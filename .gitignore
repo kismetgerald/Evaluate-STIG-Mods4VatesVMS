@@ -9,7 +9,7 @@
 #   Evaluate-STIG/xml/FileList.xml         — modified (custom module entries added)
 #   Evaluate-STIG/AnswerFiles/XCP-ng_*.xml — custom XCP-ng answer files
 #   Evaluate-STIG/AnswerFiles/XO_*.xml     — custom XO answer files
-#   CLAUDE.md                              — AI assistant project context
+#   README.md                              — project overview (root)
 #
 # What is NOT tracked (NAVSEA Evaluate-STIG framework):
 #   All other Evaluate-STIG files/folders — not for redistribution
@@ -98,8 +98,12 @@ Auxiliary/
 # Claude Code Internal Data
 # ==============================================================
 
-# Claude Code session history and project data — do not commit
+# Claude Code session history, project data, and AI assistant context — do not commit
 .claude/
+CLAUDE.md
+
+# Framework ZIP hash verification file — internal use only, not for redistribution
+Evaluate-STIG_ZIP_Hashes.txt
 
 
 # ==============================================================
