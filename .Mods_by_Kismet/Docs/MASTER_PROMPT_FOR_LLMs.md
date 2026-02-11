@@ -101,6 +101,21 @@ IMPLEMENTATION REQUIREMENTS:
 1. FUNCTION STRUCTURE - Use EXACTLY this template:
 
 Function Get-V###### {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-######
+        STIG ID    : SRG-APP-######-WSR-######
+        Rule ID    : SV-######r######_rule
+        Rule Title : [Full rule title from STIG]
+        DiscussMD5 : [MD5 hash from XCCDF <description> element]
+        CheckMD5   : [MD5 hash from XCCDF <check-content> element]
+        FixMD5     : [MD5 hash from XCCDF <fix> element]
+    #>
+    # NOTE: DiscussMD5 / CheckMD5 / FixMD5 are extracted from the XCCDF source file
+    # by the implement-stig-check skill (Step 1). They uniquely identify the STIG
+    # content version this function was written against and must be present in every
+    # function.
+
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
@@ -134,9 +149,9 @@ Function Get-V###### {
     $SeverityOverride = ""
     $Justification = ""
 
-    # === CUSTOM CHECK CODE STARTS HERE ===
-    # [Your verification logic]
-    # === CUSTOM CHECK CODE ENDS HERE ===
+    #---=== Begin Custom Code ===---#
+    # [Your verification logic — see CUSTOM CHECK CODE PATTERN below]
+    #---=== End Custom Code ===---#
 
     # ResultHash calculation
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -197,8 +212,11 @@ Function Get-V###### {
 # Build output array
 $nl = [Environment]::NewLine
 $output = @()
-$output += "Vulnerability ID: ${VulnID}:${nl}"
-$output += "Rule ID: ${RuleID}:${nl}${nl}"
+
+# REQUIRED: Output header — severity / CAT level, VulnID, and Rule Title on line 1,
+# followed by a separator line. Match exactly the format used in the module.
+$output += "CAT II / Medium - ${VulnID}: [Full rule title]"
+$output += "-------------------------------------------------------------------------------------${nl}"
 
 # Check 1: Primary verification method
 $output += "Check 1: [Description]${nl}"
