@@ -1,0 +1,181 @@
+# ==============================================================
+# VatesVMS Evaluate-STIG — Git Ignore Rules
+#
+# What IS tracked (custom work):
+#   .Mods_by_Kismet/              — integration guide, docs, test scripts
+#   Evaluate-STIG/Modules/Scan-XCP-ng_*/   — custom XCP-ng check modules
+#   Evaluate-STIG/Modules/Scan-XO_*/       — custom Xen Orchestra check modules
+#   Evaluate-STIG/xml/STIGList.xml         — modified (custom STIG entries added)
+#   Evaluate-STIG/xml/FileList.xml         — modified (custom module entries added)
+#   Evaluate-STIG/AnswerFiles/XCP-ng_*.xml — custom XCP-ng answer files
+#   Evaluate-STIG/AnswerFiles/XO_*.xml     — custom XO answer files
+#   CLAUDE.md                              — AI assistant project context
+#
+# What is NOT tracked (NAVSEA Evaluate-STIG framework):
+#   All other Evaluate-STIG files/folders — not for redistribution
+#   Evaluate-STIG/StigContent/            — DISA benchmark files (separate license)
+#   Evaluate-STIG/Modules/Master_Functions/ — framework core (mods documented in
+#                                             .Mods_by_Kismet/Docs/MODIFICATIONS.md)
+#
+# To use this repo: clone it, then download and integrate the NAVSEA
+# Evaluate-STIG framework following .Mods_by_Kismet/README.md.
+# ==============================================================
+
+
+# ==============================================================
+# Evaluate-STIG Framework Files — Not for redistribution
+# ==============================================================
+
+# Top-level framework scripts and files
+Evaluate-STIG/Evaluate-STIG.ps1
+Evaluate-STIG/Evaluate-STIG_Bash.sh
+Evaluate-STIG/Evaluate-STIG_GUI.ps1
+Evaluate-STIG/LICENSE
+Evaluate-STIG/Preferences.xml
+
+# Framework documentation (not ours)
+Evaluate-STIG/Doc/
+
+# Framework prerequisite scripts
+Evaluate-STIG/Prerequisites/
+
+# DISA STIG benchmark XCCDF content files
+# Download from: https://public.cyber.mil/stigs/downloads/
+Evaluate-STIG/StigContent/
+
+# Scan results and runtime-generated logs (may contain system inventory data)
+Evaluate-STIG/Results/
+Evaluate-STIG/Logs/
+Evaluate-STIG/**/*.log
+
+# --- Modules ---
+# Ignore ALL module directories, then un-ignore our custom ones.
+# IMPORTANT: Do NOT change this to Evaluate-STIG/Modules/ — that would prevent
+# negation patterns below from working (git cannot un-ignore inside an ignored dir).
+Evaluate-STIG/Modules/*
+
+# Custom XCP-ng modules — tracked
+!Evaluate-STIG/Modules/Scan-XCP-ng_VMM_Checks/
+!Evaluate-STIG/Modules/Scan-XCP-ng_Dom0_RHEL7_Checks/
+
+# Custom Xen Orchestra modules — tracked
+!Evaluate-STIG/Modules/Scan-XO_GPOS_Debian12_Checks/
+!Evaluate-STIG/Modules/Scan-XO_ASD_Checks/
+!Evaluate-STIG/Modules/Scan-XO_WebSRG_Checks/
+
+# Manual review guidance module — tracked
+!Evaluate-STIG/Modules/Manual/
+
+# --- xml/ directory ---
+# Ignore all xml/ files, then un-ignore our two modified files.
+Evaluate-STIG/xml/*
+!Evaluate-STIG/xml/STIGList.xml
+!Evaluate-STIG/xml/FileList.xml
+
+# --- AnswerFiles/ directory ---
+# Ignore all answer files except the custom ones created for this project.
+Evaluate-STIG/AnswerFiles/*
+!Evaluate-STIG/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+!Evaluate-STIG/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
+!Evaluate-STIG/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
+!Evaluate-STIG/AnswerFiles/XCP-ng_v8.3_VMM_AnswerFile.xml
+!Evaluate-STIG/AnswerFiles/XCP-ng_v8.3_Dom0_RHEL7_AnswerFile.xml
+
+# Note: Template_AnswerFile.xml is a framework template — not tracked.
+# Note: Master_Functions/ contains our mods but is predominantly framework code.
+#       The exact changes are documented in .Mods_by_Kismet/Docs/MODIFICATIONS.md
+#       and in the integration steps in .Mods_by_Kismet/README.md.
+
+
+# ==============================================================
+# Auxiliary folder (confirm contents before committing)
+# Remove this line if Auxiliary/ contains custom scripts you want to track.
+# ==============================================================
+Auxiliary/
+
+
+# ==============================================================
+# Claude Code Internal Data
+# ==============================================================
+
+# Claude Code session history and project data — do not commit
+.claude/
+
+
+# ==============================================================
+# Editor and IDE Artifacts
+# ==============================================================
+
+# VS Code workspace settings (user-specific)
+.vscode/
+*.code-workspace
+
+# JetBrains IDEs
+.idea/
+
+# Vim/Emacs swap files
+*.swp
+*.swo
+*~
+
+# macOS artifacts
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows Explorer artifacts
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+ehthumbs.db
+
+
+# ==============================================================
+# Python Cache (used by .Mods_by_Kismet/Test/ scripts)
+# ==============================================================
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+
+# ==============================================================
+# Credentials and Secrets — NEVER commit these
+# ==============================================================
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa
+id_rsa.pub
+id_ed25519
+id_ed25519.pub
+*api-token*
+*api_token*
+.env
+*.env
+
+
+# ==============================================================
+# Stale Module Copies — .Mods_by_Kismet/Modules/ predates the
+# move to Evaluate-STIG/Modules/ (Session #1). Authoritative
+# copies are in Evaluate-STIG/Modules/ only.
+# ==============================================================
+.Mods_by_Kismet/Modules/
+
+
+# ==============================================================
+# Temporary and Backup Files
+# ==============================================================
+*.tmp
+*.bak
+*.old
+*.orig
+*.backup
+# Timestamped backups created by integration scripts
+*.backup_*
+*.batch3a_backup
+*.before_duplicate_removal
+*_backup_*.psm1
+*_backup_*.xml

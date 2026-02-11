@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- V-264344 Answer File Entry for XO v5.x WebSRG -->
+
+<Answer Index="1" ExpectedStatus="NotAFinding">
+    <AFKey>XO</AFKey>
+    <AFValidTrueStatus>NotAFinding</AFValidTrueStatus>
+    <ValidTrueComment><![CDATA[
+MFA Strength Compliance Documented
+
+The Xen Orchestra web server implements multifactor authentication (MFA) for privileged
+account access with the following verified strength levels:
+
+Authentication Architecture:
+- Integration with Microsoft Active Directory via LDAP
+- CAC/PIV card authentication enforced for administrative accounts
+- Group Policy enforces DoD-compliant MFA requirements
+- FIPS 140-2 validated cryptographic modules in use
+
+MFA Strength Verification:
+- Privileged access (admin roles): CAC/PIV required (FIPS 140-2 validated)
+- Standard user access: TOTP/hardware tokens or CAC/PIV
+- Authentication factors: Password (knowledge) + CAC/PIV/token (possession)
+- FIPS 140-2 validation certificates on file
+
+ISSO/ISSM Approval:
+- MFA implementation plan approved by ISSO: [Date]
+- Authentication mechanism strength levels approved by ISSM: [Date]
+- Security authorization package includes MFA strength documentation
+- Exception/waiver documentation: None required (fully compliant)
+
+Enrollment/Revocation Procedures:
+- CAC/PIV enrollment managed via AD Group Policy
+- Account provisioning/deprovisioning documented in SOP
+- MFA token lifecycle management procedures established
+
+This finding is marked as NotAFinding because:
+1. MFA strength meets or exceeds DoD 8500.01 requirements
+2. FIPS 140-2 validated cryptographic modules are in use
+3. CAC/PIV authentication enforced for privileged access
+4. ISSO/ISSM have approved the MFA implementation
+5. All required documentation is on file in security authorization package
+
+Evidence: [Provide references to MFA policy documents, FIPS 140-2 certificates,
+ISSO/ISSM approval memos, and security authorization package sections]
+    ]]></ValidTrueComment>
+</Answer>
+
+<Answer Index="2" ExpectedStatus="Open">
+    <AFKey>XO</AFKey>
+    <AFValidTrueStatus>Open</AFValidTrueStatus>
+    <ValidTrueComment><![CDATA[
+MFA Strength Documentation Required
+
+The automated check detected authentication configuration on the Xen Orchestra web server,
+but ORGANIZATIONAL POLICY REVIEW is required to verify MFA strength compliance with DoD
+8500.01 requirements.
+
+Required Documentation for ISSO/ISSM Review:
+1. MFA Implementation Plan
+   - Document MFA strength levels for each account privilege tier
+   - Specify authentication mechanisms (CAC/PIV, hardware token, TOTP, biometric)
+   - Map MFA methods to account types (admin vs standard user)
+
+2. FIPS 140-2 Validation
+   - Obtain validation certificates for cryptographic modules
+   - Verify FIPS 140-2 compliance of all MFA components
+   - CAC/PIV readers must be FIPS 140-2 validated
+   - Hardware tokens must be FIPS 140-2 validated
+
+3. Authentication Factor Types
+   - Confirm at least TWO factor types implemented:
+     * Something you KNOW (password/PIN)
+     * Something you HAVE (CAC/PIV, hardware token, TOTP)
+     * Something you ARE (biometric with liveness detection)
+
+4. Privileged Account Requirements
+   - Verify CAC/PIV authentication for administrative access (preferred)
+   - If using alternative MFA: document justification and ISSM approval
+   - Software TOTP acceptable for non-privileged access only
+
+5. External Identity Provider (if applicable)
+   - If using LDAP/SAML: verify IdP MFA strength compliance
+   - Obtain documentation of IdP MFA configuration
+   - Verify IdP enforces DoD-compliant MFA policies
+
+6. Enrollment/Revocation Procedures
+   - Document MFA enrollment process
+   - Document MFA revocation/suspension procedures
+   - Verify procedures align with account lifecycle management
+
+7. ISSO/ISSM Approval
+   - Obtain ISSO approval of MFA implementation plan
+   - Obtain ISSM approval of authentication mechanism strength levels
+   - Include approvals in security authorization package
+
+Remediation Steps:
+1. Review XO authentication architecture with system administrators
+2. Collect MFA implementation documentation
+3. Verify FIPS 140-2 validation certificates
+4. Document MFA strength levels per account type
+5. Obtain ISSO/ISSM approval of MFA configuration
+6. Update security authorization package with MFA strength documentation
+
+Organizational Context:
+- XO may integrate with Microsoft Active Directory (LDAP)
+- AD Group Policy may enforce MFA via Kerberos/NTLM with CAC/PIV
+- SAML/SSO may delegate authentication to external identity provider
+- MFA strength must align with account privilege level per DoD 8500.01
+
+Note: This finding remains Open until ISSO/ISSM verify and document that MFA strength
+levels meet DoD requirements based on account privilege levels. Technical detection of
+MFA configuration is NOT sufficient for compliance - organizational policy review required.
+    ]]></ValidTrueComment>
+</Answer>

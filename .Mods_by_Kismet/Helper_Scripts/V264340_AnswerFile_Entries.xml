@@ -1,0 +1,98 @@
+    <!-- V-264340: Alert on Unauthorized Audit Log Changes -->
+    <Vuln ID="V-264340">
+      <Answer Index="1" ExpectedStatus="NotAFinding">
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+COMPLIANT: File integrity monitoring and alerting configured for audit logs.
+
+System demonstrates compliance through:
+
+1. File Integrity Monitoring (FIM) Implementation:
+   - FIM tool installed and configured (AIDE/Tripwire/OSSEC detected)
+   - All audit log locations monitored (automated checks verified)
+   - Log file protection enabled (immutable/append-only attributes)
+   - Auditd watch rules configured for log directories
+
+2. Real-Time Alerting Configuration:
+   - FIM alerts configured for unauthorized log modifications
+   - ISSO/SA notification mechanisms tested and verified
+   - SIEM integration active (Splunk/QRadar/ArcSight)
+   - Alert thresholds properly calibrated
+
+3. Organizational Integration:
+   - Documented response procedures for log tampering alerts
+   - 24/7 SOC monitoring of FIM alerts
+   - Incident response procedures include log tampering scenarios
+   - Periodic testing of alerting mechanisms (quarterly minimum)
+
+VERIFICATION EVIDENCE:
+- FIM configuration files with log directory monitoring rules
+- Alert test results showing ISSO/SA notification &lt; 5 minutes
+- SIEM integration documentation with log tampering event correlation
+- Incident response procedure documentation
+- Auditd watch rules for /var/log directories
+
+This system meets DoD requirements for immediate alerting on unauthorized audit log changes.
+        </ValidTrueComment>
+      </Answer>
+
+      <Answer Index="2" ExpectedStatus="Open">
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+REMEDIATION REQUIRED: Implement file integrity monitoring and alerting for audit logs.
+
+Steps to achieve compliance:
+
+1. Implement File Integrity Monitoring (FIM):
+   - Install FIM tool: apt install aide (recommended for Debian)
+   - Initialize AIDE database: aideinit
+   - Configure AIDE to monitor ALL audit log locations:
+     * /var/log/xo-server/
+     * /var/log/nginx/
+     * /var/log/journal/
+     * /var/log/audit/
+   - Edit /etc/aide/aide.conf and add:
+       /var/log/xo-server p+i+n+u+g+s+m+c+sha256
+       /var/log/nginx p+i+n+u+g+s+m+c+sha256
+   - Set monitoring frequency: Configure cron job for hourly checks
+
+2. Implement Log File Protection:
+   - Set append-only attribute: chattr +a /var/log/xo-server/*.log
+   - Verify immutability: lsattr /var/log/xo-server/
+   - Configure auditd watch rules:
+       echo "-w /var/log/xo-server/ -p wa -k log_tampering" &gt;&gt; /etc/audit/rules.d/log-monitoring.rules
+       echo "-w /var/log/nginx/ -p wa -k log_tampering" &gt;&gt; /etc/audit/rules.d/log-monitoring.rules
+   - Reload auditd: augenrules --load
+
+3. Configure Real-Time Alerting:
+   - Configure AIDE email notifications in /etc/aide/aide.conf
+   - Install mail utilities: apt install mailutils
+   - Configure SIEM integration for auditd events (syslog forwarding)
+   - Set alert thresholds for unauthorized modifications
+   - Configure /etc/rsyslog.conf for remote logging:
+       *.* @@siem.organization.mil:514
+
+4. Test Alerting Mechanism:
+   - Simulate log tampering: touch /var/log/xo-server/test.log
+   - Verify AIDE detection: aide --check
+   - Verify ISSO/SA receives alert within 5 minutes
+   - Document test results
+
+5. Document and Integrate:
+   - Create incident response procedures for log tampering
+   - Include in organizational security monitoring processes
+   - Schedule quarterly testing of alerting mechanisms
+   - Brief ISSO/SA on alert handling procedures
+
+VERIFICATION EVIDENCE REQUIRED:
+- FIM configuration files showing log directory monitoring
+- Alert configuration files with ISSO/SA contact information
+- SIEM integration documentation (syslog forwarding rules)
+- Alert test results (simulated tampering with verified ISSO notification)
+- Incident response procedures for log tampering events
+- Quarterly testing schedule and results
+
+DoD Requirement: Immediate alerting to security personnel when audit logs are modified without authorization.
+        </ValidTrueComment>
+      </Answer>
+    </Vuln>

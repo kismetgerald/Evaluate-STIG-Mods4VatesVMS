@@ -1,0 +1,69 @@
+
+ERROR: 'FileList.xml' failed authenticity check. Unable to verify content integrity.
+-AllowIntegrityViolations specified so continuing with scan.
+Prepping files for remote scan
+Compressing Evaluate-STIG files
+
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable hosts.  Attempting connection to 1 hosts. -
+Generating list of scannable hosts.  Attempting connection to 1 hosts. \
+Generating list of scannable hosts.  Attempting connection to 1 hosts. |
+Generating list of scannable hosts.  Attempting connection to 1 hosts. /
+Generating list of scannable machines.  Connected to 1 hosts. 0 Windows and 1 Linux
+
+Executing scans
+
+Invoking Evaluate-STIG on XO1.WGSDAC.NET.
+Local logging of scan is stored at /tmp/Evaluate-STIG on XO1.WGSDAC.NET
+Total Time : 00:01:07.5414463
+
+Done!
+Total Time - 00:01:53.7326781
+Total Hosts - 1
+Total Hosts Not Resolved - 0
+Total Hosts Offline - 0
+
+Results saved to 
+C:\Users\Public\Documents\STIG_Compliance
+Local logging of remote scan(s) stored at 
+C:\Users\kisme\AppData\Local\Temp\Evaluate-STIG
+Offline Results saved to 
+C:\Users\kisme\AppData\Local\Temp\Evaluate-STIG\Offline_Hosts.txt
+
+Name                           Value
+----                           -----
+XO1                            {[AssetData, System.Collections.Specialized.OrderedDictionary], [XO_WebSRG, @{STIGInfo=System.Colle…
+

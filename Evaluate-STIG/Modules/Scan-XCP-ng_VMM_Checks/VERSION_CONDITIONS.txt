@@ -1,0 +1,247 @@
+================================================================================
+XCP-ng VMM SRG: VERSION-CONDITIONAL RULE APPLICABILITY
+================================================================================
+
+Document Version: 1.0
+Date: January 16, 2026
+Purpose: Document which VMM SRG checks apply to different XCP-ng versions
+
+================================================================================
+VERSION SUPPORT MATRIX
+================================================================================
+
+XCP-ng Version    | Support Status    | Notes
+------------------+-------------------+----------------------------------------
+8.0 - 8.9         | SUPPORTED         | CentOS 8-based, actively maintained
+9.0 - 9.x         | SUPPORTED         | Debian 11-based, production ready
+7.x and earlier   | UNSUPPORTED       | End-of-life, requires upgrade
+10.x and later    | UNKNOWN           | Not yet released, rules TBD
+
+For unsupported versions, all VMM SRG rules return status: NotApplicable
+
+================================================================================
+RULE APPLICABILITY BY XCP-ng VERSION
+================================================================================
+
+ACCOUNT MANAGEMENT (V-207338 through V-207349)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207338-343     | APPLY      | APPLY      | Standard account management
+V-207344-347     | APPLY      | APPLY      | Session management
+V-348-349        | APPLY      | APPLY      | Account lockout and expiry
+
+AUTHENTICATION (V-207350 through V-207395)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207350-351     | APPLY      | APPLY      | Remote access security
+V-207368-375     | APPLY      | APPLY      | Password complexity and expiry
+V-207387-395     | APPLY      | APPLY      | Multi-factor authentication
+
+CRYPTOGRAPHY (V-207407 through V-207530)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207407         | APPLY      | APPLY      | Encryption mechanisms
+V-207488-501     | APPLY      | APPLY      | Cryptographic standards
+V-207526-527     | APPLY      | APPLY      | FIPS validation
+
+AUDIT & LOGGING (V-207352 through V-207366)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207352-366     | APPLY      | APPLY      | Audit record generation and protection
+V-207518-527     | APPLY      | APPLY      | Audit content and integrity
+
+RESOURCE MANAGEMENT & ISOLATION (V-207412 through V-207444)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207412-417     | APPLY      | APPLY      | Guest VM isolation (network, device)
+V-207442-444     | APPLY      | APPLY      | VM resource limits and monitoring
+
+SECURITY CONFIGURATION & HARDENING (V-207445 through V-207528)
+Rules:           | XCP-ng 8.x | XCP-ng 9.x | Notes
+-----------------+------------+------------+------------------------------------------
+V-207445-480     | APPLY      | APPLY      | Privilege separation, non-executable data
+V-207502-508     | APPLY      | APPLY      | System initialization and failure handling
+
+================================================================================
+RULE CATEGORIES AND CHECK METHODOLOGY
+================================================================================
+
+CATEGORY 1: HOST-LEVEL ACCOUNT & SESSION MANAGEMENT (V-207338-349)
+  - Check target: Dom0 user accounts, xapi service accounts
+  - Automation: Use getent passwd, usermod, lastlog commands
+  - Tools: Linux standard utilities (not Xen-specific)
+  - Xen-specific: Validate xapi service account isolation
+
+CATEGORY 2: AUTHENTICATION & CRYPTOGRAPHY (V-207350-407)
+  - Check target: SSH configuration, TLS in xapi, PKI implementation
+  - Automation: Parse /etc/ssh/sshd_config, openssl s_client checks
+  - Tools: openssl, SSH configuration utilities, FIPS mode checks
+  - Xen-specific: Verify xapi uses TLS 1.2+
+
+CATEGORY 3: AUDIT & LOGGING (V-207352-366, V-207518-527)
+  - Check target: auditd configuration, syslog setup, xen.log
+  - Automation: ausearch, grep audit rules, parse xen.log
+  - Tools: auditctl, journalctl, ausearch
+  - Xen-specific: Parse /var/log/xen/xen.log for VM events
+
+CATEGORY 4: GUEST VM ISOLATION (V-207412-417)
+  - Check target: Network isolation, device assignment, VM placement
+  - Automation: Use 'xe vm-list', 'xe network-list', 'xe vlan-list'
+  - Tools: Xen CLI (xe command), libxl
+  - Xen-specific: Verify VLAN/network configuration, SR-IOV if enabled
+  - Bash helper: query_guest_isolation.sh
+
+CATEGORY 5: VM RESOURCE MANAGEMENT (V-207442-444)
+  - Check target: Memory limits, vCPU allocation, I/O quotas
+  - Automation: Use 'xe vm-param-list', 'xe vm-memory-set'
+  - Tools: Xen CLI, xenstore
+  - Xen-specific: Check domain resource allocation via xenstore
+  - Bash helper: check_xenstore_config.sh
+
+CATEGORY 6: SYSTEM INITIALIZATION & FAILURE HANDLING (V-207406, V-207507-508)
+  - Check target: Boot-time audit, anomaly detection shutdown
+  - Automation: Verify auditd startup via systemd, check shutdown handlers
+  - Tools: systemctl, audit rules, kernel parameters
+  - Xen-specific: Verify Xen hypervisor boot with audit enabled
+
+CATEGORY 7: SECURE BOOT & INTEGRITY (V-207503-504)
+  - Check target: Data execution prevention, ASLR, DEP
+  - Automation: Check /proc/cmdline, verify CPU features
+  - Tools: Linux kernel flags, CPU feature validation
+  - Xen-specific: Verify Dom0 kernel has NX/DEP enabled
+
+================================================================================
+VERSION-SPECIFIC ADAPTATIONS
+================================================================================
+
+XCP-ng 8.x SPECIFIC NOTES:
+- Based on CentOS 8 (RHEL 8 equivalent)
+- Uses yum/dnf package manager (use yum for compatibility)
+- Xen 4.14.x hypervisor
+- xapi version 2.x
+- Supports up to 192 vCPUs per VM
+- IOMMU/VT-d support available
+
+XCP-ng 9.x SPECIFIC NOTES:
+- Based on Debian 11
+- Uses apt package manager (not yum)
+- Xen 4.16.x hypervisor
+- xapi version 2.x
+- Supports up to 512 vCPUs per VM (increased scalability)
+- Enhanced NUMA support
+- Some package names differ from 8.x (document in Debian12 GPOS module)
+
+ADAPTATION HANDLING:
+- Version detection happens at module initialization
+- Version-specific rules marked with XCP-ng version in comments
+- If feature not available in version: return NotApplicable (not Finding)
+- If feature available but not configured: return Finding (not NotApplicable)
+
+================================================================================
+EXCEPTION CASES
+================================================================================
+
+The following scenarios warrant special handling:
+
+1. CUSTOM XAPI CONFIGURATION
+   If xapi is configured non-standard (custom ports, SSL bypass):
+   - Check cannot automatically verify security
+   - Return: NotReviewed with recommendation for manual audit
+   - Message: "Manual review required for custom xapi configuration"
+
+2. MULTI-POOL DEPLOYMENT
+   If XCP-ng is part of resource pool with multiple hosts:
+   - Cannot check all pool-wide settings from single host
+   - Individual host checks still apply
+   - Return: NotApplicable for pool-level checks on single host
+   - Message: "Host is part of pool; pool administrator must verify"
+
+3. STORAGE REPOSITORY SPECIFIC RULES
+   If SR (storage repository) not attached to this host:
+   - Cannot perform storage-specific security checks
+   - Return: NotApplicable
+   - Message: "No applicable storage repositories on this host"
+
+4. VM MIGRATION IN PROGRESS
+   If VMs being migrated during scan:
+   - VM isolation checks may return inconsistent results
+   - Return: NotReviewed
+   - Message: "Cannot verify VM isolation during migration; retry after migration completes"
+
+5. EMERGENCY/MAINTENANCE MODE
+   If Dom0 in maintenance or recovery mode:
+   - Many xapi services may not be running
+   - Return: NotApplicable for xapi-dependent checks
+   - Message: "Host in maintenance mode; check only applicable in normal operation"
+
+================================================================================
+MANUAL REVIEW REQUIREMENTS
+================================================================================
+
+Checks that return "NotReviewed" typically require:
+
+1. ORGANIZATIONAL POLICY VERIFICATION
+   - Check that policies match actual requirements
+   - Verify custom policies are documented
+   - Example: "Verify organization's account lockout policy"
+
+2. COMPLIANCE OFFICER SIGN-OFF
+   - Policy decisions that can't be automated
+   - Exception approvals for non-standard configurations
+   - Example: "Obtain ISSM approval for SSH root login override"
+
+3. ARCHITECTURAL REVIEW
+   - Verification of multi-host, multi-pool designs
+   - Integration with central authentication systems
+   - Example: "Verify LDAP/Kerberos integration across all pool hosts"
+
+4. VENDOR-SPECIFIC CONFIGURATION
+   - Citrix support-required settings
+   - Performance vs. security tradeoffs
+   - Example: "Verify Citrix-recommended hypervisor tuning doesn't bypass security"
+
+5. SECURITY AUDIT BY SPECIALIST
+   - Cryptographic implementation verification
+   - Xen-specific security features
+   - Example: "Cryptographer must verify FIPS mode configuration"
+
+================================================================================
+RUNNING CHECKS FOR SPECIFIC VERSIONS
+================================================================================
+
+At scan time, the module will:
+
+1. Detect actual XCP-ng version via Get-XCPngVersion
+2. Compare against minimum supported version (8.0)
+3. For unsupported versions:
+   - Flag all checks as NotApplicable
+   - Generate warning: "XCP-ng X.X is not supported; VMM SRG rules marked NotApplicable"
+   - Recommend upgrade to supported version
+
+4. For supported versions:
+   - Apply all applicable checks
+   - Version-conditional logic handled within each function
+   - Checks that don't apply return NotApplicable with reason
+
+================================================================================
+UPDATING THIS DOCUMENT
+================================================================================
+
+When new XCP-ng versions released:
+1. Test all VMM SRG rules on new version
+2. Document any rules that require adaptation
+3. Update VERSION SUPPORT MATRIX
+4. Add new entries to RULE APPLICABILITY table
+5. Document version-specific adaptations
+6. Update Get-XCPngVersion if new version range needed
+7. Update this VERSION_CONDITIONS.txt
+
+When DISA updates VMM SRG:
+1. Review new/modified rules
+2. Implement new checks following existing patterns
+3. Update vulnerability ID ranges in psd1 manifest
+4. Document new version-specific requirements
+
+================================================================================
+END OF DOCUMENT
+================================================================================

@@ -1,0 +1,2831 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--**************************************************************************************
+This file contains answers for known opens and findings that cannot be evaluated through technical means.
+<STIGComments>      - Top element.  May only occur once.
+      "Name"           : Required.  Must match the STIG ShortName in -ListSupportedProducts.  When a match is found, this answer file will automatically be used for the STIG.
+<Vuln>              - Multiple <Vuln> sections may be configured in a single answer file provided the "ID" attribute is unique.
+      "ID"             : Required.  The STIG VulnID or RuleID.
+<AnswerKey>         - Multiple <AnswerKey> sections may be configured within a single <Vuln> section provided the "Name" attribute is unique.
+      "Name"           : Required.  The name of the key to be called by "-AnswerKey".  "DEFAULT" may be used in lieu of using "-AnswerKey".
+<Answer>            - Multiple <Answer> sections may be configured within an <AnswerKey> section provided the "Index" attribute is unique AND the combination of the other attributes is unique.
+      "Index"          : Required.  Identifier for the answer.
+      "ExpectedStatus" : Required.  The initial status that Evaluate-STIG determined.  Refer to "Valid Status formats" below.
+      "Hostname"       : Optional.  Hostname(s) that the answer is applicable to.  Use comma separation for multiple.
+      "Instance"       : Optional.  Instance name(s) (e.g. for SQL) that the answer is applicable to.  Use comma separation for multiple.  Reference FindingDetails for appropriate Instance value.
+      "Database"       : Optional.  Database name(s) (e.g. for SQL) that the answer is applicable to.  Use comma separation for multiple.  Reference FindingDetails for appropriate Database value.
+      "Site"           : Optional.  Site names (e.g. for IIS) that the answer is applicable to.  Use comma separation for multiple.  Reference FindingDetails for appropriate Site value.
+      "ResultHash"     : Optional.  Hash of FindingDetails text after "~~~~~" bar.  Use comma separation for multiple.  Reference FindingDetails for calculated ResultHash.
+<ValidationCode>    - Powershell code that returns a boolean value or Hashtable.  If blank, "true" is assumed.
+                      *Note: If Validation Code returns a Hashtable, the Object MUST contain both [String]"Results" and [Boolean]"Valid" keys.  "Results" will be written to the Comments field of the STIG check.
+                      The following Evaluate-STIG variables are also available to be called within validation code:
+      $ESPath          : Path that Evaluate-STIG.ps1 was executed from.
+      $ExpectedStatus  : Status that Evaluate-STIG determined.  Will be in CKL format (refer to "Valid Status formats" below).
+      $ResultHash      : SHA1 hash of ResultData.  Reference FindingDetails for calculated ResultHash.
+      $ResultData      : FindingDetails content after "~~~~~" bar.
+      $Username        : User name processed for HKCU check.  Reference to FindingDetails for appropriate Username value.
+      $UserSID         : User SID processed for HKCU check.  Reference to FindingDetails for appropriate UserSID value.
+      $Instance        : Instance name processed.  Reference FindingDetails for appropriate Instance value.
+      $Database        : Database name processed.  Reference FindingDetails for appropriate Database value.
+      $Site            : Site name processed.  Reference FindingDetails for appropriate Site value.
+<ValidTrueStatus>   - The status the check should be set to if ValidationCode returns "true".  Refer to "Valid Status formats" below.  If blank, Status is unchanged.
+<ValidTrueComment>  - The verbiage to add to the Comments section if ValidationCode returns "true".
+<ValidFalseStatus>  - The status the check should be set to if ValidationCode DOES NOT return "true".  Refer to "Valid Status formats" below.  If blank, Status is unchanged
+<ValidFalseComment> - The verbiage to add to the Comments section if ValidationCode DOES NOT return "true".
+
+* Valid Status formats:
+    |     Status     | EvalSTIG |       CKL        |       CKLB       |      XCCDF      |
+    |================|==========|==================|==================|=================|
+    | Not Reviewed   | "NR"     | "Not_Reviewed"   | "Not_Reviewed"   | "notchecked"    |
+    | Not A Finding  | "NF"     | "NotAFinding"    | "not_a_finding"  | "pass"          |
+    | Open           | "O"      | "Open"           | "Open"           | "fail"          |
+    | Not Applicable | "NA"     | "Not_Applicable" | "Not_Applicable" | "notapplicable" |
+    |================|==========|==================|==================|=================|
+
+* Answer Weighting:
+  Evaluate-STIG adds the weights for all "applicable" attributes configured in an <Answer>.  If an attribute is configured but not applicable to the STIG (e.g. configuring the "Database" attribute for an IIS Site STIG) then the weight for that attribute is not included in the calculation.
+    |    Attribute     | Weight |
+    |==================|========|
+    | ExpectedStatus   |   0 *  |  * ExpectedStatus is a hard requirement.  If not a match, the answer is ignored.
+    | Hostname         |   5    |
+    | Instance         |   4    |
+    | Database         |   3    |
+    | Site             |   2    |
+    | ResultHash       |   1    |
+    | <AnswerKey Name> |   16   |
+    |==================|========|
+**************************************************************************************-->
+<STIGComments Name="M_GeneralPurposeOperatingSystem">
+  <!--Evaluate-STIG answer file for Xen Orchestra (based on the General Purpose Operating System SRG)-->
+  <Vuln ID="V-203591">
+    <!--RuleTitle: The operating system must provide automated mechanisms for supporting account management functions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203592">
+    <!--RuleTitle: The operating system must automatically remove or disable temporary user accounts after 72 hours.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203593">
+    <!--RuleTitle: The operating system must audit all account creations.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203594">
+    <!--RuleTitle: The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203595">
+    <!--RuleTitle: The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203596">
+    <!--RuleTitle: The operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203597">
+    <!--RuleTitle: The operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203598">
+    <!--RuleTitle: The operating system must retain a users session lock until that user reestablishes access using established identification and authentication procedures.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203599">
+    <!--RuleTitle: The operating system must initiate a session lock after a 15-minute period of inactivity for all connection types.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203600">
+    <!--RuleTitle: The operating system must provide the capability for users to directly initiate a session lock for all connection types.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203601">
+    <!--RuleTitle: The operating system must conceal, via the session lock, information previously visible on the display with a publicly viewable image.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203602">
+    <!--RuleTitle: The operating system must monitor remote access methods.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203603">
+    <!--RuleTitle: The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203604">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish what type of events occurred.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203605">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish when (date and time) the events occurred.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203606">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish where the events occurred.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203607">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish the source of the events.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203608">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish the outcome of the events.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203609">
+    <!--RuleTitle: The operating system must generate audit records containing the full-text recording of privileged commands.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203610">
+    <!--RuleTitle: The operating system must produce audit records containing the individual identities of group account users.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203611">
+    <!--RuleTitle: The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203613">
+    <!--RuleTitle: The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203614">
+    <!--RuleTitle: The operating system must provide the capability to filter audit records for events of interest based upon all audit fields within audit records.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203615">
+    <!--RuleTitle: The operating system must use internal system clocks to generate time stamps for audit records.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203616">
+    <!--RuleTitle: The operating system must protect audit information from unauthorized read access.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203617">
+    <!--RuleTitle: The operating system must protect audit information from unauthorized modification.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203618">
+    <!--RuleTitle: The operating system must protect audit information from unauthorized deletion.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203619">
+    <!--RuleTitle: The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203620">
+    <!--RuleTitle: The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203621">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203622">
+    <!--RuleTitle: The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203623">
+    <!--RuleTitle: The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203624">
+    <!--RuleTitle: The operating system must map the authenticated identity to the user or group account for PKI-based authentication.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203625">
+    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one uppercase character be used.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203626">
+    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one lowercase character be used.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203627">
+    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one numeric character be used.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203628">
+    <!--RuleTitle: The operating system must require the change of at least 50 percent of the total number of characters when passwords are changed.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203629">
+    <!--RuleTitle: The operating system must store only encrypted representations of passwords.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203630">
+    <!--RuleTitle: The operating system must transmit only encrypted representations of passwords.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203631">
+    <!--RuleTitle: Operating systems must enforce 24 hours/1 day as the minimum password lifetime.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203632">
+    <!--RuleTitle: Operating systems must enforce a 60-day maximum password lifetime restriction.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203634">
+    <!--RuleTitle: The operating system must enforce a minimum 15-character password length.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203635">
+    <!--RuleTitle: The operating system must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203636">
+    <!--RuleTitle: The operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203637">
+    <!--RuleTitle: The operating system must be configured to disable non-essential capabilities.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203638">
+    <!--RuleTitle: The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203639">
+    <!--RuleTitle: The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203640">
+    <!--RuleTitle: The operating system must use multifactor authentication for network access to privileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203641">
+    <!--RuleTitle: The operating system must use multifactor authentication for network access to non-privileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203642">
+    <!--RuleTitle: The operating system must use multifactor authentication for local access to privileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203643">
+    <!--RuleTitle: The operating system must use multifactor authentication for local access to nonprivileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203644">
+    <!--RuleTitle: The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203645">
+    <!--RuleTitle: The operating system must implement replay-resistant authentication mechanisms for network access to privileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203646">
+    <!--RuleTitle: The operating system must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203647">
+    <!--RuleTitle: The operating system must uniquely identify peripherals before establishing a connection.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203648">
+    <!--RuleTitle: The operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203649">
+    <!--RuleTitle: The operating system must use mechanisms meeting the requirements of applicable federal laws, Executive orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203650">
+    <!--RuleTitle: The operating system must uniquely identify and must authenticate non-organizational users (or processes acting on behalf of non-organizational users).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203651">
+    <!--RuleTitle: The operating system must provide an audit reduction capability that supports on-demand reporting requirements.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203652">
+    <!--RuleTitle: The information system must automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203653">
+    <!--RuleTitle: The operating system must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203655">
+    <!--RuleTitle: The operating system must separate user functionality (including user interface services) from operating system management functionality.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203656">
+    <!--RuleTitle: The operating system must isolate security functions from nonsecurity functions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203657">
+    <!--RuleTitle: Operating systems must prevent unauthorized and unintended information transfer via shared system resources.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203658">
+    <!--RuleTitle: The operating system must manage excess capacity, bandwidth, or other redundancy to limit the effects of information flooding types of Denial of Service (DoS) attacks.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203659">
+    <!--RuleTitle: The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203660">
+    <!--RuleTitle: The operating system must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203661">
+    <!--RuleTitle: The operating system must protect the confidentiality and integrity of all information at rest.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203663">
+    <!--RuleTitle: The operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203664">
+    <!--RuleTitle: The operating system must reveal error messages only to authorized users.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203665">
+    <!--RuleTitle: Any publically accessible connection to the operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203666">
+    <!--RuleTitle: The operating system must audit all account modifications.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203667">
+    <!--RuleTitle: The operating system must audit all account disabling actions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203668">
+    <!--RuleTitle: The operating system must audit all account removal actions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203669">
+    <!--RuleTitle: The operating system must implement cryptography to protect the integrity of remote access sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203670">
+    <!--RuleTitle: The operating system must initiate session audits at system start-up.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203671">
+    <!--RuleTitle: The operating system must produce audit records containing information to establish the identity of any individual or process associated with the event.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203672">
+    <!--RuleTitle: The operating system must protect audit tools from unauthorized access.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203673">
+    <!--RuleTitle: The operating system must protect audit tools from unauthorized modification.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203674">
+    <!--RuleTitle: The operating system must protect audit tools from unauthorized deletion.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203675">
+    <!--RuleTitle: The operating system must limit privileges to change software resident within software libraries.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203676">
+    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one special character be used.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203677">
+    <!--RuleTitle: In the event of a system failure, the operating system must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203678">
+    <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are created.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203679">
+    <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are modified.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203680">
+    <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are disabled. -->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203681">
+    <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are removed.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203682">
+    <!--RuleTitle: The operating system must use cryptographic mechanisms to protect the integrity of audit tools.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203683">
+    <!--RuleTitle: The operating system must automatically terminate a user session after inactivity time-outs have expired or at shutdown.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203684">
+    <!--RuleTitle: The operating system must provide a logoff capability for user-initiated communications sessions when requiring user access authentication.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203685">
+    <!--RuleTitle: The operating system must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203686">
+    <!--RuleTitle: The operating system must control remote access methods.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203687">
+    <!--RuleTitle: The operating system must provide the capability to immediately disconnect or disable remote access to the operating system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203688">
+    <!--RuleTitle: The operating system must protect wireless access to and from the system using encryption.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203689">
+    <!--RuleTitle: The operating system must protect wireless access to the system using authentication of users and/or devices.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203690">
+    <!--RuleTitle: The operating system must audit all account enabling actions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203691">
+    <!--RuleTitle: The operating system must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203692">
+    <!--RuleTitle: The operating system must allow operating system admins to pass information to any other operating system admin or user.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203693">
+    <!--RuleTitle: The operating system must allow operating system admins to grant their privileges to other operating system admins.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203694">
+    <!--RuleTitle: The operating system must allow operating system admins to change security attributes on users, the operating system, or the operating systems components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203695">
+    <!--RuleTitle: The operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203696">
+    <!--RuleTitle: The operating system must prevent all software from executing at higher privilege levels than users executing the software.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203697">
+    <!--RuleTitle: The operating system must audit the execution of privileged functions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203698">
+    <!--RuleTitle: The operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203699">
+    <!--RuleTitle: The operating system must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203700">
+    <!--RuleTitle: The operating system must allocate audit record storage capacity to store at least one week's worth of audit records, when audit records are not immediately sent to a central audit record storage facility.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203701">
+    <!--RuleTitle: The operating system must offload audit records onto a different system or media from the system being audited.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203702">
+    <!--RuleTitle: The operating system must immediately notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203703">
+    <!--RuleTitle: The operating system must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203704">
+    <!--RuleTitle: The operating system must provide an audit reduction capability that supports on-demand audit review and analysis.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203705">
+    <!--RuleTitle: The operating system must provide an audit reduction capability that supports after-the-fact investigations of security incidents.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203706">
+    <!--RuleTitle: The operating system must provide a report generation capability that supports on-demand audit review and analysis.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203707">
+    <!--RuleTitle: The operating system must provide a report generation capability that supports on-demand reporting requirements.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203708">
+    <!--RuleTitle: The operating system must provide a report generation capability that supports after-the-fact investigations of security incidents.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203709">
+    <!--RuleTitle: The operating system must not alter original content or time ordering of audit records when it provides an audit reduction capability.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203710">
+    <!--RuleTitle: The operating system must not alter original content or time ordering of audit records when it provides a report generation capability.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203711">
+    <!--RuleTitle: The operating system must, for networked systems, compare internal information system clocks at least every 24 hours with an authoritative time source.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203712">
+    <!--RuleTitle: The operating system must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203713">
+    <!--RuleTitle: The operating system must record time stamps for audit records that meet a minimum granularity of one second for a minimum degree of precision.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203714">
+    <!--RuleTitle: The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203715">
+    <!--RuleTitle: The operating system must enforce dual authorization for movement and/or deletion of all audit information, when such movement or deletion is not part of an authorized automatic process.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203716">
+    <!--RuleTitle: The operating system must prohibit user installation of system software without explicit privileged status.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203717">
+    <!--RuleTitle: The operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203718">
+    <!--RuleTitle: The operating system must enforce access restrictions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203719">
+    <!--RuleTitle: The operating system must audit the enforcement actions used to restrict access associated with changes to the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203720">
+    <!--RuleTitle: The operating system must prevent the installation of patches, service packs, device drivers, or operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203721">
+    <!--RuleTitle: The operating system must prevent program execution in accordance with local policies regarding software program usage and restrictions and/or rules authorizing the terms and conditions of software program usage.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203722">
+    <!--RuleTitle: The operating system must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203723">
+    <!--RuleTitle: The operating system must require users to reauthenticate for privilege escalation.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203724">
+    <!--RuleTitle: The operating system must require users to reauthenticate when changing roles.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203725">
+    <!--RuleTitle: The operating system must require users to reauthenticate when changing authenticators.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203727">
+    <!--RuleTitle: The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203728">
+    <!--RuleTitle: The operating system must accept Personal Identity Verification (PIV) credentials.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203729">
+    <!--RuleTitle: The operating system must electronically verify Personal Identity Verification (PIV) credentials.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203730">
+    <!--RuleTitle: The operating system must authenticate peripherals before establishing a connection.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203731">
+    <!--RuleTitle: The operating system must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203733">
+    <!--RuleTitle: The operating system must prohibit the use of cached authenticators after one day.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203734">
+    <!--RuleTitle: The operating system, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203735">
+    <!--RuleTitle: The operating system must audit all activities performed during nonlocal maintenance and diagnostic sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203736">
+    <!--RuleTitle: The operating system must implement cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications, when used for nonlocal maintenance sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203737">
+    <!--RuleTitle: The operating system must implement cryptographic mechanisms to protect the confidentiality of nonlocal maintenance and diagnostic communications, when used for nonlocal maintenance sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203738">
+    <!--RuleTitle: The operating system must verify remote disconnection at the termination of nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance sessions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203739">
+    <!--RuleTitle: The operating system must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203744">
+    <!--RuleTitle: The operating system must only allow the use of DoD PKI-established certificate authorities for authentication in the establishment of protected sessions to the operating system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203745">
+    <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest on all operating system components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203746">
+    <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest on all operating system components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203747">
+    <!--RuleTitle: The operating system must protect against or limit the effects of Denial of Service (DoS) attacks by ensuring the operating system is implementing rate-limiting measures on impacted network interfaces.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203748">
+    <!--RuleTitle: The operating system must protect the confidentiality and integrity of transmitted information.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203749">
+    <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203750">
+    <!--RuleTitle: The operating system must maintain the confidentiality and integrity of information during preparation for transmission.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203751">
+    <!--RuleTitle: The operating system must maintain the confidentiality and integrity of information during reception.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203752">
+    <!--RuleTitle: The operating system must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203753">
+    <!--RuleTitle: The operating system must implement non-executable data to protect its memory from unauthorized code execution.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203754">
+    <!--RuleTitle: The operating system must implement address space layout randomization to protect its memory from unauthorized code execution.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203755">
+    <!--RuleTitle: The operating system must remove all software components after updated versions have been installed.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203756">
+    <!--RuleTitle: The operating system must verify correct operation of all security functions.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203757">
+    <!--RuleTitle: The operating system must perform verification of the correct operation of security functions: upon system start-up and/or restart; upon command by a user with privileged access; and/or every 30 days.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203758">
+    <!--RuleTitle: The operating system must shut down the information system, restart the information system, and/or notify the system administrator when anomalies in the operation of any security functions are discovered.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203759">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access security objects occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203760">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203761">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify privileges occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203762">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify security objects occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203763">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203764">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete privileges occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203765">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security levels occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203766">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security objects occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203767">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful logon attempts occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203768">
+    <!--RuleTitle: The operating system must generate audit records for privileged activities or other system-level access.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203769">
+    <!--RuleTitle: The audit system must be configured to audit the loading and unloading of dynamic kernel modules.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203770">
+    <!--RuleTitle: The operating system must generate audit records showing starting and ending time for user access to the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203771">
+    <!--RuleTitle: The operating system must generate audit records when concurrent logons to the same account occur from different sources.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203772">
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful accesses to objects occur.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203773">
+    <!--RuleTitle: The operating system must generate audit records for all direct access to the information system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203774">
+    <!--RuleTitle: The operating system must generate audit records for all account creations, modifications, disabling, and termination events.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203775">
+    <!--RuleTitle: The operating system must generate audit records for all kernel module load, unload, and restart actions, and also for all program initiations.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203776">
+    <!--RuleTitle: The operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203777">
+    <!--RuleTitle: The operating system must, at a minimum, off-load audit data from interconnected systems in real time and off-load audit data from standalone systems weekly.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203778">
+    <!--RuleTitle: The operating system must prevent the use of dictionary words for passwords.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203779">
+    <!--RuleTitle: The operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203780">
+    <!--RuleTitle: The operating system must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203781">
+    <!--RuleTitle: The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203782">
+    <!--RuleTitle: The operating system must not allow an unattended or automatic logon to the system.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203783">
+    <!--RuleTitle: The operating system must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-203784">
+    <!--RuleTitle: The operating system must enable an application firewall, if available.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-252688">
+    <!--RuleTitle: The operating system must protect the confidentiality and integrity of communications with wireless peripherals.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-259333">
+    <!--RuleTitle: The operating system must install security-relevant software updates within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263650">
+    <!--RuleTitle: The operating system must disable accounts when the accounts are no longer associated to a user.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263651">
+    <!--RuleTitle: The operating system must prohibit the use or connection of unauthorized hardware components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263652">
+    <!--RuleTitle: The operating system must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263653">
+    <!--RuleTitle: The operating system must, for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in IA-5 (1) (a).-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263654">
+    <!--RuleTitle: The operating system must for password-based authentication, require immediate selection of a new password upon account recovery.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263655">
+    <!--RuleTitle: The operating system must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263656">
+    <!--RuleTitle: The operating system must, for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263657">
+    <!--RuleTitle: The operating system must accept only external credentials that are NIST-compliant.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263658">
+    <!--RuleTitle: The operating system must monitor the use of maintenance tools that execute with increased privilege.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263659">
+    <!--RuleTitle: The operating system must include only approved trust anchors in trust stores or certificate stores managed by the organization.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263660">
+    <!--RuleTitle: The operating system must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+  <Vuln ID="V-263661">
+    <!--RuleTitle: The operating system must synchronize system clocks within and between systems or system components.-->
+    <AnswerKey Name="XO">
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus></ValidTrueStatus>
+        <ValidTrueComment></ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+</STIGComments>

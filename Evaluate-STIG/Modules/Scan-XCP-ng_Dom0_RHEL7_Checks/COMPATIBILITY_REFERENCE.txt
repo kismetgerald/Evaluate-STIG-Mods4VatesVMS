@@ -1,0 +1,275 @@
+================================================================================
+COMPATIBILITY REFERENCE: RHEL 7 STIG -> CentOS 7 (XCP-ng Dom0) Adaptation Guide
+================================================================================
+
+Document Version: 2.0
+Date: January 17, 2026
+Updated: Corrected from RHEL 8 to RHEL 7 (XCP-ng 8.3 is CentOS 7-based)
+Purpose: Document RHEL 7 STIG check patterns and their CentOS 7 adaptations
+         for XCP-ng hypervisor Dom0 (control domain) compliance validation.
+
+================================================================================
+CRITICAL: XCP-ng VERSION INFORMATION
+================================================================================
+
+XCP-ng 8.3 is based on CentOS 7, NOT CentOS 8:
+- RPM packages have 'el7' suffix (e.g., kernel-4.19.0+1.el7.centos.x86_64)
+- PowerShell 7.3.12 required (7.4+ incompatible due to glibc version)
+- Use RHEL 7 STIG as baseline (not RHEL 8)
+
+Verification on XCP-ng Dom0:
+  cat /etc/redhat-release
+  # Output: CentOS Linux release 7.x.xxxx (Core)
+
+  rpm -qa | head -1
+  # Package names include 'el7' suffix
+
+================================================================================
+OVERVIEW
+================================================================================
+
+XCP-ng is based on CentOS 7, which is a downstream rebuild of Red Hat Enterprise
+Linux 7. While highly compatible, certain packages, paths, and configurations
+may differ slightly. This document provides guidance for adapting RHEL 7 STIG
+checks to work reliably on CentOS 7 Dom0 environments.
+
+Reference STIG: Red Hat Enterprise Linux 7 STIG V3R15 (244 checks)
+
+================================================================================
+PACKAGE MANAGER DIFFERENCES
+================================================================================
+
+RHEL 7:     Uses yum as primary package manager
+            - yum is default in RHEL 7.x
+            - dnf NOT available by default
+
+CentOS 7:   Uses yum (identical to RHEL 7)
+            - yum is the primary package manager
+            - dnf available but not default
+
+XCP-ng:     Uses yum (identical to CentOS 7)
+            - Custom repos for XCP-ng packages
+            - Some packages have xcp-ng suffixes
+
+ADAPTATION STRATEGY:
+- Use 'yum' commands (dnf may not be available)
+- Prefer 'rpm -qa' and 'rpm' queries for package presence checks (universal)
+- Example: $(yum list installed 2>/dev/null | grep -c "^package")
+- Example: rpm -q openssh-server
+
+================================================================================
+SERVICE MANAGEMENT & SYSTEMD
+================================================================================
+
+RHEL 7/CentOS 7: systemd version 219 (with backports)
+
+ADAPTATION STRATEGY:
+- Most systemd commands are identical: systemctl, journalctl
+- Test service existence with: systemctl list-unit-files | grep service.service
+- Use: systemctl is-active service_name
+- Use: systemctl is-enabled service_name
+
+KNOWN DIFFERENCES:
+- RHEL 7 systemd is older than RHEL 8 (some newer features unavailable)
+- XCP-ng adds custom services (xapi, xenopsd, etc.)
+
+================================================================================
+GRUB BOOT CONFIGURATION
+================================================================================
+
+RHEL 7:     GRUB2 config: /etc/default/grub
+            Boot loader: /boot/grub2/grub.cfg
+
+CentOS 7:   GRUB2 config: /etc/default/grub (identical)
+            Boot loader: /boot/grub2/grub.cfg (identical)
+
+ADAPTATION STRATEGY:
+- Paths are identical; use /etc/default/grub and /boot/grub2/ directly
+- grub2-mkconfig command to regenerate
+- Example: grep "^GRUB_CMDLINE_LINUX" /etc/default/grub
+
+================================================================================
+KERNEL MODULES & AUDIT
+================================================================================
+
+RHEL 7:     Audit daemon: auditd (systemd service)
+            Kernel modules in: /lib/modules/$(uname -r)/kernel/
+            Module loading tracked via audit logs
+
+CentOS 7:   Identical to RHEL 7
+
+XCP-ng:     Custom Xen kernel (4.19.x based)
+            Additional Xen-specific modules loaded
+
+ADAPTATION STRATEGY:
+- Use 'modprobe -n -v' to check module loading behavior (universal)
+- Query audit logs: ausearch -k module_changes
+- Check /etc/modprobe.d/ configurations
+- Example: find /etc/modprobe.d/ -type f -name "*.conf"
+
+================================================================================
+FILESYSTEM & FILE PERMISSIONS
+================================================================================
+
+RHEL 7/CentOS 7: Standard Linux filesystem layout
+                 /etc/passwd, /etc/shadow, /etc/group locations identical
+
+ADAPTATION STRATEGY:
+- File permission checks use find commands (universal)
+- Example: find /etc -maxdepth 1 -name "shadow" -perm /077
+- stat command output identical
+- Example: stat -c %a /etc/shadow
+
+================================================================================
+SELinux CONFIGURATION
+================================================================================
+
+RHEL 7:     SELinux typically enforcing; targeted policy
+CentOS 7:   SELinux typically enforcing; targeted policy (identical)
+XCP-ng:     SELinux typically disabled or permissive (hypervisor mode)
+
+ADAPTATION STRATEGY:
+- Use getenforce (works identically)
+- Use getsebool (works identically)
+- Check: sestatus
+- Note: XCP-ng may have SELinux disabled by default
+
+================================================================================
+SSH CONFIGURATION
+================================================================================
+
+RHEL 7:     OpenSSH 7.4, /etc/ssh/sshd_config (standard)
+CentOS 7:   OpenSSH 7.4, /etc/ssh/sshd_config (standard, identical)
+
+ADAPTATION STRATEGY:
+- Use sshd -T to parse SSH configuration
+- Check key algorithms: ssh-keyscan -t rsa hostname
+- Parse /etc/ssh/sshd_config directly
+- Example: grep -i "^PermitRootLogin" /etc/ssh/sshd_config
+
+KNOWN DIFFERENCES:
+- None significant between RHEL 7 and CentOS 7
+
+================================================================================
+PASSWORD POLICY (PAM)
+================================================================================
+
+RHEL 7:     /etc/pam.d/ configuration (standard)
+            pam_pwquality module for password complexity
+            /etc/security/pwquality.conf
+
+CentOS 7:   Identical to RHEL 7
+
+ADAPTATION STRATEGY:
+- Parse /etc/security/pwquality.conf
+- Check PAM modules in /etc/pam.d/
+- Example: grep "^minlen" /etc/security/pwquality.conf
+
+================================================================================
+FIREWALL CONFIGURATION
+================================================================================
+
+RHEL 7:     firewalld is default firewall manager
+            /etc/firewalld/ configuration
+            firewall-cmd CLI tool
+
+CentOS 7:   firewalld is default (identical)
+XCP-ng:     iptables may be used directly (check both)
+
+ADAPTATION STRATEGY:
+- Use firewall-cmd commands if firewalld active
+- Use iptables -L if using traditional iptables
+- Example: firewall-cmd --list-all
+- Example: iptables -L -n -v
+
+================================================================================
+LOGGING & AUDIT
+================================================================================
+
+RHEL 7:     rsyslog (/etc/rsyslog.conf), auditd (/etc/audit/audit.rules)
+CentOS 7:   Identical to RHEL 7
+
+ADAPTATION STRATEGY:
+- Parse /etc/rsyslog.conf
+- Parse /etc/audit/audit.rules or /etc/audit/rules.d/
+- Use: auditctl -l to list rules
+- Use: ausearch to query audit logs
+- Example: grep -v "^#" /etc/rsyslog.conf
+
+================================================================================
+POWERSHELL COMPATIBILITY
+================================================================================
+
+CRITICAL: PowerShell version requirements for XCP-ng Dom0
+
+PowerShell 7.4+ DOES NOT WORK on XCP-ng (CentOS 7):
+- Requires glibc versions not available on CentOS 7
+- Error: GLIBCXX_3.4.20 and GLIBCXX_3.4.21 not found
+
+SOLUTION: Install PowerShell 7.3.12 on XCP-ng Dom0
+- Download: powershell-7.3.12-1.rh.x86_64.rpm
+- Install: yum install -y ./powershell-7.3.12-1.rh.x86_64.rpm
+- Verify: pwsh --version
+
+================================================================================
+XCP-ng SPECIFIC PATHS
+================================================================================
+
+XCP-ng adds hypervisor-specific paths:
+
+/opt/xensource/          - Xen management tools
+/var/log/xensource.log   - Xen service logs
+/etc/xapi.conf           - XAPI configuration
+/etc/xensource/          - Xen configuration files
+/var/xapi/               - XAPI state files
+
+================================================================================
+COMMON PACKAGE NAMES
+================================================================================
+
+Package Category       | RHEL 7 Name           | CentOS 7 / XCP-ng
+-----------------------+-----------------------+------------------------
+Authentication         | openssl               | openssl (same)
+                       | openssh-server        | openssh-server (same)
+                       | openssh-clients       | openssh-clients (same)
+
+Audit & Logging        | audit                 | audit (same)
+                       | rsyslog               | rsyslog (same)
+
+System Hardening       | aide                  | aide (same)
+                       | selinux-policy        | selinux-policy (same)
+
+Network Tools          | net-tools             | net-tools (same)
+                       | iproute               | iproute (same)
+
+Firewall               | firewalld             | firewalld (same)
+
+================================================================================
+TESTING & VALIDATION
+================================================================================
+
+When adapting RHEL 7 checks for CentOS 7 (XCP-ng Dom0):
+
+1. Test in controlled XCP-ng 8.x environment
+2. Verify PowerShell 7.3.12 is installed (not 7.4+)
+3. Verify all file paths exist and are correct
+4. Validate command syntax and output format
+5. Cross-check with /etc/redhat-release
+6. Document any discovered differences in check comments
+7. Mark checks as NotReviewed if unable to fully validate
+
+================================================================================
+REFERENCE: EXISTING RHEL7 MODULE
+================================================================================
+
+The Evaluate-STIG framework includes an existing RHEL 7 module:
+- Module: Scan-RHEL7_Checks
+- Path: Modules/Scan-RHEL7_Checks/
+- Checks: 244 (26 CAT I, 205 CAT II, 13 CAT III)
+- Status: Sunset (but still functional)
+
+Consider leveraging patterns from this module for Dom0 checks.
+
+================================================================================
+END OF DOCUMENT
+================================================================================

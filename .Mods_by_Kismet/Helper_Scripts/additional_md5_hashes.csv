@@ -1,0 +1,4 @@
+"VulnID","RuleID","Title","DiscussMD5","CheckMD5","FixMD5"
+"V-206375","SV-206375r960963_rule","The web server must only contain services and functions necessary for operation.","4a7a263d3a1b7e8ef3bd891f86d83e9f","f58642a1fb19da846058d123fbd0356e","e1972b043192ea869b678cb992caa5c1"
+"V-206396","SV-206396r1043179_rule","The web server must invalidate session identifiers upon hosted application user logout or other session termination.","6a8419e9435bcecb032b98e0d87e4c0a","52aee7aeada9b45512ab6174f4d6ce5c","fae510586a30c0a1d84436ab7edfb6d4"
+"V-206397","SV-206397r1043180_rule","Cookies exchanged between the web server and client, such as session cookies, must have security settings that disallow cookie access outside the originating web server and hosted application.","b7a1122d12dbaa97caf77df14d38e9ca","57a993a808c47b3b940d29b170db9a0f","f4262940efd259f1e677c66d6ece80ce"

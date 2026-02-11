@@ -1,0 +1,197 @@
+<![LOG[==========[Begin Local Logging]==========                                       ]LOG]!><time="00:11:06.922+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Executing: Evaluate-STIG.ps1 -ScanType Classified -AnswerKey DEFAULT -VulnTimeout 10 -Output CKL,CKLB,XCCDF,CombinedCKL,CombinedCKLB,Summary,Console -AllowIntegrityViolations -PreviousToKeep 365 -OutputPath /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance]LOG]!><time="00:11:07.115+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Utilizing Preference:                                                           ]LOG]!><time="00:11:07.169+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:11:07.215+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Verifying Evaluate-STIG file integrity                                          ]LOG]!><time="00:11:07.251+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[ERROR: 'FileList.xml' failed authenticity check.  Unable to verify content integrity.]LOG]!><time="00:11:07.982+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[-AllowIntegrityViolations specified so continuing with scan.                    ]LOG]!><time="00:11:08.039+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="2" thread="11" file="">
+<![LOG[Evaluate-STIG Version: 1.2507.6                                                 ]LOG]!><time="00:11:08.331+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Launching User: root                                                            ]LOG]!><time="00:11:08.426+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Hostname: XO1                                                                   ]LOG]!><time="00:11:11.815+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Manufacturer: Xen                                                               ]LOG]!><time="00:11:11.840+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Model: HVM domU                                                                 ]LOG]!><time="00:11:11.865+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Platform: Linux                                                ]LOG]!><time="00:11:11.887+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Name: Debian GNU/Linux 12 (bookworm)                           ]LOG]!><time="00:11:11.912+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Version: 12                                                    ]LOG]!><time="00:11:11.936+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Architecture: x86_64                                           ]LOG]!><time="00:11:11.961+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Domain Role: Member Workstation                                                 ]LOG]!><time="00:11:11.984+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Primary IP Address: 10.0.10.27                                                  ]LOG]!><time="00:11:12.007+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Primary MAC Address: 9a:23:ce:79:07:da                                          ]LOG]!><time="00:11:12.030+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[PowerShell Version: 7.3.10                                                      ]LOG]!><time="00:11:12.054+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Scan Type: Classified                                                           ]LOG]!><time="00:11:12.077+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Answer Key: DEFAULT                                                             ]LOG]!><time="00:11:12.100+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Answer File Path: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles                 ]LOG]!><time="00:11:12.123+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Results Path: /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance/XO1             ]LOG]!><time="00:11:12.146+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:11:12.169+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Validating answer files                                                         ]LOG]!><time="00:11:12.193+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Template_AnswerFile.xml : Passed                                                ]LOG]!><time="00:11:12.237+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:11:12.273+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Gathering list of STIGs applicable to this system                               ]LOG]!><time="00:11:12.296+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[The following STIGs are determined applicable:                                  ]LOG]!><time="00:12:14.143+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: General Purpose Operating System (GPOS) SRG - Debian 12                   ]LOG]!><time="00:12:14.170+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Application (ASD STIG)                                      ]LOG]!><time="00:12:14.191+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Web Server (Web SRG)                                        ]LOG]!><time="00:12:14.260+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:14.281+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIGs to process - 3                                                            ]LOG]!><time="00:12:14.314+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[The following STIGs will be evaluated:                                          ]LOG]!><time="00:12:14.337+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: General Purpose Operating System (GPOS) SRG - Debian 12                   ]LOG]!><time="00:12:14.360+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Application (ASD STIG)                                      ]LOG]!><time="00:12:14.382+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Web Server (Web SRG)                                        ]LOG]!><time="00:12:14.402+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:14.423+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Checking for and removing orphaned objects from a previous scan                 ]LOG]!><time="00:12:19.455+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Removed orphaned object: /tmp/Evaluate-STIG/Results                             ]LOG]!><time="00:12:19.488+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Getting instance counts and building job list                                   ]LOG]!><time="00:12:19.530+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating scan job(s) for Debian12_GPOS                                          ]LOG]!><time="00:12:19.921+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Unable to process XO_ASD - skipping                                             ]LOG]!><time="00:12:20.114+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[TimeStamp : 01/20/2026 00:12:20                                                 ]LOG]!><time="00:12:20.176+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Message : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:437 char:93
++ … t 5 openssl s_client -connect ${hostname}:${xoPort} -tls1_2 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:446 char:95
++ … t 5 openssl s_client -connect ${hostname}:${xoPort} -tls1_3 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:456 char:93
++ … out 3 openssl s_client -connect ${hostname}:${xoPort} -ssl3 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:463 char:93
++ … out 3 openssl s_client -connect ${hostname}:${xoPort} -tls1 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:470 char:95
++ … t 3 openssl s_client -connect ${hostname}:${xoPort} -tls1_1 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1:621 char:88
++ … $(timeout 5 openssl s_client -connect ${hostname}:${xoPort} < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.]LOG]!><time="00:12:20.203+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Category : ParserError                                                          ]LOG]!><time="00:12:20.231+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Reason : ActionPreferenceStopException                                          ]LOG]!><time="00:12:20.258+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[TargetName :                                                                    ]LOG]!><time="00:12:20.285+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[FullyQualified : RedirectionNotSupported                                        ]LOG]!><time="00:12:20.312+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ScriptName : /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_ASD_Checks/Scan-XO_ASD_Checks.psm1]LOG]!><time="00:12:20.339+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Line : 437                                                                      ]LOG]!><time="00:12:20.368+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Column : 93                                                                     ]LOG]!><time="00:12:20.395+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[LineText : $tlsCheck = $(timeout 5 openssl s_client -connect ${hostname}:${xoPort} -tls1_2 < /dev/null 2>&1)]LOG]!><time="00:12:20.422+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ExceptionType : System.Management.Automation.ActionPreferenceStopException      ]LOG]!><time="00:12:20.449+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[HResult : 0x80131501                                                            ]LOG]!><time="00:12:20.477+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ScriptStackTrace : at <ScriptBlock><Process>, /tmp/Evaluate-STIG_RemoteComputer/Evaluate-STIG.ps1: line 3916
+at <ScriptBlock>, <No file>: line 2]LOG]!><time="00:12:20.504+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[WasTerminating : False                                                          ]LOG]!><time="00:12:20.533+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Computer :                                                                      ]LOG]!><time="00:12:20.555+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ParentFunctionName : <ScriptBlock><Process>                                     ]LOG]!><time="00:12:20.577+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Unable to process XO_WebSRG - skipping                                          ]LOG]!><time="00:12:20.629+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[TimeStamp : 01/20/2026 00:12:20                                                 ]LOG]!><time="00:12:20.657+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Message : The running command stopped because the preference variable "ErrorActionPreference" or common parameter is set to Stop: At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:333 char:90
++ … out 5 openssl s_client -connect ${hostname}:${port} -tls1_2 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:337 char:90
++ … out 5 openssl s_client -connect ${hostname}:${port} -tls1_3 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:350 char:87
++ … meout 3 openssl s_client -connect ${hostname}:${port} -ssl3 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:355 char:87
++ … meout 3 openssl s_client -connect ${hostname}:${port} -tls1 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:360 char:89
++ … out 3 openssl s_client -connect ${hostname}:${port} -tls1_1 < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:509 char:79
++ … = $(timeout 5 openssl s_client -connect ${hostname}:${port} < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:544 char:99
++ … openssl s_client -connect ${hostname}:${port} -cipher 'ALL' < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.
+
+At /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1:890 char:78
++ … = $(timeout 5 openssl s_client -connect ${hostname}:${port} < /dev/nu …
++                                                               ~
+The '<' operator is reserved for future use.]LOG]!><time="00:12:20.677+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Category : ParserError                                                          ]LOG]!><time="00:12:20.697+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Reason : ActionPreferenceStopException                                          ]LOG]!><time="00:12:20.716+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[TargetName :                                                                    ]LOG]!><time="00:12:20.737+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[FullyQualified : RedirectionNotSupported                                        ]LOG]!><time="00:12:20.757+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ScriptName : /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1]LOG]!><time="00:12:20.777+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Line : 333                                                                      ]LOG]!><time="00:12:20.797+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Column : 90                                                                     ]LOG]!><time="00:12:20.817+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[LineText : $tls12Result = $(timeout 5 openssl s_client -connect ${hostname}:${port} -tls1_2 < /dev/null 2>&1)]LOG]!><time="00:12:20.837+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ExceptionType : System.Management.Automation.ActionPreferenceStopException      ]LOG]!><time="00:12:20.858+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[HResult : 0x80131501                                                            ]LOG]!><time="00:12:20.878+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ScriptStackTrace : at <ScriptBlock><Process>, /tmp/Evaluate-STIG_RemoteComputer/Evaluate-STIG.ps1: line 3916
+at <ScriptBlock>, <No file>: line 2]LOG]!><time="00:12:20.899+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[WasTerminating : False                                                          ]LOG]!><time="00:12:20.919+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[Computer :                                                                      ]LOG]!><time="00:12:20.939+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[ParentFunctionName : <ScriptBlock><Process>                                     ]LOG]!><time="00:12:20.959+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:20.985+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Invoking scan                                                                   ]LOG]!><time="00:12:21.005+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Importing scan module: Scan-Debian12_GPOS_Checks                                ]LOG]!><time="00:12:21.026+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Module Version: 1.0.0                                                           ]LOG]!><time="00:12:21.084+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Answer File variables and values passed to module:                              ]LOG]!><time="00:12:21.122+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $Hostname  |  Value: XO1                                            ]LOG]!><time="00:12:21.154+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $ESPath  |  Value: /tmp/Evaluate-STIG_RemoteComputer                ]LOG]!><time="00:12:21.183+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $Username  |  Value: root                                           ]LOG]!><time="00:12:21.211+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $UserSID  |  Value: NA                                              ]LOG]!><time="00:12:21.239+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Scan complete                                                                   ]LOG]!><time="00:12:27.316+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[EvalScore: 0%                                                                   ]LOG]!><time="00:12:27.349+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATI Open/NR: 18                                                                ]LOG]!><time="00:12:27.391+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATII Open/NR: 170                                                              ]LOG]!><time="00:12:27.412+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII Open/NR: 10                                                              ]LOG]!><time="00:12:27.433+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating CKL file                                                               ]LOG]!><time="00:12:27.460+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKL File                                                             ]LOG]!><time="00:12:32.444+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_Debian12_GPOS_V3R2_20260120-001227.ckl' : Passed.                          ]LOG]!><time="00:12:32.526+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating CKLB file                                                              ]LOG]!><time="00:12:32.550+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKLB File                                                            ]LOG]!><time="00:12:35.975+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_Debian12_GPOS_V3R2_20260120-001232.cklb' : Passed.                         ]LOG]!><time="00:12:36.256+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating XCCDF file                                                             ]LOG]!><time="00:12:36.276+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Removing scan module from memory                                                ]LOG]!><time="00:12:38.705+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:39.900+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating combined CKL file                                                      ]LOG]!><time="00:12:39.925+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKL File                                                             ]LOG]!><time="00:12:41.974+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_COMBINED_20260120-001239.ckl' : Passed.                                    ]LOG]!><time="00:12:42.078+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Creating combined CKLB file                                                     ]LOG]!><time="00:12:42.103+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKLB File                                                            ]LOG]!><time="00:12:43.554+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_COMBINED_20260120-001242.cklb' : Passed.                                   ]LOG]!><time="00:12:43.659+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:43.713+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Calculating risk score...                                                       ]LOG]!><time="00:12:43.824+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Failed to get full CAT counts for grading.  Scoring will be inaccurate.         ]LOG]!><time="00:12:43.944+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="3" thread="11" file="">
+<![LOG[RiskRating: Very High                                                           ]LOG]!><time="00:12:43.986+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[WeightedAvg: 100%                                                               ]LOG]!><time="00:12:44.015+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATI_OpenNRTotal: 0                                                             ]LOG]!><time="00:12:44.039+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATI_PossibleTotal: 0                                                           ]LOG]!><time="00:12:44.062+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATII_OpenNRTotal: 152                                                          ]LOG]!><time="00:12:44.083+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATII_PossibleTotal: 152                                                        ]LOG]!><time="00:12:44.106+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII_OpenNRTotal: 8                                                           ]LOG]!><time="00:12:44.127+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII_PossibleTotal: 8                                                         ]LOG]!><time="00:12:44.172+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:44.193+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Generating summary report                                                       ]LOG]!><time="00:12:44.216+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Retaining a maximum of '365' previous scans per -PreviousToKeep parameter       ]LOG]!><time="00:12:45.968+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="00:12:45.995+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Copying output files to /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance/XO1   ]LOG]!><time="00:12:46.021+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Removing temporary files                                                        ]LOG]!><time="00:12:46.102+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Done!                                                                           ]LOG]!><time="00:12:46.135+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Total Time : 00:01:39.4328355                                                   ]LOG]!><time="00:12:46.165+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Total checklists in Results Directory : 5                                       ]LOG]!><time="00:12:46.202+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[Exiting with exit code 0                                                        ]LOG]!><time="00:12:46.237+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">
+<![LOG[==========[End Local Logging]==========                                         ]LOG]!><time="00:12:46.263+0500_" date="01-20-2026" component="Evaluate-STIG 1.2507.6 [PID: 462699]" context="root" type="1" thread="11" file="">

@@ -1,0 +1,867 @@
+  <Vuln ID="V-206423">
+    <!--RuleTitle: The web server must generate information to be used by external applications or entities to monitor and control remote access.-->
+    <AnswerKey Name="XO">
+      <!--Session #32 Batch 3a (Feb 3, 2026): Security infrastructure integration-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems with SIEM/logging infrastructure integration-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra is integrated with organizational security infrastructure (SIEM/centralized logging) for remote access monitoring and control.
+
+The automated check verified:
+(1) Remote syslog configuration (rsyslog/syslog-ng forwarding logs to central server)
+(2) SIEM platform integration (Splunk, Elastic Stack, QRadar, or ArcSight components detected)
+(3) XO audit plugin configured for event forwarding
+(4) Systemd journal-upload service enabled with remote server configured
+(5) Documentation directories containing SIEM integration procedures
+
+Finding: Not a Finding
+
+Justification: This organization has integrated Xen Orchestra with the authorized DoD SIEM platform per NIST SP 800-53r5 AU-6(1) (Audit Review, Analysis, and Reporting - Automated Central Review and Analysis). Remote access events are forwarded to the central monitoring system in real-time.
+
+SIEM Integration Configuration:
+- Platform: [SPECIFY: Splunk/ArcSight/QRadar/Elastic Stack]
+- Log forwarding method: [rsyslog/syslog-ng/filebeat/journal-upload]
+- Remote server: [SIEM server hostname/IP]
+- Events forwarded: Login/logout, authentication failures, session creation/termination
+- Retention: Logs retained in SIEM for [N] days per organizational policy
+- Alerting: SIEM configured for suspicious login patterns, brute force, privilege escalation
+- Documentation: Security plan Section [X.X]
+
+No additional configuration or remediation required for systems with verified SIEM integration.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns NotAFinding but SIEM integration is not verified, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant or unverified systems requiring SIEM integration-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected logging infrastructure components but cannot verify integration with authorized DoD SIEM platform.
+
+Required Manual Verification:
+(1) Confirm XO integrated with authorized DoD SIEM platform
+    - Acceptable platforms: Splunk, ArcSight, QRadar, Elastic Stack, or DoD-approved alternative
+    - Verify organizational security architecture diagram includes XO
+    - Request copy of SIEM integration documentation
+
+(2) Verify remote access events forwarded to SIEM in real-time
+    - Events must include: login/logout, authentication failures, session creation/termination
+    - Test event delivery: Perform test login on XO, verify event appears in SIEM within 5 minutes
+    - Confirm event correlation: SIEM must correlate XO events with other system events
+
+(3) Confirm SIEM configured for remote access monitoring and alerting
+    - Alerts for suspicious login patterns (e.g., logins from unusual locations)
+    - Alerts for brute force attempts (multiple failed authentications)
+    - Alerts for privilege escalation (role changes, permission modifications)
+    - Verify alert recipients include ISSO/SA/security team
+
+(4) Verify SIEM data retention meets organizational requirements
+    - DoD minimum: 1 year for audit logs (NIST SP 800-53r5 AU-11)
+    - Confirm backup strategy for SIEM data
+    - Test log retrieval process
+
+(5) Test SIEM integration by generating test events
+    - Perform test authentication failure on XO
+    - Verify event visible in SIEM console within acceptable timeframe (&lt;5 min)
+    - Confirm event data includes: timestamp, username, source IP, action, result
+
+(6) Document SIEM integration architecture
+    - Include: log sources, forwarding mechanisms, SIEM platform, retention policy
+    - Update security plan Section [X.X]
+    - Provide architecture diagram showing XO &gt; syslog/agent &gt; SIEM flow
+
+Remediation for missing SIEM integration:
+
+Option 1: Configure rsyslog remote forwarding
+  1. Edit /etc/rsyslog.conf or /etc/rsyslog.d/50-xo-siem.conf:
+     *.* @@siem.example.mil:514  # TCP with reliable delivery
+     # OR
+     *.* @siem.example.mil:514   # UDP for lower latency
+
+  2. Restart rsyslog:
+     systemctl restart rsyslog
+
+  3. Verify logs forwarding:
+     logger "Test XO SIEM integration"
+     # Check SIEM for test message
+
+Option 2: Configure Elastic Beats (Filebeat)
+  1. Install Filebeat:
+     apt install filebeat  # Debian
+
+  2. Configure /etc/filebeat/filebeat.yml:
+     filebeat.inputs:
+     - type: log
+       paths:
+         - /var/log/xo-server/*.log
+         - /var/log/syslog
+
+     output.elasticsearch:
+       hosts: ["elastic.example.mil:9200"]
+       protocol: "https"
+       username: "xo-forwarder"
+       password: "PASSWORD"
+
+  3. Enable and start:
+     systemctl enable filebeat
+     systemctl start filebeat
+
+Option 3: Configure Splunk Universal Forwarder
+  1. Download and install from Splunk
+  2. Configure inputs.conf:
+     [monitor:///var/log/xo-server]
+     disabled = false
+     index = security
+     sourcetype = xo-server
+
+  3. Configure outputs.conf:
+     [tcpout]
+     defaultGroup = splunk-indexers
+
+     [tcpout:splunk-indexers]
+     server = splunk.example.mil:9997
+
+  4. Restart forwarder:
+     /opt/splunkforwarder/bin/splunk restart
+
+Re-run scan after SIEM integration verified.
+
+Note: This requirement ensures XO logs are available to external monitoring systems for centralized security event correlation and remote access control. Local logging alone is insufficient; integration with organizational SIEM infrastructure is mandatory for DoD compliance per NIST SP 800-53r5 AU-6(1).
+        </ValidTrueComment>
+        <ValidFalseStatus>NotAFinding</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Open but SIEM integration is verified, manual verification required to confirm integration meets DoD requirements.</ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-206424">
+    <!--RuleTitle: The web server must notify the system administrator (SA) and Information System Security Officer (ISSO) when allocated audit record storage volume reaches 75% of maximum audit record storage capacity.-->
+    <AnswerKey Name="XO">
+      <!--Session #32 Batch 3a (Feb 3, 2026): 75% storage warning to ISSO/SA-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems with 75% threshold monitoring configured-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra disk capacity monitoring is configured with 75% threshold alerts to ISSO/SA.
+
+The automated check verified:
+(1) Disk space monitoring agent active (Nagios NRPE, Zabbix, Prometheus, or similar)
+(2) 75% warning threshold configured in monitoring checks
+(3) Alert notification configuration detected (email/SIEM integration)
+(4) Log rotation configured with size limits (proactive capacity control)
+(5) Systemd journal storage limits configured (prevents unbounded growth)
+
+Finding: Not a Finding
+
+Justification: This organization has configured disk capacity monitoring with 75% threshold alerts per NIST SP 800-53r5 AU-5(1) (Audit Failure Responses - Storage Capacity Warning). ISSO/SA will receive alerts when log partition usage reaches 75% of maximum capacity.
+
+Monitoring Configuration:
+- Monitoring platform: [SPECIFY: Nagios/Zabbix/Prometheus]
+- 75% threshold: Warning alert at 25% free space remaining
+- Alert recipients: [ISSO email], [SA email]
+- Alert method: [Email/SIEM/monitoring console/ticketing system]
+- Check frequency: Every [N] minutes
+- Current disk usage: [X]% (verified below threshold)
+- Documentation: Security plan Section [X.X]
+
+No additional configuration or remediation required for systems with 75% threshold monitoring.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns NotAFinding but 75% threshold is not verified, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant or unverified systems requiring 75% threshold monitoring-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check identified disk monitoring capabilities but cannot verify 75% threshold alerts to ISSO/SA are configured.
+
+Required Manual Verification:
+(1) Verify monitoring system alert thresholds
+    - Nagios: Check /etc/nagios/nrpe.cfg for check_disk with -w 25% (warning at 25% free = 75% used)
+    - Zabbix: Verify filesystem triggers configured for 75% usage threshold
+    - Prometheus: Check AlertManager rules for node_filesystem_avail alerts at 25% free
+    - Request screenshot of alert configuration from monitoring system
+
+(2) Confirm ISSO/SA contact information configured in monitoring system
+    - Nagios: Verify contacts.cfg includes ISSO/SA email addresses
+    - Zabbix: Check Users &gt; Administration for ISSO/SA notification settings
+    - Prometheus: Verify AlertManager receivers include ISSO/SA
+    - Test notification delivery to ISSO/SA
+
+(3) Test disk capacity alert delivery (simulate 75% usage)
+    - Create test file to increase disk usage to 76%:
+      fallocate -l [SIZE]G /var/log/test_capacity.tmp
+    - Verify alert generated within check interval
+    - Verify ISSO/SA receive alert notification
+    - Remove test file:
+      rm /var/log/test_capacity.tmp
+    - Document test results
+
+(4) Document alert escalation procedures
+    - Define actions when 75% threshold reached
+    - Specify timeline for log rotation/archival/deletion
+    - Define critical threshold (e.g., 90%) requiring immediate action
+    - Update incident response procedures
+
+Remediation for missing 75% threshold monitoring:
+
+Option 1: Configure Nagios NRPE with 75% threshold
+  1. Install NRPE:
+     apt install nagios-nrpe-server nagios-plugins  # Debian
+
+  2. Edit /etc/nagios/nrpe.cfg:
+     command[check_disk]=/usr/lib/nagios/plugins/check_disk -w 25% -c 10% -p / -p /var/log
+     # -w 25% = Warning at 25% free (75% used)
+     # -c 10% = Critical at 10% free (90% used)
+
+  3. Restart NRPE:
+     systemctl restart nagios-nrpe-server
+
+  4. Configure Nagios server to check this host (on Nagios server)
+
+  5. Configure Nagios contacts.cfg with ISSO/SA email:
+     define contact {
+         contact_name    isso
+         email           isso@example.mil
+     }
+
+Option 2: Configure Zabbix Agent with 75% threshold
+  1. Install Zabbix agent:
+     apt install zabbix-agent2  # Debian
+
+  2. Edit /etc/zabbix/zabbix_agent2.conf:
+     Server=zabbix.example.mil
+     ServerActive=zabbix.example.mil
+     Hostname=xo1.example.mil
+
+  3. Enable and start:
+     systemctl enable zabbix-agent2
+     systemctl start zabbix-agent2
+
+  4. On Zabbix web interface:
+     - Add host
+     - Link template "Linux by Zabbix agent"
+     - Configure trigger for vfs.fs.size with 75% threshold
+     - Add ISSO/SA to Users &gt; Administration
+     - Configure notification actions
+
+Option 3: Configure Prometheus Node Exporter with 75% threshold
+  1. Install Node Exporter:
+     apt install prometheus-node-exporter  # Debian
+
+  2. Enable and start:
+     systemctl enable prometheus-node-exporter
+     systemctl start prometheus-node-exporter
+
+  3. Configure Prometheus scrape (on Prometheus server)
+
+  4. Create AlertManager rule:
+     - alert: DiskSpaceWarning75Percent
+       expr: (node_filesystem_avail_bytes / node_filesystem_size_bytes) &lt; 0.25
+       for: 5m
+       labels:
+         severity: warning
+       annotations:
+         summary: "Disk space at 75% on {{ $labels.instance }}"
+
+  5. Configure AlertManager receivers with ISSO/SA email/webhook
+
+Option 4: Configure custom script with cron
+  1. Create /usr/local/bin/disk-capacity-alert.sh:
+     #!/bin/bash
+     THRESHOLD=75
+     USAGE=$(df -h /var/log | tail -1 | awk '{print $5}' | sed 's/%//')
+     if [ $USAGE -ge $THRESHOLD ]; then
+       echo "Disk usage at ${USAGE}% on $(hostname)" | \
+       mail -s "ALERT: Disk Capacity 75% Threshold" isso@example.mil,sa@example.mil
+     fi
+
+  2. Make executable:
+     chmod +x /usr/local/bin/disk-capacity-alert.sh
+
+  3. Add to crontab (check every 15 minutes):
+     */15 * * * * /usr/local/bin/disk-capacity-alert.sh
+
+  4. Configure mail relay for alert delivery
+
+Re-run scan after 75% threshold monitoring configured and tested.
+
+Note: DoD requires ISSO/SA notification when storage capacity reaches 75% of maximum per NIST SP 800-53r5 AU-5(1). This provides sufficient lead time to prevent audit log loss due to disk space exhaustion.
+        </ValidTrueComment>
+        <ValidFalseStatus>NotAFinding</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Open but 75% threshold monitoring is verified, manual verification required to confirm configuration meets DoD requirements.</ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-206430">
+    <!--RuleTitle: The web server must only accept client certificates issued by DoD PKI or DoD-approved PKI Certification Authorities (CAs).-->
+    <AnswerKey Name="XO">
+      <!--Session #32 Batch 3a (Feb 3, 2026): DoD PKI client certificate validation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems with DoD PKI client certificate authentication configured-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra is configured to accept only client certificates issued by DoD PKI or DoD-approved PKI Certification Authorities.
+
+The automated check verified:
+(1) Client certificate authentication enabled (clientCertAuth = true OR requestCert = true in config.toml)
+(2) DoD PKI root CA certificates installed in trust stores (DoD Root CA 3-6, Federal Common Policy CA, Federal Bridge CA detected)
+(3) CA bundle configured for certificate chain validation
+(4) Certificate revocation checking (CRL/OCSP) configured
+(5) OpenSSL available for certificate validation
+
+Finding: Not a Finding
+
+Justification: This organization has configured Xen Orchestra to require client certificates issued by DoD PKI per NIST SP 800-53r5 IA-5(2) (Authenticator Management - PKI-Based Authentication). Only certificates signed by DoD-approved CAs are accepted for authentication.
+
+Client Certificate Configuration:
+- Authentication method: Client certificate (X.509 PKI)
+- Allowed CAs: DoD Root CA 3, DoD Root CA 4, DoD Root CA 5, DoD Root CA 6, Federal Common Policy CA, Federal Bridge CA
+- CA bundle location: [SPECIFY: /path/to/dod-ca-bundle.pem]
+- Revocation checking: [CRL/OCSP] enabled
+- Certificate validation: Chain verification to DoD root CAs
+- Nginx reverse proxy (if applicable): ssl_verify_client on, ssl_client_certificate [CA bundle path]
+- Documentation: Security plan Section [X.X]
+
+No additional configuration or remediation required for systems with DoD PKI client certificate authentication.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns NotAFinding but DoD PKI validation is not verified, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring DoD PKI configuration-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected client certificate authentication but cannot verify DoD PKI root CA certificates are installed and configured for validation.
+
+Required Manual Verification:
+(1) Verify DoD PKI root CA certificates installed
+    - Required CAs: DoD Root CA 3, DoD Root CA 4, DoD Root CA 5, DoD Root CA 6
+    - Additional acceptable: Federal Common Policy CA, Federal Bridge CA
+    - Check trust stores: /etc/ssl/certs, /etc/pki/tls/certs, /usr/local/share/ca-certificates
+    - Verify CA certificates are current (not expired)
+
+(2) Verify XO configured to use DoD PKI trust anchors
+    - Check config.toml for ca = '/path/to/dod-ca-bundle.pem'
+    - Verify CA bundle contains ONLY DoD-approved CAs (no commercial CAs)
+    - Test certificate validation with DoD-issued certificate
+    - Test rejection of non-DoD certificate
+
+(3) Verify certificate revocation checking (CRL/OCSP) configured
+    - DoD PKI requires revocation checking for all certificates
+    - Check config.toml for crl or ocsp settings
+    - Verify CRL distribution point URLs accessible from XO server
+    - Test revocation checking by attempting authentication with revoked certificate
+
+(4) Test client certificate authentication with CAC/PIV
+    - Obtain test DoD-issued CAC/PIV certificate
+    - Attempt authentication to XO using certificate
+    - Verify authentication succeeds with valid DoD certificate
+    - Verify authentication fails with self-signed or commercial CA certificate
+
+Remediation for missing DoD PKI configuration:
+
+Step 1: Obtain DoD PKI Root CA Certificates
+  1. Download from DoD Cyber Exchange (https://public.cyber.mil/pki-pke/):
+     - DoD Root CA 3 (SHA-256)
+     - DoD Root CA 4 (SHA-256)
+     - DoD Root CA 5 (SHA-256)
+     - DoD Root CA 6 (SHA-256)
+
+  2. Download intermediate CAs if required
+
+  3. Verify certificate fingerprints against published values
+
+Step 2: Install DoD CA Certificates (Debian)
+  1. Copy certificates to CA directory:
+     cp DoD_Root_CA_*.crt /usr/local/share/ca-certificates/
+
+  2. Update CA trust store:
+     update-ca-certificates
+
+  3. Verify installation:
+     ls -l /etc/ssl/certs/DoD_Root_CA_*
+
+Step 3: Create DoD CA Bundle for XO
+  1. Concatenate DoD CAs into single bundle:
+     cat /usr/local/share/ca-certificates/DoD_Root_CA_3.crt \
+         /usr/local/share/ca-certificates/DoD_Root_CA_4.crt \
+         /usr/local/share/ca-certificates/DoD_Root_CA_5.crt \
+         /usr/local/share/ca-certificates/DoD_Root_CA_6.crt \
+         &gt; /etc/xo-server/certs/dod-ca-bundle.pem
+
+  2. Set permissions:
+     chmod 644 /etc/xo-server/certs/dod-ca-bundle.pem
+     chown root:root /etc/xo-server/certs/dod-ca-bundle.pem
+
+Step 4: Configure XO for Client Certificate Authentication
+  1. Edit /opt/xo/xo-server/config.toml or /etc/xo-server/config.toml:
+     [http]
+     listen = "0.0.0.0:443"
+     cert = "/etc/xo-server/certs/server.crt"
+     key = "/etc/xo-server/certs/server.key"
+     ca = "/etc/xo-server/certs/dod-ca-bundle.pem"
+     requestCert = true
+     rejectUnauthorized = true
+
+  2. Restart XO:
+     systemctl restart xo-server
+
+Step 5: Configure Certificate Revocation Checking
+  1. For CRL (Certificate Revocation List):
+     [http]
+     crl = ["/etc/xo-server/certs/dod-crl.pem"]
+
+  2. Update CRL periodically via cron:
+     0 2 * * * curl -o /etc/xo-server/certs/dod-crl.pem http://crl.disa.mil/crl/DODROOT.crl
+
+  3. For OCSP (Online Certificate Status Protocol):
+     # Node.js supports OCSP by default via tls module
+
+Step 6: Configure Nginx Reverse Proxy (if applicable)
+  1. Edit /etc/nginx/sites-enabled/xo or /etc/nginx/conf.d/xo.conf:
+     server {
+       listen 443 ssl;
+       ssl_client_certificate /etc/xo-server/certs/dod-ca-bundle.pem;
+       ssl_verify_client on;
+       ssl_verify_depth 3;
+       ssl_crl /etc/xo-server/certs/dod-crl.pem;
+     }
+
+  2. Restart Nginx:
+     systemctl restart nginx
+
+Step 7: Test Configuration
+  1. Test with DoD-issued certificate:
+     curl --cert /path/to/user.crt --key /path/to/user.key https://xo.example.mil
+     # Should succeed
+
+  2. Test with non-DoD certificate:
+     curl --cert /path/to/commercial.crt --key /path/to/commercial.key https://xo.example.mil
+     # Should fail with certificate verification error
+
+  3. Test with self-signed certificate:
+     openssl req -x509 -newkey rsa:2048 -keyout test.key -out test.crt -days 1 -nodes -subj "/CN=Test"
+     curl --cert test.crt --key test.key https://xo.example.mil
+     # Should fail with certificate verification error
+
+Re-run scan after DoD PKI client certificate authentication configured and tested.
+
+Note: DoD requires client certificates to be issued by DoD PKI or DoD-approved PKI CAs per NIST SP 800-53r5 IA-5(2). Commercial CAs (VeriSign, DigiCert, etc.) and self-signed certificates are NOT acceptable for DoD systems.
+        </ValidTrueComment>
+        <ValidFalseStatus>NotAFinding</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Open but DoD PKI configuration is verified, manual verification required to confirm configuration meets DoD requirements.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Systems not using client certificate authentication-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Client certificate authentication is not enabled on Xen Orchestra. This check is Not Applicable per STIG guidance: "If the web server does not have a requirement for client certificate authentication, this is N/A."
+
+The automated check verified:
+(1) Client certificate authentication not configured (no clientCertAuth or requestCert in config.toml)
+(2) XO uses alternative authentication methods (LDAP/AD, SAML, OAuth, or local password authentication)
+
+Finding: Not Applicable
+
+Organizational Context:
+This Xen Orchestra deployment uses [SPECIFY: LDAP/AD/SAML/OAuth/local password] authentication for user access control. Client certificate authentication (PKI) is not organizationally required for this system.
+
+If organizational requirements change to mandate client certificate authentication:
+1. Follow remediation guidance in Answer Index 2 to configure DoD PKI
+2. Install DoD Root CA certificates (DoD Root CA 3-6)
+3. Configure XO config.toml with requestCert = true and ca = '/path/to/dod-ca-bundle.pem'
+4. Test with DoD-issued CAC/PIV certificates
+5. Re-run scan to verify compliance
+
+No remediation required for systems where client certificate authentication is not organizationally required.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Not_Applicable but client certificate authentication is organizationally required, configuration is needed per Answer Index 2.</ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-264339">
+    <!--RuleTitle: The web server must be configured to centrally review and analyze audit records from multiple components within the system.-->
+    <AnswerKey Name="XO">
+      <!--Session #32 Batch 3a (Feb 3, 2026): Centralized audit record review - organizational policy-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems with documented centralized review procedures-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra audit records are centrally reviewed and analyzed by security personnel as part of organizational audit review procedures.
+
+The automated check detected centralized logging capabilities:
+(1) Log aggregation configured (rsyslog/syslog-ng remote forwarding)
+(2) SIEM platform integration (Splunk/Elastic/QRadar/ArcSight)
+(3) Log analysis tools available (Kibana/Grafana/CLI tools)
+(4) Audit log forwarding to central server (XO audit plugin/journal-upload)
+(5) Scheduled review procedures (cron jobs/systemd timers detected)
+
+Finding: Not a Finding
+
+Justification: This organization has implemented centralized audit record review and analysis per NIST SP 800-53r5 AU-6(1) (Audit Review, Analysis, and Reporting - Automated Central Review and Analysis). Security personnel perform regular centralized review of audit records from XO and other system components.
+
+Centralized Review Procedures:
+- SIEM platform: [SPECIFY: Splunk/ArcSight/QRadar/Elastic Stack]
+- Security personnel access: [Analyst roles configured in SIEM]
+- XO audit log inclusion: Verified (logs forwarded to central repository)
+- Review frequency: [Daily/weekly per organizational policy]
+- Review findings: Documented in [ticketing system/security log]
+- Incident response: Findings trigger organizational incident response procedures
+- Documentation: Security plan Section [X.X]
+
+Organizational Compliance Evidence:
+- Last review date: [Date]
+- Reviewer: [Security analyst name/role]
+- Review report: [Document reference]
+- Incidents identified: [None/number]
+- Actions taken: [Description]
+
+No additional configuration or remediation required for systems with documented centralized review procedures.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns NotAFinding but centralized review procedures are not documented, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant or undocumented systems requiring centralized review procedures-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected centralized logging capabilities but cannot verify security personnel perform regular centralized review of audit records.
+
+Required Manual Verification:
+(1) Verify security personnel have access to centralized log review tools
+    - SIEM platform credentials assigned to security analysts
+    - XO logs visible in SIEM search interface
+    - Test query: Search for XO authentication events in SIEM
+    - Document security personnel with log review access
+
+(2) Verify audit records from XO web server are included in central repository
+    - Confirm XO logs forwarded to SIEM/central log server
+    - Verify log parsing: SIEM recognizes XO log format
+    - Check log completeness: All XO log sources included (Winston, systemd journal, nginx)
+    - Test correlation: SIEM can correlate XO events with other system events
+
+(3) Verify organizational procedures mandate regular centralized log review
+    - Request copy of security operations procedures
+    - Confirm log review frequency defined (daily/weekly/monthly)
+    - Verify review scope includes XO audit records
+    - Check for assigned responsibilities (who performs review)
+
+(4) Verify review frequency meets DoD/organizational requirements
+    - CNSSI 1253 guidance: High systems require daily review
+    - Moderate systems: Weekly review acceptable
+    - Low systems: Monthly review minimum
+    - Confirm current practice meets categorization requirements
+
+(5) Verify review findings are documented and acted upon
+    - Request sample log review reports
+    - Verify findings trigger incident response procedures
+    - Confirm documentation of anomalies detected
+    - Verify corrective actions taken for identified issues
+
+Remediation for missing centralized review procedures:
+
+Step 1: Document Log Review Procedures
+  1. Create security operations procedure (SOP) for log review:
+     - Purpose: Regular review of centralized audit records
+     - Scope: All systems forwarding logs to SIEM (including XO)
+     - Frequency: [Daily/weekly based on system categorization]
+     - Responsibilities: [Security analyst role]
+     - Escalation: [ISSO/ISSM notification procedures]
+
+  2. Define review checklist:
+     - Authentication failures (failed login attempts)
+     - Privilege escalations (role changes, permission modifications)
+     - Unauthorized access attempts (access denied events)
+     - System errors and anomalies
+     - Security alert review (SIEM-generated alerts)
+
+  3. Document in security plan Section [X.X]
+
+Step 2: Configure SIEM for XO Audit Record Review
+  1. Create SIEM dashboard for XO:
+     - Authentication summary (successful/failed logins)
+     - User activity timeline
+     - Error rate trends
+     - Security events (privilege changes, configuration modifications)
+
+  2. Configure saved searches for common review queries:
+     - Failed authentication attempts (last 24 hours)
+     - Privilege escalations (last 7 days)
+     - Unusual access patterns (logins from new IPs/locations)
+     - System errors requiring investigation
+
+  3. Schedule automated reports:
+     - Daily summary email to security team
+     - Weekly detailed report to ISSO
+     - Monthly trend analysis
+
+Step 3: Train Security Personnel
+  1. SIEM platform training:
+     - How to search XO logs in SIEM
+     - How to interpret XO log events
+     - How to correlate XO events with other system events
+     - How to export findings for reporting
+
+  2. Incident response training:
+     - When to escalate findings to ISSO/ISSM
+     - How to document review findings
+     - How to initiate incident response procedures
+
+  3. Document training completion
+
+Step 4: Implement Regular Review Process
+  1. Assign security analyst responsibility:
+     - Primary reviewer: [Name/role]
+     - Backup reviewer: [Name/role]
+     - Escalation contact: [ISSO/ISSM]
+
+  2. Create review schedule:
+     - Daily: Quick check of critical alerts
+     - Weekly: Detailed review of authentication and privilege events
+     - Monthly: Trend analysis and comprehensive review
+
+  3. Document review findings:
+     - Use ticketing system or log review spreadsheet
+     - Record date, reviewer, findings, actions taken
+     - Archive review reports per retention policy
+
+Step 5: Test and Validate Review Process
+  1. Perform initial comprehensive review:
+     - Review all XO logs in SIEM for past 30 days
+     - Document baseline (normal activity patterns)
+     - Identify any existing security issues
+
+  2. Perform test incident simulation:
+     - Generate test security event (e.g., failed login attempts)
+     - Verify event appears in SIEM
+     - Verify review process detects event
+     - Verify escalation procedures work
+
+  3. Validate review completeness:
+     - Confirm all XO log sources reviewed
+     - Verify no log gaps or missing data
+     - Test log retention and retrieval
+
+Re-run scan after centralized review procedures documented and implemented.
+
+Note: DoD requires centralized review and analysis of audit records from multiple system components per NIST SP 800-53r5 AU-6(1). Simply forwarding logs to SIEM is insufficient; security personnel must actively review logs and respond to findings.
+        </ValidTrueComment>
+        <ValidFalseStatus>NotAFinding</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Open but centralized review procedures are documented and implemented, manual verification required to confirm procedures meet DoD requirements.</ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-264340">
+    <!--RuleTitle: The web server must be configured to immediately alert security personnel of unauthorized changes to the audit log.-->
+    <AnswerKey Name="XO">
+      <!--Session #32 Batch 3a (Feb 3, 2026): Alert on unauthorized audit log changes - organizational policy-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems with FIM alerting configured-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra is configured to immediately alert security personnel of unauthorized changes to audit logs via file integrity monitoring (FIM) and real-time alerting.
+
+The automated check verified:
+(1) Log file protection configured (immutable/append-only attributes OR restrictive permissions)
+(2) File integrity monitoring (FIM) configured (AIDE/Tripwire/OSSEC monitoring audit log directories)
+(3) Auditd rules configured for log directory monitoring (watch rules for /var/log)
+(4) Alert configuration detected (FIM email notifications AND/OR SIEM integration)
+(5) ISSO/SA notification mechanism configured
+
+Finding: Not a Finding
+
+Justification: This organization has configured file integrity monitoring with real-time alerting for unauthorized audit log changes per NIST SP 800-53r5 AU-9(3) (Protection of Audit Information - Cryptographic Protection) and SI-7 (Software, Firmware, and Information Integrity).
+
+FIM Alerting Configuration:
+- FIM tool: [SPECIFY: AIDE/Tripwire/OSSEC/other]
+- Monitored directories: /var/log/xo-server, /var/log/nginx, /var/log/journal
+- Alert recipients: [ISSO email], [SA email], [SOC email]
+- Alert method: [Email/SIEM/monitoring console/ticketing system]
+- Alert triggers: File modification, deletion, permission changes, ownership changes
+- Response procedures: Documented in incident response plan Section [X.X]
+
+Organizational Compliance Evidence:
+- FIM configuration file: [Path to AIDE/Tripwire/OSSEC config]
+- Last FIM check: [Date/time]
+- Alert test date: [Date of last alert test]
+- Test result: [Alert successfully delivered to ISSO/SA]
+
+No additional configuration or remediation required for systems with FIM alerting configured.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns NotAFinding but FIM alerting is not verified, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant or undocumented systems requiring FIM alerting-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected file protection mechanisms but cannot verify file integrity monitoring (FIM) is configured to immediately alert security personnel of unauthorized audit log changes.
+
+Required Manual Verification:
+(1) Verify FIM tools configured to monitor ALL audit log locations
+    - XO logs: /var/log/xo-server, /opt/xo/logs (if applicable)
+    - System logs: /var/log/syslog, /var/log/auth.log
+    - Web server logs: /var/log/nginx (if applicable)
+    - Systemd journal: /var/log/journal
+    - Request FIM configuration file for review
+
+(2) Verify alert thresholds properly calibrated to detect unauthorized changes
+    - Alert on file modification (content changes)
+    - Alert on file deletion
+    - Alert on permission changes (chmod)
+    - Alert on ownership changes (chown)
+    - Test alert generation by modifying test log file
+
+(3) Verify alerting mechanisms reach designated security personnel (ISSO/SA)
+    - Confirm ISSO/SA email addresses configured in FIM tool
+    - Test alert delivery by triggering FIM check
+    - Verify alerts received within acceptable timeframe (&lt;15 minutes)
+    - Check spam filters (alerts not blocked)
+
+(4) Verify response procedures documented and tested
+    - Request copy of incident response procedures
+    - Confirm procedures define actions for audit log tampering
+    - Verify assignment of responsibilities (who investigates)
+    - Test response process with tabletop exercise
+
+(5) Verify integration with organizational SIEM/monitoring infrastructure
+    - Confirm FIM alerts forwarded to SIEM
+    - Verify SIEM correlation rules for audit log tampering
+    - Check for automated response workflows (e.g., ticket creation)
+    - Test end-to-end alert flow (FIM &gt; SIEM &gt; SOC &gt; ISSO)
+
+Remediation for missing FIM alerting:
+
+Option 1: Configure AIDE (Advanced Intrusion Detection Environment)
+  1. Install AIDE:
+     apt install aide aide-common  # Debian
+
+  2. Configure /etc/aide/aide.conf to monitor audit logs:
+     # Add monitoring rules
+     /var/log/xo-server LOG
+     /var/log/nginx LOG
+     /var/log/syslog LOG
+     /var/log/auth.log LOG
+     /var/log/journal DATAONLY
+
+     # Rule definitions
+     LOG = p+i+n+u+g+s+m+c+md5+sha256
+     DATAONLY = p+n+u+g+s+md5+sha256
+
+  3. Initialize AIDE database:
+     aideinit
+     mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db
+
+  4. Create check script /usr/local/bin/aide-check-alert.sh:
+     #!/bin/bash
+     AIDE_REPORT=$(aide --check 2&gt;&amp;1)
+     if [ $? -ne 0 ]; then
+       echo "$AIDE_REPORT" | mail -s "ALERT: Audit Log Integrity Violation on $(hostname)" \
+         isso@example.mil,sa@example.mil
+     fi
+
+  5. Make executable and add to cron:
+     chmod +x /usr/local/bin/aide-check-alert.sh
+     echo "0 */4 * * * /usr/local/bin/aide-check-alert.sh" &gt;&gt; /etc/crontab
+
+Option 2: Configure OSSEC (Host Intrusion Detection System)
+  1. Install OSSEC agent:
+     wget -q -O - https://updates.atomicorp.com/installers/atomic | bash
+     yum install ossec-hids-agent  # RHEL/CentOS
+     # OR
+     apt install ossec-hids-agent  # Debian
+
+  2. Configure /var/ossec/etc/ossec.conf:
+     &lt;syscheck&gt;
+       &lt;frequency&gt;300&lt;/frequency&gt;
+       &lt;directories check_all="yes" realtime="yes"&gt;/var/log/xo-server&lt;/directories&gt;
+       &lt;directories check_all="yes" realtime="yes"&gt;/var/log/nginx&lt;/directories&gt;
+       &lt;directories check_all="yes"&gt;/var/log/syslog&lt;/directories&gt;
+       &lt;alert_new_files&gt;yes&lt;/alert_new_files&gt;
+     &lt;/syscheck&gt;
+
+     &lt;email_notification&gt;
+       &lt;email_to&gt;isso@example.mil&lt;/email_to&gt;
+       &lt;email_to&gt;sa@example.mil&lt;/email_to&gt;
+       &lt;smtp_server&gt;mail.example.mil&lt;/smtp_server&gt;
+       &lt;email_from&gt;ossec@xo1.example.mil&lt;/email_from&gt;
+     &lt;/email_notification&gt;
+
+  3. Configure OSSEC server to receive alerts (on OSSEC manager)
+
+  4. Start OSSEC agent:
+     systemctl start ossec-hids
+     systemctl enable ossec-hids
+
+Option 3: Configure Auditd + Alerting
+  1. Install auditd:
+     apt install auditd audispd-plugins  # Debian
+
+  2. Add watch rules /etc/audit/rules.d/50-xo-audit-logs.rules:
+     -w /var/log/xo-server/ -p wa -k xo_log_tampering
+     -w /var/log/nginx/ -p wa -k nginx_log_tampering
+     -w /var/log/syslog -p wa -k syslog_tampering
+     -w /var/log/auth.log -p wa -k auth_log_tampering
+
+  3. Load rules:
+     augenrules --load
+     systemctl restart auditd
+
+  4. Create alert script /usr/local/bin/auditd-log-alert.sh:
+     #!/bin/bash
+     ausearch -k xo_log_tampering -k nginx_log_tampering -k syslog_tampering \
+       --start recent -i 2&gt;&amp;1 | \
+     mail -s "ALERT: Audit Log Modification Detected on $(hostname)" \
+       isso@example.mil,sa@example.mil
+
+  5. Add to cron (check every 15 minutes):
+     */15 * * * * /usr/local/bin/auditd-log-alert.sh
+
+Option 4: Configure File Immutability (Prevention)
+  1. Set append-only attribute on log files:
+     chattr +a /var/log/xo-server/*.log
+     chattr +a /var/log/nginx/*.log
+     chattr +a /var/log/syslog
+     chattr +a /var/log/auth.log
+
+  2. Verify attributes:
+     lsattr /var/log/xo-server/
+     # Should show 'a' flag (append-only)
+
+  3. Note: Requires root to remove attribute
+     # To remove for log rotation:
+     chattr -a /var/log/xo-server/*.log
+     # Perform rotation
+     chattr +a /var/log/xo-server/*.log
+
+Step 5: Test FIM Alerting
+  1. Create test log file:
+     echo "Test log entry" &gt; /var/log/xo-server/test.log
+
+  2. Modify test file (should trigger alert):
+     echo "Unauthorized modification" &gt;&gt; /var/log/xo-server/test.log
+
+  3. Wait for FIM check interval (or run manually)
+
+  4. Verify alert delivered to ISSO/SA email
+
+  5. Remove test file:
+     rm /var/log/xo-server/test.log
+
+  6. Document test results
+
+Re-run scan after FIM alerting configured and tested.
+
+Note: DoD requires immediate alerting of unauthorized audit log changes per NIST SP 800-53r5 AU-9(3) (Protection of Audit Information - Cryptographic Protection). File integrity monitoring with real-time alerting is mandatory to detect audit log tampering attempts.
+        </ValidTrueComment>
+        <ValidFalseStatus>NotAFinding</ValidFalseStatus>
+        <ValidFalseComment>This Answer Index should not normally be used. If the automated check returns Open but FIM alerting is verified, manual verification required to confirm configuration meets DoD requirements.</ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>

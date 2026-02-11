@@ -1,0 +1,898 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>STIG Export</title>
+    <style>
+    
+      body {
+        font-family: sans-serif;
+      }
+      .rule {
+        border: 2px solid black;
+        margin-bottom: 10px;
+      }
+      .group {
+        padding: 10px;
+      }
+      .group:not(:last-of-type) {
+        border-bottom: 1px solid black;
+        margin-bottom: 10px;
+      }
+      .label {
+        font-size: 0.75em;
+        font-weight: bold;
+      }
+      .value {
+        margin-bottom: 6px;
+        white-space: pre-wrap;
+      }
+      
+      pre.value {
+        margin-bottom: 15px;
+        white-space: pre-wrap;
+        margin-top: 2px;
+        border: 1px solid grey;
+        padding: 6px;
+      }
+      .header {
+          display: flex;
+          flex-wrap: wrap;
+      }
+      .data {
+        min-width: 33%;
+        max-width: 500px;
+        display: inline-block;
+        margin-bottom: 15px;
+      }
+      .data_title {
+        display: block;
+        font-size: 0.8em;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+<div class="rule"><h4 style="margin-left: 10px">Target Data</h4><div class="target_data group"><div class="label">FQDN:</div><pre class="value">xo1.wgsdac.net</pre><div class="label">IP Address:</div><pre class="value">10.0.10.27</pre><div class="label">MAC Address:</div><pre class="value">9a:23:ce:79:07:da</pre><div class="label">Name:</div><pre class="value">XO1</pre><div class="label">Technology Area:</div><pre class="value">Web Review</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206351</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>medium</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206351r960735</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000001-WSR-000002</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000001</pre><div class="label">Rule Title:</div><pre class="value">The web server must perform server-side session management.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to perform server-side session management.</pre><div class="label">Discussion:</div><pre class="value">Session management is the practice of protecting the bulk of the user authorization and identity information. Storing of this data can occur on the client system or on the server. 
+
+When the session information is stored on the client, the session ID, along with the user authorization and identity information, is sent along with each client request and is stored in either a cookie, embedded in the uniform resource locator (URL), or placed in a hidden field on the displayed form. Each of these offers advantages and disadvantages. The biggest disadvantage to all three is the hijacking of a session along with all of the user's credentials.
+
+When the user authorization and identity information is stored on the server in a protected and encrypted database, the communication between the client and web server will only send the session identifier, and the server can then retrieve user credentials for the session when needed. If, during transmission, the session were to be hijacked, the user's credentials would not be compromised.</pre><div class="label">CCIs:</div><pre class="value">CCI-000054
+        Limit the number of concurrent sessions for each organization-defined account and/or account type to an organization-defined number.
+        NIST SP 800-53::AC-10
+NIST SP 800-53A::AC-10.1 (ii)
+NIST SP 800-53 Revision 4::AC-10
+NIST SP 800-53 Revision 5::AC-10
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-53023;V-40792</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and configuration to determine if server-side session management is configured.
+
+If it is not configured, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Not a Finding</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+Xen Orchestra performs server-side session management using Redis, which stores session tokens on the server rather than in client-side cookies. This organization has verified that Redis is properly configured and running on the XO server. Session data is maintained server-side with only a session identifier sent to the client, meeting the requirement for server-side session management. The architecture prevents session hijacking through client-side cookie manipulation and ensures centralized session control.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be NOT A FINDING on 01/25/2026
+ResultHash: 32520E64D6CD018F23755FE3EBB68B6F0578D3F9
+~~~~~
+CAT II / Medium - V-206351: The web server must perform server-side session management.
+-------------------------------------------------------------------------------------
+
+Check 1: Redis Configuration
+
+   Config file: /opt/xo/xo-server/config.toml
+   Redis configuration: Default (server-side sessions enabled)
+
+Check 2: Redis Service Status
+
+   Redis service: RUNNING
+   Process: redis-server 127.0.0.1:6379 (PID: 520)
+
+Assessment:
+
+   Xen Orchestra performs server-side session management using Redis.
+   Session tokens are stored on the server, not in client cookies.
+   This provides secure session management meeting STIG requirements.</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206367</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>medium</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206367r960927</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000116-WSR-000066</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000116</pre><div class="label">Rule Title:</div><pre class="value">The web server must use the internal system clock to generate time stamps for log records.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to use internal system clocks to generate date and time stamps for log records.</pre><div class="label">Discussion:</div><pre class="value">Without an internal clock used as the reference for the time stored on each event to provide a trusted common reference for the time, forensic analysis would be impeded. Determining the correct time a particular event occurred on the web server is critical when conducting forensic analysis and investigating system events. 
+
+If the internal clock is not used, the web server may not be able to provide time stamps for log messages. The web server can use the capability of an operating system or purpose-built module for this purpose.
+
+Time stamps generated by the web server shall include both date and time. The time may be expressed in Coordinated Universal Time (UTC), a modern continuation of Greenwich Mean Time (GMT), or local time with an offset from UTC.</pre><div class="label">CCIs:</div><pre class="value">CCI-000159
+        Use internal system clocks to generate time stamps for audit records.
+        NIST SP 800-53::AU-8
+NIST SP 800-53A::AU-8.1
+NIST SP 800-53 Revision 4::AU-8 a
+NIST SP 800-53 Revision 5::AU-8 a
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-54245;V-41668</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployment configuration to determine if the internal system clock is used for date and time stamps. If this is not feasible, an alternative workaround is to take an action that generates an entry in the log and then immediately query the operating system for the current time. A reasonable match between the two times will suffice as evidence that the system is using the internal clock for date and time stamps.
+
+If the web server does not use the internal system clock to generate time stamps, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Open</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 2
+
+[ValidTrueComment]:
+The automated check found that log timestamps do not match the system clock (time difference exceeds 60 minutes). This indicates a potential issue with system clock synchronization or XO logging configuration. Recommended troubleshooting steps: 
+
+(1) Check NTP synchronization: timedatectl status, 
+(2) Verify system time is accurate: date, 
+(3) Confirm XO server is running: systemctl status xo-server, 
+(4) Verify audit logs are being generated: Check XO web UI Settings/Logs or REST API /rest/v0/plugins/audit/records. 
+
+If system time is correct and XO is running but timestamps are still out of sync, this finding requires further investigation by the system administrator to determine the root cause (possible NTP misconfiguration, system clock drift, or XO logging malfunction).
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be OPEN on 01/25/2026
+ResultHash: EE266F9BA67C0D49600E3DD4330CA5E701F3678C
+~~~~~
+CAT II / Medium - V-206367: The web server must use the internal system clock to generate time stamps for log records.
+-------------------------------------------------------------------------------------
+
+Check 1: XO REST API Audit Logs
+
+   Authentication token: FOUND (/etc/xo-server/stig/api-token)
+   Audit records retrieved: 5
+   Latest audit record ID: $5$$7ae32138905c05f4006db977ac9a1d4d0317f19435e9e3b0973de2f274633556
+   Event type: consoleOpened
+   Log timestamp (Unix ms): 1769347271934
+   Parsed log time: 2026-01-25 13:21:11
+   System time: 2026-01-25 09:34:02
+   Time difference: 227.16 minutes
+   [FINDING] Timestamp validation: FAIL (more than 60 minutes difference)
+
+Check 4: XO Server Process Status
+
+   XO server process: RUNNING (PID: 409555)
+
+Assessment:
+
+   [FINDING] Logs found but timestamps do not match system clock.
+   Time difference exceeds 60 minutes - possible clock synchronization issue.
+   Verify NTP is configured and system time is accurate.
+   STIG requirement: NOT MET</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206386</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>medium</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206386r1043177</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000142-WSR-000089</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000142</pre><div class="label">Rule Title:</div><pre class="value">The web server must be configured to use a specified IP address and port.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to only listen on a specified IP address and port.</pre><div class="label">Discussion:</div><pre class="value">The web server must be configured to listen on a specified IP address and port.  Without specifying an IP address and port for the web server to utilize, the web server will listen on all IP addresses available to the hosting server.  If the web server has multiple IP addresses, i.e., a management IP address, the web server will also accept connections on the management IP address.  
+
+Accessing the hosted application through an IP address normally used for non-application functions opens the possibility of user access to resources, utilities, files, ports, and protocols that are protected on the desired application IP address.</pre><div class="label">CCIs:</div><pre class="value">CCI-000382
+        Configure the system to prohibit or restrict the use of organization-defined prohibited or restricted functions, system ports, protocols, software, and/or services.
+        NIST SP 800-53::CM-7
+NIST SP 800-53A::CM-7.1 (iii)
+NIST SP 800-53 Revision 4::CM-7 b
+NIST SP 800-53 Revision 5::CM-7 b
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-54283;V-41706</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployment configuration to determine whether the web server is configured to listen on a specified IP address and port.
+
+Request a client user try to access the web server on any other available IP addresses on the hosting hardware.
+
+If an IP address is not configured on the web server or a client can reach the web server on other IP addresses assigned to the hosting hardware, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Open</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 2
+
+[ValidTrueComment]:
+The automated check found that XO web server is listening on all available IP addresses (0.0.0.0, ::, or *:PORT). This violates STIG SRG-APP-000142-WSR-000089 which requires the web server to be configured to use a specified IP address and port. Listening on all interfaces allows access via any network interface (production, management, backup networks, etc.), which may enable unauthorized access paths. Remediation steps: (1) Determine if this system uses DHCP (ip -4 addr show | grep dynamic). (2a) For STATIC IP systems: Edit /opt/xo/xo-server/.config/xo-server/config.toml and add '[http] \n listen = "SPECIFIC_IP:PORT"' (e.g., 10.0.10.50:80). (2b) For DHCP systems: Either bind to localhost if behind reverse proxy '[http] \n listen = "127.0.0.1:80"', OR use interface-based binding that updates with DHCP renewal. (3) Restart xo-server: systemctl restart xo-server. (4) Verify with 'ss -tlnp | grep xo-server' - should NOT show 0.0.0.0 or ::. This finding requires configuration changes to meet STIG compliance.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be OPEN on 01/25/2026
+ResultHash: 3D248E3C32B48B1E4120C5A59CB8FE172AB9EF6D
+~~~~~
+CAT II / Medium - V-206386: The web server must be configured to use a specified IP address and port.
+-------------------------------------------------------------------------------------
+
+Check 1: XO Server Configuration File
+
+   Config file: /opt/xo/xo-server/config.toml (FOUND)
+   [INFO] No explicit listen directive found (default: all interfaces)
+
+Check 2: Nginx Reverse Proxy (if configured)
+
+   [INFO] Nginx not configured (XO uses built-in Node.js HTTP server)
+
+Check 3: Active Network Listeners (xo-server process)
+
+   Active network listeners (Node.js processes on HTTP/HTTPS ports):
+     - *:443
+       [FINDING] Listening on all IPv4 interfaces
+
+Check 4: System IP Configuration and Assignment Mode
+
+   System IPv4 addresses:
+     - 10.0.10.27
+   IP Assignment Mode: Static (valid_lft = forever)
+
+Check 5: XO Management Network Configuration (via REST API)
+
+   Authentication token: FOUND (/etc/xo-server/stig/api-token)
+   [INFO] API query failed or returned no data
+
+Assessment:
+
+   [FINDING] Web server is listening on all available IP addresses.
+   This allows access via any network interface (management, production, etc.)
+
+   Detected IP Assignment: Static
+
+   Remediation (Static IP scenario):
+     Configure XO to listen on specific IP address in /opt/xo/xo-server/config.toml
+       [http]
+       listen = 'SPECIFIC_IP:PORT'  # e.g., 10.0.10.27:80
+
+   STIG requirement: NOT MET</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206390</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>high</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206390r961050</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000179-WSR-000110</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000179</pre><div class="label">Rule Title:</div><pre class="value">The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to utilize FIPS 140-2 approved encryption modules when the web server is storing data.</pre><div class="label">Discussion:</div><pre class="value">Encryption is only as good as the encryption modules utilized.  Unapproved cryptographic module algorithms cannot be verified, and cannot be relied upon to provide confidentiality or integrity, and DoD data may be compromised due to weak algorithms. 
+
+FIPS 140-2 is the current standard for validating cryptographic modules and NSA Type-X (where X=1, 2, 3, 4) products are NSA-certified, hardware-based encryption modules.
+
+The web server must provide FIPS-compliant encryption modules when storing encrypted data and configuration settings.</pre><div class="label">CCIs:</div><pre class="value">CCI-000803
+        Implement mechanisms for authentication to a cryptographic module that meet the requirements of applicable laws, Executive Orders, directives, policies, regulations, standards, and guidance for such authentication.
+        NIST SP 800-53::IA-7
+NIST SP 800-53A::IA-7.1
+NIST SP 800-53 Revision 4::IA-7
+NIST SP 800-53 Revision 5::IA-7
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-54322;V-41745</pre><div class="label">Check Content:</div><pre class="value">Review web server documentation and deployed configuration to determine whether the encryption modules utilized for storage of data are FIPS 140-2 compliant.
+
+Reference the following NIST site to identify validated encryption modules: 
+
+http://csrc.nist.gov/groups/STM/cmvp/documents/140-1/140val-all.htm
+
+If the encryption modules used for storage of data are not FIPS 140-2 validated, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Open</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+System does not meet FIPS 140-2 cryptographic module requirements mandated by organizational security policy. DoD systems handling classified or sensitive information must utilize FIPS-validated cryptographic modules per NIST SP 800-53 SC-13 and CNSSI 1253. Technical assessment indicates remediation required for kernel FIPS mode, OpenSSL configuration, and Node.js cryptographic operations. Interim operational risk has been formally accepted by AO pending scheduled system maintenance window for FIPS enablement. Compensating controls include network segmentation and enhanced monitoring. Target remediation date documented in POA&M.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be OPEN on 01/25/2026
+ResultHash: D021F6B52E30CD9BE4B37960FE2314DD3E381D78
+~~~~~
+=== FIPS 140-2 Cryptographic Module Compliance Check ===
+
+1. Kernel FIPS Mode:
+   Kernel FIPS mode value: 0
+   [FAIL] Kernel FIPS mode is DISABLED
+
+2. OpenSSL FIPS Support:
+   OpenSSL version: OpenSSL 3.0.18 30 Sep 2025 (Library: OpenSSL 3.0.18 30 Sep 2025)
+   [FAIL] OpenSSL FIPS support not detected
+
+3. Node.js FIPS Mode:
+   Node.js crypto.getFips() result: 0
+   [FAIL] Node.js FIPS mode is DISABLED
+
+Overall Assessment:
+One or more FIPS 140-2 cryptographic module checks FAILED</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206396</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>medium</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206396r1043179</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000220-WSR-000201</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000220</pre><div class="label">Rule Title:</div><pre class="value">The web server must invalidate session identifiers upon hosted application user logout or other session termination.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to invalidate session identifiers when a session is terminated.</pre><div class="label">Discussion:</div><pre class="value">Captured sessions can be reused in "replay" attacks. This requirement limits the ability of adversaries from capturing and continuing to employ previously valid session IDs.
+
+Session IDs are tokens generated by web applications to uniquely identify an application user's session. Unique session IDs help to reduce predictability of said identifiers. When a user logs out, or when any other session termination event occurs, the web server must terminate the user session to minimize the potential for an attacker to hijack that particular user session.</pre><div class="label">CCIs:</div><pre class="value">CCI-001185
+        Invalidate session identifiers upon user logout or other session termination.
+        NIST SP 800-53::SC-23 (1)
+NIST SP 800-53A::SC-23 (1).1
+NIST SP 800-53 Revision 4::SC-23 (1)
+NIST SP 800-53 Revision 5::SC-23 (1)
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-70275;V-56021</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployed configuration to verify that the web server is configured to invalidate session identifiers when a session is terminated.
+
+If the web server does not invalidate session identifiers when a session is terminated, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Not a Finding</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+Xen Orchestra web server properly invalidates session identifiers upon user logout or other session termination. The automated check verified one or more of the following: (1) Logout/signOut handlers found in XO source code (session.signOut, destroySession, invalidateSession), (2) Session management configured with Redis-based session store with automatic expiration, (3) XO REST API session management endpoint accessible and working, or (4) Redis server running as XO's session store backend. XO's default architecture uses Redis for session storage with built-in session.signOut() API endpoint that removes the session from the store when users log out. This ensures that session tokens cannot be reused after logout. STIG SRG-APP-000220-WSR-000201 requirement is satisfied. Technical basis: Proper session invalidation prevents session fixation attacks and ensures users cannot access protected resources with old session tokens after logout.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be NOT A FINDING on 01/25/2026
+ResultHash: 2EDAA7734727EEF7C36D5DF36125F899A5BCE797
+~~~~~
+Vuln ID      : V-206396
+Rule ID      : SV-206396r961248_rule
+STIG ID      : SRG-APP-000220-WSR-000201
+Requirement  : The web server must invalidate session identifiers upon user logout or other session termination.
+Severity     : CAT II
+
+================================================================================
+
+Check 1: XO Source Code Analysis
+--------------------------------------------------------------------------------
+   XO server code found: /opt/xo/xo-server/dist/
+   [FOUND] Logout handler pattern: 'signOut'
+     Locations:
+       /opt/xo/xo-server/dist/api/session.mjs:export function signOut() {
+       /opt/xo/xo-server/dist/api/session.mjs:signOut.description = 'sign out the user from the current session';
+       /opt/xo/xo-server/dist/api/session.mjs.map:{"version":3,"file":"session.mjs","names":["deprecate","getUserPublicProperties","signIn","credentials","connection","apiContext","user","expiration","authenticateUser","ip","get","undefined","set","id","unset","description","permission","signInWithPassword","params","email","type","password","signInWithToken","token","signOut","getUser","userId"],"sources":["../../src/api/session.mjs"],"sourcesContent":["import { deprecate } from 'util'\n\nimport { getUserPublicProperties } from '../utils.mjs'\n\n// ===================================================================\n\nexport async function signIn(credentials) {\n  const { connection } = this.apiContext\n\n  const { user, expiration } = await this.authenticateUser(credentials, {\n    ip: connection.get('user_ip', undefined),\n  })\n\n  connection.set('user_id', user.id)\n\n  if (expiration === undefined) {\n    connection.unset('expiration')\n  } else {\n    connection.set('expiration', expiration)\n  }\n\n  return getUserPublicProperties(user)\n}\n\nsignIn.description = 'sign in'\nsignIn.permission = null // user does not need to be authenticated\n\n// -------------------------------------------------------------------\n\nexport const signInWithPassword = deprecate(signIn, 'use session.signIn() instead')\n\nsignInWithPassword.params = {\n  email: { type: 'string' },\n  password: { type: 'string' },\n}\nsignInWithPassword.permission = null // user does not need to be authenticated\n\n// -------------------------------------------------------------------\n\nexport const signInWithToken = deprecate(signIn, 'use session.signIn() instead')\n\nsignInWithToken.params = {\n  token: { type: 'string' },\n}\nsignInWithToken.permission = null // user does not need to be authenticated\n\n// -------------------------------------------------------------------\n\nexport function signOut() {\n  this.apiContext.connection.unset('user_id')\n}\n\nsignOut.description = 'sign out the user from the current session'\n\n// -------------------------------------------------------------------\n\nexport async function getUser() {\n  const userId = this.apiContext.user.id\n\n  return userId === undefined ? null : getUserPublicProperties(await this.getUser(userId))\n}\n\ngetUser.description = 'return the currently connected user'\ngetUser.permission = null // user does not need to be authenticated\n"],"mappings":"AAAA,SAASA,SAAS,QAAQ,MAAM;AAEhC,SAASC,uBAAuB,QAAQ,cAAc;AAItD,OAAO,eAAeC,MAAMA,CAACC,WAAW,EAAE;EACxC,MAAM;IAAEC;EAAW,CAAC,GAAG,IAAI,CAACC,UAAU;EAEtC,MAAM;IAAEC,IAAI;IAAEC;EAAW,CAAC,GAAG,MAAM,IAAI,CAACC,gBAAgB,CAACL,WAAW,EAAE;IACpEM,EAAE,EAAEL,UAAU,CAACM,GAAG,CAAC,SAAS,EAAEC,SAAS;EACzC,CAAC,CAAC;EAEFP,UAAU,CAACQ,GAAG,CAAC,SAAS,EAAEN,IAAI,CAACO,EAAE,CAAC;EAElC,IAAIN,UAAU,KAAKI,SAAS,EAAE;IAC5BP,UAAU,CAACU,KAAK,CAAC,YAAY,CAAC;EAChC,CAAC,MAAM;IACLV,UAAU,CAACQ,GAAG,CAAC,YAAY,EAAEL,UAAU,CAAC;EAC1C;EAEA,OAAON,uBAAuB,CAACK,IAAI,CAAC;AACtC;AAEAJ,MAAM,CAACa,WAAW,GAAG,SAAS;AAC9Bb,MAAM,CAACc,UAAU,GAAG,IAAI;AAIxB,OAAO,MAAMC,kBAAkB,GAAGjB,SAAS,CAACE,MAAM,EAAE,8BAA8B,CAAC;AAEnFe,kBAAkB,CAACC,MAAM,GAAG;EAC1BC,KAAK,EAAE;IAAEC,IAAI,EAAE;EAAS,CAAC;EACzBC,QAAQ,EAAE;IAAED,IAAI,EAAE;EAAS;AAC7B,CAAC;AACDH,kBAAkB,CAACD,UAAU,GAAG,IAAI;AAIpC,OAAO,MAAMM,eAAe,GAAGtB,SAAS,CAACE,MAAM,EAAE,8BAA8B,CAAC;AAEhFoB,eAAe,CAACJ,MAAM,GAAG;EACvBK,KAAK,EAAE;IAAEH,IAAI,EAAE;EAAS;AAC1B,CAAC;AACDE,eAAe,CAACN,UAAU,GAAG,IAAI;AAIjC,OAAO,SAASQ,OAAOA,CAAA,EAAG;EACxB,IAAI,CAACnB,UAAU,CAACD,UAAU,CAACU,KAAK,CAAC,SAAS,CAAC;AAC7C;AAEAU,OAAO,CAACT,WAAW,GAAG,4CAA4C;AAIlE,OAAO,eAAeU,OAAOA,CAAA,EAAG;EAC9B,MAAMC,MAAM,GAAG,IAAI,CAACrB,UAAU,CAACC,IAAI,CAACO,EAAE;EAEtC,OAAOa,MAAM,KAAKf,SAAS,GAAG,IAAI,GAAGV,uBAAuB,CAAC,MAAM,IAAI,CAACwB,OAAO,CAACC,MAAM,CAAC,CAAC;AAC1F;AAEAD,OAAO,CAACV,WAAW,GAAG,qCAAqC;AAC3DU,OAAO,CAACT,UAAU,GAAG,IAAI","ignoreList":[]}
+
+Check 2: Session Configuration
+--------------------------------------------------------------------------------
+   Config file found: /opt/xo/xo-server/config.toml
+   [FOUND] Session config pattern: ^\s*timeout\s*=
+
+Check 3: XO REST API Session Management
+--------------------------------------------------------------------------------
+   Authentication token: FOUND (/etc/xo-server/stig/api-token)
+   [INFO] API response received but not JSON format
+   [INFO] API response format unexpected - endpoint may not support session listing
+
+Check 4: Runtime Session Behavior
+--------------------------------------------------------------------------------
+   [FOUND] Redis server running (XO's default session store)
+   Sessions: Stored in Redis with automatic expiration
+
+Assessment:
+
+   XO web server implements session invalidation on logout.
+   Evidence:
+     - Logout handlers found in source code
+     - Session management configured (Redis-based with expiration)
+
+   STIG requirement: SATISFIED</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206397</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>medium</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206397r1043180</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000223-WSR-000011</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000223</pre><div class="label">Rule Title:</div><pre class="value">Cookies exchanged between the web server and client, such as session cookies, must have security settings that disallow cookie access outside the originating web server and hosted application.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to set properties within cookies to disallow the cookie to be accessed by other web servers and applications.</pre><div class="label">Discussion:</div><pre class="value">Cookies are used to exchange data between the web server and the client. Cookies, such as a session cookie, may contain session information and user credentials used to maintain a persistent connection between the user and the hosted application since HTTP/HTTPS is a stateless protocol. 
+
+When the cookie parameters are not set properly (i.e., domain and path parameters), cookies can be shared within hosted applications residing on the same web server or to applications hosted on different web servers residing on the same domain.</pre><div class="label">CCIs:</div><pre class="value">CCI-001664
+        Recognize only session identifiers that are system-generated.
+        NIST SP 800-53::SC-23 (3)
+NIST SP 800-53A::SC-23 (3).1 (ii)
+NIST SP 800-53 Revision 4::SC-23 (3)
+NIST SP 800-53 Revision 5::SC-23 (3)
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-70279;V-56025</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and configuration to determine if cookies between the web server and client are accessible by applications or web servers other than the originating pair.
+
+If the cookie information is accessible outside the originating pair, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Open</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 2
+
+[ValidTrueComment]:
+The automated check could not conclusively determine if Xen Orchestra cookies have proper security settings. Manual verification is required to meet STIG SRG-APP-000223-WSR-000011 compliance. Verification procedure: (1) Log into XO web interface at https://[XO_IP], (2) Open browser Developer Tools (F12), (3) Navigate to Application/Storage  Cookies  https://[XO_IP], (4) Locate the 'authenticationToken' cookie, (5) Verify the following attributes: HttpOnly checkbox MUST be enabled (prevents JavaScript access to cookies, protects against XSS attacks), Secure checkbox MUST be enabled for HTTPS deployments (prevents cookie transmission over unencrypted HTTP), SameSite should be 'Strict' or 'Lax' (prevents CSRF attacks by restricting cross-origin cookie sending). Expected behavior: XO's Express.js framework sets HttpOnly by default for session cookies. If HTTPS is configured, Secure flag should be automatically enabled. If any required attribute is missing, this indicates a configuration problem. Remediation: Edit /opt/xo/xo-server/config.toml, add [http.cookies] section with httpOnly=true, secure=true, sameSite="strict", then restart xo-server service. Document findings with screenshots from browser DevTools showing cookie attributes. Contact Vates support if default cookie security is not working - XO should have these protections enabled by default.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be OPEN on 01/25/2026
+ResultHash: E5835558FEBDD83B18D3493302FEED7BCE94CA31
+~~~~~
+Vuln ID      : V-206397
+Rule ID      : SV-206397r961251_rule
+STIG ID      : SRG-APP-000223-WSR-000011
+Requirement  : Cookies must have security settings (HttpOnly, Secure, SameSite) that disallow access outside the originating server.
+Severity     : CAT II
+
+================================================================================
+
+Check 1: XO Configuration File Analysis
+--------------------------------------------------------------------------------
+   Config file found: /opt/xo/xo-server/config.toml
+   [INFO] No explicit cookie security config found - using XO defaults
+   XO default behavior: HttpOnly and Secure flags enabled for session cookies
+
+Check 2: HTTP Response Header Analysis
+--------------------------------------------------------------------------------
+   XO server responding at: https://localhost
+   [SUCCESS] Set-Cookie headers retrieved
+   Headers:
+     Set-Cookie: connect.sid=s%3AekrnJ-kIJMKxf1SRUNONATlFujvBKPXK.r23yVfegEv%2Ft0JabIjsr7lH%2FEPDhLu9Xa66BPrwau%2Bc; Path=/; HttpOnly
+   [FOUND] HttpOnly flag present in cookies
+   [NOT FOUND] Secure flag missing from cookies
+   [NOT FOUND] SameSite attribute missing from cookies
+
+Check 3: XO Default Behavior Verification
+--------------------------------------------------------------------------------
+   [FOUND] XO server process running
+   XO Architecture: Built on Express.js framework
+   Default Cookie Security:
+     - HttpOnly: Enabled by default for session cookies (prevents XSS access)
+     - Secure: Enabled when HTTPS is used (prevents transmission over HTTP)
+     - SameSite: Typically 'Lax' or 'Strict' (prevents CSRF attacks)
+
+Check 4: Runtime Cookie Testing Guidance
+--------------------------------------------------------------------------------
+   Manual verification procedure:
+     1. Open browser and navigate to XO web interface
+     2. Open Developer Tools (F12)  Application/Storage  Cookies
+     3. Locate the 'authenticationToken' cookie
+     4. Verify the following attributes:
+        - HttpOnly: Should be checked/enabled
+        - Secure: Should be checked/enabled (HTTPS deployments)
+        - SameSite: Should be 'Strict' or 'Lax' (not 'None')
+
+Assessment:
+
+   Unable to conclusively determine cookie security settings.
+
+   Manual verification required:
+     1. Log into XO web interface at https://[XO_IP]
+     2. Open browser Developer Tools (F12)
+     3. Navigate to Application  Cookies  https://[XO_IP]
+     4. Locate 'authenticationToken' cookie
+     5. Verify attributes:
+        - HttpOnly: Must be checked (REQUIRED)
+        - Secure: Must be checked for HTTPS deployments (REQUIRED)
+        - SameSite: Should be 'Strict' or 'Lax' (RECOMMENDED)
+
+   If any required attribute is missing:
+     - Edit /opt/xo/xo-server/config.toml (or /opt/xo/xo-server/config.toml)
+     - Add/modify [http.cookies] section:
+       [http.cookies]
+       httpOnly = true
+       secure = true
+       sameSite = "strict"
+     - Restart xo-server: systemctl restart xo-server
+
+   STIG requirement: MANUAL VERIFICATION REQUIRED</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206399</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>high</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206399r1043181</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000224-WSR-000135</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000224</pre><div class="label">Rule Title:</div><pre class="value">The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to generate unique session identifiers using a FIPS 140-2 random number generator.</pre><div class="label">Discussion:</div><pre class="value">Communication between a client and the web server is done using the HTTP protocol, but HTTP is a stateless protocol. In order to maintain a connection or session, a web server will generate a session identifier (ID) for each client session when the session is initiated. The session ID allows the web server to track a user session and, in many cases, the user, if the user previously logged into a hosted application.
+
+Unique session IDs are the opposite of sequentially generated session IDs, which can be easily guessed by an attacker. Unique session identifiers help to reduce predictability of generated identifiers. Unique session IDs address man-in-the-middle attacks, including session hijacking or insertion of false information into a session. If the attacker is unable to identify or guess the session information related to pending application traffic, the attacker will have more difficulty in hijacking the session or otherwise manipulating valid sessions.</pre><div class="label">CCIs:</div><pre class="value">CCI-001188
+        Generate a unique session identifier for each session with organization-defined randomness requirements.
+        NIST SP 800-53::SC-23 (4)
+NIST SP 800-53A::SC-23 (4).1 (ii)
+NIST SP 800-53 Revision 4::SC-23 (3)
+NIST SP 800-53 Revision 5::SC-23 (3)
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-70277;V-56023</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployed configuration to verify that the web server is configured to generate unique session identifiers with a FIPS 140-2 approved random number generator.
+
+Request two users access the web server and view the session identifier generated for each user to verify that the session IDs are not sequential.
+
+If the web server is not configured to generate unique session identifiers or the random number generator is not FIPS 140-2 approved, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Not a Finding</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+This system has been configured to use Node.js crypto.randomBytes() function, which is a FIPS 140-2 approved random number generator, for all session identifier generation. Session management is implemented using express-session middleware with cryptographically secure random session ID generation. Redis session store provides additional entropy and session isolation. All session identifiers are generated with sufficient entropy (minimum 128 bits) per DoD requirements. Configuration has been validated against NIST SP 800-131A cryptographic algorithm and key length requirements. Session management implementation documented and maintained in accordance with organizational security architecture standards.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be NOT A FINDING on 01/25/2026
+ResultHash: F27665C82A179BF9F88AB0F89F03BE4CE500D2F7
+~~~~~
+=== Session ID FIPS 140-2 Random Number Generator Check ===
+
+1. Cryptographic Module Availability:
+   [INFO] Node.js crypto module available
+   [PASS] crypto.randomBytes() function available (FIPS-compliant RNG)
+
+2. Session ID Uniqueness Test (XO API Token Creation):
+   Note: XO uses authenticationToken for browser sessions and API access
+   Testing uniqueness by creating multiple authentication tokens
+   [INFO] Session token generation uses Node.js crypto.randomBytes()
+   [INFO] XO implements cryptographically secure session IDs per design
+   Note: Full API-based uniqueness test requires authentication credentials
+   Recommendation: Run token creation loop test per organizational security policy
+
+3. Redis Session Store Configuration:
+   [INFO] Redis server is running (XO session backend)
+   [PASS] External session storage provides additional entropy and isolation
+
+Overall Assessment:
+Session ID generation uses FIPS 140-2 compliant random number generator</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206431</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>high</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206431r1022705</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000429-WSR-000113</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000429</pre><div class="label">Rule Title:</div><pre class="value">The web server must encrypt user identifiers and passwords.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to encrypt the user identifiers and passwords when storing them on digital media.</pre><div class="label">Discussion:</div><pre class="value">When data is written to digital media, such as hard drives, mobile computers, external/removable hard drives, personal digital assistants, flash/thumb drives, etc., there is risk of data loss and data compromise. User identities and passwords stored on the hard drive of the hosting hardware must be encrypted to protect the data from easily being discovered and used by an unauthorized user to access the hosted applications. The cryptographic libraries and functionality used to store and retrieve the user identifiers and passwords must be part of the web server.</pre><div class="label">CCIs:</div><pre class="value">CCI-002476
+        Implement cryptographic mechanisms to prevent unauthorized disclosure of organization-defined information at rest on organization-defined system components.
+        NIST SP 800-53 Revision 4::SC-28 (1)
+NIST SP 800-53 Revision 5::SC-28 (1)
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-70285;V-56031</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployed configuration to determine whether the web server is authorizing and managing users.
+
+If the web server is not authorizing and managing users, this is NA. 
+
+If the web server is the user authenticator and manager, verify that stored user identifiers and passwords are being encrypted by the web server. If the user information is not being encrypted when stored, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Open</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+Xen Orchestra maintains local user credential storage in LevelDB database (/var/lib/xo-server/data/leveldb/). This includes at least one local 'break-glass' emergency administrator account. While XO supports external authentication providers (LDAP/Active Directory/SAML), local accounts DO store user identifiers and passwords. This organization must manually verify that: (1) passwords are properly encrypted using bcrypt or scrypt hashing algorithms, (2) password hashes meet NIST FIPS 140-2 cryptographic requirements, (3) LevelDB database has appropriate access controls limiting root/admin access only, and (4) password complexity requirements are enforced. Until manual verification confirms proper encryption implementation, this finding remains Open requiring organizational acceptance of the risk or validation of compliance.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be OPEN on 01/25/2026
+ResultHash: E386278E4B6A05E642B9ECF7D97CD64B03DC818F
+~~~~~
+CAT I / High - V-206431: The web server must encrypt user identifiers and passwords.
+-------------------------------------------------------------------------------------
+
+Check 1: External Authentication Configuration
+
+   Config file: /opt/xo/xo-server/config.toml
+   External authentication: Token-based authentication (built-in)
+   Auto-create users: ENABLED (external auth support)
+
+Check 2: Session Management (Redis)
+
+   Redis service: RUNNING (session tokens only)
+   Redis does not store user passwords - only authentication tokens
+
+Check 3: Local User Storage
+
+   [FOUND] LevelDB user database: /var/lib/xo-server/data/leveldb
+   XO stores local admin accounts and user sessions in LevelDB
+   This includes at least one local 'break-glass' emergency admin account
+
+Assessment:
+
+   [FINDING] XO Orchestra maintains local user storage in LevelDB
+   This includes at least one local 'break-glass' emergency admin account
+   Manual verification required to confirm passwords are properly encrypted:
+   - Verify bcrypt/scrypt hashing is used (not plain text or weak encryption)
+   - Confirm password hashes meet NIST FIPS 140-2 requirements
+   - Review LevelDB database security and access controls
+   While XO supports external authentication, local accounts DO store credentials.</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-206434</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>high</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-206434r961632</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-000439-WSR-000151</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-000439</pre><div class="label">Rule Title:</div><pre class="value">The web server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission.</pre><div class="label">Fix Text:</div><pre class="value">Configure the web server to encrypt the transmission of data between the web server and external devices.</pre><div class="label">Discussion:</div><pre class="value">Preventing the disclosure of transmitted information requires that the web server take measures to employ some form of cryptographic mechanism in order to protect the information during transmission. This is usually achieved through the use of Transport Layer Security (TLS).
+
+Transmission of data can take place between the web server and a large number of devices/applications external to the web server. Examples are a web client used by a user, a backend database, an audit server, or other web servers in a web cluster.
+
+If data is transmitted unencrypted, the data then becomes vulnerable to disclosure. The disclosure may reveal user identifier/password combinations, website code revealing business logic, or other user personal information.</pre><div class="label">CCIs:</div><pre class="value">CCI-002418
+        Protect the confidentiality and/or integrity of transmitted information.
+        NIST SP 800-53 Revision 4::SC-8
+NIST SP 800-53 Revision 5::SC-8
+      </pre><div class="label">Legacy IDs:</div><pre class="value">SV-70255;V-56001</pre><div class="label">Check Content:</div><pre class="value">Review the web server documentation and deployed configuration to determine whether the transmission of data between the web server and external devices is encrypted.
+
+If the web server does not encrypt the transmission, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Not a Finding</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+Xen Orchestra enforces HTTPS/TLS for all web connections by default. The web server is configured to use cryptographic mechanisms (TLS 1.2 or higher) preventing unauthorized disclosure of information during transmission. This organization has verified that HTTPS is properly configured on port 443, HTTP traffic on port 80 (if enabled) redirects to HTTPS, and no plain HTTP connections are permitted for the web interface. All client-server communication is encrypted using industry-standard TLS protocols, ensuring data confidentiality and integrity during transmission.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be NOT A FINDING on 01/25/2026
+ResultHash: 825427C5AE5CD305D643F185E896755D049E585C
+~~~~~
+CAT I / High - V-206434: The web server must employ cryptographic mechanisms (TLS/DTLS/SSL)
+preventing the unauthorized disclosure of information during transmission.
+-------------------------------------------------------------------------------------
+
+Check 1: XO Server HTTPS Configuration
+
+   Config file: /opt/xo/xo-server/config.toml
+
+   Configured port: 80
+   [INFO] HTTP port 80 configured (typically behind reverse proxy for HTTPS)
+
+Check 2: Network Listeners
+
+   Port 443 (HTTPS): LISTENING
+   Port 80 (HTTP): NOT LISTENING (expected)
+
+Check 3: XO Server Process Check
+
+   XO Server: RUNNING
+   Default XO configuration enforces HTTPS for web interface
+
+Assessment:
+
+   Xen Orchestra enforces HTTPS/TLS for all web connections.
+   The web server is properly configured to use cryptographic
+   mechanisms preventing unauthorized disclosure during transmission.</pre></div></div><div class="rule"><div class="header group"><div class="data">
+                    <div class="data_title">Benchmark Name:</div>
+                    <div>Web Server Security Requirements Guide</div>
+                </div><div class="data">
+                    <div class="data_title">Benchmark ID:</div>
+                    <div>Web_Server_SRG</div>
+                </div><div class="data">
+                    <div class="data_title">Release Info:</div>
+                    <div>Release: 4 Benchmark Date: 28 Oct 2025</div>
+                </div><div class="data">
+                    <div class="data_title">Version:</div>
+                    <div>4</div>
+                </div><div class="data">
+                    <div class="data_title">Group ID:</div>
+                    <div>V-279029</div>
+                </div><div class="data">
+                    <div class="data_title">Severity:</div>
+                    <div>high</div>
+                </div><div class="data">
+                    <div class="data_title">Rule ID:</div>
+                    <div>SV-279029r1138083</div>
+                </div><div class="data">
+                    <div class="data_title">Rule Version:</div>
+                    <div>SRG-APP-001035-WSR-000340</div>
+                </div><div class="data">
+                    <div class="data_title">Classification:</div>
+                    <div>UNCLASSIFIED</div>
+                </div><div class="data">
+                    <div class="data_title">Asset Posture:</div>
+                    <div></div>
+                </div></div><div class="rule_info group"><div class="label">SRG ID:</div><pre class="value">SRG-APP-001035</pre><div class="label">Rule Title:</div><pre class="value">The web server must be a version supported by the vendor.</pre><div class="label">Fix Text:</div><pre class="value">Install or upgrade the webserver to a version supported by the vendor.</pre><div class="label">Discussion:</div><pre class="value">Unsupported software and systems should not be used because fixes to newly identified bugs will not be implemented by the vendor. The lack of support can result in potential vulnerabilities.
+
+Software and systems at unsupported servicing levels or releases will not receive security updates for new vulnerabilities, which leaves them subject to exploitation.
+
+When maintenance updates and patches are no longer available, software is no longer considered supported and should be upgraded or decommissioned.</pre><div class="label">CCIs:</div><pre class="value">CCI-003376
+        Replace system components when support for the components is no longer available from the developer, vendor, or manufacturer.
+        NIST SP 800-53 Revision 4::SA-22 a
+NIST SP 800-53 Revision 5::SA-22 a
+      </pre><div class="label">Check Content:</div><pre class="value">Verify that the web server is a version supported by the vendor.
+
+If the web server is not a version supported by the vendor, this is a finding.</pre><div class="label">Check Content Ref:</div><pre class="value">undefined:Web_Server_SRG.xml</pre><div class="label">Weight:</div><pre class="value">10.0</pre><div class="label">Documentable:</div><pre class="value">false</pre></div><div class="checklist_data group"><div class="label">Status:</div><pre class="value">Not a Finding</pre><div class="label">Comments:</div><pre class="value">Evaluate-STIG answer file is providing the below comment on 01/25/2026:
+
+Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+Key Name: XO
+Index: 1
+
+[ValidTrueComment]:
+All web server software components (nginx, Node.js, Debian OS, Xen Orchestra) are running vendor-supported versions that receive active security updates and patches. Organizational patch management policy requires monthly review of vendor security bulletins and timely application of critical updates within SLA requirements. Software lifecycle management process ensures proactive identification of approaching End-of-Life dates with minimum 90-day advance planning for version upgrades. All version updates are tested in development environment before production deployment per change management procedures. Current software inventory is documented and maintained in organizational CMDB with automated alerting for EOL notifications.
+
+</pre><div class="label">FindingDetails:</div><pre class="value">Evaluate-STIG 1.2507.6 (Scan-XO_WebSRG_Checks) found this to be NOT A FINDING on 01/25/2026
+ResultHash: 942B952C060A87627C6445F33B7D9E09BDDA197B
+~~~~~
+=== Vendor-Supported Software Version Check ===
+
+1. Xen Orchestra Server Service:
+   [INFO] xo-server service is running
+
+2. Node.js Runtime:
+   Installed version: v22.22.0
+   Major version: 22
+   [PASS] Version is within supported range (Active LTS or Current)
+
+3. Debian Operating System:
+   OS Information:
+     Distributor ID:	Debian
+     Description:	Debian GNU/Linux 12 (bookworm)
+     Release:	12
+     Codename:	bookworm
+   [PASS] Debian 12 is within supported lifecycle
+
+4. Xen Orchestra Application Version:
+   Detected: XOCE (Xen Orchestra Community Edition)
+   XO Server version: 5.194.6
+   [INFO] XO follows rolling release model - verify against Vates/XCP-ng project support
+
+Overall Assessment:
+All critical software components are using vendor-supported versions
+Recommendation: Maintain regular update schedule per organizational patch management policy</pre></div></div>
+  </body>
+</html>

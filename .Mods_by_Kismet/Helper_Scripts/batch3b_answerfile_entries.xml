@@ -1,0 +1,367 @@
+<!-- Session #32 Batch 3b Answer File Entries -->
+<!-- 5 functions: V-264346, V-264347, V-264357, V-264354, V-279028 -->
+
+<!-- V-264346: Update password list on organization-defined frequency -->
+<Vuln ID="V-264346">
+  <AnswerKey Name="XO">
+    <Answer Index="1" ExpectedStatus="NotAFinding">
+      <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+      <ValidTrueComment>
+        Compliant: Password list maintenance on organization-defined frequency
+
+        Automated checks detected:
+        - Organizational password policy documentation found
+        - Password list files present with recent modification dates
+        - Automated update jobs configured (cron/systemd timers)
+        - Password list updates occur at defined frequency (e.g., quarterly, annually)
+
+        Active Directory Integration:
+        When LDAP/AD authentication is used, password list maintenance is managed by the
+        directory service administrators, not the web server.
+
+        Validation:
+        - Review password policy documentation for defined update frequency
+        - Verify password list modification dates align with organizational schedule
+        - Confirm automated update mechanisms are functional
+        - Test password enforcement after updates
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="2" ExpectedStatus="Open">
+      <ValidTrueStatus>Open</ValidTrueStatus>
+      <ValidTrueComment>
+        Manual verification required: Password list update frequency
+
+        The automated check detected the system but could not verify compliance with
+        organization-defined update frequency requirements.
+
+        ISSO/ISSM must verify:
+        1. Organization has defined a specific update frequency (e.g., quarterly, annually)
+        2. Password list is actually updated according to the defined frequency
+        3. Each password list update is documented with date and source
+        4. Password enforcement is tested after each update
+        5. Update frequency meets DoD/organizational requirements
+
+        When LDAP/AD is used:
+        - Verify directory service administrators maintain password lists
+        - Confirm AD Group Policy settings for password complexity
+        - Validate AD password list update procedures
+        - Review AD audit logs for password policy changes
+
+        References:
+        - NIST SP 800-63B Section 5.1.1.2 (Memorized Secret Verifiers)
+        - DoD Password Management Guidance
+        - Organizational password policy documentation
+      </ValidTrueComment>
+    </Answer>
+  </AnswerKey>
+</Vuln>
+
+<!-- V-264347: Update password list when organization passwords compromised -->
+<Vuln ID="V-264347">
+  <AnswerKey Name="XO">
+    <Answer Index="1" ExpectedStatus="NotAFinding">
+      <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+      <ValidTrueComment>
+        Compliant: Password list updated when passwords suspected/confirmed compromised
+
+        Automated checks detected:
+        - Incident response documentation with password compromise procedures found
+        - Security incident logs show evidence of compromise handling
+        - Emergency password list update scripts/procedures present
+        - Contact/escalation procedures for security incidents documented
+
+        Active Directory Integration:
+        When LDAP/AD authentication is used, password compromise incident response (including
+        forcing password resets and blocking compromised passwords) is managed by the
+        directory service administrators, not the web server.
+
+        Validation:
+        - Review incident response plan for password compromise procedures
+        - Verify emergency password list update mechanisms are tested
+        - Confirm incident response team has authority to update password enforcement
+        - Test post-incident review process validates response effectiveness
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="2" ExpectedStatus="Open">
+      <ValidTrueStatus>Open</ValidTrueStatus>
+      <ValidTrueComment>
+        Manual verification required: Password list update for compromised passwords
+
+        The automated check detected the system but could not verify compliance with
+        incident response requirements for password compromise.
+
+        ISSO/ISSM must verify organization has:
+        1. Documented procedures for responding to suspected password compromise
+        2. Defined process for adding compromised passwords to blocklist immediately
+        3. Incident response team with authority to update password enforcement
+        4. Testing of emergency password list update procedures (at least annually)
+        5. Post-incident review process to validate password compromise response
+
+        When LDAP/AD is used:
+        - Verify directory service incident response procedures
+        - Confirm AD administrators can force immediate password resets
+        - Validate AD password history and complexity enforcement
+        - Review AD security event logs for compromise indicators
+
+        Organizational Requirements:
+        - Emergency password list updates must occur within 24 hours of suspected compromise
+        - Affected users must be notified and forced to change passwords immediately
+        - Incident response must be documented with timeline and actions taken
+        - Post-incident review must validate effectiveness of response
+
+        References:
+        - NIST SP 800-61r2 (Computer Security Incident Handling Guide)
+        - DoD Incident Response Procedures
+        - Organizational incident response plan
+      </ValidTrueComment>
+    </Answer>
+  </AnswerKey>
+</Vuln>
+
+<!-- V-264357: Protected storage for cryptographic keys -->
+<Vuln ID="V-264357">
+  <AnswerKey Name="XO">
+    <Answer Index="1" ExpectedStatus="NotAFinding">
+      <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+      <ValidTrueComment>
+        Compliant: Cryptographic private keys stored in protected storage
+
+        Automated checks verified:
+        - Private keys detected with proper file permissions (600 or 400)
+        - Key ownership restricted to authorized system accounts (root, xo-server)
+        - Keys located in standard protected directories (/etc/ssl/private, /opt/xo)
+        - No world-readable or world-writable key files detected
+
+        Additional Security Controls:
+        - Hardware Security Module (HSM) detected: Enhanced key protection via hardware
+        - Disk encryption (LUKS/dm-crypt) detected: Encryption at rest for key storage
+        - Both HSM and disk encryption provide defense-in-depth for key protection
+
+        DoD Requirements Met:
+        - File permissions: 600 (rw-------) or 400 (r--------) - COMPLIANT
+        - Ownership: root:root or xo-server:xo-server - COMPLIANT
+        - Access control: Only authorized processes can read keys - COMPLIANT
+
+        Validation:
+        All cryptographic keys have proper permissions and ownership as required by
+        DoD STIG guidelines.
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="2" ExpectedStatus="Open">
+      <ValidTrueStatus>Open</ValidTrueStatus>
+      <ValidTrueComment>
+        Non-Compliant: One or more cryptographic keys have improper protection
+
+        The automated check detected private keys but identified security issues.
+
+        Issues Detected:
+        - Improper file permissions (not 600 or 400)
+        - Non-standard ownership (not root or xo-server)
+        - Keys in world-readable locations
+
+        Remediation Required:
+        1. Fix file permissions: chmod 600 &lt;keyfile&gt; (or 400 for read-only)
+        2. Fix ownership: chown root:root &lt;keyfile&gt; (or xo-server:xo-server)
+        3. Move keys to protected directories (/etc/ssl/private, /opt/xo)
+        4. Verify no keys in /tmp, /var/tmp, or user home directories
+        5. Test application functionality after permission changes
+
+        DoD Requirements:
+        - File permissions must be 600 (rw-------) or 400 (r--------) - NO EXCEPTIONS
+        - Ownership must be restricted to authorized system accounts only
+        - Keys must be in directories with restricted access (700 permissions)
+
+        Enhanced Protection (Recommended):
+        - Hardware Security Module (HSM): Use YubiKey, SmartCard, or HSM for key storage
+        - Disk encryption (LUKS/dm-crypt): Encrypt partitions containing keys
+        - Both provide defense-in-depth beyond file permissions
+
+        References:
+        - DoD STIG: Private keys must be protected with 600/400 permissions
+        - NIST SP 800-57 (Key Management Recommendations)
+        - FIPS 140-2 (Cryptographic Module Security Requirements)
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="3" ExpectedStatus="Not_Applicable">
+      <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+      <ValidTrueComment>
+        Not Applicable: No cryptographic private keys detected on system
+
+        The automated check searched standard key storage locations and did not detect
+        any private key files.
+
+        Search Locations:
+        - /etc/ssl/private (standard Debian location)
+        - /etc/ssl (XOA deployment)
+        - /etc/pki/tls/private (RHEL-style)
+        - /etc/xo-server (XO configuration)
+        - /opt/xo (XOCE deployment)
+
+        If system truly has no private keys, this check is Not Applicable per STIG guidance:
+        "If the web server does not have a private key, this is N/A"
+
+        However, if keys exist in non-standard locations, manual verification is required
+        to ensure they have proper protection.
+      </ValidTrueComment>
+    </Answer>
+  </AnswerKey>
+</Vuln>
+
+<!-- V-264354: Local cache for public key authentication -->
+<Vuln ID="V-264354">
+  <AnswerKey Name="XO">
+    <Answer Index="1" ExpectedStatus="NotAFinding">
+      <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+      <ValidTrueComment>
+        Compliant: Organization-defined time period implemented for PKI cache
+
+        Automated checks verified:
+        - PKI/public key authentication detected (client certificates, SSH keys)
+        - Certificate/key cache locations identified
+        - OCSP/CRL cache configuration found
+        - Cache timeout policy documented
+
+        Active Directory Integration:
+        When Active Directory is used for authentication:
+        - PKI credential caching is managed by AD/LDAP
+        - Certificate revocation checking uses AD's CRL/OCSP
+        - Cache timeouts are defined by AD Group Policy
+        - XO delegates all PKI authentication decisions to AD
+
+        DoD Requirements Met:
+        - Cache timeout is organization-defined (e.g., 24 hours, 1 week)
+        - Cached credentials expire after defined period
+        - Certificate revocation checking is enabled (OCSP/CRL)
+        - Cache policy is documented and enforced
+
+        Validation:
+        PKI credential caching is properly configured with organization-defined
+        timeout period.
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="2" ExpectedStatus="Open">
+      <ValidTrueStatus>Open</ValidTrueStatus>
+      <ValidTrueComment>
+        Manual verification required: PKI cache timeout period
+
+        The automated check detected PKI/public key authentication but requires
+        ISSO/ISSM verification of cache timeout compliance.
+
+        Manual Verification Required:
+        1. Verify organization-defined cache timeout period is documented
+        2. Confirm PKI cache timeout is configured per organizational policy
+        3. For AD integration: Verify Group Policy settings for credential caching
+        4. Test certificate revocation checking (cached CRL/OCSP responses)
+        5. Validate cached credentials expire after defined period (e.g., test login
+           after cache timeout)
+
+        When LDAP/AD is used:
+        - Review AD Group Policy for credential caching settings
+        - Verify AD certificate services (AD CS) configuration
+        - Confirm CRL Distribution Points (CDP) are accessible
+        - Test OCSP responder availability and response caching
+
+        Organizational Requirements:
+        - Define specific cache timeout period (e.g., 24 hours, 1 week, 30 days)
+        - Document cache timeout in organizational policy
+        - Test cache expiration at least quarterly
+        - Validate certificate revocation checking is not bypassed by caching
+
+        References:
+        - NIST SP 800-63-3 (Digital Identity Guidelines)
+        - DoD PKI and External Certification Authority (ECA) Program
+        - Organizational PKI policy documentation
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="3" ExpectedStatus="Not_Applicable">
+      <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+      <ValidTrueComment>
+        Not Applicable: No PKI/public key authentication in use
+
+        The automated check did not detect any PKI or public key authentication mechanisms.
+
+        Detection Checks:
+        - Client certificate configuration: Not found
+        - SSH public key authentication: Not enabled (or password-only)
+        - PKI authentication plugins (LDAP certificate mapping): Not detected
+        - Certificate cache locations: Not present
+
+        Authentication Method:
+        System uses password-based authentication (local or LDAP/AD) only.
+
+        If your organization uses PKI authentication (CAC/PIV cards, client certificates,
+        SSH keys), this check result may be incorrect. Manual verification is required
+        to confirm PKI authentication is truly not in use.
+      </ValidTrueComment>
+    </Answer>
+  </AnswerKey>
+</Vuln>
+
+<!-- V-279028: Uniquely identify source of information transfer -->
+<Vuln ID="V-279028">
+  <AnswerKey Name="XO">
+    <Answer Index="1" ExpectedStatus="NotAFinding">
+      <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+      <ValidTrueComment>
+        Compliant: Logs uniquely identify source of information transfers
+
+        Automated checks verified:
+        - Source IP address logging detected in XO logs
+        - User identity logging detected (username, email)
+        - Session ID tracking detected for correlation
+        - XO audit plugin provides comprehensive source tracking (IP, user, action, resource)
+
+        Multi-Layer Logging Infrastructure:
+        - Express.js access logs: HTTP requests with source IP and user agent
+        - Winston logger: Application events with user context
+        - Systemd journal: System-level event logging
+        - XO audit plugin: Enhanced event tracking with full attribution
+        - Nginx reverse proxy logs (optional): Client IP with X-Forwarded-For support
+
+        DoD Requirements Met:
+        - Source IP address: Logged in all requests
+        - User identity: Logged via authentication context (username, email)
+        - Session ID: Logged for transaction correlation
+        - Timestamp: Logged with millisecond precision
+        - Traceability: Logs enable tracing specific transaction to specific user/IP
+
+        Validation:
+        All information transfers are logged with sufficient detail to uniquely
+        identify the source (IP, user, session) for accountability and traceability.
+      </ValidTrueComment>
+    </Answer>
+    <Answer Index="2" ExpectedStatus="Open">
+      <ValidTrueStatus>Open</ValidTrueStatus>
+      <ValidTrueComment>
+        Manual verification required: Source identification in logs
+
+        The automated check detected the logging infrastructure but requires ISSO/ISSM
+        verification that logs uniquely identify source of information transfers.
+
+        Manual Verification Steps:
+        1. Review XO log files for source IP, username, session ID in each entry
+        2. Test information transfer (file upload/download, API call, VM operation)
+        3. Verify log entry includes: timestamp, source IP, username, action, resource
+        4. Confirm logs enable tracing specific transaction to specific user/IP
+        5. Validate log retention allows historical source identification (90+ days)
+
+        Log Analysis Requirements:
+        - Source IP: Must be present in every log entry (not masked, not localhost)
+        - User identity: Must be actual username (not "anonymous", not system account)
+        - Session ID: Must be unique and persistent for session duration
+        - Action: Must describe what was done (e.g., "VM started", "file downloaded")
+        - Resource: Must identify what was accessed (e.g., "VM: web-server-01")
+
+        When reverse proxy (Nginx) is used:
+        - Verify X-Forwarded-For header preserves original client IP
+        - Confirm logs show client IP, not proxy IP
+        - Test from external network to validate IP logging
+
+        References:
+        - DoD STIG: Logs must enable traceability to source
+        - NIST SP 800-92 (Guide to Computer Security Log Management)
+        - Organizational logging and auditing policy
+      </ValidTrueComment>
+    </Answer>
+  </AnswerKey>
+</Vuln>

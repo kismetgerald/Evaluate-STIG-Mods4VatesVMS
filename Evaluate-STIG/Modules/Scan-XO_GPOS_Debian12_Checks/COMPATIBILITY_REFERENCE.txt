@@ -1,0 +1,508 @@
+================================================================================
+COMPATIBILITY REFERENCE: GPOS STIG → Debian 12 Adaptation Guide
+================================================================================
+
+Document Version: 1.0
+Date: January 16, 2026
+Purpose: Document GPOS STIG check patterns and their Debian 12 adaptations
+         for standalone Debian 12 systems (including Xen Orchestra hosts).
+
+================================================================================
+OVERVIEW
+================================================================================
+
+Debian 12 (Bookworm) is a modern Linux distribution with significant differences
+from RHEL/CentOS in package management, file locations, and service handling.
+This document provides guidance for adapting GPOS STIG checks to work reliably
+on Debian 12 environments.
+
+================================================================================
+PACKAGE MANAGER DIFFERENCES
+================================================================================
+
+RHEL/CentOS:    Uses yum/dnf package manager
+                - Package queries: yum list installed, rpm -qa
+                - Package install: yum install package
+
+Debian 12:      Uses apt package manager
+                - Package queries: apt list --installed, dpkg -l
+                - Package install: apt install package
+
+ADAPTATION STRATEGY:
+- Replace 'yum list installed' with 'apt list --installed'
+- Replace 'rpm -qa' with 'dpkg -l' or 'apt list --installed'
+- Replace 'rpm -q package' with 'dpkg -l | grep package'
+- Use 'dpkg -s package' to check if specific package installed
+- Example: $(dpkg -l | grep -c "^ii.*openssh-server")
+
+KEY DIFFERENCES:
+- Debian uses dpkg for package queries (rpm not available)
+- Apt is simpler interface than yum/dnf
+- Package names may differ slightly between distributions
+
+================================================================================
+SERVICE MANAGEMENT & SYSTEMD
+================================================================================
+
+Both RHEL and Debian use systemd for service management. Adaptations are minimal:
+
+RHEL/CentOS:    systemd ~219-78 (varies by release)
+Debian 12:      systemd ~250.x (more recent)
+
+ADAPTATION STRATEGY:
+- Most systemd commands are identical: systemctl, journalctl
+- Test service existence: systemctl list-unit-files | grep service.service
+- Use: systemctl is-active service_name (works on both)
+- Use: systemctl is-enabled service_name (works on both)
+- Service unit files: /etc/systemd/system/ and /lib/systemd/system/
+
+KNOWN DIFFERENCES:
+- None significant for basic service control/status checks
+- SELinux not typically used on Debian (uses AppArmor instead)
+- Service names may differ: openssh-server (Debian) vs sshd (RHEL)
+
+================================================================================
+FILE LOCATIONS & PATHS
+================================================================================
+
+RHEL/CentOS → Debian 12 Mapping:
+
+SSH Configuration:
+  RHEL:       /etc/ssh/sshd_config
+  Debian:     /etc/ssh/sshd_config
+  IDENTICAL
+
+Boot Configuration:
+  RHEL:       /etc/default/grub, /boot/grub2/
+  Debian:     /etc/default/grub, /boot/grub/
+  SIMILAR (grub2 vs grub naming differs)
+
+Audit:
+  RHEL:       /var/log/audit/audit.log
+  Debian:     /var/log/audit/audit.log (if auditd installed)
+  SIMILAR
+
+PAM Configuration:
+  RHEL:       /etc/pam.d/system-auth
+  Debian:     /etc/pam.d/common-auth (may vary)
+  DIFFERENT
+
+Login Configuration:
+  RHEL:       /etc/default/useradd, /etc/login.defs
+  Debian:     /etc/default/useradd, /etc/login.defs
+  IDENTICAL
+
+ADAPTATION STRATEGY:
+- Use conditional checks for system-specific files
+- Example: Check /etc/pam.d/system-auth OR /etc/pam.d/common-auth
+- Test file existence before reading
+- Document both paths in check output
+
+================================================================================
+SUDO & PRIVILEGE ESCALATION
+================================================================================
+
+RHEL/CentOS:    /etc/sudoers configuration
+Debian 12:      /etc/sudoers configuration
+
+ADAPTATION STRATEGY:
+- Sudoers configuration is identical
+- visudo command works the same
+- sudoers.d/ directory structure identical
+- Same permissions requirements (0440 on /etc/sudoers)
+
+KNOWN DIFFERENCES:
+- None; sudo implementation is standard across distributions
+
+================================================================================
+PACKAGE-SPECIFIC SERVICES
+================================================================================
+
+RHEL Package → Debian Package Mapping:
+
+SSH Server:
+  RHEL:       openssh-server (service: sshd)
+  Debian:     openssh-server (service: ssh)
+  DIFFERENCE: Service name differs
+
+Audit Daemon:
+  RHEL:       audit (service: auditd)
+  Debian:     auditd (same package, service: auditd)
+  IDENTICAL
+
+Firewall:
+  RHEL:       firewalld (typically active service)
+  Debian:     Multiple options - ufw, firewalld, nftables, iptables, or none
+  DIFFERENT: Debian lacks standardized firewall service; detection required
+
+SELinux:
+  RHEL:       selinux-policy (typically enforced)
+  Debian:     NOT used (uses AppArmor instead)
+  DIFFERENT: Checks should expect AppArmor
+
+ADAPTATION STRATEGY:
+- Verify actual service name before querying status
+- Example: systemctl is-active ssh (not sshd on Debian)
+- Check for AppArmor instead of SELinux: aa-status
+- Firewall checks: query ufw status or iptables rules
+
+KEY MAPPING:
+- sshd (RHEL) → ssh (Debian)
+- firewalld (RHEL) → ufw (Debian)
+- selinux (RHEL) → apparmor (Debian)
+
+================================================================================
+USER & GROUP MANAGEMENT
+================================================================================
+
+RHEL/CentOS:    Same useradd, usermod, groupadd commands
+Debian 12:      Same useradd, usermod, groupadd commands
+
+ADAPTATION STRATEGY:
+- User/group management commands are identical
+- /etc/passwd, /etc/shadow, /etc/group layouts identical
+- getent command works identically
+- UID/GID ranges may vary, but check patterns are same
+
+KNOWN DIFFERENCES:
+- None significant; user management is standard
+
+================================================================================
+KERNEL & MODULE MANAGEMENT
+================================================================================
+
+RHEL/CentOS:    Kernel modules in /lib/modules/$(uname -r)/kernel/
+Debian 12:      Kernel modules in /lib/modules/$(uname -r)/kernel/
+
+ADAPTATION STRATEGY:
+- Module paths are identical
+- modprobe command works identically
+- /etc/modprobe.d/ configuration identical
+- No changes needed for module-related checks
+
+KNOWN DIFFERENCES:
+- None; kernel module management is standard
+
+================================================================================
+PASSWORD POLICY
+================================================================================
+
+RHEL/CentOS:    libpam-cracklib or libpam-pwquality
+Debian 12:      libpam-pwquality (preferred) or libpam-cracklib
+
+ADAPTATION STRATEGY:
+- Check for pwquality.conf: /etc/security/pwquality.conf
+- May also have pam_cracklib.so in /etc/pam.d/
+- Configuration file format same across both
+- Example: grep "minlen" /etc/security/pwquality.conf
+
+KNOWN DIFFERENCES:
+- pwquality module version may differ
+- Configuration location same, but packages differ
+
+================================================================================
+FIREWALL DETECTION & STATUS
+================================================================================
+
+CRITICAL NOTE: Debian systems do NOT have a standardized firewall service.
+Unlike RHEL (firewalld), Debian can have multiple firewall implementations.
+However, Xen Orchestra deployment model affects default firewall configuration.
+
+XEN ORCHESTRA DEPLOYMENT MODELS:
+
+1. XOA (Xen Orchestra Appliance - Official Vates Product)
+   - Official support offering from Vates
+   - Pre-configured with UFW enabled by default
+   - Standardized deployment with vendor-supported firewall
+   - Reference: https://docs.xen-orchestra.com/xoa#firewall
+
+2. XOCE (Xen Orchestra Community Edition - Built from Sources)
+   - Community-maintained, built from source code
+   - NO default firewall configuration
+   - Firewall choice left to user/administrator
+   - Can have any firewall implementation or none at all
+
+Possible Debian Firewall Configurations:
+
+1. UFW (Uncomplicated Firewall) - User-friendly wrapper
+   - Service: ufw
+   - Detection: systemctl is-active ufw
+   - Config: /etc/ufw/ufw.conf
+   - Default: YES (XOA), NO (XOCE)
+
+2. firewalld - Dynamic firewall daemon (if installed)
+   - Service: firewalld
+   - Detection: systemctl is-active firewalld
+   - Config: /etc/firewalld/
+   - Default: NO (both)
+
+3. nftables - Modern netfilter framework
+   - Service: nftables
+   - Detection: systemctl is-active nftables
+   - Config: /etc/nftables.conf
+   - Default: NO (both)
+
+4. iptables - Direct kernel firewall (legacy)
+   - Service: none (rules persisted via iptables-persistent or manual)
+   - Detection: iptables -L -n (shows loaded rules)
+   - Persistence: /etc/iptables/rules.v4
+   - Default: NO (both)
+
+5. No Active Firewall - Common on XOCE systems
+   - Detection: No active service, empty iptables rules
+   - Default: YES (XOCE community deployments), NO (XOA)
+   - Valid for: Community-built systems, performance-optimized environments
+
+ADAPTATION STRATEGY:
+
+To determine what firewall (if any) is in use:
+
+```bash
+# Check which firewall services are available
+systemctl list-unit-files | grep -E 'firewall|ufw|nftables'
+
+# Check for active services (CRITICAL: UFW may be enabled on XOA)
+for service in ufw firewalld nftables; do
+    systemctl is-active "$service" 2>/dev/null && echo "$service: ACTIVE" || echo "$service: inactive"
+done
+
+# Check for iptables rules (indicates raw iptables usage)
+iptables -L -n 2>/dev/null | grep -c "Chain"
+
+# Check nftables ruleset
+nft list ruleset 2>/dev/null | wc -l
+
+# Overall system firewall status
+echo "=== Firewall Status Summary ===" && \
+( systemctl is-active firewalld 2>/dev/null && echo "firewalld: ACTIVE" ) || \
+( systemctl is-active ufw 2>/dev/null && echo "ufw: ACTIVE" ) || \
+( systemctl is-active nftables 2>/dev/null && echo "nftables: ACTIVE" ) || \
+( [ $(iptables -L -n 2>/dev/null | grep -c "Chain") -gt 0 ] && echo "iptables: ACTIVE (manual rules)" ) || \
+echo "No active firewall service detected"
+```
+
+REAL-WORLD EXAMPLES:
+
+XOA (Official Xen Orchestra Appliance):
+  - UFW service enabled and active by default
+  - Standard Vates-supported configuration
+  - Firewall compliance checks should validate UFW settings
+  - Result: Firewall compliance checks should return Finding or NotAFinding based on UFW configuration
+
+XOCE (Community Edition, built from sources):
+  - No default firewall configuration
+  - Firewall choice left to system administrator
+  - May have any firewall implementation or none at all
+  - Result: Firewall compliance checks should return NotApplicable if no firewall service is active
+  - Common pattern: Firewall managed at hypervisor/network level instead of guest level
+
+FOR GPOS STIG CHECKS:
+Firewall policy checks must:
+1. Detect which firewall (if any) is in use
+2. Query appropriate configuration files/commands
+3. Return NotApplicable only if no firewall service is active (especially for XOCE)
+4. For XOA: Validate UFW configuration if active
+5. Document finding with actual firewall status and deployment model when identifiable
+
+================================================================================
+NETWORK CONFIGURATION
+================================================================================
+
+RHEL/CentOS:    /etc/sysconfig/network-scripts/ (legacy) or NetworkManager
+Debian 12:      /etc/netplan/ (modern) or /etc/network/interfaces (legacy)
+
+ADAPTATION STRATEGY:
+- Modern Debian uses netplan YAML configuration
+- Legacy Debian uses /etc/network/interfaces
+- Check /etc/netplan/*.yaml for network configuration
+- Use 'ip' command for runtime queries (universal)
+- nmcli commands work if NetworkManager installed
+
+KNOWN DIFFERENCES:
+- netplan (Debian modern) vs sysconfig (RHEL legacy)
+- Use 'ip addr show' for universal network info
+
+================================================================================
+MANDATORY ACCESS CONTROL
+================================================================================
+
+RHEL/CentOS:    SELinux enforcement
+Debian 12:      AppArmor enforcement (or no MAC)
+
+ADAPTATION STRATEGY:
+- SELinux checks should return NotApplicable on Debian
+- Instead, check AppArmor: aa-status --enabled
+- Document that Debian uses AppArmor instead of SELinux
+- Checks should allow both or default to appropriate MAC system
+
+KNOWN DIFFERENCES:
+- AppArmor is profile-based (vs SELinux context-based)
+- Both serve similar purposes but very different implementation
+
+================================================================================
+LOGGING & SYSLOG
+================================================================================
+
+RHEL/CentOS:    /var/log/messages (rsyslog)
+Debian 12:      /var/log/syslog (rsyslog) or journald
+
+ADAPTATION STRATEGY:
+- Debian uses /var/log/syslog instead of /var/log/messages
+- journalctl command works identically on both
+- rsyslog configuration similar but paths differ
+- Example: /etc/rsyslog.d/ (works on both)
+
+KNOWN DIFFERENCES:
+- Log file path: /var/log/messages (RHEL) vs /var/log/syslog (Debian)
+- Debian increasingly uses journald instead of files
+
+================================================================================
+CRON & SCHEDULING
+================================================================================
+
+RHEL/CentOS:    cron and anacron packages
+Debian 12:      cron packages (cron, anacron - similar naming)
+
+ADAPTATION STRATEGY:
+- Cron service name: cron (Debian) vs crond (RHEL)
+- Cron configuration locations similar
+- /etc/crontab, /etc/cron.d/ (both systems)
+- /var/spool/cron/crontabs/ (both systems)
+
+KNOWN DIFFERENCES:
+- Service name differs: cron vs crond
+
+================================================================================
+IMPLEMENTATION GUIDELINES
+================================================================================
+
+Pattern for Debian 12 Adapted Checks:
+
+1. SERVICE NAME ADAPTATION:
+   if [ -f /etc/os-release ]; then
+       OS_ID=$(grep '^ID=' /etc/os-release | cut -d'=' -f2 | tr -d '"')
+       if [ "$OS_ID" = "debian" ]; then
+           SERVICE_NAME="ssh"  # Debian uses "ssh" not "sshd"
+       else
+           SERVICE_NAME="sshd"  # RHEL uses "sshd"
+       fi
+   fi
+
+2. PACKAGE QUERY ADAPTATION:
+   if command -v apt &>/dev/null; then
+       # Debian: use apt
+       INSTALLED=$(apt list --installed 2>/dev/null | grep -c "^package-name")
+   else
+       # RHEL: use yum/rpm
+       INSTALLED=$(rpm -qa | grep -c "^package-name")
+   fi
+
+3. FILE PATH ADAPTATION:
+   if [ -f /etc/netplan/00-installer-config.yaml ]; then
+       # Modern Debian: use netplan
+       CONFIG_FILE="/etc/netplan/00-installer-config.yaml"
+   elif [ -f /etc/sysconfig/network-scripts/ifcfg-eth0 ]; then
+       # RHEL: use sysconfig
+       CONFIG_FILE="/etc/sysconfig/network-scripts/ifcfg-eth0"
+   fi
+
+4. MAC SYSTEM ADAPTATION:
+   if [ -f /etc/apparmor.d ]; then
+       # Debian: check AppArmor
+       MAC_CHECK="aa-status --enabled"
+   elif [ -f /etc/selinux/config ]; then
+       # RHEL: check SELinux
+       MAC_CHECK="getenforce"
+   fi
+
+================================================================================
+COMMON PITFALLS & SOLUTIONS
+================================================================================
+
+Pitfall 1: Checking for /var/log/messages
+Solution: Use /var/log/syslog on Debian or journalctl --since
+
+Pitfall 2: Assuming sshd service name
+Solution: Check OS and use appropriate service name (ssh vs sshd)
+
+Pitfall 3: Checking SELinux on Debian
+Solution: Check for AppArmor existence and status instead
+
+Pitfall 4: Package name differences (openssh vs openssh-server)
+Solution: Use conditional package manager queries (apt vs rpm)
+
+Pitfall 5: PAM configuration in system-auth
+Solution: Check /etc/pam.d/common-auth on Debian
+
+================================================================================
+DEBIAN 12 SYSTEM DETECTION
+================================================================================
+
+Recommended Check:
+```bash
+if [ -f /etc/debian_version ]; then
+    DEBIAN_VERSION=$(cat /etc/debian_version)
+    if [ "$DEBIAN_VERSION" = "12" ] || [[ "$DEBIAN_VERSION" =~ ^12\. ]]; then
+        SYSTEM="Debian 12"
+    fi
+fi
+```
+
+Or via os-release:
+```bash
+if grep -q 'VERSION_ID="12"' /etc/os-release 2>/dev/null; then
+    SYSTEM="Debian 12"
+fi
+```
+
+================================================================================
+SUMMARY OF KEY ADAPTATIONS
+================================================================================
+
+| Aspect | RHEL/CentOS | Debian 12 | Check Type |
+|--------|-----------|-----------|-----------|
+| Package Manager | yum/rpm | apt/dpkg | Conditional |
+| SSH Service | sshd | ssh | Conditional |
+| Log File | /var/log/messages | /var/log/syslog | Conditional |
+| Firewall | firewalld | ufw | Conditional |
+| MAC System | SELinux | AppArmor | Conditional |
+| PAM System Auth | system-auth | common-auth | Conditional |
+| Network Config | sysconfig | netplan | Conditional |
+| Boot Loader | grub2 | grub | Path Variation |
+| Cron Service | crond | cron | Conditional |
+
+================================================================================
+ADAPTATION IMPLEMENTATION RECOMMENDATIONS
+================================================================================
+
+For PowerShell Checks:
+1. Detect OS at start: $OSType = Get-Content /etc/os-release
+2. Adapt command paths based on detection
+3. Return NotApplicable if feature doesn't exist on platform
+4. Provide platform-specific guidance in manual checks
+
+For Bash Helpers:
+1. Detect OS early: grep ID /etc/os-release
+2. Set variables for platform-specific paths/commands
+3. Use conditional logic for different implementations
+4. Output same format regardless of platform
+
+For Service Checks:
+1. Query actual service name on target system
+2. Use systemctl (works on both) instead of service command
+3. Handle case where service may not be installed
+
+For Package Checks:
+1. Detect package manager availability
+2. Use appropriate query command
+3. Handle different package naming between distributions
+
+---
+
+**References**:
+- Debian Bookworm Release: https://wiki.debian.org/DebianBookworm
+- GPOS STIG V3R2: https://dl.dod.cyber.mil/gpos
+- Debian Package Search: https://packages.debian.org
+
+**Generated**: January 16, 2026
+**Status**: Ready for Debian 12 GPOS Module Implementation

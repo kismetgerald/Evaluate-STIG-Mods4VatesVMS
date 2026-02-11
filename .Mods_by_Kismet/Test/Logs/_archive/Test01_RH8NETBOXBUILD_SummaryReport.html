@@ -1,0 +1,4270 @@
+﻿<html xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+                    .styled-table {
+                        border-collapse: collapse;
+                        margin: 25px 0;
+                        font-size: 0.9em;
+                        font-family: sans-serif;
+                        min-width: 400px;
+                        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                        width: 100%
+                    }
+
+                    .styled-table thead tr {
+                        background-color: #2e86c1;
+                        color: #ffffff;
+                        text-align: left;
+                    }
+
+                    .styled-table th,
+                    .styled-table td {
+                        text-align: center;
+                        padding: 12px 15px;
+                    }
+
+                    .styled-table tbody tr:last-of-type {
+                        border-bottom: 2px solid #2e86c1;
+                    }
+
+                    .styled-table tbody tr.active-row {
+                        font-weight: bold;
+                        color: #3498db;
+                    }
+
+                    .hidden {
+                        visibility: hidden;
+                    }
+
+                    .button {
+                        color: #494949;
+                        text-align: center;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        background-color: #aed6f1;
+                        padding: 20px;
+                        border: 4px solid #494949;
+                        border-radius: 10px;
+                        display: inline-block;
+                        transition: all 0.4s ease 0s;
+                        width: 250px;
+                        height: 20px;
+                        margin: 5px;
+                    }
+
+                    .risk-VeryHigh td {
+                        color: #4c4c4c;
+                        background-color: #ffa5a5;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-High td {
+                        color: #5b5b5b;
+                        background-color: #ffc8a0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-Moderate td {
+                        color: #737373;
+                        background-color: #ffffb9;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-Low td {
+                        color: #494949;
+                        background-color: #aed6f1;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-VeryLow td {
+                        color: #676767;
+                        background-color: #d0f0c0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .stig_button {
+                        color: #494949;
+                        text-align: center;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        background-color: #aed6f1;
+                        padding: 20px;
+                        border: 4px solid #494949;
+                        border-radius: 10px;
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        transition: all 0.4s ease 0s;
+                        width: 450px;
+                        height: 10px;
+                    }
+
+                    .button:hover{
+                        color: #ffffff;
+                        background: #2e86c1;
+                        border-color: #2e86c1;
+                        transition: all 0.4s ease 0s;
+                        cursor: pointer;
+                    }
+
+                    .stig_button:hover{
+                        color: #ffffff;
+                        background: #2e86c1;
+                        border-color: #2e86c1;
+                        transition: all 0.4s ease 0s;
+                        cursor: pointer;
+                    }
+
+                    #topbtn{
+                        position: fixed;
+                        bottom: 20px;
+                        right: 30px;
+                        z-index: 99;
+                        font-size: 18px;
+                        border: none;
+                        outline: none;
+                        background-color: red;
+                        color: white;
+                        cursor: pointer;
+                        padding: 15px;
+                        border-radius: 4px;
+                    }
+
+                    #topbtn:hover{
+                        background-color: #555;
+                    }
+
+                    caption{
+                        text-align: center;
+                        margin-bottom: 5px;
+                        font-size: 200%;
+                        padding: 5px;
+                        font-weight: bold;
+                    }
+
+                    .grid-container {
+                        display: inline-grid;
+                        grid-template-columns: auto auto auto;
+                        padding: 10px;
+                    }
+
+                    .grid-item {
+                        padding: 20px;
+                        text-align: center;
+                    }
+
+                    .sortheading {
+                        cursor: pointer;
+                    }
+
+                    .sortheading::after {
+                        content: " ↑↓";
+                        font-size: 10px;
+                        vertical-align: top;
+                    }
+
+                    .filterdata,
+                    .filterdata td {
+                        margin-left: 16px;
+                        text-align: left;
+                        background-color: #ffffff;
+                    }
+
+                    .status-NF td {
+                        color: #676767;
+                        background-color: #d0f0c0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_high td {
+                        color: #4c4c4c;
+                        background-color: #ffa5a5;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_med td {
+                        color: #5b5b5b;
+                        background-color: #ffc8a0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_low td {
+                        color: #737373;
+                        background-color: #ffffb9;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-NA td {
+                        color: #4a4a4a;
+                        background-color: #c8c8c8;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-NR td {
+                        color: #6d6d6d;
+                        background-color: #f0f0f0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .CellWithComment{
+                        position:relative;
+                        text-decoration:underline;
+                        text-decoration-style: dotted;
+                    }
+
+                    .CellComment{
+                        display:none;
+                        position:absolute;
+                        z-index:100;
+                        border:1px;
+                        background-color:#555555;
+                        border-style:solid;
+                        border-width:1px;
+                        border-color: #555555;
+                        border-radius: 10px;
+                        padding:3px;
+                        color:#C9C9C9;
+                        top:20px;
+                        left:20px;
+                    }
+
+                    .CellWithComment:hover span.CellComment{
+                        display:block;
+                    }
+                </style><script>
+                    var topbutton = document.getElementById("topbtn");
+
+                    function topFunction() {
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                    }
+
+                    function change(table_value) {
+                        var x = document.getElementById(table_value);
+                        var rows = document.getElementById(table_value).getElementsByTagName("tbody");
+
+                        if (x.style.display === "none") {
+                        x.style.display = "table";
+                        } else {
+                            x.style.display = "none";
+                        }
+                    }
+
+                    function sortTable(n,table_value) {
+                        // https://www.w3schools.com/howto/howto_js_sort_table.asp
+                        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                        table = document.getElementById(table_value);
+                        switching = true;
+                        // Set the sorting direction to ascending:
+                        dir = "asc";
+                        /* Make a loop that will continue until
+                        no switching has been done: */
+                        while (switching) {
+                            // Start by saying: no switching is done:
+                            switching = false;
+                            rows = table.rows;
+                            /* Loop through all table rows (except the
+                            first, which contains table headers): */
+                            for (i = 1; i < (rows.length - 1); i++) {
+                                // Start by saying there should be no switching:
+                                shouldSwitch = false;
+                                /* Get the two elements you want to compare,
+                                one from current row and one from the next: */
+                                x = rows[i].getElementsByTagName("TD")[n];
+                                y = rows[i + 1].getElementsByTagName("TD")[n];
+                                /* Check if the two rows should switch place,
+                                based on the direction, asc or desc: */
+                                if (dir == "asc") {
+                                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                    // If so, mark as a switch and break the loop:
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                                } else if (dir == "desc") {
+                                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                        // If so, mark as a switch and break the loop:
+                                        shouldSwitch = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (shouldSwitch) {
+                                /* If a switch has been marked, make the switch
+                                and mark that a switch has been done: */
+                                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                switching = true;
+                                // Each time a switch is done, increase this count by 1:
+                                switchcount ++;
+                            } else {
+                                /* If no switching has been done AND the direction is "asc",
+                                set the direction to "desc" and run the while loop again. */
+                                if (switchcount == 0 && dir == "asc") {
+                                    dir = "desc";
+                                    switching = true;
+                                }
+                            }
+                        }
+                    }
+
+                    function filterTable(input,table_value) {
+                        // https://www.w3schools.com/howto/howto_js_filter_table.asp
+                        // Declare variables
+                        var input, filter, table, tr, td, i, txtValue;
+                        input = document.getElementById(input);
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById(table_value);
+                        tr = table.getElementsByTagName("tr");
+
+                        // Loop through all table rows, and hide those who don't match the search query
+                        for (i = 0; i < tr.length; i++) {
+                            var allTDs = tr[i].getElementsByTagName("td");
+                            for (index = 0; index < allTDs.length; index++) {
+                                txtValue = allTDs[index].textContent || allTDs[index].innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                    break;
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }
+                        }
+                    }
+                </script></head>
+  <body>
+    <h1 align="center">Evaluate-STIG Summary Report</h1><button onclick="topFunction()" id="topbtn" title="Go to Top">Top</button><table id="RH8NETBOXBUILD" class="styled-table">
+      <td>
+        <h2 align="center">RH8NETBOXBUILD</h2>
+        <h3 align="center">Scan Date:
+                                01/19/2026</h3>
+        <h3 align="center">Evaluate-STIG Version:
+                                1.2507.6</h3>
+        <h3 align="center">Scan Type:
+                                Classified</h3>
+        <h3 align="center">Scanned User Profile:
+                                root</h3>
+        <div class="button_cont" align="center"><a class="button" id="button" onclick="change('RH8NETBOXBUILD_computer_table')" title="Show/Hide Computer information">Computer Information</a><a class="button" id="button" onclick="change('RH8NETBOXBUILD_stig_table')" title="Show/Hide STIG information">STIG Information</a></div>
+        <table id="RH8NETBOXBUILD_computer_table" class="styled-table">
+          <caption>Computer Information</caption>
+          <td>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Manufacturer</th>
+                  <th>Model</th>
+                  <th>Serial Number</th>
+                  <th>BIOS Version</th>
+                  <th>OS Name</th>
+                  <th>OS Version</th>
+                  <th>OS Architecture</th>
+                  <th>CPU Architecture</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Xen</td>
+                  <td>HVM domU</td>
+                  <td>3a404743-ebbd-132f-8bc5-e10995c30060</td>
+                  <td>4.17</td>
+                  <td>Red Hat Enterprise Linux 8.10 (Ootpa)</td>
+                  <td>8.10</td>
+                  <td>x86_64</td>
+                  <td>x86_64</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Interface Index</th>
+                  <th>Caption</th>
+                  <th>MAC Address</th>
+                  <th>IPv4 Addresses</th>
+                  <th>IPv6 Addresses</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2</td>
+                  <td>Ethernet interface</td>
+                  <td>ea:18:64:6a:13:80</td>
+                  <td>10.0.10.114</td>
+                  <td>fe80::e818:64ff:fe6a:1380</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Device ID</th>
+                  <th>Size</th>
+                  <th>Caption</th>
+                  <th>Serial Number</th>
+                  <th>Media Type</th>
+                  <th>Interface Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>var_log_audit</td>
+                  <td>25.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>var</td>
+                  <td>10.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>root</td>
+                  <td>70.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>home</td>
+                  <td>10.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>swap</td>
+                  <td>&lt;7.89 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>tmp</td>
+                  <td>10.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>var_log</td>
+                  <td>10.00 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>rhel_rh8netboxbuild</td>
+                  <td>var_tmp</td>
+                  <td>&lt;5.51 GiB</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Risk Rating</th>
+                  <th>Weighted Average</th>
+                  <th>CAT I Open|NR</th>
+                  <th>CAT I Possible</th>
+                  <th>CAT II Open|NR</th>
+                  <th>CAT II Possible</th>
+                  <th>CAT III Open|NR</th>
+                  <th>CAT III Possible</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="risk-High">
+                  <td>High</td>
+                  <td>18%
+                                                    </td>
+                  <td>4</td>
+                  <td>24</td>
+                  <td>67</td>
+                  <td>350</td>
+                  <td>8</td>
+                  <td>29</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </table>
+        <table id="RH8NETBOXBUILD_stig_table" class="styled-table">
+          <caption>STIG Information</caption>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Start Time</th>
+              <th>Open</th>
+              <th>Not A Finding</th>
+              <th>Not Applicable</th>
+              <th>Not Reviewed</th>
+              <th title="(Not A Finding + Not Applicable)/Total Findings">EvalScore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="button_cont" align="left"><a class="stig_button" id="button" onclick="change('MOZ Firefox STIG V6R6_filter');change('MOZ Firefox STIG V6R6')" title="Show/Hide ">MOZ Firefox STIG V6R6</a></div>
+              </td>
+              <td>2026-01-19T16:37:21-05:00</td>
+              <td>31</td>
+              <td>0</td>
+              <td>0</td>
+              <td>3</td>
+              <td>0%</td>
+            </tr>
+            <tr>
+              <td id="MOZ Firefox STIG V6R6_filter" class="filterdata" style="display:none"><input type="text" id="MOZ Firefox STIG V6R6_input" onkeyup="filterTable(`MOZ Firefox STIG V6R6_input`,`MOZ Firefox STIG V6R6`)" placeholder="Filter..." title="Type data to filter on"></td>
+            </tr>
+            <tr>
+              <td colspan="7">
+                <table id="MOZ Firefox STIG V6R6" class="styled-table" style="display:none;">
+                  <thead>
+                    <tr>
+                      <th onclick="sortTable(`0`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">Severity</th>
+                      <th onclick="sortTable(`1`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">Status</th>
+                      <th onclick="sortTable(`2`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">Group ID</th>
+                      <th onclick="sortTable(`3`,`MOZ Firefox STIG V6R6`)" class="sortheading" title="Sort by column">Rule Title</th>
+                      <th onclick="sortTable(`4`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">Override</th>
+                      <th onclick="sortTable(`5`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">AFMod</th>
+                      <th onclick="sortTable(`5`,`MOZ Firefox STIG V6R6`)" class="sortheading" style="width:10%;" title="Sort by column">Pre-AF Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-251545</td>
+                      <td>The installed version of Firefox must be supported.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-251546</td>
+                      <td>Firefox must be configured to allow only TLS 1.2 or above.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251547</td>
+                      <td>Firefox must be configured to ask which certificate to present to a website when a certificate is required.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251548</td>
+                      <td>Firefox must be configured to not automatically check for updated versions of installed search plugins.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251549</td>
+                      <td>Firefox must be configured to not automatically update installed add-ons and plugins.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-251550</td>
+                      <td>Firefox must be configured to not automatically execute or download MIME types that are not authorized for auto-download.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251551</td>
+                      <td>Firefox must be configured to disable form fill assistance.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251552</td>
+                      <td>Firefox must be configured to not use a password store with or without a master password.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251553</td>
+                      <td>Firefox must be configured to block pop-up windows.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251554</td>
+                      <td>Firefox must be configured to prevent JavaScript from moving or resizing windows.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251555</td>
+                      <td>Firefox must be configured to prevent JavaScript from raising or lowering windows.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251557</td>
+                      <td>Firefox must be configured to disable the installation of extensions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251558</td>
+                      <td>Background submission of information to Mozilla must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-251560</td>
+                      <td>Firefox must have the DOD root certificates installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251562</td>
+                      <td>Firefox must prevent the user from quickly deleting data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251563</td>
+                      <td>Firefox private browsing must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251564</td>
+                      <td>Firefox search suggestions must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251566</td>
+                      <td>Firefox network prediction must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251567</td>
+                      <td>Firefox fingerprinting protection must be enabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251568</td>
+                      <td>Firefox cryptomining protection must be enabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251569</td>
+                      <td>Firefox Enhanced Tracking Protection must be enabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251570</td>
+                      <td>Firefox extension recommendations must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251571</td>
+                      <td>Firefox deprecated ciphers must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251572</td>
+                      <td>Firefox must not recommend extensions as the user is using the browser.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251573</td>
+                      <td>The Firefox New Tab page must not show Top Sites, Sponsored Top Sites, Pocket Recommendations, Sponsored Pocket Stories, Searches, Highlights, or Snippets.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251577</td>
+                      <td>Firefox must be configured so that DNS over HTTPS is disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251578</td>
+                      <td>Firefox accounts must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251580</td>
+                      <td>Firefox feedback reporting must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251581</td>
+                      <td>Firefox encrypted media extensions must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-252881</td>
+                      <td>Firefox must be configured to not delete data upon shutdown.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-252908</td>
+                      <td>Pocket must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-252909</td>
+                      <td>Firefox Studies must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-251559</td>
+                      <td>Firefox development tools must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-251565</td>
+                      <td>Firefox autoplay must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="button_cont" align="left"><a class="stig_button" id="button" onclick="change('RHEL 8 STIG V2R4_filter');change('RHEL 8 STIG V2R4')" title="Show/Hide ">RHEL 8 STIG V2R4</a></div>
+              </td>
+              <td>2026-01-19T16:37:36-05:00</td>
+              <td>31</td>
+              <td>305</td>
+              <td>19</td>
+              <td>14</td>
+              <td>87.8%</td>
+            </tr>
+            <tr>
+              <td id="RHEL 8 STIG V2R4_filter" class="filterdata" style="display:none"><input type="text" id="RHEL 8 STIG V2R4_input" onkeyup="filterTable(`RHEL 8 STIG V2R4_input`,`RHEL 8 STIG V2R4`)" placeholder="Filter..." title="Type data to filter on"></td>
+            </tr>
+            <tr>
+              <td colspan="7">
+                <table id="RHEL 8 STIG V2R4" class="styled-table" style="display:none;">
+                  <thead>
+                    <tr>
+                      <th onclick="sortTable(`0`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">Severity</th>
+                      <th onclick="sortTable(`1`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">Status</th>
+                      <th onclick="sortTable(`2`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">Group ID</th>
+                      <th onclick="sortTable(`3`,`RHEL 8 STIG V2R4`)" class="sortheading" title="Sort by column">Rule Title</th>
+                      <th onclick="sortTable(`4`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">Override</th>
+                      <th onclick="sortTable(`5`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">AFMod</th>
+                      <th onclick="sortTable(`5`,`RHEL 8 STIG V2R4`)" class="sortheading" style="width:10%;" title="Sort by column">Pre-AF Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230221</td>
+                      <td>RHEL 8 must be a vendor-supported release.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230223</td>
+                      <td>RHEL 8 must implement NIST FIPS-validated cryptography for the following: To provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-230224</td>
+                      <td>All RHEL 8 local disk partitions must implement cryptographic mechanisms to prevent unauthorized disclosure or modification of all information that requires at rest protection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-230234</td>
+                      <td>RHEL 8 operating systems booted with United Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user mode and maintenance.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT I</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230235</td>
+                      <td>RHEL 8 operating systems booted with a BIOS must require authentication upon booting into single-user and maintenance modes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230264</td>
+                      <td>RHEL 8 must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230265</td>
+                      <td>RHEL 8 must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230283</td>
+                      <td>There must be no shosts.equiv files on the RHEL 8 operating system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230284</td>
+                      <td>There must be no .shosts files on the RHEL 8 operating system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230329</td>
+                      <td>Unattended or automatic logon via the RHEL 8 graphical user interface must not be allowed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230380</td>
+                      <td>RHEL 8 must not allow accounts configured with blank or null passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230487</td>
+                      <td>RHEL 8 must not have the telnet-server package installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230492</td>
+                      <td>RHEL 8 must not have the rsh-server package installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230529</td>
+                      <td>The x86 Ctrl-Alt-Delete key sequence must be disabled on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230530</td>
+                      <td>The x86 Ctrl-Alt-Delete key sequence in RHEL 8 must be disabled if a graphical user interface is installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230531</td>
+                      <td>The systemd Ctrl-Alt-Delete burst key sequence in RHEL 8 must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230533</td>
+                      <td>The Trivial File Transfer Protocol (TFTP) server package must not be installed if not required for RHEL 8 operational support.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230534</td>
+                      <td>The root account must be the only account having unrestricted access to the RHEL 8 system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-230558</td>
+                      <td>A File Transfer Protocol (FTP) server package must not be installed unless mission essential on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-244541</td>
+                      <td>RHEL 8 must not allow blank or null passwords in the password-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-251706</td>
+                      <td>The RHEL 8 operating system must not have accounts configured with blank or null passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-268322</td>
+                      <td>RHEL 8 must not allow blank or null passwords in the system-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230222</td>
+                      <td>RHEL 8 vendor packaged system security patches and updates must be installed and up to date.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230225</td>
+                      <td>RHEL 8 must display the Standard Mandatory DOD Notice and Consent Banner before granting local or remote access to the system via a ssh logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230226</td>
+                      <td>RHEL 8 must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230227</td>
+                      <td>RHEL 8 must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230228</td>
+                      <td>All RHEL 8 remote access methods must be monitored.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230229</td>
+                      <td>RHEL 8, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230230</td>
+                      <td>RHEL 8, for certificate-based authentication, must enforce authorized access to the corresponding private key.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230231</td>
+                      <td>RHEL 8 must encrypt all stored passwords with a FIPS 140-2 approved cryptographic hashing algorithm.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230232</td>
+                      <td>RHEL 8 must employ FIPS 140-2 approved cryptographic hashing algorithms for all stored passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230233</td>
+                      <td>The RHEL 8 shadow password suite must be configured to use a sufficient number of hashing rounds.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230236</td>
+                      <td>RHEL 8 operating systems must require authentication upon booting into rescue mode.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230237</td>
+                      <td>The RHEL 8 pam_unix.so module must be configured in the password-auth file to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230238</td>
+                      <td>RHEL 8 must prevent system daemons from using Kerberos for authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230239</td>
+                      <td>The krb5-workstation package must not be installed on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230240</td>
+                      <td>RHEL 8 must use a Linux Security Module configured to enforce limits on system services.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230243</td>
+                      <td>A sticky bit must be set on all RHEL 8 public directories to prevent unauthorized and unintended information transferred via shared system resources.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230244</td>
+                      <td>RHEL 8 must be configured so that all network connections associated with SSH traffic terminate after becoming unresponsive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230245</td>
+                      <td>The RHEL 8 /var/log/messages file must have mode 0640 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230246</td>
+                      <td>The RHEL 8 /var/log/messages file must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230247</td>
+                      <td>The RHEL 8 /var/log/messages file must be group-owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230248</td>
+                      <td>The RHEL 8 /var/log directory must have mode 0755 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230249</td>
+                      <td>The RHEL 8 /var/log directory must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230250</td>
+                      <td>The RHEL 8 /var/log directory must be group-owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230251</td>
+                      <td>The RHEL 8 SSH server must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230252</td>
+                      <td>The RHEL 8 operating system must implement DOD-approved encryption to protect the confidentiality of SSH server connections.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230254</td>
+                      <td>The RHEL 8 operating system must implement DoD-approved encryption in the OpenSSL package.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230255</td>
+                      <td>The RHEL 8 operating system must implement DoD-approved TLS encryption in the OpenSSL package.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230256</td>
+                      <td>The RHEL 8 operating system must implement DoD-approved TLS encryption in the GnuTLS package.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230257</td>
+                      <td>RHEL 8 system commands must have mode 755 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230258</td>
+                      <td>RHEL 8 system commands must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230259</td>
+                      <td>RHEL 8 system commands must be group-owned by root or a system account.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230260</td>
+                      <td>RHEL 8 library files must have mode 755 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230261</td>
+                      <td>RHEL 8 library files must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230262</td>
+                      <td>RHEL 8 library files must be group-owned by root or a system account.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230263</td>
+                      <td>The RHEL 8 file integrity tool must notify the system administrator when changes to the baseline configuration or anomalies in the operation of any security functions are discovered within an organizationally defined frequency.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230266</td>
+                      <td>RHEL 8 must prevent the loading of a new kernel for later execution.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230267</td>
+                      <td>RHEL 8 must enable kernel parameters to enforce discretionary access control on symlinks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230268</td>
+                      <td>RHEL 8 must enable kernel parameters to enforce discretionary access control on hardlinks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230271</td>
+                      <td>RHEL 8 must require users to provide a password for privilege escalation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230272</td>
+                      <td>RHEL 8 must require users to reauthenticate for privilege escalation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230273</td>
+                      <td>RHEL 8 must have the packages required for multifactor authentication installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230274</td>
+                      <td>RHEL 8 must implement certificate status checking for multifactor authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230275</td>
+                      <td>RHEL 8 must accept Personal Identity Verification (PIV) credentials.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230276</td>
+                      <td>RHEL 8 must implement non-executable data to protect its memory from unauthorized code execution.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230277</td>
+                      <td>RHEL 8 must clear the page allocator to prevent use-after-free attacks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230278</td>
+                      <td>RHEL 8 must disable virtual syscalls.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230279</td>
+                      <td>RHEL 8 must clear memory when it is freed to prevent use-after-free attacks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230280</td>
+                      <td>RHEL 8 must implement address space layout randomization (ASLR) to protect its memory from unauthorized code execution.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230282</td>
+                      <td>RHEL 8 must enable the SELinux targeted policy.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230286</td>
+                      <td>The RHEL 8 SSH public host key files must have mode 0644 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230287</td>
+                      <td>The RHEL 8 SSH private host key files must have mode 0640 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230288</td>
+                      <td>The RHEL 8 SSH daemon must perform strict mode checking of home directory configuration files.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230290</td>
+                      <td>The RHEL 8 SSH daemon must not allow authentication using known hosts authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230291</td>
+                      <td>The RHEL 8 SSH daemon must not allow Kerberos authentication, except to fulfill documented and validated mission requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230295</td>
+                      <td>A separate RHEL 8 filesystem must be used for the /tmp directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230296</td>
+                      <td>RHEL 8 must not permit direct logons to the root account using remote access via SSH.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230298</td>
+                      <td>The rsyslog service must be running in RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230299</td>
+                      <td>RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that contain user home directories.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230300</td>
+                      <td>RHEL 8 must prevent files with the setuid and setgid bit set from being executed on the /boot directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230301</td>
+                      <td>RHEL 8 must prevent special devices on non-root local partitions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230302</td>
+                      <td>RHEL 8 must prevent code from being executed on file systems that contain user home directories.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230303</td>
+                      <td>RHEL 8 must prevent special devices on file systems that are used with removable media.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230304</td>
+                      <td>RHEL 8 must prevent code from being executed on file systems that are used with removable media.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230305</td>
+                      <td>RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230306</td>
+                      <td>RHEL 8 must prevent code from being executed on file systems that are imported via Network File System (NFS).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230307</td>
+                      <td>RHEL 8 must prevent special devices on file systems that are imported via Network File System (NFS).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230308</td>
+                      <td>RHEL 8 must prevent files with the setuid and setgid bit set from being executed on file systems that are imported via Network File System (NFS).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230309</td>
+                      <td>Local RHEL 8 initialization files must not execute world-writable programs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230310</td>
+                      <td>RHEL 8 must disable kernel dumps unless needed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230311</td>
+                      <td>RHEL 8 must disable the kernel.core_pattern.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230312</td>
+                      <td>RHEL 8 must disable acquiring, saving, and processing core dumps.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230313</td>
+                      <td>RHEL 8 must disable core dumps for all users.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230314</td>
+                      <td>RHEL 8 must disable storing core dumps.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230315</td>
+                      <td>RHEL 8 must disable core dump backtraces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230316</td>
+                      <td>For RHEL 8 systems using Domain Name Servers (DNS) resolution, at least two name servers must be configured.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230317</td>
+                      <td>Executable search paths within the initialization files of all local interactive RHEL 8 users must only contain paths that resolve to the system default or the users home directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230318</td>
+                      <td>All RHEL 8 world-writable directories must be owned by root, sys, bin, or an application user.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230319</td>
+                      <td>All RHEL 8 world-writable directories must be group-owned by root, sys, bin, or an application group.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230320</td>
+                      <td>All RHEL 8 local interactive users must have a home directory assigned in the /etc/passwd file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230321</td>
+                      <td>All RHEL 8 local interactive user home directories must have mode 0750 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230322</td>
+                      <td>All RHEL 8 local interactive user home directories must be group-owned by the home directory owners primary group.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230323</td>
+                      <td>All RHEL 8 local interactive user home directories defined in the /etc/passwd file must exist.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230324</td>
+                      <td>All RHEL 8 local interactive user accounts must be assigned a home directory upon creation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230325</td>
+                      <td>All RHEL 8 local initialization files must have mode 0740 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230326</td>
+                      <td>All RHEL 8 local files and directories must have a valid owner.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230327</td>
+                      <td>All RHEL 8 local files and directories must have a valid group owner.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230328</td>
+                      <td>A separate RHEL 8 filesystem must be used for user home directories (such as /home or an equivalent).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230330</td>
+                      <td>RHEL 8 must not allow users to override SSH environment variables.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230331</td>
+                      <td>RHEL 8 temporary user accounts must be provisioned with an expiration time of 72 hours or less.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230332</td>
+                      <td>RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230333</td>
+                      <td>RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230334</td>
+                      <td>RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230335</td>
+                      <td>RHEL 8 must automatically lock an account when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230336</td>
+                      <td>RHEL 8 must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230337</td>
+                      <td>RHEL 8 must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230338</td>
+                      <td>RHEL 8 must ensure account lockouts persist.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230339</td>
+                      <td>RHEL 8 must ensure account lockouts persist.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230340</td>
+                      <td>RHEL 8 must prevent system messages from being presented when three unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230341</td>
+                      <td>RHEL 8 must prevent system messages from being presented when three unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230342</td>
+                      <td>RHEL 8 must log user name information when unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230343</td>
+                      <td>RHEL 8 must log user name information when unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230344</td>
+                      <td>RHEL 8 must include root when automatically locking an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230345</td>
+                      <td>RHEL 8 must include root when automatically locking an account until the locked account is released by an administrator when three unsuccessful logon attempts occur during a 15-minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230347</td>
+                      <td>RHEL 8 must enable a user session lock until that user re-establishes access using established identification and authentication procedures for graphical user sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230351</td>
+                      <td>RHEL 8 must be able to initiate directly a session lock for all connection types using smartcard when the smartcard is removed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230352</td>
+                      <td>RHEL 8 must automatically lock graphical user sessions after 15 minutes of inactivity.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230354</td>
+                      <td>RHEL 8 must prevent a user from overriding the session lock-delay setting for the graphical user interface.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230355</td>
+                      <td>RHEL 8 must map the authenticated identity to the user or group account for PKI-based authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230356</td>
+                      <td>RHEL 8 must ensure the password complexity module is enabled in the password-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230357</td>
+                      <td>RHEL 8 must enforce password complexity by requiring that at least one uppercase character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230358</td>
+                      <td>RHEL 8 must enforce password complexity by requiring that at least one lower-case character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230359</td>
+                      <td>RHEL 8 must enforce password complexity by requiring that at least one numeric character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230360</td>
+                      <td>RHEL 8 must require the maximum number of repeating characters of the same character class be limited to four when passwords are changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230361</td>
+                      <td>RHEL 8 must require the maximum number of repeating characters be limited to three when passwords are changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230362</td>
+                      <td>RHEL 8 must require the change of at least four character classes when passwords are changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230363</td>
+                      <td>RHEL 8 must require the change of at least 8 characters when passwords are changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230364</td>
+                      <td>RHEL 8 passwords must have a 24 hours/1 day minimum password lifetime restriction in /etc/shadow.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230365</td>
+                      <td>RHEL 8 passwords for new users or password changes must have a 24 hours/1 day minimum password lifetime restriction in /etc/login.defs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230366</td>
+                      <td>RHEL 8 user account passwords must have a 60-day maximum password lifetime restriction.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230367</td>
+                      <td>RHEL 8 user account passwords must be configured so that existing passwords are restricted to a 60-day maximum lifetime.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230369</td>
+                      <td>RHEL 8 passwords must have a minimum of 15 characters.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230370</td>
+                      <td>RHEL 8 passwords for new users must have a minimum of 15 characters.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230371</td>
+                      <td>RHEL 8 duplicate User IDs (UIDs) must not exist for interactive users.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230372</td>
+                      <td>RHEL 8 must implement smart card logon for multifactor authentication for access to interactive accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230373</td>
+                      <td>RHEL 8 account identifiers (individuals, groups, roles, and devices) must be disabled after 35 days of inactivity.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230374</td>
+                      <td>RHEL 8 must automatically expire temporary accounts within 72 hours.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230375</td>
+                      <td>All RHEL 8 passwords must contain at least one special character.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230376</td>
+                      <td>RHEL 8 must prohibit the use of cached authentications after one day.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230377</td>
+                      <td>RHEL 8 must prevent the use of dictionary words for passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230378</td>
+                      <td>RHEL 8 must enforce a delay of at least four seconds between logon prompts following a failed logon attempt.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230379</td>
+                      <td>RHEL 8 must not have unnecessary accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230382</td>
+                      <td>RHEL 8 must display the date and time of the last successful account logon upon an SSH logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230383</td>
+                      <td>RHEL 8 must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230384</td>
+                      <td>RHEL 8 must set the umask value to 077 for all local interactive user accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230385</td>
+                      <td>RHEL 8 must define default permissions for logon and non-logon shells.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230386</td>
+                      <td>The RHEL 8 audit system must be configured to audit the execution of privileged functions and prevent all software from executing at higher privilege levels than users executing the software.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230387</td>
+                      <td>Cron logging must be implemented in RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230388</td>
+                      <td>The RHEL 8 System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) must be alerted of an audit processing failure event.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230389</td>
+                      <td>The RHEL 8 Information System Security Officer (ISSO) and System Administrator (SA) (at a minimum) must have mail aliases to be notified of an audit processing failure.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230390</td>
+                      <td>The RHEL 8 System must take appropriate action when an audit processing failure occurs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230392</td>
+                      <td>The RHEL 8 audit system must take appropriate action when the audit storage volume is full.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230393</td>
+                      <td>The RHEL 8 audit system must audit local events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230394</td>
+                      <td>RHEL 8 must label all off-loaded audit logs before sending them to the central log server.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230396</td>
+                      <td>RHEL 8 audit logs must have a mode of 0600 or less permissive to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230397</td>
+                      <td>RHEL 8 audit logs must be owned by root to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230398</td>
+                      <td>RHEL 8 audit logs must be group-owned by root to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230399</td>
+                      <td>RHEL 8 audit log directory must be owned by root to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230400</td>
+                      <td>RHEL 8 audit log directory must be group-owned by root to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230401</td>
+                      <td>RHEL 8 audit log directory must have a mode of 0700 or less permissive to prevent unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230402</td>
+                      <td>RHEL 8 audit system must protect auditing rules from unauthorized change.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230403</td>
+                      <td>RHEL 8 audit system must protect logon UIDs from unauthorized change.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230404</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230405</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/security/opasswd.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230406</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230407</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230408</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230409</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230410</td>
+                      <td>RHEL 8 must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/sudoers.d/.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230411</td>
+                      <td>The RHEL 8 audit package must be installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230412</td>
+                      <td>Successful/unsuccessful uses of the su command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230413</td>
+                      <td>The RHEL 8 audit system must be configured to audit any usage of the setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr system calls.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230418</td>
+                      <td>Successful/unsuccessful uses of the chage command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230419</td>
+                      <td>Successful/unsuccessful uses of the chcon command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230421</td>
+                      <td>Successful/unsuccessful uses of the ssh-agent in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230422</td>
+                      <td>Successful/unsuccessful uses of the passwd command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230423</td>
+                      <td>Successful/unsuccessful uses of the mount command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230424</td>
+                      <td>Successful/unsuccessful uses of the umount command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230425</td>
+                      <td>Successful/unsuccessful uses of the mount syscall in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230426</td>
+                      <td>Successful/unsuccessful uses of the unix_update in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230427</td>
+                      <td>Successful/unsuccessful uses of postdrop in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230428</td>
+                      <td>Successful/unsuccessful uses of postqueue in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230429</td>
+                      <td>Successful/unsuccessful uses of semanage in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230430</td>
+                      <td>Successful/unsuccessful uses of setfiles in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230431</td>
+                      <td>Successful/unsuccessful uses of userhelper in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230432</td>
+                      <td>Successful/unsuccessful uses of setsebool in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230433</td>
+                      <td>Successful/unsuccessful uses of unix_chkpwd in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230434</td>
+                      <td>Successful/unsuccessful uses of the ssh-keysign in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230435</td>
+                      <td>Successful/unsuccessful uses of the setfacl command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230436</td>
+                      <td>Successful/unsuccessful uses of the pam_timestamp_check command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230437</td>
+                      <td>Successful/unsuccessful uses of the newgrp command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230438</td>
+                      <td>Successful/unsuccessful uses of the init_module and finit_module system calls in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230439</td>
+                      <td>Successful/unsuccessful uses of the rename, unlink, rmdir, renameat, and unlinkat system calls in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230444</td>
+                      <td>Successful/unsuccessful uses of the gpasswd command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230446</td>
+                      <td>Successful/unsuccessful uses of the delete_module command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230447</td>
+                      <td>Successful/unsuccessful uses of the crontab command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230448</td>
+                      <td>Successful/unsuccessful uses of the chsh command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230449</td>
+                      <td>Successful/unsuccessful uses of the truncate, ftruncate, creat, open, openat, and open_by_handle_at system calls in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230455</td>
+                      <td>Successful/unsuccessful uses of the chown, fchown, fchownat, and lchown system calls in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230456</td>
+                      <td>Successful/unsuccessful uses of the chmod, fchmod, and fchmodat system calls in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230462</td>
+                      <td>Successful/unsuccessful uses of the sudo command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230463</td>
+                      <td>Successful/unsuccessful uses of the usermod command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230464</td>
+                      <td>Successful/unsuccessful uses of the chacl command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230465</td>
+                      <td>Successful/unsuccessful uses of the kmod command in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230466</td>
+                      <td>Successful/unsuccessful modifications to the faillock log file in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230467</td>
+                      <td>Successful/unsuccessful modifications to the lastlog file in RHEL 8 must generate an audit record.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230471</td>
+                      <td>RHEL 8 must allow only the Information System Security Manager (ISSM) (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230472</td>
+                      <td>RHEL 8 audit tools must have a mode of 0755 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230473</td>
+                      <td>RHEL 8 audit tools must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230474</td>
+                      <td>RHEL 8 audit tools must be group-owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230475</td>
+                      <td>RHEL 8 must use cryptographic mechanisms to protect the integrity of audit tools.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230476</td>
+                      <td>RHEL 8 must allocate audit record storage capacity to store at least one week of audit records, when audit records are not immediately sent to a central audit record storage facility.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230477</td>
+                      <td>RHEL 8 must have the packages required for offloading audit logs installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230478</td>
+                      <td>RHEL 8 must have the packages required for encrypting offloaded audit logs installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230479</td>
+                      <td>The RHEL 8 audit records must be off-loaded onto a different system or storage media from the system being audited.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230480</td>
+                      <td>RHEL 8 must take appropriate action when the internal event queue is full.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230481</td>
+                      <td>RHEL 8 must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230482</td>
+                      <td>RHEL 8 must authenticate the remote logging server for off-loading audit logs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230483</td>
+                      <td>RHEL 8 must take action when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230484</td>
+                      <td>RHEL 8 must securely compare internal information system clocks at least every 24 hours with a server synchronized to an authoritative time source, such as the United States Naval Observatory (USNO) time servers, or a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230488</td>
+                      <td>RHEL 8 must not have any automated bug reporting tools installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230489</td>
+                      <td>RHEL 8 must not have the sendmail package installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230493</td>
+                      <td>RHEL 8 must cover or disable the built-in or attached camera when not in use.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230500</td>
+                      <td>RHEL 8 must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management (PPSM) Category Assignments List (CAL) and vulnerability assessments.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230502</td>
+                      <td>The RHEL 8 file system automounter must be disabled unless required.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230503</td>
+                      <td>RHEL 8 must be configured to disable USB mass storage.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230504</td>
+                      <td>A RHEL 8 firewall must employ a deny-all, allow-by-exception policy for allowing connections to other systems.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230505</td>
+                      <td>A firewall must be installed on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230506</td>
+                      <td>RHEL 8 wireless network adapters must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230507</td>
+                      <td>RHEL 8 Bluetooth must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230508</td>
+                      <td>RHEL 8 must mount /dev/shm with the nodev option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230509</td>
+                      <td>RHEL 8 must mount /dev/shm with the nosuid option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230510</td>
+                      <td>RHEL 8 must mount /dev/shm with the noexec option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230511</td>
+                      <td>RHEL 8 must mount /tmp with the nodev option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230512</td>
+                      <td>RHEL 8 must mount /tmp with the nosuid option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230513</td>
+                      <td>RHEL 8 must mount /tmp with the noexec option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230514</td>
+                      <td>RHEL 8 must mount /var/log with the nodev option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230515</td>
+                      <td>RHEL 8 must mount /var/log with the nosuid option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230516</td>
+                      <td>RHEL 8 must mount /var/log with the noexec option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230517</td>
+                      <td>RHEL 8 must mount /var/log/audit with the nodev option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230518</td>
+                      <td>RHEL 8 must mount /var/log/audit with the nosuid option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230519</td>
+                      <td>RHEL 8 must mount /var/log/audit with the noexec option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230520</td>
+                      <td>RHEL 8 must mount /var/tmp with the nodev option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230521</td>
+                      <td>RHEL 8 must mount /var/tmp with the nosuid option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230522</td>
+                      <td>RHEL 8 must mount /var/tmp with the noexec option.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230523</td>
+                      <td>The RHEL 8 fapolicy module must be installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230524</td>
+                      <td>RHEL 8 must block unauthorized peripherals before establishing a connection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230525</td>
+                      <td>A firewall must be able to protect against or limit the effects of Denial of Service (DoS) attacks by ensuring RHEL 8 can implement rate-limiting measures on impacted network interfaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230526</td>
+                      <td>All RHEL 8 networked systems must have and implement SSH to protect the confidentiality and integrity of transmitted and received information, as well as information during preparation for transmission.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230527</td>
+                      <td>RHEL 8 must force a frequent session key renegotiation for SSH connections to the server.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230532</td>
+                      <td>The debug-shell systemd service must be disabled on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230535</td>
+                      <td>RHEL 8 must prevent IPv6 Internet Control Message Protocol (ICMP) redirect messages from being accepted.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230536</td>
+                      <td>RHEL 8 must not send Internet Control Message Protocol (ICMP) redirects.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230537</td>
+                      <td>RHEL 8 must not respond to Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230538</td>
+                      <td>RHEL 8 must not forward IPv6 source-routed packets.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230539</td>
+                      <td>RHEL 8 must not forward IPv6 source-routed packets by default.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230540</td>
+                      <td>RHEL 8 must not enable IPv6 packet forwarding unless the system is a router.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230541</td>
+                      <td>RHEL 8 must not accept router advertisements on all IPv6 interfaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230542</td>
+                      <td>RHEL 8 must not accept router advertisements on all IPv6 interfaces by default.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230543</td>
+                      <td>RHEL 8 must not allow interfaces to perform Internet Control Message Protocol (ICMP) redirects by default.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230544</td>
+                      <td>RHEL 8 must ignore IPv6 Internet Control Message Protocol (ICMP) redirect messages.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230545</td>
+                      <td>RHEL 8 must disable access to network bpf syscall from unprivileged processes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-230546</td>
+                      <td>RHEL 8 must restrict usage of ptrace to descendant  processes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230547</td>
+                      <td>RHEL 8 must restrict exposed kernel pointer addresses access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230548</td>
+                      <td>RHEL 8 must disable the use of user namespaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230549</td>
+                      <td>RHEL 8 must use reverse path filtering on all IPv4 interfaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230550</td>
+                      <td>RHEL 8 must be configured to prevent unrestricted mail relaying.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230553</td>
+                      <td>The graphical display manager must not be installed on RHEL 8 unless approved.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230554</td>
+                      <td>RHEL 8 network interfaces must not be in promiscuous mode.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230555</td>
+                      <td>RHEL 8 remote X connections for interactive users must be disabled unless to fulfill documented and validated mission requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230556</td>
+                      <td>The RHEL 8 SSH daemon must prevent remote hosts from connecting to the proxy display.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-230557</td>
+                      <td>If the Trivial File Transfer Protocol (TFTP) server is required, the RHEL 8 TFTP daemon must be configured to operate in secure mode.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230559</td>
+                      <td>The gssproxy package must not be installed unless mission essential on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230560</td>
+                      <td>The iprutils package must not be installed unless mission essential on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-230561</td>
+                      <td>The tuned package must not be installed unless mission essential on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-237640</td>
+                      <td>The krb5-server package must not be installed on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-237641</td>
+                      <td>RHEL 8 must restrict privilege elevation to authorized personnel.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-237642</td>
+                      <td>RHEL 8 must use the invoking user's password for privilege escalation when using "sudo".</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-237643</td>
+                      <td>RHEL 8 must require re-authentication when using the "sudo" command.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-244519</td>
+                      <td>RHEL 8 must display a banner before granting local or remote access to the system via a graphical user logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-244521</td>
+                      <td>RHEL 8 operating systems booted with United Extensible Firmware Interface (UEFI) must require a unique superusers name upon booting into single-user mode and maintenance.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-244522</td>
+                      <td>RHEL 8 operating systems booted with a BIOS must require  a unique superusers name upon booting into single-user and maintenance modes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244523</td>
+                      <td>RHEL 8 operating systems must require authentication upon booting into emergency mode.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244524</td>
+                      <td>The RHEL 8 pam_unix.so module must be configured in the system-auth file to use a FIPS 140-2 approved cryptographic hashing algorithm for system authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-244525</td>
+                      <td>RHEL 8 must be configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244526</td>
+                      <td>The RHEL 8 SSH daemon must be configured to use system-wide crypto policies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244528</td>
+                      <td>The RHEL 8 SSH daemon must not allow GSSAPI authentication, except to fulfill documented and validated mission requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244529</td>
+                      <td>RHEL 8 must use a separate file system for /var/tmp.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244530</td>
+                      <td>RHEL 8 must prevent files with the setuid and setgid bit set from being executed on the /boot/efi directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244531</td>
+                      <td>All RHEL 8 local interactive user home directory files must have mode 0750 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244532</td>
+                      <td>RHEL 8 must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244533</td>
+                      <td>RHEL 8 must configure the use of the pam_faillock.so module in the /etc/pam.d/system-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244534</td>
+                      <td>RHEL 8 must configure the use of the pam_faillock.so module in the /etc/pam.d/password-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244535</td>
+                      <td>RHEL 8 must initiate a session lock for graphical user interfaces when the screensaver is activated.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-244536</td>
+                      <td>RHEL 8 must disable the user list at logon for graphical user interfaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244538</td>
+                      <td>RHEL 8 must prevent a user from overriding the session idle-delay setting for the graphical user interface.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244539</td>
+                      <td>RHEL 8 must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244542</td>
+                      <td>RHEL 8 audit records must contain information to establish what type of events occurred, the source of events, where events occurred, and the outcome of events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244543</td>
+                      <td>RHEL 8 must notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when allocated audit record storage volume 75 percent utilization.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244544</td>
+                      <td>A firewall must be active on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244545</td>
+                      <td>The RHEL 8 fapolicy module must be enabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244546</td>
+                      <td>The RHEL 8 fapolicy module must be configured to employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244547</td>
+                      <td>RHEL 8 must have the USBGuard installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244548</td>
+                      <td>RHEL 8 must enable the USBGuard.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244549</td>
+                      <td>All RHEL 8 networked systems must have SSH installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244550</td>
+                      <td>RHEL 8 must prevent IPv4 Internet Control Message Protocol (ICMP) redirect messages from being accepted.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244551</td>
+                      <td>RHEL 8 must not forward IPv4 source-routed packets.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244552</td>
+                      <td>RHEL 8 must not forward IPv4 source-routed packets by default.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244553</td>
+                      <td>RHEL 8 must ignore IPv4 Internet Control Message Protocol (ICMP) redirect messages.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-244554</td>
+                      <td>RHEL 8 must enable hardening for the Berkeley Packet Filter Just-in-time compiler.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-250315</td>
+                      <td>RHEL 8 systems, versions 8.2 and above, must configure SELinux context type to allow the use of a non-default faillock tally directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT II</td>
+                      <td>Not_Applicable</td>
+                      <td>V-250316</td>
+                      <td>RHEL 8 systems below version 8.2 must configure SELinux context type to allow the use of a non-default faillock tally directory.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-250317</td>
+                      <td>RHEL 8 must not enable IPv4 packet forwarding unless the system is a router.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251707</td>
+                      <td>RHEL 8 library directories must have mode 755 or less permissive.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251708</td>
+                      <td>RHEL 8 library directories must be owned by root.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251709</td>
+                      <td>RHEL 8 library directories must be group-owned by root or a system account.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251710</td>
+                      <td>The RHEL 8 operating system must use a file integrity tool to verify correct operation of all security functions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251711</td>
+                      <td>RHEL 8 must specify the default "include" directory for the /etc/sudoers file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251712</td>
+                      <td>The RHEL 8 operating system must not be configured to bypass password requirements for privilege escalation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251713</td>
+                      <td>RHEL 8 must ensure the password complexity module is enabled in the system-auth file.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-251716</td>
+                      <td>RHEL 8 systems, version 8.4 and above, must ensure the password complexity module is configured for three retries or less.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-251718</td>
+                      <td>The graphical display manager must not be the default target on RHEL 8 unless approved.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-254520</td>
+                      <td>RHEL 8 must prevent nonprivileged users from executing privileged functions, including disabling, circumventing, or altering implemented security safeguards/countermeasures.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-255924</td>
+                      <td>RHEL 8 SSH server must be configured to use only FIPS-validated key exchange algorithms.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-256973</td>
+                      <td>RHEL 8 must ensure cryptographic verification of vendor software packages.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT II</td>
+                      <td>NotAFinding</td>
+                      <td>V-256974</td>
+                      <td>RHEL 8 must be configured to allow sending email notifications of unauthorized configuration changes to designated personnel.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-257258</td>
+                      <td>RHEL 8.7 and higher must terminate idle user sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-272482</td>
+                      <td>RHEL 8 SSH client must be configured to use only Message Authentication Codes (MACs) employing FIPS 140-3 validated cryptographic hash algorithms.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-272483</td>
+                      <td>RHEL 8 SSH client must be configured to use only ciphers employing FIPS 140-3 validated cryptographic hash algorithms.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-272484</td>
+                      <td>RHEL 8 must elevate the SELinux context when an administrator calls the sudo command.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_med">
+                      <td>CAT II</td>
+                      <td>Open</td>
+                      <td>V-274877</td>
+                      <td>RHEL 8 must audit any script or executable called by cron as root or by any privileged user.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230241</td>
+                      <td>RHEL 8 must have policycoreutils package installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230253</td>
+                      <td>RHEL 8 must ensure the SSH server uses strong entropy.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230269</td>
+                      <td>RHEL 8 must restrict access to the kernel message buffer.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230270</td>
+                      <td>RHEL 8 must prevent kernel profiling by unprivileged users.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230281</td>
+                      <td>YUM must remove all software components after updated versions have been installed on RHEL 8.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-230285</td>
+                      <td>RHEL 8 must enable the hardware random number generator entropy gatherer service.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230292</td>
+                      <td>RHEL 8 must use a separate file system for /var.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230293</td>
+                      <td>RHEL 8 must use a separate file system for /var/log.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230294</td>
+                      <td>RHEL 8 must use a separate file system for the system audit data path.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230346</td>
+                      <td>RHEL 8 must limit the number of concurrent sessions to ten for all accounts and/or account types.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230381</td>
+                      <td>RHEL 8 must display the date and time of the last successful account logon upon logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230395</td>
+                      <td>RHEL 8 must resolve audit information before writing to disk.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-230468</td>
+                      <td>RHEL 8 must enable auditing of processes that start prior to the audit daemon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-230469</td>
+                      <td>RHEL 8 must allocate an audit_backlog_limit of sufficient size to capture processes that start prior to the audit daemon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230470</td>
+                      <td>RHEL 8 must enable Linux audit logging for the USBGuard daemon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230485</td>
+                      <td>RHEL 8 must disable the chrony daemon from acting as a server.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230486</td>
+                      <td>RHEL 8 must disable network management of the chrony daemon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_low">
+                      <td>CAT III</td>
+                      <td>Open</td>
+                      <td>V-230491</td>
+                      <td>RHEL 8 must enable mitigations against processor-based vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230494</td>
+                      <td>RHEL 8 must disable the asynchronous transfer mode (ATM) protocol.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230495</td>
+                      <td>RHEL 8 must disable the controller area network (CAN) protocol.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230496</td>
+                      <td>RHEL 8 must disable the stream control transmission protocol (SCTP).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230497</td>
+                      <td>RHEL 8 must disable the transparent inter-process communication (TIPC) protocol.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230498</td>
+                      <td>RHEL 8 must disable mounting of cramfs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-230499</td>
+                      <td>RHEL 8 must disable IEEE 1394 (FireWire) Support.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230551</td>
+                      <td>The RHEL 8 file integrity tool must be configured to verify extended attributes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-230552</td>
+                      <td>The RHEL 8 file integrity tool must be configured to verify Access Control Lists (ACLs).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT III</td>
+                      <td>NotAFinding</td>
+                      <td>V-244527</td>
+                      <td>RHEL 8 must have the packages required to use the hardware random number generator entropy gatherer service.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </table>
+  </body>
+</html>

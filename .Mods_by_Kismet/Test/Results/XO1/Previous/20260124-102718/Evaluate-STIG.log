@@ -1,0 +1,2369 @@
+<![LOG[==========[Begin Local Logging]==========                                       ]LOG]!><time="10:26:29.090+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Executing: Evaluate-STIG.ps1 -SelectSTIG XO_WebSRG -ScanType Classified -AnswerKey XO -VulnTimeout 15 -Output CKL,CKLB,Summary,Console -AllowIntegrityViolations -PreviousToKeep 365 -OutputPath /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance]LOG]!><time="10:26:29.301+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Utilizing Preference:                                                           ]LOG]!><time="10:26:29.354+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:29.401+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Verifying Evaluate-STIG file integrity                                          ]LOG]!><time="10:26:29.438+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[ERROR: 'FileList.xml' failed authenticity check.  Unable to verify content integrity.]LOG]!><time="10:26:29.889+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[-AllowIntegrityViolations specified so continuing with scan.                    ]LOG]!><time="10:26:29.944+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="2" thread="11" file="">
+<![LOG[Evaluate-STIG Version: 1.2507.6                                                 ]LOG]!><time="10:26:30.254+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Launching User: root                                                            ]LOG]!><time="10:26:30.316+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Hostname: XO1                                                                   ]LOG]!><time="10:26:33.480+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Manufacturer: Xen                                                               ]LOG]!><time="10:26:33.512+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Model: HVM domU                                                                 ]LOG]!><time="10:26:33.544+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Platform: Linux                                                ]LOG]!><time="10:26:33.574+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Name: Debian GNU/Linux 12 (bookworm)                           ]LOG]!><time="10:26:33.608+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Version: 12                                                    ]LOG]!><time="10:26:33.639+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Operating System Architecture: x86_64                                           ]LOG]!><time="10:26:33.671+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Domain Role: Member Workstation                                                 ]LOG]!><time="10:26:33.699+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Primary IP Address: 10.0.10.27                                                  ]LOG]!><time="10:26:33.735+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Primary MAC Address: 9a:23:ce:79:07:da                                          ]LOG]!><time="10:26:33.761+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[PowerShell Version: 7.3.10                                                      ]LOG]!><time="10:26:33.789+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Scan Type: Classified                                                           ]LOG]!><time="10:26:33.813+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Answer Key: XO                                                                  ]LOG]!><time="10:26:33.837+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Answer File Path: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles                 ]LOG]!><time="10:26:33.862+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Results Path: /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance/XO1             ]LOG]!><time="10:26:33.886+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:33.909+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Validating answer files                                                         ]LOG]!><time="10:26:33.936+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Template_AnswerFile.xml : Passed                                                ]LOG]!><time="10:26:33.987+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[XCP-ng_v8.3_Dom0_RHEL7_AnswerFile.xml : Passed                                  ]LOG]!><time="10:26:34.078+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[XCP-ng_v8.3_VMM_AnswerFile.xml : Passed                                         ]LOG]!><time="10:26:34.234+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[XO_v5.x_ASD_AnswerFile.xml : Passed                                             ]LOG]!><time="10:26:34.377+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[XO_v5.x_GPOS_Debian12_AnswerFile.xml : Passed                                   ]LOG]!><time="10:26:34.538+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[XO_v5.x_WebSRG_AnswerFile.xml : Passed                                          ]LOG]!><time="10:26:34.680+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:34.790+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Gathering list of STIGs applicable to this system                               ]LOG]!><time="10:26:34.842+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[The following STIGs are determined applicable:                                  ]LOG]!><time="10:26:38.702+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra - Debian 12 - General Purpose Operating System (GPOS) SRG   ]LOG]!><time="10:26:38.738+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Application (ASD STIG)                                      ]LOG]!><time="10:26:38.771+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Web Server (Web SRG)                                        ]LOG]!><time="10:26:38.802+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:38.833+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[STIGs to process - 1                                                            ]LOG]!><time="10:26:38.893+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[The following STIGs will be evaluated:                                          ]LOG]!><time="10:26:38.926+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[STIG: Xen Orchestra Web Server (Web SRG)  |  AnswerFile: XO_v5.x_WebSRG_AnswerFile.xml (Modified: 24 Jan 2026 10:03:10)]LOG]!><time="10:26:38.957+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:38.980+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Checking for and removing orphaned objects from a previous scan                 ]LOG]!><time="10:26:44.021+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Getting instance counts and building job list                                   ]LOG]!><time="10:26:44.080+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Creating scan job(s) for XO_WebSRG                                              ]LOG]!><time="10:26:45.095+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:26:45.132+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Invoking scan                                                                   ]LOG]!><time="10:26:45.161+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Importing scan module: Scan-XO_WebSRG_Checks                                    ]LOG]!><time="10:26:45.191+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Module Version: 1.2026.1.16                                                     ]LOG]!><time="10:26:45.234+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Answer File variables and values passed to module:                              ]LOG]!><time="10:26:45.275+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $Hostname  |  Value: XO1                                            ]LOG]!><time="10:26:45.308+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $Username  |  Value: root                                           ]LOG]!><time="10:26:45.337+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $ESPath  |  Value: /tmp/Evaluate-STIG_RemoteComputer                ]LOG]!><time="10:26:45.369+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[  Variable: $UserSID  |  Value: NA                                              ]LOG]!><time="10:26:45.399+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206350                                                             ]LOG]!><time="10:26:49.978+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:50.007+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:50.042+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Executing Answer File ValidationCode                                        ]LOG]!><time="10:26:50.074+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    ValidationResult: V-206350: Helper functions placeholder. Actual implementation requires CDATA or entity escaping for complex code.]LOG]!><time="10:26:51.340+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.385+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206351                                                             ]LOG]!><time="10:26:51.433+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.458+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.484+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.505+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206352                                                             ]LOG]!><time="10:26:51.560+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.580+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.601+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.621+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206353                                                             ]LOG]!><time="10:26:51.650+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.672+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.698+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.724+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206354                                                             ]LOG]!><time="10:26:51.757+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.782+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.805+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.825+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206355                                                             ]LOG]!><time="10:26:51.860+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.880+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.900+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:51.920+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206356                                                             ]LOG]!><time="10:26:51.948+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:51.971+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:51.997+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.023+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206357                                                             ]LOG]!><time="10:26:52.056+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.081+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.108+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.134+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206359                                                             ]LOG]!><time="10:26:52.203+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.258+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.318+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.370+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206360                                                             ]LOG]!><time="10:26:52.401+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.421+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.475+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.496+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206361                                                             ]LOG]!><time="10:26:52.524+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.544+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.565+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.586+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206362                                                             ]LOG]!><time="10:26:52.613+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.633+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.655+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.676+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206363                                                             ]LOG]!><time="10:26:52.704+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.728+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.757+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.784+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206364                                                             ]LOG]!><time="10:26:52.817+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.843+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.870+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:52.896+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206365                                                             ]LOG]!><time="10:26:52.928+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:52.954+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:52.980+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.006+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206366                                                             ]LOG]!><time="10:26:53.039+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.068+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.090+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.111+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206367                                                             ]LOG]!><time="10:26:53.292+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.323+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.368+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.407+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206368                                                             ]LOG]!><time="10:26:53.468+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.494+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.521+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.547+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206369                                                             ]LOG]!><time="10:26:53.578+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.599+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.619+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.641+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206370                                                             ]LOG]!><time="10:26:53.669+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.689+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.711+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.734+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206371                                                             ]LOG]!><time="10:26:53.767+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.788+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.809+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.830+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206372                                                             ]LOG]!><time="10:26:53.859+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.879+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.900+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:53.921+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206373                                                             ]LOG]!><time="10:26:53.948+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:53.969+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:53.989+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.010+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206374                                                             ]LOG]!><time="10:26:54.037+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.058+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.079+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.108+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206375                                                             ]LOG]!><time="10:26:54.142+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.169+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.195+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.223+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206376                                                             ]LOG]!><time="10:26:54.252+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.272+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.293+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.314+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206377                                                             ]LOG]!><time="10:26:54.342+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.362+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.384+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.404+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206378                                                             ]LOG]!><time="10:26:54.432+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.452+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.473+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.494+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206379                                                             ]LOG]!><time="10:26:54.521+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.541+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.563+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.584+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206380                                                             ]LOG]!><time="10:26:54.614+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.634+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.655+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.676+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206381                                                             ]LOG]!><time="10:26:54.704+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.724+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.745+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.765+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206382                                                             ]LOG]!><time="10:26:54.793+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:54.819+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:54.846+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:54.885+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206383                                                             ]LOG]!><time="10:26:55.005+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:55.069+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:55.135+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:55.217+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206384                                                             ]LOG]!><time="10:26:55.304+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:55.357+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:55.406+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:55.616+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206385                                                             ]LOG]!><time="10:26:55.671+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:55.723+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:55.776+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:55.816+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206386                                                             ]LOG]!><time="10:26:55.875+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:55.912+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:55.951+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:55.987+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206387                                                             ]LOG]!><time="10:26:56.048+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:56.086+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:56.129+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:56.172+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206388                                                             ]LOG]!><time="10:26:56.230+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:56.277+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:56.329+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:56.382+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206389                                                             ]LOG]!><time="10:26:56.477+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:56.911+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:56.943+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:56.963+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206390                                                             ]LOG]!><time="10:26:56.992+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Running Scan-XO_WebSRG_Checks                                               ]LOG]!><time="10:26:57.013+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:57.196+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Open
+MatchedData         : Open
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:57.221+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Scan Module determined Status is 'Open'                                     ]LOG]!><time="10:26:57.509+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:57.533+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206391                                                             ]LOG]!><time="10:26:57.574+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:57.601+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:57.628+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:57.656+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206392                                                             ]LOG]!><time="10:26:57.689+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:57.710+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:57.735+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:57.757+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206393                                                             ]LOG]!><time="10:26:57.787+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:57.809+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:57.831+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:57.853+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206394                                                             ]LOG]!><time="10:26:57.884+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:57.910+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:57.937+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:57.964+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206395                                                             ]LOG]!><time="10:26:57.998+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:58.027+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:58.056+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:58.083+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206396                                                             ]LOG]!><time="10:26:58.118+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:58.147+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:58.174+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:58.201+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206397                                                             ]LOG]!><time="10:26:58.230+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:58.251+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:58.273+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:58.294+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206398                                                             ]LOG]!><time="10:26:58.323+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:58.343+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:58.365+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:58.386+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206399                                                             ]LOG]!><time="10:26:58.409+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Running Scan-XO_WebSRG_Checks                                               ]LOG]!><time="10:26:58.430+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:58.570+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : NotAFinding
+MatchedData         : NotAFinding
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:58.595+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Scan Module determined Status is 'NotAFinding'                              ]LOG]!><time="10:26:59.018+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.044+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206400                                                             ]LOG]!><time="10:26:59.079+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.105+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.135+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.159+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206401                                                             ]LOG]!><time="10:26:59.187+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.207+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.230+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.251+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206402                                                             ]LOG]!><time="10:26:59.280+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.301+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.322+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.343+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206403                                                             ]LOG]!><time="10:26:59.372+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.393+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.414+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.435+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206404                                                             ]LOG]!><time="10:26:59.463+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.484+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.506+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.526+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206405                                                             ]LOG]!><time="10:26:59.554+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.575+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.597+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.617+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206406                                                             ]LOG]!><time="10:26:59.645+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.666+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.686+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.711+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206407                                                             ]LOG]!><time="10:26:59.745+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.770+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.797+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.823+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206408                                                             ]LOG]!><time="10:26:59.852+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.872+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.893+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:26:59.914+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206409                                                             ]LOG]!><time="10:26:59.946+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:26:59.971+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:26:59.998+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.026+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206410                                                             ]LOG]!><time="10:27:00.095+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.122+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.149+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.176+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206411                                                             ]LOG]!><time="10:27:00.210+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.237+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.263+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.291+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206412                                                             ]LOG]!><time="10:27:00.331+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.364+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.399+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.434+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206413                                                             ]LOG]!><time="10:27:00.488+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.523+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.560+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.591+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206414                                                             ]LOG]!><time="10:27:00.644+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.673+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.708+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.744+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206415                                                             ]LOG]!><time="10:27:00.779+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.809+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.831+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.853+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206416                                                             ]LOG]!><time="10:27:00.882+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.903+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:00.924+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:00.945+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206417                                                             ]LOG]!><time="10:27:00.974+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:00.998+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.044+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.071+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206418                                                             ]LOG]!><time="10:27:01.106+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.137+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.164+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.191+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206419                                                             ]LOG]!><time="10:27:01.233+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.259+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.287+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.315+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206421                                                             ]LOG]!><time="10:27:01.350+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.370+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.392+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.413+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206422                                                             ]LOG]!><time="10:27:01.442+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.462+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.484+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.505+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206423                                                             ]LOG]!><time="10:27:01.534+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.555+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.576+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.598+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206424                                                             ]LOG]!><time="10:27:01.627+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.647+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.668+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.690+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206425                                                             ]LOG]!><time="10:27:01.719+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.739+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.761+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.781+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206426                                                             ]LOG]!><time="10:27:01.810+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.831+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.852+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.873+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206427                                                             ]LOG]!><time="10:27:01.903+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:01.923+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:01.944+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:01.965+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206428                                                             ]LOG]!><time="10:27:01.995+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:02.016+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:02.038+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:02.061+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206430                                                             ]LOG]!><time="10:27:02.096+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:02.123+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:02.149+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:02.170+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206431                                                             ]LOG]!><time="10:27:02.193+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Running Scan-XO_WebSRG_Checks                                               ]LOG]!><time="10:27:02.213+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Failed to execute vuln scan                                                 ]LOG]!><time="10:27:02.292+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      TimeStamp : 01/24/2026 10:27:02                                           ]LOG]!><time="10:27:02.364+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Message : A parameter cannot be found that matches parameter name 'FindingHash'.]LOG]!><time="10:27:02.394+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Category : InvalidArgument                                                ]LOG]!><time="10:27:02.424+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Reason : ParameterBindingException                                        ]LOG]!><time="10:27:02.452+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      TargetName :                                                              ]LOG]!><time="10:27:02.480+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      FullyQualified : NamedParameterNotFound,Get-V206431                       ]LOG]!><time="10:27:02.508+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ScriptName :                                                              ]LOG]!><time="10:27:02.537+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Line : 1                                                                  ]LOG]!><time="10:27:02.566+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Column : 16                                                               ]LOG]!><time="10:27:02.597+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      LineText : Try {$Result = Get-V206431 -ScanType Classified -AnswerFile '/tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml' -AnswerKey XO -Username root -UserSID NA} Catch {$Result = @{CodeFail = $true; ErrorData = $_; Status="Not_Reviewed"}}; Return $Result]LOG]!><time="10:27:02.620+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ExceptionType : System.Management.Automation.ParameterBindingException    ]LOG]!><time="10:27:02.642+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      HResult : 0x80131501                                                      ]LOG]!><time="10:27:02.665+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ScriptStackTrace : at Get-V206431, /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1: line 5942
+at <ScriptBlock>, <No file>: line 1]LOG]!><time="10:27:02.687+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      WasTerminating : False                                                    ]LOG]!><time="10:27:02.719+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Computer :                                                                ]LOG]!><time="10:27:02.743+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ParentFunctionName : Invoke-STIGScan                                      ]LOG]!><time="10:27:02.766+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[Group ID : V-206432                                                             ]LOG]!><time="10:27:02.804+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:02.825+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:02.847+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:02.868+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206433                                                             ]LOG]!><time="10:27:02.897+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:02.918+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:02.939+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:02.960+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206434                                                             ]LOG]!><time="10:27:02.983+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Running Scan-XO_WebSRG_Checks                                               ]LOG]!><time="10:27:03.008+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Failed to execute vuln scan                                                 ]LOG]!><time="10:27:03.138+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      TimeStamp : 01/24/2026 10:27:03                                           ]LOG]!><time="10:27:03.185+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Message : A parameter cannot be found that matches parameter name 'FindingHash'.]LOG]!><time="10:27:03.212+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Category : InvalidArgument                                                ]LOG]!><time="10:27:03.239+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Reason : ParameterBindingException                                        ]LOG]!><time="10:27:03.265+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      TargetName :                                                              ]LOG]!><time="10:27:03.290+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      FullyQualified : NamedParameterNotFound,Get-V206434                       ]LOG]!><time="10:27:03.316+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ScriptName :                                                              ]LOG]!><time="10:27:03.337+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Line : 1                                                                  ]LOG]!><time="10:27:03.358+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Column : 16                                                               ]LOG]!><time="10:27:03.378+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      LineText : Try {$Result = Get-V206434 -ScanType Classified -AnswerFile '/tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml' -AnswerKey XO -Username root -UserSID NA} Catch {$Result = @{CodeFail = $true; ErrorData = $_; Status="Not_Reviewed"}}; Return $Result]LOG]!><time="10:27:03.398+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ExceptionType : System.Management.Automation.ParameterBindingException    ]LOG]!><time="10:27:03.418+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      HResult : 0x80131501                                                      ]LOG]!><time="10:27:03.438+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ScriptStackTrace : at Get-V206434, /tmp/Evaluate-STIG_RemoteComputer/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1: line 6162
+at <ScriptBlock>, <No file>: line 1]LOG]!><time="10:27:03.458+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      WasTerminating : False                                                    ]LOG]!><time="10:27:03.479+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      Computer :                                                                ]LOG]!><time="10:27:03.499+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[      ParentFunctionName : Invoke-STIGScan                                      ]LOG]!><time="10:27:03.520+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[Group ID : V-206435                                                             ]LOG]!><time="10:27:03.554+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:03.574+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:03.596+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:03.616+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206436                                                             ]LOG]!><time="10:27:03.645+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:03.665+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:03.686+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:03.715+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206437                                                             ]LOG]!><time="10:27:03.755+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:03.782+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:03.810+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:03.836+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206438                                                             ]LOG]!><time="10:27:03.871+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:03.897+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:03.924+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:03.950+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206439                                                             ]LOG]!><time="10:27:03.984+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.011+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.038+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.064+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206440                                                             ]LOG]!><time="10:27:04.096+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.117+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.138+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.158+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206441                                                             ]LOG]!><time="10:27:04.188+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.209+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.230+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.251+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206442                                                             ]LOG]!><time="10:27:04.280+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.302+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.324+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.345+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206443                                                             ]LOG]!><time="10:27:04.375+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.396+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.417+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.438+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206444                                                             ]LOG]!><time="10:27:04.467+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.488+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.509+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.530+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-206445                                                             ]LOG]!><time="10:27:04.560+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.581+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.602+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.623+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-239371                                                             ]LOG]!><time="10:27:04.653+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.673+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.694+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.716+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264337                                                             ]LOG]!><time="10:27:04.745+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.766+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.787+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.808+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264338                                                             ]LOG]!><time="10:27:04.837+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.858+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.880+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.901+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264339                                                             ]LOG]!><time="10:27:04.930+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:04.950+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:04.972+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:04.993+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264340                                                             ]LOG]!><time="10:27:05.070+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.105+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.130+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.160+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264341                                                             ]LOG]!><time="10:27:05.195+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.220+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.241+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.262+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264342                                                             ]LOG]!><time="10:27:05.291+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.312+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.334+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.355+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264343                                                             ]LOG]!><time="10:27:05.385+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.406+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.427+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.451+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264344                                                             ]LOG]!><time="10:27:05.487+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.514+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.540+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.567+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264345                                                             ]LOG]!><time="10:27:05.614+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.640+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.667+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.696+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264346                                                             ]LOG]!><time="10:27:05.727+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.747+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.768+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.789+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264347                                                             ]LOG]!><time="10:27:05.818+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.839+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.860+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.881+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264348                                                             ]LOG]!><time="10:27:05.911+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:05.931+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:05.953+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:05.980+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264349                                                             ]LOG]!><time="10:27:06.015+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.042+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.068+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.097+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264350                                                             ]LOG]!><time="10:27:06.133+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.156+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.178+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.198+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264351                                                             ]LOG]!><time="10:27:06.229+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.250+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.271+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.292+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264352                                                             ]LOG]!><time="10:27:06.321+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.343+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.366+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.388+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264353                                                             ]LOG]!><time="10:27:06.423+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.449+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.476+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.498+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264354                                                             ]LOG]!><time="10:27:06.527+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.548+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.569+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.590+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264355                                                             ]LOG]!><time="10:27:06.621+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.642+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.663+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.684+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264356                                                             ]LOG]!><time="10:27:06.714+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.734+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.756+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.776+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264357                                                             ]LOG]!><time="10:27:06.806+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.826+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.848+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.868+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264358                                                             ]LOG]!><time="10:27:06.898+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:06.920+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:06.941+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:06.961+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264359                                                             ]LOG]!><time="10:27:06.991+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.012+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.033+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.054+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264360                                                             ]LOG]!><time="10:27:07.084+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.105+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.130+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.156+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264361                                                             ]LOG]!><time="10:27:07.199+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.226+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.249+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.270+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264362                                                             ]LOG]!><time="10:27:07.300+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.321+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.343+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.364+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264363                                                             ]LOG]!><time="10:27:07.395+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.416+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.437+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.458+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264364                                                             ]LOG]!><time="10:27:07.488+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.509+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.530+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.551+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264365                                                             ]LOG]!><time="10:27:07.580+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.601+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.623+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.643+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-264366                                                             ]LOG]!><time="10:27:07.673+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.694+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.716+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.739+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-279028                                                             ]LOG]!><time="10:27:07.770+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:07.791+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : Not_Reviewed
+MatchedData         : Not_Reviewed
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:07.812+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:07.833+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Group ID : V-279029                                                             ]LOG]!><time="10:27:07.857+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Running Scan-XO_WebSRG_Checks                                               ]LOG]!><time="10:27:07.877+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Answer key 'XO', index '1' selected.  Weight: 16                            ]LOG]!><time="10:27:08.019+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Match info: 
+ConfiguredAttribute : ExpectedStatus
+ConfiguredData      : NotAFinding
+MatchedData         : NotAFinding
+ValidInContext      : True
+AttributeWeight     : 0
+
+ConfiguredAttribute : Name
+ConfiguredData      : XO
+MatchedData         : XO
+ValidInContext      : True
+AttributeWeight     : 16
+
+
+]LOG]!><time="10:27:08.043+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="18" file="">
+<![LOG[    Scan Module determined Status is 'NotAFinding'                              ]LOG]!><time="10:27:08.359+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[    Adding Comment from answer file for Key 'XO'                                ]LOG]!><time="10:27:08.380+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Scan completed with errors                                                      ]LOG]!><time="10:27:08.415+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[EvalScore: 1.59%                                                                ]LOG]!><time="10:27:08.445+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATI Open/NR: 3                                                                 ]LOG]!><time="10:27:08.484+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATII Open/NR: 121                                                              ]LOG]!><time="10:27:08.506+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII Open/NR: 0                                                               ]LOG]!><time="10:27:08.528+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Creating CKL file                                                               ]LOG]!><time="10:27:08.557+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKL File                                                             ]LOG]!><time="10:27:12.290+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_XO_WebSRG_V4R4_20260124-102708.ckl' : Passed.                              ]LOG]!><time="10:27:12.349+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Creating CKLB file                                                              ]LOG]!><time="10:27:12.380+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Validating CKLB File                                                            ]LOG]!><time="10:27:15.311+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG['XO1_XO_WebSRG_V4R4_20260124-102712.cklb' : Passed.                             ]LOG]!><time="10:27:15.494+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Removing scan module from memory                                                ]LOG]!><time="10:27:15.526+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Please report issues to https://spork.navsea.navy.mil/nswc-crane-division/evaluate-stig/-/issues]LOG]!><time="10:27:16.769+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="3" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:27:16.794+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Calculating risk score...                                                       ]LOG]!><time="10:27:16.814+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[RiskRating: Very High                                                           ]LOG]!><time="10:27:16.927+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[WeightedAvg: 100%                                                               ]LOG]!><time="10:27:16.952+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATI_OpenNRTotal: 0                                                             ]LOG]!><time="10:27:16.973+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATI_PossibleTotal: 0                                                           ]LOG]!><time="10:27:16.994+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATII_OpenNRTotal: 152                                                          ]LOG]!><time="10:27:17.015+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATII_PossibleTotal: 152                                                        ]LOG]!><time="10:27:17.037+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII_OpenNRTotal: 8                                                           ]LOG]!><time="10:27:17.058+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[CATIII_PossibleTotal: 8                                                         ]LOG]!><time="10:27:17.102+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:27:17.122+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Generating summary report                                                       ]LOG]!><time="10:27:17.145+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Retaining a maximum of '365' previous scans per -PreviousToKeep parameter       ]LOG]!><time="10:27:18.567+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[----------------------------------                                              ]LOG]!><time="10:27:18.588+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Copying output files to /tmp/Evaluate-STIG_RemoteComputer/STIG_Compliance/XO1   ]LOG]!><time="10:27:18.608+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Removing temporary files                                                        ]LOG]!><time="10:27:18.659+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Done!                                                                           ]LOG]!><time="10:27:18.691+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Total Time : 00:00:49.7118616                                                   ]LOG]!><time="10:27:18.714+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Total checklists in Results Directory : 2                                       ]LOG]!><time="10:27:18.741+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[Exiting with exit code 0                                                        ]LOG]!><time="10:27:18.776+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
+<![LOG[==========[End Local Logging]==========                                         ]LOG]!><time="10:27:18.796+0500_" date="01-24-2026" component="Evaluate-STIG 1.2507.6 [PID: 625069]" context="root" type="1" thread="11" file="">
