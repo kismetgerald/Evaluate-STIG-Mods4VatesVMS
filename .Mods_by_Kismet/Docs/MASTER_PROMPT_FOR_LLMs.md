@@ -1,9 +1,65 @@
 # Complete Implementation Guide for V-###### Functions
 
-**Date:** January 26, 2026 (Updated after Session #18)
+**Date:** January 26, 2026 (Updated February 11, 2026 — Session #36: GitHub workflow added)
 **Purpose:** Comprehensive prompt templates for implementing XO WebSRG CAT II checks
 **Tested With:** GitHub Copilot, Claude Sonnet 4.5, Claude Code
 **Success Rate:** 100% (20 functions implemented using these patterns)
+
+---
+
+## 🔀 Part 0: GitHub Workflow (MANDATORY — Do This First)
+
+All implementation work must be done on a feature branch. **Never commit directly to `main`.**
+
+### Step-by-Step Branch Setup
+
+```bash
+# 1. Ensure main is up to date
+git checkout main
+git pull origin main
+
+# 2. Create a feature branch for this batch
+git checkout -b feature/<short-description>
+# Branch naming examples:
+#   feature/xo-asd-cat1-batch1
+#   feature/xo-asd-cat2-session-mgmt
+#   feature/xcpng-vmm-cat1-fixes
+#   fix/answer-file-xml-escaping
+#   docs/session-36-update
+```
+
+### Commit Incrementally During the Session
+
+After each function is validated (standalone test passes or framework test passes), commit
+before moving to the next function. Don't accumulate all changes into one end-of-session commit.
+
+```bash
+# After each validated function
+git add Evaluate-STIG/Modules/Scan-XO_WebSRG_Checks/Scan-XO_WebSRG_Checks.psm1
+git add Evaluate-STIG/AnswerFiles/XO_v5.x_WebSRG_AnswerFile.xml
+git commit -m "Implement V-206430: DoD PKI trust anchor verification"
+
+# After a full batch test passes (e.g., Test125)
+git add .Mods_by_Kismet/Docs/
+git commit -m "Session #36: V-206430, V-264339 implemented and validated (Test125)"
+```
+
+### Push and Open PR When the Session Is Complete
+
+```bash
+git push -u origin feature/<short-description>
+gh pr create --title "Session #36: XO ASD CAT II batch 1" \
+  --body "Implements V-206430, V-264339, V-264354 with answer file entries. Test125 validated."
+```
+
+### After PR Is Merged
+
+```bash
+# Pull the updated main before starting the next branch
+git checkout main
+git pull origin main
+git checkout -b feature/<next-batch-description>
+```
 
 ---
 
@@ -708,6 +764,8 @@ VERIFICATION COMPLETE when:
 
 ---
 
-**Last Updated:** January 26, 2026 (Session #18 Complete)
+**Last Updated:** February 11, 2026 (Session #36 — GitHub workflow added as Part 0)
 **Maintained By:** Kismet Agbasi (with GitHub Copilot and Claude Code)
 **Status:** Production Ready - All patterns validated through 20 successful implementations
+**GitHub Repo:** https://github.com/kismetgerald/Evaluate-STIG-Mods4VatesVMS
+**Branch Policy:** All work on feature branches — NEVER commit directly to `main`
