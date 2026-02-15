@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total CAT II/III** | 252 |
-| **Implemented** | 24 |
-| **Stubs (Not_Reviewed)** | 228 |
-| **Completion** | 9.5% |
+| **Implemented** | 33 |
+| **Stubs (Not_Reviewed)** | 219 |
+| **Completion** | 13.1% |
 
-**Last validated test:** Test134 — Exit 0, EvalScore 5.24%, 2m 57s (February 15, 2026)
+**Last validated test:** Test135 — Exit 0, EvalScore 6.99%, 2m 57s (February 15, 2026)
 
 **Reference:** CAT I tracker (34 functions) → `XO_ASD_IMPLEMENTATION_TRACKER_CAT_I.md`
 
@@ -65,16 +65,16 @@
 |---------|--------|---------|---------|-------|
 | V-222387 | ✅ Impl | #5 | — | Already implemented |
 | V-222388 | ✅ Impl | #5 | — | Already implemented |
-| V-222401 | 🟡 Stub | — | — | |
-| V-222402 | 🟡 Stub | — | — | |
-| V-222405 | 🟡 Stub | — | — | |
-| V-222406 | 🟡 Stub | — | — | |
-| V-222407 | 🟡 Stub | — | — | |
+| V-222401 | ✅ Test135 | #37 | Not_Applicable | SAML not configured; if SAML active → Open |
+| V-222402 | ✅ Test135 | #37 | Not_Applicable | XO uses REST/JSON, not SOAP/WS-Security |
+| V-222405 | ✅ Test135 | #37 | Not_Applicable | SAML OneTimeUse; not configured on XO1 |
+| V-222406 | ✅ Test135 | #37 | Not_Applicable | SAML SessionIndex; SAML not configured |
+| V-222407 | ✅ Test135 | #37 | Open | No LDAP/AD configured on XO1 |
 | V-222408 | ✅ Impl | #5 | — | Already implemented (generic placeholder) |
-| V-222409 | 🟡 Stub | — | — | |
-| V-222410 | 🟡 Stub | — | — | |
-| V-222411 | 🟡 Stub | — | — | |
-| V-222412 | 🟡 Stub | — | — | |
+| V-222409 | ✅ Test135 | #37 | Open | No native 72-hour temp account expiry in XO |
+| V-222410 | ✅ Test135 | #37 | Not_Applicable | XO has no emergency account concept |
+| V-222411 | ✅ Test135 | #37 | Open | No native 35-day inactivity disable in XO |
+| V-222412 | ✅ Test135 | #37 | Open | Requires periodic manual account review |
 
 ### Batch 3: V-222413 to V-222424 (~10 functions)
 *Topics: Application isolation, security boundaries, interface definition*
