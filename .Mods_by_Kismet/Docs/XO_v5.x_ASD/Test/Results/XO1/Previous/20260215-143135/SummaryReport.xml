@@ -22,17 +22,15 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;'&#xA;sr0">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//sr0/'
+1024M
 DeviceID                       '//'
-1024M</Size>
+Index                          '//sr0/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +40,15 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;'&#xA;xvda">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda/'
+30G
 DeviceID                       '//'
-30G</Size>
+Index                          '//xvda/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +58,16 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-
-boot
-Size                           [512M]</DeviceID>
+Size                           [512M]
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda1/'
+512M
 DeviceID                       '///boot/efi'
-512M</Size>
+Index                          '//xvda1/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +77,15 @@ DeviceID                       '///boot/efi'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda2/'
+28.5G
 DeviceID                       '///'
-28.5G</Size>
+Index                          '//xvda2/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +95,15 @@ DeviceID                       '///'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;[SWAP]'&#xA;xvda3">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda3/'
+976M
 SWAP
-976M</Size>
+Index                          '//xvda3/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -128,17 +119,17 @@ SWAP
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>139</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>143</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>90</WeightedAvg>
+      <WeightedAvg>93</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-15T18:25:03.2189178-05:00" EvalScore="8.39">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-15T14:11:43.0529338-05:00" EvalScore="6.99">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -175,7 +166,7 @@ SWAP
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="12" Open="10" NotAFinding="1" Not_Reviewed="207">
+      <CAT_II Total="230" Not_Applicable="8" Open="7" NotAFinding="1" Not_Reviewed="214">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -195,13 +186,13 @@ SWAP
         <Vuln RuleTitle="Shared/group account credentials must be terminated when members leave the group." Status="Not_Reviewed" ID="V-222408" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically remove or disable temporary user accounts 72 hours after account creation." Status="Open" ID="V-222409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Unnecessary application accounts must be disabled, or deleted." Status="Open" ID="V-222412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account creation." Status="Not_Applicable" ID="V-222413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account modification." Status="Not_Applicable" ID="V-222414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account disabling actions." Status="Not_Applicable" ID="V-222415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account removal actions." Status="Not_Applicable" ID="V-222416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account enabling actions." Status="Open" ID="V-222421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Application data protection requirements must be identified and documented." Status="Open" ID="V-222423" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts." Status="Open" ID="V-222424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account creation." Status="Not_Reviewed" ID="V-222413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account modification." Status="Not_Reviewed" ID="V-222414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account disabling actions." Status="Not_Reviewed" ID="V-222415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account removal actions." Status="Not_Reviewed" ID="V-222416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account enabling actions." Status="Not_Reviewed" ID="V-222421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Application data protection requirements must be identified and documented." Status="Not_Reviewed" ID="V-222423" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts." Status="Not_Reviewed" ID="V-222424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must enforce organization-defined discretionary access control policies over defined subjects and objects." Status="Not_Reviewed" ID="V-222426" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies." Status="Not_Reviewed" ID="V-222427" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies." Status="Not_Reviewed" ID="V-222428" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -407,15 +398,15 @@ SWAP
         <Vuln RuleTitle="The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function." Status="Not_Reviewed" ID="V-222673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-265634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
-      <CAT_III Total="22" Not_Applicable="1" Open="7" NotAFinding="0" Not_Reviewed="14">
+      <CAT_III Total="22" Not_Applicable="1" Open="2" NotAFinding="0" Not_Reviewed="19">
         <Vuln RuleTitle="The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-222392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must have a process, feature or function that prevents removal or disabling of emergency accounts." Status="Not_Applicable" ID="V-222410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically disable accounts after a 35 day period of account inactivity." Status="Open" ID="V-222411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created." Status="Open" ID="V-222417" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified." Status="Open" ID="V-222418" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions." Status="Open" ID="V-222419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions." Status="Open" ID="V-222420" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions." Status="Open" ID="V-222422" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created." Status="Not_Reviewed" ID="V-222417" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified." Status="Not_Reviewed" ID="V-222418" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions." Status="Not_Reviewed" ID="V-222419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions." Status="Not_Reviewed" ID="V-222420" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions." Status="Not_Reviewed" ID="V-222422" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Not_Reviewed" ID="V-222434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Not_Reviewed" ID="V-222435" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Not_Reviewed" ID="V-222436" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
