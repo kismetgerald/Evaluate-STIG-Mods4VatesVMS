@@ -3304,25 +3304,36 @@ Function Get-V222413 {
     # Check 1: Detect auth-ldap plugin (enterprise account management = Not_Applicable)
     $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
     $ldapConfigured = $false
-    if ($ldapDirStr -ne "") {
-        $FindingDetails += "auth-ldap plugin found: " + $nl + $ldapDirStr + $nl
-        # Check if the plugin is actively configured
-        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
-        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
-        if ($ldapEnabledStr -ne "") {
-            $FindingDetails += "auth-ldap referenced in config: " + $ldapEnabledStr + $nl
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
             $ldapConfigured = $true
         }
         else {
-            $FindingDetails += "auth-ldap plugin present but not referenced in config files." + $nl
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
         }
     }
-    else {
-        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
     }
     $FindingDetails += $nl
 
@@ -3507,24 +3518,36 @@ Function Get-V222414 {
     # Check 1: Detect auth-ldap plugin (enterprise account management = Not_Applicable)
     $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
     $ldapConfigured = $false
-    if ($ldapDirStr -ne "") {
-        $FindingDetails += "auth-ldap plugin found: " + $nl + $ldapDirStr + $nl
-        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
-        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
-        if ($ldapEnabledStr -ne "") {
-            $FindingDetails += "auth-ldap referenced in config: " + $ldapEnabledStr + $nl
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
             $ldapConfigured = $true
         }
         else {
-            $FindingDetails += "auth-ldap plugin present but not referenced in config files." + $nl
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
         }
     }
-    else {
-        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
     }
     $FindingDetails += $nl
 
@@ -3680,24 +3703,36 @@ Function Get-V222415 {
     # Check 1: Detect auth-ldap plugin
     $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
     $ldapConfigured = $false
-    if ($ldapDirStr -ne "") {
-        $FindingDetails += "auth-ldap plugin found: " + $nl + $ldapDirStr + $nl
-        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
-        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
-        if ($ldapEnabledStr -ne "") {
-            $FindingDetails += "auth-ldap referenced in config: " + $ldapEnabledStr + $nl
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
             $ldapConfigured = $true
         }
         else {
-            $FindingDetails += "auth-ldap plugin present but not referenced in config files." + $nl
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
         }
     }
-    else {
-        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
     }
     $FindingDetails += $nl
 
@@ -3850,24 +3885,36 @@ Function Get-V222416 {
     # Check 1: Detect auth-ldap plugin
     $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
-    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
     $ldapConfigured = $false
-    if ($ldapDirStr -ne "") {
-        $FindingDetails += "auth-ldap plugin found: " + $nl + $ldapDirStr + $nl
-        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
-        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
-        if ($ldapEnabledStr -ne "") {
-            $FindingDetails += "auth-ldap referenced in config: " + $ldapEnabledStr + $nl
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
             $ldapConfigured = $true
         }
         else {
-            $FindingDetails += "auth-ldap plugin present but not referenced in config files." + $nl
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
         }
     }
-    else {
-        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
     }
     $FindingDetails += $nl
 
