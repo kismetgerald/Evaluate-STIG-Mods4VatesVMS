@@ -438,11 +438,27 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML not configured — control does not apply-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no active SAML configuration in XO config files (/opt/xo/xo-server/config.toml or /etc/xo-server/config.toml). XO supports SAML via the @xen-orchestra/auth-saml plugin, but SAML is not enabled on this system. This control requires SAML authentication to be configured and active; since SAML is not in use, the control is Not Applicable.
+
+If SAML is later enabled, this finding must be re-evaluated. The SAML IdP must generate a unique assertion ID (the saml:Assertion ID attribute) for every assertion it issues. Verify the IdP configuration enforces uniqueness — most modern IdPs (ADFS, Okta, Azure AD) do this by default.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML configured — manual review required-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected active SAML configuration in XO config.toml. XO delegates SAML assertion handling to the configured Identity Provider (IdP). This control requires the ISSO/ISSM to verify with the IdP administrator that:
+
+1. The IdP generates a unique ID attribute for every SAML assertion issued to XO.
+2. The XO SAML plugin does not accept assertions with duplicate or reused IDs.
+3. The IdP enforces the uniqueness requirement per SAML 2.0 Core section 1.3.4.
+
+Action required: Obtain documentation or configuration evidence from the IdP administrator confirming assertion ID uniqueness is enforced. Document the IdP product, version, and the uniqueness enforcement mechanism (e.g., ADFS enforces this by default via the AssertionID attribute generated as a GUID).</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -452,11 +468,15 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--XO uses REST/JSON API — WS-Security/SOAP intermediary assertions do not apply-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan confirmed XO (Xen Orchestra) uses a REST/JSON API architecture, not SOAP/WS-Security. WS-Security encrypted assertion tokens are a SOAP-specific mechanism (WS-Security standard, OASIS 2004). XO has no SOAP endpoint, no WS-Security middleware, and no assertion intermediary in the SOAP sense.
+
+XO API communications occur over HTTPS (TLS), which provides equivalent confidentiality protection for all data in transit. Authentication uses JSON Web Token (JWT) session tokens issued over TLS, not SOAP assertion tokens passed through XML intermediaries. This control is Not Applicable because the technology (WS-Security/SOAP assertions) is not used by XO.
+
+Note: If a future XO deployment introduces a SOAP-based integration gateway, this finding must be re-evaluated for that component.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -494,11 +514,27 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML not configured — control does not apply-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no active SAML configuration on this system. The OneTimeUse element is a SAML 2.0 Conditions element restriction that prevents assertion replay. Since SAML is not configured, no SAML assertions are generated and this control does not apply.
+
+If SAML is later enabled, verify: (1) the IdP only includes at most one OneTimeUse element per assertion Conditions block; (2) the XO SAML plugin enforces single-use assertion consumption and rejects replays. Most SAML 2.0-compliant IdPs enforce this automatically.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML configured — manual review required-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected active SAML configuration. SAML 2.0 Core (section 2.5.1.5) requires that the Conditions element contain at most one OneTimeUse element per assertion. XO delegates SAML assertion processing to the @xen-orchestra/auth-saml plugin and the upstream IdP.
+
+Action required: The ISSO/ISSM must verify with the IdP administrator that:
+1. The IdP never includes more than one OneTimeUse element in the Conditions block of any assertion sent to XO.
+2. The XO SAML plugin enforces OneTimeUse semantics — each assertion is only accepted once (replay protection).
+
+Document the IdP product, version, and the configuration or code reference confirming OneTimeUse enforcement. Common IdPs (ADFS, Okta, Azure AD) enforce this by default and may be documented by citing the product compliance statement.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -508,11 +544,28 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must ensure messages are encrypted when the SessionIndex is tied to privacy data.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML not configured — control does not apply-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no active SAML configuration on this system. The SessionIndex attribute is a SAML 2.0 element used in AuthnStatement to correlate the IdP session with the SP session. Since SAML is not configured, no SAML SessionIndex values are generated or transmitted, and this control does not apply.
+
+If SAML is later enabled, verify: (1) all SAML messages containing a SessionIndex attribute are transmitted over encrypted channels (HTTPS/TLS); (2) the XO SAML plugin is configured to reject unencrypted SAML responses. XO's TLS-only API configuration provides this protection by default.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--SAML configured — manual review required-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected active SAML configuration. SAML 2.0 SessionIndex values that are correlated with user privacy data must be transmitted only over encrypted channels.
+
+Action required: The ISSO/ISSM must verify:
+1. All SAML AuthnResponse and LogoutRequest messages containing SessionIndex are sent only over HTTPS (TLS 1.2 or higher).
+2. The XO application does not accept SAML messages over plain HTTP.
+3. The IdP is configured to only deliver assertions to the registered HTTPS Assertion Consumer Service (ACS) URL.
+
+Verify the ACS URL registered in the IdP for XO uses https:// not http://. Document the IdP configuration and confirm TLS is enforced end-to-end between IdP and XO. XO's default TLS configuration (if properly configured) satisfies this requirement.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -522,11 +575,31 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must provide automated mechanisms for supporting account management functions.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--LDAP/AD integration detected — automated account management satisfied-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected LDAP or Active Directory integration configured in XO config.toml. LDAP/AD integration satisfies the requirement for automated account management mechanisms by delegating user provisioning, disabling, and removal to the enterprise directory service.
+
+This means: (1) when a user account is disabled or deleted in Active Directory, XO authentication fails automatically at the next login attempt; (2) account creation, modification, and termination workflows are handled by the enterprise IdM/IdP system (e.g., AD, LDAP); (3) XO local account management is supplemented by the directory service's automated account lifecycle controls.
+
+The ISSO/ISSM should document the LDAP/AD integration as the automated account management mechanism in the system's authorization artifacts.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--No LDAP/AD — manual account management only-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no LDAP or Active Directory integration in XO config files. XO is operating with local account management only, which requires manual administrative action for each account lifecycle event.
+
+Action required to achieve compliance:
+1. Configure LDAP/AD integration in XO config.toml under the [ldap] section (or equivalent SAML/OIDC integration).
+2. Alternatively, integrate XO with an enterprise Identity Management (IdM) system that provides automated provisioning/deprovisioning via SCIM or LDAP.
+
+Without automated account management, the ISSO/ISSM must document a compensating control: a manual account review process with a defined schedule (recommend monthly) and documented evidence of reviews. This compensating control must be approved in the ATO package.
+
+Reference: config.toml LDAP configuration requires: ldap.url, ldap.bindDn, ldap.bindPassword, ldap.filter, and ldap.base entries.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -550,11 +623,18 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must automatically remove or disable temporary user accounts 72 hours after account creation.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--XO has no native 72-hour temporary account expiry — manual process or LDAP required-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan confirmed XO does not have a native mechanism to automatically expire or disable temporary accounts after 72 hours. XO account management is primarily through the web UI or xo-cli; there is no built-in account expiry field or scheduled deprovisioning job.
+
+Action required (choose one):
+1. LDAP/AD integration: Configure temporary accounts in Active Directory with an account expiration set to 72 hours from creation. XO will inherit the AD account expiry automatically.
+2. Administrative procedure: Implement a documented manual process where administrators create temporary accounts and schedule removal within 72 hours. The process must include: (a) a creation log with timestamp, (b) a scheduled reminder or ticket, (c) evidence of removal/disabling within 72 hours.
+3. External automation: Use the XO REST API (/rest/v0/users) with a scheduled job (cron/systemd timer) to disable or remove accounts created more than 72 hours ago.
+
+Document the chosen approach in the ISSO/ISSM authorization artifacts. If no temporary accounts are ever provisioned on this system, document that policy as a compensating control.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -564,11 +644,15 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must have a process, feature or function that prevents removal or disabling of emergency accounts. -->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--XO has no emergency account concept — control does not apply-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no emergency account designation or protection mechanism in XO. XO does not implement a concept of "emergency accounts" (also called break-glass or PACE accounts) as a distinct account type with protected status. All XO administrator accounts have equal administrative rights and can be enabled or disabled by any other administrator.
+
+Emergency access to the underlying XO infrastructure is handled at the operating system level (Debian 12 root account, SSH key-based access) rather than within the XO application itself. The operating system emergency access controls are assessed separately under the GPOS SRG for Debian 12.
+
+Since XO has no application-level emergency account feature or account type distinction, this control is Not Applicable. Document this assessment in the authorization artifacts noting that emergency system access relies on OS-level administrative mechanisms.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -578,11 +662,18 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: The application must automatically disable accounts after a 35 day period of account inactivity.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--XO lacks native 35-day inactivity disable — LDAP or manual process required-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no native inactivity-based account disable mechanism in XO. XO does not track last-login timestamps for accounts or automatically disable accounts after a period of inactivity. The XO LevelDB database stores user credentials but does not implement inactivity enforcement.
+
+Action required (choose one):
+1. LDAP/AD integration: Configure Active Directory with the "Account is disabled after N days of inactivity" Group Policy Object (GPO). Set the threshold to 35 days. AD will disable accounts automatically; XO inherits this via LDAP authentication failure.
+2. Administrative procedure: Implement a documented manual process where administrators review XO audit logs (or the XO user list via xo-cli) monthly and disable accounts with no login activity in the past 35 days. Document evidence of reviews.
+3. External automation: Use the XO REST API (/rest/v0/users) with a scheduled job that compares user last-activity timestamps from audit logs against the 35-day threshold.
+
+Document the chosen approach in the ISSO/ISSM authorization artifacts with evidence that inactivity monitoring is active and enforced.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -592,11 +683,19 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <!--RuleTitle: Unnecessary application accounts must be disabled, or deleted.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Manual account review required — no automated enforcement of "unnecessary" policy-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan enumerated XO user accounts from the LevelDB database or XO REST API. The scan cannot automatically determine which accounts are "unnecessary" — this requires human judgment based on current organizational roles and responsibilities.
+
+Action required:
+1. Review the list of XO user accounts displayed in the Finding Details section.
+2. For each account, verify that the account holder: (a) is a current employee or contractor, (b) still requires access to XO for their job function, (c) has the minimum required role (no excessive permissions).
+3. Disable or delete any accounts for: former employees, transferred personnel no longer needing access, test/demo accounts, shared accounts with no current business justification, or service accounts for decommissioned integrations.
+4. Document the account review with: reviewer name, date, accounts reviewed, actions taken, and justification for retained accounts.
+
+Schedule periodic account reviews (recommend every 30 days) and maintain documentation as evidence for ATO compliance. Use "xo-cli --list-users" or the XO web UI (Settings &gt; Users) to perform the review.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
