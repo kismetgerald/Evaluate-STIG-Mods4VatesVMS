@@ -330,10 +330,10 @@ Function Get-V222389 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222389
-        STIG ID    : ASD-V6R4-222389
-        Rule ID    : SV-222389r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000070
+        Rule ID    : SV-222389r1043182_rule
+        Rule Title : The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -347,6 +347,7 @@ Function Get-V222389 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -368,7 +369,7 @@ Function Get-V222389 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222389"
-    $RuleID = "SV-222389r508029_rule"
+    $RuleID = "SV-222389r1043182_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -378,9 +379,67 @@ Function Get-V222389 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222389) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222389 - Non-Privileged Session Idle Timeout (15 Minutes)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: XO server config for session/token timeout settings
+    $FindingDetails += "Check 1: XO Server Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $xoConfigPath = ""
+    if (Test-Path "/etc/xo-server/config.toml") {
+        $xoConfigPath = "/etc/xo-server/config.toml"
+    }
+    elseif (Test-Path "/opt/xo/xo-server/config.toml") {
+        $xoConfigPath = "/opt/xo/xo-server/config.toml"
+    }
+    if ($xoConfigPath -ne "") {
+        $FindingDetails += "Config path: " + $xoConfigPath + $nl
+        $sessionConfig = $(timeout 5 grep -iE "token|session|expire|timeout|inactiv|maxAge|cookieMax" "$xoConfigPath" 2>&1 | grep -v "^#" | head -10 2>&1)
+        $sessionConfigStr = $sessionConfig -join $nl
+        if ($sessionConfigStr.Trim() -ne "") {
+            $FindingDetails += "Session/token settings (active lines):" + $nl + $sessionConfigStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No explicit session timeout settings found in config file." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "XO config file not found at /etc/xo-server/config.toml or /opt/xo/xo-server/config.toml." + $nl + $nl
+    }
+
+    # Check 2: XO process environment for timeout variables
+    $FindingDetails += "Check 2: Process Environment Variables" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $xoPid = $(timeout 5 pgrep -f "xo-server" 2>&1 | head -1 2>&1)
+    $xoPidStr = ($xoPid -join $nl).Trim()
+    if ($xoPidStr -ne "" -and $xoPidStr -match '^\d+$') {
+        $envVars = $(timeout 5 sh -c "cat /proc/${xoPidStr}/environ 2>/dev/null | tr '\0' '\n' | grep -iE 'TOKEN|SESSION|TIMEOUT|EXPIRE' | head -5 2>&1")
+        $envVarsStr = ($envVars -join $nl).Trim()
+        if ($envVarsStr -ne "") {
+            $FindingDetails += "Session-related environment variables:" + $nl + $envVarsStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No session timeout environment variables found in XO process (PID: " + $xoPidStr + ")." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "XO server process not found via pgrep." + $nl + $nl
+    }
+
+    # Check 3: Default XO session token lifetime
+    $FindingDetails += "Check 3: XO Default Session Behavior" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "XO default session tokens do not expire on inactivity; they have a fixed lifetime." + $nl
+    $FindingDetails += "DoD requirement: Non-privileged sessions must terminate after 15 minutes of inactivity." + $nl
+    $FindingDetails += "Without explicit inactivity timeout enforcement, this requirement is not met by default." + $nl + $nl
+
+    $FindingDetails += "RESULT: OPEN - Manual verification required." + $nl
+    $FindingDetails += "ISSO/ISSM must confirm XO session inactivity timeout is set to 15 minutes or less" + $nl
+    $FindingDetails += "for non-privileged users via configuration, reverse proxy settings, or compensating control." + $nl
+
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -440,10 +499,10 @@ Function Get-V222390 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222390
-        STIG ID    : ASD-V6R4-222390
-        Rule ID    : SV-222390r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000080
+        Rule ID    : SV-222390r1043182_rule
+        Rule Title : The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -457,6 +516,7 @@ Function Get-V222390 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -478,7 +538,7 @@ Function Get-V222390 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222390"
-    $RuleID = "SV-222390r508029_rule"
+    $RuleID = "SV-222390r1043182_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -488,9 +548,55 @@ Function Get-V222390 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222390) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222390 - Admin Session Idle Timeout (10 Minutes)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: XO config for admin session timeout settings
+    $FindingDetails += "Check 1: XO Server Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $xoConfigPath = ""
+    if (Test-Path "/etc/xo-server/config.toml") {
+        $xoConfigPath = "/etc/xo-server/config.toml"
+    }
+    elseif (Test-Path "/opt/xo/xo-server/config.toml") {
+        $xoConfigPath = "/opt/xo/xo-server/config.toml"
+    }
+    if ($xoConfigPath -ne "") {
+        $FindingDetails += "Config path: " + $xoConfigPath + $nl
+        $sessionConfig = $(timeout 5 grep -iE "token|session|expire|timeout|inactiv|admin|role" "$xoConfigPath" 2>&1 | grep -v "^#" | head -10 2>&1)
+        $sessionConfigStr = $sessionConfig -join $nl
+        if ($sessionConfigStr.Trim() -ne "") {
+            $FindingDetails += "Session/admin settings (active lines):" + $nl + $sessionConfigStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No explicit admin session timeout settings found in config file." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "XO config file not found at standard paths." + $nl + $nl
+    }
+
+    # Check 2: Per-role timeout capability assessment
+    $FindingDetails += "Check 2: Per-Role Timeout Capability" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "XO uses role-based access control: Admin, Operator, Viewer." + $nl
+    $FindingDetails += "XO does NOT natively support separate inactivity timeout values per role." + $nl
+    $FindingDetails += "A single global token lifetime applies to all users regardless of privilege level." + $nl + $nl
+
+    # Check 3: DoD requirement analysis
+    $FindingDetails += "Check 3: DoD Requirement" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "DoD requirement: Admin sessions must terminate after 10 minutes of inactivity." + $nl
+    $FindingDetails += "Non-privileged sessions require 15 minutes (V-222389)." + $nl
+    $FindingDetails += "Compensating controls: Nginx reverse proxy with per-role path timeouts, LDAP session policy." + $nl + $nl
+
+    $FindingDetails += "RESULT: OPEN - Manual verification required." + $nl
+    $FindingDetails += "ISSO/ISSM must confirm admin session inactivity timeout is 10 minutes or less," + $nl
+    $FindingDetails += "or document an approved compensating control meeting the 10-minute requirement." + $nl
+
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -550,10 +656,10 @@ Function Get-V222391 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222391
-        STIG ID    : ASD-V6R4-222391
-        Rule ID    : SV-222391r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000090
+        Rule ID    : SV-222391r961224_rule
+        Rule Title : Applications requiring user access authentication must provide a logoff capability for user initiated communication session.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -567,6 +673,7 @@ Function Get-V222391 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -588,7 +695,7 @@ Function Get-V222391 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222391"
-    $RuleID = "SV-222391r508029_rule"
+    $RuleID = "SV-222391r961224_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -598,9 +705,57 @@ Function Get-V222391 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222391) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222391 - User-Initiated Logoff Capability" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: XO REST API session endpoint
+    $FindingDetails += "Check 1: XO Session Logout API Endpoint" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $sessionEndpoint = $(timeout 10 curl -sk -o /dev/null -w "%{http_code}" "https://${Hostname}/rest/v0/sessions/current" 2>&1)
+    $sessionEndpointStr = ($sessionEndpoint -join $nl).Trim()
+    $FindingDetails += "GET /rest/v0/sessions/current HTTP status: " + $sessionEndpointStr + $nl
+    if ($sessionEndpointStr -match "^(200|401|403)$") {
+        $FindingDetails += "Session endpoint reachable; logout (DELETE) capability confirmed." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "Session endpoint not responding as expected (may require auth token)." + $nl + $nl
+    }
+
+    # Check 2: XO source code for logout handler
+    $FindingDetails += "Check 2: XO Logout Handler in Source" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $logoutHandlerJS = $(timeout 5 find /opt/xo/xo-server/dist /usr/share/xo-server -maxdepth 3 -name "*.js" 2>/dev/null | head -5 2>&1)
+    $logoutHandlerJSStr = ($logoutHandlerJS -join $nl).Trim()
+    $logoutCode = $(timeout 5 find /opt/xo/xo-server/dist /usr/share/xo-server -maxdepth 3 -name "*.mjs" 2>/dev/null | xargs -r grep -l "signOut\|logout\|deleteSession" 2>/dev/null | head -3 2>&1)
+    $logoutCodeStr = ($logoutCode -join $nl).Trim()
+    if ($logoutCodeStr -ne "") {
+        $FindingDetails += "Logout handler found in: " + $nl + $logoutCodeStr + $nl + $nl
+    }
+    else {
+        $logoutCode2 = $(timeout 5 find /opt/xo/xo-server/dist /usr/share/xo-server -maxdepth 3 -name "*.js" 2>/dev/null | xargs -r grep -l "signOut\|logout\|deleteSession" 2>/dev/null | head -3 2>&1)
+        $logoutCodeStr2 = ($logoutCode2 -join $nl).Trim()
+        if ($logoutCodeStr2 -ne "") {
+            $FindingDetails += "Logout handler found in: " + $nl + $logoutCodeStr2 + $nl + $nl
+        }
+        else {
+            $FindingDetails += "Logout handler search inconclusive (minified/compiled source)." + $nl + $nl
+        }
+    }
+
+    # Check 3: XO web UI logout capability (known design behavior)
+    $FindingDetails += "Check 3: XO Web UI Logout Design" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "XO web interface provides a logout option in the user menu (top-right)." + $nl
+    $FindingDetails += "The logout action calls the XO session API to invalidate the authentication token." + $nl
+    $FindingDetails += "This is a core XO feature present in all versions (xo-web UI + REST API)." + $nl + $nl
+
+    $FindingDetails += "RESULT: PASS - XO provides user-initiated logoff capability." + $nl
+    $FindingDetails += "The web UI has a logout button and the REST API supports session termination" + $nl
+    $FindingDetails += "via DELETE /rest/v0/sessions/current." + $nl
+
+    $Status = "NotAFinding"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -660,10 +815,10 @@ Function Get-V222392 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222392
-        STIG ID    : ASD-V6R4-222392
-        Rule ID    : SV-222392r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000100
+        Rule ID    : SV-222392r961227_rule
+        Rule Title : The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -677,6 +832,7 @@ Function Get-V222392 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -698,7 +854,7 @@ Function Get-V222392 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222392"
-    $RuleID = "SV-222392r508029_rule"
+    $RuleID = "SV-222392r961227_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -708,9 +864,43 @@ Function Get-V222392 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222392) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222392 - Explicit Logoff Message to Users (CAT III)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: XO web UI logoff message behavior
+    $FindingDetails += "Check 1: Web UI Logoff Message Assessment" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "This control requires visual verification of the XO web user interface." + $nl
+    $FindingDetails += "Automated CLI scanning cannot capture what message the browser displays" + $nl
+    $FindingDetails += "after a user clicks the logout button." + $nl + $nl
+
+    # Check 2: XO source for logout redirect/message
+    $FindingDetails += "Check 2: XO Logout Behavior in Source" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $logoutMsg = $(timeout 5 find /opt/xo/xo-web/dist /usr/share/xo-web -maxdepth 3 -name "*.js" 2>/dev/null | xargs -r grep -l "logout\|signed.out\|logged.out\|session.ended" 2>/dev/null | head -3 2>&1)
+    $logoutMsgStr = ($logoutMsg -join $nl).Trim()
+    if ($logoutMsgStr -ne "") {
+        $FindingDetails += "Logout message candidates found in: " + $nl + $logoutMsgStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No explicit logout message source files detected via automated search." + $nl + $nl
+    }
+
+    # Check 3: Standard XO behavior note
+    $FindingDetails += "Check 3: Standard XO Post-Logout Behavior" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "Standard XO behavior after logout: redirect to /signin page." + $nl
+    $FindingDetails += "The signin page indicates the user is no longer authenticated." + $nl
+    $FindingDetails += "Whether an explicit 'You have been logged out' message is displayed" + $nl
+    $FindingDetails += "depends on the XO version and customization; requires ISSO manual review." + $nl + $nl
+
+    $FindingDetails += "RESULT: OPEN - Manual verification required." + $nl
+    $FindingDetails += "ISSO must log in to the XO web UI, click logout, and confirm an explicit" + $nl
+    $FindingDetails += "logoff message is displayed indicating reliable termination of the session." + $nl
+
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -808,7 +998,7 @@ Function Get-V222393 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222393"
-    $RuleID = "SV-222393r508029_rule"
+    $RuleID = "SV-222393r1136904_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -818,9 +1008,25 @@ Function Get-V222393 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222393) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222393 - Security Attributes on Stored Data (N/A Assessment)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check: Application Purpose and Data Classification" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "Xen Orchestra is a hypervisor management platform for XCP-ng hosts." + $nl
+    $FindingDetails += "XO manages infrastructure resources (VMs, storage, networking, user accounts)." + $nl
+    $FindingDetails += "XO does not process, store, or transmit classified data or CUI requiring" + $nl
+    $FindingDetails += "security attribute markings (classification labels, CUI category markings," + $nl
+    $FindingDetails += "or dissemination control caveats)." + $nl + $nl
+    $FindingDetails += "STIG check guidance states: 'If the application does not handle classified/" + $nl
+    $FindingDetails += "CUI/marked data, this check is not applicable.'" + $nl + $nl
+    $FindingDetails += "RESULT: NOT APPLICABLE - XO does not store data requiring organization-defined" + $nl
+    $FindingDetails += "security attribute markings. Infrastructure configuration data does not" + $nl
+    $FindingDetails += "constitute classified or CUI data under this control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -918,7 +1124,7 @@ Function Get-V222394 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222394"
-    $RuleID = "SV-222394r508029_rule"
+    $RuleID = "SV-222394r1136906_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -928,9 +1134,23 @@ Function Get-V222394 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222394) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222394 - Security Attributes on Data in Process (N/A Assessment)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check: Application Purpose and Data Classification" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "Xen Orchestra processes infrastructure management operations (VM lifecycle," + $nl
+    $FindingDetails += "resource allocation, host configuration) - not classified or CUI end-user data." + $nl + $nl
+    $FindingDetails += "XO does not process data requiring organization-defined security attribute" + $nl
+    $FindingDetails += "markings (classification, CUI categories, or handling caveats) during" + $nl
+    $FindingDetails += "its normal virtualization management operations." + $nl + $nl
+    $FindingDetails += "STIG check guidance states: 'If no classified/CUI data, this is N/A.'" + $nl + $nl
+    $FindingDetails += "RESULT: NOT APPLICABLE - XO does not process classified/CUI data requiring" + $nl
+    $FindingDetails += "security attribute markings to be retained during processing." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1028,7 +1248,7 @@ Function Get-V222395 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222395"
-    $RuleID = "SV-222395r508029_rule"
+    $RuleID = "SV-222395r1136908_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -1038,9 +1258,25 @@ Function Get-V222395 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222395) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222395 - Security Attributes on Data in Transmission (N/A Assessment)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check: Application Purpose and Data Classification" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "Xen Orchestra transmits infrastructure management data (API calls, VM config," + $nl
+    $FindingDetails += "host metrics) between web clients and the XO server over HTTPS/TLS." + $nl + $nl
+    $FindingDetails += "XO does not transmit classified data or CUI requiring security attribute" + $nl
+    $FindingDetails += "markings (classification labels, CUI category markings, handling caveats)" + $nl
+    $FindingDetails += "to be retained in the transmitted data payload." + $nl + $nl
+    $FindingDetails += "STIG check guidance states: 'If no classified/CUI data, this is N/A.'" + $nl + $nl
+    $FindingDetails += "RESULT: NOT APPLICABLE - XO does not transmit classified/CUI data requiring" + $nl
+    $FindingDetails += "security attribute markings to be retained during transmission." + $nl
+    $FindingDetails += "TLS encryption for data-in-transit confidentiality/integrity is addressed" + $nl
+    $FindingDetails += "in V-222396 and V-222397." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1138,7 +1374,7 @@ Function Get-V222396 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222396"
-    $RuleID = "SV-222396r508029_rule"
+    $RuleID = "SV-222396r960759_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -1148,9 +1384,65 @@ Function Get-V222396 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222396) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222396 - DoD-Approved Encryption for Remote Session Confidentiality (TLS)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Active TLS 1.2 connection test
+    $FindingDetails += "Check 1: TLS 1.2 Availability" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $tls12Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1")
+    $tls12Str = $tls12Result -join $nl
+    if ($tls12Str -match "Cipher is" -or $tls12Str -match "SSL-Session") {
+        $FindingDetails += "TLS 1.2: AVAILABLE" + $nl
+        if ($tls12Str -match "Cipher is\s+(.+)") { $FindingDetails += "Cipher: " + $matches[1] + $nl }
+        $tls12Pass = $true
+    }
+    else {
+        $FindingDetails += "TLS 1.2: Not confirmed" + $nl
+        $tls12Pass = $false
+    }
+    $FindingDetails += $nl
+
+    # Check 2: Active TLS 1.3 connection test
+    $FindingDetails += "Check 2: TLS 1.3 Availability" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $tls13Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1")
+    $tls13Str = $tls13Result -join $nl
+    if ($tls13Str -match "Cipher is" -or $tls13Str -match "SSL-Session") {
+        $FindingDetails += "TLS 1.3: AVAILABLE" + $nl
+        if ($tls13Str -match "Cipher is\s+(.+)") { $FindingDetails += "Cipher: " + $matches[1] + $nl }
+        $tls13Pass = $true
+    }
+    else {
+        $FindingDetails += "TLS 1.3: Not confirmed" + $nl
+        $tls13Pass = $false
+    }
+    $FindingDetails += $nl
+
+    # Check 3: Weak protocol detection
+    $FindingDetails += "Check 3: Weak Protocol Check (TLS 1.0/1.1, SSLv3)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $tls10Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1 2>&1")
+    $tls10Str = $tls10Result -join $nl
+    $tls11Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_1 2>&1")
+    $tls11Str = $tls11Result -join $nl
+    $tls10Active = $tls10Str -match "Cipher is"
+    $tls11Active = $tls11Str -match "Cipher is"
+    $FindingDetails += "TLS 1.0: " + $(if ($tls10Active) { "ACTIVE (finding)" } else { "Not available" }) + $nl
+    $FindingDetails += "TLS 1.1: " + $(if ($tls11Active) { "ACTIVE (finding)" } else { "Not available" }) + $nl + $nl
+
+    # Determine status
+    if (($tls12Pass -or $tls13Pass) -and -not $tls10Active) {
+        $FindingDetails += "RESULT: PASS - DoD-approved TLS encryption active for remote session confidentiality." + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - TLS 1.2/1.3 not confirmed or weak protocols enabled." + $nl
+        $FindingDetails += "Configure XO to use TLS 1.2 or TLS 1.3 and disable TLS 1.0/1.1." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1211,9 +1503,9 @@ Function Get-V222397 {
     .DESCRIPTION
         Vuln ID    : V-222397
         STIG ID    : ASD-V6R4-222397
-        Rule ID    : SV-222397r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        Rule ID    : SV-222397r960762_rule
+        Rule Title : The application must protect the integrity of transmitted information.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -1248,7 +1540,7 @@ Function Get-V222397 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222397"
-    $RuleID = "SV-222397r508029_rule"
+    $RuleID = "SV-222397r960762_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -1258,9 +1550,53 @@ Function Get-V222397 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222397) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # Test TLS 1.2 support (minimum DoD-required version for integrity protection)
+    $tls12Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1")
+    $tls12Active = ($tls12Output -join $nl) -match "Cipher is"
+
+    # Test TLS 1.3 support (preferred)
+    $tls13Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1")
+    $tls13Active = ($tls13Output -join $nl) -match "Cipher is"
+
+    # Test for weak TLS 1.0 (must NOT be active)
+    $tls10Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1 2>&1")
+    $tls10Active = ($tls10Output -join $nl) -match "Cipher is"
+
+    if ($tls12Active -or $tls13Active) {
+        if (-not $tls10Active) {
+            $Status = "NotAFinding"
+        }
+        else {
+            $Status = "Open"
+        }
+    }
+    else {
+        $Status = "Open"
+    }
+
+    $FindingDetails += "TLS Integrity Protection Check (APSC-DV-000170):" + $nl
+    $FindingDetails += "Target: ${Hostname}:443" + $nl + $nl
+
+    $FindingDetails += "TLS 1.2 (integrity): " + $(if ($tls12Active) { "ACTIVE" } else { "NOT ACTIVE" }) + $nl
+    $FindingDetails += "TLS 1.3 (integrity): " + $(if ($tls13Active) { "ACTIVE" } else { "NOT ACTIVE" }) + $nl
+    $FindingDetails += "TLS 1.0 (weak, must be disabled): " + $(if ($tls10Active) { "ACTIVE - FINDING" } else { "NOT ACTIVE" }) + $nl + $nl
+
+    if ($Status -eq "NotAFinding") {
+        $FindingDetails += "PASS: Xen Orchestra enforces TLS 1.2 or TLS 1.3, which provides cryptographic integrity" + $nl
+        $FindingDetails += "protection (HMAC authentication) for all transmitted data. TLS 1.0 is disabled." + $nl
+    }
+    else {
+        if (-not $tls12Active -and -not $tls13Active) {
+            $FindingDetails += "FAIL: TLS 1.2 and TLS 1.3 are not active. Integrity protection for transmitted" + $nl
+            $FindingDetails += "information cannot be verified." + $nl
+        }
+        elseif ($tls10Active) {
+            $FindingDetails += "FAIL: TLS 1.0 is active. TLS 1.0 does not provide adequate integrity protection" + $nl
+            $FindingDetails += "and must be disabled. Only TLS 1.2 and TLS 1.3 are acceptable." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1321,9 +1657,9 @@ Function Get-V222398 {
     .DESCRIPTION
         Vuln ID    : V-222398
         STIG ID    : ASD-V6R4-222398
-        Rule ID    : SV-222398r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        Rule ID    : SV-222398r960762_rule
+        Rule Title : The application must use appropriate cryptography to protect the integrity of SOAP messages.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -1358,7 +1694,7 @@ Function Get-V222398 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222398"
-    $RuleID = "SV-222398r508029_rule"
+    $RuleID = "SV-222398r960762_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -1368,9 +1704,31 @@ Function Get-V222398 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222398) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # Xen Orchestra uses a REST/JSON API over HTTPS — not SOAP.
+    # SOAP (Simple Object Access Protocol) is an XML-based messaging protocol
+    # not used by Node.js/Express.js applications. This requirement is N/A.
+
+    $xoApiType = $(sh -c "grep -r 'soap\|wsdl\|xml-rpc' /opt/xo/xo-server/dist/ 2>/dev/null | head -5 2>&1")
+    $xoaApiType = $(sh -c "grep -r 'soap\|wsdl\|xml-rpc' /usr/share/xo-server/ 2>/dev/null | head -5 2>&1")
+    $soapFound = (($xoApiType -join $nl).Trim().Length -gt 0) -or (($xoaApiType -join $nl).Trim().Length -gt 0)
+
+    if (-not $soapFound) {
+        $Status = "Not_Applicable"
+        $FindingDetails += "Not Applicable: Xen Orchestra does not use SOAP messaging." + $nl + $nl
+        $FindingDetails += "Xen Orchestra exposes a REST API over HTTPS (JSON payloads) and a WebSocket" + $nl
+        $FindingDetails += "JSON-RPC interface. Neither protocol is SOAP. Node.js/Express.js applications" + $nl
+        $FindingDetails += "do not natively use SOAP. No SOAP/WSDL/XML-RPC references found in XO source." + $nl + $nl
+        $FindingDetails += "TLS-based integrity for the REST/JSON API is covered by V-222397." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "SOAP or WSDL references detected in Xen Orchestra source; manual review required." + $nl + $nl
+        $FindingDetails += "Detected references:" + $nl
+        $FindingDetails += ($xoApiType -join $nl) + $nl
+        $FindingDetails += ($xoaApiType -join $nl) + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

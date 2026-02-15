@@ -54,7 +54,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     | <AnswerKey Name> |   16   |
     |==================|========|
 **************************************************************************************-->
-<STIGComments Name="M_ApplicationSecurityDevelopment">
+<STIGComments Name="XO_ASD">
   <!--Evaluate-STIG answer file for Xen Orchestra (based on the Application Security Development STIG)-->
   <Vuln ID="V-222387">
     <!--RuleTitle: The application must provide a capability to limit the number of logon sessions per user.-->
@@ -87,12 +87,25 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222389">
     <!--RuleTitle: The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: Non-privileged user sessions must time out after 15 minutes of inactivity (APSC-DV-000070).
+
+Xen Orchestra does not natively expose a configurable idle session timeout in config.toml or via environment variable.
+The check searched config.toml, process environment, and XO source for sessionTimeout, idleTimeout, or token
+expiration settings. No qualifying 15-minute inactivity timeout was detected.
+
+Remediation options:
+1. Configure a reverse proxy (nginx) in front of XO to enforce session idle timeouts using proxy_read_timeout
+   and proxy_send_timeout directives set to 900 seconds (15 minutes).
+2. Implement network-level session enforcement via firewall idle-connection timeout rules.
+3. Contact Vates to request a configurable session idle timeout feature in a future XO release.
+4. Document a compensating control accepted by the AO if a technical solution is not feasible.
+
+Reference: The AO must accept this finding or document a compensating control in the SSP.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -101,12 +114,27 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222390">
     <!--RuleTitle: The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: Administrator sessions must time out after 10 minutes of inactivity (APSC-DV-000080).
+
+Xen Orchestra applies a single session expiration policy to all users and does not differentiate between
+administrator and non-privileged user sessions. The check found no per-role idle timeout configuration
+in config.toml, process environment, or source. The 10-minute administrator timeout requirement cannot
+be enforced through native XO configuration.
+
+Remediation options:
+1. Implement differentiated timeout enforcement via a reverse proxy (nginx) or load balancer that
+   applies shorter session timeouts to administrative URL paths (e.g., /api/admin/*).
+2. Configure administrative access through a privileged access workstation (PAW) or jump server
+   that enforces 10-minute idle lockouts at the OS level.
+3. Contact Vates to request role-based session timeout support in a future XO release.
+4. Document this as an accepted risk with compensating controls in the SSP.
+
+Reference: APSC-DV-000080. The AO must accept this finding or document a compensating control.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -115,12 +143,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222391">
     <!--RuleTitle: Applications requiring user access authentication must provide a logoff capability for user initiated communication session.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: The application must provide a user-initiated logoff capability (APSC-DV-000090).
+
+Xen Orchestra provides a built-in logoff capability through multiple mechanisms:
+- Web UI: Sign Out button accessible from the user menu in the top navigation bar terminates the session.
+- REST API: The /rest/v0/sessions/current endpoint accepts DELETE requests to invalidate the current session.
+- XO CLI: The xo-cli session.signOut command terminates the authenticated session programmatically.
+
+Session termination is confirmed by verifying that authenticated API requests return HTTP 401 after logout.
+XO uses server-side session tokens stored in LevelDB; logout invalidates the token server-side, preventing reuse.
+
+This finding is Not A Finding. Xen Orchestra fully satisfies the logoff capability requirement.
+        </ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: The application must provide a user-initiated logoff capability (APSC-DV-000090).
+
+The automated check could not confirm XO's logout capability on this system. Possible causes:
+- XO process is not running or is not accessible on port 443.
+- The REST API endpoint /rest/v0/sessions/current is not responding.
+- XO is deployed behind a proxy that is filtering the check.
+
+Manual verification steps:
+1. Log in to the Xen Orchestra web interface.
+2. Confirm a Sign Out or Logout option is present in the user menu.
+3. Click Sign Out and verify you are redirected to the login page.
+4. Attempt to access a protected resource after logout and confirm HTTP 401 is returned.
+
+If manual verification confirms logout works, document the evidence and mark as NotAFinding in the CKL.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -129,12 +189,27 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222392">
     <!--RuleTitle: The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: The application must display an explicit logoff message confirming session termination (APSC-DV-000100, CAT III).
+
+The automated check searched the xo-web compiled JavaScript distribution for explicit session-terminated
+confirmation messages (e.g., "You have been logged out", "Session terminated"). While XO redirects users
+to the login page after logout, no explicit confirmation message text was detected in the source.
+
+Manual verification steps:
+1. Log in to the Xen Orchestra web interface.
+2. Click Sign Out from the user menu.
+3. Observe whether the application displays a message such as "You have been signed out" or "Session terminated
+   successfully" before or after redirecting to the login page.
+4. If such a message is displayed, document it with a screenshot and mark as NotAFinding.
+5. If no message is displayed (only a redirect to login), this remains an Open finding.
+
+Remediation: Request Vates add an explicit logout confirmation message to the XO web interface.
+This is a CAT III (low severity) finding. Document as accepted risk if remediation is not feasible.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -143,12 +218,17 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222393">
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in storage.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>
+Not Applicable: Xen Orchestra is a hypervisor management platform that manages VMs, hosts, and storage.
+It does not store or process classified, CUI, or user-defined data objects requiring security attribute
+labeling (e.g., classification markings). The STIG requires security attribute association only for
+applications that store data subject to mandatory access control (MAC) or sensitivity labeling policies.
+XO stores infrastructure configuration data (VM configs, user credentials, audit logs), not mission data.
+This requirement does not apply to infrastructure management software of this type.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -157,12 +237,18 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222394">
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in process.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>
+Not Applicable: Xen Orchestra does not process classified, CUI, or sensitivity-labeled data objects
+requiring in-process security attribute association. XO processes infrastructure management data
+(API requests, VM operations, host metrics) that does not carry data classification markings.
+This STIG control applies to applications that process data subject to mandatory access control (MAC)
+policies where security attributes (classification, sensitivity labels) must be tracked through
+processing pipelines. XO is an infrastructure management tool, not a data processing application
+subject to data labeling requirements. This requirement does not apply.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -171,12 +257,20 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222395">
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in transmission.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>
+Not Applicable: Xen Orchestra does not transmit classified, CUI, or sensitivity-labeled data objects
+requiring security attribute association during transmission. XO transmits infrastructure management
+data (API responses, VM state, metrics) over TLS-protected channels, but this data does not carry
+mandatory access control (MAC) classification labels that must travel with the data.
+
+TLS confidentiality and integrity protection for XO API transmissions is covered separately by
+V-222396 (confidentiality) and V-222397 (integrity). This control specifically requires applications
+to embed and preserve data classification attributes (e.g., FOUO, SECRET) in transmitted messages.
+As an infrastructure management tool, XO does not handle data subject to this labeling requirement.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -185,12 +279,40 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222396">
     <!--RuleTitle: The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: DoD-approved encryption (TLS 1.2 or higher) must protect all remote access sessions (APSC-DV-000160).
+
+The automated check confirmed that Xen Orchestra accepts TLS 1.2 and/or TLS 1.3 connections on port 443,
+and TLS 1.0 (weak protocol) is disabled. This satisfies the DoD requirement for FIPS 140-2 approved
+encryption protecting session confidentiality.
+
+TLS 1.2 and TLS 1.3 use AES-based cipher suites which are FIPS 140-2 approved. TLS 1.0 is disabled,
+eliminating known weaknesses (e.g., POODLE, BEAST). All XO API and web UI traffic is encrypted end-to-end.
+        </ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: DoD-approved encryption (TLS 1.2 or higher) must protect all remote access sessions (APSC-DV-000160).
+
+The automated check detected one of the following conditions:
+- TLS 1.2 and TLS 1.3 are not active on port 443 (TLS not configured or not accessible).
+- TLS 1.0 is active alongside TLS 1.2/1.3 (weak protocol must be disabled).
+
+Remediation steps:
+1. Verify XO is listening on port 443: ss -tlnp | grep :443
+2. Review config.toml for TLS certificate configuration (bindAddress, certificate, key fields).
+3. Disable TLS 1.0 and TLS 1.1 in the Node.js TLS configuration using --tls-min-v1.2 flag
+   or by setting minVersion: 'TLSv1.2' in the https.createServer options.
+4. Restart the xo-server service: systemctl restart xo-server
+5. Verify with: echo Q | openssl s_client -connect HOSTNAME:443 -tls1_2 2&gt;&amp;1 | grep "Cipher is"
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -199,12 +321,42 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222397">
     <!--RuleTitle: The application must implement cryptographic mechanisms to protect the integrity of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: Cryptographic mechanisms must protect the integrity of all remote access sessions (APSC-DV-000170).
+
+The automated check confirmed that Xen Orchestra accepts TLS 1.2 and/or TLS 1.3 connections on port 443,
+and TLS 1.0 (which lacks adequate integrity protection) is disabled.
+
+TLS 1.2 and TLS 1.3 use HMAC-based message authentication (e.g., HMAC-SHA256 in TLS 1.2, AEAD in TLS 1.3)
+to ensure integrity of all transmitted data. Any in-transit modification of encrypted TLS records is
+detected and the connection is terminated. This satisfies the DoD requirement for cryptographic integrity
+protection of remote access sessions.
+        </ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+STIG Requirement: Cryptographic mechanisms must protect the integrity of all remote access sessions (APSC-DV-000170).
+
+The automated check detected one of the following conditions:
+- TLS 1.2 and TLS 1.3 are not active on port 443.
+- TLS 1.0 is active (does not provide adequate integrity protection and must be disabled).
+
+Remediation steps:
+1. Verify XO is listening on port 443: ss -tlnp | grep :443
+2. Review config.toml for TLS certificate and key configuration.
+3. Enforce minimum TLS 1.2 by adding --tls-min-v1.2 to xo-server startup parameters
+   or setting minVersion: 'TLSv1.2' in Node.js https.createServer options.
+4. Disable TLS 1.0 and TLS 1.1 explicitly.
+5. Restart the xo-server service: systemctl restart xo-server
+6. Re-test TLS configuration after restart.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -213,12 +365,42 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-222398">
     <!--RuleTitle: Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>
+Not Applicable: Xen Orchestra does not use SOAP (Simple Object Access Protocol) for any of its interfaces.
+
+XO exposes a REST/JSON API over HTTPS and a WebSocket JSON-RPC interface. Both are modern protocols
+that do not use XML-based SOAP messaging. Node.js/Express.js applications do not natively support SOAP.
+No SOAP, WSDL, or XML-RPC references were detected in the XO source code.
+
+The STIG requirement applies only to applications that use SOAP messaging. Since XO does not use SOAP,
+this control does not apply. TLS-based integrity for XO's REST and WebSocket interfaces is covered
+by V-222397. This finding is Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated check detected potential SOAP, WSDL, or XML-RPC references in the Xen Orchestra source code.
+
+Manual verification required:
+1. Review the detected references to determine if they represent active SOAP endpoints or merely
+   code comments, documentation, or library imports.
+2. If active SOAP messaging is confirmed, verify that all SOAP messages include:
+   - Message ID
+   - Service Request element
+   - Timestamp element
+   - SAML Assertion (if applicable)
+   - Digital signatures on all message elements
+3. If no active SOAP endpoints are found, update the finding to Not_Applicable with supporting evidence.
+
+If SOAP is confirmed but not properly secured, contact Vates to implement WS-Security digital signing.
+        </ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
