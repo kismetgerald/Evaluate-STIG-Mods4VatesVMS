@@ -704,12 +704,46 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222413">
     <!--RuleTitle: The application must automatically audit account creation.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account creation events in the systemd
+journal for the last 7 days. This is expected on systems where no account changes have been made recently.
+
+ACTION REQUIRED - ISSO/ISSM must verify one of the following:
+1. Enable the XO audit plugin (xo-server-audit) which records all API operations including user.create events
+2. Confirm XO audit logs are being forwarded to a SIEM that captures account creation events
+3. Manually create a test account and verify the event is logged in the system journal or audit log
+
+To enable the XO audit plugin: navigate to Settings &gt; Plugins in the XO web interface and enable xo-server-audit.
+Once enabled, all user management actions are logged to the XO audit log and accessible via the REST API at
+/rest/v0/plugins/audit/records.
+
+If using LDAP/AD for account management, configure the auth-ldap plugin to satisfy this as Not Applicable.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is installed and configured. Account management
+is delegated to the enterprise LDAP/AD directory service, which maintains its own comprehensive audit trail of
+all account lifecycle events including creation.
+
+ISSO must verify: Active Directory audit policy (Account Management category) is enabled and logs are retained
+per DoD policy (minimum 1 year online, 3 years archived). AD account creation events appear as Event ID 4720
+in the Windows Security Event Log.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found account creation events in the systemd journal. XO is logging account
+creation activity as required by this control.
+
+ISSO should verify: The XO audit plugin (xo-server-audit) is enabled and logs include account name and timestamp
+at minimum. Audit logs should be retained per DoD requirements and forwarded to a centralized audit server.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -718,12 +752,37 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222414">
     <!--RuleTitle: The application must automatically audit account modification.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account modification events in the
+systemd journal for the last 7 days.
+
+ACTION REQUIRED - ISSO/ISSM must verify one of the following:
+1. Enable the XO audit plugin (xo-server-audit) to capture user.set events (account modifications)
+2. Confirm XO audit logs are forwarded to a SIEM that captures account modification events
+3. Manually modify a test account and verify the event appears in the audit log
+
+XO account modification events via the audit plugin include role changes, password changes, and permission updates.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account management is delegated to
+enterprise LDAP/AD, which maintains its own audit trail. Account modification events in AD appear as Event ID 4738
+(user account changed) in the Windows Security Event Log.
+
+ISSO must verify AD audit policy covers account management changes and logs are retained per DoD policy.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found account modification events in the systemd journal. XO is logging account
+modification activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -732,12 +791,37 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222415">
     <!--RuleTitle: The application must automatically audit account disabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account disabling events in the
+systemd journal for the last 7 days.
+
+ACTION REQUIRED - ISSO/ISSM must verify:
+1. Enable the XO audit plugin (xo-server-audit) to capture account disable events
+2. Confirm audit logs are forwarded to a centralized SIEM
+3. Test by disabling a non-production account and verifying the event is logged
+
+Note: XO does not have a native "disable account" feature separate from deletion. Accounts may be disabled by
+removing permissions or by the LDAP/AD directory if configured.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account disabling is managed by
+enterprise LDAP/AD. Account disable events in AD appear as Event ID 4725 (user account disabled).
+
+ISSO must verify AD audit policy is enabled and logs retained per DoD policy.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found account disabling events in the systemd journal. XO is logging account
+disabling activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -746,68 +830,158 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222416">
     <!--RuleTitle: The application must automatically audit account removal actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account removal events in the
+systemd journal for the last 7 days.
+
+ACTION REQUIRED - ISSO/ISSM must verify:
+1. Enable the XO audit plugin (xo-server-audit) to capture user deletion events
+2. Confirm audit logs are forwarded to a centralized SIEM
+3. Test by deleting a non-production account and verifying the event is logged
+
+Account deletion in XO is logged as a user.delete action in the audit log when the audit plugin is enabled.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account removal is managed by
+enterprise LDAP/AD. Account deletion events in AD appear as Event ID 4726 (user account deleted).
+
+ISSO must verify AD audit policy is enabled and logs retained per DoD policy.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found account removal events in the systemd journal. XO is logging account
+removal activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222417">
-    <!--RuleTitle: The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.-->
+    <!--RuleTitle: The application must notify SAs and ISSOs when accounts are created.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured. XO does not natively send notifications
+to SAs/ISSOs when accounts are created.
+
+ACTION REQUIRED - ISSO/ISSM must implement a compensating control:
+Option 1 (SIEM): Configure SIEM to alert SA/ISSO when XO audit log records a user.create event
+Option 2 (ITSM): Require all account creation requests to go through a ticketing system (ServiceNow, Jira) that
+  automatically notifies SA/ISSO via email/ticket assignment
+Option 3 (Script): Deploy a monitoring script that polls the XO API /rest/v0/plugins/audit/records and sends
+  email alerts when new user.create events are detected
+
+Document the implemented compensating control in the System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account creation notifications
+to SA/ISSO are handled by the enterprise LDAP/AD directory service processes and procedures.
+
+ISSO must verify the enterprise AD account management process includes SA/ISSO notification on account creation
+per DoD account management procedures.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222418">
-    <!--RuleTitle: The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified.-->
+    <!--RuleTitle: The application must notify SAs and ISSOs when accounts are modified.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured. XO does not natively notify SA/ISSO
+when accounts are modified.
+
+ACTION REQUIRED - Implement a compensating control:
+Option 1: Configure SIEM to alert on user.set events from XO audit log
+Option 2: Require account modification requests through an ITSM system with automatic SA/ISSO notification
+Option 3: Deploy monitoring script polling XO API for account modification events
+
+Significant account modifications include: role changes, permission updates, password resets, and group membership
+changes. All of these are captured by the XO audit plugin when enabled.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account modification notifications
+are handled by enterprise LDAP/AD directory service procedures. ISSO must verify the AD account management process
+includes SA/ISSO notification on account changes.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222419">
-    <!--RuleTitle: The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions.-->
+    <!--RuleTitle: The application must notify SAs and ISSOs of account disabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured. XO does not natively notify SA/ISSO
+when accounts are disabled.
+
+ACTION REQUIRED - Implement a compensating control for account disable notifications:
+Option 1: Configure SIEM to alert SA/ISSO when XO audit log records an account disable event
+Option 2: Require account disable requests through ITSM with automatic SA/ISSO notification workflow
+Option 3: Establish manual procedure where any XO account disablement triggers immediate SA/ISSO email notification
+
+Document the implemented procedure in the System Security Plan and ensure it is tested annually.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account disabling notifications
+are handled by enterprise LDAP/AD procedures. ISSO must verify AD procedures include SA/ISSO notification on
+account disabling per DoD account management policy.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222420">
-    <!--RuleTitle: The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions.-->
+    <!--RuleTitle: The application must notify SAs and ISSOs of account removal actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured. XO does not natively notify SA/ISSO
+when accounts are removed.
+
+ACTION REQUIRED - Implement a compensating control for account removal notifications:
+Option 1: Configure SIEM to alert SA/ISSO when XO audit log records a user.delete event
+Option 2: Require account removal requests through ITSM with automatic SA/ISSO notification
+Option 3: Establish manual procedure requiring SA/ISSO acknowledgment before any XO account deletion
+
+Account removal is a high-risk event. SA/ISSO notification allows verification that removal was authorized
+and prevents unauthorized account deletion from going undetected.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account removal notifications
+are handled by enterprise LDAP/AD procedures. ISSO must verify AD procedures include SA/ISSO notification on
+account removal per DoD account management policy.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -816,26 +990,66 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222421">
     <!--RuleTitle: The application must automatically audit account enabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account enabling events in the
+systemd journal for the last 7 days.
+
+ACTION REQUIRED - ISSO/ISSM must verify:
+1. Enable the XO audit plugin (xo-server-audit) to capture account enable/unlock events
+2. Confirm audit logs are forwarded to a centralized SIEM
+3. Test by unlocking/re-enabling an account and verifying the event is logged
+
+When an account is re-enabled in XO (e.g., after lockout), the event should be captured by the audit plugin
+and logged with the account name, timestamp, and the admin who performed the action.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account enabling events are
+managed by enterprise LDAP/AD. Account unlock events in AD appear as Event ID 4767 (user account unlocked).
+
+ISSO must verify AD audit policy covers account management and logs are retained per DoD policy.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found account enabling events in the systemd journal. XO is logging account
+enabling activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222422">
-    <!--RuleTitle: The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.-->
+    <!--RuleTitle: The application must notify SAs and ISSOs of account enabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no auth-ldap plugin configured. XO does not natively notify SA/ISSO
+when accounts are enabled/unlocked.
+
+ACTION REQUIRED - Implement a compensating control for account enabling notifications:
+Option 1: Configure SIEM to alert SA/ISSO when XO audit log records an account enable/unlock event
+Option 2: Require account enable requests through ITSM with automatic SA/ISSO notification
+Option 3: Establish manual procedure requiring SA/ISSO acknowledgment for any account re-enablement
+
+Account re-enablement after lockout should be tracked to detect potential brute-force unlock attempts.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account enabling notifications
+are handled by enterprise LDAP/AD procedures. ISSO must verify AD procedures include SA/ISSO notification on
+account enabling actions per DoD account management policy.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -844,26 +1058,51 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
   <Vuln ID="V-222423">
     <!--RuleTitle: Application data protection requirements must be identified and documented.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan identified the following data elements managed by Xen Orchestra that require
+data protection classification and documentation:
+
+- User credentials (bcrypt-hashed passwords stored in LevelDB at /var/lib/xo-server)
+- Authentication tokens (stored in memory/Redis, scoped to session)
+- VM configuration data (stored in LevelDB, includes network configs, storage paths)
+- XCP-ng host connection credentials (stored in LevelDB, may include passwords)
+- SSL/TLS private keys (stored at /etc/ssl or /opt/xo)
+- Audit log records (stored via xo-server-audit plugin)
+
+ACTION REQUIRED - ISSO must produce documentation that:
+1. Identifies each data element and its sensitivity/classification level
+2. Documents the protection requirements for each element (encryption, access control, retention)
+3. Describes implemented protections (TLS in transit, file permissions, key management)
+4. Is reviewed annually and updated when the application changes
+
+This documentation is required by APSC-DV-000440 and must be available for auditor review.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222424">
-    <!--RuleTitle: The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts.-->
+    <!--RuleTitle: The application must utilize organization-defined data mining detection techniques.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Automated scan found no explicit data mining detection controls configured in Xen Orchestra.
+
+ACTION REQUIRED - ISSO must provide one of the following:
+Option A (Not Applicable determination): If the organization has determined that data mining protections are not
+required for the XO management plane (e.g., because it only stores hypervisor management metadata, not sensitive
+user data), document this determination with ISSO/ISSM signature and reference in the System Security Plan.
+
+Option B (Detection controls): If data mining protections are required, implement:
+1. Rate limiting: Configure XO API rate limits to detect/prevent bulk data extraction
+2. SIEM monitoring: Alert on unusually high API call volumes from a single user/IP
+3. Session monitoring: Track and alert on bulk VM/storage enumeration operations
+4. Access logging: Ensure all API access is logged with user identity for forensic analysis
+
+XO REST API calls are logged when the audit plugin is enabled, providing a baseline for anomaly detection.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
