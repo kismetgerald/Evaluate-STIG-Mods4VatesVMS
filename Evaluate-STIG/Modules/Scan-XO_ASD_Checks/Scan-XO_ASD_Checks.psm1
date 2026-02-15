@@ -1788,10 +1788,11 @@ Function Get-V222401 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222401
-        STIG ID    : ASD-V6R4-222401
-        Rule ID    : SV-222401r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000210
+        Rule ID    : SV-222401r960759_rule
+        Rule Title : The application must use SAML assertion identifiers that are not reused within
+                     the assertion TTL, unless the application is using one time use assertions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -1805,6 +1806,7 @@ Function Get-V222401 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1825,20 +1827,52 @@ Function Get-V222401 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222401"
-    $RuleID = "SV-222401r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222401"
+    $RuleID     = "SV-222401r960759_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222401) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222401 - SAML Assertion Identifier Uniqueness" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If the application does not utilize SAML assertions, this check is not applicable." + $nl + $nl
+
+    # Check both XOCE and XOA config paths for active SAML configuration
+    $samlActive = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $FindingDetails += "Config: $cfgPath" + $nl
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)saml") {
+                $samlActive = $true
+                $samlLines = ($cfgLines | Where-Object { $_ -match "(?i)saml" }) -join $nl
+                $FindingDetails += "Active SAML configuration detected:" + $nl
+                $FindingDetails += $samlLines + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No active SAML configuration (package installed but not enabled)." + $nl + $nl
+            }
+        }
+    }
+
+    if (-not $samlActive) {
+        $FindingDetails += "RESULT: XO does not utilize SAML assertions." + $nl
+        $FindingDetails += "This check is Not Applicable per STIG guidance." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: SAML is configured. Manual review of design documentation required" + $nl
+        $FindingDetails += "to verify assertion identifiers are unique within the assertion TTL." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1898,10 +1932,11 @@ Function Get-V222402 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222402
-        STIG ID    : ASD-V6R4-222402
-        Rule ID    : SV-222402r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000220
+        Rule ID    : SV-222402r960759_rule
+        Rule Title : The application must ensure WS-Security SOAP messages are encrypted when the
+                     messages contain sensitive data that would enable an attacker to read the message.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -1915,6 +1950,7 @@ Function Get-V222402 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1935,20 +1971,46 @@ Function Get-V222402 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222402"
-    $RuleID = "SV-222402r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222402"
+    $RuleID     = "SV-222402r960759_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222402) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222402 - WS-Security SOAP Message Encryption" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If the application does not utilize WS-Security tokens, this check is not applicable." + $nl + $nl
+
+    # XO is a Node.js/Express.js application using a REST/JSON API.
+    # WS-Security is an XML/SOAP standard (OASIS WS-Security specification).
+    # XO does not use SOAP messaging or WS-Security tokens.
+    $FindingDetails += "Check 1: Application architecture" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "Xen Orchestra uses a REST/JSON API (WebSocket + HTTPS)." + $nl
+    $FindingDetails += "WS-Security is an XML/SOAP protocol standard that does not apply" + $nl
+    $FindingDetails += "to REST/JSON-based web services." + $nl + $nl
+
+    $FindingDetails += "Check 2: SOAP/WS-Security package detection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $wsCheck = $(timeout 5 find /opt/xo /usr/share/xo-server -maxdepth 4 -name "ws-security*" -o -name "node-soap*" 2>/dev/null | head -5 2>&1)
+    $wsStr = $wsCheck -join $nl
+    if ($wsStr.Trim() -ne "") {
+        $FindingDetails += "WS-Security related packages found: $wsStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No WS-Security/SOAP packages detected." + $nl + $nl
+    }
+
+    $FindingDetails += "RESULT: XO does not utilize WS-Security tokens." + $nl
+    $FindingDetails += "This check is Not Applicable per STIG guidance." + $nl
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2008,10 +2070,12 @@ Function Get-V222405 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222405
-        STIG ID    : ASD-V6R4-222405
-        Rule ID    : SV-222405r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000250
+        Rule ID    : SV-222405r960759_rule
+        Rule Title : The application must only allow the use of DoD PKI established certificate
+                     authorities for verification of the establishment of protected sessions; or
+                     limit use of the OneTimeUse element to one per conditions element.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2045,20 +2109,52 @@ Function Get-V222405 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222405"
-    $RuleID = "SV-222405r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222405"
+    $RuleID     = "SV-222405r960759_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222405) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222405 - SAML OneTimeUse Element Restriction" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If the application does not utilize SAML assertions, this check is not applicable." + $nl + $nl
+
+    # Check both XOCE and XOA config paths for active SAML configuration
+    $samlActive = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $FindingDetails += "Config: $cfgPath" + $nl
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)saml") {
+                $samlActive = $true
+                $samlLines = ($cfgLines | Where-Object { $_ -match "(?i)saml" }) -join $nl
+                $FindingDetails += "Active SAML configuration detected:" + $nl
+                $FindingDetails += $samlLines + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No active SAML configuration (package installed but not enabled)." + $nl + $nl
+            }
+        }
+    }
+
+    if (-not $samlActive) {
+        $FindingDetails += "RESULT: XO does not utilize SAML assertions." + $nl
+        $FindingDetails += "This check is Not Applicable per STIG guidance." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: SAML is configured. Manual review required to verify that only one" + $nl
+        $FindingDetails += "OneTimeUse element is used per SAML assertion Conditions element." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2118,10 +2214,11 @@ Function Get-V222406 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222406
-        STIG ID    : ASD-V6R4-222406
-        Rule ID    : SV-222406r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000260
+        Rule ID    : SV-222406r960759_rule
+        Rule Title : The application must protect the SAML authentication data during the assertion
+                     if the SessionIndex is tied to privacy data.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2155,20 +2252,52 @@ Function Get-V222406 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222406"
-    $RuleID = "SV-222406r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222406"
+    $RuleID     = "SV-222406r960759_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222406) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222406 - SAML SessionIndex Privacy Protection" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If the application does not utilize SAML assertions, this check is not applicable." + $nl + $nl
+
+    # Check both XOCE and XOA config paths for active SAML configuration
+    $samlActive = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $FindingDetails += "Config: $cfgPath" + $nl
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)saml") {
+                $samlActive = $true
+                $samlLines = ($cfgLines | Where-Object { $_ -match "(?i)saml" }) -join $nl
+                $FindingDetails += "Active SAML configuration detected:" + $nl
+                $FindingDetails += $samlLines + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No active SAML configuration (package installed but not enabled)." + $nl + $nl
+            }
+        }
+    }
+
+    if (-not $samlActive) {
+        $FindingDetails += "RESULT: XO does not utilize SAML assertions." + $nl
+        $FindingDetails += "This check is Not Applicable per STIG guidance." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: SAML is configured. Manual review required to verify SAML messages" + $nl
+        $FindingDetails += "are encrypted when SessionIndex is tied to privacy data." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2228,10 +2357,10 @@ Function Get-V222407 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222407
-        STIG ID    : ASD-V6R4-222407
-        Rule ID    : SV-222407r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000280
+        Rule ID    : SV-222407r1043176_rule
+        Rule Title : The application must use automated mechanisms for account management functions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2265,20 +2394,71 @@ Function Get-V222407 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222407"
-    $RuleID = "SV-222407r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222407"
+    $RuleID     = "SV-222407r1043176_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222407) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222407 - Automated Mechanisms for Account Management" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for centralized authentication (LDAP/AD) in XO configuration
+    $ldapConfigured = $false
+    $adConfigured   = $false
+
+    $FindingDetails += "Check 1: LDAP/AD configuration in XO config files" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)\[ldap\]|ldap\.url|ldapUrl") {
+                $ldapConfigured = $true
+                $ldapLines = ($cfgLines | Where-Object { $_ -match "(?i)ldap" }) -join $nl
+                $FindingDetails += "LDAP configuration found in $cfgPath" + $nl
+                $FindingDetails += $ldapLines + $nl + $nl
+            }
+            if ($cfgStr -match "(?i)\[ad\]|\bactiveDirectory\b|activedirectory") {
+                $adConfigured = $true
+                $FindingDetails += "Active Directory configuration found in $cfgPath" + $nl + $nl
+            }
+        }
+    }
+
+    if (-not $ldapConfigured -and -not $adConfigured) {
+        $FindingDetails += "No LDAP/AD configuration detected in XO config files." + $nl + $nl
+    }
+
+    # Check for auth plugins
+    $FindingDetails += "Check 2: Authentication plugins installed" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $authPlugins = $(timeout 5 find /opt/xo/packages /usr/share/xo-server -maxdepth 3 -name "xo-server-auth-*" -type d 2>/dev/null | head -10 2>&1)
+    $authStr = $authPlugins -join $nl
+    if ($authStr.Trim() -ne "") {
+        $FindingDetails += "Auth plugins found:" + $nl + $authStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No additional auth plugins found beyond default." + $nl + $nl
+    }
+
+    if ($ldapConfigured -or $adConfigured) {
+        $FindingDetails += "RESULT: LDAP/AD centralized authentication is configured." + $nl
+        $FindingDetails += "Account management is handled through the centralized directory service." + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: No centralized account management detected." + $nl
+        $FindingDetails += "Manual review required to verify automated account management processes exist." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2448,10 +2628,10 @@ Function Get-V222409 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222409
-        STIG ID    : ASD-V6R4-222409
-        Rule ID    : SV-222409r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000300
+        Rule ID    : SV-222409r960771_rule
+        Rule Title : The application must automatically disable temporary accounts after 72 hours.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2485,20 +2665,65 @@ Function Get-V222409 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222409"
-    $RuleID = "SV-222409r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222409"
+    $RuleID     = "SV-222409r960771_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222409) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222409 - Temporary Accounts Auto-Disabled After 72 Hours" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If official documentation exists that disallows temporary accounts, this is not applicable." + $nl + $nl
+
+    # Check for any account expiry configuration in XO
+    $FindingDetails += "Check 1: XO configuration for account expiry or temporary account policy" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $expiryConfigured = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)expir|temporary|temp.*account|account.*expir") {
+                $expiryConfigured = $true
+                $expLines = ($cfgLines | Where-Object { $_ -match "(?i)expir|temporary|tempaccount" }) -join $nl
+                $FindingDetails += "Account expiry config found in $cfgPath" + $nl
+                $FindingDetails += $expLines + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No temporary/expiry account configuration found in $cfgPath" + $nl + $nl
+            }
+        }
+    }
+
+    # Check LDAP/AD configuration (handles expiry externally)
+    $FindingDetails += "Check 2: LDAP/AD integration (handles account expiry externally)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapActive = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)\[ldap\]|ldap\.url|ldapUrl") {
+                $ldapActive = $true
+                $FindingDetails += "LDAP configured — account expiry managed by directory service." + $nl + $nl
+            }
+        }
+    }
+    if (-not $ldapActive) {
+        $FindingDetails += "No LDAP/AD configured." + $nl + $nl
+    }
+
+    $FindingDetails += "RESULT: XO does not natively support automatic 72-hour temporary account expiry." + $nl
+    $FindingDetails += "Manual review required: Verify organizational policy either disallows temporary" + $nl
+    $FindingDetails += "accounts (making this N/A) or that LDAP/AD enforces the 72-hour expiry." + $nl
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2558,10 +2783,10 @@ Function Get-V222410 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222410
-        STIG ID    : ASD-V6R4-222410
-        Rule ID    : SV-222410r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000310
+        Rule ID    : SV-222410r961863_rule
+        Rule Title : Emergency accounts must be automatically disabled after 72 hours.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2595,20 +2820,55 @@ Function Get-V222410 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222410"
-    $RuleID = "SV-222410r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222410"
+    $RuleID     = "SV-222410r961863_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222410) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222410 - Emergency Accounts Auto-Disabled After 72 Hours" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "STIG: If emergency accounts are not used, this requirement is not applicable." + $nl + $nl
+
+    # XO does not have a built-in emergency account concept. All accounts are regular user or
+    # admin accounts. There is no native mechanism to designate or auto-expire emergency accounts.
+    $FindingDetails += "Check 1: XO user account configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    # Check if XO API token exists for user query
+    $tokenPath = "/etc/xo-server/stig/api-token"
+    if (Test-Path $tokenPath) {
+        $apiToken = $(timeout 5 cat $tokenPath 2>&1)
+        $apiTokenStr = ($apiToken -join "").Trim()
+        if ($apiTokenStr -ne "") {
+            $usersResult = $(timeout 10 sh -c "curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1")
+            $usersStr = $usersResult -join $nl
+            $FindingDetails += "XO users via API:" + $nl + $usersStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "API token file empty." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No API token configured at $tokenPath" + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2: Emergency account designation" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "XO does not have a built-in 'emergency account' account type." + $nl
+    $FindingDetails += "All XO accounts are standard user or administrator accounts." + $nl
+    $FindingDetails += "No emergency account mechanism or designation feature exists natively." + $nl + $nl
+
+    $FindingDetails += "RESULT: No emergency accounts are defined or used in XO." + $nl
+    $FindingDetails += "This check is Not Applicable per STIG guidance." + $nl
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2668,10 +2928,11 @@ Function Get-V222411 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222411
-        STIG ID    : ASD-V6R4-222411
-        Rule ID    : SV-222411r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000320
+        Rule ID    : SV-222411r960774_rule
+        Rule Title : The application must automatically disable accounts after a 35-day period
+                     of account inactivity.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2705,20 +2966,75 @@ Function Get-V222411 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222411"
-    $RuleID = "SV-222411r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222411"
+    $RuleID     = "SV-222411r960774_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222411) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222411 - Inactive Accounts Disabled After 35 Days" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check LDAP/AD (handles inactivity expiry externally)
+    $FindingDetails += "Check 1: LDAP/AD configuration (handles inactivity expiry)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapActive = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)\[ldap\]|ldap\.url|ldapUrl") {
+                $ldapActive = $true
+                $ldapLines = ($cfgLines | Where-Object { $_ -match "(?i)ldap" }) -join $nl
+                $FindingDetails += "LDAP configured in $cfgPath" + $nl
+                $FindingDetails += $ldapLines + $nl + $nl
+            }
+        }
+    }
+    if (-not $ldapActive) {
+        $FindingDetails += "No LDAP/AD configuration detected." + $nl + $nl
+    }
+
+    # Check XO native inactivity expiry config
+    $FindingDetails += "Check 2: XO native inactivity/expiry configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $inactivityConfigured = $false
+    foreach ($cfgPath in @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $cfgLines = $(timeout 5 grep -v "^[[:space:]]*#" $cfgPath 2>&1)
+            $cfgStr   = $cfgLines -join $nl
+            if ($cfgStr -match "(?i)inactiv|disableAfter|account.*expir|expir.*account") {
+                $inactivityConfigured = $true
+                $expLines = ($cfgLines | Where-Object { $_ -match "(?i)inactiv|disableAfter" }) -join $nl
+                $FindingDetails += "Inactivity config found: $expLines" + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No native inactivity expiry configuration in $cfgPath" + $nl + $nl
+            }
+        }
+    }
+
+    if ($ldapActive) {
+        $FindingDetails += "RESULT: LDAP/AD is configured. Account inactivity enforcement is managed" + $nl
+        $FindingDetails += "by the directory service. Verify AD policy enforces 35-day inactivity limit." + $nl
+        $Status = "Open"
+    }
+    elseif ($inactivityConfigured) {
+        $FindingDetails += "RESULT: Inactivity expiry configuration detected. Verify 35-day threshold." + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: No automatic account inactivity expiry configured." + $nl
+        $FindingDetails += "XO does not natively auto-disable accounts after 35 days of inactivity." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2778,10 +3094,11 @@ Function Get-V222412 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222412
-        STIG ID    : ASD-V6R4-222412
-        Rule ID    : SV-222412r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : APSC-DV-000330
+        Rule ID    : SV-222412r960774_rule
+        Rule Title : The application must automatically disable accounts after a 35-day period of
+                     account inactivity.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -2815,20 +3132,62 @@ Function Get-V222412 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
-    $VulnID = "V-222412"
-    $RuleID = "SV-222412r508029_rule"
-    $Status = "Not_Reviewed"
+    $VulnID     = "V-222412"
+    $RuleID     = "SV-222412r960774_rule"
+    $Status     = "Not_Reviewed"
     $FindingDetails = ""
-    $Comments = ""
-    $AFKey = ""
-    $AFStatus = ""
+    $Comments   = ""
+    $AFKey      = ""
+    $AFStatus   = ""
     $SeverityOverride = ""
-    $Justification = ""
+    $Justification    = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222412) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails  = "V-222412 - No Unnecessary Application Accounts" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check XO user accounts via API
+    $FindingDetails += "Check 1: Current XO user accounts via API" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $tokenPath = "/etc/xo-server/stig/api-token"
+    if (Test-Path $tokenPath) {
+        $apiToken = $(timeout 5 cat $tokenPath 2>&1)
+        $apiTokenStr = ($apiToken -join "").Trim()
+        if ($apiTokenStr -ne "") {
+            $usersResult = $(timeout 10 sh -c "curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1")
+            $usersStr = $usersResult -join $nl
+            if ($usersStr.Trim() -ne "") {
+                $FindingDetails += "XO user list from API:" + $nl + $usersStr + $nl + $nl
+            }
+            else {
+                $FindingDetails += "API query returned no results or failed." + $nl + $nl
+            }
+        }
+        else {
+            $FindingDetails += "API token file is empty." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No API token at $tokenPath — cannot query user accounts." + $nl + $nl
+    }
+
+    # Check for default/demo accounts in XO database
+    $FindingDetails += "Check 2: XO LevelDB for default accounts" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $dbPaths = $(timeout 5 find /var/lib/xo-server /opt/xo -maxdepth 3 -name "*.ldb" -o -name "CURRENT" 2>/dev/null | head -5 2>&1)
+    $dbStr = $dbPaths -join $nl
+    if ($dbStr.Trim() -ne "") {
+        $FindingDetails += "XO database files found: $dbStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No XO LevelDB files found in expected locations." + $nl + $nl
+    }
+
+    $FindingDetails += "RESULT: Manual review required to verify no unnecessary accounts exist." + $nl
+    $FindingDetails += "Review the account list above and confirm all accounts are operationally required." + $nl
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

@@ -1,0 +1,3194 @@
+﻿<html xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <head>
+    <META http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <style type="text/css">
+                    .styled-table {
+                        border-collapse: collapse;
+                        margin: 25px 0;
+                        font-size: 0.9em;
+                        font-family: sans-serif;
+                        min-width: 400px;
+                        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+                        width: 100%
+                    }
+
+                    .styled-table thead tr {
+                        background-color: #2e86c1;
+                        color: #ffffff;
+                        text-align: left;
+                    }
+
+                    .styled-table th,
+                    .styled-table td {
+                        text-align: center;
+                        padding: 12px 15px;
+                    }
+
+                    .styled-table tbody tr:last-of-type {
+                        border-bottom: 2px solid #2e86c1;
+                    }
+
+                    .styled-table tbody tr.active-row {
+                        font-weight: bold;
+                        color: #3498db;
+                    }
+
+                    .hidden {
+                        visibility: hidden;
+                    }
+
+                    .button {
+                        color: #494949;
+                        text-align: center;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        background-color: #aed6f1;
+                        padding: 20px;
+                        border: 4px solid #494949;
+                        border-radius: 10px;
+                        display: inline-block;
+                        transition: all 0.4s ease 0s;
+                        width: 250px;
+                        height: 20px;
+                        margin: 5px;
+                    }
+
+                    .risk-VeryHigh td {
+                        color: #4c4c4c;
+                        background-color: #ffa5a5;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-High td {
+                        color: #5b5b5b;
+                        background-color: #ffc8a0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-Moderate td {
+                        color: #737373;
+                        background-color: #ffffb9;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-Low td {
+                        color: #494949;
+                        background-color: #aed6f1;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .risk-VeryLow td {
+                        color: #676767;
+                        background-color: #d0f0c0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .stig_button {
+                        color: #494949;
+                        text-align: center;
+                        text-transform: uppercase;
+                        text-decoration: none;
+                        background-color: #aed6f1;
+                        padding: 20px;
+                        border: 4px solid #494949;
+                        border-radius: 10px;
+                        display: inline-flex;
+                        justify-content: center;
+                        align-items: center;
+                        transition: all 0.4s ease 0s;
+                        width: 450px;
+                        height: 10px;
+                    }
+
+                    .button:hover{
+                        color: #ffffff;
+                        background: #2e86c1;
+                        border-color: #2e86c1;
+                        transition: all 0.4s ease 0s;
+                        cursor: pointer;
+                    }
+
+                    .stig_button:hover{
+                        color: #ffffff;
+                        background: #2e86c1;
+                        border-color: #2e86c1;
+                        transition: all 0.4s ease 0s;
+                        cursor: pointer;
+                    }
+
+                    #topbtn{
+                        position: fixed;
+                        bottom: 20px;
+                        right: 30px;
+                        z-index: 99;
+                        font-size: 18px;
+                        border: none;
+                        outline: none;
+                        background-color: red;
+                        color: white;
+                        cursor: pointer;
+                        padding: 15px;
+                        border-radius: 4px;
+                    }
+
+                    #topbtn:hover{
+                        background-color: #555;
+                    }
+
+                    caption{
+                        text-align: center;
+                        margin-bottom: 5px;
+                        font-size: 200%;
+                        padding: 5px;
+                        font-weight: bold;
+                    }
+
+                    .grid-container {
+                        display: inline-grid;
+                        grid-template-columns: auto auto auto;
+                        padding: 10px;
+                    }
+
+                    .grid-item {
+                        padding: 20px;
+                        text-align: center;
+                    }
+
+                    .sortheading {
+                        cursor: pointer;
+                    }
+
+                    .sortheading::after {
+                        content: " ↑↓";
+                        font-size: 10px;
+                        vertical-align: top;
+                    }
+
+                    .filterdata,
+                    .filterdata td {
+                        margin-left: 16px;
+                        text-align: left;
+                        background-color: #ffffff;
+                    }
+
+                    .status-NF td {
+                        color: #676767;
+                        background-color: #d0f0c0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_high td {
+                        color: #4c4c4c;
+                        background-color: #ffa5a5;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_med td {
+                        color: #5b5b5b;
+                        background-color: #ffc8a0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-O_low td {
+                        color: #737373;
+                        background-color: #ffffb9;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-NA td {
+                        color: #4a4a4a;
+                        background-color: #c8c8c8;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .status-NR td {
+                        color: #6d6d6d;
+                        background-color: #f0f0f0;
+                        border-top: 2px solid #fafafa;
+                    }
+
+                    .CellWithComment{
+                        position:relative;
+                        text-decoration:underline;
+                        text-decoration-style: dotted;
+                    }
+
+                    .CellComment{
+                        display:none;
+                        position:absolute;
+                        z-index:100;
+                        border:1px;
+                        background-color:#555555;
+                        border-style:solid;
+                        border-width:1px;
+                        border-color: #555555;
+                        border-radius: 10px;
+                        padding:3px;
+                        color:#C9C9C9;
+                        top:20px;
+                        left:20px;
+                    }
+
+                    .CellWithComment:hover span.CellComment{
+                        display:block;
+                    }
+                </style><script>
+                    var topbutton = document.getElementById("topbtn");
+
+                    function topFunction() {
+                        document.body.scrollTop = 0;
+                        document.documentElement.scrollTop = 0;
+                    }
+
+                    function change(table_value) {
+                        var x = document.getElementById(table_value);
+                        var rows = document.getElementById(table_value).getElementsByTagName("tbody");
+
+                        if (x.style.display === "none") {
+                        x.style.display = "table";
+                        } else {
+                            x.style.display = "none";
+                        }
+                    }
+
+                    function sortTable(n,table_value) {
+                        // https://www.w3schools.com/howto/howto_js_sort_table.asp
+                        var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+                        table = document.getElementById(table_value);
+                        switching = true;
+                        // Set the sorting direction to ascending:
+                        dir = "asc";
+                        /* Make a loop that will continue until
+                        no switching has been done: */
+                        while (switching) {
+                            // Start by saying: no switching is done:
+                            switching = false;
+                            rows = table.rows;
+                            /* Loop through all table rows (except the
+                            first, which contains table headers): */
+                            for (i = 1; i < (rows.length - 1); i++) {
+                                // Start by saying there should be no switching:
+                                shouldSwitch = false;
+                                /* Get the two elements you want to compare,
+                                one from current row and one from the next: */
+                                x = rows[i].getElementsByTagName("TD")[n];
+                                y = rows[i + 1].getElementsByTagName("TD")[n];
+                                /* Check if the two rows should switch place,
+                                based on the direction, asc or desc: */
+                                if (dir == "asc") {
+                                if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                                    // If so, mark as a switch and break the loop:
+                                    shouldSwitch = true;
+                                    break;
+                                }
+                                } else if (dir == "desc") {
+                                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                                        // If so, mark as a switch and break the loop:
+                                        shouldSwitch = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (shouldSwitch) {
+                                /* If a switch has been marked, make the switch
+                                and mark that a switch has been done: */
+                                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                                switching = true;
+                                // Each time a switch is done, increase this count by 1:
+                                switchcount ++;
+                            } else {
+                                /* If no switching has been done AND the direction is "asc",
+                                set the direction to "desc" and run the while loop again. */
+                                if (switchcount == 0 && dir == "asc") {
+                                    dir = "desc";
+                                    switching = true;
+                                }
+                            }
+                        }
+                    }
+
+                    function filterTable(input,table_value) {
+                        // https://www.w3schools.com/howto/howto_js_filter_table.asp
+                        // Declare variables
+                        var input, filter, table, tr, td, i, txtValue;
+                        input = document.getElementById(input);
+                        filter = input.value.toUpperCase();
+                        table = document.getElementById(table_value);
+                        tr = table.getElementsByTagName("tr");
+
+                        // Loop through all table rows, and hide those who don't match the search query
+                        for (i = 0; i < tr.length; i++) {
+                            var allTDs = tr[i].getElementsByTagName("td");
+                            for (index = 0; index < allTDs.length; index++) {
+                                txtValue = allTDs[index].textContent || allTDs[index].innerText;
+                                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                                    tr[i].style.display = "";
+                                    break;
+                                } else {
+                                    tr[i].style.display = "none";
+                                }
+                            }
+                        }
+                    }
+                </script></head>
+  <body>
+    <h1 align="center">Evaluate-STIG Summary Report</h1><button onclick="topFunction()" id="topbtn" title="Go to Top">Top</button><table id="XO1" class="styled-table">
+      <td>
+        <h2 align="center">XO1</h2>
+        <h3 align="center">Scan Date:
+                                02/15/2026</h3>
+        <h3 align="center">Evaluate-STIG Version:
+                                1.2507.6</h3>
+        <h3 align="center">Scan Type:
+                                Classified</h3>
+        <h3 align="center">Scanned User Profile:
+                                root</h3>
+        <div class="button_cont" align="center"><a class="button" id="button" onclick="change('XO1_computer_table')" title="Show/Hide Computer information">Computer Information</a><a class="button" id="button" onclick="change('XO1_stig_table')" title="Show/Hide STIG information">STIG Information</a></div>
+        <table id="XO1_computer_table" class="styled-table">
+          <caption>Computer Information</caption>
+          <td>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Manufacturer</th>
+                  <th>Model</th>
+                  <th>Serial Number</th>
+                  <th>BIOS Version</th>
+                  <th>OS Name</th>
+                  <th>OS Version</th>
+                  <th>OS Architecture</th>
+                  <th>CPU Architecture</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Xen</td>
+                  <td>HVM domU</td>
+                  <td>b549354c-356e-6c5a-450b-adcce1198e7b</td>
+                  <td>4.17</td>
+                  <td>Debian GNU/Linux 12 (bookworm)</td>
+                  <td>12</td>
+                  <td>x86_64</td>
+                  <td>x86_64</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Interface Index</th>
+                  <th>Caption</th>
+                  <th>MAC Address</th>
+                  <th>IPv4 Addresses</th>
+                  <th>IPv6 Addresses</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>2</td>
+                  <td>Ethernet interface</td>
+                  <td>9a:23:ce:79:07:da</td>
+                  <td>10.0.10.27</td>
+                  <td>fe80::9823:ceff:fe79:7da</td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Index</th>
+                  <th>Device ID</th>
+                  <th>Size</th>
+                  <th>Caption</th>
+                  <th>Serial Number</th>
+                  <th>Media Type</th>
+                  <th>Interface Type</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+'
+Size                           [1024M]
+sr0</td>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [1024M]</td>
+                  <td>Name                           Value
+----                           -----
+DeviceID                       '//'
+1024M
+Index                          '//sr0/'</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+'
+Size                           [30G]
+xvda</td>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [30G]</td>
+                  <td>Name                           Value
+----                           -----
+DeviceID                       '//'
+30G
+Index                          '//xvda/'</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [512M]
+xvda1</td>
+                  <td>Name                           Value
+----                           -----
+boot
+Size                           [512M]</td>
+                  <td>Name                           Value
+----                           -----
+DeviceID                       '///boot/efi'
+512M
+Index                          '//xvda1/'</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [28.5G]
+xvda2</td>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [28.5G]</td>
+                  <td>Name                           Value
+----                           -----
+DeviceID                       '///'
+28.5G
+Index                          '//xvda2/'</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+[SWAP]'
+Size                           [976M]
+xvda3</td>
+                  <td>Name                           Value
+----                           -----
+
+Size                           [976M]</td>
+                  <td>Name                           Value
+----                           -----
+SWAP
+976M
+Index                          '//xvda3/'</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <table class="styled-table">
+              <thead>
+                <tr>
+                  <th>Risk Rating</th>
+                  <th>Weighted Average</th>
+                  <th>CAT I Open|NR</th>
+                  <th>CAT I Possible</th>
+                  <th>CAT II Open|NR</th>
+                  <th>CAT II Possible</th>
+                  <th>CAT III Open|NR</th>
+                  <th>CAT III Possible</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="risk-VeryHigh">
+                  <td>Very High</td>
+                  <td>100%
+                                                    </td>
+                  <td>0</td>
+                  <td>0</td>
+                  <td>152</td>
+                  <td>152</td>
+                  <td>8</td>
+                  <td>8</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </table>
+        <table id="XO1_stig_table" class="styled-table">
+          <caption>STIG Information</caption>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Start Time</th>
+              <th>Open</th>
+              <th>Not A Finding</th>
+              <th>Not Applicable</th>
+              <th>Not Reviewed</th>
+              <th title="(Not A Finding + Not Applicable)/Total Findings">EvalScore</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="button_cont" align="left"><a class="stig_button" id="button" onclick="change('Application Security Development STIG V6R4_filter');change('Application Security Development STIG V6R4')" title="Show/Hide ">Application Security Development STIG V6R4</a></div>
+              </td>
+              <td>2026-02-15T06:46:57-05:00</td>
+              <td>14</td>
+              <td>6</td>
+              <td>2</td>
+              <td>264</td>
+              <td>2.8%</td>
+            </tr>
+            <tr>
+              <td id="Application Security Development STIG V6R4_filter" class="filterdata" style="display:none"><input type="text" id="Application Security Development STIG V6R4_input" onkeyup="filterTable(`Application Security Development STIG V6R4_input`,`Application Security Development STIG V6R4`)" placeholder="Filter..." title="Type data to filter on"></td>
+            </tr>
+            <tr>
+              <td colspan="7">
+                <table id="Application Security Development STIG V6R4" class="styled-table" style="display:none;">
+                  <thead>
+                    <tr>
+                      <th onclick="sortTable(`0`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">Severity</th>
+                      <th onclick="sortTable(`1`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">Status</th>
+                      <th onclick="sortTable(`2`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">Group ID</th>
+                      <th onclick="sortTable(`3`,`Application Security Development STIG V6R4`)" class="sortheading" title="Sort by column">Rule Title</th>
+                      <th onclick="sortTable(`4`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">Override</th>
+                      <th onclick="sortTable(`5`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">AFMod</th>
+                      <th onclick="sortTable(`5`,`Application Security Development STIG V6R4`)" class="sortheading" style="width:10%;" title="Sort by column">Pre-AF Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="status-NA">
+                      <td>CAT I</td>
+                      <td>Not_Applicable</td>
+                      <td>V-222399</td>
+                      <td>Messages protected with WS_Security must use time stamps with creation and expiration times.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NA">
+                      <td>CAT I</td>
+                      <td>Not_Applicable</td>
+                      <td>V-222400</td>
+                      <td>Validity periods must be verified on all application messages using WS-Security or SAML assertions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222403</td>
+                      <td>The application must use the NotOnOrAfter condition when using the SubjectConfirmation element in a SAML assertion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222404</td>
+                      <td>The application must use both the NotBefore and NotOnOrAfter elements or OneTimeUse element when using the Conditions element in a SAML assertion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222425</td>
+                      <td>The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222430</td>
+                      <td>The application must execute without excessive account permissions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222432</td>
+                      <td>The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222522</td>
+                      <td>The application must uniquely identify and authenticate organizational users (or processes acting on behalf of organizational users).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222536</td>
+                      <td>The application must enforce a minimum 15-character password length.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222542</td>
+                      <td>The application must only store cryptographic representations of passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222543</td>
+                      <td>The application must transmit only cryptographically-protected passwords.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222550</td>
+                      <td>The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222551</td>
+                      <td>The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222554</td>
+                      <td>The application must not display passwords/PINs as clear text.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222555</td>
+                      <td>The application must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222577</td>
+                      <td>The application must not expose session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222578</td>
+                      <td>The application must destroy the session ID value and/or cookie on logoff or browser close.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222585</td>
+                      <td>The application must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222588</td>
+                      <td>The application must implement approved cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest on organization-defined information system components.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222589</td>
+                      <td>The application must use appropriate cryptography in order to protect stored DOD information when required by the information owner or DOD policy.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222596</td>
+                      <td>The application must protect the confidentiality and integrity of transmitted information.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222601</td>
+                      <td>The application must not store sensitive information in hidden fields.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222602</td>
+                      <td>The application must protect from Cross-Site Scripting (XSS) vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222604</td>
+                      <td>The application must protect from command injection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222607</td>
+                      <td>The application must not be vulnerable to SQL Injection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222608</td>
+                      <td>The application must not be vulnerable to XML-oriented attacks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222609</td>
+                      <td>The application must not be subject to input handling vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222612</td>
+                      <td>The application must not be vulnerable to overflow attacks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT I</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222620</td>
+                      <td>Application web servers must be on a separate network segment from the application and database servers if it is a tiered application operating in the DoD DMZ.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222642</td>
+                      <td>The application must not contain embedded authentication data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222643</td>
+                      <td>The application must have the capability to mark sensitive/classified output when required.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222658</td>
+                      <td>All products must be supported by the vendor or the development team.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-O_high">
+                      <td>CAT I</td>
+                      <td>Open</td>
+                      <td>V-222659</td>
+                      <td>The application must be decommissioned when maintenance or support is no longer available.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NF">
+                      <td>CAT I</td>
+                      <td>NotAFinding</td>
+                      <td>V-222662</td>
+                      <td>Default passwords must be changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222387</td>
+                      <td>The application must provide a capability to limit the number of logon sessions per user.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222388</td>
+                      <td>The application must clear temporary storage and cookies when the session is terminated.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222389</td>
+                      <td>The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222390</td>
+                      <td>The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222391</td>
+                      <td>Applications requiring user access authentication must provide a logoff capability for user initiated communication session.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222393</td>
+                      <td>The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in storage.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222394</td>
+                      <td>The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in process.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222395</td>
+                      <td>The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in transmission.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222396</td>
+                      <td>The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222397</td>
+                      <td>The application must implement cryptographic mechanisms to protect the integrity of remote access sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222398</td>
+                      <td>Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222401</td>
+                      <td>The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222402</td>
+                      <td>The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222405</td>
+                      <td>The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222406</td>
+                      <td>The application must ensure messages are encrypted when the SessionIndex is tied to privacy data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222407</td>
+                      <td>The application must provide automated mechanisms for supporting account management functions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222408</td>
+                      <td>Shared/group account credentials must be terminated when members leave the group.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222409</td>
+                      <td>The application must automatically remove or disable temporary user accounts 72 hours after account creation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222412</td>
+                      <td>Unnecessary application accounts must be disabled, or deleted.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222413</td>
+                      <td>The application must automatically audit account creation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222414</td>
+                      <td>The application must automatically audit account modification.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222415</td>
+                      <td>The application must automatically audit account disabling actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222416</td>
+                      <td>The application must automatically audit account removal actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222421</td>
+                      <td>The application must automatically audit account enabling actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222423</td>
+                      <td>Application data protection requirements must be identified and documented.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222424</td>
+                      <td>The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222426</td>
+                      <td>The application must enforce organization-defined discretionary access control policies over defined subjects and objects.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222427</td>
+                      <td>The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222428</td>
+                      <td>The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222429</td>
+                      <td>The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222431</td>
+                      <td>The application must audit the execution of privileged functions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222433</td>
+                      <td>The application administrator must follow an approved process to unlock locked user accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222438</td>
+                      <td>The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222439</td>
+                      <td>For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222441</td>
+                      <td>The application must provide audit record generation capability for the creation of session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222442</td>
+                      <td>The application must provide audit record generation capability for the destruction of session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222443</td>
+                      <td>The application must provide audit record generation capability for the renewal of session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222444</td>
+                      <td>The application must not write sensitive data into the application logs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222445</td>
+                      <td>The application must provide audit record generation capability for session timeouts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222446</td>
+                      <td>The application must record a time stamp indicating when the event occurred.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222447</td>
+                      <td>The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222448</td>
+                      <td>The application must provide audit record generation capability for connecting system IP addresses.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222449</td>
+                      <td>The application must record the username or user ID of the user associated with the event.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222450</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222451</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to access security objects occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222452</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to access security levels occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222453</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222454</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to modify privileges occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222455</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to modify security objects occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222456</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to modify security levels occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222457</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222458</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to delete privileges occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222459</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to delete security levels occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222460</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to delete application database security objects occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222461</td>
+                      <td>The application must generate audit records when successful/unsuccessful attempts to delete categories of information (e.g., classification levels) occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222462</td>
+                      <td>The application must generate audit records when successful/unsuccessful logon attempts occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222463</td>
+                      <td>The application must generate audit records for privileged activities or other system-level access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222464</td>
+                      <td>The application must generate audit records showing starting and ending time for user access to the system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222465</td>
+                      <td>The application must generate audit records when successful/unsuccessful accesses to objects occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222466</td>
+                      <td>The application must generate audit records for all direct access to the information system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222467</td>
+                      <td>The application must generate audit records for all account creations, modifications, disabling, and termination events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222468</td>
+                      <td>The application must initiate session auditing upon startup.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222469</td>
+                      <td>The application must log application shutdown events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222470</td>
+                      <td>The application must log destination IP addresses.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222471</td>
+                      <td>The application must log user actions involving access to data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222472</td>
+                      <td>The application must log user actions involving changes to data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222473</td>
+                      <td>The application must produce audit records containing information to establish when (date and time) the events occurred.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222474</td>
+                      <td>The application must produce audit records containing enough information to establish which component, feature or function of the application triggered the audit event.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222475</td>
+                      <td>When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222476</td>
+                      <td>The application must produce audit records that contain information to establish the outcome of the events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222477</td>
+                      <td>The application must generate audit records containing information that establishes the identity of any individual or process associated with the event.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222478</td>
+                      <td>The application must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222479</td>
+                      <td>The application must implement transaction recovery logs when transaction based.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222480</td>
+                      <td>The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222481</td>
+                      <td>The application must off-load audit records onto a different system or media than the system being audited.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222482</td>
+                      <td>The application must be configured to write application logs to a centralized log repository.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222483</td>
+                      <td>The application must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222484</td>
+                      <td>Applications categorized as having a moderate or high impact must provide an immediate real-time alert to the SA and ISSO (at a minimum) for all audit failure events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222485</td>
+                      <td>The application must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222486</td>
+                      <td>The application must shut down by default upon audit failure (unless availability is an overriding concern).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222487</td>
+                      <td>The application must provide the capability to centrally review and analyze audit records from multiple components within the system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222488</td>
+                      <td>The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222489</td>
+                      <td>The application must provide an audit reduction capability that supports on-demand reporting requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222490</td>
+                      <td>The application must provide an audit reduction capability that supports on-demand audit review and analysis.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222491</td>
+                      <td>The application must provide an audit reduction capability that supports after-the-fact investigations of security incidents.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222492</td>
+                      <td>The application must provide a report generation capability that supports on-demand audit review and analysis.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222493</td>
+                      <td>The application must provide a report generation capability that supports on-demand reporting requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222494</td>
+                      <td>The application must provide a report generation capability that supports after-the-fact investigations of security incidents.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222495</td>
+                      <td>The application must provide an audit reduction capability that does not alter original content or time ordering of audit records.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222496</td>
+                      <td>The application must provide a report generation capability that does not alter original content or time ordering of audit records.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222497</td>
+                      <td>The applications must use internal system clocks to generate time stamps for audit records.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222498</td>
+                      <td>The application must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222499</td>
+                      <td>The application must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222500</td>
+                      <td>The application must protect audit information from any type of unauthorized read access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222501</td>
+                      <td>The application must protect audit information from unauthorized modification.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222502</td>
+                      <td>The application must protect audit information from unauthorized deletion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222503</td>
+                      <td>The application must protect audit tools from unauthorized access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222504</td>
+                      <td>The application must protect audit tools from unauthorized modification.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222505</td>
+                      <td>The application must protect audit tools from unauthorized deletion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222506</td>
+                      <td>The application must back up audit records at least every seven days onto a different system or system component than the system or component being audited.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222507</td>
+                      <td>The application must use cryptographic mechanisms to protect the integrity of audit information.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222508</td>
+                      <td>Application audit tools must be cryptographically hashed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222509</td>
+                      <td>The integrity of the audit tools must be validated by checking the files for changes in the cryptographic hash value.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222510</td>
+                      <td>The application must prohibit user installation of software without explicit privileged status.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222511</td>
+                      <td>The application must enforce access restrictions associated with changes to application configuration.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222512</td>
+                      <td>The application must audit who makes configuration changes to the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222513</td>
+                      <td>The application must have the capability to prevent the installation of patches, service packs, or application components without verification the software component has been digitally signed using a certificate that is recognized and approved by the organization.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222514</td>
+                      <td>The applications must limit privileges to change the software resident within software libraries.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222515</td>
+                      <td>An application vulnerability assessment must be conducted.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222516</td>
+                      <td>The application must prevent program execution in accordance with organization-defined policies regarding software program usage and restrictions, and/or rules authorizing the terms and conditions of software program usage.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222517</td>
+                      <td>The application must employ a deny-all, permit-by-exception (whitelist) policy to allow the execution of authorized software programs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222518</td>
+                      <td>The application must be configured to disable non-essential capabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222519</td>
+                      <td>The application must be configured to use only functions, ports, and protocols permitted to it in the PPSM CAL.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222520</td>
+                      <td>The application must require users to reauthenticate when organization-defined circumstances or situations require reauthentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222521</td>
+                      <td>The application must require devices to reauthenticate when organization-defined circumstances or situations requiring reauthentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222523</td>
+                      <td>The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222524</td>
+                      <td>The application must accept Personal Identity Verification (PIV) credentials.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222525</td>
+                      <td>The application must electronically verify Personal Identity Verification (PIV) credentials.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222526</td>
+                      <td>The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222527</td>
+                      <td>The application must use multifactor (Alt. Token) authentication for local access to privileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222528</td>
+                      <td>The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222529</td>
+                      <td>The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222530</td>
+                      <td>The application must implement replay-resistant authentication mechanisms for network access to privileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222531</td>
+                      <td>The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222532</td>
+                      <td>The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222533</td>
+                      <td>The application must authenticate all network connected endpoint devices before establishing any connection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222534</td>
+                      <td>Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222535</td>
+                      <td>The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222537</td>
+                      <td>The application must enforce password complexity by requiring that at least one uppercase character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222538</td>
+                      <td>The application must enforce password complexity by requiring that at least one lowercase character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222539</td>
+                      <td>The application must enforce password complexity by requiring that at least one numeric character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222540</td>
+                      <td>The application must enforce password complexity by requiring that at least one special character be used.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222541</td>
+                      <td>The application must require the change of at least eight of the total number of characters when passwords are changed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222544</td>
+                      <td>The application must enforce 24 hours/1 day as the minimum password lifetime.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222545</td>
+                      <td>The application must enforce a 60-day maximum password lifetime restriction.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222546</td>
+                      <td>The application must prohibit password reuse for a minimum of five generations.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222547</td>
+                      <td>The application must allow the use of a temporary password for system logons with an immediate change to a permanent password.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222548</td>
+                      <td>The application password must not be changeable by users other than the administrator or the user with which the password is associated.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222549</td>
+                      <td>The application must terminate existing user sessions upon account deletion.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222552</td>
+                      <td>The application must map the authenticated identity to the individual user or group account for PKI-based authentication.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222553</td>
+                      <td>The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222556</td>
+                      <td>The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222557</td>
+                      <td>The application must accept Personal Identity Verification (PIV) credentials from other federal agencies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222558</td>
+                      <td>The application must electronically verify Personal Identity Verification (PIV) credentials from other federal agencies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222559</td>
+                      <td>The application must accept Federal Identity, Credential, and Access Management (FICAM)-approved third-party credentials.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222560</td>
+                      <td>The application must conform to Federal Identity, Credential, and Access Management (FICAM)-issued profiles.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222561</td>
+                      <td>Applications used for non-local maintenance sessions must audit non-local maintenance and diagnostic sessions for organization-defined auditable events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222562</td>
+                      <td>Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222563</td>
+                      <td>Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222564</td>
+                      <td>Applications used for non-local maintenance sessions must verify remote disconnection at the termination of non-local maintenance and diagnostic sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222565</td>
+                      <td>The application must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222566</td>
+                      <td>The application must terminate all sessions and network connections when nonlocal maintenance is completed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222567</td>
+                      <td>The application must not be vulnerable to race conditions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222568</td>
+                      <td>The application must terminate all network connections associated with a communications session at the end of the session.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222570</td>
+                      <td>The application must utilize FIPS-validated cryptographic modules when signing application components.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222571</td>
+                      <td>The application must utilize FIPS-validated cryptographic modules when generating cryptographic hashes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222572</td>
+                      <td>The application must utilize FIPS-validated cryptographic modules when protecting unclassified information that requires cryptographic protection.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222573</td>
+                      <td>Applications making SAML assertions must use FIPS-approved random numbers in the generation of SessionIndex in the SAML element AuthnStatement.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222574</td>
+                      <td>The application user interface must be either physically or logically separated from data storage and management interfaces.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222575</td>
+                      <td>The application must set the HTTPOnly flag on session cookies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222576</td>
+                      <td>The application must set the secure flag on session cookies.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222579</td>
+                      <td>Applications must use system-generated session identifiers that protect against session fixation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222580</td>
+                      <td>Applications must validate session identifiers.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222581</td>
+                      <td>Applications must not use URL embedded session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222582</td>
+                      <td>The application must not re-use or recycle session IDs.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222583</td>
+                      <td>The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222584</td>
+                      <td>The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222586</td>
+                      <td>In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222587</td>
+                      <td>The application must protect the confidentiality and integrity of stored information when required by DOD policy or the information owner.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222590</td>
+                      <td>The application must isolate security functions from non-security functions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222591</td>
+                      <td>The application must maintain a separate execution domain for each executing process.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222592</td>
+                      <td>Applications must prevent unauthorized and unintended information transfer via shared system resources.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222593</td>
+                      <td>XML-based applications must mitigate DoS attacks by using XML filters, parser options, or gateways.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222594</td>
+                      <td>The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222595</td>
+                      <td>The web service design must include redundancy mechanisms when used with high-availability systems.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222597</td>
+                      <td>The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222598</td>
+                      <td>The application must maintain the confidentiality and integrity of information during preparation for transmission.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222599</td>
+                      <td>The application must maintain the confidentiality and integrity of information during reception.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222600</td>
+                      <td>The application must not disclose unnecessary information to users.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222603</td>
+                      <td>The application must protect from Cross-Site Request Forgery (CSRF) vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222605</td>
+                      <td>The application must protect from canonical representation vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222606</td>
+                      <td>The application must validate all input.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222610</td>
+                      <td>The application must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222611</td>
+                      <td>The application must reveal error messages only to the ISSO, ISSM, or SA.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222613</td>
+                      <td>The application must remove organization-defined software components after updated versions have been installed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222614</td>
+                      <td>Security-relevant software updates and patches must be kept up to date.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222615</td>
+                      <td>The application performing organization-defined security functions must verify correct operation of security functions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222616</td>
+                      <td>The application must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222618</td>
+                      <td>Unsigned Category 1A mobile code must not be used in the application in accordance with DoD policy.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222619</td>
+                      <td>The ISSO must ensure an account management process is implemented, verifying only authorized users can gain access to the application, and individual accounts designated as inactive, suspended, or terminated are promptly removed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222621</td>
+                      <td>The ISSO must ensure application audit trails are retained for at least 30 months (12 months active + 18 months cold storage) for applications without SAMI data and five years for applications including SAMI data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222622</td>
+                      <td>The ISSO must review audit trails periodically based on system documentation recommendations or immediately upon system security events.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222623</td>
+                      <td>The ISSO must report all suspected violations of IA policies in accordance with DoD information system IA procedures.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222624</td>
+                      <td>The ISSO must ensure active vulnerability testing is performed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222625</td>
+                      <td>Execution flow diagrams and design documents must be created to show how deadlock and recursion issues in web services are being mitigated.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222626</td>
+                      <td>The designer must ensure the application does not store configuration and control files in the same directory as user data.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222627</td>
+                      <td>The ISSO must ensure if a DoD STIG or NSA guide is not available, a third-party product will be configured by following available guidance.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222628</td>
+                      <td>New IP addresses, data services, and associated ports used by the application must be submitted to the appropriate approving authority for the organization, which in turn will be submitted through the DoD Ports, Protocols, and Services Management (DoD PPSM)</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222629</td>
+                      <td>The application must be registered with the DoD Ports and Protocols Database.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222630</td>
+                      <td>The Configuration Management (CM) repository must be properly patched and STIG compliant.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222631</td>
+                      <td>Access privileges to the Configuration Management (CM) repository must be reviewed every three months.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222632</td>
+                      <td>A Software Configuration Management (SCM) plan describing the configuration control and change management process of application objects developed by the organization and the roles and responsibilities of the organization must be created and maintained.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222633</td>
+                      <td>A Configuration Control Board (CCB) that meets at least every release cycle, for managing the Configuration Management (CM) process must be established.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222634</td>
+                      <td>The application services and interfaces must be compatible with and ready for IPv6 networks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222635</td>
+                      <td>The application must not be hosted on a general purpose machine if the application is designated as critical or high availability by the ISSO.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222636</td>
+                      <td>A contingency plan must exist in accordance with DOD policy based on the application's availability requirements.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222637</td>
+                      <td>Recovery procedures and technical system features must exist so recovery is performed in a secure and verifiable manner. The ISSO will document circumstances inhibiting a trusted recovery.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222638</td>
+                      <td>Data backup must be performed at required intervals in accordance with DoD policy.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222639</td>
+                      <td>Back-up copies of the application software or source code must be stored in a fire-rated container or stored separately (offsite).</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222640</td>
+                      <td>Procedures must be in place to assure the appropriate physical and technical protection of the backup and restoration of the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222641</td>
+                      <td>The application must use encryption to implement key exchange and authenticate endpoints prior to establishing a communication channel for key exchange.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222645</td>
+                      <td>Application files must be cryptographically hashed prior to deploying to DoD operational networks.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222646</td>
+                      <td>At least one tester must be designated to test for security flaws in addition to functional testing.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222648</td>
+                      <td>An application code review must be performed on the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222650</td>
+                      <td>Flaws found during a code review must be tracked in a defect tracking system.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222651</td>
+                      <td>The changes to the application must be assessed for IA and accreditation impact prior to implementation.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222652</td>
+                      <td>Security flaws must be fixed or addressed in the project plan.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222655</td>
+                      <td>Threat models must be documented and reviewed for each application release and updated as required by design and functionality changes or when new threats are discovered.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222656</td>
+                      <td>The application must not be subject to error handling vulnerabilities.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222657</td>
+                      <td>The application development team must provide an application incident response plan.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222661</td>
+                      <td>Unnecessary built-in application accounts must be disabled.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222663</td>
+                      <td>An Application Configuration Guide must be created and included with the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222664</td>
+                      <td>If the application contains classified data, a Security Classification Guide must exist containing data elements and their classification.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222665</td>
+                      <td>The designer must ensure uncategorized or emerging mobile code is not used in applications.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222666</td>
+                      <td>Production database exports must have database administration credentials and sensitive data removed before releasing the export.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222667</td>
+                      <td>Protections against DoS attacks must be implemented.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222668</td>
+                      <td>The system must alert an administrator when low resource conditions are encountered.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222671</td>
+                      <td>Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222673</td>
+                      <td>The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT II</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-265634</td>
+                      <td>The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222392</td>
+                      <td>The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222410</td>
+                      <td>The application must have a process, feature or function that prevents removal or disabling of emergency accounts.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222411</td>
+                      <td>The application must automatically disable accounts after a 35 day period of account inactivity.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222417</td>
+                      <td>The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222418</td>
+                      <td>The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222419</td>
+                      <td>The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222420</td>
+                      <td>The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222422</td>
+                      <td>The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222434</td>
+                      <td>The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222435</td>
+                      <td>The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222436</td>
+                      <td>The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222437</td>
+                      <td>The application must display the time and date of the users last successful logon.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222617</td>
+                      <td>The application must notify the ISSO and ISSM of failed security verification tests.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222644</td>
+                      <td>Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222647</td>
+                      <td>Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222649</td>
+                      <td>Code coverage statistics must be maintained for each release of the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222653</td>
+                      <td>The application development team must follow a set of coding standards.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222654</td>
+                      <td>The designer must create and update the Design Document for each release of the application.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222660</td>
+                      <td>Procedures must be in place to notify users when an application is decommissioned.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222669</td>
+                      <td>At least one application administrator must be registered to receive update notifications, or security alerts, when automated alerts are available.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222670</td>
+                      <td>The application must provide notifications or alerts when product update and security related patches are available.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                    <tr class="status-NR">
+                      <td>CAT III</td>
+                      <td>Not_Reviewed</td>
+                      <td>V-222672</td>
+                      <td>The application must generate audit records when concurrent logons from different workstations occur.</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </td>
+    </table>
+  </body>
+</html>
