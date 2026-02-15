@@ -22,15 +22,17 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;'&#xA;sr0">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;sr0&#xA;Size                           [1024M]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-1024M
 DeviceID                       '//'
-Index                          '//sr0/'</Size>
+Index                          '//sr0/'
+1024M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -40,15 +42,17 @@ Index                          '//sr0/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;'&#xA;xvda">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [30G]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-30G
 DeviceID                       '//'
-Index                          '//xvda/'</Size>
+Index                          '//xvda/'
+30G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -58,16 +62,17 @@ Index                          '//xvda/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;&#xA;xvda1">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda1&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
-Size                           [512M]
-boot</DeviceID>
+boot
+
+Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-512M
 DeviceID                       '///boot/efi'
-Index                          '//xvda1/'</Size>
+Index                          '//xvda1/'
+512M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -77,15 +82,17 @@ Index                          '//xvda1/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;&#xA;xvda2">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-28.5G
 DeviceID                       '///'
-Index                          '//xvda2/'</Size>
+Index                          '//xvda2/'
+28.5G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -95,15 +102,17 @@ Index                          '//xvda2/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;[SWAP]'&#xA;xvda3">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda3&#xA;Size                           [976M]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-976M
 SWAP
-Index                          '//xvda3/'</Size>
+Index                          '//xvda3/'
+976M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -119,17 +128,17 @@ Index                          '//xvda3/'</Size>
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>143</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>147</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
-      <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
+      <CATIII_OpenNRTotal>8</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>93</WeightedAvg>
+      <WeightedAvg>98</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-15T14:11:43.0529338-05:00" EvalScore="6.99">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-15T13:44:00.8013252-05:00" EvalScore="5.24">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -166,7 +175,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="8" Open="7" NotAFinding="1" Not_Reviewed="214">
+      <CAT_II Total="230" Not_Applicable="4" Open="4" NotAFinding="1" Not_Reviewed="221">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -178,14 +187,14 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-222396" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement cryptographic mechanisms to protect the integrity of remote access sessions." Status="Open" ID="V-222397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed." Status="Not_Applicable" ID="V-222398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion." Status="Not_Applicable" ID="V-222401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary." Status="Not_Applicable" ID="V-222402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion." Status="Not_Applicable" ID="V-222405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must ensure messages are encrypted when the SessionIndex is tied to privacy data." Status="Not_Applicable" ID="V-222406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-222407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must ensure each unique asserting party provides unique assertion ID references for each SAML assertion." Status="Not_Reviewed" ID="V-222401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must ensure encrypted assertions, or equivalent confidentiality protections are used when assertion data is passed through an intermediary, and confidentiality of the assertion data is required when passing through the intermediary." Status="Not_Reviewed" ID="V-222402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must ensure if a OneTimeUse element is used in an assertion, there is only one of the same used in the Conditions element portion of an assertion." Status="Not_Reviewed" ID="V-222405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must ensure messages are encrypted when the SessionIndex is tied to privacy data." Status="Not_Reviewed" ID="V-222406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide automated mechanisms for supporting account management functions." Status="Not_Reviewed" ID="V-222407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Shared/group account credentials must be terminated when members leave the group." Status="Not_Reviewed" ID="V-222408" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically remove or disable temporary user accounts 72 hours after account creation." Status="Open" ID="V-222409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Unnecessary application accounts must be disabled, or deleted." Status="Open" ID="V-222412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically remove or disable temporary user accounts 72 hours after account creation." Status="Not_Reviewed" ID="V-222409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Unnecessary application accounts must be disabled, or deleted." Status="Not_Reviewed" ID="V-222412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically audit account creation." Status="Not_Reviewed" ID="V-222413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically audit account modification." Status="Not_Reviewed" ID="V-222414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically audit account disabling actions." Status="Not_Reviewed" ID="V-222415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -398,10 +407,10 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function." Status="Not_Reviewed" ID="V-222673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-265634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
-      <CAT_III Total="22" Not_Applicable="1" Open="2" NotAFinding="0" Not_Reviewed="19">
+      <CAT_III Total="22" Not_Applicable="0" Open="1" NotAFinding="0" Not_Reviewed="21">
         <Vuln RuleTitle="The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-222392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must have a process, feature or function that prevents removal or disabling of emergency accounts." Status="Not_Applicable" ID="V-222410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically disable accounts after a 35 day period of account inactivity." Status="Open" ID="V-222411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must have a process, feature or function that prevents removal or disabling of emergency accounts." Status="Not_Reviewed" ID="V-222410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically disable accounts after a 35 day period of account inactivity." Status="Not_Reviewed" ID="V-222411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created." Status="Not_Reviewed" ID="V-222417" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are modified." Status="Not_Reviewed" ID="V-222418" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions." Status="Not_Reviewed" ID="V-222419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
