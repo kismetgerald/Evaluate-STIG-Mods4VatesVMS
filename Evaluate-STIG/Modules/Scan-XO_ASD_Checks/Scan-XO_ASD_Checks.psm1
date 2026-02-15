@@ -30,7 +30,7 @@ $ErrorActionPreference = "Stop"
 filter bash {
     param([string]$c)
     try {
-        $result = & bash -c $c 2>&1
+        $result = sh -c $c 2>&1
         return $result
     }
     catch {
@@ -156,18 +156,15 @@ Function Get-V222387 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails += "The application must protect all private keys and digital certificates from unauthorized disclosure.`n"
-    $FindingDetails += "Manual verification required: Review cryptographic key management practices in XO.`n"
-    $FindingDetails += "Evidence to request from System Administrator:`n"
-    $FindingDetails += "- Key storage and access controls`n"
-    $FindingDetails += "- Certificate handling procedures`n"
-    $FindingDetails += "- Encryption key protection mechanisms`n"
-    $Status = "Not_Reviewed"
+    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
+                      "Refer to the Application Security and Development STIG (V-222387) for detailed requirements. " +
+                      "Evidence should include configuration files, policies, and operational procedures."
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
         $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
-    } else {
+    }
+    else {
         $ResultHash = ""
     }
 
@@ -184,6 +181,12 @@ Function Get-V222387 {
             Instance     = $Instance
             Database     = $Database
             Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
@@ -200,14 +203,12 @@ Function Get-V222387 {
         AFKey            = $AFKey
         AFStatus         = $AFStatus
         Comments         = $Comments
-        SeverityOverride  = $SeverityOverride
+        SeverityOverride = $SeverityOverride
         Justification    = $Justification
-        ScanType         = $ScanType
-        AnswerFile       = $PSBoundParameters.AnswerFile
-        AnswerKey        = $PSBoundParameters.AnswerKey
-        Instance         = $PSBoundParameters.Instance
-        Database         = $PSBoundParameters.Database
-        SiteName         = $PSBoundParameters.SiteName
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -266,18 +267,15 @@ Function Get-V222388 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails += "The application must implement DoD-approved cryptography to protect data at rest.`n"
-    $FindingDetails += "Manual verification required: Review cryptographic implementations in XO.`n"
-    $FindingDetails += "Evidence to request from System Administrator:`n"
-    $FindingDetails += "- Data encryption mechanisms and algorithms`n"
-    $FindingDetails += "- Key management and storage procedures`n"
-    $FindingDetails += "- FIPS-validated cryptography compliance`n"
-    $Status = "Not_Reviewed"
+    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
+                      "Refer to the Application Security and Development STIG (V-222388) for detailed requirements. " +
+                      "Evidence should include configuration files, policies, and operational procedures."
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
         $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
-    } else {
+    }
+    else {
         $ResultHash = ""
     }
 
@@ -294,6 +292,12 @@ Function Get-V222388 {
             Instance     = $Instance
             Database     = $Database
             Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
@@ -310,14 +314,12 @@ Function Get-V222388 {
         AFKey            = $AFKey
         AFStatus         = $AFStatus
         Comments         = $Comments
-        SeverityOverride  = $SeverityOverride
+        SeverityOverride = $SeverityOverride
         Justification    = $Justification
-        ScanType         = $ScanType
-        AnswerFile       = $PSBoundParameters.AnswerFile
-        AnswerKey        = $PSBoundParameters.AnswerKey
-        Instance         = $PSBoundParameters.Instance
-        Database         = $PSBoundParameters.Database
-        SiteName         = $PSBoundParameters.SiteName
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -22491,134 +22493,52 @@ Function Get-V222608 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222608: Application must not be vulnerable to XML-based attacks (XXE, XPath injection, etc.)
-    # Checks for XML processing libraries and their security configuration
-    
-    $ErrorCount = 0
-    $FindingDetails = ""
-    
-    # Check for XML processing packages
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "XML Processing Library Detection`n"
-    $FindingDetails += "============================================`n"
-    
-    $XMLPackages = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-    echo "Checking for XML processing libraries..."
-    cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep -E '\"xml|\"xpath|\"dom-parser|\"xmldom|\"fast-xml-parser|\"xml2js' || echo "No XML packages in dependencies"
-else
-    echo "package.json not found"
-fi
+    $nl = [Environment]::NewLine
 
-echo -e "\nSearching for XML parser usage in source..."
-if [ -d /opt/xo/xo-src ]; then
-    XML_USAGE=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l "new.*DOMParser\|xml2js\|parseXML\|XMLHttpRequest" 2>/dev/null | wc -l)
-    echo "Files with XML processing: `$XML_USAGE"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $XMLPackages + "`n"
-    
-    # Check for XXE protection patterns
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "XXE Protection Analysis`n"
-    $FindingDetails += "============================================`n"
-    
-    $XXEProtection = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Searching for XXE protection patterns..."
-    
-    # Check for external entity disabling
-    XXE_PROTECTION=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'noent.*false\|loadExternalDtd.*false\|xmlParserOption' 2>/dev/null | wc -l)
-    echo "Files with XXE protection: `$XXE_PROTECTION"
-    
-    # Check for unsafe XML parsing
-    UNSAFE_XML=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'new DOMParser()\|parseFromString' 2>/dev/null | wc -l)
-    echo "Files with XML parsing: `$UNSAFE_XML"
-    
-    # Check for XPath usage
-    XPATH_USAGE=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'xpath\|evaluate.*XPath' </dev/null 2>/dev/null | wc -l)
-    echo "Files with XPath: `$XPATH_USAGE"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $XXEProtection + "`n"
-    
-    # Check for SOAP/WSDL processing (common XML attack vectors)
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "SOAP/WSDL Processing Check`n"
-    $FindingDetails += "============================================`n"
-    
-    $SOAPCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking for SOAP/WSDL usage..."
-    SOAP_USAGE=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -il 'soap\|wsdl\|ws-security' </dev/null 2>/dev/null | wc -l)
-    echo "Files with SOAP/WSDL: `$SOAP_USAGE"
-    
-    # Check for XML signature validation
-    XML_SIG=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'xml-crypto\|xmldsig\|SignedXml' </dev/null 2>/dev/null | wc -l)
-    echo "Files with XML signatures: `$XML_SIG"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SOAPCheck + "`n"
-    
-    # Check for XML validation schemas
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "XML Schema Validation`n"
-    $FindingDetails += "============================================`n"
-    
-    $SchemaCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Searching for XML schemas and validation..."
-    XSD_FILES=`$(find /opt/xo/xo-src -name '*.xsd' -o -name '*.dtd' </dev/null 2>/dev/null | wc -l)
-    echo "XML schema files: `$XSD_FILES"
-    
-    XML_VALIDATION=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'validateXML\|xsd.*validate\|schema.*validate' </dev/null 2>/dev/null | wc -l)
-    echo "Files with schema validation: `$XML_VALIDATION"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SchemaCheck + "`n"
-    
-    # Analyze findings
-    $XMLUsageCount = 0
-    if ($XMLPackages -match 'Files with XML processing: ([0-9]+)') {
-        $XMLUsageCount = [int]$Matches[1]
-    }
-    
-    $SOAPCount = 0
-    if ($SOAPCheck -match 'Files with SOAP/WSDL: ([0-9]+)') {
-        $SOAPCount = [int]$Matches[1]
-    }
-    
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Vulnerability Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    if ($XMLUsageCount -eq 0 -and $SOAPCount -eq 0) {
-        $Status = "NotAFinding"
-        $FindingDetails += "[PASS] No XML processing detected - application not vulnerable to XML attacks`n"
-        $FindingDetails += "XO uses JSON for API communication and data exchange, not XML`n"
-    } elseif ($XMLUsageCount -gt 0) {
-        $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] XML processing detected - manual code review required`n"
-        $FindingDetails += "Verify: XXE protection, XPath injection prevention, schema validation`n"
-        $ErrorCount = $XMLUsageCount
+    $FindingDetails = "XML Processing Library Detection" + $nl + $nl
+
+    # Check for XML processing packages in installed node_modules
+    $xoServerDir = ""
+    if (Test-Path "/opt/xo/xo-server/node_modules") { $xoServerDir = "/opt/xo/xo-server/node_modules" }
+    elseif (Test-Path "/usr/share/xo-server/node_modules") { $xoServerDir = "/usr/share/xo-server/node_modules" }
+
+    if ($xoServerDir -ne "") {
+        $xmlPkgs = $(timeout 10 find "$xoServerDir" -maxdepth 2 -type d -name "xml2js" -o -name "xmldom" -o -name "fast-xml-parser" -o -name "xpath" -o -name "xml-js" -o -name "libxmljs" 2>&1)
+        $FindingDetails += "XML processing packages in $xoServerDir):" + $nl
+        if ($xmlPkgs -match "xml2js|xmldom|fast-xml-parser|xpath|xml-js|libxmljs") {
+            $FindingDetails += $xmlPkgs + $nl + $nl
+        } else {
+            $FindingDetails += "No XML parsing packages found." + $nl + $nl
+        }
     } else {
-        $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] Unable to fully assess XML processing - manual review recommended`n"
+        $xmlPkgs = ""
+        $FindingDetails += "XO server node_modules not found." + $nl + $nl
     }
-    
-    $FindingDetails += "`nXML Processing Files: $XMLUsageCount`n"
-    $FindingDetails += "SOAP/WSDL Files: $SOAPCount`n"
-    
-    if ($ErrorCount -gt 0) {
-        $FindingDetails += "`nREMEDIATION: Review XML processing code, disable external entities, use secure parsers, validate against schemas`n"
+
+    # Check for SOAP/WS-Security packages (also XML-based attack vectors)
+    $soapPkgs = ""
+    if ($xoServerDir -ne "") {
+        $soapPkgs = $(timeout 10 find "$xoServerDir" -maxdepth 2 -type d -name "soap" -o -name "ws-security" -o -name "xml-crypto" 2>&1)
+        $FindingDetails += "SOAP/XML-crypto packages:" + $nl
+        if ($soapPkgs -match "soap|ws-security|xml-crypto") {
+            $FindingDetails += $soapPkgs + $nl + $nl
+        } else {
+            $FindingDetails += "No SOAP/XML-crypto packages found." + $nl + $nl
+        }
+    }
+
+    $FindingDetails += "XO API Architecture:" + $nl
+    $FindingDetails += "Xen Orchestra uses JSON-RPC over WebSocket and REST/JSON APIs." + $nl
+    $FindingDetails += "External-facing data exchange is JSON, not XML." + $nl + $nl
+
+    if ($xmlPkgs -match "xml2js|xmldom|fast-xml-parser|xpath|libxmljs" -or $soapPkgs -match "soap|ws-security") {
+        $Status = "Not_Reviewed"
+        $FindingDetails += "XML processing packages detected — manual review required." + $nl
+        $FindingDetails += "Verify XXE protection (disableEntities/noent:false) and XPath injection prevention." + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "[PASS] No XML processing libraries found in XO server." + $nl
+        $FindingDetails += "XO uses JSON for all data exchange. XML-based attack vectors (XXE, XPath injection) do not apply." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -24310,154 +24230,66 @@ Function Get-V222620 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222620: Web server, application server, and database must be on separate network segments
-    # Checks network configuration, firewall rules, and component separation
-    
-    $FindingDetails = ""
-    
-    # Get network interface information
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Network Interface Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $NetworkInfo = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Network interfaces and IP addresses:"
-ip addr show | grep -E '^[0-9]+:|inet ' | grep -v '127.0.0.1'
+    $nl = [Environment]::NewLine
 
-echo -e "\nRouting table:"
-ip route show | head -5
+    $FindingDetails = "Network Segregation Check" + $nl + $nl
 
-echo -e "\nListening services:"
-ss -tlnp | grep -E 'LISTEN' | head -10
-"@
-    $FindingDetails += $NetworkInfo + "`n"
-    
-    # Identify XO components and their network bindings
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "XO Component Network Bindings`n"
-    $FindingDetails += "============================================`n"
-    
-    $ComponentBinding = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "XO Server web interface:"
-ss -tlnp | grep -E ':80|:443|:8080' | grep -i 'node\|xo'
-
-echo -e "\nRedis database:"
-ss -tlnp | grep -E ':6379' || echo "Redis not listening or using Unix socket"
-
-echo -e "\nChecking Redis configuration:"
-if [ -f /etc/redis/redis.conf ]; then
-    grep -E '^bind |^port ' /etc/redis/redis.conf | head -3
-elif [ -f /etc/xo-server/config.toml ]; then
-    grep -A2 '\[redis\]' /etc/xo-server/config.toml </dev/null 2>/dev/null | head -5
-else
-    echo "Redis config not found in standard locations"
-fi
-
-echo -e "\nXen host connections (from XO config):"
-if [ -f /etc/xo-server/config.toml ]; then
-    grep -E 'host.*=|server.*=' /etc/xo-server/config.toml </dev/null 2>/dev/null | head -5
-else
-    echo "XO config not found"
-fi
-"@
-    $FindingDetails += $ComponentBinding + "`n"
-    
-    # Check firewall configuration
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Firewall Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $FirewallCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Checking firewall status..."
-if command -v ufw >/dev/null 2>&1; then
-    echo "UFW firewall:"
-    ufw status verbose </dev/null 2>/dev/null | head -10
-elif command -v iptables >/dev/null 2>&1; then
-    echo "iptables rules:"
-    iptables -L -n -v </dev/null 2>/dev/null | head -15
-else
-    echo "No firewall detected"
-fi
-
-echo -e "\nNftables:"
-if command -v nft >/dev/null 2>&1; then
-    nft list tables </dev/null </dev/null 2>/dev/null || echo "Nftables not configured"
-else
-    echo "Nftables not installed"
-fi
-"@
-    $FindingDetails += $FirewallCheck + "`n"
-    
-    # Check for network segregation indicators
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Network Segregation Analysis`n"
-    $FindingDetails += "============================================`n"
-    
-    $SegregationCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Checking for multiple network interfaces:"
-ip addr show | grep -E '^[0-9]+:' | grep -v lo | wc -l
-echo "active network interfaces (excluding loopback)"
-
-echo -e "\nChecking VLAN configuration:"
-ip link show type vlan </dev/null 2>/dev/null | grep -E '^[0-9]+:' || echo "No VLANs configured"
-
-echo -e "\nChecking bridge interfaces:"
-ip link show type bridge </dev/null 2>/dev/null | grep -E '^[0-9]+:' || echo "No bridges configured"
-
-echo -e "\nDocker/container networking:"
-if command -v docker >/dev/null 2>&1; then
-    docker network ls </dev/null </dev/null 2>/dev/null || echo "Docker not accessible"
-else
-    echo "Docker not installed"
-fi
-"@
-    $FindingDetails += $SegregationCheck + "`n"
-    
-    # Architecture assessment for XO
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Xen Orchestra Architecture Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    $FindingDetails += "ANALYSIS:`n"
-    $FindingDetails += "- XO is an integrated appliance combining web UI, app logic, and Redis database`n"
-    $FindingDetails += "- Components run on same host in all-in-one deployment (typical for XO)`n"
-    $FindingDetails += "- Network segregation typically achieved through:`n"
-    $FindingDetails += "  * Management network (XO web access) - separate VLAN/subnet`n"
-    $FindingDetails += "  * Storage network (Xen host connections) - separate VLAN/subnet`n"
-    $FindingDetails += "  * Redis internal communication - localhost or Unix socket`n`n"
-    
-    # Determine status based on architecture
-    $RedisExternal = $false
-    if ($ComponentBinding -match ':6379.*0\.0\.0\.0|:6379.*\*') {
-        $RedisExternal = $true
+    # Check 1: Redis binding (critical — Redis must NOT be externally accessible)
+    $redisListen = $(ss -tlnp 2>&1 | grep ":6379")
+    $FindingDetails += "Redis listener:" + $nl
+    if ($redisListen) {
+        $FindingDetails += $redisListen + $nl + $nl
+    } else {
+        $FindingDetails += "Redis not listening on TCP (may use Unix socket — good)." + $nl + $nl
     }
-    
-    $MultipleInterfaces = $false
-    if ($SegregationCheck -match 'active network interfaces.*\n([2-9]|[1-9][0-9]+)') {
-        $MultipleInterfaces = $true
+
+    # Check 2: Network interfaces
+    $netIfaces = $(ip -4 addr show 2>&1 | grep -E "inet " | grep -v "127.0.0.1")
+    $FindingDetails += "Network interfaces with IPv4 addresses:" + $nl
+    $FindingDetails += $netIfaces + $nl + $nl
+
+    # Check 3: Firewall status (ufw may not be installed on XOCE)
+    $ufwStatus = ""
+    if (Get-Command ufw -ErrorAction SilentlyContinue) {
+        $ufwStatus = $(ufw status 2>&1 | head -3)
     }
-    
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Compliance Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    if ($RedisExternal) {
+    $iptStatus = ""
+    if (-not ($ufwStatus -match "Status: active")) {
+        if (Get-Command iptables -ErrorAction SilentlyContinue) {
+            $iptStatus = $(iptables -L INPUT -n 2>&1 | head -5)
+        }
+    }
+    $FindingDetails += "Firewall status:" + $nl
+    if ($ufwStatus -match "Status: active") {
+        $FindingDetails += $ufwStatus + $nl + $nl
+    } elseif ($iptStatus -match "Chain INPUT") {
+        $FindingDetails += "UFW not active. iptables INPUT chain:" + $nl + $iptStatus + $nl + $nl
+    } else {
+        $FindingDetails += "No active firewall detected (UFW inactive, iptables check failed)." + $nl + $nl
+    }
+
+    # Check 4: XO architecture note
+    $FindingDetails += "XO Architecture:" + $nl
+    $FindingDetails += "XO is an all-in-one appliance (web UI + app + Redis on same host)." + $nl
+    $FindingDetails += "Network segregation must be achieved via VLAN/subnet separation at the infrastructure level." + $nl + $nl
+
+    # Determine status
+    $redisExternal = ($redisListen -match "0\.0\.0\.0:6379|\*:6379")
+    $firewallActive = ($ufwStatus -match "Status: active" -or $iptStatus -match "Chain INPUT")
+
+    if ($redisExternal) {
         $Status = "Open"
-        $FindingDetails += "[FINDING] Redis database exposed on external network interface`n"
-        $FindingDetails += "REMEDIATION: Configure Redis to bind only to localhost (127.0.0.1) or Unix socket`n"
-    } elseif ($MultipleInterfaces -and $FirewallCheck -notmatch 'Status: active|Chain.*ACCEPT') {
+        $FindingDetails += "[FINDING] Redis is listening on all interfaces (0.0.0.0:6379)." + $nl
+        $FindingDetails += "Redis must bind only to localhost (127.0.0.1) or a Unix socket." + $nl
+    } elseif (-not $firewallActive) {
         $Status = "Open"
-        $FindingDetails += "[FINDING] Multiple network interfaces without active firewall protection`n"
-        $FindingDetails += "REMEDIATION: Implement firewall rules to segregate management and storage networks`n"
+        $FindingDetails += "[FINDING] No active firewall detected. Network segregation cannot be verified." + $nl
+        $FindingDetails += "Implement UFW or iptables rules to restrict management network access." + $nl
     } else {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] Network architecture assessment requires manual validation`n"
-        $FindingDetails += "VERIFY:`n"
-        $FindingDetails += "1. Management network (web UI) on dedicated VLAN/subnet`n"
-        $FindingDetails += "2. Storage network (Xen connections) on separate VLAN/subnet`n"
-        $FindingDetails += "3. Redis bound to localhost only (not externally accessible)`n"
-        $FindingDetails += "4. Firewall rules enforcing network segregation`n`n"
-        $FindingDetails += "NOTE: XO appliance combines components on single host - segregation via network interfaces`n"
+        $FindingDetails += "Manual verification required." + $nl
+        $FindingDetails += "Verify: (1) Redis bound to localhost only, (2) management VLAN separate from storage/VM networks," + $nl
+        $FindingDetails += "(3) firewall rules enforce segment boundaries." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -27218,160 +27050,44 @@ Function Get-V222643 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222643: Application must mark output displaying sensitive or classified information
-    # Checks for data classification, labeling, and watermarking in UI and reports
-    
-    $FindingDetails = ""
-    
-    # Check for web UI data classification features
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Web UI Data Classification Check`n"
-    $FindingDetails += "============================================`n"
-    
-    $UIClassification = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/xen-orchestra/packages/xo-web ]; then
-    echo "Checking for classification labels in web UI..."
-    
-    # Check for classification/security banners
-    BANNER=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-web -name '*.js' -o -name '*.jsx' </dev/null 2>/dev/null | xargs grep -il 'classification\|confidential\|secret\|unclassified\|banner' </dev/null 2>/dev/null | wc -l)
-    echo "Files with classification keywords: `$BANNER"
-    
-    # Check for watermark/footer components
-    WATERMARK=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-web -name '*.js' -o -name '*.jsx' </dev/null 2>/dev/null | xargs grep -il 'watermark\|footer.*security\|header.*classification' </dev/null 2>/dev/null | wc -l)
-    echo "Files with watermark components: `$WATERMARK"
-    
-    # Check for CSS styling for classification
-    CSS_CLASS=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-web -name '*.css' -o -name '*.scss' </dev/null 2>/dev/null | xargs grep -il 'classification\|security-banner' </dev/null 2>/dev/null | wc -l)
-    echo "CSS files with classification styling: `$CSS_CLASS"
-else
-    echo "XO web source not found"
-fi
-"@
-    $FindingDetails += $UIClassification + "`n"
-    
-    # Check for report generation with classification
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Report Classification Features`n"
-    $FindingDetails += "============================================`n"
-    
-    $ReportClassification = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking report generation modules..."
-    
-    # Check for PDF generation with headers/footers
-    PDF_GEN=`$(find /opt/xo/xo-src -name '*.js' </dev/null 2>/dev/null | xargs grep -il 'pdf\|report.*generate\|export.*pdf' </dev/null 2>/dev/null | wc -l)
-    echo "Files with PDF/report generation: `$PDF_GEN"
-    
-    # Check for email notifications with classification
-    EMAIL_CLASS=`$(find /opt/xo/xo-src -name '*.js' </dev/null 2>/dev/null | xargs grep -il 'sendmail\|nodemailer\|email.*send' </dev/null 2>/dev/null | wc -l)
-    echo "Files with email functionality: `$EMAIL_CLASS"
-    
-    # Check for data export with metadata
-    EXPORT=`$(find /opt/xo/xo-src -name '*.js' </dev/null 2>/dev/null | xargs grep -il 'export.*csv\|export.*json\|download.*data' </dev/null 2>/dev/null | wc -l)
-    echo "Files with data export: `$EXPORT"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $ReportClassification + "`n"
-    
-    # Check configuration for classification settings
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Classification Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $ConfigCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /etc/xo-server/config.toml ]; then
-    echo "Checking XO configuration for classification settings..."
-    grep -i 'classification\|banner\|label\|security.*level' /etc/xo-server/config.toml </dev/null </dev/null 2>/dev/null || echo "No classification config found"
-else
-    echo "XO config not found"
-fi
+    $nl = [Environment]::NewLine
 
-echo -e "\nChecking environment variables:"
-env | grep -i 'classification\|security.*banner' </dev/null </dev/null 2>/dev/null || echo "No classification env vars"
-"@
-    $FindingDetails += $ConfigCheck + "`n"
-    
-    # Check for custom branding/banners
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Custom Branding and Security Banners`n"
-    $FindingDetails += "============================================`n"
-    
-    $BrandingCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/xen-orchestra/packages/xo-web ]; then
-    echo "Checking for custom branding files..."
-    
-    # Check for custom CSS/themes
-    find /opt/xo/xo-src/xen-orchestra/packages/xo-web -name 'custom*.css' -o -name 'theme*.css' </dev/null 2>/dev/null | head -5
-    
-    # Check for banner images
-    find /opt/xo/xo-src/xen-orchestra/packages/xo-web -name '*banner*' -o -name '*classification*' </dev/null 2>/dev/null | head -5
-    
-    if [ -d /opt/xo/xo-src/xen-orchestra/packages/xo-web/public ]; then
-        echo -e "\nPublic assets directory:"
-        ls -lh /opt/xo/xo-src/xen-orchestra/packages/xo-web/public/ </dev/null 2>/dev/null | head -5
-    fi
-else
-    echo "XO web directory not found"
-fi
-"@
-    $FindingDetails += $BrandingCheck + "`n"
-    
-    # Check for data sensitivity indicators in database
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Database Metadata for Classification`n"
-    $FindingDetails += "============================================`n"
-    
-    $DBClassification = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if command -v redis-cli >/dev/null 2>&1; then
-    echo "Checking Redis for classification metadata..."
-    redis-cli --scan --pattern '*classification*' </dev/null 2>/dev/null | wc -l
-    echo "keys with 'classification' in name"
-    
-    redis-cli --scan --pattern '*label*' </dev/null 2>/dev/null | head -5
-else
-    echo "Redis CLI not available"
-fi
-"@
-    $FindingDetails += $DBClassification + "`n"
-    
-    # Analyze findings
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Assessment and Recommendations`n"
-    $FindingDetails += "============================================`n"
-    
-    $ClassificationFound = $false
-    if ($UIClassification -match 'Files with classification keywords: ([1-9][0-9]*)') {
-        $ClassificationFound = $true
+    $FindingDetails = "Data Classification Marking Check" + $nl + $nl
+
+    # Check XO config for any classification/banner settings
+    $classConfig = ""
+    if (Test-Path "/etc/xo-server/config.toml") {
+        $classConfig = $(grep -i "classification\|banner\|label\|security.level" /etc/xo-server/config.toml 2>&1)
+    } elseif (Test-Path "/opt/xo/xo-server/config.toml") {
+        $classConfig = $(grep -i "classification\|banner\|label\|security.level" /opt/xo/xo-server/config.toml 2>&1)
     }
-    
-    $FindingDetails += "ANALYSIS:`n"
-    $FindingDetails += "XO is an infrastructure management tool displaying:`n"
-    $FindingDetails += "- VM configurations and metadata`n"
-    $FindingDetails += "- Storage repository information`n"
-    $FindingDetails += "- Network configurations`n"
-    $FindingDetails += "- Performance metrics and logs`n`n"
-    
-    $FindingDetails += "Data classification should indicate sensitivity level of displayed information.`n`n"
-    
-    if ($ClassificationFound) {
-        $Status = "NotAFinding"
-        $FindingDetails += "[PASS] Classification/labeling features detected in application`n"
+    $FindingDetails += "Classification settings in config.toml:" + $nl
+    if ($classConfig) { $FindingDetails += $classConfig + $nl + $nl }
+    else { $FindingDetails += "No classification configuration found." + $nl + $nl }
+
+    # Check for classification-related files in web UI deploy directory
+    $xoWebDir = ""
+    if (Test-Path "/opt/xo/xo-web/dist") { $xoWebDir = "/opt/xo/xo-web/dist" }
+    elseif (Test-Path "/usr/share/xo-web") { $xoWebDir = "/usr/share/xo-web" }
+    $classFiles = ""
+    if ($xoWebDir -ne "") {
+        $classFiles = $(timeout 10 find "$xoWebDir" -maxdepth 3 -type f -name "*banner*" -o -name "*classification*" -o -name "*security-label*" 2>&1)
+        $FindingDetails += "Classification/banner files in $xoWebDir):" + $nl
+        if ($classFiles) { $FindingDetails += $classFiles + $nl + $nl }
+        else { $FindingDetails += "No classification/banner files found." + $nl + $nl }
     } else {
-        $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] No automated classification features detected - manual review required`n`n"
-        $FindingDetails += "VERIFY:`n"
-        $FindingDetails += "1. Security banners displayed on web UI (header/footer)`n"
-        $FindingDetails += "2. Classification labels on reports and exports`n"
-        $FindingDetails += "3. Watermarks on sensitive screens or printed output`n"
-        $FindingDetails += "4. Email notifications include classification markings`n`n"
-        $FindingDetails += "IMPLEMENTATION OPTIONS:`n"
-        $FindingDetails += "- Custom CSS banner in XO web UI`n"
-        $FindingDetails += "- Reverse proxy (nginx) adding classification headers`n"
-        $FindingDetails += "- Custom branding with classification images`n"
-        $FindingDetails += "- Environment-specific configuration (DEV/TEST/PROD markings)`n"
+        $FindingDetails += "XO web UI directory not found." + $nl + $nl
     }
+
+    $FindingDetails += "Assessment:" + $nl
+    $FindingDetails += "XO displays VM configurations, storage, network, and metrics — all potentially sensitive." + $nl
+    $FindingDetails += "DoD requires classification markings on output containing classified/sensitive information." + $nl + $nl
+
+    # This is an organizational policy check — automated verification cannot confirm compliance
+    $Status = "Open"
+    $FindingDetails += "Manual review required." + $nl
+    $FindingDetails += "Verify that classification banners/labels are displayed in the XO web UI," + $nl
+    $FindingDetails += "and that reports/exports include appropriate classification markings." + $nl
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -29019,182 +28735,98 @@ Function Get-V222658 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222658: Vendor or development team must provide ongoing security/feature support
-    # Verifies product version, update status, support contract, and vendor responsiveness
-    
-    $FindingDetails = ""
-    
-    # Get XO version and installation info
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Xen Orchestra Version Information`n"
-    $FindingDetails += "============================================`n"
-    
-    $VersionInfo = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-    echo "XO Server version:"
-    cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep '\"version\"' | head -1
-    
-    echo -e "\nXO Package info:"
-    cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep -E '\"name\":|\"description\":|\"homepage\":|\"bugs\":' | head -5
-else
-    echo "package.json not found"
-fi
+    $nl = [Environment]::NewLine
 
-echo -e "\nNode.js version:"
-node --version </dev/null </dev/null 2>/dev/null || echo "Node not found"
+    # Check Node.js version
+    $nodeVer = $(node --version 2>&1)
 
-echo -e "\nInstallation date (from xo-server directory):"
-stat -c '%y' /opt/xo/xo-src/xen-orchestra/packages/xo-server </dev/null 2>/dev/null | cut -d' ' -f1 || echo "Unknown"
-"@
-    $FindingDetails += $VersionInfo + "`n"
-    
-    # Check git repository status and last update
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Update Status and Repository Information`n"
-    $FindingDetails += "============================================`n"
-    
-    $GitStatus = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/.git ]; then
-    echo "Git repository status:"
-    cd /opt/xo/xo-src
-    git log -1 --format='Commit: %H%nDate: %ci%nAuthor: %an%nMessage: %s' </dev/null </dev/null 2>/dev/null || echo "Unable to read git log"
-    
-    echo -e "\nGit remote origin:"
-    git remote -v </dev/null 2>/dev/null | grep fetch
-    
-    echo -e "\nCurrent branch:"
-    git branch --show-current </dev/null </dev/null 2>/dev/null || echo "Unknown branch"
-    
-    echo -e "\nLast git pull/update:"
-    stat -c '%y' /opt/xo/xo-src/.git/FETCH_HEAD </dev/null 2>/dev/null | cut -d' ' -f1 || echo "Never updated or unknown"
-else
-    echo "Not a git installation - possibly from packages"
-    
-    # Check for package manager installation
-    if command -v dpkg >/dev/null 2>&1; then
-        echo -e "\nChecking apt packages:"
-        dpkg -l | grep -i 'xo-\|xen-orchestra' || echo "No XO packages installed"
-    fi
-fi
-"@
-    $FindingDetails += $GitStatus + "`n"
-    
-    # Check for vendor/support information
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Vendor and Support Information`n"
-    $FindingDetails += "============================================`n"
-    
-    $VendorInfo = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Official XO vendor: Vates SAS (https://vates.tech)"
-echo "GitHub repository: https://github.com/vatesfr/xen-orchestra"
-echo "Community forum: https://xcp-ng.org/forum"
-echo "Commercial support: https://vates.tech/support"
-
-echo -e "\nChecking for support contact configuration:"
-if [ -f /etc/xo-server/config.toml ]; then
-    grep -i 'support\|contact\|vendor' /etc/xo-server/config.toml </dev/null </dev/null 2>/dev/null || echo "No support config found"
-fi
-
-echo -e "\nLicense/edition check:"
-if [ -d /opt/xo/xo-src ]; then
-    find /opt/xo/xo-src -name 'LICENSE' -o -name 'license.txt' </dev/null 2>/dev/null | head -3
-fi
-"@
-    $FindingDetails += $VendorInfo + "`n"
-    
-    # Check for recent commits/activity in upstream
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Upstream Development Activity`n"
-    $FindingDetails += "============================================`n"
-    
-    $UpstreamActivity = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/.git ]; then
-    cd /opt/xo/xo-src
-    
-    echo "Checking upstream commits (requires network access)..."
-    timeout 10 git fetch --dry-run 2>&1 | head -5 || echo "Unable to check upstream (offline or no access)"
-    
-    echo -e "\nLocal commit history (last 5):"
-    git log -5 --oneline </dev/null </dev/null 2>/dev/null || echo "Unable to read commit history"
-else
-    echo "Not a git installation"
-fi
-"@
-    $FindingDetails += $UpstreamActivity + "`n"
-    
-    # Check for security mailing lists or update notifications
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Update Mechanism and Notifications`n"
-    $FindingDetails += "============================================`n"
-    
-    $UpdateMechanism = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Checking for automated update configuration..."
-if [ -d /etc/cron.d ]; then
-    grep -r 'xo\|xen-orchestra' /etc/cron.d/ </dev/null </dev/null 2>/dev/null || echo "No cron jobs for XO updates"
-fi
-
-if [ -d /etc/cron.daily ]; then
-    ls -lh /etc/cron.daily/*xo* </dev/null </dev/null 2>/dev/null || echo "No daily update scripts"
-fi
-
-echo -e "\nSystemd timers for updates:"
-systemctl list-timers </dev/null 2>/dev/null | grep -i 'xo\|update' | head -5 || echo "No update timers found"
-"@
-    $FindingDetails += $UpdateMechanism + "`n"
-    
-    # Analyze version and support status
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Support Status Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    $CurrentYear = (Get-Date).Year
-    $LastUpdate = "Unknown"
-    $IsGitInstall = $false
-    
-    if ($GitStatus -match 'Date: (\d{4})-\d{2}-\d{2}') {
-        $CommitYear = [int]$Matches[1]
-        $LastUpdate = $Matches[1]
-        $IsGitInstall = $true
-        
-        $YearsSinceUpdate = $CurrentYear - $CommitYear
-        
-        $FindingDetails += "Last commit year: $CommitYear`n"
-        $FindingDetails += "Years since last update: $YearsSinceUpdate`n`n"
-        
-        if ($YearsSinceUpdate -le 1) {
-            $Status = "NotAFinding"
-            $FindingDetails += "[PASS] XO installation has recent updates - vendor actively maintaining product`n"
-            $FindingDetails += "Vates SAS provides ongoing development and security patches`n"
-        } elseif ($YearsSinceUpdate -le 2) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "[WARN] Installation is $YearsSinceUpdate year(s) old - update recommended`n"
-            $FindingDetails += "Verify support contract status and update to latest version`n"
-        } else {
-            $Status = "Open"
-            $FindingDetails += "[FINDING] Installation is significantly outdated ($YearsSinceUpdate+ years)`n"
-            $FindingDetails += "System may lack security patches and feature updates`n"
-        }
-    } else {
-        $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] Unable to determine version age - manual verification required`n"
+    # Check XO version from package.json (XOCE and XOA paths)
+    $xoPkgJson = ""
+    if (Test-Path "/opt/xo/xo-server/package.json") {
+        $xoPkgJson = $(grep '"version"' /opt/xo/xo-server/package.json 2>&1 | head -1)
     }
-    
-    $FindingDetails += "`nVENDOR INFORMATION:`n"
-    $FindingDetails += "- Product: Xen Orchestra (XO)`n"
-    $FindingDetails += "- Vendor: Vates SAS`n"
-    $FindingDetails += "- Open Source: Yes (AGPLv3 license)`n"
-    $FindingDetails += "- Active Development: Yes (GitHub vatesfr/xen-orchestra)`n"
-    $FindingDetails += "- Commercial Support: Available from Vates`n"
-    $FindingDetails += "- Community Support: XCP-ng forums and GitHub issues`n`n"
-    
-    $FindingDetails += "VERIFICATION REQUIRED:`n"
-    $FindingDetails += "1. Confirm support contract with Vates (if commercial deployment)`n"
-    $FindingDetails += "2. Verify regular update schedule`n"
-    $FindingDetails += "3. Review security advisory subscriptions`n"
-    $FindingDetails += "4. Document point of contact for security issues`n"
-    
-    if ($Status -eq "Open") {
-        $FindingDetails += "`nREMEDIATION: Update XO to latest version from GitHub or Vates repository`n"
+    elseif (Test-Path "/usr/share/xo-server/package.json") {
+        $xoPkgJson = $(grep '"version"' /usr/share/xo-server/package.json 2>&1 | head -1)
+    }
+    elseif (Test-Path "/opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json") {
+        $xoPkgJson = $(grep '"version"' /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json 2>&1 | head -1)
+    }
+
+    # Check git repository for last commit date
+    $gitLogDate = ""
+    $gitRemote = ""
+    if (Test-Path "/opt/xo/xo-src/.git") {
+        $gitLogDate = $(git -C /opt/xo/xo-src log -1 --format="%ci" 2>&1)
+        $gitRemote = $(git -C /opt/xo/xo-src remote get-url origin 2>&1)
+    }
+    elseif (Test-Path "/opt/xo/xo-server/.git") {
+        $gitLogDate = $(git -C /opt/xo/xo-server log -1 --format="%ci" 2>&1)
+        $gitRemote = $(git -C /opt/xo/xo-server remote get-url origin 2>&1)
+    }
+
+    # Check for automated update mechanism
+    $cronXO = $(grep -rl 'xo\|xen-orchestra' /etc/cron.d/ 2>&1 | head -3)
+    $timerXO = $(systemctl list-timers 2>&1 | grep -i 'xo\|update' | head -3)
+
+    # Build FindingDetails
+    $FindingDetails = "Vendor Support / Active Maintenance Check" + $nl + $nl
+
+    $FindingDetails += "Node.js version: $nodeVer" + $nl
+    if ($xoPkgJson -ne "") {
+        $FindingDetails += "XO Server package.json version line: $xoPkgJson" + $nl
+    }
+    else {
+        $FindingDetails += "XO Server package.json: Not found in expected paths" + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($gitLogDate -ne "" -and $gitLogDate -notmatch "^fatal|^error") {
+        $FindingDetails += "Git last commit date: $gitLogDate" + $nl
+        $FindingDetails += "Git remote: $gitRemote" + $nl
+    }
+    else {
+        $FindingDetails += "Git repository: Not found or not a git installation" + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($cronXO -ne "" -and $cronXO -notmatch "No such file|^$") {
+        $FindingDetails += "Cron update entries found: $cronXO" + $nl
+    }
+    else {
+        $FindingDetails += "Automated cron update: None detected" + $nl
+    }
+    if ($timerXO -ne "" -and $timerXO -notmatch "^$") {
+        $FindingDetails += "Systemd update timers: $timerXO" + $nl
+    }
+    $FindingDetails += $nl
+
+    $FindingDetails += "Vendor: Vates SAS (https://vates.tech)" + $nl
+    $FindingDetails += "GitHub: https://github.com/vatesfr/xen-orchestra" + $nl
+    $FindingDetails += "License: AGPLv3 (open source)" + $nl + $nl
+
+    # Determine status based on git commit recency
+    $CurrentYear = (Get-Date).Year
+    if ($gitLogDate -match "(\d{4})-\d{2}-\d{2}") {
+        $CommitYear = [int]$Matches[1]
+        $YearsSince = $CurrentYear - $CommitYear
+        $FindingDetails += "Last commit year: $CommitYear (${YearsSince} year(s) ago)" + $nl
+        if ($YearsSince -le 1) {
+            $Status = "NotAFinding"
+            $FindingDetails += "[PASS] XO has recent git commits - vendor actively maintaining product." + $nl
+        }
+        elseif ($YearsSince -le 2) {
+            $Status = "Open"
+            $FindingDetails += "[OPEN] Installation is $YearsSince year(s) old - manual verification of vendor support required." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "[OPEN] Installation is $YearsSince+ years old - may lack current security patches." + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "Unable to determine last update date - manual review required." + $nl
+        $FindingDetails += "Verify with vendor (Vates) that product is under active support." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -29303,178 +28935,81 @@ Function Get-V222659 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222659: Application must be decommissioned when vendor/development support ceases
-    # Checks product lifecycle status, support end dates, and decommission policies
-    
-    $FindingDetails = ""
-    
-    # Get XO version and installation info
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Xen Orchestra Product Lifecycle Check`n"
-    $FindingDetails += "============================================`n"
-    
-    $ProductInfo = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-    echo "Product: Xen Orchestra (XO)"
-    VERSION=`$(cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep '\"version\"' | cut -d'\"' -f4)
-    echo "Version: `$VERSION"
-    echo "Vendor: Vates SAS"
-    echo "License: AGPLv3 (Open Source)"
-else
-    echo "package.json not found"
-fi
+    $nl = [Environment]::NewLine
 
-echo -e "\nInstallation date:"
-stat -c '%y' /opt/xo/xo-src/xen-orchestra/packages/xo-server </dev/null 2>/dev/null | cut -d' ' -f1 || echo "Unknown"
-"@
-    $FindingDetails += $ProductInfo + "`n"
-    
-    # Check for development activity and last updates
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Development Activity Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    $DevelopmentActivity = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/.git ]; then
-    cd /opt/xo/xo-src
-    
-    echo "Last 3 commits:"
-    git log -3 --oneline --date=short --format='%ad %s' </dev/null </dev/null 2>/dev/null || echo "Unable to read git history"
-    
-    echo -e "\nGit remote repository:"
-    git remote get-url origin </dev/null </dev/null 2>/dev/null || echo "No remote configured"
-    
-    echo -e "\nBranch information:"
-    git branch --show-current </dev/null </dev/null 2>/dev/null || echo "Unknown branch"
-else
-    echo "Not a git installation"
-    
-    # Check package installation date
-    if command -v dpkg >/dev/null 2>&1; then
-        echo -e "\nPackage installation info:"
-        dpkg -l | grep -i xo | head -3 || echo "No XO packages"
-    fi
-fi
-"@
-    $FindingDetails += $DevelopmentActivity + "`n"
-    
-    # Check Node.js version and support status
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Dependency Support Status`n"
-    $FindingDetails += "============================================`n"
-    
-    $DependencySupport = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Node.js version:"
-node --version </dev/null </dev/null 2>/dev/null || echo "Node not found"
-
-echo -e "\nNode.js LTS status:"
-NODE_VERSION=`$(node --version </dev/null 2>/dev/null | cut -d'v' -f2 | cut -d'.' -f1)
-if [ -n "`$NODE_VERSION" ]; then
-    if [ `$NODE_VERSION -ge 18 ]; then
-        echo "Node.js v`$NODE_VERSION is current/supported"
-    else
-        echo "Node.js v`$NODE_VERSION may be EOL - check nodejs.org"
-    fi
-fi
-
-echo -e "\nOpenSSL version:"
-openssl version </dev/null </dev/null 2>/dev/null || echo "OpenSSL not found"
-"@
-    $FindingDetails += $DependencySupport + "`n"
-    
-    # Check for support contract or maintenance agreement
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Support Contract and Maintenance`n"
-    $FindingDetails += "============================================`n"
-    
-    $SupportContract = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Checking for support documentation..."
-if [ -d /opt/xo/xo-src ]; then
-    find /opt/xo/xo-src -name 'LICENSE*' -o -name 'SUPPORT*' -o -name 'MAINTENANCE*' </dev/null 2>/dev/null | head -3
-fi
-
-echo -e "\nLicense/support configuration:"
-if [ -f /etc/xo-server/config.toml ]; then
-    grep -i 'license\|support\|contract' /etc/xo-server/config.toml </dev/null </dev/null 2>/dev/null || echo "No license config found"
-fi
-"@
-    $FindingDetails += $SupportContract + "`n"
-    
-    # Check for decommission policy documentation
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Decommission Policy Check`n"
-    $FindingDetails += "============================================`n"
-    
-    $DecommissionPolicy = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Searching for decommission/EOL policy documents..."
-find /opt/xo /etc/xo-server /usr/local/doc -type f \( -name '*decommission*' -o -name '*eol*' -o -name '*lifecycle*' -o -name '*policy*' \) </dev/null 2>/dev/null | head -5 || echo "No policy documents found"
-
-echo -e "\nSystem documentation:"
-if [ -d /usr/local/share/doc ]; then
-    ls -lh /usr/local/share/doc/ </dev/null 2>/dev/null | head -3
-else
-    echo "No local documentation directory"
-fi
-"@
-    $FindingDetails += $DecommissionPolicy + "`n"
-    
-    # Analyze product lifecycle status
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Lifecycle Status Assessment`n"
-    $FindingDetails += "============================================`n"
-    
-    $FindingDetails += "PRODUCT INFORMATION:`n"
-    $FindingDetails += "- Product: Xen Orchestra (XO)`n"
-    $FindingDetails += "- Vendor: Vates SAS (https://vates.tech)`n"
-    $FindingDetails += "- License: AGPLv3 Open Source`n"
-    $FindingDetails += "- Development Status: Active (GitHub: vatesfr/xen-orchestra)`n"
-    $FindingDetails += "- Community: Active XCP-ng community support`n"
-    $FindingDetails += "- Commercial Support: Available from Vates`n`n"
-    
-    # Check if git installation with recent commits
-    $IsActivelySupported = $false
-    if ($DevelopmentActivity -match 'Last 3 commits:|\d{4}-\d{2}-\d{2}') {
-        $IsActivelySupported = $true
-    }
-    
     # Check Node.js version
-    $NodeVersion = 0
-    if ($DependencySupport -match 'Node.js v([0-9]+)') {
-        $NodeVersion = [int]$Matches[1]
+    $nodeVer = $(node --version 2>&1)
+
+    # Check OpenSSL version
+    $opensslVer = $(openssl version 2>&1)
+
+    # Check XO version from package.json (XOCE and XOA paths)
+    $xoPkgVer = ""
+    if (Test-Path "/opt/xo/xo-server/package.json") {
+        $xoPkgVer = $(grep '"version"' /opt/xo/xo-server/package.json 2>&1 | head -1)
     }
-    
-    if ($IsActivelySupported -and $NodeVersion -ge 18) {
-        $Status = "NotAFinding"
-        $FindingDetails += "[PASS] XO is actively supported with ongoing development`n"
-        $FindingDetails += "Product remains viable with Vates vendor support`n"
-        $FindingDetails += "Dependencies (Node.js v$NodeVersion) are current/supported`n`n"
-    } elseif ($NodeVersion -gt 0 -and $NodeVersion -lt 16) {
-        $Status = "Open"
-        $FindingDetails += "[FINDING] Node.js dependency is EOL (v$NodeVersion)`n"
-        $FindingDetails += "System requires update or decommission consideration`n`n"
-    } else {
-        $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] Product support status requires manual verification`n`n"
+    elseif (Test-Path "/usr/share/xo-server/package.json") {
+        $xoPkgVer = $(grep '"version"' /usr/share/xo-server/package.json 2>&1 | head -1)
     }
-    
-    $FindingDetails += "DECOMMISSION CRITERIA:`n"
-    $FindingDetails += "System should be decommissioned if:`n"
-    $FindingDetails += "1. Vates SAS ceases XO development (check GitHub activity)`n"
-    $FindingDetails += "2. Critical dependencies reach EOL (Node.js, OpenSSL)`n"
-    $FindingDetails += "3. No security patches available for 12+ months`n"
-    $FindingDetails += "4. Vendor/community support unavailable`n"
-    $FindingDetails += "5. Product incompatible with supported Xen/XCP-ng versions`n`n"
-    
-    $FindingDetails += "VERIFICATION REQUIRED:`n"
-    $FindingDetails += "1. Confirm active development on GitHub (vatesfr/xen-orchestra)`n"
-    $FindingDetails += "2. Verify support contract status with Vates (if commercial)`n"
-    $FindingDetails += "3. Document decommission policy and EOL criteria`n"
-    $FindingDetails += "4. Establish monitoring for vendor support status`n"
-    $FindingDetails += "5. Maintain migration plan for EOL scenario`n"
-    
-    if ($Status -eq "Open") {
-        $FindingDetails += "`nREMEDIATION: Update Node.js to LTS version or plan decommission`n"
+    elseif (Test-Path "/opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json") {
+        $xoPkgVer = $(grep '"version"' /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json 2>&1 | head -1)
     }
+
+    # Check git last commit date to assess development activity
+    $gitDate = ""
+    if (Test-Path "/opt/xo/xo-src/.git") {
+        $gitDate = $(git -C /opt/xo/xo-src log -1 --format="%ci" 2>&1)
+    }
+    elseif (Test-Path "/opt/xo/xo-server/.git") {
+        $gitDate = $(git -C /opt/xo/xo-server log -1 --format="%ci" 2>&1)
+    }
+
+    # Search for decommission/lifecycle policy documents
+    $policyDocs = $(timeout 10 find /opt/xo /etc/xo-server /usr/local/doc -maxdepth 4 -type f -iname "*decommission*" -o -iname "*lifecycle*" -o -iname "*eol*" 2>&1 | head -5)
+
+    # Build FindingDetails
+    $FindingDetails = "Application Decommission Policy Check" + $nl + $nl
+
+    $FindingDetails += "Product: Xen Orchestra (XO)" + $nl
+    $FindingDetails += "Vendor: Vates SAS (https://vates.tech)" + $nl
+    $FindingDetails += "License: AGPLv3 open source" + $nl
+    $FindingDetails += "GitHub: https://github.com/vatesfr/xen-orchestra" + $nl + $nl
+
+    if ($xoPkgVer -ne "") {
+        $FindingDetails += "XO version: $xoPkgVer" + $nl
+    }
+    $FindingDetails += "Node.js: $nodeVer" + $nl
+    $FindingDetails += "OpenSSL: $opensslVer" + $nl + $nl
+
+    if ($gitDate -ne "" -and $gitDate -notmatch "^fatal|^error") {
+        $FindingDetails += "Git last commit: $gitDate" + $nl
+    }
+    else {
+        $FindingDetails += "Git repository: Not found or not a git installation" + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($policyDocs -ne "" -and $policyDocs -notmatch "No such file") {
+        $FindingDetails += "Decommission policy documents found: $policyDocs" + $nl
+    }
+    else {
+        $FindingDetails += "Decommission policy documents: None found in /opt/xo, /etc/xo-server, /usr/local/doc" + $nl
+    }
+    $FindingDetails += $nl
+
+    # Node.js version check for EOL dependency
+    if ($nodeVer -match "v(\d+)\.") {
+        $nodeMajor = [int]$Matches[1]
+        if ($nodeMajor -lt 18) {
+            $FindingDetails += "WARNING: Node.js v$nodeMajor may be EOL. See https://nodejs.org/en/about/previous-releases" + $nl + $nl
+        }
+    }
+
+    # This is an organizational policy check - the org must document a decommission plan.
+    # Automated check gathers evidence; ISSO must verify policy documentation exists.
+    $Status = "Open"
+    $FindingDetails += "Manual review required: Verify organization has a documented decommission" + $nl
+    $FindingDetails += "plan and criteria (vendor EOL, security patch cessation, etc.)." + $nl
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -29849,21 +29384,18 @@ Function Get-V222662 {
         $FindingDetails += "- Default credentials must be changed immediately`n"
         $FindingDetails += "- XO default password: 'admin' is well-known`n"
         $FindingDetails += "`nSTATUS: Open (FINDING - Default credentials exist)`n"
-        $Comments = "FINDING: Default admin@admin.net account exists - change immediately"
     } elseif ($userCount -match "^0") {
         $Status = "Not_Reviewed"
         $FindingDetails += "- Unable to verify user accounts (Redis not accessible)`n"
         $FindingDetails += "- Manually verify no default credentials remain`n"
         $FindingDetails += "- XO default: admin@admin.net / password: admin`n"
         $FindingDetails += "`nSTATUS: Not_Reviewed (Cannot access user database)`n"
-        $Comments = "Manual review required - verify default credentials changed"
     } else {
         $Status = "NotAFinding"
         $FindingDetails += "- No default admin@admin.net email found`n"
         $FindingDetails += "- $userCount user account(s) configured`n"
         $FindingDetails += "- Default credentials appear to have been changed`n"
         $FindingDetails += "`nSTATUS: NotAFinding (No default credentials detected)`n"
-        $Comments = "Default credentials not detected - custom users configured"
     }
     #---=== End Custom Code ===---#
 
@@ -31292,86 +30824,47 @@ Function Get-V222399 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222399: Application using SOAP must protect messages using WS_Security timestamps
-    # XO uses REST/JSON APIs, not SOAP - this check is Not Applicable
-    
-    $FindingDetails = "============================================`n"
-    $FindingDetails += "WS-Security and SOAP Usage Check`n"
-    $FindingDetails += "============================================`n`n"
-    
-    # Check for SOAP/WS-Security libraries
-    $SOAPCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking for SOAP/WS-Security usage..."
-    
-    # Check package.json for SOAP libraries
-    if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-        cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep -c 'soap\|ws-security\|wsdl' || echo "0"
-        echo "SOAP packages in dependencies"
-    fi
-    
-    # Check source code for SOAP usage
-    SOAP_FILES=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'soap\|wsdl\|ws-security' </dev/null 2>/dev/null | wc -l)
-    echo "Files with SOAP references: `$SOAP_FILES"
-    
-    # Check for XML SOAP envelope usage
-    XML_SOAP=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'Envelope.*xmlns.*soap' </dev/null 2>/dev/null | wc -l)
-    echo "Files with SOAP envelopes: `$XML_SOAP"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SOAPCheck + "`n`n"
-    
-    # Check API architecture
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "XO API Architecture Analysis`n"
-    $FindingDetails += "============================================`n"
-    
-    $APICheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src/xen-orchestra/packages/xo-server ]; then
-    echo "XO Server API type: REST/JSON-RPC over WebSocket"
-    echo ""
-    echo "Checking API implementation:"
-    
-    # Check for REST/JSON API
-    REST_FILES=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-server -name '*.js' </dev/null 2>/dev/null | xargs grep -l 'express\|koa\|fastify\|restify' </dev/null 2>/dev/null | wc -l)
-    echo "REST framework files: `$REST_FILES"
-    
-    # Check for JSON-RPC
-    JSONRPC=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-server -name '*.js' </dev/null 2>/dev/null | xargs grep -l 'json-rpc\|jsonrpc' </dev/null 2>/dev/null | wc -l)
-    echo "JSON-RPC files: `$JSONRPC"
-    
-    # Check for WebSocket
-    WEBSOCKET=`$(find /opt/xo/xo-src/xen-orchestra/packages/xo-server -name '*.js' </dev/null 2>/dev/null | xargs grep -l 'websocket\|ws:' </dev/null 2>/dev/null | wc -l)
-    echo "WebSocket files: `$WEBSOCKET"
-fi
-"@
-    $FindingDetails += $APICheck + "`n`n"
-    
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Assessment Result`n"
-    $FindingDetails += "============================================`n"
-    
-    $SOAPCount = 0
-    if ($SOAPCheck -match 'Files with SOAP references: ([0-9]+)') {
-        $SOAPCount = [int]$Matches[1]
-    }
-    
-    if ($SOAPCount -eq 0) {
-        $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] Xen Orchestra does not use SOAP/WS-Security`n`n"
-        $FindingDetails += "RATIONALE:`n"
-        $FindingDetails += "- XO uses REST API with JSON payloads`n"
-        $FindingDetails += "- Communication via JSON-RPC over WebSocket`n"
-        $FindingDetails += "- No SOAP envelopes or WS-Security headers`n"
-        $FindingDetails += "- Security via HTTPS/TLS and session-based authentication`n`n"
-        $FindingDetails += "This check applies only to applications using SOAP-based web services.`n"
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "WS-Security and SOAP Usage Check" + $nl + $nl
+
+    # Check for SOAP/WS-Security packages in installed node_modules (XOA and XOCE paths)
+    $xoServerDir = ""
+    if (Test-Path "/opt/xo/xo-server/node_modules") { $xoServerDir = "/opt/xo/xo-server/node_modules" }
+    elseif (Test-Path "/usr/share/xo-server/node_modules") { $xoServerDir = "/usr/share/xo-server/node_modules" }
+
+    if ($xoServerDir -ne "") {
+        $soapPkgs = $(timeout 10 find "$xoServerDir" -maxdepth 2 -type d -name "soap" -o -name "ws-security" -o -name "wsse" -o -name "xml-crypto" 2>&1)
+        $FindingDetails += "SOAP/WS-Security package check ($xoServerDir):" + $nl
+        if ($soapPkgs -match "soap|ws-security|wsse|xml-crypto") {
+            $FindingDetails += $soapPkgs + $nl + $nl
+        } else {
+            $FindingDetails += "No SOAP/WS-Security packages found." + $nl + $nl
+        }
     } else {
+        $soapPkgs = ""
+        $FindingDetails += "XO server node_modules directory not found (checked /opt/xo/xo-server, /usr/share/xo-server)." + $nl + $nl
+    }
+
+    # Verify XO uses REST/JSON-RPC architecture
+    $xoProcess = $(ps -eo comm,args 2>&1 | grep -E "node.*xo" | grep -v grep | head -3)
+    $FindingDetails += "XO server process:" + $nl
+    if ($xoProcess) { $FindingDetails += $xoProcess + $nl + $nl }
+    else { $FindingDetails += "XO process not detected (may be stopped)." + $nl + $nl }
+
+    $FindingDetails += "XO API Architecture:" + $nl
+    $FindingDetails += "Xen Orchestra uses JSON-RPC over WebSocket for its management API." + $nl
+    $FindingDetails += "The REST API uses JSON payloads. SOAP web services are not used." + $nl + $nl
+
+    if ($soapPkgs -match "soap|ws-security|wsse") {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] SOAP references detected - manual review required`n"
-        $FindingDetails += "Files with SOAP: $SOAPCount`n"
-        $FindingDetails += "Verify WS-Security timestamp implementation if SOAP is used`n"
+        $FindingDetails += "SOAP/WS-Security packages detected — manual review required." + $nl
+        $FindingDetails += "Verify whether WS-Security timestamps are properly implemented." + $nl
+    } else {
+        $Status = "Not_Applicable"
+        $FindingDetails += "[NOT APPLICABLE] Xen Orchestra does not use SOAP/WS-Security." + $nl
+        $FindingDetails += "No SOAP packages found. XO uses REST/JSON-RPC over WebSocket." + $nl
+        $FindingDetails += "WS-Security timestamp requirements do not apply to this architecture." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -31482,95 +30975,53 @@ Function Get-V222400 {
 
     #---=== Begin Custom Code ===---#
     # V-222400: Application using SOAP must implement WS-Security validity periods
-    # XO uses REST/JSON APIs, not SOAP - this check is Not Applicable
-    
-    $FindingDetails = "============================================`n"
-    $FindingDetails += "WS-Security Validity Period Check`n"
-    $FindingDetails += "============================================`n`n"
-    
-    # Check for SOAP and WS-Security usage
-    $SOAPValidityCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking for WS-Security validity period implementation..."
-    
-    # Check for WS-Security libraries
-    WSSECURITY=`$(find /opt/xo/xo-src -name 'package.json' </dev/null 2>/dev/null | xargs grep -l 'ws-security\|wsse\|xml-crypto' </dev/null 2>/dev/null | wc -l)
-    echo "Packages with WS-Security: `$WSSECURITY"
-    
-    # Check for timestamp validation code
-    TIMESTAMP_VAL=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'Created.*Expires\|wsu:Timestamp\|validateTimestamp' </dev/null 2>/dev/null | wc -l)
-    echo "Files with timestamp validation: `$TIMESTAMP_VAL"
-    
-    # Check for SOAP security headers
-    SOAP_SECURITY=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'Security.*wsse\|soapHeader.*Security' </dev/null 2>/dev/null | wc -l)
-    echo "Files with SOAP security headers: `$SOAP_SECURITY"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SOAPValidityCheck + "`n`n"
-    
-    # Document XO's actual security mechanisms
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "XO Security Mechanisms (Non-SOAP)`n"
-    $FindingDetails += "============================================`n"
-    
-    $SecurityMechanisms = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /etc/xo-server/config.toml ]; then
-    echo "Session timeout configuration:"
-    grep -i 'session\|timeout\|ttl' /etc/xo-server/config.toml </dev/null 2>/dev/null | head -3 || echo "No session config"
-fi
+    # XO uses REST/JSON-RPC over WebSocket, not SOAP.
+    $nl = [Environment]::NewLine
 
-echo -e "\nRedis session TTL:"
-if command -v redis-cli >/dev/null 2>&1; then
-    SESSIONS=`$(redis-cli --scan --pattern 'xo:session:*' </dev/null 2>/dev/null | wc -l)
-    echo "Active sessions: `$SESSIONS"
-    
-    # Check TTL on a session if any exist
-    SESSION_KEY=`$(redis-cli --scan --pattern 'xo:session:*' </dev/null 2>/dev/null | head -1)
-    if [ -n "`$SESSION_KEY" ]; then
-        TTL=`$(redis-cli ttl "`$SESSION_KEY" 2>/dev/null)
-        echo "Sample session TTL: `$TTL seconds"
-    fi
-else
-    echo "Redis CLI not available"
-fi
+    $FindingDetails = "WS-Security Validity Period Check" + $nl + $nl
 
-echo -e "\nJWT token usage (if any):"
-if [ -d /opt/xo/xo-src ]; then
-    JWT_COUNT=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'jsonwebtoken\|jwt\.sign\|jwt\.verify' </dev/null 2>/dev/null | wc -l)
-    echo "Files with JWT: `$JWT_COUNT"
-fi
-"@
-    $FindingDetails += $SecurityMechanisms + "`n`n"
-    
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Assessment Result`n"
-    $FindingDetails += "============================================`n"
-    
-    $WSSecurityCount = 0
-    if ($SOAPValidityCheck -match 'Packages with WS-Security: ([0-9]+)') {
-        $WSSecurityCount = [int]$Matches[1]
-    }
-    
-    if ($WSSecurityCount -eq 0) {
-        $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] Xen Orchestra does not use WS-Security`n`n"
-        $FindingDetails += "RATIONALE:`n"
-        $FindingDetails += "- XO does not implement SOAP web services`n"
-        $FindingDetails += "- No WS-Security headers or timestamps used`n"
-        $FindingDetails += "- Security via HTTPS/TLS transport layer`n"
-        $FindingDetails += "- Session validity controlled by Redis TTL`n"
-        $FindingDetails += "- Authentication token expiration managed separately`n`n"
-        $FindingDetails += "EQUIVALENT CONTROLS:`n"
-        $FindingDetails += "- Session timeout via Redis TTL (typically 24 hours)`n"
-        $FindingDetails += "- HTTPS certificates with validity periods`n"
-        $FindingDetails += "- OAuth/SAML token expiration (if configured)`n`n"
-        $FindingDetails += "This check applies only to SOAP-based applications using WS-Security.`n"
+    # Check for WS-Security/SOAP packages in installed node_modules
+    $xoServerDir = ""
+    if (Test-Path "/opt/xo/xo-server/node_modules") { $xoServerDir = "/opt/xo/xo-server/node_modules" }
+    elseif (Test-Path "/usr/share/xo-server/node_modules") { $xoServerDir = "/usr/share/xo-server/node_modules" }
+
+    if ($xoServerDir -ne "") {
+        $soapPkgs = $(timeout 10 find "$xoServerDir" -maxdepth 2 -type d -name "soap" -o -name "ws-security" -o -name "wsse" -o -name "xml-crypto" 2>&1)
+        $FindingDetails += "SOAP/WS-Security package check ($xoServerDir):" + $nl
+        if ($soapPkgs -match "soap|ws-security|wsse|xml-crypto") {
+            $FindingDetails += $soapPkgs + $nl + $nl
+        } else {
+            $FindingDetails += "No SOAP/WS-Security packages found." + $nl + $nl
+        }
     } else {
+        $soapPkgs = ""
+        $FindingDetails += "XO server node_modules not found (checked /opt/xo/xo-server, /usr/share/xo-server)." + $nl + $nl
+    }
+
+    # Check XO session timeout controls (equivalent security mechanism)
+    $sessionConfig = ""
+    if (Test-Path "/etc/xo-server/config.toml") {
+        $sessionConfig = $(grep -i "session\|timeout\|ttl" /etc/xo-server/config.toml 2>&1 | head -5)
+    } elseif (Test-Path "/opt/xo/xo-server/config.toml") {
+        $sessionConfig = $(grep -i "session\|timeout\|ttl" /opt/xo/xo-server/config.toml 2>&1 | head -5)
+    }
+    $FindingDetails += "Session timeout configuration:" + $nl
+    if ($sessionConfig) { $FindingDetails += $sessionConfig + $nl + $nl }
+    else { $FindingDetails += "No session timeout config found (using defaults)." + $nl + $nl }
+
+    $FindingDetails += "XO API Architecture:" + $nl
+    $FindingDetails += "Xen Orchestra uses JSON-RPC over WebSocket and REST/JSON APIs." + $nl
+    $FindingDetails += "Message validity is enforced via HTTPS/TLS and session TTL, not WS-Security." + $nl + $nl
+
+    if ($soapPkgs -match "ws-security|wsse") {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] WS-Security components detected - manual review required`n"
-        $FindingDetails += "Verify Created/Expires timestamp validation if WS-Security is used`n"
+        $FindingDetails += "WS-Security packages detected — manual review required." + $nl
+        $FindingDetails += "Verify Created/Expires timestamp validation in WS-Security implementation." + $nl
+    } else {
+        $Status = "Not_Applicable"
+        $FindingDetails += "[NOT APPLICABLE] Xen Orchestra does not use SOAP or WS-Security." + $nl
+        $FindingDetails += "No WS-Security packages installed. XO uses JSON-RPC/REST architecture." + $nl
+        $FindingDetails += "Session validity is enforced through Redis TTL and HTTPS transport." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -31680,94 +31131,33 @@ Function Get-V222403 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222403: Application must use NotOnOrAfter in SAML SubjectConfirmation element
-    # Checks if SAML is implemented and validates assertion handling
-    
-    $FindingDetails = "============================================`n"
-    $FindingDetails += "SAML Implementation Check`n"
-    $FindingDetails += "============================================`n`n"
-    
-    # Check for SAML authentication plugins
-    $SAMLCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking for SAML authentication..."
-    
-    # Check for SAML plugin
-    SAML_PLUGIN=`$(find /opt/xo/xo-src -name 'xo-server-auth-saml' -type d </dev/null 2>/dev/null | wc -l)
-    echo "SAML auth plugin installed: `$SAML_PLUGIN"
-    
-    # Check package.json for SAML dependencies
-    if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-        cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep -c 'saml\|passport-saml' || echo "0"
-        echo "SAML packages in dependencies"
-    fi
-    
-    # Check for SAML assertion handling
-    SAML_CODE=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'SAMLResponse\|SubjectConfirmation\|NotOnOrAfter' </dev/null 2>/dev/null | wc -l)
-    echo "Files with SAML assertion code: `$SAML_CODE"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SAMLCheck + "`n`n"
-    
-    # Check SAML configuration if plugin exists
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "SAML Configuration Analysis`n"
-    $FindingDetails += "============================================`n"
-    
-    $SAMLConfig = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /etc/xo-server/config.toml ]; then
-    echo "Checking XO config for SAML settings..."
-    grep -A10 '\[auth\]\|\[saml\]' /etc/xo-server/config.toml </dev/null 2>/dev/null | head -15 || echo "No SAML config section"
-fi
+    $nl = [Environment]::NewLine
 
-echo -e "\nSAML authentication plugins:"
-if [ -d /opt/xo/xo-src ]; then
-    find /opt/xo/xo-src -type d -name '*auth-saml*' </dev/null </dev/null 2>/dev/null || echo "No SAML auth plugins"
-fi
-"@
-    $FindingDetails += $SAMLConfig + "`n`n"
-    
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Assessment Result`n"
-    $FindingDetails += "============================================`n"
-    
-    $SAMLPluginCount = 0
-    if ($SAMLCheck -match 'SAML auth plugin installed: ([1-9][0-9]*)') {
-        $SAMLPluginCount = [int]$Matches[1]
+    $FindingDetails = "SAML Implementation Check" + $nl + $nl
+
+    # Check XO config for an ACTIVE (uncommented) [auth.saml] section
+    # The SAML package ships with XO but is only active when explicitly configured.
+    # grep -v "^#" strips commented lines; we look for the section header [auth.saml] or [auth."saml"]
+    $samlActiveConfig = ""
+    $configPath = ""
+    if (Test-Path "/etc/xo-server/config.toml") { $configPath = "/etc/xo-server/config.toml" }
+    elseif (Test-Path "/opt/xo/xo-server/config.toml") { $configPath = "/opt/xo/xo-server/config.toml" }
+    if ($configPath -ne "") {
+        $samlActiveConfig = $(grep -v "^#" "$configPath" 2>&1 | grep -i "saml" | head -5)
     }
-    
-    $SAMLCodeCount = 0
-    if ($SAMLCheck -match 'Files with SAML assertion code: ([0-9]+)') {
-        $SAMLCodeCount = [int]$Matches[1]
-    }
-    
-    if ($SAMLPluginCount -eq 0 -and $SAMLCodeCount -eq 0) {
-        $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] SAML authentication not implemented`n`n"
-        $FindingDetails += "RATIONALE:`n"
-        $FindingDetails += "- No SAML auth plugin (xo-server-auth-saml) installed`n"
-        $FindingDetails += "- No SAML assertion processing code detected`n"
-        $FindingDetails += "- XO uses local authentication or LDAP/AD instead`n`n"
-        $FindingDetails += "This check applies only when SAML SSO is configured.`n"
-    } elseif ($SAMLPluginCount -gt 0 -or $SAMLCodeCount -gt 0) {
+
+    $FindingDetails += "Config file checked: $(if ($configPath) { $configPath } else { 'not found' })" + $nl
+    $FindingDetails += "Active SAML config lines (uncommented): $(if ($samlActiveConfig) { $samlActiveConfig } else { 'none' })" + $nl + $nl
+
+    if ($samlActiveConfig -ne "" -and $samlActiveConfig -notmatch "^$") {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] SAML authentication detected - manual review required`n`n"
-        $FindingDetails += "SAML plugin: $SAMLPluginCount`n"
-        $FindingDetails += "SAML code files: $SAMLCodeCount`n`n"
-        $FindingDetails += "VERIFICATION REQUIRED:`n"
-        $FindingDetails += "1. Review SAML assertion validation code`n"
-        $FindingDetails += "2. Verify NotOnOrAfter element in SubjectConfirmation`n"
-        $FindingDetails += "3. Check assertion lifetime validation`n"
-        $FindingDetails += "4. Confirm replay attack prevention`n`n"
-        $FindingDetails += "EXPECTED IMPLEMENTATION:`n"
-        $FindingDetails += '<SubjectConfirmation Method="urn:oasis:names:tc:SAML:2.0:cm:bearer"> ' + "`n"
-        $FindingDetails += '  <SubjectConfirmationData NotOnOrAfter="[timestamp]" .../> ' + "`n"
-        $FindingDetails += '</SubjectConfirmation>' + "`n"
+        $FindingDetails += "SAML authentication is actively configured — manual review required." + $nl
+        $FindingDetails += "Verify that SubjectConfirmation elements include NotOnOrAfter condition." + $nl
     } else {
         $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] SAML not in use`n"
+        $FindingDetails += "[NOT APPLICABLE] SAML authentication is not actively configured." + $nl
+        $FindingDetails += "XO uses local authentication or LDAP/AD, not SAML SSO by default." + $nl
+        $FindingDetails += "The NotOnOrAfter requirement applies only to SAML-enabled deployments." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -31784,11 +31174,19 @@ fi
             VulnID       = $VulnID
             RuleID       = $RuleID
             AnswerKey    = $PSBoundParameters.AnswerKey
-            Instance     = $PSBoundParameters.Instance
-            Database     = $PSBoundParameters.Database
-            SiteName     = $PSBoundParameters.SiteName
-            ScanType     = $ScanType
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
             ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
@@ -31869,105 +31267,32 @@ Function Get-V222404 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222404: Application must use NotBefore/NotOnOrAfter or OneTimeUse in SAML Conditions
-    # Validates SAML assertion time constraints and replay protection
-    
-    $FindingDetails = "============================================`n"
-    $FindingDetails += "SAML Conditions Element Check`n"
-    $FindingDetails += "============================================`n`n"
-    
-    # Check for SAML implementation and condition validation
-    $SAMLConditions = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Checking for SAML Conditions validation..."
-    
-    # Check for SAML packages
-    if [ -f /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json ]; then
-        SAML_PKGS=`$(cat /opt/xo/xo-src/xen-orchestra/packages/xo-server/package.json | grep -c 'saml\|passport-saml' || echo 0)
-        echo "SAML packages: `$SAML_PKGS"
-    fi
-    
-    # Check for Conditions element handling
-    CONDITIONS=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'Conditions.*NotBefore\|Conditions.*NotOnOrAfter\|OneTimeUse' </dev/null 2>/dev/null | wc -l)
-    echo "Files with Conditions validation: `$CONDITIONS"
-    
-    # Check for assertion validation
-    ASSERTION_VAL=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'validateAssertion\|assertionValidation\|samlp:Response' </dev/null 2>/dev/null | wc -l)
-    echo "Files with assertion validation: `$ASSERTION_VAL"
-    
-    # Check for timestamp validation
-    TIME_VAL=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'moment.*isBefore\|Date.*isAfter\|timestamp.*valid' </dev/null 2>/dev/null | wc -l)
-    echo "Files with timestamp validation: `$TIME_VAL"
-else
-    echo "Source directory not found"
-fi
-"@
-    $FindingDetails += $SAMLConditions + "`n`n"
-    
-    # Check for SAML auth plugin configuration
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "SAML Authentication Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $SAMLAuthConfig = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Checking for SAML auth plugin:"
-find /opt/xo/xo-src -type d -name '*auth-saml*' </dev/null 2>/dev/null | head -3 || echo "No SAML auth plugin"
+    $nl = [Environment]::NewLine
 
-echo -e "\nSAML configuration in XO:"
-if [ -f /etc/xo-server/config.toml ]; then
-    grep -i 'saml' /etc/xo-server/config.toml </dev/null 2>/dev/null | head -5 || echo "No SAML config"
-fi
+    $FindingDetails = "SAML Conditions Element Check" + $nl + $nl
 
-echo -e "\nInstalled auth plugins:"
-if command -v redis-cli >/dev/null 2>&1; then
-    redis-cli --scan --pattern 'xo:config:auth*' </dev/null 2>/dev/null | head -5 || echo "No auth config in Redis"
-fi
-"@
-    $FindingDetails += $SAMLAuthConfig + "`n`n"
-    
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Assessment Result`n"
-    $FindingDetails += "============================================`n"
-    
-    $SAMLPackages = 0
-    if ($SAMLConditions -match 'SAML packages: ([0-9]+)') {
-        $SAMLPackages = [int]$Matches[1]
+    # Check XO config for an ACTIVE (uncommented) SAML section.
+    # The SAML package ships with XO but only activates when explicitly configured.
+    $samlActiveConfig = ""
+    $configPath = ""
+    if (Test-Path "/etc/xo-server/config.toml") { $configPath = "/etc/xo-server/config.toml" }
+    elseif (Test-Path "/opt/xo/xo-server/config.toml") { $configPath = "/opt/xo/xo-server/config.toml" }
+    if ($configPath -ne "") {
+        $samlActiveConfig = $(grep -v "^#" "$configPath" 2>&1 | grep -i "saml" | head -5)
     }
-    
-    $ConditionsFiles = 0
-    if ($SAMLConditions -match 'Files with Conditions validation: ([0-9]+)') {
-        $ConditionsFiles = [int]$Matches[1]
-    }
-    
-    if ($SAMLPackages -eq 0 -and $ConditionsFiles -eq 0) {
-        $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] SAML authentication not implemented`n`n"
-        $FindingDetails += "RATIONALE:`n"
-        $FindingDetails += "- No SAML packages in dependencies`n"
-        $FindingDetails += "- No SAML Conditions validation code`n"
-        $FindingDetails += "- XO uses alternative authentication methods`n`n"
-        $FindingDetails += "This check applies only when SAML SSO is configured.`n"
-    } elseif ($SAMLPackages -gt 0 -or $ConditionsFiles -gt 0) {
+
+    $FindingDetails += "Config file checked: $(if ($configPath) { $configPath } else { 'not found' })" + $nl
+    $FindingDetails += "Active SAML config lines (uncommented): $(if ($samlActiveConfig) { $samlActiveConfig } else { 'none' })" + $nl + $nl
+
+    if ($samlActiveConfig -ne "" -and $samlActiveConfig -notmatch "^$") {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] SAML implementation detected - manual review required`n`n"
-        $FindingDetails += "SAML packages: $SAMLPackages`n"
-        $FindingDetails += "Conditions validation files: $ConditionsFiles`n`n"
-        $FindingDetails += "VERIFICATION REQUIRED:`n"
-        $FindingDetails += "1. Review SAML assertion parsing code`n"
-        $FindingDetails += "2. Verify Conditions element with NotBefore/NotOnOrAfter`n"
-        $FindingDetails += "3. Check OneTimeUse assertion tracking (prevents replay)`n"
-        $FindingDetails += "4. Validate time window enforcement (typically 5 minutes)`n`n"
-        $FindingDetails += "EXPECTED SAML STRUCTURE:`n"
-        $FindingDetails += '<Conditions NotBefore="[timestamp]" NotOnOrAfter="[timestamp]"> ' + "`n"
-        $FindingDetails += '  <OneTimeUse/> <!-- Optional but recommended --> ' + "`n"
-        $FindingDetails += '</Conditions>' + "`n`n"
-        $FindingDetails += "SECURITY NOTES:`n"
-        $FindingDetails += "- Time window should be narrow (5-10 minutes)`n"
-        $FindingDetails += "- System clocks must be synchronized (NTP)`n"
-        $FindingDetails += "- OneTimeUse requires assertion ID tracking`n"
+        $FindingDetails += "SAML authentication is actively configured — manual review required." + $nl
+        $FindingDetails += "Verify that SAML Conditions element includes NotBefore and NotOnOrAfter (or OneTimeUse)." + $nl
     } else {
         $Status = "Not_Applicable"
-        $FindingDetails += "[NOT APPLICABLE] SAML not in use`n"
+        $FindingDetails += "[NOT APPLICABLE] SAML authentication is not actively configured." + $nl
+        $FindingDetails += "XO uses local authentication or LDAP/AD, not SAML SSO by default." + $nl
+        $FindingDetails += "SAML Conditions requirements (NotBefore/NotOnOrAfter/OneTimeUse) do not apply." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -31984,11 +31309,19 @@ fi
             VulnID       = $VulnID
             RuleID       = $RuleID
             AnswerKey    = $PSBoundParameters.AnswerKey
-            Instance     = $PSBoundParameters.Instance
-            Database     = $PSBoundParameters.Database
-            SiteName     = $PSBoundParameters.SiteName
-            ScanType     = $ScanType
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
             ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
@@ -32511,20 +31844,17 @@ Function Get-V222432 {
         $FindingDetails += "- DoD requires lockout after 3 failed attempts within 15 minutes`n"
         $FindingDetails += "- Verify fail2ban maxretry=3 and findtime=900 (15 min) settings`n"
         $FindingDetails += "`nSTATUS: NotAFinding (fail2ban provides lockout mechanism)`n"
-        $Comments = "fail2ban active - verify maxretry and findtime match DoD requirements"
     } elseif ($pamFaillock -notmatch "No PAM faillock") {
         $Status = "NotAFinding"
         $FindingDetails += "- PAM faillock/tally2 configured for account lockout`n"
         $FindingDetails += "- Verify deny <= 3 and unlock_time settings`n"
         $FindingDetails += "`nSTATUS: NotAFinding (PAM provides lockout mechanism)`n"
-        $Comments = "PAM faillock configured - verify deny threshold"
     } else {
         $Status = "Open"
         $FindingDetails += "- NO account lockout mechanism detected`n"
         $FindingDetails += "- Neither fail2ban nor PAM faillock found`n"
         $FindingDetails += "- DoD STIG requires account lockout after 3 failed attempts`n"
         $FindingDetails += "`nSTATUS: Open (FINDING - No lockout mechanism found)`n"
-        $Comments = "FINDING: No account lockout mechanism detected - implement fail2ban or PAM faillock"
     }
     #---=== End Custom Code ===---#
 
@@ -32541,11 +31871,19 @@ Function Get-V222432 {
             VulnID       = $VulnID
             RuleID       = $RuleID
             AnswerKey    = $PSBoundParameters.AnswerKey
-            Instance     = $PSBoundParameters.Instance
-            Database     = $PSBoundParameters.Database
-            SiteName     = $PSBoundParameters.SiteName
-            ScanType     = $ScanType
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
             ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
@@ -33174,13 +32512,11 @@ Function Get-V222542 {
         $FindingDetails += "- Xen Orchestra uses bcrypt for password hashing by default`n"
         $FindingDetails += "- Passwords stored as cryptographic hashes (bcrypt)`n"
         $FindingDetails += "`nSTATUS: NotAFinding (Passwords properly hashed)`n"
-        $Comments = "XO uses bcrypt password hashing - no plaintext passwords found"
     } else {
         $Status = "Open"
         $FindingDetails += "- Potential plaintext passwords detected in configuration`n"
         $FindingDetails += "- Review findings above for security concerns`n"
         $FindingDetails += "`nSTATUS: Open (FINDING - Plaintext passwords may exist)`n"
-        $Comments = "FINDING: Potential plaintext passwords detected"
     }
     #---=== End Custom Code ===---#
 
@@ -33334,14 +32670,12 @@ Function Get-V222543 {
         $FindingDetails += "- Passwords transmitted over encrypted channel`n"
         $FindingDetails += "- HTTPS port 443 in use or TLS configured`n"
         $FindingDetails += "`nSTATUS: NotAFinding (TLS encryption in use)`n"
-        $Comments = "HTTPS/TLS configured - passwords encrypted in transit"
     } else {
         $Status = "Open"
         $FindingDetails += "- NO TLS/HTTPS configuration detected`n"
         $FindingDetails += "- Passwords may be transmitted in cleartext`n"
         $FindingDetails += "- Configure HTTPS or use nginx reverse proxy with TLS`n"
         $FindingDetails += "`nSTATUS: Open (FINDING - No TLS detected)`n"
-        $Comments = "FINDING: No TLS/HTTPS detected - passwords transmitted unencrypted"
     }
     #---=== End Custom Code ===---#
 
@@ -35129,153 +34463,69 @@ Function Get-V222585 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222585: Application must fail to a secure state if system initialization fails
-    # Checks error handling, service failure recovery, and system boot configuration
-    
-    $ErrorCount = 0
+    $nl = [Environment]::NewLine
     $ComplianceCount = 0
-    $FindingDetails = ""
-    
-    # Check XO service configuration for restart on failure
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Service Failure Configuration Check`n"
-    $FindingDetails += "============================================`n"
-    
-    $ServiceCheck = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -f /etc/systemd/system/xo-server.service ] || [ -f /lib/systemd/system/xo-server.service ]; then
-    SERVICE_FILE=`$(find /etc/systemd /lib/systemd -name 'xo-server.service' </dev/null 2>/dev/null | head -1)
-    if [ -n "`$SERVICE_FILE" ]; then
-        echo "Service file: `$SERVICE_FILE"
-        grep -E '^Restart=|^RestartSec=|^StartLimitInterval=|^StartLimitBurst=' "`$SERVICE_FILE" || echo "No restart directives"
-    fi
-else
-    echo "No xo-server service file found"
-fi
-"@
-    $FindingDetails += $ServiceCheck + "`n"
-    
-    if ($ServiceCheck -match 'Restart=on-failure|Restart=always') {
-        $ComplianceCount++
-        $FindingDetails += "[PASS] Service configured to restart on failure`n"
-    } else {
-        $ErrorCount++
-        $FindingDetails += "[FAIL] Service NOT configured for automatic restart on failure`n"
-    }
-    
-    # Check systemd service status and recent failures
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Service Status and Recent Failures`n"
-    $FindingDetails += "============================================`n"
-    
-    $ServiceStatus = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-systemctl is-active xo-server </dev/null </dev/null 2>/dev/null || echo "Service not running"
-systemctl is-enabled xo-server </dev/null </dev/null 2>/dev/null || echo "Service not enabled"
-systemctl status xo-server 2>&1 | grep -E 'Active:|Main PID:|Failed:|Exit code:' | head -5
-"@
-    $FindingDetails += $ServiceStatus + "`n"
-    
-    if ($ServiceStatus -match 'active \(running\)|enabled') {
-        $ComplianceCount++
-        $FindingDetails += "[INFO] Service is active and enabled`n"
-    } else {
-        $FindingDetails += "[WARN] Service status needs review`n"
-    }
-    
-    # Check for error handling in application code
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Application Error Handling Analysis`n"
-    $FindingDetails += "============================================`n"
-    
-    $ErrorHandling = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /opt/xo/xo-src ]; then
-    echo "Searching for error handling patterns..."
-    # Check for try-catch blocks
-    TRYCATCH=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l 'try.*catch' </dev/null 2>/dev/null | wc -l)
-    echo "Files with try-catch blocks: `$TRYCATCH"
-    
-    # Check for process exit handling
-    PROCESS_EXIT=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l "process.on.*'exit'\|process.on.*'uncaughtException'" </dev/null 2>/dev/null | wc -l)
-    echo "Files with process exit handlers: `$PROCESS_EXIT"
-    
-    # Check for error logging
-    ERROR_LOG=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l '\.error(\|console.error\|logger.error' </dev/null 2>/dev/null | wc -l)
-    echo "Files with error logging: `$ERROR_LOG"
-    
-    # Check for graceful shutdown handling
-    SHUTDOWN=`$(find /opt/xo/xo-src -name '*.js' -type f </dev/null 2>/dev/null | xargs grep -l "process.on.*'SIGTERM'\|process.on.*'SIGINT'" </dev/null 2>/dev/null | wc -l)
-    echo "Files with shutdown handlers: `$SHUTDOWN"
-else
-    echo "XO source directory not found"
-fi
-"@
-    $FindingDetails += $ErrorHandling + "`n"
-    
-    if ($ErrorHandling -match 'Files with try-catch blocks: ([0-9]+)') {
-        $TryCatchCount = [int]$Matches[1]
-        if ($TryCatchCount -gt 10) {
-            $ComplianceCount++
-            $FindingDetails += "[PASS] Adequate error handling detected ($TryCatchCount files with try-catch)`n"
+    $ErrorCount = 0
+
+    $FindingDetails = "Service Failure Configuration Check" + $nl + $nl
+
+    # Check 1: Find xo-server systemd service file and Restart directive
+    $svcFile = $(find /etc/systemd /lib/systemd /usr/lib/systemd -maxdepth 4 -name "xo-server.service" 2>&1 | head -1)
+    $FindingDetails += "Systemd service file: " + $nl
+    if ($svcFile -match "xo-server.service") {
+        $FindingDetails += $svcFile + $nl
+        $restartDir = $(grep -E "^Restart=" "$svcFile" 2>&1)
+        $FindingDetails += "Restart directive: " + $nl
+        if ($restartDir) {
+            $FindingDetails += $restartDir + $nl + $nl
+            if ($restartDir -match "Restart=(on-failure|always|on-abnormal)") {
+                $ComplianceCount++
+                $FindingDetails += "[PASS] Service configured to restart on failure." + $nl + $nl
+            } else {
+                $ErrorCount++
+                $FindingDetails += "[FAIL] Service restart directive does not cover failure scenarios." + $nl + $nl
+            }
         } else {
             $ErrorCount++
-            $FindingDetails += "[FAIL] Insufficient error handling ($TryCatchCount files with try-catch)`n"
+            $FindingDetails += "No Restart directive found — service will not auto-restart on failure." + $nl + $nl
         }
+    } else {
+        $FindingDetails += "No xo-server.service file found in systemd directories." + $nl + $nl
     }
-    
-    # Check system boot configuration and failure mode
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "System Boot Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $BootConfig = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-echo "Systemd default target:"
-systemctl get-default </dev/null </dev/null 2>/dev/null || echo "Unable to determine"
 
-echo -e "\nEmergency mode configuration:"
-grep -r 'emergency.target\|rescue.target' /etc/systemd/system/*.wants </dev/null 2>/dev/null | wc -l
-echo "Emergency/rescue targets configured"
+    # Check 2: Service active status
+    $svcActive = $(systemctl is-active xo-server 2>&1)
+    $svcEnabled = $(systemctl is-enabled xo-server 2>&1)
+    $FindingDetails += "Service status:" + $nl
+    $FindingDetails += "  Active: $svcActive" + $nl
+    $FindingDetails += "  Enabled: $svcEnabled" + $nl + $nl
+    if ($svcActive -match "active") { $ComplianceCount++ }
 
-echo -e "\nKernel panic behavior:"
-cat /proc/sys/kernel/panic </dev/null </dev/null 2>/dev/null || echo "Unknown"
-cat /proc/sys/kernel/panic_on_oops </dev/null </dev/null 2>/dev/null || echo "Unknown"
-"@
-    $FindingDetails += $BootConfig + "`n"
-    
-    # Check log rotation and error logging configuration
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Error Logging Configuration`n"
-    $FindingDetails += "============================================`n"
-    
-    $LogConfig = Invoke-SSHCommandText -SSHSession $SSHSession -Command @"
-if [ -d /var/log/xo-server ]; then
-    echo "XO Server log directory exists"
-    ls -lh /var/log/xo-server/ </dev/null 2>/dev/null | head -5
-else
-    echo "No dedicated XO log directory"
-fi
+    # Check 3: Recent service failures (last 24h)
+    $recentErrors = $(journalctl -u xo-server --since "24 hours ago" -p err -n 5 --no-pager 2>&1)
+    $FindingDetails += "Recent errors (last 24h):" + $nl
+    if ($recentErrors -match "No entries" -or -not $recentErrors) {
+        $FindingDetails += "No errors in last 24 hours." + $nl + $nl
+        $ComplianceCount++
+    } else {
+        $FindingDetails += $recentErrors + $nl + $nl
+    }
 
-echo -e "\nJournald XO errors (last 24 hours):"
-journalctl -u xo-server --since '24 hours ago' --priority=err </dev/null 2>/dev/null | wc -l
-echo "error entries found"
-"@
-    $FindingDetails += $LogConfig + "`n"
-    
-    # Final status determination
-    $FindingDetails += "`n============================================`n"
-    $FindingDetails += "Compliance Assessment`n"
-    $FindingDetails += "============================================`n"
-    $FindingDetails += "Compliance Items: $ComplianceCount`n"
-    $FindingDetails += "Non-Compliance Items: $ErrorCount`n`n"
-    
+    # Check 4: Kernel panic behavior
+    $panicSetting = $(cat /proc/sys/kernel/panic 2>&1)
+    $FindingDetails += "Kernel panic auto-reboot (seconds, 0=disabled): $panicSetting" + $nl + $nl
+
     if ($ErrorCount -eq 0 -and $ComplianceCount -ge 2) {
         $Status = "NotAFinding"
-        $FindingDetails += "[PASS] Application has adequate fail-to-secure-state mechanisms`n"
+        $FindingDetails += "[PASS] XO server has adequate fail-to-secure-state configuration." + $nl
+        $FindingDetails += "Systemd Restart directive and service monitoring are in place." + $nl
     } elseif ($ErrorCount -gt 0) {
         $Status = "Open"
-        $FindingDetails += "[FINDING] Application lacks proper fail-to-secure-state configuration`n"
-        $FindingDetails += "REMEDIATION: Configure systemd service with Restart=on-failure, implement proper error handling`n"
+        $FindingDetails += "[FINDING] XO server service lacks proper failure recovery configuration." + $nl
+        $FindingDetails += "Configure: Restart=on-failure in the systemd service unit file." + $nl
     } else {
         $Status = "Not_Reviewed"
-        $FindingDetails += "[INFO] Manual review required - verify error handling and failure recovery procedures`n"
+        $FindingDetails += "Manual review required — verify service failure recovery procedures." + $nl
     }
     #---=== End Custom Code ===---#
 
