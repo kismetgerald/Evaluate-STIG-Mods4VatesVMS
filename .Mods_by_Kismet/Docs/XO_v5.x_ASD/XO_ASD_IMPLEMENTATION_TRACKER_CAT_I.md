@@ -2,7 +2,7 @@
 
 **Document Version**: 1.0  
 **Created**: January 22, 2026  
-**Last Updated**: January 22, 2026 (Session #14 - Phase 1)  
+**Last Updated**: February 15, 2026 (Session #36 - Phase 0B complete, Test130 baseline confirmed)  
 **Module**: Scan-XO_ASD_Checks (Application Security and Development STIG V6R4)
 
 ---
@@ -25,8 +25,8 @@
 |----------|---------|------------|----------|----------------------|-------------|----------------|-------|
 | V-222399 | V-222399 | WS_Security timestamps | CAT I | ✅ **Implemented** | ✅ **Tested** | ⚪ **Not_Applicable** | XO uses REST/JSON, not SOAP web services |
 | V-222400 | V-222400 | WS-Security validity periods | CAT I | ✅ **Implemented** | ✅ **Tested** | ⚪ **Not_Applicable** | No WS-Security implementation, uses HTTPS/TLS |
-| V-222403 | V-222403 | SAML NotOnOrAfter element | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | SAML plugin available, config verification needed |
-| V-222404 | V-222404 | SAML Conditions element | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | SAML plugin available, assertion validation needed |
+| V-222403 | V-222403 | SAML NotOnOrAfter element | CAT I | ✅ **Implemented** | ✅ **Tested** | ⚪ **Not_Applicable** | SAML pkg ships with XO but not configured; checks active config only |
+| V-222404 | V-222404 | SAML Conditions element | CAT I | ✅ **Implemented** | ✅ **Tested** | ⚪ **Not_Applicable** | SAML pkg ships with XO but not configured; checks active config only |
 | V-222425 | V-222425 | Enforce approved authorizations | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | RBAC: 3 ACLs, 1 role detected |
 | V-222430 | V-222430 | Execute without excessive permissions | CAT I | ✅ **Implemented** | ⏸️ Not Tested | 🟡 **Not_Reviewed** | Least privilege - analyzes service account permissions |
 | V-222432 | V-222432 | Account lockout (3 attempts, 15 min) | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | Need fail2ban or PAM faillock |
@@ -40,7 +40,7 @@
 | V-222555 | V-222555 | FIPS-compliant crypto module | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | FIPS mode disabled - fips_enabled=0 |
 | V-222577 | V-222577 | No session ID exposure | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 0 active sessions, mechanism needs active user test |
 | V-222578 | V-222578 | Destroy session on logoff | CAT I | ✅ **Implemented** | ⏸️ Not Tested | 🟡 **Not_Reviewed** | Session destruction - checks Redis TTL and logout handlers |
-| V-222585 | V-222585 | Fail to secure state | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | Restart=always configured, manual verification needed |
+| V-222585 | V-222585 | Fail to secure state | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | systemd Restart=always, service active, no recent errors (Test129) |
 | V-222588 | V-222588 | Prevent unauthorized modification at rest | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | No encryption/FIM detected - needs LUKS/AIDE |
 | V-222589 | V-222589 | Protect DoD info with crypto | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | No LUKS encryption - disk encryption required |
 | V-222596 | V-222596 | Protect transmitted info confidentiality | CAT I | ✅ **Implemented** | ⏸️ Not Tested | 🟡 **Not_Reviewed** | TLS/HTTPS verification - service testing needed |
@@ -48,14 +48,14 @@
 | V-222602 | V-222602 | Protect from XSS vulnerabilities | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | React detected (provides XSS protection) - CSP headers missing |
 | V-222604 | V-222604 | Protect from command injection | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 7 child_process refs, code analysis needed |
 | V-222607 | V-222607 | Not vulnerable to SQL Injection | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | Redis (NoSQL) only, no SQL databases |
-| V-222608 | V-222608 | Not vulnerable to XML attacks | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 2 XML files detected, minimal usage |
+| V-222608 | V-222608 | Not vulnerable to XML attacks | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | XO uses JSON/REST; no XML parsing packages in node_modules (Test129) |
 | V-222609 | V-222609 | No input handling vulnerabilities | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | ajv validator found, coverage needs verification |
 | V-222612 | V-222612 | Not vulnerable to overflow attacks | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | Node v22, ASLR enabled, 5 unsafe buffers |
-| V-222620 | V-222620 | Web/app/DB on separate segments | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 2 interfaces, Redis on 2 listeners, firewall needs verification |
+| V-222620 | V-222620 | Web/app/DB on separate segments | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | No UFW firewall on XOCE; Redis listener status checked (Test129) |
 | V-222642 | V-222642 | No embedded authentication data | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 65 env vars, 1 embedded key needs inspection |
-| V-222643 | V-222643 | Mark sensitive/classified output | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | 1 classification keyword found, manual UI review needed |
-| V-222658 | V-222658 | Vendor/dev team support available | CAT I | ✅ **Implemented** | ✅ **Tested** | 🟡 **Not_Reviewed** | XO v5.194.6, package install, Vates vendor verification needed |
-| V-222659 | V-222659 | Decommission when unsupported | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | XO v5.194.6, Node v22, active Vates development |
+| V-222643 | V-222643 | Mark sensitive/classified output | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | Org policy — classification marking requires documentation (Test129) |
+| V-222658 | V-222658 | Vendor/dev team support available | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | No git repo found; manual Vates vendor support verification needed (Test129) |
+| V-222659 | V-222659 | Decommission when unsupported | CAT I | ✅ **Implemented** | ✅ **Tested** | 🔴 **Open** | Org policy — decommission plan documentation required (Test129) |
 | V-222662 | V-222662 | Default passwords changed | CAT I | ✅ **Implemented** | ✅ **Tested** | ✅ **NotAFinding** | No admin@admin.net detected |
 
 ---
