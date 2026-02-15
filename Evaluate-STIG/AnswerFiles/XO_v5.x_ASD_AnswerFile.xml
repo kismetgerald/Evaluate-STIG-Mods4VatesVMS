@@ -54,7 +54,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     | <AnswerKey Name> |   16   |
     |==================|========|
 **************************************************************************************-->
-<STIGComments Name="M_ApplicationSecurityDevelopment">
+<STIGComments Name="XO_ASD">
   <!--Evaluate-STIG answer file for Xen Orchestra (based on the Application Security Development STIG)-->
   <Vuln ID="V-222387">
     <!--RuleTitle: The application must provide a capability to limit the number of logon sessions per user.-->
