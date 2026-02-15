@@ -12,9 +12,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total CAT II/III** | 252 |
-| **Implemented** | 4 |
-| **Stubs (Not_Reviewed)** | 248 |
-| **Completion** | 1.6% |
+| **Implemented** | 14 |
+| **Stubs (Not_Reviewed)** | 238 |
+| **Completion** | 5.6% |
 
 **Reference:** CAT I tracker (34 functions) → `XO_ASD_IMPLEMENTATION_TRACKER_CAT_I.md`
 
@@ -45,16 +45,16 @@
 
 | Vuln ID | Status | Session | Finding | Notes |
 |---------|--------|---------|---------|-------|
-| V-222389 | 🟡 Stub | — | — | |
-| V-222390 | 🟡 Stub | — | — | |
-| V-222391 | 🟡 Stub | — | — | |
-| V-222392 | 🟡 Stub | — | — | |
-| V-222393 | 🟡 Stub | — | — | |
-| V-222394 | 🟡 Stub | — | — | |
-| V-222395 | 🟡 Stub | — | — | |
-| V-222396 | 🟡 Stub | — | — | |
-| V-222397 | 🟡 Stub | — | — | |
-| V-222398 | 🟡 Stub | — | — | |
+| V-222389 | ⏸️ Tested in #36 | #36 | Open | Session idle timeout; XO lacks native 15-min idle timeout config |
+| V-222390 | ⏸️ Tested in #36 | #36 | Open | Admin idle timeout; XO lacks per-role timeout differentiation |
+| V-222391 | ⏸️ Tested in #36 | #36 | NotAFinding | Logoff capability; XO REST API + web UI provide session termination |
+| V-222392 | ⏸️ Tested in #36 | #36 | Open | CAT III; explicit logoff message; requires UI verification |
+| V-222393 | ⚪ Tested in #36 | #36 | Not_Applicable | Security attrs in storage; XO is infra mgmt, not classified data app |
+| V-222394 | ⚪ Tested in #36 | #36 | Not_Applicable | Security attrs in process; same rationale as V-222393 |
+| V-222395 | ⚪ Tested in #36 | #36 | Not_Applicable | Security attrs in transmission; TLS integrity covered by V-222397 |
+| V-222396 | ⏸️ Tested in #36 | #36 | NotAFinding/Open | TLS confidentiality; dynamic based on openssl s_client result |
+| V-222397 | ⏸️ Tested in #36 | #36 | NotAFinding/Open | TLS integrity; same TLS check as V-222396 |
+| V-222398 | ⚪ Tested in #36 | #36 | Not_Applicable | SOAP integrity; XO uses REST/JSON, not SOAP |
 
 ### Batch 2: V-222401, V-222402, V-222405–V-222412 (~10 functions)
 *Topics: Digital signatures, certificate management, cryptographic module selection*
