@@ -88,6 +88,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     <!--RuleTitle: The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: Non-privileged user sessions must time out after 15 minutes of inactivity (APSC-DV-000070).
@@ -112,6 +113,7 @@ Reference: The AO must accept this finding or document a compensating control in
     <!--RuleTitle: The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: Administrator sessions must time out after 10 minutes of inactivity (APSC-DV-000080).
@@ -138,6 +140,7 @@ Reference: APSC-DV-000080. The AO must accept this finding or document a compens
     <!--RuleTitle: Applications requiring user access authentication must provide a logoff capability for user initiated communication session.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: The application must provide a user-initiated logoff capability (APSC-DV-000090).
@@ -154,6 +157,7 @@ This finding is Not A Finding. Xen Orchestra fully satisfies the logoff capabili
         </ValidTrueComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: The application must provide a user-initiated logoff capability (APSC-DV-000090).
@@ -178,6 +182,7 @@ If manual verification confirms logout works, document the evidence and mark as 
     <!--RuleTitle: The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: The application must display an explicit logoff message confirming session termination (APSC-DV-000100, CAT III).
@@ -204,6 +209,7 @@ This is a CAT III (low severity) finding. Document as accepted risk if remediati
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in storage.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>
 Not Applicable: Xen Orchestra is a hypervisor management platform that manages VMs, hosts, and storage.
@@ -220,6 +226,7 @@ This requirement does not apply to infrastructure management software of this ty
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in process.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>
 Not Applicable: Xen Orchestra does not process classified, CUI, or sensitivity-labeled data objects
@@ -237,6 +244,7 @@ subject to data labeling requirements. This requirement does not apply.
     <!--RuleTitle: The application must associate organization-defined types of security attributes having organization-defined security attribute values with information in transmission.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>
 Not Applicable: Xen Orchestra does not transmit classified, CUI, or sensitivity-labeled data objects
@@ -256,6 +264,7 @@ As an infrastructure management tool, XO does not handle data subject to this la
     <!--RuleTitle: The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: DoD-approved encryption (TLS 1.2 or higher) must protect all remote access sessions (APSC-DV-000160).
@@ -269,6 +278,7 @@ eliminating known weaknesses (e.g., POODLE, BEAST). All XO API and web UI traffi
         </ValidTrueComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: DoD-approved encryption (TLS 1.2 or higher) must protect all remote access sessions (APSC-DV-000160).
@@ -292,6 +302,7 @@ Remediation steps:
     <!--RuleTitle: The application must implement cryptographic mechanisms to protect the integrity of remote access sessions.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: Cryptographic mechanisms must protect the integrity of all remote access sessions (APSC-DV-000170).
@@ -306,6 +317,7 @@ protection of remote access sessions.
         </ValidTrueComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 STIG Requirement: Cryptographic mechanisms must protect the integrity of all remote access sessions (APSC-DV-000170).
@@ -330,6 +342,7 @@ Remediation steps:
     <!--RuleTitle: Applications with SOAP messages requiring integrity must include the following message elements:-Message ID-Service Request-Timestamp-SAML Assertion (optionally included in messages) and all elements of the message must be digitally signed.-->
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>
 Not Applicable: Xen Orchestra does not use SOAP (Simple Object Access Protocol) for any of its interfaces.
@@ -344,6 +357,7 @@ by V-222397. This finding is Not Applicable.
         </ValidTrueComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>
 The automated check detected potential SOAP, WSDL, or XML-RPC references in the Xen Orchestra source code.
