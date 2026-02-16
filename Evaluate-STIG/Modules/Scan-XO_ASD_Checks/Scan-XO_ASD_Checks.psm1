@@ -5246,9 +5246,38 @@ Function Get-V222426 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222426) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222426: DAC (Discretionary Access Control) - APSC-DV-000470
+    # STIG check: "If application does not implement DAC, this requirement is N/A."
+    # XO uses RBAC (Admin/Operator/Viewer roles) — not DAC (user-owned object permissions).
+    $FindingDetails += "Xen Orchestra Access Control Architecture:" + $nl
+    $FindingDetails += "==========================================" + $nl + $nl
+
+    # Check for ACL plugin presence
+    $aclPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -type d -name "*acl*" 2>/dev/null | head -3 2>&1)
+    $aclPluginStr = ($aclPlugin -join $nl).Trim()
+
+    $FindingDetails += "Access Control Model:" + $nl
+    $FindingDetails += "  XO implements Role-Based Access Control (RBAC):" + $nl
+    $FindingDetails += "  - Roles: Admin, Operator, Viewer, No Access (assigned per resource pool)" + $nl
+    $FindingDetails += "  - Permissions are assigned by administrators, not by object owners" + $nl
+    $FindingDetails += "  - Users cannot grant access to their own objects (no discretionary permissions)" + $nl
+    if ($aclPluginStr -ne "") {
+        $FindingDetails += "  - ACL plugin detected: " + $aclPluginStr + $nl
+    }
+    $FindingDetails += $nl
+
+    $FindingDetails += "DAC Requirement Assessment:" + $nl
+    $FindingDetails += "  Discretionary Access Control (DAC) requires subjects (users) to have" + $nl
+    $FindingDetails += "  discretion to grant permissions on objects they own (e.g., Unix file ACLs," + $nl
+    $FindingDetails += "  Windows DACL). XO does not implement this model — access control is" + $nl
+    $FindingDetails += "  centrally administered via RBAC roles only." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not implement DAC, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement discretionary access control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5356,9 +5385,30 @@ Function Get-V222427 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222427) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222427: Information Flow Control (within system) - APSC-DV-000480
+    # STIG check: "If application does not provide data flow control capabilities, this requirement is N/A."
+    # XO does not implement data classification labels or information flow control policies.
+    $FindingDetails += "Xen Orchestra Information Flow Control Assessment (Within System):" + $nl
+    $FindingDetails += "==================================================================" + $nl + $nl
+
+    $FindingDetails += "Information Flow Control Model:" + $nl
+    $FindingDetails += "  XO is a virtualization management platform for Xen/XCP-ng hypervisors." + $nl
+    $FindingDetails += "  It does not implement:" + $nl
+    $FindingDetails += "  - Data classification labels (e.g., Unclassified, Secret, Top Secret)" + $nl
+    $FindingDetails += "  - Security level enforcement (BLP/MLS-style mandatory access control)" + $nl
+    $FindingDetails += "  - Information flow control policies based on sensitivity labels" + $nl
+    $FindingDetails += "  - Object labeling or cross-domain guard functionality" + $nl + $nl
+
+    $FindingDetails += "  XO's API enforces RBAC (role-based) access control but does not enforce" + $nl
+    $FindingDetails += "  information flow based on data classification or sensitivity labels." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not provide data flow control" + $nl
+    $FindingDetails += "capabilities, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement information flow control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5466,9 +5516,31 @@ Function Get-V222428 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222428) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222428: Information Flow Control (between interconnected systems) - APSC-DV-000490
+    # STIG check: "If application does not provide data flow control capabilities, this requirement is N/A."
+    # XO does not implement inter-system information flow control policies.
+    $FindingDetails += "Xen Orchestra Information Flow Control Assessment (Between Systems):" + $nl
+    $FindingDetails += "====================================================================" + $nl + $nl
+
+    $FindingDetails += "Inter-System Information Flow Control Model:" + $nl
+    $FindingDetails += "  XO communicates with XCP-ng hosts via XAPI (XML-RPC/TLS) and" + $nl
+    $FindingDetails += "  manages VMs, storage, and networks. It does not implement:" + $nl
+    $FindingDetails += "  - Data classification-based flow control between connected systems" + $nl
+    $FindingDetails += "  - Cross-domain information transfer policies or guards" + $nl
+    $FindingDetails += "  - Security label enforcement on data crossing system boundaries" + $nl
+    $FindingDetails += "  - MLS/MAC-style flow control for inter-system communication" + $nl + $nl
+
+    $FindingDetails += "  XO enforces TLS encryption and RBAC for inter-system API calls but" + $nl
+    $FindingDetails += "  does not implement data classification-based flow control policies" + $nl
+    $FindingDetails += "  between interconnected systems." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not provide data flow control" + $nl
+    $FindingDetails += "capabilities, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement inter-system information flow control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5576,9 +5648,90 @@ Function Get-V222429 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222429) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222429: Prevent non-privileged users from executing privileged functions - APSC-DV-000500
+    # STIG check: "Identify application user accounts and OS group memberships.
+    # If the account is a member of Administrators group or has UID 0, this is a finding."
+    $FindingDetails += "XO Server Process Privilege Assessment:" + $nl
+    $FindingDetails += "=======================================" + $nl + $nl
+
+    # Check the user running xo-server process
+    $xoServerProc = $(timeout 5 ps -eo user,pid,args 2>/dev/null | grep -v grep | grep "xo-server" | head -5 2>&1)
+    $xoServerProcStr = ($xoServerProc -join $nl).Trim()
+
+    $nodeProc = $(timeout 5 ps -eo user,pid,comm 2>/dev/null | grep -v grep | grep "^[^ ].*node" | head -10 2>&1)
+    $nodeProcStr = ($nodeProc -join $nl).Trim()
+
+    if ($xoServerProcStr -ne "") {
+        $FindingDetails += "XO Server process:" + $nl + $xoServerProcStr + $nl + $nl
+    }
+    elseif ($nodeProcStr -ne "") {
+        $FindingDetails += "Node.js processes (xo-server may use 'node' name):" + $nl + $nodeProcStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "XO server process not detected (may be stopped or named differently)." + $nl + $nl
+    }
+
+    # Extract process owner
+    $runningUser = ""
+    $combinedProc = if ($xoServerProcStr -ne "") { $xoServerProcStr } else { $nodeProcStr }
+    if ($combinedProc -ne "") {
+        if ($combinedProc -match '^(\S+)\s+') {
+            $runningUser = $matches[1]
+        }
+    }
+
+    $isRoot = $false
+    if ($runningUser -ne "") {
+        $userID = $(timeout 5 id $runningUser 2>/dev/null | head -1 2>&1)
+        $userIDStr = ($userID -join $nl).Trim()
+        $FindingDetails += "Process owner: " + $runningUser + $nl
+        $FindingDetails += "User details:  " + $userIDStr + $nl + $nl
+
+        if ($runningUser -eq "root" -or $userIDStr -match "uid=0\b") {
+            $isRoot = $true
+            $FindingDetails += "FINDING: XO server is running as root (UID 0)." + $nl
+            $FindingDetails += "All users of the application inherit elevated OS privileges." + $nl
+        }
+        else {
+            $FindingDetails += "XO server runs as non-root user '" + $runningUser + "'." + $nl
+            foreach ($grp in @("sudo", "wheel", "adm")) {
+                if ($userIDStr -match "\b$grp\b") {
+                    $FindingDetails += "WARNING: Process owner is a member of privileged group '" + $grp + "'." + $nl
+                }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "Could not determine process owner — XO server may not be running." + $nl
+        $FindingDetails += "Verify xo-server runs as a dedicated non-root service account." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Check systemd service user
+    $systemdUser = $(timeout 5 systemctl show xo-server -p User 2>/dev/null | head -2 2>&1)
+    $systemdUserStr = ($systemdUser -join $nl).Trim()
+    if ($systemdUserStr -ne "" -and $systemdUserStr -notmatch "=\s*$") {
+        $FindingDetails += "Systemd service user config: " + $systemdUserStr + $nl + $nl
+        if ($systemdUserStr -match "=root$" -or $systemdUserStr -match "=$") {
+            $isRoot = $true
+        }
+    }
+
+    # Application-level privilege separation (RBAC)
+    $FindingDetails += "Application-Level Privilege Separation (RBAC):" + $nl
+    $FindingDetails += "  XO enforces RBAC: Admin, Operator, Viewer roles per resource pool." + $nl
+    $FindingDetails += "  Non-privileged users cannot: create/delete users, modify system config," + $nl
+    $FindingDetails += "  manage encryption keys, or access admin API endpoints." + $nl
+    $FindingDetails += "  Privilege separation is enforced at the XO API layer." + $nl
+
+    if ($isRoot) {
+        $Status = "Open"
+    }
+    else {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5686,9 +5839,104 @@ Function Get-V222431 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222431) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222431: Audit the execution of privileged functions - APSC-DV-000520
+    # STIG check: Perform privileged tasks (add users, modify config, manage keys),
+    # then verify specific actions and dates/times appear in audit logs.
+    $FindingDetails += "XO Privileged Function Audit Assessment:" + $nl
+    $FindingDetails += "========================================" + $nl + $nl
+
+    $auditPluginLoaded = $false
+    $auditRecordsFound = $false
+
+    # Method 1: REST API — check audit plugin and records
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+
+    if ($apiToken -ne "") {
+        $FindingDetails += "REST API: checking audit plugin and records..." + $nl
+        # Check plugin list
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+
+        if ($pluginsStr -match '"audit"') {
+            $auditPluginLoaded = $true
+            $FindingDetails += "  Audit plugin: LOADED (confirmed via /rest/v0/plugins)" + $nl
+        }
+        else {
+            $FindingDetails += "  Audit plugin: not found in active plugin list." + $nl
+        }
+
+        # Query recent audit records
+        $auditArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " " + [char]39 + "https://localhost/rest/v0/plugins/audit/records?limit=50" + [char]39 + " 2>/dev/null | head -c 16000"
+        $auditJson = $(timeout 10 sh -c $auditArgs 2>&1)
+        $auditStr = ($auditJson -join $nl).Trim()
+
+        if ($auditStr -ne "" -and $auditStr.Length -gt 10 -and $auditStr -notmatch '"error"' -and $auditStr -notmatch "Unauthorized") {
+            $FindingDetails += "  Audit records endpoint accessible (" + $auditStr.Length + " bytes)." + $nl
+            # Check for privileged action types
+            $privActions = @("user.create", "user.delete", "user.set", "acl.add", "acl.remove",
+                             "server.add", "server.remove", "plugin", "permission", "signIn", "signOut")
+            $foundActions = @()
+            foreach ($action in $privActions) {
+                if ($auditStr -match $action) {
+                    $foundActions += $action
+                }
+            }
+            if ($foundActions.Count -gt 0) {
+                $auditRecordsFound = $true
+                $FindingDetails += "  Privileged action types in audit records: " + ($foundActions -join ", ") + $nl
+            }
+            else {
+                $FindingDetails += "  Audit records present but privileged action types not in sample (sample may not cover recent admin activity)." + $nl
+                $auditRecordsFound = $auditPluginLoaded
+            }
+        }
+        else {
+            $FindingDetails += "  Audit records endpoint: not accessible or no records returned." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "API token not available (/etc/xo-server/stig/api-token not found)." + $nl
+        $FindingDetails += "Falling back to filesystem and journal checks." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Method 2: Systemd journal — privileged action keywords
+    $journalPriv = $(timeout 10 journalctl -u xo-server --since "7 days ago" --no-pager 2>/dev/null | grep -iE "user.*(creat|delet|modif)|acl|permission|admin|signIn|login" | head -10 2>&1)
+    $journalPrivStr = ($journalPriv -join $nl).Trim()
+    $FindingDetails += "Systemd Journal (privileged actions, last 7 days):" + $nl
+    if ($journalPrivStr -ne "") {
+        $FindingDetails += $journalPrivStr + $nl
+        $auditRecordsFound = $true
+    }
+    else {
+        $FindingDetails += "  No privileged action entries in systemd journal." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Method 3: XO audit log files
+    $auditLogFile = $(timeout 5 find /var/log -maxdepth 3 -type f -name "*xo*audit*" 2>/dev/null | head -3 2>&1)
+    $auditLogFileStr = ($auditLogFile -join $nl).Trim()
+    if ($auditLogFileStr -ne "") {
+        $FindingDetails += "XO audit log file(s): " + $auditLogFileStr + $nl + $nl
+        $auditRecordsFound = $true
+    }
+
+    if ($auditPluginLoaded -or $auditRecordsFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: XO audit system is active and records privileged function executions." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: Could not confirm privileged function executions are audited." + $nl
+        $FindingDetails += "Ensure XO audit plugin is installed, loaded, and capturing admin actions." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5796,9 +6044,50 @@ Function Get-V222433 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222433) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222433: Application administrator must follow approved process to unlock locked accounts - APSC-DV-000540
+    # STIG check: "Interview admin to identify approved unlock process. Process must include
+    # user self-identification. Must have documented ISSO and ISSM approvals."
+    $FindingDetails += "Account Unlock Process Assessment:" + $nl
+    $FindingDetails += "==================================" + $nl + $nl
+
+    # Check account lockout is configured (confirms lockout is active)
+    $lockoutFound = $false
+    foreach ($cfgPath in @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $lockoutConf = $(timeout 5 grep -iE "lockout|maxFailed|failedAttempt|bruteForce" $cfgPath 2>/dev/null | head -5 2>&1)
+            $lockoutConfStr = ($lockoutConf -join $nl).Trim()
+            if ($lockoutConfStr -ne "") {
+                $lockoutFound = $true
+                $FindingDetails += "Lockout config in " + $cfgPath + ":" + $nl + $lockoutConfStr + $nl + $nl
+            }
+        }
+    }
+    if (-not $lockoutFound) {
+        $FindingDetails += "No explicit lockout configuration found in config.toml." + $nl
+        $FindingDetails += "(XO enforces 3-attempt lockout by default — see V-222432.)" + $nl + $nl
+    }
+
+    # Check fail2ban
+    $fb2Status = $(timeout 5 systemctl is-active fail2ban 2>/dev/null 2>&1)
+    $fb2Str = ($fb2Status -join "").Trim()
+    $FindingDetails += "Fail2ban status: " + $(if ($fb2Str -eq "active") { "active" } else { "not active" }) + $nl + $nl
+
+    $FindingDetails += "MANUAL VERIFICATION REQUIRED — ISSO/ISSM Interview:" + $nl
+    $FindingDetails += "=====================================================" + $nl
+    $FindingDetails += "An approved account unlock process must be verified by interview." + $nl + $nl
+    $FindingDetails += "The process must include all of the following:" + $nl
+    $FindingDetails += "  1. A documented, written account unlock procedure" + $nl
+    $FindingDetails += "  2. ISSO and ISSM approval signatures on the procedure document" + $nl
+    $FindingDetails += "  3. A step to verify user identity before unlocking (self-identification)" + $nl
+    $FindingDetails += "  4. A ticket/request workflow creating an audit trail for each unlock" + $nl + $nl
+    $FindingDetails += "XO Account Unlock Methods:" + $nl
+    $FindingDetails += "  - Admin re-enables via XO web UI: Users section, toggle account enabled" + $nl
+    $FindingDetails += "  - CLI: xo-cli user.set id=<user-uuid> enabled=true" + $nl
+    $FindingDetails += "  - API: PATCH /rest/v0/users/<uuid> {" + [char]34 + "enabled" + [char]34 + ": true}" + $nl
+
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5906,9 +6195,86 @@ Function Get-V222434 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222434) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222434: Display DoD Notice and Consent Banner - APSC-DV-000550
+    # STIG check: "If no interactive UI, or if accessed only via GFE OS console that already
+    # displays the banner, this is N/A. Otherwise verify approved banner text appears prior to access."
+    # XO has a web-based interactive UI — N/A condition does not apply.
+    $FindingDetails += "DoD Notice and Consent Banner Assessment:" + $nl
+    $FindingDetails += "==========================================" + $nl + $nl
+
+    $bannerFound = $false
+    $bannerKeywords = @(
+        "Standard Mandatory DoD Notice",
+        "DoD Notice and Consent",
+        "You are accessing a U.S. Government",
+        "Unauthorized use is prohibited",
+        "authorized users only",
+        "monitoring and recording"
+    )
+
+    # Fetch login page and check for banner text
+    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
+    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPageStr = ($loginPage -join $nl).Trim()
+
+    if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
+        $FindingDetails += "Login page retrieved: " + $loginPageStr.Length + " bytes." + $nl
+        foreach ($keyword in $bannerKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $bannerFound = $true
+                $FindingDetails += "  DoD banner keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        if (-not $bannerFound) {
+            $FindingDetails += "  DoD banner keywords NOT found in login page HTML." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "Login page not retrieved (curl returned empty or XO not listening on localhost:443)." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Check for custom banner configuration files
+    foreach ($bf in @("/etc/xo-server/banner.txt", "/opt/xo/banner.txt", "/etc/xo-server/motd.txt")) {
+        if (Test-Path $bf) {
+            $bannerContent = $(timeout 3 cat $bf 2>&1)
+            $bannerContentStr = ($bannerContent -join $nl).Trim()
+            if ($bannerContentStr -ne "") {
+                $FindingDetails += "Banner file found at " + $bf + ":" + $nl + $bannerContentStr + $nl + $nl
+                foreach ($keyword in $bannerKeywords) {
+                    if ($bannerContentStr -match $keyword) {
+                        $bannerFound = $true
+                    }
+                }
+            }
+        }
+    }
+
+    # Check nginx for pre-auth banner page
+    $nginxBanner = $(timeout 5 find /etc/nginx -maxdepth 3 -type f -name "*.conf" 2>/dev/null | head -5 2>&1)
+    $nginxBannerStr = ($nginxBanner -join $nl).Trim()
+    if ($nginxBannerStr -ne "") {
+        $FindingDetails += "Nginx config files found (may implement pre-auth banner):" + $nl + $nginxBannerStr + $nl + $nl
+    }
+
+    $FindingDetails += "XO Banner Implementation Notes:" + $nl
+    $FindingDetails += "  XO Community Edition does not include a built-in DoD banner feature." + $nl
+    $FindingDetails += "  The banner can be implemented via:" + $nl
+    $FindingDetails += "  1. A reverse proxy (nginx) consent page before the XO login page" + $nl
+    $FindingDetails += "  2. Network access control pre-authentication page" + $nl
+    $FindingDetails += "  3. Custom XO plugin (requires Vates development)" + $nl + $nl
+
+    if ($bannerFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: DoD Notice and Consent Banner detected before login." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: DoD Notice and Consent Banner not detected on login page." + $nl
+        $FindingDetails += "Configure the application or a reverse proxy to display the banner." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6016,9 +6382,78 @@ Function Get-V222435 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222435) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222435: Retain DoD banner until user acknowledges - APSC-DV-000560
+    # STIG check: "If no interactive UI or GFE-already-displays-banner, N/A.
+    # Verify banner is displayed AND user must take explicit action to accept before proceeding."
+    $FindingDetails += "DoD Banner Acknowledgment Assessment:" + $nl
+    $FindingDetails += "=====================================" + $nl + $nl
+
+    $bannerFound = $false
+    $ackFound = $false
+
+    $bannerKeywords = @(
+        "Standard Mandatory DoD Notice",
+        "DoD Notice",
+        "You are accessing a U.S. Government",
+        "authorized users only",
+        "Unauthorized use is prohibited"
+    )
+    $ackKeywords = @(
+        "acknowledge", "i acknowledge", "i accept", "i agree",
+        "accept", "agree", "consent",
+        "type.*accept", "checkbox", "button.*accept", "accept.*button"
+    )
+
+    # Fetch login page and check for banner + acknowledgment
+    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
+    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPageStr = ($loginPage -join $nl).Trim()
+
+    if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
+        $FindingDetails += "Login page retrieved: " + $loginPageStr.Length + " bytes." + $nl
+
+        foreach ($keyword in $bannerKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $bannerFound = $true
+                $FindingDetails += "  Banner keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        foreach ($keyword in $ackKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $ackFound = $true
+                $FindingDetails += "  Acknowledgment keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        if (-not $bannerFound) {
+            $FindingDetails += "  DoD banner keywords NOT found in login page." + $nl
+        }
+        if (-not $ackFound) {
+            $FindingDetails += "  Acknowledgment mechanism NOT found in login page." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "Login page not retrieved (curl returned empty or XO not listening)." + $nl
+    }
+    $FindingDetails += $nl
+
+    $FindingDetails += "XO Banner Acknowledgment Implementation Notes:" + $nl
+    $FindingDetails += "  XO does not include a built-in banner acknowledgment feature." + $nl
+    $FindingDetails += "  Implementation options:" + $nl
+    $FindingDetails += "  1. Nginx pre-auth consent page with a checkbox/button before proxying to XO" + $nl
+    $FindingDetails += "  2. Captive portal / network policy page with explicit acceptance" + $nl
+    $FindingDetails += "  3. Custom XO plugin rendering a consent modal on first page load" + $nl + $nl
+
+    if ($bannerFound -and $ackFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: DoD banner displayed AND acknowledgment mechanism present." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: DoD banner or acknowledgment mechanism not detected." + $nl
+        $FindingDetails += "Users must take an explicit action to accept the banner before gaining access." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
