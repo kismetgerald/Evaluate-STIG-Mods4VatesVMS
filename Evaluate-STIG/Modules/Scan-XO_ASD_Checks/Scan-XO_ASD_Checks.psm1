@@ -333,9 +333,9 @@ Function Get-V222389 {
         STIG ID    : APSC-DV-000070
         Rule ID    : SV-222389r1043182_rule
         Rule Title : The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : d0684f408e9e8b715471acd160751f05
+        CheckMD5   : 62903c7da22f39c959b5661a54534d3b
+        FixMD5     : 056844e5c2c1ced7d3cc977a718f3d08
     #>
 
     param (
@@ -502,9 +502,9 @@ Function Get-V222390 {
         STIG ID    : APSC-DV-000080
         Rule ID    : SV-222390r1043182_rule
         Rule Title : The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 8168016c796c3991518b939dc35f6095
+        CheckMD5   : b5abe7d5bd8eab0e239f037bef340c1c
+        FixMD5     : c01465dab107bfdfba86d4468a2ddf73
     #>
 
     param (
@@ -659,9 +659,9 @@ Function Get-V222391 {
         STIG ID    : APSC-DV-000090
         Rule ID    : SV-222391r961224_rule
         Rule Title : Applications requiring user access authentication must provide a logoff capability for user initiated communication session.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 2f173b2572b6d4add0e821b32b67f0fe
+        CheckMD5   : 906503b6183e39b56628360763377ba0
+        FixMD5     : a31d0ba937e640ce790996781ebae235
     #>
 
     param (
@@ -818,9 +818,9 @@ Function Get-V222392 {
         STIG ID    : APSC-DV-000100
         Rule ID    : SV-222392r961227_rule
         Rule Title : The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : c16c018a737e50f73ee97d7eb5f52b1b
+        CheckMD5   : 55528bf6d1b515df5a4a856276754b20
+        FixMD5     : 02b3613d2cfb42ce28fce465d80c4a39
     #>
 
     param (
@@ -962,10 +962,10 @@ Function Get-V222393 {
         Vuln ID    : V-222393
         STIG ID    : ASD-V6R4-222393
         Rule ID    : SV-222393r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in storage.
+        DiscussMD5 : 7b86f51304113f7978d32303f641a685
+        CheckMD5   : 1d78ca3dfb0d644e9363d34b6f215cb0
+        FixMD5     : d2e3ab582f82ee4dfe49b96f01b89646
     #>
 
     param (
@@ -1088,10 +1088,10 @@ Function Get-V222394 {
         Vuln ID    : V-222394
         STIG ID    : ASD-V6R4-222394
         Rule ID    : SV-222394r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in process.
+        DiscussMD5 : ca930f7cb4ed458b9ced3d6e2aae28a1
+        CheckMD5   : b6a30c9623d35b182d2ea13f3c02dc3e
+        FixMD5     : 106e31028f679c484b8666e71c6ed972
     #>
 
     param (
@@ -1212,10 +1212,10 @@ Function Get-V222395 {
         Vuln ID    : V-222395
         STIG ID    : ASD-V6R4-222395
         Rule ID    : SV-222395r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in transmission.
+        DiscussMD5 : aaf140e94fbd628ddd539e6ca8556fb1
+        CheckMD5   : e2b796d5af1f2794e7df6d655404ed8f
+        FixMD5     : ced40f5eb04c8f2dbdfc95c284b86356
     #>
 
     param (
@@ -1338,10 +1338,10 @@ Function Get-V222396 {
         Vuln ID    : V-222396
         STIG ID    : ASD-V6R4-222396
         Rule ID    : SV-222396r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.
+        DiscussMD5 : 20f02d6bb54d4e28c9a5f00bdf9b0cd2
+        CheckMD5   : f46dc7d7d0df9a6ba719ee7eeb7c669a
+        FixMD5     : 9f4a0239435b9767ab2c5734ade0ff7d
     #>
 
     param (
@@ -1505,9 +1505,9 @@ Function Get-V222397 {
         STIG ID    : ASD-V6R4-222397
         Rule ID    : SV-222397r960762_rule
         Rule Title : The application must protect the integrity of transmitted information.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5c29b33b6468a89441fc6291646dd254
+        CheckMD5   : f46dc7d7d0df9a6ba719ee7eeb7c669a
+        FixMD5     : aa6887984a711e031c41d40698a55db7
     #>
 
     param (
@@ -1659,9 +1659,9 @@ Function Get-V222398 {
         STIG ID    : ASD-V6R4-222398
         Rule ID    : SV-222398r960762_rule
         Rule Title : The application must use appropriate cryptography to protect the integrity of SOAP messages.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : c451e633e44576800d9586bac7dd1121
+        CheckMD5   : c072a1ceb15fe9181f1bd39046cc41f4
+        FixMD5     : d30eed451593e44118357a99bbaf69af
     #>
 
     param (
@@ -1792,9 +1792,9 @@ Function Get-V222401 {
         Rule ID    : SV-222401r960759_rule
         Rule Title : The application must use SAML assertion identifiers that are not reused within
                      the assertion TTL, unless the application is using one time use assertions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : ba39d2e273ffc0981ca5cb93310c80b2
+        CheckMD5   : 83dacf8241dd5c022fe824b0b806696c
+        FixMD5     : 2c4e579566fa0cc31c2a4b08a13339a9
     #>
 
     param (
@@ -1936,9 +1936,9 @@ Function Get-V222402 {
         Rule ID    : SV-222402r960759_rule
         Rule Title : The application must ensure WS-Security SOAP messages are encrypted when the
                      messages contain sensitive data that would enable an attacker to read the message.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 741ebd3a5500f194194711344c2b4683
+        CheckMD5   : 1fff19efb091e3aeb01b8db0097548e0
+        FixMD5     : 8211a5bc9a330b260424854c4c3efe62
     #>
 
     param (
@@ -2075,9 +2075,9 @@ Function Get-V222405 {
         Rule Title : The application must only allow the use of DoD PKI established certificate
                      authorities for verification of the establishment of protected sessions; or
                      limit use of the OneTimeUse element to one per conditions element.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : a10eaa42172588cc002fc2cb9c27a7d4
+        CheckMD5   : 73ecfed4fc205c0ae97a492cca57fc90
+        FixMD5     : 0ab0e1911a1d9d80b9b254ac73203770
     #>
 
     param (
@@ -2218,9 +2218,9 @@ Function Get-V222406 {
         Rule ID    : SV-222406r960759_rule
         Rule Title : The application must protect the SAML authentication data during the assertion
                      if the SessionIndex is tied to privacy data.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 3e2d11ced4aa3cae5eadb9d7710801e8
+        CheckMD5   : 8f25f376752771a9d34e7d5dcb41c4c7
+        FixMD5     : 38c9302f65cf87ba87881d753df3d5f8
     #>
 
     param (
@@ -2360,9 +2360,9 @@ Function Get-V222407 {
         STIG ID    : APSC-DV-000280
         Rule ID    : SV-222407r1043176_rule
         Rule Title : The application must use automated mechanisms for account management functions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 507acc6a4b7f4f60e46bc18fb53a3da6
+        CheckMD5   : 62c7e4ab95e6cee671d868bbdbd12fd5
+        FixMD5     : 1ca6e082e034d0c477a615606a0aff42
     #>
 
     param (
@@ -2631,9 +2631,9 @@ Function Get-V222409 {
         STIG ID    : APSC-DV-000300
         Rule ID    : SV-222409r960771_rule
         Rule Title : The application must automatically disable temporary accounts after 72 hours.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 21390efe291bc0aeb749a0f0a5030d63
+        CheckMD5   : 5c51feaf7c5c3a8b1a745be55871c3c8
+        FixMD5     : 87d07bd9d8eba6d234662d6bcdb71b38
     #>
 
     param (
@@ -2786,9 +2786,9 @@ Function Get-V222410 {
         STIG ID    : APSC-DV-000310
         Rule ID    : SV-222410r961863_rule
         Rule Title : Emergency accounts must be automatically disabled after 72 hours.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : f5af95e214c3c2665dc87c8beb25daa9
+        CheckMD5   : 7ef31a550151bb4cc0cf8c3d0d03958e
+        FixMD5     : bd22f04223eb9614f7b849c82df748a7
     #>
 
     param (
@@ -2932,9 +2932,9 @@ Function Get-V222411 {
         Rule ID    : SV-222411r960774_rule
         Rule Title : The application must automatically disable accounts after a 35-day period
                      of account inactivity.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 0a332090ad726d26fcaf74affa80c3b6
+        CheckMD5   : e935e1c310fbcf84296f918bdc49db38
+        FixMD5     : e754074a3730282c516ba7b96fa6fc50
     #>
 
     param (
@@ -3098,9 +3098,9 @@ Function Get-V222412 {
         Rule ID    : SV-222412r960774_rule
         Rule Title : The application must automatically disable accounts after a 35-day period of
                      account inactivity.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 910fbefa071f57cb5b0e89713139579d
+        CheckMD5   : 079f85fda1a6dadd48eb95d0b109f4c0
+        FixMD5     : c5e0315ffb1a8e525e8db779863850da
     #>
 
     param (
@@ -3250,9 +3250,9 @@ Function Get-V222413 {
         STIG ID    : APSC-DV-000340
         Rule ID    : SV-222413r960777_rule
         Rule Title : The application must automatically audit account creation.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 515c07e6d96273899a36448cce0360af
+        CheckMD5   : 926479b575136ea8014109f65de28bee
+        FixMD5     : 81ba6665a600ffaa0bcb4d90fdad52ae
     #>
 
     param (
@@ -3465,9 +3465,9 @@ Function Get-V222414 {
         STIG ID    : APSC-DV-000350
         Rule ID    : SV-222414r960780_rule
         Rule Title : The application must automatically audit account modification.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : dfd3a2e681e434b6a58612199d215246
+        CheckMD5   : db2bf383b84ed2696f4538952363d62e
+        FixMD5     : 9f52290d9ad9c900d8299271fae4f1b4
     #>
 
     param (
@@ -3650,9 +3650,9 @@ Function Get-V222415 {
         STIG ID    : APSC-DV-000360
         Rule ID    : SV-222415r960783_rule
         Rule Title : The application must automatically audit account disabling actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5f5d2ae8e0adfe7e68c1f105236b8028
+        CheckMD5   : 8d9789bc8bb8184885b0f4b0f7d10b9f
+        FixMD5     : 8b9d410bd64be3753dd49a238683edf6
     #>
 
     param (
@@ -3832,9 +3832,9 @@ Function Get-V222416 {
         STIG ID    : APSC-DV-000370
         Rule ID    : SV-222416r960786_rule
         Rule Title : The application must automatically audit account removal actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 15abd8ea614062ec61f87d32041b5cdd
+        CheckMD5   : cd2d59b2b1f8a1c95d3ec45644453746
+        FixMD5     : 2082dbbd0bbb941922d5344d418acc24
     #>
 
     param (
@@ -4014,9 +4014,9 @@ Function Get-V222417 {
         STIG ID    : APSC-DV-000380
         Rule ID    : SV-222417r1015684_rule
         Rule Title : The application must notify system administrators (SAs) and ISSOs when accounts are created.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 8dd31494138157e186bd3f69628dca9f
+        CheckMD5   : 8cf87bbb149401f73a69fe9ca32722c6
+        FixMD5     : 7c2a53166f77b683df4049d5de40e804
     #>
 
     param (
@@ -4171,9 +4171,9 @@ Function Get-V222418 {
         STIG ID    : APSC-DV-000390
         Rule ID    : SV-222418r1015685_rule
         Rule Title : The application must notify SAs and ISSOs when accounts are modified.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 9a75fba922d8734c16c88fffaf17124d
+        CheckMD5   : c474bbd20e477b2ff20ea6d0913f28fa
+        FixMD5     : f2c6053229d11e0f06db8b2931d62601
     #>
 
     param (
@@ -4315,9 +4315,9 @@ Function Get-V222419 {
         STIG ID    : APSC-DV-000400
         Rule ID    : SV-222419r1015686_rule
         Rule Title : The application must notify SAs and ISSOs of account disabling actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 8dd31494138157e186bd3f69628dca9f
+        CheckMD5   : b808e3e13ee69eb97f66c286baf688cc
+        FixMD5     : a18b7a8265993b35d4ea2e4d1885c8a6
     #>
 
     param (
@@ -4459,9 +4459,9 @@ Function Get-V222420 {
         STIG ID    : APSC-DV-000410
         Rule ID    : SV-222420r1015687_rule
         Rule Title : The application must notify SAs and ISSOs of account removal actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : cc0ef03e5e9ac4c6dd0949411cd7e52d
+        CheckMD5   : cc2f0ab761f1dc762a9c91678102ce0c
+        FixMD5     : 99e6ba767d567651ab3625a09db9cdc1
     #>
 
     param (
@@ -4603,9 +4603,9 @@ Function Get-V222421 {
         STIG ID    : APSC-DV-000420
         Rule ID    : SV-222421r961290_rule
         Rule Title : The application must automatically audit account enabling actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 4d4bf2aaadbde388507d38012ffc65eb
+        CheckMD5   : 8b788ef03d196c699c47619cb230199a
+        FixMD5     : 4ba850927f3f76b18d1ab545a8385687
     #>
 
     param (
@@ -4771,9 +4771,9 @@ Function Get-V222422 {
         STIG ID    : APSC-DV-000430
         Rule ID    : SV-222422r1015688_rule
         Rule Title : The application must notify SAs and ISSOs of account enabling actions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 346003eec5e8474d3e9a8098251de3e6
+        CheckMD5   : 5677abfd45f2040714515f4a9aabe211
+        FixMD5     : 044b3263eefbeac143c944322c8afbd5
     #>
 
     param (
@@ -4915,9 +4915,9 @@ Function Get-V222423 {
         STIG ID    : APSC-DV-000440
         Rule ID    : SV-222423r961302_rule
         Rule Title : Application data protection requirements must be identified and documented.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5c67990880167e6cc7baf5a0b1cdd496
+        CheckMD5   : 706ffa3b6904ebbea8ef7df4763fb425
+        FixMD5     : 3fd2412b1331bbe8c500a1ca17289d3a
     #>
 
     param (
@@ -5053,9 +5053,9 @@ Function Get-V222424 {
         STIG ID    : APSC-DV-000450
         Rule ID    : SV-222424r961305_rule
         Rule Title : The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 2dd41657a55096bddb593c3c6d6ef74f
+        CheckMD5   : 44f6936e7814d58b29ca5b9585242188
+        FixMD5     : 5ae868fcb2defda8c80abf207eb06cc4
     #>
 
     param (
