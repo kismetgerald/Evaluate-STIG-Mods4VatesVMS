@@ -333,9 +333,9 @@ Function Get-V222389 {
         STIG ID    : APSC-DV-000070
         Rule ID    : SV-222389r1043182_rule
         Rule Title : The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : d0684f408e9e8b715471acd160751f05
+        CheckMD5   : 62903c7da22f39c959b5661a54534d3b
+        FixMD5     : 056844e5c2c1ced7d3cc977a718f3d08
     #>
 
     param (
@@ -502,9 +502,9 @@ Function Get-V222390 {
         STIG ID    : APSC-DV-000080
         Rule ID    : SV-222390r1043182_rule
         Rule Title : The application must automatically terminate the admin user session and log off admin users after a 10 minute idle time period is exceeded.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 8168016c796c3991518b939dc35f6095
+        CheckMD5   : b5abe7d5bd8eab0e239f037bef340c1c
+        FixMD5     : c01465dab107bfdfba86d4468a2ddf73
     #>
 
     param (
@@ -659,9 +659,9 @@ Function Get-V222391 {
         STIG ID    : APSC-DV-000090
         Rule ID    : SV-222391r961224_rule
         Rule Title : Applications requiring user access authentication must provide a logoff capability for user initiated communication session.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 2f173b2572b6d4add0e821b32b67f0fe
+        CheckMD5   : 906503b6183e39b56628360763377ba0
+        FixMD5     : a31d0ba937e640ce790996781ebae235
     #>
 
     param (
@@ -818,9 +818,9 @@ Function Get-V222392 {
         STIG ID    : APSC-DV-000100
         Rule ID    : SV-222392r961227_rule
         Rule Title : The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : c16c018a737e50f73ee97d7eb5f52b1b
+        CheckMD5   : 55528bf6d1b515df5a4a856276754b20
+        FixMD5     : 02b3613d2cfb42ce28fce465d80c4a39
     #>
 
     param (
@@ -962,10 +962,10 @@ Function Get-V222393 {
         Vuln ID    : V-222393
         STIG ID    : ASD-V6R4-222393
         Rule ID    : SV-222393r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in storage.
+        DiscussMD5 : 7b86f51304113f7978d32303f641a685
+        CheckMD5   : 1d78ca3dfb0d644e9363d34b6f215cb0
+        FixMD5     : d2e3ab582f82ee4dfe49b96f01b89646
     #>
 
     param (
@@ -1088,10 +1088,10 @@ Function Get-V222394 {
         Vuln ID    : V-222394
         STIG ID    : ASD-V6R4-222394
         Rule ID    : SV-222394r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in process.
+        DiscussMD5 : ca930f7cb4ed458b9ced3d6e2aae28a1
+        CheckMD5   : b6a30c9623d35b182d2ea13f3c02dc3e
+        FixMD5     : 106e31028f679c484b8666e71c6ed972
     #>
 
     param (
@@ -1212,10 +1212,10 @@ Function Get-V222395 {
         Vuln ID    : V-222395
         STIG ID    : ASD-V6R4-222395
         Rule ID    : SV-222395r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must associate organization-defined types of security attributes with organization-defined security attribute values to information in transmission.
+        DiscussMD5 : aaf140e94fbd628ddd539e6ca8556fb1
+        CheckMD5   : e2b796d5af1f2794e7df6d655404ed8f
+        FixMD5     : ced40f5eb04c8f2dbdfc95c284b86356
     #>
 
     param (
@@ -1338,10 +1338,10 @@ Function Get-V222396 {
         Vuln ID    : V-222396
         STIG ID    : ASD-V6R4-222396
         Rule ID    : SV-222396r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must implement DoD-approved encryption to protect the confidentiality of remote access sessions.
+        DiscussMD5 : 20f02d6bb54d4e28c9a5f00bdf9b0cd2
+        CheckMD5   : f46dc7d7d0df9a6ba719ee7eeb7c669a
+        FixMD5     : 9f4a0239435b9767ab2c5734ade0ff7d
     #>
 
     param (
@@ -1505,9 +1505,9 @@ Function Get-V222397 {
         STIG ID    : ASD-V6R4-222397
         Rule ID    : SV-222397r960762_rule
         Rule Title : The application must protect the integrity of transmitted information.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5c29b33b6468a89441fc6291646dd254
+        CheckMD5   : f46dc7d7d0df9a6ba719ee7eeb7c669a
+        FixMD5     : aa6887984a711e031c41d40698a55db7
     #>
 
     param (
@@ -1659,9 +1659,9 @@ Function Get-V222398 {
         STIG ID    : ASD-V6R4-222398
         Rule ID    : SV-222398r960762_rule
         Rule Title : The application must use appropriate cryptography to protect the integrity of SOAP messages.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : c451e633e44576800d9586bac7dd1121
+        CheckMD5   : c072a1ceb15fe9181f1bd39046cc41f4
+        FixMD5     : d30eed451593e44118357a99bbaf69af
     #>
 
     param (
@@ -1792,9 +1792,9 @@ Function Get-V222401 {
         Rule ID    : SV-222401r960759_rule
         Rule Title : The application must use SAML assertion identifiers that are not reused within
                      the assertion TTL, unless the application is using one time use assertions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : ba39d2e273ffc0981ca5cb93310c80b2
+        CheckMD5   : 83dacf8241dd5c022fe824b0b806696c
+        FixMD5     : 2c4e579566fa0cc31c2a4b08a13339a9
     #>
 
     param (
@@ -1936,9 +1936,9 @@ Function Get-V222402 {
         Rule ID    : SV-222402r960759_rule
         Rule Title : The application must ensure WS-Security SOAP messages are encrypted when the
                      messages contain sensitive data that would enable an attacker to read the message.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 741ebd3a5500f194194711344c2b4683
+        CheckMD5   : 1fff19efb091e3aeb01b8db0097548e0
+        FixMD5     : 8211a5bc9a330b260424854c4c3efe62
     #>
 
     param (
@@ -2075,9 +2075,9 @@ Function Get-V222405 {
         Rule Title : The application must only allow the use of DoD PKI established certificate
                      authorities for verification of the establishment of protected sessions; or
                      limit use of the OneTimeUse element to one per conditions element.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : a10eaa42172588cc002fc2cb9c27a7d4
+        CheckMD5   : 73ecfed4fc205c0ae97a492cca57fc90
+        FixMD5     : 0ab0e1911a1d9d80b9b254ac73203770
     #>
 
     param (
@@ -2218,9 +2218,9 @@ Function Get-V222406 {
         Rule ID    : SV-222406r960759_rule
         Rule Title : The application must protect the SAML authentication data during the assertion
                      if the SessionIndex is tied to privacy data.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 3e2d11ced4aa3cae5eadb9d7710801e8
+        CheckMD5   : 8f25f376752771a9d34e7d5dcb41c4c7
+        FixMD5     : 38c9302f65cf87ba87881d753df3d5f8
     #>
 
     param (
@@ -2360,9 +2360,9 @@ Function Get-V222407 {
         STIG ID    : APSC-DV-000280
         Rule ID    : SV-222407r1043176_rule
         Rule Title : The application must use automated mechanisms for account management functions.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 507acc6a4b7f4f60e46bc18fb53a3da6
+        CheckMD5   : 62c7e4ab95e6cee671d868bbdbd12fd5
+        FixMD5     : 1ca6e082e034d0c477a615606a0aff42
     #>
 
     param (
@@ -2631,9 +2631,9 @@ Function Get-V222409 {
         STIG ID    : APSC-DV-000300
         Rule ID    : SV-222409r960771_rule
         Rule Title : The application must automatically disable temporary accounts after 72 hours.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 21390efe291bc0aeb749a0f0a5030d63
+        CheckMD5   : 5c51feaf7c5c3a8b1a745be55871c3c8
+        FixMD5     : 87d07bd9d8eba6d234662d6bcdb71b38
     #>
 
     param (
@@ -2786,9 +2786,9 @@ Function Get-V222410 {
         STIG ID    : APSC-DV-000310
         Rule ID    : SV-222410r961863_rule
         Rule Title : Emergency accounts must be automatically disabled after 72 hours.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : f5af95e214c3c2665dc87c8beb25daa9
+        CheckMD5   : 7ef31a550151bb4cc0cf8c3d0d03958e
+        FixMD5     : bd22f04223eb9614f7b849c82df748a7
     #>
 
     param (
@@ -2932,9 +2932,9 @@ Function Get-V222411 {
         Rule ID    : SV-222411r960774_rule
         Rule Title : The application must automatically disable accounts after a 35-day period
                      of account inactivity.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 0a332090ad726d26fcaf74affa80c3b6
+        CheckMD5   : e935e1c310fbcf84296f918bdc49db38
+        FixMD5     : e754074a3730282c516ba7b96fa6fc50
     #>
 
     param (
@@ -3098,9 +3098,9 @@ Function Get-V222412 {
         Rule ID    : SV-222412r960774_rule
         Rule Title : The application must automatically disable accounts after a 35-day period of
                      account inactivity.
-        DiscussMD5 : 00000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 910fbefa071f57cb5b0e89713139579d
+        CheckMD5   : 079f85fda1a6dadd48eb95d0b109f4c0
+        FixMD5     : c5e0315ffb1a8e525e8db779863850da
     #>
 
     param (
@@ -3247,12 +3247,12 @@ Function Get-V222413 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222413
-        STIG ID    : ASD-V6R4-222413
-        Rule ID    : SV-222413r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000340
+        Rule ID    : SV-222413r960777_rule
+        Rule Title : The application must automatically audit account creation.
+        DiscussMD5 : 515c07e6d96273899a36448cce0360af
+        CheckMD5   : 926479b575136ea8014109f65de28bee
+        FixMD5     : 81ba6665a600ffaa0bcb4d90fdad52ae
     #>
 
     param (
@@ -3264,6 +3264,7 @@ Function Get-V222413 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -3285,7 +3286,7 @@ Function Get-V222413 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222413"
-    $RuleID = "SV-222413r508029_rule"
+    $RuleID = "SV-222413r960777_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3295,9 +3296,113 @@ Function Get-V222413 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222413) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222413 - Auto-Audit Account Creation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin (enterprise account management = Not_Applicable)
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapConfigured = $false
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
+        }
+    }
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "Account lifecycle events are managed and audited by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: XO audit plugin presence
+        $FindingDetails += "Check 2: XO Audit Plugin" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $auditPkg1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*audit*" 2>/dev/null | head -5 2>&1)
+        $auditPkg2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*xo*audit*" 2>/dev/null | head -5 2>&1)
+        $auditPkgStr = ((@($auditPkg1, $auditPkg2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+        if ($auditPkgStr -ne "") {
+            $FindingDetails += "XO audit-related packages found:" + $nl + $auditPkgStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No XO audit plugin directories detected." + $nl + $nl
+        }
+
+        # Check 3: Query API for audit records (account creation events)
+        $FindingDetails += "Check 3: Audit Records via XO REST API" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $apiToken = ""
+        if (Test-Path "/etc/xo-server/stig/api-token") {
+            $apiTokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+            $apiToken = ($apiTokenContent -join "").Trim()
+        }
+        if ($apiToken -ne "") {
+            $curlArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " " + [char]39 + "https://localhost/rest/v0/plugins/audit/records?limit=200" + [char]39 + " 2>/dev/null | head -c 10000"
+            $auditJson = $(timeout 15 sh -c $curlArgs 2>&1)
+            $auditStr = ($auditJson -join $nl).Trim()
+            if ($auditStr -ne "" -and $auditStr -notmatch "401|403|404|error") {
+                $createEvents = $(timeout 5 sh -c "echo " + [char]39 + $auditStr + [char]39 + " | grep -oi 'user.create\|user.set\|createUser\|addUser\|account.*creat' | head -10 2>/dev/null")
+                $createEventsStr = ($createEvents -join $nl).Trim()
+                if ($createEventsStr -ne "") {
+                    $FindingDetails += "Account creation event types found in audit records: " + $createEventsStr + $nl + $nl
+                }
+                else {
+                    $FindingDetails += "Audit API accessible. No explicit account-creation event types found in last 200 records." + $nl + $nl
+                }
+            }
+            else {
+                $FindingDetails += "Audit API query returned error or empty response." + $nl + $nl
+            }
+        }
+        else {
+            $FindingDetails += "API token not available (/etc/xo-server/stig/api-token not found)." + $nl + $nl
+        }
+
+        # Check 4: Systemd journal for account events
+        $FindingDetails += "Check 4: Systemd Journal - Account Creation Events" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*creat|creat.*user|addUser|user.*add' | head -10 2>&1")
+        $journalEventsStr = ($journalEvents -join $nl).Trim()
+        if ($journalEventsStr -ne "") {
+            $FindingDetails += "Account creation log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
+            $FindingDetails += "RESULT: PASS - Account creation events are logged in the system journal." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "No account creation events found in system journal (last 7 days)." + $nl + $nl
+            $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+            $FindingDetails += "Auditor must confirm XO audit plugin is enabled and account creation events are captured." + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3357,12 +3462,12 @@ Function Get-V222414 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222414
-        STIG ID    : ASD-V6R4-222414
-        Rule ID    : SV-222414r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000350
+        Rule ID    : SV-222414r960780_rule
+        Rule Title : The application must automatically audit account modification.
+        DiscussMD5 : dfd3a2e681e434b6a58612199d215246
+        CheckMD5   : db2bf383b84ed2696f4538952363d62e
+        FixMD5     : 9f52290d9ad9c900d8299271fae4f1b4
     #>
 
     param (
@@ -3395,7 +3500,7 @@ Function Get-V222414 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222414"
-    $RuleID = "SV-222414r508029_rule"
+    $RuleID = "SV-222414r960780_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3405,9 +3510,84 @@ Function Get-V222414 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222414) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222414 - Auto-Audit Account Modification" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin (enterprise account management = Not_Applicable)
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapConfigured = $false
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
+        }
+    }
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "Account lifecycle events are managed and audited by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: Systemd journal for account modification events
+        $FindingDetails += "Check 2: Systemd Journal - Account Modification Events" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*modif|modif.*user|user.*set|setUser|updateUser|user.*update' | head -10 2>&1")
+        $journalEventsStr = ($journalEvents -join $nl).Trim()
+        if ($journalEventsStr -ne "") {
+            $FindingDetails += "Account modification log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
+            $FindingDetails += "RESULT: PASS - Account modification events are logged in the system journal." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "No account modification events found in system journal (last 7 days)." + $nl + $nl
+        }
+
+        # Check 3: XO audit plugin presence
+        if ($Status -eq "Not_Reviewed") {
+            $FindingDetails += "Check 3: XO Audit Plugin" + $nl
+            $FindingDetails += ("-" * 40) + $nl
+            $auditPkg = $(timeout 5 find /opt/xo/packages /usr/share /usr/lib -maxdepth 4 -type d -name "*audit*" 2>/dev/null | head -5 2>&1)
+            $auditPkgStr = ($auditPkg -join $nl).Trim()
+            if ($auditPkgStr -ne "") {
+                $FindingDetails += "XO audit-related packages found:" + $nl + $auditPkgStr + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No XO audit plugin directories detected." + $nl + $nl
+            }
+            $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+            $FindingDetails += "Auditor must confirm XO audit plugin is enabled and account modification events are captured." + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3467,12 +3647,12 @@ Function Get-V222415 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222415
-        STIG ID    : ASD-V6R4-222415
-        Rule ID    : SV-222415r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000360
+        Rule ID    : SV-222415r960783_rule
+        Rule Title : The application must automatically audit account disabling actions.
+        DiscussMD5 : 5f5d2ae8e0adfe7e68c1f105236b8028
+        CheckMD5   : 8d9789bc8bb8184885b0f4b0f7d10b9f
+        FixMD5     : 8b9d410bd64be3753dd49a238683edf6
     #>
 
     param (
@@ -3505,7 +3685,7 @@ Function Get-V222415 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222415"
-    $RuleID = "SV-222415r508029_rule"
+    $RuleID = "SV-222415r960783_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3515,9 +3695,81 @@ Function Get-V222415 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222415) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222415 - Auto-Audit Account Disabling Actions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapConfigured = $false
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
+        }
+    }
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "Account lifecycle events are managed and audited by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: Systemd journal for account disable events
+        $FindingDetails += "Check 2: Systemd Journal - Account Disabling Events" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*disabl|disabl.*user|user.*lock|lockUser|disableUser' | head -10 2>&1")
+        $journalEventsStr = ($journalEvents -join $nl).Trim()
+        if ($journalEventsStr -ne "") {
+            $FindingDetails += "Account disabling log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
+            $FindingDetails += "RESULT: PASS - Account disabling events are logged in the system journal." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "No account disabling events found in system journal (last 7 days)." + $nl + $nl
+            # Check 3: XO audit plugin presence
+            $FindingDetails += "Check 3: XO Audit Plugin" + $nl
+            $FindingDetails += ("-" * 40) + $nl
+            $auditPkg = $(timeout 5 find /opt/xo/packages /usr/share /usr/lib -maxdepth 4 -type d -name "*audit*" 2>/dev/null | head -5 2>&1)
+            $auditPkgStr = ($auditPkg -join $nl).Trim()
+            if ($auditPkgStr -ne "") {
+                $FindingDetails += "XO audit-related packages found:" + $nl + $auditPkgStr + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No XO audit plugin directories detected." + $nl + $nl
+            }
+            $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+            $FindingDetails += "Auditor must confirm XO audit plugin is enabled and account disabling events are captured." + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3577,12 +3829,12 @@ Function Get-V222416 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222416
-        STIG ID    : ASD-V6R4-222416
-        Rule ID    : SV-222416r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000370
+        Rule ID    : SV-222416r960786_rule
+        Rule Title : The application must automatically audit account removal actions.
+        DiscussMD5 : 15abd8ea614062ec61f87d32041b5cdd
+        CheckMD5   : cd2d59b2b1f8a1c95d3ec45644453746
+        FixMD5     : 2082dbbd0bbb941922d5344d418acc24
     #>
 
     param (
@@ -3615,7 +3867,7 @@ Function Get-V222416 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222416"
-    $RuleID = "SV-222416r508029_rule"
+    $RuleID = "SV-222416r960786_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3625,9 +3877,81 @@ Function Get-V222416 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222416) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222416 - Auto-Audit Account Removal Actions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapConfigured = $false
+    # Method 1: REST API (most reliable — confirms plugin is loaded)
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+    if ($apiToken -ne "") {
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+        if ($pluginsStr -match "ldap") {
+            $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "REST API queried: auth-ldap plugin not found in plugin list." + $nl
+        }
+    }
+    # Method 2: Filesystem fallback
+    if (-not $ldapConfigured) {
+        $ldapDir = $(timeout 5 find /opt/xo -maxdepth 5 -type d -name "*ldap*" 2>/dev/null | head -3 2>&1)
+        $ldapDirStr = ($ldapDir -join $nl).Trim()
+        if ($ldapDirStr -ne "") {
+            $FindingDetails += "auth-ldap plugin directory found: " + $nl + $ldapDirStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin not detected (REST API and filesystem checked)." + $nl
+        }
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "Account lifecycle events are managed and audited by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: Systemd journal for account removal events
+        $FindingDetails += "Check 2: Systemd Journal - Account Removal Events" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*delet|delet.*user|removeUser|deleteUser|user.*remov' | head -10 2>&1")
+        $journalEventsStr = ($journalEvents -join $nl).Trim()
+        if ($journalEventsStr -ne "") {
+            $FindingDetails += "Account removal log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
+            $FindingDetails += "RESULT: PASS - Account removal events are logged in the system journal." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "No account removal events found in system journal (last 7 days)." + $nl + $nl
+            # Check 3: XO audit plugin presence
+            $FindingDetails += "Check 3: XO Audit Plugin" + $nl
+            $FindingDetails += ("-" * 40) + $nl
+            $auditPkg = $(timeout 5 find /opt/xo/packages /usr/share /usr/lib -maxdepth 4 -type d -name "*audit*" 2>/dev/null | head -5 2>&1)
+            $auditPkgStr = ($auditPkg -join $nl).Trim()
+            if ($auditPkgStr -ne "") {
+                $FindingDetails += "XO audit-related packages found:" + $nl + $auditPkgStr + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No XO audit plugin directories detected." + $nl + $nl
+            }
+            $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+            $FindingDetails += "Auditor must confirm XO audit plugin is enabled and account removal events are captured." + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3687,12 +4011,12 @@ Function Get-V222417 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222417
-        STIG ID    : ASD-V6R4-222417
-        Rule ID    : SV-222417r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000380
+        Rule ID    : SV-222417r1015684_rule
+        Rule Title : The application must notify system administrators (SAs) and ISSOs when accounts are created.
+        DiscussMD5 : 8dd31494138157e186bd3f69628dca9f
+        CheckMD5   : 8cf87bbb149401f73a69fe9ca32722c6
+        FixMD5     : 7c2a53166f77b683df4049d5de40e804
     #>
 
     param (
@@ -3725,7 +4049,7 @@ Function Get-V222417 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222417"
-    $RuleID = "SV-222417r508029_rule"
+    $RuleID = "SV-222417r1015684_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3735,9 +4059,56 @@ Function Get-V222417 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222417) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222417 - Notify SA/ISSO on Account Creation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin (enterprise = Not_Applicable)
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
+        if ($ldapEnabledStr -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + $ldapEnabledStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "SA/ISSO notification for account creation is handled by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: Email or notification mechanism
+        $FindingDetails += "Check 2: Notification/Email Mechanism" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $emailPlugin = $(timeout 5 find /opt/xo/packages /usr/share /usr/lib -maxdepth 4 -type d -name "*email*" -o -type d -name "*notification*" -o -type d -name "*alert*" 2>/dev/null | head -5 2>&1)
+        $emailPluginStr = ($emailPlugin -join $nl).Trim()
+        if ($emailPluginStr -ne "") {
+            $FindingDetails += "Potential notification packages found:" + $nl + $emailPluginStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No email/notification plugin packages detected." + $nl + $nl
+        }
+        $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+        $FindingDetails += "XO does not natively notify SA/ISSO when accounts are created." + $nl
+        $FindingDetails += "Auditor must verify a compensating control (SIEM alert, email hook, ITSM workflow) is in place." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3797,12 +4168,12 @@ Function Get-V222418 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222418
-        STIG ID    : ASD-V6R4-222418
-        Rule ID    : SV-222418r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000390
+        Rule ID    : SV-222418r1015685_rule
+        Rule Title : The application must notify SAs and ISSOs when accounts are modified.
+        DiscussMD5 : 9a75fba922d8734c16c88fffaf17124d
+        CheckMD5   : c474bbd20e477b2ff20ea6d0913f28fa
+        FixMD5     : f2c6053229d11e0f06db8b2931d62601
     #>
 
     param (
@@ -3835,7 +4206,7 @@ Function Get-V222418 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222418"
-    $RuleID = "SV-222418r508029_rule"
+    $RuleID = "SV-222418r1015685_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3845,9 +4216,43 @@ Function Get-V222418 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222418) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222418 - Notify SA/ISSO on Account Modification" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        if (($ldapEnabled -join $nl).Trim() -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + ($ldapEnabled -join $nl).Trim() + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "SA/ISSO notification for account modification is handled by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+        $FindingDetails += "XO does not natively notify SA/ISSO when accounts are modified." + $nl
+        $FindingDetails += "Auditor must verify a compensating control (SIEM alert, email hook, ITSM workflow) is in place." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3907,12 +4312,12 @@ Function Get-V222419 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222419
-        STIG ID    : ASD-V6R4-222419
-        Rule ID    : SV-222419r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000400
+        Rule ID    : SV-222419r1015686_rule
+        Rule Title : The application must notify SAs and ISSOs of account disabling actions.
+        DiscussMD5 : 8dd31494138157e186bd3f69628dca9f
+        CheckMD5   : b808e3e13ee69eb97f66c286baf688cc
+        FixMD5     : a18b7a8265993b35d4ea2e4d1885c8a6
     #>
 
     param (
@@ -3945,7 +4350,7 @@ Function Get-V222419 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222419"
-    $RuleID = "SV-222419r508029_rule"
+    $RuleID = "SV-222419r1015686_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -3955,9 +4360,43 @@ Function Get-V222419 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222419) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222419 - Notify SA/ISSO on Account Disabling" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        if (($ldapEnabled -join $nl).Trim() -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + ($ldapEnabled -join $nl).Trim() + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "SA/ISSO notification for account disabling is handled by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+        $FindingDetails += "XO does not natively notify SA/ISSO when accounts are disabled." + $nl
+        $FindingDetails += "Auditor must verify a compensating control (SIEM alert, email hook, ITSM workflow) is in place." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4017,12 +4456,12 @@ Function Get-V222420 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222420
-        STIG ID    : ASD-V6R4-222420
-        Rule ID    : SV-222420r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000410
+        Rule ID    : SV-222420r1015687_rule
+        Rule Title : The application must notify SAs and ISSOs of account removal actions.
+        DiscussMD5 : cc0ef03e5e9ac4c6dd0949411cd7e52d
+        CheckMD5   : cc2f0ab761f1dc762a9c91678102ce0c
+        FixMD5     : 99e6ba767d567651ab3625a09db9cdc1
     #>
 
     param (
@@ -4055,7 +4494,7 @@ Function Get-V222420 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222420"
-    $RuleID = "SV-222420r508029_rule"
+    $RuleID = "SV-222420r1015687_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4065,9 +4504,43 @@ Function Get-V222420 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222420) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222420 - Notify SA/ISSO on Account Removal" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        if (($ldapEnabled -join $nl).Trim() -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + ($ldapEnabled -join $nl).Trim() + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "SA/ISSO notification for account removal is handled by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+        $FindingDetails += "XO does not natively notify SA/ISSO when accounts are removed." + $nl
+        $FindingDetails += "Auditor must verify a compensating control (SIEM alert, email hook, ITSM workflow) is in place." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4127,12 +4600,12 @@ Function Get-V222421 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222421
-        STIG ID    : ASD-V6R4-222421
-        Rule ID    : SV-222421r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000420
+        Rule ID    : SV-222421r961290_rule
+        Rule Title : The application must automatically audit account enabling actions.
+        DiscussMD5 : 4d4bf2aaadbde388507d38012ffc65eb
+        CheckMD5   : 8b788ef03d196c699c47619cb230199a
+        FixMD5     : 4ba850927f3f76b18d1ab545a8385687
     #>
 
     param (
@@ -4165,7 +4638,7 @@ Function Get-V222421 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222421"
-    $RuleID = "SV-222421r508029_rule"
+    $RuleID = "SV-222421r961290_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4175,9 +4648,67 @@ Function Get-V222421 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222421) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222421 - Auto-Audit Account Enabling Actions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Detect auth-ldap plugin
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        $ldapEnabledStr = ($ldapEnabled -join $nl).Trim()
+        if ($ldapEnabledStr -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + $ldapEnabledStr + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "Account enabling events are managed and audited by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        # Check 2: Systemd journal for account enabling events
+        $FindingDetails += "Check 2: Systemd Journal - Account Enabling Events" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*enabl|enabl.*user|enableUser|unlockUser|user.*unlock|user.*activat' | head -10 2>&1")
+        $journalEventsStr = ($journalEvents -join $nl).Trim()
+        if ($journalEventsStr -ne "") {
+            $FindingDetails += "Account enabling log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
+            $FindingDetails += "RESULT: PASS - Account enabling events are logged in the system journal." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "No account enabling events found in system journal (last 7 days)." + $nl + $nl
+            $FindingDetails += "Check 3: XO Audit Plugin" + $nl
+            $FindingDetails += ("-" * 40) + $nl
+            $auditPkg = $(timeout 5 find /opt/xo/packages /usr/share /usr/lib -maxdepth 4 -type d -name "*audit*" 2>/dev/null | head -5 2>&1)
+            $auditPkgStr = ($auditPkg -join $nl).Trim()
+            if ($auditPkgStr -ne "") {
+                $FindingDetails += "XO audit-related packages found:" + $nl + $auditPkgStr + $nl + $nl
+            }
+            else {
+                $FindingDetails += "No XO audit plugin directories detected." + $nl + $nl
+            }
+            $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+            $FindingDetails += "Auditor must confirm XO audit plugin is enabled and account enabling events are captured." + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4237,12 +4768,12 @@ Function Get-V222422 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222422
-        STIG ID    : ASD-V6R4-222422
-        Rule ID    : SV-222422r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000430
+        Rule ID    : SV-222422r1015688_rule
+        Rule Title : The application must notify SAs and ISSOs of account enabling actions.
+        DiscussMD5 : 346003eec5e8474d3e9a8098251de3e6
+        CheckMD5   : 5677abfd45f2040714515f4a9aabe211
+        FixMD5     : 044b3263eefbeac143c944322c8afbd5
     #>
 
     param (
@@ -4275,7 +4806,7 @@ Function Get-V222422 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222422"
-    $RuleID = "SV-222422r508029_rule"
+    $RuleID = "SV-222422r1015688_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4285,9 +4816,43 @@ Function Get-V222422 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222422) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222422 - Notify SA/ISSO on Account Enabling" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $FindingDetails += "Check 1: Enterprise Account Management (auth-ldap plugin)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ldapDir1 = $(timeout 5 find /opt/xo/packages -maxdepth 3 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDir2 = $(timeout 5 find /usr/share /usr/lib -maxdepth 4 -type d -name "*auth-ldap*" 2>/dev/null | head -3 2>&1)
+    $ldapDirStr = ((@($ldapDir1, $ldapDir2) | Where-Object { "$_".Trim() -ne "" }) -join $nl).Trim()
+    $ldapConfigured = $false
+    if ($ldapDirStr -ne "") {
+        $ldapEnabled = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -name "config.toml" 2>/dev/null | xargs -r grep -l "auth-ldap" 2>/dev/null | head -3 2>&1)
+        if (($ldapEnabled -join $nl).Trim() -ne "") {
+            $FindingDetails += "auth-ldap plugin configured: " + ($ldapEnabled -join $nl).Trim() + $nl
+            $ldapConfigured = $true
+        }
+        else {
+            $FindingDetails += "auth-ldap plugin installed but not configured." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "auth-ldap plugin not detected." + $nl
+    }
+    $FindingDetails += $nl
+
+    if ($ldapConfigured) {
+        $FindingDetails += "RESULT: NOT APPLICABLE - Enterprise LDAP/AD account management detected." + $nl
+        $FindingDetails += "SA/ISSO notification for account enabling is handled by the enterprise directory service." + $nl
+        $Status = "Not_Applicable"
+    }
+    else {
+        $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+        $FindingDetails += "XO does not natively notify SA/ISSO when accounts are enabled." + $nl
+        $FindingDetails += "Auditor must verify a compensating control (SIEM alert, email hook, ITSM workflow) is in place." + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4347,12 +4912,12 @@ Function Get-V222423 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222423
-        STIG ID    : ASD-V6R4-222423
-        Rule ID    : SV-222423r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000440
+        Rule ID    : SV-222423r961302_rule
+        Rule Title : Application data protection requirements must be identified and documented.
+        DiscussMD5 : 5c67990880167e6cc7baf5a0b1cdd496
+        CheckMD5   : 706ffa3b6904ebbea8ef7df4763fb425
+        FixMD5     : 3fd2412b1331bbe8c500a1ca17289d3a
     #>
 
     param (
@@ -4385,7 +4950,7 @@ Function Get-V222423 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222423"
-    $RuleID = "SV-222423r508029_rule"
+    $RuleID = "SV-222423r961302_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4395,9 +4960,37 @@ Function Get-V222423 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222423) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222423 - Application Data Protection Requirements Documentation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Look for any data classification or data protection documentation
+    $FindingDetails += "Check 1: Data Protection Policy/Documentation Files" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $docFiles = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -type f -name "*data*" -o -name "*classif*" -o -name "*privacy*" -o -name "*protection*" 2>/dev/null | head -5 2>&1)
+    $docFilesStr = ($docFiles -join $nl).Trim()
+    if ($docFilesStr -ne "") {
+        $FindingDetails += "Data-related documentation files found:" + $nl + $docFilesStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No data protection documentation files found in XO configuration directories." + $nl + $nl
+    }
+
+    # Check 2: Identify data elements stored by XO
+    $FindingDetails += "Check 2: Data Elements Managed by Xen Orchestra" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "XO manages the following data elements that require protection classification:" + $nl
+    $FindingDetails += "  - User credentials (bcrypt-hashed passwords in LevelDB)" + $nl
+    $FindingDetails += "  - Authentication tokens (stored in memory/Redis)" + $nl
+    $FindingDetails += "  - VM configuration data (stored in LevelDB)" + $nl
+    $FindingDetails += "  - Audit log records (stored via audit plugin)" + $nl
+    $FindingDetails += "  - XCP-ng host connection credentials (stored in LevelDB)" + $nl
+    $FindingDetails += "  - SSL/TLS private keys (stored in /etc/ssl or /opt/xo)" + $nl + $nl
+
+    $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+    $FindingDetails += "ISSO must provide documentation identifying all application data elements and their protection requirements." + $nl
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4457,12 +5050,12 @@ Function Get-V222424 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222424
-        STIG ID    : ASD-V6R4-222424
-        Rule ID    : SV-222424r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-000450
+        Rule ID    : SV-222424r961305_rule
+        Rule Title : The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts.
+        DiscussMD5 : 2dd41657a55096bddb593c3c6d6ef74f
+        CheckMD5   : 44f6936e7814d58b29ca5b9585242188
+        FixMD5     : 5ae868fcb2defda8c80abf207eb06cc4
     #>
 
     param (
@@ -4495,7 +5088,7 @@ Function Get-V222424 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222424"
-    $RuleID = "SV-222424r508029_rule"
+    $RuleID = "SV-222424r961305_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4505,9 +5098,47 @@ Function Get-V222424 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222424) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-222424 - Data Mining Detection Techniques" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Rate limiting configuration (helps detect/prevent data mining)
+    $FindingDetails += "Check 1: Rate Limiting Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $xoConfigPath = ""
+    if (Test-Path "/etc/xo-server/config.toml") { $xoConfigPath = "/etc/xo-server/config.toml" }
+    elseif (Test-Path "/opt/xo/xo-server/config.toml") { $xoConfigPath = "/opt/xo/xo-server/config.toml" }
+    if ($xoConfigPath -ne "") {
+        $rateLimit = $(timeout 5 grep -iE "rate|limit|throttl" "$xoConfigPath" 2>&1 | grep -v "^#" | head -5 2>&1)
+        $rateLimitStr = ($rateLimit -join $nl).Trim()
+        if ($rateLimitStr -ne "") {
+            $FindingDetails += "Rate-limiting configuration found:" + $nl + $rateLimitStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "No rate-limiting configuration found in " + $xoConfigPath + "." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "XO config file not found." + $nl + $nl
+    }
+
+    # Check 2: SIEM/logging for anomalous access patterns
+    $FindingDetails += "Check 2: Anomalous Access Pattern Detection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $siemConfig = $(timeout 5 find /etc/xo-server /opt/xo/xo-server -maxdepth 3 -type f -name "*.toml" -o -name "*.json" 2>/dev/null | xargs -r grep -l "siem\|anomal\|alert\|monitor" 2>/dev/null | head -3 2>&1)
+    $siemConfigStr = ($siemConfig -join $nl).Trim()
+    if ($siemConfigStr -ne "") {
+        $FindingDetails += "Files referencing monitoring/alerting:" + $nl + $siemConfigStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "No SIEM or anomalous access detection configuration found." + $nl + $nl
+    }
+
+    $FindingDetails += "RESULT: OPEN - Manual review required." + $nl
+    $FindingDetails += "ISSO must provide documentation of data mining detection requirements and implemented controls." + $nl
+    $FindingDetails += "If data mining protections are not required for this system, ISSO must document the determination." + $nl
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
