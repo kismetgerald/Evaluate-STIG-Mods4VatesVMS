@@ -6070,7 +6070,7 @@ Function Get-V222433 {
     }
 
     # Check fail2ban
-    $fb2Status = $(timeout 5 systemctl is-active fail2ban 2>/dev/null 2>&1)
+    $fb2Status = $(timeout 5 systemctl is-active fail2ban 2>/dev/null)
     $fb2Str = ($fb2Status -join "").Trim()
     $FindingDetails += "Fail2ban status: " + $(if ($fb2Str -eq "active") { "active" } else { "not active" }) + $nl + $nl
 
