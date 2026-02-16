@@ -266,6 +266,103 @@ HEADER_DATA = {
         "check":   "7fdce9747db2fdb8f08940f628182dd9",
         "fix":     "2f6673667e891a80c8bd4609de1643ba",
     },
+    # Batch 5: Audit Record Generation & Non-Repudiation (V-222440 missing from XCCDF)
+    "V-222436": {  # [CAT III]
+        "title": "The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.",
+        "discuss": "7957ea6cacbdec0926adb7afa4063c24",
+        "check":   "e298960995f0df0e4e715fdfbf40a954",
+        "fix":     "064bc2cfb8f163bf2cc03557c4b2a267",
+    },
+    "V-222437": {  # [CAT III]
+        "title": "The application must display the time and date of the users last successful logon.",
+        "discuss": "16ffa1fd87a2dccdd6b3f9e023e37750",
+        "check":   "0b2ad7f6ba37645f8bb89aa1697e778a",
+        "fix":     "2fb586f3f45b342a65f696c71ffb5462",
+    },
+    "V-222438": {  # [CAT II]
+        "title": "The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.",
+        "discuss": "f37bf69662a6b229cb5df1a30baea17a",
+        "check":   "9059b86bc8dddf8e898e38b28c6ee34d",
+        "fix":     "e1627c0424df0676f43a8a99ae79044e",
+    },
+    "V-222439": {  # [CAT II]
+        "title": "For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.",
+        "discuss": "a3b192ab5d8e75ceabad32f5ca739432",
+        "check":   "080c946e5d592d1f64293fd465178bc5",
+        "fix":     "b1f294bcde1f58fa415aad563aace3f9",
+    },
+    "V-222441": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for the creation of session IDs.",
+        "discuss": "5790d425772d466d0291ac48ed48abc3",
+        "check":   "b593d0f5208db2b1fbed5dbcd085a6ae",
+        "fix":     "e4426adad94c0d615756a271c578a8c8",
+    },
+    "V-222442": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for the destruction of session IDs.",
+        "discuss": "9667d25856ebbfa43ad2a0fffb583b16",
+        "check":   "492d4c0e0c96650f148215b07da88658",
+        "fix":     "95d06ded8b98077fbb15cc8e7978c663",
+    },
+    "V-222443": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for the renewal of session IDs.",
+        "discuss": "80c66b34e3809f8528d3983a2cad211d",
+        "check":   "dda68a00b04ba688f2517142f8b17f2f",
+        "fix":     "aae087891b4c7ab157701dac2ac1e4d8",
+    },
+    "V-222444": {  # [CAT II]
+        "title": "The application must not write sensitive data into the application logs.",
+        "discuss": "3da3d7bd2ddc9c34af1fa474dec911d3",
+        "check":   "41473c355242a8957f03e4ef5877a06c",
+        "fix":     "cb70a3d25b96460276b7958c9e27e886",
+    },
+    "V-222445": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for session timeouts.",
+        "discuss": "7161fec628d156cae8adb9a4cc52ba6f",
+        "check":   "5b35585016b69ef3eba8a3ca4e426ec5",
+        "fix":     "c80d6184d5009014786ccf1fc6446c92",
+    },
+    "V-222446": {  # [CAT II]
+        "title": "The application must record a time stamp indicating when the event occurred.",
+        "discuss": "9c8b676776f5ef871e07ad26be58859e",
+        "check":   "e4521b6b1ef1630f38007a1ef9ee5e7f",
+        "fix":     "e697aaacc570924a321cbb985abcf7a7",
+    },
+    "V-222447": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.",
+        "discuss": "62ea43f7664115a70f55af0ccd978a50",
+        "check":   "be51e4101f91e0a1f2477f890a4b20db",
+        "fix":     "ad3cd17436f23f6d6a3d2febc412bb03",
+    },
+    "V-222448": {  # [CAT II]
+        "title": "The application must provide audit record generation capability for connecting system IP addresses.",
+        "discuss": "92ada8b550ad999ca0d5562a0b4f867f",
+        "check":   "af628113d6864091f0d1d57ef7f394a1",
+        "fix":     "aabd116a9a00eec2383be26345c44841",
+    },
+    "V-222449": {  # [CAT II]
+        "title": "The application must record the username or user ID of the user associated with the event.",
+        "discuss": "de135163f28d0339512862b177868180",
+        "check":   "6a201c6c1f2e177540fd7f9d7c8ab2d3",
+        "fix":     "a422a9124f451cce891074750efa63e7",
+    },
+    "V-222450": {  # [CAT II]
+        "title": "The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.",
+        "discuss": "8ab16e9049d6ee787495fc7d09d7e9ec",
+        "check":   "eabadc2ced38e9ea7591396a0a49eea7",
+        "fix":     "e347b435ea953807ef0ee8304691fc69",
+    },
+    "V-222451": {  # [CAT II]
+        "title": "The application must generate audit records when successful/unsuccessful attempts to access security objects occur.",
+        "discuss": "7ec12c83afb4c85a67622bb30b6ba4e5",
+        "check":   "f65e456ff50283febe4b3d4437fdcf55",
+        "fix":     "f614192dc28ad4cd3d988eb5abc61d52",
+    },
+    "V-222452": {  # [CAT II]
+        "title": "The application must generate audit records when successful/unsuccessful attempts to access security levels occur.",
+        "discuss": "5fab01a6004e5d5ea7a6dd2a79a7a0cd",
+        "check":   "802613c5394978eb3cdc37a86c93b073",
+        "fix":     "e7b611e6b679e7f45cf3cc436af7f8c4",
+    },
 }
 
 def fix_header_block(text, vuln_id, data):

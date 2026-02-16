@@ -6515,10 +6515,10 @@ Function Get-V222436 {
         Vuln ID    : V-222436
         STIG ID    : ASD-V6R4-222436
         Rule ID    : SV-222436r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.
+        DiscussMD5 : 7957ea6cacbdec0926adb7afa4063c24
+        CheckMD5   : e298960995f0df0e4e715fdfbf40a954
+        FixMD5     : 064bc2cfb8f163bf2cc03557c4b2a267
     #>
 
     param (
@@ -6625,10 +6625,10 @@ Function Get-V222437 {
         Vuln ID    : V-222437
         STIG ID    : ASD-V6R4-222437
         Rule ID    : SV-222437r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must display the time and date of the users last successful logon.
+        DiscussMD5 : 16ffa1fd87a2dccdd6b3f9e023e37750
+        CheckMD5   : 0b2ad7f6ba37645f8bb89aa1697e778a
+        FixMD5     : 2fb586f3f45b342a65f696c71ffb5462
     #>
 
     param (
@@ -6735,10 +6735,10 @@ Function Get-V222438 {
         Vuln ID    : V-222438
         STIG ID    : ASD-V6R4-222438
         Rule ID    : SV-222438r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.
+        DiscussMD5 : f37bf69662a6b229cb5df1a30baea17a
+        CheckMD5   : 9059b86bc8dddf8e898e38b28c6ee34d
+        FixMD5     : e1627c0424df0676f43a8a99ae79044e
     #>
 
     param (
@@ -6845,10 +6845,10 @@ Function Get-V222439 {
         Vuln ID    : V-222439
         STIG ID    : ASD-V6R4-222439
         Rule ID    : SV-222439r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.
+        DiscussMD5 : a3b192ab5d8e75ceabad32f5ca739432
+        CheckMD5   : 080c946e5d592d1f64293fd465178bc5
+        FixMD5     : b1f294bcde1f58fa415aad563aace3f9
     #>
 
     param (
@@ -6956,10 +6956,10 @@ Function Get-V222441 {
         Vuln ID    : V-222441
         STIG ID    : ASD-V6R4-222441
         Rule ID    : SV-222441r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the creation of session IDs.
+        DiscussMD5 : 5790d425772d466d0291ac48ed48abc3
+        CheckMD5   : b593d0f5208db2b1fbed5dbcd085a6ae
+        FixMD5     : e4426adad94c0d615756a271c578a8c8
     #>
 
     param (
@@ -7066,10 +7066,10 @@ Function Get-V222442 {
         Vuln ID    : V-222442
         STIG ID    : ASD-V6R4-222442
         Rule ID    : SV-222442r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the destruction of session IDs.
+        DiscussMD5 : 9667d25856ebbfa43ad2a0fffb583b16
+        CheckMD5   : 492d4c0e0c96650f148215b07da88658
+        FixMD5     : 95d06ded8b98077fbb15cc8e7978c663
     #>
 
     param (
@@ -7176,10 +7176,10 @@ Function Get-V222443 {
         Vuln ID    : V-222443
         STIG ID    : ASD-V6R4-222443
         Rule ID    : SV-222443r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the renewal of session IDs.
+        DiscussMD5 : 80c66b34e3809f8528d3983a2cad211d
+        CheckMD5   : dda68a00b04ba688f2517142f8b17f2f
+        FixMD5     : aae087891b4c7ab157701dac2ac1e4d8
     #>
 
     param (
@@ -7286,10 +7286,10 @@ Function Get-V222444 {
         Vuln ID    : V-222444
         STIG ID    : ASD-V6R4-222444
         Rule ID    : SV-222444r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not write sensitive data into the application logs.
+        DiscussMD5 : 3da3d7bd2ddc9c34af1fa474dec911d3
+        CheckMD5   : 41473c355242a8957f03e4ef5877a06c
+        FixMD5     : cb70a3d25b96460276b7958c9e27e886
     #>
 
     param (
@@ -7396,10 +7396,10 @@ Function Get-V222445 {
         Vuln ID    : V-222445
         STIG ID    : ASD-V6R4-222445
         Rule ID    : SV-222445r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for session timeouts.
+        DiscussMD5 : 7161fec628d156cae8adb9a4cc52ba6f
+        CheckMD5   : 5b35585016b69ef3eba8a3ca4e426ec5
+        FixMD5     : c80d6184d5009014786ccf1fc6446c92
     #>
 
     param (
@@ -7506,10 +7506,10 @@ Function Get-V222446 {
         Vuln ID    : V-222446
         STIG ID    : ASD-V6R4-222446
         Rule ID    : SV-222446r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must record a time stamp indicating when the event occurred.
+        DiscussMD5 : 9c8b676776f5ef871e07ad26be58859e
+        CheckMD5   : e4521b6b1ef1630f38007a1ef9ee5e7f
+        FixMD5     : e697aaacc570924a321cbb985abcf7a7
     #>
 
     param (
@@ -7616,10 +7616,10 @@ Function Get-V222447 {
         Vuln ID    : V-222447
         STIG ID    : ASD-V6R4-222447
         Rule ID    : SV-222447r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.
+        DiscussMD5 : 62ea43f7664115a70f55af0ccd978a50
+        CheckMD5   : be51e4101f91e0a1f2477f890a4b20db
+        FixMD5     : ad3cd17436f23f6d6a3d2febc412bb03
     #>
 
     param (
@@ -7726,10 +7726,10 @@ Function Get-V222448 {
         Vuln ID    : V-222448
         STIG ID    : ASD-V6R4-222448
         Rule ID    : SV-222448r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for connecting system IP addresses.
+        DiscussMD5 : 92ada8b550ad999ca0d5562a0b4f867f
+        CheckMD5   : af628113d6864091f0d1d57ef7f394a1
+        FixMD5     : aabd116a9a00eec2383be26345c44841
     #>
 
     param (
@@ -7836,10 +7836,10 @@ Function Get-V222449 {
         Vuln ID    : V-222449
         STIG ID    : ASD-V6R4-222449
         Rule ID    : SV-222449r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must record the username or user ID of the user associated with the event.
+        DiscussMD5 : de135163f28d0339512862b177868180
+        CheckMD5   : 6a201c6c1f2e177540fd7f9d7c8ab2d3
+        FixMD5     : a422a9124f451cce891074750efa63e7
     #>
 
     param (
@@ -7946,10 +7946,10 @@ Function Get-V222450 {
         Vuln ID    : V-222450
         STIG ID    : ASD-V6R4-222450
         Rule ID    : SV-222450r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.
+        DiscussMD5 : 8ab16e9049d6ee787495fc7d09d7e9ec
+        CheckMD5   : eabadc2ced38e9ea7591396a0a49eea7
+        FixMD5     : e347b435ea953807ef0ee8304691fc69
     #>
 
     param (
@@ -8056,10 +8056,10 @@ Function Get-V222451 {
         Vuln ID    : V-222451
         STIG ID    : ASD-V6R4-222451
         Rule ID    : SV-222451r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to access security objects occur.
+        DiscussMD5 : 7ec12c83afb4c85a67622bb30b6ba4e5
+        CheckMD5   : f65e456ff50283febe4b3d4437fdcf55
+        FixMD5     : f614192dc28ad4cd3d988eb5abc61d52
     #>
 
     param (
@@ -8166,10 +8166,10 @@ Function Get-V222452 {
         Vuln ID    : V-222452
         STIG ID    : ASD-V6R4-222452
         Rule ID    : SV-222452r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to access security levels occur.
+        DiscussMD5 : 5fab01a6004e5d5ea7a6dd2a79a7a0cd
+        CheckMD5   : 802613c5394978eb3cdc37a86c93b073
+        FixMD5     : e7b611e6b679e7f45cf3cc436af7f8c4
     #>
 
     param (

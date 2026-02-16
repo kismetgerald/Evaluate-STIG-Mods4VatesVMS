@@ -2,7 +2,7 @@
 
 **Purpose:** Track compliance blockers, missing packages/features, and items requiring Vates team input for DoD STIG compliance approval (IATT/ATO).
 
-**Last Updated:** February 9, 2026
+**Last Updated:** February 16, 2026
 **Document Owner:** Kismet Agbasi
 **Target:** DoD Classified Environment Approval (IATT for PoC or Full ATO for Production)
 
@@ -204,6 +204,64 @@ echo "minclass = 4" >> /etc/security/pwquality.conf
 
 ---
 
+### 1.8 No DoD Mandatory Notice and Consent Banner
+
+| Issue ID | BANNER-001 |
+|----------|------------|
+| **Affected VulnIDs** | V-222434, V-222435 |
+| **Severity** | CAT II |
+| **Discovery** | Session #39 — Batch 4 (February 16, 2026) |
+
+**Finding:** Xen Orchestra has **no built-in mechanism** to display the DoD Standard Mandatory Notice and Consent Banner before granting access. The XO login page does not present any banner text, and there is no acknowledgment/consent mechanism before login.
+
+**DoD Requirement (V-222434):** The application must display the following banner (or equivalent) before granting access:
+> *"You are accessing a U.S. Government (USG) Information System (IS) that is provided for USG-authorized use only. By using this IS (which includes any device attached to this IS), you consent to the following conditions: ... The USG routinely intercepts and monitors communications on this IS for purposes including, but not limited to, penetration testing, COMSEC monitoring, network operations and defense, personnel misconduct (PM), law enforcement (LE), and counterintelligence (CI) investigations."*
+
+**DoD Requirement (V-222435):** The banner must remain on screen until the user **explicitly acknowledges** it (e.g., clicks "I Agree" or equivalent) before login proceeds. Simply displaying text that disappears automatically is not sufficient.
+
+**Impact:**
+- V-222434 returns **Open** — no DoD banner text found on XO login page (curl scan of `https://localhost/` finds no required keywords)
+- V-222435 returns **Open** — no banner acknowledgment mechanism detected (no checkbox, button, or consent form before login)
+
+**Root Cause:** XO's React-based login UI does not include a configurable pre-authentication banner or consent page. This is a platform-level limitation.
+
+**Mitigation Options (Vates input needed):**
+
+1. **Nginx Reverse Proxy (Recommended for near-term):** Deploy nginx in front of XO with a custom `/consent` page. Users are redirected to the consent page before being proxied to XO. Nginx serves the banner HTML, and a session cookie records acknowledgment before allowing the XO login page to render. This approach does NOT require any XO code changes.
+
+   ```nginx
+   # Example nginx consent flow
+   location / {
+       if ($cookie_dod_consent != "acknowledged") {
+           return 302 /consent;
+       }
+       proxy_pass https://127.0.0.1:8443;
+   }
+   location /consent {
+       # Serve banner page with "I Agree" button that sets cookie and redirects to /
+   }
+   ```
+
+2. **XO Native Banner (Long-term Vates feature request):** Add a configurable pre-login banner to the XO web UI. Configuration in `config.toml`:
+   ```toml
+   [loginBanner]
+   enabled = true
+   text = "You are accessing a U.S. Government (USG) Information System..."
+   requireAcknowledgment = true
+   ```
+
+3. **XOA Appliance Configuration:** For XOA deployments, Vates could provide an nginx configuration template that implements the consent flow as part of the standard deployment.
+
+**Action Required from Vates:**
+- **[NEAR-TERM]** Publish nginx reverse proxy configuration template that implements DoD banner + acknowledgment for XO deployments
+- **[LONG-TERM]** Add native configurable pre-login banner support to XO web UI with acknowledgment requirement
+- **[DOCUMENTATION]** Include DoD banner configuration in the XO hardening guide
+- **[XOCE]** Recommend and document use of nginx as required DoD deployment component for XOCE
+
+**Note:** XOA (the official Vates appliance) ships with nginx by default and is better positioned to implement the consent page natively. XOCE deployments will require additional nginx installation.
+
+---
+
 ## Section 2: Architecture-Level Blockers (From January 2026)
 
 ### 2.1 Xen Orchestra Deployment Models
@@ -281,13 +339,14 @@ Implementation framework complete. Key open findings on production XCP-ng hosts:
 
 1. **[CRITICAL] FIPS 140-2 Statement** - Official position on bcrypt and FIPS compliance path (Section 1.1)
 2. **[CRITICAL] MFA Integration Guide** - CAC/PIV or hardware token integration for DoD (Section 1.5)
-3. **[HIGH] Hardening Guide** - Official XOA and XCP-ng hardening documentation
-4. **[HIGH] TLS Configuration Guide** - How to disable TLS 1.0/1.1, enforce TLS 1.2+ (Section 1.2)
-5. **[HIGH] UTC Timezone Configuration** - XO deployment recommendation for DoD (Section 1.3)
-6. **[MEDIUM] Cryptographic Statement** - Key storage architecture documentation (Section 1.7)
-7. **[MEDIUM] xe CLI Reference** - Security-relevant xe commands for audit evidence
-8. **[MEDIUM] Log Format Documentation** - xen.log and audit log formats for SIEM integration
-9. **[LOW] AppArmor-to-SELinux Equivalence** - For Debian 12 GPOS SRG compliance
+3. **[HIGH] DoD Banner Implementation** - Nginx consent page template OR native XO banner feature (Section 1.8)
+4. **[HIGH] Hardening Guide** - Official XOA and XCP-ng hardening documentation
+5. **[HIGH] TLS Configuration Guide** - How to disable TLS 1.0/1.1, enforce TLS 1.2+ (Section 1.2)
+6. **[HIGH] UTC Timezone Configuration** - XO deployment recommendation for DoD (Section 1.3)
+7. **[MEDIUM] Cryptographic Statement** - Key storage architecture documentation (Section 1.7)
+8. **[MEDIUM] xe CLI Reference** - Security-relevant xe commands for audit evidence
+9. **[MEDIUM] Log Format Documentation** - xen.log and audit log formats for SIEM integration
+10. **[LOW] AppArmor-to-SELinux Equivalence** - For Debian 12 GPOS SRG compliance
 
 ### From Implementation Team
 
@@ -315,6 +374,7 @@ Implementation framework complete. Key open findings on production XCP-ng hosts:
 | Risk | Component | Current Status | Mitigation Path |
 |------|-----------|----------------|-----------------|
 | No MFA/2FA | XO Access | ❌ OPEN | LDAP + smart card; Vates MFA feature |
+| No DoD mandatory banner | XO Login | ❌ OPEN | Nginx consent page or native XO banner feature |
 | TLS 1.1 enabled | XO HTTPS | ❌ OPEN | Configuration change (disable in config.toml) |
 | UTC timestamps not enforced | XO Logging | ❌ OPEN | Set TZ=UTC; document in hardening guide |
 | No centralized audit server | XO Logs | ❌ OPEN | Deploy rsyslog/syslog-ng; SIEM integration |
@@ -337,6 +397,7 @@ All findings are based on automated scans performed using the custom Evaluate-ST
 
 | Scan | Date | System | Result |
 |------|------|--------|--------|
+| Test137 | February 16, 2026 | XO1.WGSDAC.NET (XOCE) | ASD Batch 4: V-222426–V-222435, EvalScore 9.79% |
 | Test119e | February 9, 2026 | XO1.WGSDAC.NET (XOCE) | WebSRG 100% complete, 4-minute scan |
 | Test113d | February 3, 2026 | XO1.WGSDAC.NET (XOCE) | Session #32 Batch 2 validated |
 | Test112b | February 3, 2026 | XO1.WGSDAC.NET (XOCE) | Session #32 Batch 1 validated |
@@ -358,6 +419,6 @@ All findings are based on automated scans performed using the custom Evaluate-ST
 
 ---
 
-**Document Status:** ACTIVE - Updated based on Session #34 completion
+**Document Status:** ACTIVE - Updated based on Session #39 (Batch 4, DoD Banner blocker added)
 **Classification:** UNCLASSIFIED
 **Distribution:** Limited to implementation team and Vates engineering
