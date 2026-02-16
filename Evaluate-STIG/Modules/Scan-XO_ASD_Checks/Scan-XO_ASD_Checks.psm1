@@ -5200,10 +5200,10 @@ Function Get-V222426 {
         Vuln ID    : V-222426
         STIG ID    : ASD-V6R4-222426
         Rule ID    : SV-222426r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce organization-defined discretionary access control policies over defined subjects and objects.
+        DiscussMD5 : 6b5163ec9a0ab85852d981ecfbfaa422
+        CheckMD5   : c7ab3271807eaff1b3b5be1f447f3a0c
+        FixMD5     : f74dde4309979f77251b62c33376ffab
     #>
 
     param (
@@ -5310,10 +5310,10 @@ Function Get-V222427 {
         Vuln ID    : V-222427
         STIG ID    : ASD-V6R4-222427
         Rule ID    : SV-222427r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.
+        DiscussMD5 : 4786377fe9f1276d499eb7b4a4c3a3fc
+        CheckMD5   : a82ae9bead764bae6b856cac79b42ade
+        FixMD5     : 0b145f6e4df0c8eeef1256e0c62870d4
     #>
 
     param (
@@ -5420,10 +5420,10 @@ Function Get-V222428 {
         Vuln ID    : V-222428
         STIG ID    : ASD-V6R4-222428
         Rule ID    : SV-222428r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.
+        DiscussMD5 : 4786377fe9f1276d499eb7b4a4c3a3fc
+        CheckMD5   : 1ed5f3f0ef295e6001d2d2f84886d9aa
+        FixMD5     : 0b145f6e4df0c8eeef1256e0c62870d4
     #>
 
     param (
@@ -5530,10 +5530,10 @@ Function Get-V222429 {
         Vuln ID    : V-222429
         STIG ID    : ASD-V6R4-222429
         Rule ID    : SV-222429r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+        DiscussMD5 : ae3006fcea7446c656c31d5405683307
+        CheckMD5   : 4bc624cef64ad231a4a021b9252b4abd
+        FixMD5     : 708d6e9f451f5b9403378de78290dd72
     #>
 
     param (
@@ -5640,10 +5640,10 @@ Function Get-V222431 {
         Vuln ID    : V-222431
         STIG ID    : ASD-V6R4-222431
         Rule ID    : SV-222431r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must audit the execution of privileged functions.
+        DiscussMD5 : 0cd47b539c4419c29fe0f6129f158649
+        CheckMD5   : 9d386c9600e3cef7328d0a11a3e2c8db
+        FixMD5     : daef81a9341692f8ee1f7dbc76b8a218
     #>
 
     param (
@@ -5750,10 +5750,10 @@ Function Get-V222433 {
         Vuln ID    : V-222433
         STIG ID    : ASD-V6R4-222433
         Rule ID    : SV-222433r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application administrator must follow an approved process to unlock locked user accounts.
+        DiscussMD5 : af15f2b461bee552438151c7a457f007
+        CheckMD5   : 39fcd52ec9eced5e2289b4eb665eda3f
+        FixMD5     : ae6cd45270af3db07a185c5229c6c010
     #>
 
     param (
@@ -5860,10 +5860,10 @@ Function Get-V222434 {
         Vuln ID    : V-222434
         STIG ID    : ASD-V6R4-222434
         Rule ID    : SV-222434r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.
+        DiscussMD5 : e84a72e8b50cbc9635e228d9acb4c1e2
+        CheckMD5   : e790c7854dc9f40feeefe4f51ac76383
+        FixMD5     : 064bc2cfb8f163bf2cc03557c4b2a267
     #>
 
     param (
@@ -5970,10 +5970,10 @@ Function Get-V222435 {
         Vuln ID    : V-222435
         STIG ID    : ASD-V6R4-222435
         Rule ID    : SV-222435r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.
+        DiscussMD5 : d201e9f9f35898c1dcbaf349b8e204a5
+        CheckMD5   : 7fdce9747db2fdb8f08940f628182dd9
+        FixMD5     : 2f6673667e891a80c8bd4609de1643ba
     #>
 
     param (
@@ -32703,10 +32703,10 @@ Function Get-V222425 {
         Vuln ID    : V-222425
         STIG ID    : ASD-V6R4-222425
         Rule ID    : SV-222425r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+        DiscussMD5 : c8937c15ae7a86a2b55a0787bfb8f9e3
+        CheckMD5   : 87095229e086a884ca8afadd9954d47e
+        FixMD5     : fc15d318ed4df676baaab220263b4314
     #>
 
     param (
@@ -32890,10 +32890,10 @@ Function Get-V222430 {
         Vuln ID    : V-222430
         STIG ID    : ASD-V6R4-222430
         Rule ID    : SV-222430r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must execute without excessive account permissions.
+        DiscussMD5 : 1c1dd4fcade7baaaaa322238711c4d0b
+        CheckMD5   : 983a1a15d18cff98a889efcd76b38d2e
+        FixMD5     : 18f8936df2a4c6c82bcf65c4675000ce
     #>
 
     param (
@@ -33096,9 +33096,9 @@ Function Get-V222432 {
         STIG ID    : ASD-V6R4-222432
         Rule ID    : SV-222432r508029_rule
         Rule Title : The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5d05eba9fcda3d0310a02706c4605881
+        CheckMD5   : b06613cdfe5931a085b99c978eb9aee1
+        FixMD5     : 369f0b6662fef6bc7b7f7e801f420c22
     #>
 
     param (
