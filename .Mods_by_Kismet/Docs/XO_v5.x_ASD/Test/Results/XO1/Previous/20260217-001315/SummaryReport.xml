@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>02/17/2026</ScanDate>
+    <ScanDate>02/16/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -22,17 +22,15 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;sr0&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;sr0&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
+1024M
 Index                          '//sr0/'
-1024M</Size>
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +40,15 @@ Index                          '//sr0/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;xvda&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
+30G
 Index                          '//xvda/'
-30G</Size>
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +58,17 @@ Index                          '//xvda/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda1&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-boot
+Size                           [512M]
 
-Size                           [512M]</DeviceID>
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///boot/efi'
+512M
 Index                          '//xvda1/'
-512M</Size>
+DeviceID                       '///boot/efi'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +78,15 @@ Index                          '//xvda1/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///'
+28.5G
 Index                          '//xvda2/'
-28.5G</Size>
+DeviceID                       '///'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +96,15 @@ Index                          '//xvda2/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda3&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;xvda3&#xA;[SWAP]'">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-SWAP
+976M
 Index                          '//xvda3/'
-976M</Size>
+SWAP</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -138,7 +130,7 @@ Index                          '//xvda3/'
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-17T00:37:28.8204522-05:00" EvalScore="17.48">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-16T20:18:51.2133125-05:00" EvalScore="17.48">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -175,7 +167,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="26" Open="47" NotAFinding="13" Not_Reviewed="144">
+      <CAT_II Total="230" Not_Applicable="26" Open="33" NotAFinding="13" Not_Reviewed="158">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -251,20 +243,20 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The application must implement transaction recovery logs when transaction based." Status="Not_Applicable" ID="V-222479" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components." Status="Not_Applicable" ID="V-222480" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must off-load audit records onto a different system or media than the system being audited." Status="Not_Applicable" ID="V-222481" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must be configured to write application logs to a centralized log repository." Status="Open" ID="V-222482" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity." Status="Open" ID="V-222483" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications categorized as having a moderate or high impact must provide an immediate real-time alert to the SA and ISSO (at a minimum) for all audit failure events." Status="Open" ID="V-222484" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Open" ID="V-222485" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must shut down by default upon audit failure (unless availability is an overriding concern)." Status="Open" ID="V-222486" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide the capability to centrally review and analyze audit records from multiple components within the system." Status="Open" ID="V-222487" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria." Status="Open" ID="V-222488" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide an audit reduction capability that supports on-demand reporting requirements." Status="Open" ID="V-222489" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide an audit reduction capability that supports on-demand audit review and analysis." Status="Open" ID="V-222490" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide an audit reduction capability that supports after-the-fact investigations of security incidents." Status="Open" ID="V-222491" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide a report generation capability that supports on-demand audit review and analysis." Status="Open" ID="V-222492" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide a report generation capability that supports on-demand reporting requirements." Status="Open" ID="V-222493" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide a report generation capability that supports after-the-fact investigations of security incidents." Status="Open" ID="V-222494" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide an audit reduction capability that does not alter original content or time ordering of audit records." Status="Open" ID="V-222495" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must be configured to write application logs to a centralized log repository." Status="Not_Reviewed" ID="V-222482" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide an immediate warning to the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity." Status="Not_Reviewed" ID="V-222483" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications categorized as having a moderate or high impact must provide an immediate real-time alert to the SA and ISSO (at a minimum) for all audit failure events." Status="Not_Reviewed" ID="V-222484" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Not_Reviewed" ID="V-222485" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must shut down by default upon audit failure (unless availability is an overriding concern)." Status="Not_Reviewed" ID="V-222486" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide the capability to centrally review and analyze audit records from multiple components within the system." Status="Not_Reviewed" ID="V-222487" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide the capability to filter audit records for events of interest based upon organization-defined criteria." Status="Not_Reviewed" ID="V-222488" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide an audit reduction capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-222489" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide an audit reduction capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-222490" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide an audit reduction capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-222491" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide a report generation capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-222492" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide a report generation capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-222493" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide a report generation capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-222494" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide an audit reduction capability that does not alter original content or time ordering of audit records." Status="Not_Reviewed" ID="V-222495" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must provide a report generation capability that does not alter original content or time ordering of audit records." Status="Not_Reviewed" ID="V-222496" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The applications must use internal system clocks to generate time stamps for audit records." Status="Not_Reviewed" ID="V-222497" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="Not_Reviewed" ID="V-222498" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
