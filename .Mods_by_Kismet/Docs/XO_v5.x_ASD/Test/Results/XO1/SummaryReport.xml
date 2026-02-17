@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>02/15/2026</ScanDate>
+    <ScanDate>02/16/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -22,17 +22,16 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;Size                           [1024M]&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 Index                          '//sr0/'
-DeviceID                       '//'
-1024M</Size>
+1024M
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +41,16 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;Size                           [30G]&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 Index                          '//xvda/'
-DeviceID                       '//'
-30G</Size>
+30G
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +60,17 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
 
-boot
-Size                           [512M]</DeviceID>
+Size                           [512M]
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
 Index                          '//xvda1/'
-DeviceID                       '///boot/efi'
-512M</Size>
+512M
+DeviceID                       '///boot/efi'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +80,16 @@ DeviceID                       '///boot/efi'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 Index                          '//xvda2/'
-DeviceID                       '///'
-28.5G</Size>
+28.5G
+DeviceID                       '///'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +99,16 @@ DeviceID                       '///'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;Size                           [976M]&#xA;[SWAP]'">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 Index                          '//xvda3/'
-SWAP
-976M</Size>
+976M
+SWAP</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -128,17 +124,17 @@ SWAP
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>139</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>130</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>90</WeightedAvg>
+      <WeightedAvg>86</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-15T18:25:03.2189178-05:00" EvalScore="8.39">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-16T18:57:24.4739038-05:00" EvalScore="11.54">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -175,7 +171,7 @@ SWAP
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="12" Open="10" NotAFinding="1" Not_Reviewed="207">
+      <CAT_II Total="230" Not_Applicable="15" Open="21" NotAFinding="7" Not_Reviewed="187">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -202,26 +198,26 @@ SWAP
         <Vuln RuleTitle="The application must automatically audit account enabling actions." Status="Open" ID="V-222421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Application data protection requirements must be identified and documented." Status="Open" ID="V-222423" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts." Status="Open" ID="V-222424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce organization-defined discretionary access control policies over defined subjects and objects." Status="Not_Reviewed" ID="V-222426" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies." Status="Not_Reviewed" ID="V-222427" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies." Status="Not_Reviewed" ID="V-222428" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures." Status="Not_Reviewed" ID="V-222429" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must audit the execution of privileged functions." Status="Not_Reviewed" ID="V-222431" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application administrator must follow an approved process to unlock locked user accounts." Status="Not_Reviewed" ID="V-222433" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation." Status="Not_Reviewed" ID="V-222438" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail." Status="Not_Reviewed" ID="V-222439" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for the creation of session IDs." Status="Not_Reviewed" ID="V-222441" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for the destruction of session IDs." Status="Not_Reviewed" ID="V-222442" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for the renewal of session IDs." Status="Not_Reviewed" ID="V-222443" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not write sensitive data into the application logs." Status="Not_Reviewed" ID="V-222444" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for session timeouts." Status="Not_Reviewed" ID="V-222445" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must record a time stamp indicating when the event occurred." Status="Not_Reviewed" ID="V-222446" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST." Status="Not_Reviewed" ID="V-222447" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide audit record generation capability for connecting system IP addresses." Status="Not_Reviewed" ID="V-222448" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must record the username or user ID of the user associated with the event." Status="Not_Reviewed" ID="V-222449" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to grant privileges occur." Status="Not_Reviewed" ID="V-222450" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to access security objects occur." Status="Not_Reviewed" ID="V-222451" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to access security levels occur." Status="Not_Reviewed" ID="V-222452" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce organization-defined discretionary access control policies over defined subjects and objects." Status="Not_Applicable" ID="V-222426" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies." Status="Not_Applicable" ID="V-222427" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies." Status="Not_Applicable" ID="V-222428" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures." Status="Open" ID="V-222429" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must audit the execution of privileged functions." Status="NotAFinding" ID="V-222431" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application administrator must follow an approved process to unlock locked user accounts." Status="Open" ID="V-222433" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation." Status="Open" ID="V-222438" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail." Status="NotAFinding" ID="V-222439" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for the creation of session IDs." Status="NotAFinding" ID="V-222441" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for the destruction of session IDs." Status="Open" ID="V-222442" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for the renewal of session IDs." Status="Open" ID="V-222443" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not write sensitive data into the application logs." Status="NotAFinding" ID="V-222444" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for session timeouts." Status="Open" ID="V-222445" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must record a time stamp indicating when the event occurred." Status="NotAFinding" ID="V-222446" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST." Status="Open" ID="V-222447" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide audit record generation capability for connecting system IP addresses." Status="Open" ID="V-222448" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must record the username or user ID of the user associated with the event." Status="NotAFinding" ID="V-222449" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to grant privileges occur." Status="Open" ID="V-222450" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to access security objects occur." Status="Open" ID="V-222451" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to access security levels occur." Status="Open" ID="V-222452" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur." Status="Not_Reviewed" ID="V-222453" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to modify privileges occur." Status="Not_Reviewed" ID="V-222454" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must generate audit records when successful/unsuccessful attempts to modify security objects occur." Status="Not_Reviewed" ID="V-222455" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -407,7 +403,7 @@ SWAP
         <Vuln RuleTitle="The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function." Status="Not_Reviewed" ID="V-222673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-265634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
-      <CAT_III Total="22" Not_Applicable="1" Open="7" NotAFinding="0" Not_Reviewed="14">
+      <CAT_III Total="22" Not_Applicable="1" Open="11" NotAFinding="0" Not_Reviewed="10">
         <Vuln RuleTitle="The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-222392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must have a process, feature or function that prevents removal or disabling of emergency accounts." Status="Not_Applicable" ID="V-222410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically disable accounts after a 35 day period of account inactivity." Status="Open" ID="V-222411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -416,10 +412,10 @@ SWAP
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account disabling actions." Status="Open" ID="V-222419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account removal actions." Status="Open" ID="V-222420" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions." Status="Open" ID="V-222422" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Not_Reviewed" ID="V-222434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Not_Reviewed" ID="V-222435" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Not_Reviewed" ID="V-222436" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must display the time and date of the users last successful logon." Status="Not_Reviewed" ID="V-222437" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Open" ID="V-222434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Open" ID="V-222435" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Open" ID="V-222436" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must display the time and date of the users last successful logon." Status="Open" ID="V-222437" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify the ISSO and ISSM of failed security verification tests." Status="Not_Reviewed" ID="V-222617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed." Status="Not_Reviewed" ID="V-222644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state." Status="Not_Reviewed" ID="V-222647" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
