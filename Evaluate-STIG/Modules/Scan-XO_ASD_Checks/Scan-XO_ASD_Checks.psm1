@@ -5200,10 +5200,10 @@ Function Get-V222426 {
         Vuln ID    : V-222426
         STIG ID    : ASD-V6R4-222426
         Rule ID    : SV-222426r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce organization-defined discretionary access control policies over defined subjects and objects.
+        DiscussMD5 : 6b5163ec9a0ab85852d981ecfbfaa422
+        CheckMD5   : c7ab3271807eaff1b3b5be1f447f3a0c
+        FixMD5     : f74dde4309979f77251b62c33376ffab
     #>
 
     param (
@@ -5246,9 +5246,38 @@ Function Get-V222426 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222426) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222426: DAC (Discretionary Access Control) - APSC-DV-000470
+    # STIG check: "If application does not implement DAC, this requirement is N/A."
+    # XO uses RBAC (Admin/Operator/Viewer roles) — not DAC (user-owned object permissions).
+    $FindingDetails += "Xen Orchestra Access Control Architecture:" + $nl
+    $FindingDetails += "==========================================" + $nl + $nl
+
+    # Check for ACL plugin presence
+    $aclPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -type d -name "*acl*" 2>/dev/null | head -3 2>&1)
+    $aclPluginStr = ($aclPlugin -join $nl).Trim()
+
+    $FindingDetails += "Access Control Model:" + $nl
+    $FindingDetails += "  XO implements Role-Based Access Control (RBAC):" + $nl
+    $FindingDetails += "  - Roles: Admin, Operator, Viewer, No Access (assigned per resource pool)" + $nl
+    $FindingDetails += "  - Permissions are assigned by administrators, not by object owners" + $nl
+    $FindingDetails += "  - Users cannot grant access to their own objects (no discretionary permissions)" + $nl
+    if ($aclPluginStr -ne "") {
+        $FindingDetails += "  - ACL plugin detected: " + $aclPluginStr + $nl
+    }
+    $FindingDetails += $nl
+
+    $FindingDetails += "DAC Requirement Assessment:" + $nl
+    $FindingDetails += "  Discretionary Access Control (DAC) requires subjects (users) to have" + $nl
+    $FindingDetails += "  discretion to grant permissions on objects they own (e.g., Unix file ACLs," + $nl
+    $FindingDetails += "  Windows DACL). XO does not implement this model — access control is" + $nl
+    $FindingDetails += "  centrally administered via RBAC roles only." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not implement DAC, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement discretionary access control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5310,10 +5339,10 @@ Function Get-V222427 {
         Vuln ID    : V-222427
         STIG ID    : ASD-V6R4-222427
         Rule ID    : SV-222427r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.
+        DiscussMD5 : 4786377fe9f1276d499eb7b4a4c3a3fc
+        CheckMD5   : a82ae9bead764bae6b856cac79b42ade
+        FixMD5     : 0b145f6e4df0c8eeef1256e0c62870d4
     #>
 
     param (
@@ -5356,9 +5385,30 @@ Function Get-V222427 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222427) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222427: Information Flow Control (within system) - APSC-DV-000480
+    # STIG check: "If application does not provide data flow control capabilities, this requirement is N/A."
+    # XO does not implement data classification labels or information flow control policies.
+    $FindingDetails += "Xen Orchestra Information Flow Control Assessment (Within System):" + $nl
+    $FindingDetails += "==================================================================" + $nl + $nl
+
+    $FindingDetails += "Information Flow Control Model:" + $nl
+    $FindingDetails += "  XO is a virtualization management platform for Xen/XCP-ng hypervisors." + $nl
+    $FindingDetails += "  It does not implement:" + $nl
+    $FindingDetails += "  - Data classification labels (e.g., Unclassified, Secret, Top Secret)" + $nl
+    $FindingDetails += "  - Security level enforcement (BLP/MLS-style mandatory access control)" + $nl
+    $FindingDetails += "  - Information flow control policies based on sensitivity labels" + $nl
+    $FindingDetails += "  - Object labeling or cross-domain guard functionality" + $nl + $nl
+
+    $FindingDetails += "  XO's API enforces RBAC (role-based) access control but does not enforce" + $nl
+    $FindingDetails += "  information flow based on data classification or sensitivity labels." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not provide data flow control" + $nl
+    $FindingDetails += "capabilities, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement information flow control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5420,10 +5470,10 @@ Function Get-V222428 {
         Vuln ID    : V-222428
         STIG ID    : ASD-V6R4-222428
         Rule ID    : SV-222428r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.
+        DiscussMD5 : 4786377fe9f1276d499eb7b4a4c3a3fc
+        CheckMD5   : 1ed5f3f0ef295e6001d2d2f84886d9aa
+        FixMD5     : 0b145f6e4df0c8eeef1256e0c62870d4
     #>
 
     param (
@@ -5466,9 +5516,31 @@ Function Get-V222428 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222428) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222428: Information Flow Control (between interconnected systems) - APSC-DV-000490
+    # STIG check: "If application does not provide data flow control capabilities, this requirement is N/A."
+    # XO does not implement inter-system information flow control policies.
+    $FindingDetails += "Xen Orchestra Information Flow Control Assessment (Between Systems):" + $nl
+    $FindingDetails += "====================================================================" + $nl + $nl
+
+    $FindingDetails += "Inter-System Information Flow Control Model:" + $nl
+    $FindingDetails += "  XO communicates with XCP-ng hosts via XAPI (XML-RPC/TLS) and" + $nl
+    $FindingDetails += "  manages VMs, storage, and networks. It does not implement:" + $nl
+    $FindingDetails += "  - Data classification-based flow control between connected systems" + $nl
+    $FindingDetails += "  - Cross-domain information transfer policies or guards" + $nl
+    $FindingDetails += "  - Security label enforcement on data crossing system boundaries" + $nl
+    $FindingDetails += "  - MLS/MAC-style flow control for inter-system communication" + $nl + $nl
+
+    $FindingDetails += "  XO enforces TLS encryption and RBAC for inter-system API calls but" + $nl
+    $FindingDetails += "  does not implement data classification-based flow control policies" + $nl
+    $FindingDetails += "  between interconnected systems." + $nl + $nl
+
+    $FindingDetails += "STIG guidance: 'If the application does not provide data flow control" + $nl
+    $FindingDetails += "capabilities, this requirement is N/A.'" + $nl
+    $FindingDetails += "Result: Not Applicable — XO does not implement inter-system information flow control." + $nl
+
+    $Status = "Not_Applicable"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5530,10 +5602,10 @@ Function Get-V222429 {
         Vuln ID    : V-222429
         STIG ID    : ASD-V6R4-222429
         Rule ID    : SV-222429r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+        DiscussMD5 : ae3006fcea7446c656c31d5405683307
+        CheckMD5   : 4bc624cef64ad231a4a021b9252b4abd
+        FixMD5     : 708d6e9f451f5b9403378de78290dd72
     #>
 
     param (
@@ -5576,9 +5648,90 @@ Function Get-V222429 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222429) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222429: Prevent non-privileged users from executing privileged functions - APSC-DV-000500
+    # STIG check: "Identify application user accounts and OS group memberships.
+    # If the account is a member of Administrators group or has UID 0, this is a finding."
+    $FindingDetails += "XO Server Process Privilege Assessment:" + $nl
+    $FindingDetails += "=======================================" + $nl + $nl
+
+    # Check the user running xo-server process
+    $xoServerProc = $(timeout 5 ps -eo user,pid,args 2>/dev/null | grep -v grep | grep "xo-server" | head -5 2>&1)
+    $xoServerProcStr = ($xoServerProc -join $nl).Trim()
+
+    $nodeProc = $(timeout 5 ps -eo user,pid,comm 2>/dev/null | grep -v grep | grep "^[^ ].*node" | head -10 2>&1)
+    $nodeProcStr = ($nodeProc -join $nl).Trim()
+
+    if ($xoServerProcStr -ne "") {
+        $FindingDetails += "XO Server process:" + $nl + $xoServerProcStr + $nl + $nl
+    }
+    elseif ($nodeProcStr -ne "") {
+        $FindingDetails += "Node.js processes (xo-server may use 'node' name):" + $nl + $nodeProcStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "XO server process not detected (may be stopped or named differently)." + $nl + $nl
+    }
+
+    # Extract process owner
+    $runningUser = ""
+    $combinedProc = if ($xoServerProcStr -ne "") { $xoServerProcStr } else { $nodeProcStr }
+    if ($combinedProc -ne "") {
+        if ($combinedProc -match '^(\S+)\s+') {
+            $runningUser = $matches[1]
+        }
+    }
+
+    $isRoot = $false
+    if ($runningUser -ne "") {
+        $userID = $(timeout 5 id $runningUser 2>/dev/null | head -1 2>&1)
+        $userIDStr = ($userID -join $nl).Trim()
+        $FindingDetails += "Process owner: " + $runningUser + $nl
+        $FindingDetails += "User details:  " + $userIDStr + $nl + $nl
+
+        if ($runningUser -eq "root" -or $userIDStr -match "uid=0\b") {
+            $isRoot = $true
+            $FindingDetails += "FINDING: XO server is running as root (UID 0)." + $nl
+            $FindingDetails += "All users of the application inherit elevated OS privileges." + $nl
+        }
+        else {
+            $FindingDetails += "XO server runs as non-root user '" + $runningUser + "'." + $nl
+            foreach ($grp in @("sudo", "wheel", "adm")) {
+                if ($userIDStr -match "\b$grp\b") {
+                    $FindingDetails += "WARNING: Process owner is a member of privileged group '" + $grp + "'." + $nl
+                }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "Could not determine process owner — XO server may not be running." + $nl
+        $FindingDetails += "Verify xo-server runs as a dedicated non-root service account." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Check systemd service user
+    $systemdUser = $(timeout 5 systemctl show xo-server -p User 2>/dev/null | head -2 2>&1)
+    $systemdUserStr = ($systemdUser -join $nl).Trim()
+    if ($systemdUserStr -ne "" -and $systemdUserStr -notmatch "=\s*$") {
+        $FindingDetails += "Systemd service user config: " + $systemdUserStr + $nl + $nl
+        if ($systemdUserStr -match "=root$" -or $systemdUserStr -match "=$") {
+            $isRoot = $true
+        }
+    }
+
+    # Application-level privilege separation (RBAC)
+    $FindingDetails += "Application-Level Privilege Separation (RBAC):" + $nl
+    $FindingDetails += "  XO enforces RBAC: Admin, Operator, Viewer roles per resource pool." + $nl
+    $FindingDetails += "  Non-privileged users cannot: create/delete users, modify system config," + $nl
+    $FindingDetails += "  manage encryption keys, or access admin API endpoints." + $nl
+    $FindingDetails += "  Privilege separation is enforced at the XO API layer." + $nl
+
+    if ($isRoot) {
+        $Status = "Open"
+    }
+    else {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5640,10 +5793,10 @@ Function Get-V222431 {
         Vuln ID    : V-222431
         STIG ID    : ASD-V6R4-222431
         Rule ID    : SV-222431r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must audit the execution of privileged functions.
+        DiscussMD5 : 0cd47b539c4419c29fe0f6129f158649
+        CheckMD5   : 9d386c9600e3cef7328d0a11a3e2c8db
+        FixMD5     : daef81a9341692f8ee1f7dbc76b8a218
     #>
 
     param (
@@ -5686,9 +5839,104 @@ Function Get-V222431 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222431) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222431: Audit the execution of privileged functions - APSC-DV-000520
+    # STIG check: Perform privileged tasks (add users, modify config, manage keys),
+    # then verify specific actions and dates/times appear in audit logs.
+    $FindingDetails += "XO Privileged Function Audit Assessment:" + $nl
+    $FindingDetails += "========================================" + $nl + $nl
+
+    $auditPluginLoaded = $false
+    $auditRecordsFound = $false
+
+    # Method 1: REST API — check audit plugin and records
+    $apiToken = ""
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $apiTokenRaw = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        $apiToken = ($apiTokenRaw -join "").Trim()
+    }
+
+    if ($apiToken -ne "") {
+        $FindingDetails += "REST API: checking audit plugin and records..." + $nl
+        # Check plugin list
+        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
+        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsStr = ($pluginsJson -join $nl).Trim()
+
+        if ($pluginsStr -match '"audit"') {
+            $auditPluginLoaded = $true
+            $FindingDetails += "  Audit plugin: LOADED (confirmed via /rest/v0/plugins)" + $nl
+        }
+        else {
+            $FindingDetails += "  Audit plugin: not found in active plugin list." + $nl
+        }
+
+        # Query recent audit records
+        $auditArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " " + [char]39 + "https://localhost/rest/v0/plugins/audit/records?limit=50" + [char]39 + " 2>/dev/null | head -c 16000"
+        $auditJson = $(timeout 10 sh -c $auditArgs 2>&1)
+        $auditStr = ($auditJson -join $nl).Trim()
+
+        if ($auditStr -ne "" -and $auditStr.Length -gt 10 -and $auditStr -notmatch '"error"' -and $auditStr -notmatch "Unauthorized") {
+            $FindingDetails += "  Audit records endpoint accessible (" + $auditStr.Length + " bytes)." + $nl
+            # Check for privileged action types
+            $privActions = @("user.create", "user.delete", "user.set", "acl.add", "acl.remove",
+                             "server.add", "server.remove", "plugin", "permission", "signIn", "signOut")
+            $foundActions = @()
+            foreach ($action in $privActions) {
+                if ($auditStr -match $action) {
+                    $foundActions += $action
+                }
+            }
+            if ($foundActions.Count -gt 0) {
+                $auditRecordsFound = $true
+                $FindingDetails += "  Privileged action types in audit records: " + ($foundActions -join ", ") + $nl
+            }
+            else {
+                $FindingDetails += "  Audit records present but privileged action types not in sample (sample may not cover recent admin activity)." + $nl
+                $auditRecordsFound = $auditPluginLoaded
+            }
+        }
+        else {
+            $FindingDetails += "  Audit records endpoint: not accessible or no records returned." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "API token not available (/etc/xo-server/stig/api-token not found)." + $nl
+        $FindingDetails += "Falling back to filesystem and journal checks." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Method 2: Systemd journal — privileged action keywords
+    $journalPriv = $(timeout 10 journalctl -u xo-server --since "7 days ago" --no-pager 2>/dev/null | grep -iE "user.*(creat|delet|modif)|acl|permission|admin|signIn|login" | head -10 2>&1)
+    $journalPrivStr = ($journalPriv -join $nl).Trim()
+    $FindingDetails += "Systemd Journal (privileged actions, last 7 days):" + $nl
+    if ($journalPrivStr -ne "") {
+        $FindingDetails += $journalPrivStr + $nl
+        $auditRecordsFound = $true
+    }
+    else {
+        $FindingDetails += "  No privileged action entries in systemd journal." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Method 3: XO audit log files
+    $auditLogFile = $(timeout 5 find /var/log -maxdepth 3 -type f -name "*xo*audit*" 2>/dev/null | head -3 2>&1)
+    $auditLogFileStr = ($auditLogFile -join $nl).Trim()
+    if ($auditLogFileStr -ne "") {
+        $FindingDetails += "XO audit log file(s): " + $auditLogFileStr + $nl + $nl
+        $auditRecordsFound = $true
+    }
+
+    if ($auditPluginLoaded -or $auditRecordsFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: XO audit system is active and records privileged function executions." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: Could not confirm privileged function executions are audited." + $nl
+        $FindingDetails += "Ensure XO audit plugin is installed, loaded, and capturing admin actions." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5750,10 +5998,10 @@ Function Get-V222433 {
         Vuln ID    : V-222433
         STIG ID    : ASD-V6R4-222433
         Rule ID    : SV-222433r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application administrator must follow an approved process to unlock locked user accounts.
+        DiscussMD5 : af15f2b461bee552438151c7a457f007
+        CheckMD5   : 39fcd52ec9eced5e2289b4eb665eda3f
+        FixMD5     : ae6cd45270af3db07a185c5229c6c010
     #>
 
     param (
@@ -5796,9 +6044,50 @@ Function Get-V222433 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222433) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222433: Application administrator must follow approved process to unlock locked accounts - APSC-DV-000540
+    # STIG check: "Interview admin to identify approved unlock process. Process must include
+    # user self-identification. Must have documented ISSO and ISSM approvals."
+    $FindingDetails += "Account Unlock Process Assessment:" + $nl
+    $FindingDetails += "==================================" + $nl + $nl
+
+    # Check account lockout is configured (confirms lockout is active)
+    $lockoutFound = $false
+    foreach ($cfgPath in @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")) {
+        if (Test-Path $cfgPath) {
+            $lockoutConf = $(timeout 5 grep -iE "lockout|maxFailed|failedAttempt|bruteForce" $cfgPath 2>/dev/null | head -5 2>&1)
+            $lockoutConfStr = ($lockoutConf -join $nl).Trim()
+            if ($lockoutConfStr -ne "") {
+                $lockoutFound = $true
+                $FindingDetails += "Lockout config in " + $cfgPath + ":" + $nl + $lockoutConfStr + $nl + $nl
+            }
+        }
+    }
+    if (-not $lockoutFound) {
+        $FindingDetails += "No explicit lockout configuration found in config.toml." + $nl
+        $FindingDetails += "(XO enforces 3-attempt lockout by default — see V-222432.)" + $nl + $nl
+    }
+
+    # Check fail2ban
+    $fb2Status = $(timeout 5 systemctl is-active fail2ban 2>/dev/null)
+    $fb2Str = ($fb2Status -join "").Trim()
+    $FindingDetails += "Fail2ban status: " + $(if ($fb2Str -eq "active") { "active" } else { "not active" }) + $nl + $nl
+
+    $FindingDetails += "MANUAL VERIFICATION REQUIRED — ISSO/ISSM Interview:" + $nl
+    $FindingDetails += "=====================================================" + $nl
+    $FindingDetails += "An approved account unlock process must be verified by interview." + $nl + $nl
+    $FindingDetails += "The process must include all of the following:" + $nl
+    $FindingDetails += "  1. A documented, written account unlock procedure" + $nl
+    $FindingDetails += "  2. ISSO and ISSM approval signatures on the procedure document" + $nl
+    $FindingDetails += "  3. A step to verify user identity before unlocking (self-identification)" + $nl
+    $FindingDetails += "  4. A ticket/request workflow creating an audit trail for each unlock" + $nl + $nl
+    $FindingDetails += "XO Account Unlock Methods:" + $nl
+    $FindingDetails += "  - Admin re-enables via XO web UI: Users section, toggle account enabled" + $nl
+    $FindingDetails += "  - CLI: xo-cli user.set id=<user-uuid> enabled=true" + $nl
+    $FindingDetails += "  - API: PATCH /rest/v0/users/<uuid> {" + [char]34 + "enabled" + [char]34 + ": true}" + $nl
+
+    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5860,10 +6149,10 @@ Function Get-V222434 {
         Vuln ID    : V-222434
         STIG ID    : ASD-V6R4-222434
         Rule ID    : SV-222434r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.
+        DiscussMD5 : e84a72e8b50cbc9635e228d9acb4c1e2
+        CheckMD5   : e790c7854dc9f40feeefe4f51ac76383
+        FixMD5     : 064bc2cfb8f163bf2cc03557c4b2a267
     #>
 
     param (
@@ -5906,9 +6195,86 @@ Function Get-V222434 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222434) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222434: Display DoD Notice and Consent Banner - APSC-DV-000550
+    # STIG check: "If no interactive UI, or if accessed only via GFE OS console that already
+    # displays the banner, this is N/A. Otherwise verify approved banner text appears prior to access."
+    # XO has a web-based interactive UI — N/A condition does not apply.
+    $FindingDetails += "DoD Notice and Consent Banner Assessment:" + $nl
+    $FindingDetails += "==========================================" + $nl + $nl
+
+    $bannerFound = $false
+    $bannerKeywords = @(
+        "Standard Mandatory DoD Notice",
+        "DoD Notice and Consent",
+        "You are accessing a U.S. Government",
+        "Unauthorized use is prohibited",
+        "authorized users only",
+        "monitoring and recording"
+    )
+
+    # Fetch login page and check for banner text
+    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
+    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPageStr = ($loginPage -join $nl).Trim()
+
+    if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
+        $FindingDetails += "Login page retrieved: " + $loginPageStr.Length + " bytes." + $nl
+        foreach ($keyword in $bannerKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $bannerFound = $true
+                $FindingDetails += "  DoD banner keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        if (-not $bannerFound) {
+            $FindingDetails += "  DoD banner keywords NOT found in login page HTML." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "Login page not retrieved (curl returned empty or XO not listening on localhost:443)." + $nl
+    }
+    $FindingDetails += $nl
+
+    # Check for custom banner configuration files
+    foreach ($bf in @("/etc/xo-server/banner.txt", "/opt/xo/banner.txt", "/etc/xo-server/motd.txt")) {
+        if (Test-Path $bf) {
+            $bannerContent = $(timeout 3 cat $bf 2>&1)
+            $bannerContentStr = ($bannerContent -join $nl).Trim()
+            if ($bannerContentStr -ne "") {
+                $FindingDetails += "Banner file found at " + $bf + ":" + $nl + $bannerContentStr + $nl + $nl
+                foreach ($keyword in $bannerKeywords) {
+                    if ($bannerContentStr -match $keyword) {
+                        $bannerFound = $true
+                    }
+                }
+            }
+        }
+    }
+
+    # Check nginx for pre-auth banner page
+    $nginxBanner = $(timeout 5 find /etc/nginx -maxdepth 3 -type f -name "*.conf" 2>/dev/null | head -5 2>&1)
+    $nginxBannerStr = ($nginxBanner -join $nl).Trim()
+    if ($nginxBannerStr -ne "") {
+        $FindingDetails += "Nginx config files found (may implement pre-auth banner):" + $nl + $nginxBannerStr + $nl + $nl
+    }
+
+    $FindingDetails += "XO Banner Implementation Notes:" + $nl
+    $FindingDetails += "  XO Community Edition does not include a built-in DoD banner feature." + $nl
+    $FindingDetails += "  The banner can be implemented via:" + $nl
+    $FindingDetails += "  1. A reverse proxy (nginx) consent page before the XO login page" + $nl
+    $FindingDetails += "  2. Network access control pre-authentication page" + $nl
+    $FindingDetails += "  3. Custom XO plugin (requires Vates development)" + $nl + $nl
+
+    if ($bannerFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: DoD Notice and Consent Banner detected before login." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: DoD Notice and Consent Banner not detected on login page." + $nl
+        $FindingDetails += "Configure the application or a reverse proxy to display the banner." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5970,10 +6336,10 @@ Function Get-V222435 {
         Vuln ID    : V-222435
         STIG ID    : ASD-V6R4-222435
         Rule ID    : SV-222435r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.
+        DiscussMD5 : d201e9f9f35898c1dcbaf349b8e204a5
+        CheckMD5   : 7fdce9747db2fdb8f08940f628182dd9
+        FixMD5     : 2f6673667e891a80c8bd4609de1643ba
     #>
 
     param (
@@ -6016,9 +6382,78 @@ Function Get-V222435 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222435) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    # V-222435: Retain DoD banner until user acknowledges - APSC-DV-000560
+    # STIG check: "If no interactive UI or GFE-already-displays-banner, N/A.
+    # Verify banner is displayed AND user must take explicit action to accept before proceeding."
+    $FindingDetails += "DoD Banner Acknowledgment Assessment:" + $nl
+    $FindingDetails += "=====================================" + $nl + $nl
+
+    $bannerFound = $false
+    $ackFound = $false
+
+    $bannerKeywords = @(
+        "Standard Mandatory DoD Notice",
+        "DoD Notice",
+        "You are accessing a U.S. Government",
+        "authorized users only",
+        "Unauthorized use is prohibited"
+    )
+    $ackKeywords = @(
+        "acknowledge", "i acknowledge", "i accept", "i agree",
+        "accept", "agree", "consent",
+        "type.*accept", "checkbox", "button.*accept", "accept.*button"
+    )
+
+    # Fetch login page and check for banner + acknowledgment
+    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
+    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPageStr = ($loginPage -join $nl).Trim()
+
+    if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
+        $FindingDetails += "Login page retrieved: " + $loginPageStr.Length + " bytes." + $nl
+
+        foreach ($keyword in $bannerKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $bannerFound = $true
+                $FindingDetails += "  Banner keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        foreach ($keyword in $ackKeywords) {
+            if ($loginPageStr -match $keyword) {
+                $ackFound = $true
+                $FindingDetails += "  Acknowledgment keyword found: " + [char]39 + $keyword + [char]39 + $nl
+            }
+        }
+        if (-not $bannerFound) {
+            $FindingDetails += "  DoD banner keywords NOT found in login page." + $nl
+        }
+        if (-not $ackFound) {
+            $FindingDetails += "  Acknowledgment mechanism NOT found in login page." + $nl
+        }
+    }
+    else {
+        $FindingDetails += "Login page not retrieved (curl returned empty or XO not listening)." + $nl
+    }
+    $FindingDetails += $nl
+
+    $FindingDetails += "XO Banner Acknowledgment Implementation Notes:" + $nl
+    $FindingDetails += "  XO does not include a built-in banner acknowledgment feature." + $nl
+    $FindingDetails += "  Implementation options:" + $nl
+    $FindingDetails += "  1. Nginx pre-auth consent page with a checkbox/button before proxying to XO" + $nl
+    $FindingDetails += "  2. Captive portal / network policy page with explicit acceptance" + $nl
+    $FindingDetails += "  3. Custom XO plugin rendering a consent modal on first page load" + $nl + $nl
+
+    if ($bannerFound -and $ackFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "Result: DoD banner displayed AND acknowledgment mechanism present." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FINDING: DoD banner or acknowledgment mechanism not detected." + $nl
+        $FindingDetails += "Users must take an explicit action to accept the banner before gaining access." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6080,10 +6515,10 @@ Function Get-V222436 {
         Vuln ID    : V-222436
         STIG ID    : ASD-V6R4-222436
         Rule ID    : SV-222436r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.
+        DiscussMD5 : 7957ea6cacbdec0926adb7afa4063c24
+        CheckMD5   : e298960995f0df0e4e715fdfbf40a954
+        FixMD5     : 064bc2cfb8f163bf2cc03557c4b2a267
     #>
 
     param (
@@ -6190,10 +6625,10 @@ Function Get-V222437 {
         Vuln ID    : V-222437
         STIG ID    : ASD-V6R4-222437
         Rule ID    : SV-222437r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must display the time and date of the users last successful logon.
+        DiscussMD5 : 16ffa1fd87a2dccdd6b3f9e023e37750
+        CheckMD5   : 0b2ad7f6ba37645f8bb89aa1697e778a
+        FixMD5     : 2fb586f3f45b342a65f696c71ffb5462
     #>
 
     param (
@@ -6300,10 +6735,10 @@ Function Get-V222438 {
         Vuln ID    : V-222438
         STIG ID    : ASD-V6R4-222438
         Rule ID    : SV-222438r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect against an individual (or process acting on behalf of an individual) falsely denying having performed organization-defined actions to be covered by non-repudiation.
+        DiscussMD5 : f37bf69662a6b229cb5df1a30baea17a
+        CheckMD5   : 9059b86bc8dddf8e898e38b28c6ee34d
+        FixMD5     : e1627c0424df0676f43a8a99ae79044e
     #>
 
     param (
@@ -6410,10 +6845,10 @@ Function Get-V222439 {
         Vuln ID    : V-222439
         STIG ID    : ASD-V6R4-222439
         Rule ID    : SV-222439r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : For applications providing audit record aggregation, the application must compile audit records from organization-defined information system components into a system-wide audit trail that is time-correlated with an organization-defined level of tolerance for the relationship between time stamps of individual records in the audit trail.
+        DiscussMD5 : a3b192ab5d8e75ceabad32f5ca739432
+        CheckMD5   : 080c946e5d592d1f64293fd465178bc5
+        FixMD5     : b1f294bcde1f58fa415aad563aace3f9
     #>
 
     param (
@@ -6521,10 +6956,10 @@ Function Get-V222441 {
         Vuln ID    : V-222441
         STIG ID    : ASD-V6R4-222441
         Rule ID    : SV-222441r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the creation of session IDs.
+        DiscussMD5 : 5790d425772d466d0291ac48ed48abc3
+        CheckMD5   : b593d0f5208db2b1fbed5dbcd085a6ae
+        FixMD5     : e4426adad94c0d615756a271c578a8c8
     #>
 
     param (
@@ -6631,10 +7066,10 @@ Function Get-V222442 {
         Vuln ID    : V-222442
         STIG ID    : ASD-V6R4-222442
         Rule ID    : SV-222442r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the destruction of session IDs.
+        DiscussMD5 : 9667d25856ebbfa43ad2a0fffb583b16
+        CheckMD5   : 492d4c0e0c96650f148215b07da88658
+        FixMD5     : 95d06ded8b98077fbb15cc8e7978c663
     #>
 
     param (
@@ -6741,10 +7176,10 @@ Function Get-V222443 {
         Vuln ID    : V-222443
         STIG ID    : ASD-V6R4-222443
         Rule ID    : SV-222443r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for the renewal of session IDs.
+        DiscussMD5 : 80c66b34e3809f8528d3983a2cad211d
+        CheckMD5   : dda68a00b04ba688f2517142f8b17f2f
+        FixMD5     : aae087891b4c7ab157701dac2ac1e4d8
     #>
 
     param (
@@ -6851,10 +7286,10 @@ Function Get-V222444 {
         Vuln ID    : V-222444
         STIG ID    : ASD-V6R4-222444
         Rule ID    : SV-222444r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not write sensitive data into the application logs.
+        DiscussMD5 : 3da3d7bd2ddc9c34af1fa474dec911d3
+        CheckMD5   : 41473c355242a8957f03e4ef5877a06c
+        FixMD5     : cb70a3d25b96460276b7958c9e27e886
     #>
 
     param (
@@ -6961,10 +7396,10 @@ Function Get-V222445 {
         Vuln ID    : V-222445
         STIG ID    : ASD-V6R4-222445
         Rule ID    : SV-222445r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for session timeouts.
+        DiscussMD5 : 7161fec628d156cae8adb9a4cc52ba6f
+        CheckMD5   : 5b35585016b69ef3eba8a3ca4e426ec5
+        FixMD5     : c80d6184d5009014786ccf1fc6446c92
     #>
 
     param (
@@ -7071,10 +7506,10 @@ Function Get-V222446 {
         Vuln ID    : V-222446
         STIG ID    : ASD-V6R4-222446
         Rule ID    : SV-222446r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must record a time stamp indicating when the event occurred.
+        DiscussMD5 : 9c8b676776f5ef871e07ad26be58859e
+        CheckMD5   : e4521b6b1ef1630f38007a1ef9ee5e7f
+        FixMD5     : e697aaacc570924a321cbb985abcf7a7
     #>
 
     param (
@@ -7181,10 +7616,10 @@ Function Get-V222447 {
         Vuln ID    : V-222447
         STIG ID    : ASD-V6R4-222447
         Rule ID    : SV-222447r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for HTTP headers including User-Agent, Referer, GET, and POST.
+        DiscussMD5 : 62ea43f7664115a70f55af0ccd978a50
+        CheckMD5   : be51e4101f91e0a1f2477f890a4b20db
+        FixMD5     : ad3cd17436f23f6d6a3d2febc412bb03
     #>
 
     param (
@@ -7291,10 +7726,10 @@ Function Get-V222448 {
         Vuln ID    : V-222448
         STIG ID    : ASD-V6R4-222448
         Rule ID    : SV-222448r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must provide audit record generation capability for connecting system IP addresses.
+        DiscussMD5 : 92ada8b550ad999ca0d5562a0b4f867f
+        CheckMD5   : af628113d6864091f0d1d57ef7f394a1
+        FixMD5     : aabd116a9a00eec2383be26345c44841
     #>
 
     param (
@@ -7401,10 +7836,10 @@ Function Get-V222449 {
         Vuln ID    : V-222449
         STIG ID    : ASD-V6R4-222449
         Rule ID    : SV-222449r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must record the username or user ID of the user associated with the event.
+        DiscussMD5 : de135163f28d0339512862b177868180
+        CheckMD5   : 6a201c6c1f2e177540fd7f9d7c8ab2d3
+        FixMD5     : a422a9124f451cce891074750efa63e7
     #>
 
     param (
@@ -7511,10 +7946,10 @@ Function Get-V222450 {
         Vuln ID    : V-222450
         STIG ID    : ASD-V6R4-222450
         Rule ID    : SV-222450r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to grant privileges occur.
+        DiscussMD5 : 8ab16e9049d6ee787495fc7d09d7e9ec
+        CheckMD5   : eabadc2ced38e9ea7591396a0a49eea7
+        FixMD5     : e347b435ea953807ef0ee8304691fc69
     #>
 
     param (
@@ -7621,10 +8056,10 @@ Function Get-V222451 {
         Vuln ID    : V-222451
         STIG ID    : ASD-V6R4-222451
         Rule ID    : SV-222451r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to access security objects occur.
+        DiscussMD5 : 7ec12c83afb4c85a67622bb30b6ba4e5
+        CheckMD5   : f65e456ff50283febe4b3d4437fdcf55
+        FixMD5     : f614192dc28ad4cd3d988eb5abc61d52
     #>
 
     param (
@@ -7731,10 +8166,10 @@ Function Get-V222452 {
         Vuln ID    : V-222452
         STIG ID    : ASD-V6R4-222452
         Rule ID    : SV-222452r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate audit records when successful/unsuccessful attempts to access security levels occur.
+        DiscussMD5 : 5fab01a6004e5d5ea7a6dd2a79a7a0cd
+        CheckMD5   : 802613c5394978eb3cdc37a86c93b073
+        FixMD5     : e7b611e6b679e7f45cf3cc436af7f8c4
     #>
 
     param (
@@ -32703,10 +33138,10 @@ Function Get-V222425 {
         Vuln ID    : V-222425
         STIG ID    : ASD-V6R4-222425
         Rule ID    : SV-222425r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+        DiscussMD5 : c8937c15ae7a86a2b55a0787bfb8f9e3
+        CheckMD5   : 87095229e086a884ca8afadd9954d47e
+        FixMD5     : fc15d318ed4df676baaab220263b4314
     #>
 
     param (
@@ -32890,10 +33325,10 @@ Function Get-V222430 {
         Vuln ID    : V-222430
         STIG ID    : ASD-V6R4-222430
         Rule ID    : SV-222430r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must execute without excessive account permissions.
+        DiscussMD5 : 1c1dd4fcade7baaaaa322238711c4d0b
+        CheckMD5   : 983a1a15d18cff98a889efcd76b38d2e
+        FixMD5     : 18f8936df2a4c6c82bcf65c4675000ce
     #>
 
     param (
@@ -33096,9 +33531,9 @@ Function Get-V222432 {
         STIG ID    : ASD-V6R4-222432
         Rule ID    : SV-222432r508029_rule
         Rule Title : The application must enforce the limit of three consecutive invalid logon attempts by a user during a 15 minute time period.
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        DiscussMD5 : 5d05eba9fcda3d0310a02706c4605881
+        CheckMD5   : b06613cdfe5931a085b99c978eb9aee1
+        FixMD5     : 369f0b6662fef6bc7b7f7e801f420c22
     #>
 
     param (

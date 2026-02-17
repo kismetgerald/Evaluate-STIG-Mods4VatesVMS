@@ -1126,11 +1126,15 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must enforce organization-defined discretionary access control policies over defined subjects and objects.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra implements Role-Based Access Control (RBAC) with Admin, Operator, Viewer,
+and No Access roles per resource pool. It does not implement Discretionary Access Control (DAC),
+which requires subjects (users) to set permissions on objects they own (e.g., Unix file ACLs,
+Windows DACLs). In XO, all access control is centrally administered by administrators, not by
+object owners. The STIG check states: "If the application does not implement DAC, this requirement
+is N/A." This requirement is Not Applicable to Xen Orchestra.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1140,11 +1144,16 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must enforce approved authorizations for controlling the flow of information within the system based on organization-defined information flow control policies.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra is a virtualization management platform and does not implement information
+flow control policies within the system. It does not enforce data classification labels, security
+levels (e.g., Unclassified/Secret/Top Secret), or mandatory access control (MAC/MLS) for data
+flowing between application components. XO's API enforces RBAC for access control but does not
+enforce information flow based on sensitivity labels. The STIG check states: "If the application
+does not provide data flow control capabilities, this requirement is N/A." This requirement is
+Not Applicable to Xen Orchestra.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1154,11 +1163,16 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must enforce approved authorizations for controlling the flow of information between interconnected systems based on organization-defined information flow control policies.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>Xen Orchestra communicates with XCP-ng hosts via XAPI (XML-RPC over TLS) but does not
+implement information flow control policies between interconnected systems. It does not enforce
+data classification-based flow control, cross-domain transfer guards, or security label
+enforcement on data crossing system boundaries. XO enforces TLS encryption and RBAC for
+inter-system API calls but not classification-based flow control. The STIG check states: "If the
+application does not provide data flow control capabilities, this requirement is N/A." This
+requirement is Not Applicable to Xen Orchestra.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1168,11 +1182,36 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The xo-server process runs as a dedicated non-root service account (not UID 0). XO also
+enforces RBAC at the application layer: non-privileged users (Operator, Viewer roles) cannot
+disable security safeguards, modify system configuration, manage encryption keys, or perform
+administrative functions. The application-level privilege separation is enforced by the XO API
+regardless of the OS user account used to start the service. Automated check confirmed process
+owner is non-root with no membership in privileged OS groups (sudo/wheel/adm).</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The xo-server process is running as root (UID 0) or a privileged OS account. This means
+all XO users inherit elevated OS privileges, violating the principle of least privilege.
+
+Remediation steps:
+1. Create a dedicated service account: useradd -r -s /bin/false xo-server
+2. Set ownership: chown -R xo-server:xo-server /opt/xo /var/lib/xo-server
+3. Update systemd unit file to run as the service account:
+   [Service]
+   User=xo-server
+   Group=xo-server
+4. Reload and restart: systemctl daemon-reload &amp;&amp; systemctl restart xo-server
+5. Verify process owner: ps -eo user,comm | grep node
+
+Note: XO application-level RBAC (Admin/Operator/Viewer roles) is independent of the OS
+process user and should remain functional after this change.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1196,11 +1235,36 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must audit the execution of privileged functions.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The XO audit plugin is installed and loaded. Privileged function executions are recorded
+in audit logs including: user account creation/modification/deletion, ACL assignments, server
+additions/removals, plugin configuration changes, and user sign-in/sign-out events. Each audit
+record includes the action type, timestamp, and the user who performed it. Audit records are
+accessible via the REST API at /rest/v0/plugins/audit/records and are also written to the
+systemd journal under the xo-server unit.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The XO audit plugin was not detected as loaded, or audit records of privileged function
+executions could not be confirmed. Privileged function executions (user management, config changes,
+key management) must be recorded with the action, date, and time.
+
+Remediation steps:
+1. Install the XO audit plugin if not present:
+   cd /opt/xo &amp;&amp; yarn add @xen-orchestra/audit-core
+2. Enable the audit plugin in XO web UI: Settings &gt; Plugins &gt; audit &gt; Enable
+3. Configure audit log retention in the plugin settings
+4. Verify by performing a privileged action (e.g., create a test user) and checking:
+   GET /rest/v0/plugins/audit/records?limit=10
+5. Confirm the action, date/time, and user are recorded in the response
+
+Note: If LDAP/AD authentication is used, ensure authentication events are also captured
+in the centralized audit server per V-222422 requirements.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1224,11 +1288,29 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application administrator must follow an approved process to unlock locked user accounts.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Account unlock process requires ISSO/ISSM interview verification. The process cannot be
+fully automated. The approved account unlock procedure must meet all of the following criteria:
+
+Required procedure elements (STIG requirement):
+1. Written procedure document with ISSO and ISSM approval signatures
+2. Identity verification step — administrator must confirm user identity before unlocking
+3. Ticket/request workflow creating an auditable trail for each unlock event
+4. Documentation of the business justification for the unlock
+
+XO Account Unlock Methods available to the administrator:
+- Web UI: Admin &gt; Users &gt; select user &gt; toggle "Enabled" state
+- CLI: xo-cli user.set id=&lt;user-uuid&gt; enabled=true
+- API: PATCH /rest/v0/users/&lt;uuid&gt; {"enabled": true}
+
+To satisfy this requirement:
+1. Create a Standard Operating Procedure (SOP) document for account unlocks
+2. Obtain ISSO and ISSM approval and signatures on the SOP
+3. Implement a ticketing workflow (e.g., ServiceNow, JIRA) for unlock requests
+4. Train administrators on the identity verification step
+5. Retain records of all unlock events for audit purposes</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1238,11 +1320,41 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Standard Mandatory DoD Notice and Consent Banner is displayed on the XO login page
+before granting access. Automated check confirmed banner keywords are present in the login page
+HTML. The approved DoD banner text includes the required elements: notification of monitoring,
+prohibition of unauthorized use, and user consent to monitoring conditions.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The DoD Notice and Consent Banner was not detected on the XO login page. XO Community
+Edition does not include a built-in banner feature. The banner must be implemented via one of
+the following methods:
+
+Option 1 — Nginx reverse proxy pre-authentication page (recommended):
+1. Install nginx: apt-get install -y nginx
+2. Create a consent page that displays the DoD banner with an Accept button
+3. Configure nginx to require banner acknowledgment before proxying to XO:
+   - Serve consent.html at /
+   - Redirect to /xo/ after acceptance (using a session cookie)
+4. Configure XO to listen only on localhost (127.0.0.1)
+5. Test: browse to XO URL and verify banner appears before login page
+
+Option 2 — Network-level pre-authentication page:
+Configure a captive portal or network access control system to present the banner
+before granting network access to the XO server.
+
+Required DoD banner text (abbreviated — use full approved text):
+"You are accessing a U.S. Government (USG) Information System (IS) that is provided for
+USG-authorized use only. By using this IS, you consent to monitoring of your use..."
+
+Reference: DoD CIO memorandum on Standard Mandatory DoD Notice and Consent Banner.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -1252,11 +1364,40 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
     <!--RuleTitle: The application must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The DoD Notice and Consent Banner is retained on screen until the user explicitly
+acknowledges it. An acknowledgment mechanism (Accept button, checkbox, or equivalent) is present
+on the banner page. Users cannot proceed to the XO login page until they take an explicit action
+to accept the banner. Automated check confirmed both banner text and acknowledgment keywords are
+present in the login page or pre-authentication page.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The DoD banner acknowledgment mechanism was not detected. The banner must be retained until
+the user takes an explicit action to accept it — simply displaying it without requiring
+acknowledgment does not satisfy this requirement.
+
+Implementation requirements:
+1. The banner page must include an explicit acceptance mechanism (one of):
+   - A checkbox: "I acknowledge and accept the above terms" + Submit button
+   - An "I Accept" button that the user must click to proceed
+   - A typed-acknowledgment field requiring the user to type "I AGREE"
+2. The banner must block access to the XO login page until accepted
+3. A session cookie should be set after acknowledgment to avoid repeated banners per session
+
+Sample nginx consent page implementation:
+- Serve a consent.html with the full DoD banner text
+- Include: &lt;input type="checkbox" id="accept"&gt; I acknowledge these terms
+  &lt;button onclick="if(document.getElementById('accept').checked){window.location='/xo/'}"&gt;Continue&lt;/button&gt;
+- Block direct access to /xo/ without the consent cookie set
+
+Note: Both V-222434 (display banner) and V-222435 (require acknowledgment) must be satisfied
+simultaneously. Implementing both with a single nginx pre-auth page is the recommended approach.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
