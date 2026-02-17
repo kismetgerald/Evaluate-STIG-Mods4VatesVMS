@@ -18,7 +18,7 @@
 	</ASSET>
 	<STIGS>
 		<iSTIG>
-			<!--<Evaluate-STIG><time>2026-02-16T18:57:24.4739038-05:00</time><module><name>Scan-XO_ASD_Checks</name><version>1.2026.1.20</version></module></Evaluate-STIG>-->
+			<!--<Evaluate-STIG><time>2026-02-16T19:29:20.6924615-05:00</time><module><name>Scan-XO_ASD_Checks</name><version>1.2026.1.20</version></module></Evaluate-STIG>-->
 			<STIG_INFO>
 				<SI_DATA>
 					<SID_NAME>version</SID_NAME>
@@ -53,7 +53,7 @@
 				</SI_DATA>
 				<SI_DATA>
 					<SID_NAME>uuid</SID_NAME>
-					<SID_DATA>0a75d99e-4234-4b27-8a85-469698b002f8</SID_DATA>
+					<SID_DATA>2bda6450-bcca-4cac-9b3d-96bcf1b02e97</SID_DATA>
 				</SI_DATA>
 				<SI_DATA>
 					<SID_NAME>notice</SID_NAME>
@@ -179,7 +179,7 @@ If the application is not configured to limit the number of logon sessions per u
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>29d9cd8e-7642-4a04-99de-1f611ec8624b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>aae11015-3d5a-4699-9c61-1265f5e260f9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -328,7 +328,7 @@ The application may use means other than cookies to store user information. If t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>aabae2ee-a3c1-4504-b5e9-52903b292e9c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a7cf724e-fc48-44cb-b3fe-097c54d23807</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -467,7 +467,7 @@ If the configuration setting is not set to time out user sessions after 15 minut
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>15ea5ee0-6062-4c27-a551-81d0b3ee8b8b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2c543ea2-b282-4088-96a3-86c4a41c00b7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -652,7 +652,7 @@ If the configuration setting is not set to time out admin user sessions after 10
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>867c831d-e660-42d3-a00d-62d156dfe54b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6169e558-5ce0-4897-ade3-82f163e7fccd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -841,7 +841,7 @@ If the user session is not terminated or if the logoff function does not exist, 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2f61b035-e841-43b2-9a87-0fb96a27188b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>363f94bc-9012-4a45-8e30-95be6f8c492b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1012,7 +1012,7 @@ If the application does not provide an explicit logoff message indicating the us
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4bfb347f-33ef-4e27-8fc1-a9966a56ac50</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>814cf243-2195-4fa1-b1dc-f133f2b454f2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1201,7 +1201,7 @@ If application data required to be marked is not marked and does not retain its 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7733a406-2435-403c-8953-30ecd37ac9f0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1b197288-4dc5-46f2-8da9-412676b20bcd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1372,7 +1372,7 @@ If application data required to be marked does not retain its marking while it i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>653fe60e-4748-4294-9c8b-41af926e3f28</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ef8bbe79-6218-40a6-b085-d4e17f22f9c5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1543,7 +1543,7 @@ If application data required to be marked does not retain its marking when it is
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a97ec208-60f9-449a-930a-de90a9aa1353</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3f73a113-ce46-4549-a289-aed8575ae23c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1714,7 +1714,7 @@ If the connection is not secured with TLS, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>93b5732b-52d7-4b2f-a346-5285e0194511</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4ed53239-d2ce-4c1d-8145-544e1aea1988</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1891,7 +1891,7 @@ If the connection is not secured with TLS, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>26a2f67e-f6f5-4066-9a15-d7584c1f9b11</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e336ff04-5c52-4100-85e9-ccb5499d62e9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2064,7 +2064,7 @@ If SOAP messages requiring integrity do not have the Message ID, Service Request
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cb05ab78-0f21-4d03-93b1-335a34494ddc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6e0f0be3-4bea-476f-8f15-90379dfd45a3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2218,7 +2218,7 @@ If messages using WS Security do not contain time stamps, sequence numbers, and 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>abe6a0fd-54b7-4b1f-bcb1-99c848d0e5ee</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f93f4a94-d853-4a35-9459-851d7b657b3e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2363,7 +2363,7 @@ If the design document does not exist, or does not indicate validity periods are
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9b544487-3e47-41f2-a162-db5f7ed460be</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>38ad86d1-2038-4607-a4d4-be2512a24bd7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2508,7 +2508,7 @@ If the design document does not exist, or does not indicate SAML assertion ident
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>223caec5-b1de-418a-8695-e990da90e13a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>209f97f8-b85e-4021-90b4-3aa20bad4a70</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2661,7 +2661,7 @@ If the design document does not exist, or does not indicate all WS-Security toke
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a0bd65bd-8ddd-4080-9964-08b6976ca05d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a63b41c8-ffc7-484d-848f-755cd86413be</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2823,7 +2823,7 @@ If SOAP messages do not contain &lt;NotOnOrAfter&gt; elements, this is a finding
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1d5cf1d3-7b78-47ae-a47e-124abb2de313</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>30b6eb9f-e312-46b5-a9f6-d2e2fdff619a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2963,7 +2963,7 @@ If SOAP using the &lt;Conditions&gt; element does not contain &lt;NotBefore&gt; 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>285e6115-5fca-475c-8118-d31ebe382f44</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f6014f0b-4193-4765-be68-e10ee80931c8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3101,7 +3101,7 @@ If SOAP message uses more than one, OneTimeUse element in a SAML assertion, this
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>77b95561-ed66-4abb-a103-ca796713c7be</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5b8065e0-57db-46ed-af62-e5a05d3ce615</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3252,7 +3252,7 @@ If the SessionIndex is tied to privacy information, and it is not encrypted, thi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>781f1f6b-abb3-4367-b580-f31c3f7c9ddf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0fc133cb-5ede-41df-9f5a-4af8652b1c35</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3417,7 +3417,7 @@ If the account management process is manual in nature, this is a finding.</ATTRI
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9b6aa18a-6181-46b9-8e78-9ac784f68723</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>50adb170-2aa2-4edd-b9e7-fdb9530734f8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3579,7 +3579,7 @@ If there is no process for handling group account credentials, this is a finding
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a462ffab-ad0e-45a9-8813-dc1227327a73</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>39b910ac-14ac-493c-8dfb-8ca2341c07d3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3730,7 +3730,7 @@ If the application has no ability to specify a user account as being temporary i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a98824e8-e679-4731-bf37-63b3ea87930d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cfa7b787-b05d-4a8f-9b05-2842a6ce3abf</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3899,7 +3899,7 @@ If a process, procedure, function or feature designed to prevent emergency accou
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8a27dacd-2e63-49f0-8094-2a46d0248686</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cc67d70a-1b53-4c8e-a2f4-ca79c78c480e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4068,7 +4068,7 @@ If the application is not set to expire inactive accounts after 35 days, or if t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2d665cfa-6f43-4342-a96d-a64e7bad412d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8e98a541-7754-4249-bc07-68bcd385985a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4227,7 +4227,7 @@ If any accounts cannot be validated and are deemed to be unnecessary, this is a 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>83ab1516-74de-46a6-87cf-4cd9d9eaa4a2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e3dcf611-7de3-4343-81d8-5bfafb49f6e6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4398,7 +4398,7 @@ At a minimum, ensure account name, date and time of the event are recorded.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ed7c44f9-9ffb-4513-b360-8c21d4e27edf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f1abbfd2-cc5e-458c-8434-edc48be0a962</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4564,7 +4564,7 @@ At a minimum, ensure account name, date and time of the event are recorded.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fc579548-cb61-4295-aba7-f87fb733d532</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>13895719-4397-43db-9cef-eb2ed25dabc9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4728,7 +4728,7 @@ At a minimum, ensure account name, date and time of the event are recorded.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>351d3c50-044a-4c2d-a777-8da9aeb8e24a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5b691911-9420-4470-86ef-0b97e8c84765</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4891,7 +4891,7 @@ At a minimum, ensure account name, date and time of the event are recorded.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8e623bed-310f-4dba-83f5-3c599d67c1d0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>43466528-c761-4255-a4a6-c6c97f4a9bcc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5048,7 +5048,7 @@ If SAs and ISSOs are not notified when accounts are created, this is a finding.<
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6ecb1dc5-e38d-4afd-9d07-1c3369c3ec72</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d9e9bee0-685e-4ffe-9ef2-25a11a157b76</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5220,7 +5220,7 @@ If SAs and ISSOs are not notified when accounts are modified, this is a finding.
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f1c9cd92-3dd3-40ac-89f3-985f74b48f20</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4812d630-7606-419b-b569-ff1efffa5781</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5386,7 +5386,7 @@ If SAs and ISSOs are not notified when accounts are disabled, this is a finding.
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a46b0ac3-b1be-4ade-a458-2319c2839903</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d24039f2-cedf-4d19-87bf-86a274181431</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5551,7 +5551,7 @@ If SAs and ISSOs are not notified when accounts are removed, this is a finding.<
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>36384f53-e598-40c1-8852-be57eec6146b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>35f1b830-64bb-4876-a9b8-f4e571c0d13e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5721,7 +5721,7 @@ At a minimum, ensure account name, date and time of the event are recorded.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d4372403-3292-4a7b-ae63-d2ada1315142</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5a3c476f-9372-4783-a735-b301713f2db2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5894,7 +5894,7 @@ If SAs and ISSOs are not notified when accounts are enabled, this is a finding.<
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>54b717d8-5229-4b99-b9ea-c0a54e133d26</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>eb013d8e-6bab-49f5-b687-dff24252f1f7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6057,7 +6057,7 @@ If the application data protection requirements are not documented, this is a fi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>feb2bd4b-209e-443c-9d2e-9afdb0db2af5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ac15f86-96f9-4b54-94fb-4cce0d12424c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6247,7 +6247,7 @@ If the application requirements specify protections for data mining and the appl
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>db356592-4701-480c-8713-f342803fd243</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>59389117-fb06-4917-9824-da96d81f3604</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6440,7 +6440,7 @@ If the enforcement of configured access restrictions is not performed, this is a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>19865cce-bbcf-4b88-b457-b6b6f00b71ca</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7cc264a5-486b-440c-bff0-e21b8e0c6270</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6599,7 +6599,7 @@ If the enforcement of configured access restrictions is not performed, this is a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>093e70a3-dd76-4e3e-adfc-6971cb50565d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a77cb122-dea8-4f26-a2fe-9e146467644b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6781,7 +6781,7 @@ If the application does not enforce the approved authorizations for controlling 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1602b84c-7890-4ff2-bf61-49b86b90dfad</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>560889e0-3ac3-4011-9ff2-35bb0de80dec</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6966,7 +6966,7 @@ If the application does not enforce the approved authorizations for controlling 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>663c3cb9-222c-4428-b60a-b4b69d8b00ad</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8e693d54-061b-41ad-a512-76c445fb24c8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7143,7 +7143,7 @@ The finding details should note the full path of the file(s) and the associated 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>35b873a8-3023-4df0-9b10-e2128196b078</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a83a9ea1-6ced-4fd2-9f18-5e28d6c2a9a9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7319,7 +7319,7 @@ If the application user account has excessive OS privileges such as being in the
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>446cb805-af2b-47d1-99fc-db679d392842</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0769d8c5-5aca-4b9c-a132-d52bbf389f82</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7468,7 +7468,7 @@ If the execution of privileged functionality is not logged, this is a finding.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5cfa6843-941d-4323-b8ff-ebcb2cc24a0b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a0cbc03d-5408-45b2-9768-b82024767a7e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7636,7 +7636,7 @@ If the logon is successful upon the 4th attempt the account was not locked after
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ff7b3a64-a0d1-4670-a2a2-5b7161cd5778</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8d4e7feb-d34b-43d0-84a8-ae4adb3aae67</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7799,7 +7799,7 @@ Use that process when unlocking application user accounts.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d5b0741c-932f-416f-ad5b-f32cdee6faa0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>edbc2590-978e-4015-a10e-a0ff5eee085e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8001,7 +8001,7 @@ If the standard DoD-approved banner is not displayed prior to obtaining access, 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>dcefbb2b-d65b-4f97-8bc8-4896e8c09014</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ca8902cb-fb06-4e5c-80b3-9070cc38d50d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8175,7 +8175,7 @@ If the banner is not displayed or no action must be taken to accept terms of use
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>accfca9e-a28a-4c90-a9f9-0d239969ff51</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>95197236-9d44-4001-ad28-7cc3747e9781</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8365,7 +8365,7 @@ If the standard DoD-approved banner is not displayed prior to obtaining access, 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c0fd7dbc-f615-49e4-812a-6e62fc5a05fa</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3e2cf14b-a825-44d8-ac42-d8c3edd32a2e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8544,7 +8544,7 @@ If the date and time the user account was last granted access to the application
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>dc7bb899-6ab7-4308-b18c-ddd9e343c6bc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c198e079-fe46-4c98-aebe-fe755da4462e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8709,7 +8709,7 @@ If the application is required to provide non-repudiation services and does not,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ed4b5ac5-1f9c-4489-87e3-9ddae5e56a10</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a53497ef-aefe-40d4-908b-a38d6707abc7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8876,7 +8876,7 @@ If the log dates and times do not correlate when the logs are aggregated, this i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>49f3c786-623a-44f0-b202-3a5f182c9457</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>440d49a1-0b6d-4a22-8db4-1e2aeb1baabf</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8892,7 +8892,7 @@ If the log dates and times do not correlate when the logs are aggregated, this i
 				</STIG_DATA>
 				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT A FINDING on 02/16/2026
-ResultHash: 3C6247835AE5008482842B7665ECD0A7C4B3E4C6
+ResultHash: 9B6BD6DEBCD3AB2AED18CC61A43B5A3186D8560D
 ~~~~~
 Time-Correlated Audit Record Aggregation Check
 ================================================
@@ -8904,8 +8904,8 @@ LocalRTC=no
 CanNTP=yes
 NTP=yes
 NTPSynchronized=yes
-TimeUSec=Mon 2026-02-16 18:58:02 EST
-RTCTimeUSec=Mon 2026-02-16 18:58:02 EST
+TimeUSec=Mon 2026-02-16 19:29:58 EST
+RTCTimeUSec=Mon 2026-02-16 19:29:58 EST
 
 Check 2: Chrony Sources
 Chrony not detected or no sources available
@@ -9055,7 +9055,7 @@ If the application generates session ID creation event logs by default, and that
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b8560a0b-efd1-48bc-bc70-3ebe56d5be89</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8206ba89-b1f1-49db-b88d-b532538f1277</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9215,7 +9215,7 @@ If the application generates audit logs by default when session IDs are destroye
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2308615d-8582-45f6-a50f-40c8fa98eb8b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>03819f3d-7e4e-4e8e-85c9-86fdf0045988</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9387,7 +9387,7 @@ If the application is not configured to log session ID renewal events this is a 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>75719202-7994-4c80-8df8-413465f9c71b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>17e5f9b2-b59e-4a87-8391-a6d221509840</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9550,7 +9550,7 @@ If the application logs sensitive data such as session IDs, application source c
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4d522fc7-4a19-4a3c-9058-3631da99053a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b98e8f61-fbfa-408d-88d7-2114e9a905a8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9724,7 +9724,7 @@ If the session timeout event is not recorded in the logs, this is a finding.</AT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>53780fe8-be8a-473b-90ca-dfb15ec759ff</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f484fea3-deab-45ba-9fbb-ecb7e0f868d9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9882,7 +9882,7 @@ If the time the event occurred is not included as part of the event, this is a f
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0fefb88e-c080-4490-a38d-7aa8abd2d3dc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b15a2f2b-ad7b-472a-ae1b-1c512a79a9d3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9898,14 +9898,14 @@ If the time the event occurred is not included as part of the event, this is a f
 				</STIG_DATA>
 				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT A FINDING on 02/16/2026
-ResultHash: 53A6C0AC3E844AF68C4609DA941F664455E2AA49
+ResultHash: 5690A2E0C8C352185B2188BA262F462B56A3A141
 ~~~~~
 Audit Record Timestamp Check
 =============================
 
 Check 1: Timestamps in systemd Journal
 Timestamps present in XO service journal
-Sample: Feb 16 10:11:46 XO1 xo-server[1715836]: 2026-02-16T15:11:46.124Z xo:xo-server-auth-ldap INFO successfully bound as CN=yyAgbasi_Kismet,OU=Privileged Users,OU=Users,OU=WGSDAC,DC=wgsdac,DC=net =&gt; yykagbasi authenticated
+Sample: Feb 16 10:11:46 XO1 xo-server[1715836]: 2026-02-16T15:11:46.130Z xo:xo-server-auth-ldap INFO syncing groups...
 
 Check 2: Timestamps in XO Log Files
 No XO log files found to check
@@ -10061,7 +10061,7 @@ If HTTP headers are not logged, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>22ef2fe5-41a6-4f6f-b66e-aabf0438b774</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5fe0ff2a-93de-4c5a-9a48-4ae0038cbf9b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10218,7 +10218,7 @@ If the IP addresses of the systems that connect to the application are not recor
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e0d2750d-f041-4bad-af26-fe14b7e0c2d2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e4b9491a-01d6-41f3-b904-d0e17f90d18b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10374,7 +10374,7 @@ If the user ID is not recorded along with the event in the event log, this is a 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8808e0fd-af24-40c7-b3fc-aa0caf282d01</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>83b0453a-e82a-462e-a632-cbeba3f70e67</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10537,7 +10537,7 @@ If the application does not log when successful and unsuccessful attempts to gra
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4b5db9b7-c614-4e93-8af8-22a1100230bc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>48992967-4573-41fc-8a49-28f385f2d9e3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10702,7 +10702,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5e1e4b3f-fb22-4e61-a239-5d52560db5d4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f1536b16-2b2e-40aa-9bc6-919a1479e1e7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10863,7 +10863,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f3065e62-0e53-4f47-85f2-21a6968e0a05</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>740cb9a3-1f7a-4b7b-a24b-6198a2f211f2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11031,7 +11031,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>08bb9711-a7a9-4129-9c0f-e9c8def02b9c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5a354a20-d89a-4f02-afc5-8b6c683a5154</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11045,11 +11045,23 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: F7F6DF4C96B0D81BC1B015050FB96C81F332931E
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 187C504F32563AEAEAF9CC2C8B7B7ECDB7342A2D
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222453) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+The STIG check states: 'If the application requirements do not call
+for compartmentalized data and data protection, this requirement is not applicable.'
+
+Xen Orchestra is a virtualization management platform. It does not implement
+data classification categories, security labels, MAC (Mandatory Access Control),
+or compartmentalized data protection. XO manages virtual machines and hypervisor
+resources using RBAC (Admin/Operator/Viewer roles), not data classification levels.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -11057,7 +11069,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra does not implement data classification categories, MAC security labels, or compartmentalized data protection. XO is a virtualization management platform that uses RBAC (Admin/Operator/Viewer roles)  not data classification levels. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data and data protection. This condition applies to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11176,7 +11188,7 @@ If the application does not log when successful and unsuccessful attempts to mod
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7721fcdd-4120-4df4-9687-fd221af4066c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>70304f9f-9eed-46ad-87de-91d0024f3ea0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11190,19 +11202,35 @@ If the application does not log when successful and unsuccessful attempts to mod
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 3AD8FEF71A58FE0A5D844CD4B7D9B140E5D40356
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: 60077791A13A5F50B6B1535A62CFBDE4616220BE
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222454) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Privilege Modification Audit Record Check
+=========================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Role/ACL Modification Events in Audit API
+NOT FOUND in sample records (may be present in full history)
+
+Check 3: ACL Audit Code in XO Source
+ACL audit code not found in searched paths
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify privilege modification events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Privilege modification audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test: assign and revoke a role for a test user; (3) Verify audit records capture: userId (admin performing change), targetUserId, action (addAcl/removeAcl), privilege level, and outcome; (4) Verify failed privilege modification attempts also generate audit records.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11322,7 +11350,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c798dfe7-055b-4185-8d08-444c89ac528b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>abfb4bd5-41af-4be0-8b06-66cd8dc9cc29</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11336,11 +11364,23 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: A6DDD9AF3E1F31C55704B16C7707DCB9FF2D6948
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 1A59872B9AE715CD7C090F9FCC34A75D288F4955
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222455) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+This requirement concerns audit records for modifications to security objects
+with associated classification labels or privilege designations.
+
+Xen Orchestra does not implement classified security objects, data element
+privilege assignments, or compartmentalized data protection. XO manages
+virtual infrastructure resources (VMs, hosts, storage, networks) using
+RBAC access controls, not object-level security classification labels.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -11348,7 +11388,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra does not implement classified security objects or data elements with privilege/classification designations. XO manages virtual infrastructure resources (VMs, hosts, storage, networks) using RBAC access controls, not object-level security classification labels. This requirement for security object modification auditing does not apply to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11471,7 +11511,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>55db4a81-50bf-4694-a3d0-b381318b89a5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6ca14e24-2638-45ff-9b3b-9092dbd66373</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11485,11 +11525,23 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: B8FF12506D389D0317EE3263B3BD6F1F010FEA32
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: D4D0FE905BDA2264919DF03A358024D31E790B98
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222456) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+This requirement concerns audit records for modifications to security levels
+or security domains in a MAC (Mandatory Access Control) system.
+
+Xen Orchestra uses RBAC (Role-Based Access Control) with three roles:
+Admin, Operator, and Viewer. It does not implement MAC security levels,
+security domains, or multilevel security (MLS) classifications.
+
+RBAC role changes (privilege modifications) are audited under V-222454.
+This MAC-specific requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -11497,7 +11549,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra uses RBAC (Admin/Operator/Viewer) and does not implement MAC security levels, security domains, or multilevel security (MLS) classifications. RBAC role changes (privilege modifications) are audited under V-222454. This MAC-specific security level modification requirement does not apply to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11622,7 +11674,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b80cce5b-a446-4140-9e8b-c2866e1d8ed8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1fa3c231-c857-4431-a029-36aa336f397e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11636,11 +11688,23 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 9A2875CC21BB3309E62422581CDEDF682E2EF22C
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 80305EE496595112C1034CFDBDC8C78EF829DDD1
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222457) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+The STIG check states: 'If the application requirements do not call
+for compartmentalized data and data protection, this requirement is not applicable.'
+
+Xen Orchestra does not store or process classified information, does not
+implement data classification categories, and does not require compartmentalized
+data protection mechanisms. Audit records for classification data modification
+are not applicable to XO as a virtualization management platform.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -11648,7 +11712,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra does not store or process classified information and does not implement data classification categories or compartmentalized data protection. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data protection. This condition applies to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11767,7 +11831,7 @@ If the application does not log when successful and unsuccessful attempts to del
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1c08c79a-cbe4-43ec-aff7-95e2717206e2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>755d5229-db6b-474b-b8a4-f059c8c38b72</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11781,19 +11845,35 @@ If the application does not log when successful and unsuccessful attempts to del
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: D1AC2FA4A9F14AC0B554305371C8DC7671690121
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: 58E23CC8CE5F5ADCA503692F1D38AA6D2ECF0D70
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222458) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Privilege Deletion Audit Record Check
+======================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Privilege Deletion Events in Audit API
+NOT FOUND in sample records (may be present in full history)
+
+Check 3: ACL Deletion Code in XO Source
+ACL deletion code not found in searched paths
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify privilege deletion events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Privilege deletion audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test: remove a role from a test user; (3) Verify audit records capture: userId (admin), targetUserId, action (removeAcl), privilege level, and outcome; (4) Verify failed deletion attempts also generate audit records.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -11916,7 +11996,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e6bd7962-02a1-4955-a7a5-9d38ab86989d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f914be0c-ca2d-4173-93a3-58c01109ec74</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11930,11 +12010,22 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 9CE0ED84219C8FA4757D54269D5394FDAF1BE19D
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: A1BBE17351535F08E1D9C6130A7CD08232393F0B
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222459) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+This requirement concerns audit records for deletion of security levels
+or security domain permissions in a MAC system.
+
+Xen Orchestra uses RBAC (Admin/Operator/Viewer) and does not implement
+MAC security levels or multilevel security domains. RBAC role removals
+(which are the nearest equivalent) are audited under V-222458.
+
+This MAC-specific requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -11942,7 +12033,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra uses RBAC (Admin/Operator/Viewer) and does not implement MAC security levels or multilevel security domains. The deletion of security level permissions is not a supported operation in XO. RBAC role removals (privilege deletions) are audited under V-222458. This MAC-specific requirement does not apply to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12061,7 +12152,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>32c145aa-3e0b-4c0b-b11c-3060b5d92bd2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a804a907-be68-429e-a282-09c36760140c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12075,11 +12166,22 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: A89DCDFCBEB718A88F307D7224282D8B7EDE8C69
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 70A19AA1DEB2F703B6D12F96E1DB240C8E4889E6
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222460) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+This requirement concerns audit records for deletion of application database
+security objects (data elements with assigned privilege/classification labels).
+
+Xen Orchestra stores its state in LevelDB (a key-value store) and does not
+implement a relational database with security-labeled objects or data elements.
+XO does not support compartmentalized data classification for database records.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -12087,7 +12189,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra stores its state in LevelDB (a key-value store) and does not implement a relational database with security-labeled objects or data elements. XO does not support compartmentalized data classification for database records. This database security object deletion requirement does not apply to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12212,7 +12314,7 @@ If the application does not generate an audit record when successful and unsucce
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>173b0914-1ce8-4ff5-82ce-30d939fe50ad</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>47599c43-b54f-448f-a05e-fcc97c002422</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12226,11 +12328,22 @@ If the application does not generate an audit record when successful and unsucce
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: C1AAA017C87569FB4F6AECFB306D396B5629C1EA
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 4DFC08F94169EF7D26AD2C50B8A1C8A454704152
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222461) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Not Applicable
+==============
+
+The STIG check states: 'If the application requirements do not call
+for compartmentalized data and data protection, this requirement is not applicable.'
+
+Xen Orchestra does not store classified or categorized information, does not
+implement data classification categories, and has no compartmentalized data
+requiring protected-category deletion audit records.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -12238,7 +12351,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra does not store classified or categorized information and does not implement data classification categories. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data and data protection. This condition applies to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12355,7 +12468,7 @@ If successful and unsuccessful logon events are not recorded in the logs, this i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5299efee-141b-4bf6-9083-507641ee90f8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a0e10d42-0eb0-4f18-8517-e1e0bb018682</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12369,19 +12482,38 @@ If successful and unsuccessful logon events are not recorded in the logs, this i
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 132D8EDC9C13576C9476742BE29DCF787CA9E00C
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: 51C228AB663856657C3239B47AAAC050CE042806
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222462) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Logon Attempt Audit Record Check
+=================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Session.signIn Events in Audit API
+NOT FOUND in sample records (plugin may be active but no recent logins)
+
+Check 3: systemd Journal Auth Events
+No recent auth events in systemd journal
+
+Check 4: Nginx Access Log Auth Endpoints
+No auth endpoint hits in nginx access log (or nginx not present)
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify logon attempt events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Logon attempt audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Perform a successful login and verify session.signIn audit record was created; (3) Perform a failed login and verify it is recorded; (4) Confirm records include: userId, action=session.signIn, timestamp, source IP, outcome.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12496,7 +12628,7 @@ If log events that correspond with the actions performed are not recorded in the
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>537d7d43-4735-4a5e-87a5-36fc8cda8551</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0befc68a-05c1-4799-9bf8-28360928efd5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12510,19 +12642,35 @@ If log events that correspond with the actions performed are not recorded in the
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: FCAA87559F9C74E34EAC684AFAF0E7B430F0CBC4
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: BCD309AABD95C6AA708A37FE05FD00DC7A8B00A0
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222463) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Privileged Activities Audit Record Check
+=========================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Admin/System-Level Events in Audit API
+NOT FOUND in sample records (may be present in full history)
+
+Check 3: Privileged Operation Audit Code
+Admin audit code not found in searched paths
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify privileged activity events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Privileged activity audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Perform a privileged action (start a VM, add a user, change an ACL); (3) Verify audit record includes: userId, action type, target object, timestamp; (4) Verify system-level access events (host management, pool operations) are captured.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12633,7 +12781,7 @@ If the start and the end time of the session are not recorded in the logs, this 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b4d51a31-b50b-4927-a09b-b055e3606770</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c505862d-87b0-4f52-a9d3-42084a0b460d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12647,19 +12795,36 @@ If the start and the end time of the session are not recorded in the logs, this 
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 7CFC0D7CFF2C173B308B6A1FF076692AE8794051
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: BBDD4F906420E44AA8FF081B0E81E39EED1AA71A
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222464) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Session Start/End Time Audit Record Check
+==========================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Timestamps in Audit API Records
+Timestamp field not detected in sample audit records
+
+Check 3: Session Events in systemd Journal
+Session events in journal:
+Feb 15 21:07:11 XO1 xo-server[1715836]: 2026-02-16T02:07:11.161Z xo:api WARN (unknown user) | session.signIn(...) [5ms] =!&gt; XoError: invalid credentials
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify session start/end times are recorded.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Session start/end time audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Perform a login and logout; (3) Verify audit records for session.signIn and session.signOut exist with timestamps; (4) Confirm timestamps have millisecond granularity and are in UTC.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12776,7 +12941,7 @@ If the application does not log application object access, this is a finding.</A
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cb82743f-a17e-45ad-bd8d-c8296f00dd4b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>91ad6ac8-ef2e-412d-abd2-34011e8549e3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12790,19 +12955,32 @@ If the application does not log application object access, this is a finding.</A
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 79D994B028A987EBB95F56A6EEBEE3944AAC8D79
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: 03797D52E99886DCAAAE9D451BDF5E0889F94381
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222465) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Object Access Audit Record Check
+=================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: Object Access Events in Audit API
+NOT FOUND in sample records (may be present in full history)
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify object access events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active. Object access audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Access a VM (start or view console); (3) Verify audit record includes: userId, action, object type, object ID, timestamp; (4) Test unauthorized access (attempt restricted action) and verify the failed attempt is also recorded.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -12926,7 +13104,7 @@ If the application does not log all direct access to the system, this is a findi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>468ae505-e920-4543-8499-04859ba4cf50</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b042d5ee-068a-41b8-abed-3aa1611ddfdf</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12940,11 +13118,32 @@ If the application does not log all direct access to the system, this is a findi
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: A106B92CAB58591C9D461484FBB453E5AAEDCAFA
+				<STATUS>Not_Applicable</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT APPLICABLE on 02/16/2026
+ResultHash: 1CBA2BBB626BC0CFAC6D0E15D56316366EAA2759
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222466) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Direct OS Access Audit Record Check
+=====================================
+
+The STIG check states: 'If the application does not provide direct
+access to the system, this requirement is not applicable.'
+
+Assessment: XO OS Shell Exposure Check
+Shell execution references found in XO source (review required):
+/opt/xo/xo-server/dist/index.mjs.map
+/opt/xo/xo-server/dist/api/esxi.mjs.map
+
+NOTE: These are internal server operations, not user-facing OS shell access.
+
+Conclusion:
+Xen Orchestra is a web-based virtualization management application.
+Users interact with XO exclusively via HTTPS web UI and REST API.
+XO does not expose terminal emulators, command shells, file browsers,
+or direct OS command execution interfaces to authenticated users.
+Internal Node.js server processes that call OS commands are not user-accessible.
+
+This requirement does not apply to XO deployments.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -12952,7 +13151,7 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Xen Orchestra is a web-based virtualization management application. Users interact with XO exclusively via HTTPS web UI and REST API. XO does not expose terminal emulators, command shells, file system browsers, or direct OS command execution interfaces to authenticated users. The STIG check explicitly states this requirement is not applicable when the application does not provide direct access to the system. This condition applies to XO deployments.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -13085,7 +13284,7 @@ Findings should document which of the events was not logged.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fcde79f4-0fbc-4250-91d2-61b53d944415</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2d6eed32-c25c-4004-a993-b5ada2d0d585</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13099,19 +13298,35 @@ Findings should document which of the events was not logged.</ATTRIBUTE_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000172</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 931D47FAA7D787B7524526FD3691FBECD5DA13E3
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: C346702A8C50CDCAB158BA55C2BD10B3E0A84148
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222467) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Account Lifecycle Audit Record Check
+=====================================
+
+Check 1: Enterprise Authentication (LDAP/AD)
+LDAP plugin not found - XO using local user management
+
+Check 2: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 3: Account Lifecycle Events in Audit API
+NOT FOUND in sample records (may be present in full history)
+
+Summary:
+OPEN: No enterprise auth or audit plugin confirmed.
+Manual review required: Verify account lifecycle events are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active or account lifecycle events are logged. Account lifecycle audit records may not be generated.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Create, modify, and delete a test user account; (3) Verify audit records for each lifecycle event are created; (4) Confirm records include: performing user ID, target user ID, action, and timestamp.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -13232,7 +13447,7 @@ If the application does not begin logging events upon start up, this is a findin
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4e290901-9b42-4f79-9934-c256c6ef4f12</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1a11799b-3f85-415a-b199-eef82b7dbf29</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13246,19 +13461,43 @@ If the application does not begin logging events upon start up, this is a findin
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001464</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 23769369608CD86E1636006AAAF056B44A44545E
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: AD79A953A68C35C141F56773BEA93AA5CD2FD6F4
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222468) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Session Auditing on Startup Check
+==================================
+
+Check 1: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 2: systemd Journal - Service Startup Events
+Startup events found in journal:
+Feb 14 18:22:58 XO1 xo-server[1715836]:       _readyState: 3,
+Feb 15 12:23:53 XO1 xo-server[1715836]:       _readyState: 2,
+Feb 15 12:23:54 XO1 xo-server[1715836]:       _readyState: 2,
+Feb 15 12:23:57 XO1 xo-server[1715836]:       _readyState: 2,
+Feb 15 12:24:00 XO1 xo-server[1715836]:       _readyState: 2,
+
+Check 3: Winston Logger Configuration
+Winston logger config not found in searched source paths
+
+Check 4: XO Service Current Status
+xo-server service: active
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify session auditing starts on XO startup.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active or that session auditing begins on startup.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Restart the xo-server service: systemctl restart xo-server; (3) Review logs immediately after restart: journalctl -u xo-server -f; (4) Verify the first log entries appear immediately upon service start; (5) Confirm the audit plugin logs a startup event.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -13371,7 +13610,7 @@ If the application is not recording application shutdown events in either the ap
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0f4920e6-1818-4d28-a1ea-e941a5bbfe6f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6c499dcc-5962-4a66-90cb-640ea70b7043</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13385,11 +13624,36 @@ If the application is not recording application shutdown events in either the ap
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000130</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 674684F1A733ECF7DBFEFB44AF7694E0BA1A55F5
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be NOT A FINDING on 02/16/2026
+ResultHash: 7541EBD62F8DEFF5DA7905352B475A384A0DB8DB
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222469) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Application Shutdown Event Logging Check
+==========================================
+
+Check 1: systemd Journal - Service Stop Events
+FOUND: Shutdown events in systemd journal (last 30 days):
+Jan 30 18:34:47 XO1 systemd[1]: Stopping xo-server.service - XO Server...
+Jan 30 18:36:17 XO1 systemd[1]: Stopped xo-server.service - XO Server.
+Feb 12 21:11:13 XO1 systemd[1]: Stopping xo-server.service - XO Server...
+Feb 12 21:11:14 XO1 systemd[1]: xo-server.service: Deactivated successfully.
+Feb 12 21:11:14 XO1 systemd[1]: Stopped xo-server.service - XO Server.
+
+Check 2: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 3: Process Exit Event Handlers
+Process exit handler code not found in searched paths
+
+Check 4: systemd Unit Configuration
+systemd unit configuration not available
+
+Summary:
+PASS: XO runs as a systemd service. systemd journals ALL service stop
+events including graceful shutdown, crash, and admin stop.
+Service: xo-server (systemd-enabled: enabled)
+Shutdown events are recorded in the systemd journal with timestamp.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
@@ -13397,7 +13661,8 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
-
+Automated check confirmed the XO service runs under systemd which records all service stop/shutdown events in the system journal. systemd logs both graceful shutdown (systemctl stop xo-server) and unexpected termination events with timestamps. This provides comprehensive shutdown event logging.
+ISSO action: Review recent shutdown events: journalctl -u xo-server | grep -i 'stop\|shut\|deactiv' | tail -10. Verify shutdown events are captured with timestamp and reason.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -13516,7 +13781,7 @@ If the IP address of the remote system is not recorded along with the event in t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f1d60fc6-3647-4667-b800-1978de8e9fb1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ffd5a2b-1308-41de-b68e-65d608dcdabd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13530,19 +13795,40 @@ If the IP address of the remote system is not recorded along with the event in t
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000130</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: 72EB6F58DD7E9CCDAC3A50B17B02437C58F20661
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) found this to be OPEN on 02/16/2026
+ResultHash: 2D61BC074BC3AAE42FEA7C351EB0E3E0DBEE191E
 ~~~~~
-This check requires manual review of Xen Orchestra application security configuration. Refer to the Application Security and Development STIG (V-222470) for detailed requirements. Evidence should include configuration files, policies, and operational procedures.</FINDING_DETAILS>
+Destination IP Address Logging Check
+======================================
+
+Check 1: XO Configuration - Outbound Connections
+XO connects to remote systems:
+xapiMarkDisconnectedDelay = '5 minutes'
+[xapiOptions]
+
+Check 2: XO Audit Plugin
+NOT FOUND: XO audit plugin not detected
+
+Check 3: Nginx Upstream/Proxy Configuration
+Nginx upstream config not found (nginx may not be present)
+
+Check 4: IP Addresses in Audit API Records
+IP address fields not detected in sample audit records
+
+Summary:
+OPEN: XO audit plugin not confirmed active.
+Manual review required: Verify destination IP addresses are logged.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 02/16/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_ASD_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
-
+Automated check could not confirm the XO audit plugin is active or that destination IP addresses are logged for outbound connections.
+ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Perform an operation on a VM hosted on a specific XCP-ng host; (3) Verify the audit record references the target host (which maps to the destination IP); (4) Check nginx access logs for upstream proxy destination logging; (5) Review syslog for outbound connection destination IPs to DNS, LDAP, and XCP-ng hosts.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -13657,7 +13943,7 @@ If successful access to application data elements is not recorded in the logs, t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>232f7f54-082f-4fcd-be1b-19c0602e301b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cc8a78a3-44ad-4269-b6fe-6b26f16f9f84</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13800,7 +14086,7 @@ If successful changes/modifications to application data elements are not recorde
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>dc0980d3-72b5-4f27-8da5-c1f912fdb4ba</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f06819f2-76cf-4848-bdf4-f99598b805d4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13935,7 +14221,7 @@ If the audit logs do not have a corresponding date and time associated with each
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>549128f5-b3f4-4c9e-9a87-5f538d3f1ee8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f3a24a0a-50ad-4d81-83fc-7a5c5bde18b1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14094,7 +14380,7 @@ If the audit logs do not contain enough data in the logs to establish which comp
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b07184cb-ef8f-4865-a0d5-a22df10fc647</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4dba10a0-ed45-4d67-8f38-322d24251e59</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14241,7 +14527,7 @@ If the application name and the hosts or client names are not identified, this i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>80b4a98d-afee-40f9-9c8c-413ed54ffe26</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b9b26a25-b22d-421f-ab14-d14a6b611c80</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14386,7 +14672,7 @@ If the application does not produce audit records that contain information regar
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3a1854b0-29fc-4f36-a9e1-342986a76727</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1bd81796-fb37-4a67-95e1-dbdb46d2c106</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14526,7 +14812,7 @@ If the event logs do not include the appropriate identifier or identifiers, this
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4091431b-fd89-4b19-878b-61649958b05d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a54defc4-5907-4427-a2ed-013f9cb6de10</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14673,7 +14959,7 @@ If the application does not log the full text recording of privileged commands o
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6d762e6f-8510-41c6-acf5-a9fa56978904</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8fa9a608-f3a0-4462-8416-deec3665bdee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14810,7 +15096,7 @@ If the application is not configured to utilize transaction logging, this is a f
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6b0d4dc2-8fab-4be8-af5f-b87b3774333d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9d211a9e-e669-4265-8b97-6d5c27053031</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14953,7 +15239,7 @@ If the application does not provide the ability to centrally manage the content 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a2c2a5a8-9f53-4cc7-bdea-4d6e1e929a90</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3cc8130e-7521-4ced-a92b-eea13efef62b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15100,7 +15386,7 @@ If the logs are not automatically moved off the system as per approved schedule,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2d852d20-7b46-4fd3-a1be-aced877e3349</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>58e3db95-3dda-4542-adb1-dade5b0acf51</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15241,7 +15527,7 @@ If the system is not configured to write the application logs to the centralized
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bc274984-3162-43e3-b03a-76e44474391f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c14b7d7d-b4ae-423f-976c-5afd833a41ad</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15386,7 +15672,7 @@ If the application is not configured to send an alarm when storage volume exceed
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ffd13ad3-a709-4498-a4a7-2d41dfe298ac</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e926f77b-092f-479f-8c04-9d8127d5e20b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15533,7 +15819,7 @@ Configure the log alerts to be immediately sent to the application admin/SA and 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>39c6357c-020e-4fc6-b437-f8e50dc04d01</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8ef51d5f-9633-460e-aa73-c85f7751b15d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15682,7 +15968,7 @@ If the application is not configured to alarm on alerts that indicate the audit 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>60c72b9f-4ee6-42b7-8758-6dd188e14199</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9620771d-ed2a-43cf-add5-b2e881627c7b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15833,7 +16119,7 @@ If the application does not shut down processing when an audit failure is detect
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d9ca2b85-d2de-436e-850c-0cfd36ef5635</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3bc3a2bd-4721-43cc-b98f-87a91f20cf88</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15974,7 +16260,7 @@ If all of the application logs are not reviewable from a central location, this 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>77c4f0cd-307c-4bb5-8bbe-2506da8087d3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c60fe3f2-997d-4ab8-8b5d-00cb3c621f07</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16128,7 +16414,7 @@ If the application does not provide the ability to filter audit events, this is 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8709e9a2-855b-4f9f-ac2b-afd539394a34</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>bbf7011f-0c94-4362-8dcc-1a49a938a708</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16286,7 +16572,7 @@ If the application does not provide on demand reports based on the filtered audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>26dc0e4b-df65-44ab-bbc1-d3fc95c4946d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ca5a92c-c28a-4c9c-9b2d-501bf9b307fd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16444,7 +16730,7 @@ If the application does not provide an audit reduction capability that supports 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b506dc37-f11a-4f93-ba7f-508ad49ced19</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4f766ed1-9743-429b-b687-ccfe4f3e50d9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16597,7 +16883,7 @@ If the application does not provide an audit reduction (event filtering) capabil
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e457f8c5-77c8-455d-896c-0fe5de7e8ccd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e0ccfaed-01bb-4cb3-b0fa-9645dbee5734</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16746,7 +17032,7 @@ If the application does not provide an immediate, ad-hoc audit review and analys
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>57c6558d-68bb-4352-9917-402701cbe74a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c8aa3426-9130-490c-9c70-6fc9985b5f21</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16893,7 +17179,7 @@ If the application does not provide customizable, immediate, ad-hoc audit log re
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b348deb7-89fa-405f-832a-f1346731640c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7287d866-0aca-40c2-9452-d06be5f90a47</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17040,7 +17326,7 @@ If the application does not have a report generation capability that supports af
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a7c3ce34-1106-4dd8-884f-238b29f2569b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>166955e0-26ca-40af-a95e-07020eae442d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17193,7 +17479,7 @@ If the application of event filters modifies the original log records, this is a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>86c164bf-9d1f-42cc-9d2f-c1bfcc9f4ae9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c6e7cdac-5aaa-4110-acfb-dbeb9f59b49b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17346,7 +17632,7 @@ If the application of event filters modifies the original log records, this is a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>efc74b26-24ad-41f5-9bb1-4ca45fae6745</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2fb5942a-1636-499e-8bfc-3e807c7a3d2f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17491,7 +17777,7 @@ If the application doesn't use the internal system clocks to generate time stamp
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>723d883e-8226-4044-ae94-a1546cc5e580</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e9e56af4-04f8-4040-bbf7-a2625dbc8c24</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17634,7 +17920,7 @@ If the application is not configured to map to UTC or GMT, this is a finding.</A
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f5a1b0ba-cd6f-45e9-82e4-ecdd2ba1ab23</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>27cc651f-83b5-4a45-87a5-e551f4895d92</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17773,7 +18059,7 @@ If the application audit log time stamps differ from the OS time source by more 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fb511e09-9007-461e-8e50-a9b1b614e5b9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9999b975-4241-42f2-be32-7423a5d42ee5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17928,7 +18214,7 @@ If a non-privileged user account is allowed to access the audit data or the audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d5c03287-3b58-47e7-abd4-cc2544fb71d5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ae107dab-a5c3-4ff7-973a-aecaecbad5dd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18083,7 +18369,7 @@ If a non-privileged user account is allowed to modify the audit data or the audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8dfe38f0-dc51-4e7b-9f05-761b63313455</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>305a7176-8275-4f84-b971-802d00c0ffb4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18238,7 +18524,7 @@ If a non-privileged user account is allowed to delete the audit data or the audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>48d1738b-f6ba-46eb-9896-0e1955a4ad96</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>38dfe53c-408c-4e72-aff2-df1809543482</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18389,7 +18675,7 @@ If a non-privileged user account is allowed to access the audit data or the audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>186ff517-d523-42d6-a66d-93a613afaefa</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ba807d3f-f85b-43cd-9ec4-7c11f6408fa6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18538,7 +18824,7 @@ If file permissions are configured so as to allow unapproved modifications to th
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>aaa0ac60-773e-44e3-81b2-7ba494ae5f88</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fdaf8598-7330-4b3b-ab53-54a1b3e84b26</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18687,7 +18973,7 @@ If file permissions are configured to allow unapproved deletions of the audit to
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c71b5247-f699-498c-9578-621e678e9758</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>76b91aaa-7170-4486-a84e-93ebd4f60915</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18830,7 +19116,7 @@ If the application backup settings are not configured to backup application audi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>552d1248-57db-420f-9965-16fc9c654e16</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a9a7b34a-abac-4c18-aa5b-3bc2abeddb3f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18975,7 +19261,7 @@ If an integrity check is not created to protect the integrity of the audit infor
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>163ea5ae-1643-49e9-8a71-97377b2ab4d4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e754363f-8882-42b2-b7d1-6fa34806cc03</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19130,7 +19416,7 @@ If a cryptographic checksum or hash value of the audit tool file is not created 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2e2c9b10-da7c-4718-a81c-3cd173a6c476</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>68d8dddb-d82c-4fa2-9074-957211519990</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19279,7 +19565,7 @@ If a cryptographic checksum or hash value of the audit tool file is not periodic
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>303c947b-3744-4251-ae44-efc366545525</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>03c03d2b-bffe-4a67-9c40-32a5f6b617d9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19426,7 +19712,7 @@ If the application allows regular users to install untested or unapproved softwa
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>99076797-ee3f-4da6-a0cb-7d5bbb497b23</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d2c069cd-d345-4e88-84e2-a13abfeba1cd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19577,7 +19863,7 @@ If access permissions to configuration files are not restricted to application a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1790895c-14a1-4cea-969f-2b2e223be7bf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>43323341-63ad-4abb-ae76-33137deaff84</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19724,7 +20010,7 @@ If the user account used to make the changes is not logged in the audit records,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>efdf69d3-7b2f-471f-b9cf-bd4a7f1e4c6b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e6eedb28-2a1f-4467-8ca5-89afa2258259</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19873,7 +20159,7 @@ Provide a cryptographic hash value that can be verified by a system administrato
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9e9c4f1d-28d0-45f3-bdd8-5ea9277301d8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6787d18f-7195-4719-bb61-c35d47a4390e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20022,7 +20308,7 @@ If file restrictions do not limit write access to library files and if the appli
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8d4c0d3c-29fd-4fc2-98ba-48aed6c0dcc5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8951c100-9582-4c4e-8001-afb15deb2b60</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20186,7 +20472,7 @@ If the high risk issues identified in the report have not been fixed or mitigate
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e38a95e3-3fd1-4afd-997b-4efd33d738dd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6ce4dac0-43c7-4572-af3c-978c7c2d2751</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20329,7 +20615,7 @@ If application requirements or policy documents specify application execution re
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>028ac0de-1d15-4255-90c3-4c4c9db0ff40</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>94dee0f7-3e6b-4e87-9727-ff5bd0f471e3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20474,7 +20760,7 @@ If application whitelisting is not utilized or does not follow a deny-all, permi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5651849e-6cef-4e8d-a42d-b350ab661a48</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>af91a84a-266b-4c3b-914a-e1771b9ee593</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20619,7 +20905,7 @@ If the application is operating with extraneous capabilities that have not been 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>054348e0-d048-4d3a-99dd-5f1ae572dded</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ddfce73a-1633-46cd-bce8-098b1923b3df</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20768,7 +21054,7 @@ If the ports are not approved by the PPSM CAL, this is a finding.</ATTRIBUTE_DAT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bd27d820-524c-410d-b73a-1225e610c308</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9aa7e62f-88bb-4216-8e78-bef3ae13768d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20934,7 +21220,7 @@ If the user is not prompted to reauthenticate before the user is allowed to proc
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>01560262-56fb-4551-9ff2-0a79bac15087</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d16c0c5b-ab75-47fd-bba4-e6f288c1c028</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21090,7 +21376,7 @@ If the device is not forced to reauthenticate periodically, this is a finding.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>efbf5847-6354-4873-ae33-92d0fcc69c21</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f13fb299-d5bd-445a-8713-84c74870157e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21236,7 +21522,7 @@ If the application does not uniquely identify and authenticate users, this is a 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d2d04dc7-9f9f-4ba2-a513-29e33a25d7ba</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fccda80d-4e15-488d-a8b4-75484e93de15</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21425,7 +21711,7 @@ If the application allows administrative access to the application without requi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9915c5a9-9cb8-47ec-ab04-71ab38e16ba8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>16fb21af-b9c8-42f1-b265-6240bd236f6c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21566,7 +21852,7 @@ If the application allows access without requiring a CAC, this is a finding.</AT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>18a68ab0-79ff-423e-b8d1-dcb55ce3dd35</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f78e8e43-ed09-440e-9e34-63ac5f61faf5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21711,7 +21997,7 @@ If the application allows access without requiring a CAC, this is a finding.</AT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9d1ad134-bcd0-4042-a8fb-5eaa14936433</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>de983f98-cb8d-48ff-9e4f-42e9d39a590b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21866,7 +22152,7 @@ If the application allows access without requiring a CAC or Alt. Token, this is 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7533433a-524a-4946-9416-d1ae1c510583</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7eb7f4c5-2932-4879-86c6-b8b122954331</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22020,7 +22306,7 @@ If the application allows administrative access to the application without requi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ca850a72-ded3-494c-9b48-a19a531b69f1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ed24dadd-d8a3-4980-9793-1cc6274f4872</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22178,7 +22464,7 @@ If the application allows access without requiring a CAC or Alt. Token, this is 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6be918b7-6959-4bfc-8f6d-002c75ae83e4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f8ae7298-be84-4de6-b9e4-2dbffe91a432</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22329,7 +22615,7 @@ If the application allows access without first requiring the group member to aut
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ac7a8b1c-f159-4fee-8ac4-5d38e5e4647a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>278b0008-66ed-4497-a026-8b15e54882ce</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22490,7 +22776,7 @@ If the application is not implementing replay-resistant authentication methods a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d19ad8ec-a5c3-4021-8ae5-79a55eb53414</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d945f21c-aed7-4302-bdf4-0d8f4b782f40</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22649,7 +22935,7 @@ If the application is not implementing replay-resistant authentication methods a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3f64f2fb-84f0-450d-995f-667e78698a0b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>59cb64e6-bf48-4548-a6e7-1e0b9ad5a824</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22817,7 +23103,7 @@ If SSL mutual authentication is required and is not being utilized, this is a fi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>efe05f7b-3e1c-4973-92d8-1f201dc5da1e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0b383f17-da67-4b13-85aa-f6d56547bbec</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22971,7 +23257,7 @@ If no authentication mechanism is used to authenticate remote service consumers/
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3b337877-0ee0-45cd-87b3-bdef4b4ee4ab</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>faa6dfd8-1533-4033-82dd-e2fb589868a0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23132,7 +23418,7 @@ If SSL/TLS mutual authentication is required due to the application processing n
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>417d0f6d-8547-4dcc-81b0-7e2b9ab74065</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e99b6bed-71af-4b8b-9f65-4087fa2d3959</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23293,7 +23579,7 @@ If the application does not disable accounts used to authenticate devices after 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>20b518d4-483d-4cac-a860-b54a5c33b082</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>78be8de6-05d6-47fb-bcc1-5be09761a6f0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23448,7 +23734,7 @@ If a password shorter than 15 characters can be created, this is a finding.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8194c8a5-9d78-4323-9841-b8058f3fefa7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8734396f-8826-4c7b-a4fd-450e71286af2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23601,7 +23887,7 @@ If a password without at least one upper-case character can be created, this is 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b6b8b581-312d-4da2-93dd-09c804e54e8d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>53fe1d07-8b53-4a4c-80d8-d963ac781810</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23754,7 +24040,7 @@ If a password without at least one lower-case character can be created, this is 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>90eec1fc-37a2-4f3f-a065-f9c7fbada766</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1e7bf3d6-94a9-4746-8e8a-030168571af4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23907,7 +24193,7 @@ If a password without at least one numeric character can be created, this is a f
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bd2faf23-af83-4cb1-b9be-10f5a797415a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4fc83159-fe9f-40af-af55-3027b26c7650</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24060,7 +24346,7 @@ If a password without at least one special character can be created, this is a f
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b52eb9a4-8e2f-494f-87b3-6ce52f86e606</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>54c8c99d-3d94-4be6-9197-7716163ffea7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24213,7 +24499,7 @@ If less than 8 characters of the password are changed, this is a finding.</ATTRI
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>019bbeae-0c6e-493d-9a2f-835fe5a299de</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>181c1726-5bb6-4d03-b82b-17f237a06194</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24387,7 +24673,7 @@ Ensure strong access control permissions on data files containing authentication
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f6a433e9-9820-43cd-a1e3-8d11a2c3d283</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>350cd40a-1d9e-4fc3-b923-7c3ff30c29f7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24557,7 +24843,7 @@ If the passwords are not encrypted when being transmitted, this is a finding.</A
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fccf4ca6-508c-4051-94f4-d1c42b85ba76</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b41f3f3b-acca-42e2-9c53-fc8bc51eddf5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24717,7 +25003,7 @@ If a password can be changed more than once within 24 hours, the minimum lifetim
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>23b9cd7d-cfe5-4243-8999-83c3ae327542</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d2e6a1cd-3def-436f-94df-295a0ddcc740</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24872,7 +25158,7 @@ If user passwords are not configured to expire after 60 days, or if the applicat
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>890c1716-d335-4cb9-949b-682e2b7593b1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fbc041d8-abea-42df-8be6-5a8e3610a886</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25027,7 +25313,7 @@ If the application does not prevent users from reusing their previous five passw
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2ce46e67-d10d-4d0a-a4e9-461799b33066</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>62b968cc-7ff5-4f96-ab87-7d65afe1ae43</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25176,7 +25462,7 @@ If the application can not specify a password as temporary and force the user to
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b3c8e72c-f3d4-44ad-86fc-05d1404a70b1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>503ad15e-c303-4b57-99fd-a170b0f398b9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25333,7 +25619,7 @@ Ensure users are only allowed to change their own passwords.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f9a13154-f1f2-4143-84f6-6b449e449aa9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4933330c-c78a-4304-8c1b-c6e38550e873</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25478,7 +25764,7 @@ If the test user retains access after the test account has been deleted, this is
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e4fc89bb-1c1a-4f5d-93b0-611f7afa3dae</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9b3027e3-f051-413c-b1a7-17b359701eb1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25623,7 +25909,7 @@ If the application does not construct a certificate path to an accepted trust an
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c8c73611-c9cc-4d45-adac-a35cb6678346</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>bb1488c1-365c-436f-b993-d3651564e7a6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25639,7 +25925,7 @@ If the application does not construct a certificate path to an accepted trust an
 				</STIG_DATA>
 				<STATUS>Not_Reviewed</STATUS>
 				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_ASD_Checks) was unable to determine a Status but found the below configuration on 02/16/2026:
-ResultHash: FFB413221A6E9A809E04BD6BB4C76BD0E0D772D1
+ResultHash: 1AE114DEC7193D47535C24C9A112AD80E96DFE53
 ~~~~~
 CAT I: PKI Certificate Path Validation Check
 
@@ -25665,7 +25951,7 @@ CAT I: PKI Certificate Path Validation Check
       notBefore=Dec 20 22:33:50 2025 GMT
       notAfter=Dec 15 22:33:50 2026 GMT
   Checking: /opt/xo/xo-src/xen-orchestra/@vates/nbd-client/tests/server-key.pem
-     Verification issue: Could not read certificate file from /opt/xo/xo-src/xen-orchestra/@vates/nbd-client/tests/server-key.pem 40C7A2C2E17F0000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:151: Unable to load certificate file
+     Verification issue: Could not read certificate file from /opt/xo/xo-src/xen-orchestra/@vates/nbd-client/tests/server-key.pem 400740533E7F0000:error:1608010C:STORE routines:ossl_store_handle_load_result:unsupported:../crypto/store/store_result.c:151: Unable to load certificate file
 
 4. Checking CA certificate bundle:
    CA bundle found: /etc/ssl/certs/ca-certificates.crt
@@ -25822,7 +26108,7 @@ If unauthorized access is granted to the private key(s), this is a finding.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b13b7db6-84b6-434d-8ffc-ccf618868b3a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b814aed0-3894-4f57-b364-88a6ddd1183e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26037,7 +26323,7 @@ If the application does not map the certificate data to an individual user or gr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ccbfc386-964d-4724-a77b-9c7d8054b66c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>632b96fc-c9ae-4744-86a0-7b840e7f21e4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26182,7 +26468,7 @@ If the application is not configured to implement a CRL, this is a finding.</ATT
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4fd65d14-c560-4935-b5e6-ec4f6c55fd10</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c64bdd20-0987-47e1-9fa3-18d739eb7d98</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26335,7 +26621,7 @@ Design the application so obfuscated passwords cannot be copied and then pasted 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>47e5c3e3-6661-4e46-827f-cbeab1e66cbd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>96e52563-1bd8-440f-9cb0-f738f2467586</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26491,7 +26777,7 @@ If the cryptographic module that requires authentication is not on the FIPS-appr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>65d3ac3c-cd2d-492b-a099-5763ddfca3aa</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fb74eefb-e292-41ba-ba83-7b9459c86989</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26666,7 +26952,7 @@ If the application does not identify and authenticate non-organizational users a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>606728b2-3335-46ec-824d-c92da6b6a0f0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3e9add8a-54fd-4449-9bee-5ac5df4c00a7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26809,7 +27095,7 @@ If the application is required to provide authenticated access to Federal agenci
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e3f7f4ed-893a-44fa-b921-0c2a2fa73e90</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>15944bc0-e029-4182-b4bb-5cc2f1c88a50</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26952,7 +27238,7 @@ If the application is required to provide authenticated access to Federal agenci
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>03241dee-bce9-4d46-9e48-4548a7ebf107</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>012484e1-ea83-4d8c-9dbc-de48a357a11c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27100,7 +27386,7 @@ If the application does not accept FICAM-approved credentials when accepting thi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9ea1eb85-764e-49b6-b9b5-ae6a9bae24dc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>19bb9161-bbd0-4dc2-9dda-df15e3a7625a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27254,7 +27540,7 @@ If the application is designed to be a service provider utilizing an external id
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>059330c3-8a5e-4c3d-a714-6f5234ab6876</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d77390c6-a9f2-4e39-8ff9-d80ef6c7d165</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27407,7 +27693,7 @@ If the application provides maintenance functions and capabilities and those fun
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7ad20b4d-e759-455e-8d14-e66792807608</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a293799f-07f2-43ce-b505-a9284c6dcb63</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27556,7 +27842,7 @@ If the application provides remote access to maintenance functions and capabilit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>97e6e4df-19f5-4db0-8ec0-05f7a1c113b9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f18d04d1-8087-4fd3-add6-b348c64fae21</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27703,7 +27989,7 @@ If the application provides remote access to maintenance functions and capabilit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cfb5743c-af92-411d-812a-f1e267cd5d90</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d311e6bc-43e0-4764-8b01-d0758dd861cb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27868,7 +28154,7 @@ If the application provides remote access to maintenance functions and capabilit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bdd9cbe6-767a-43f8-90c9-4d7770c57755</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>102cd2cc-fd99-4872-bd1a-83cc0b01b86e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28021,7 +28307,7 @@ If a CAC is not used when remotely accessing the application for maintenance or 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8cf6673e-1d3b-4b3e-a40c-1ca62f9fbc44</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>15ee878d-4b77-4211-88ad-e0c45e7ad340</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28172,7 +28458,7 @@ If the application does not deny access after each user session has exceeded the
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a9cfb339-4e33-4599-8be3-488aeafe0686</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d6a91f24-fd7c-4cb1-bfbf-c51a4d910e8f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28325,7 +28611,7 @@ Validate that variable values do not change while a switch event is occurring.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cf7b2262-ab9d-4138-978d-089e521b76e8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7d8bf709-d5c9-419a-bb17-15b197644448</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28484,7 +28770,7 @@ If exceptions are documented with no mitigation this is a finding.</ATTRIBUTE_DA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cd376067-c0db-414c-aa26-1efa6a227ea4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5ad300b7-88f9-482f-9742-c95b2a4b7505</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28631,7 +28917,7 @@ If the application signing process does not use FIPS validated cryptographic mod
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ff127b14-b204-4189-9797-1f2af38fd25e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7c6de395-6cc4-4f08-bb22-0bf031b0af64</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28776,7 +29062,7 @@ If FIPS-validated cryptographic modules are not used when generating hashes or i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>121aae4a-64ac-4aa9-9502-650dda5321e6</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>937d2c23-b982-450f-9165-3894842ed891</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28915,7 +29201,7 @@ If the application is using cryptographic modules that are not FIPS-validated to
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5739281b-ef30-4cd2-9191-8539cd31d470</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>12c5ae2a-b3d6-4751-b6ad-176f18885692</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29058,7 +29344,7 @@ If the application is using cryptographic modules that are not FIPS-validated wh
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0b98a62f-540a-476b-bbb0-9a1f6c90d841</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f1b4c5d1-8bbf-4cbe-b3aa-2bb6c2077eb6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29199,7 +29485,7 @@ If the application user interface and the application management interface are s
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>839c54e0-d6ab-4105-b6f5-8e5141d3c200</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c9c28657-939d-4ab2-95f1-edeeffba8bc5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29360,7 +29646,7 @@ If the application does not set the HTTPOnly flag on session cookies or if the a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>82b5054b-5442-4ca5-9c6f-54c84d9f38b0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>00cc69f6-80b4-4ae8-95a1-16b593a16264</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29512,7 +29798,7 @@ If the "secure" flag is not set on the session cookie, or if the vulnerability s
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0d632e4b-ba15-43bd-af82-cfc9be9b5fa4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b93f18d7-93d4-45ed-a605-bba2b50ea5ef</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29661,7 +29947,7 @@ If the session IDs are unencrypted across network segments, this is a finding.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>306e6078-6762-4899-bb9a-3bbe91e8d895</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>af6709f6-7846-4c01-bdde-44e288629204</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29844,7 +30130,7 @@ If the session IDs and associated cookies are not destroyed on logoff or browser
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9e2901a0-6943-4be9-99aa-6e48b59165fc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b2fb6dc8-b69d-428d-9fe0-41bcfa112acc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -29991,7 +30277,7 @@ If the session testing results indicate application session IDs are re-used afte
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>805b7783-0231-47f3-a3d6-f91aeaa6cd85</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e08d02e4-2e3a-4876-843c-c3271e0f407b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30128,7 +30414,7 @@ If the application is not configured to validate user session identifiers, this 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fa86a418-bd39-4300-a34b-b051dca107bb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c84078d3-6418-49cc-b1d7-ef29d92d5c26</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30273,7 +30559,7 @@ If the framework or the application is configured to transmit cookies within the
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>180daac1-b989-40f1-99fa-c61be6695bcb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3c18a531-3024-4413-ad2b-619044652d70</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30422,7 +30708,7 @@ If the session testing results indicate application session IDs are re-used afte
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a0d00839-9910-476f-8364-6ecadef4c0d2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5295f620-e68b-4240-899f-f53a5967e8fe</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30561,7 +30847,7 @@ If the application server does not generate unique session identifiers and does 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f19b1914-03a0-4fe5-86b1-06be35a788df</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>aa9b7228-48a8-451c-8574-eda319fec29f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30712,7 +30998,7 @@ If the application utilizes PKI certificates other than DoD-approved PKI and ECA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>631aa8e5-3d6b-46b1-9703-8462f2a0f18f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>10e9e009-be80-42c3-8c9f-86ac1ff86e38</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -30873,7 +31159,7 @@ If the application fails in such a way that the application security controls ar
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>85de2033-06b9-4ddf-a0f0-323a1f41900e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>330edfd3-f5a0-4f3f-bcf2-a5607ca5fbc7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31023,7 +31309,7 @@ If the application does not log the data required to determine root cause of app
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5f5ab8a6-ad83-4b6b-bca0-b85cdd6186ad</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e8ef9e61-4168-4192-99a1-63153241a098</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31174,7 +31460,7 @@ If the application processes classified data or the data owner has specified dat
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>53f300ad-3c72-4062-bbc6-c59a6619fff0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2f0beba7-7135-49b4-af49-4241e1c937f1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31325,7 +31611,7 @@ Encrypt data according to DOD policy or data owner requirements.</ATTRIBUTE_DATA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>67717845-40dc-473e-9645-0ab68b92981e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cedbe2d9-fbf7-4ab8-933f-f9b266203a75</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31494,7 +31780,7 @@ Encrypt classified data using Type 1, Suite B, or other NSA-approved encryption 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9c9381a7-136f-4e2d-b8a9-e3ed5fb3b177</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>077a0b07-de83-4a39-bfef-37a42d79ccdc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31641,7 +31927,7 @@ If the application does not protect security functions that enforce security pol
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8eb2c798-c509-4612-9aad-5b53f6eb8e43</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d14a6bd7-45e7-42ac-92de-6a9e721ed5e5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31780,7 +32066,7 @@ If the application does not maintain a separate execution domain for each execut
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f8e6f892-09e2-4856-96fd-702f843583de</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fd9e5e9d-0b62-409b-a122-255a3449fcf8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -31921,7 +32207,7 @@ If the application does not prevent unauthorized and unintended information tran
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6ed47e44-82a7-4d5a-a9ca-970db7d41145</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3ffa1af6-a04f-4980-851d-e4880a19541a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32080,7 +32366,7 @@ If the application administrator cannot demonstrate how these protections are im
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e5e38fe4-2f66-424e-b77b-15cfba27d9cd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>39a60ef7-efcf-48e8-8a83-4b5c68c280be</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32231,7 +32517,7 @@ If the test results indicate the application is susceptible to DoS attacks or ca
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d5818f21-e57b-4894-b2d3-c1f17dd1e8cc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7018b224-fbe7-44cc-ad13-09b6d2c5463a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32382,7 +32668,7 @@ If the application has been designated as high availability but the architecture
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>35e957c7-e967-4153-9aed-b0b48c2aa56a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cc13cb9b-4972-4134-8eb3-74e3b3b8b49c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32533,7 +32819,7 @@ If the application does not utilize TLS, IPsec or other approved encryption mech
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>002050e1-9b9c-4663-81b7-a9fbb57e9368</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1838975f-91e5-4832-9ac1-a815e9c16d65</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32688,7 +32974,7 @@ If the application is not configured to provide cryptographic protections to app
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4403a10f-dfcf-4c75-b117-1cf8a5cddc1d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e31e13e0-f4d2-44a1-907c-9778669ff4e4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32829,7 +33115,7 @@ If the application does not utilize TLS to protect the confidentiality and integ
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>153a2921-7a44-4744-9f72-4534f1ff0805</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8e377ca8-506d-4c1b-8092-0c4d8481221d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -32970,7 +33256,7 @@ If the application does not utilize TLS to protect the confidentiality and integ
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>345376c4-6fcd-4e03-9ec7-c5b085b5a326</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0b723224-22a7-48b1-a156-73ddbc5f277d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33115,7 +33401,7 @@ If the application displays any application technical data such as database vers
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>81717080-c915-45a9-8bf6-dacbcc2e31f3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d20c6638-3660-4fe8-919d-d57979952842</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33258,7 +33544,7 @@ Encrypt sensitive information stored in hidden fields using DoD-approved encrypt
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>db9854aa-4666-496a-960e-761db32f87c3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>04c9f941-43a9-40f5-8869-beabb1a0962f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33426,7 +33712,7 @@ Develop your application using a web template system or a web application develo
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6ae17e65-309f-4190-9a4a-060612627bdf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e1d5dfd6-96e0-4558-aef9-29d9774f687f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33592,7 +33878,7 @@ If application scan results show an unremediated CSRF vulnerability, or if no sc
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9364f6f3-b997-4773-9e8f-92dc60dd451a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4075d19e-ca5b-4412-a651-d1464a3a47ee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33757,7 +34043,7 @@ If testing results are not provided demonstrating the vulnerability does not exi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7a5996c9-b456-468e-98c2-ab3defa8329c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ad5ba4bb-d8cc-45b2-9de5-609e7440e8a5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -33933,7 +34219,7 @@ Security checks should be carried out after decoding is completed. Moreover, it 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0afd5d81-3d9f-4482-b732-9a7856165676</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9b15193a-c891-406b-908c-f9a72bf826ad</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34092,7 +34378,7 @@ If test results include input validation errors, or if no test results exist, th
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>88af5874-394c-47a8-bf8b-23c9dca5c98a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e582ad9a-a920-4ec8-8f34-703b9c0f3705</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34253,7 +34539,7 @@ If the application is vulnerable to SQL injection attack, contains SQL injection
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4fad5c41-9cb6-470a-b439-9b51fe97c6cb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1ecd93f2-ed1d-4c28-88ce-d007f0454c3e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34445,7 +34731,7 @@ Patch the application components when vulnerabilities are discovered.</ATTRIBUTE
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>853ad0dc-79e0-47ec-add6-86e1cafac830</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>670fc9ef-c14e-482a-bf84-dc5a9469a610</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34625,7 +34911,7 @@ Remediate identified vulnerabilities and obtain documented risk acceptance for t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>23b2ca9e-71dc-4b5a-a806-15c7cb774549</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>97019cd9-4fb2-4e93-97ab-adbf9fa622cb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34812,7 +35098,7 @@ Use generic error messages.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>823c8aad-4598-4996-9119-e7e9f75b5ff6</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>36eb43e1-60d4-4146-a538-6919a5f50f45</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -34961,7 +35247,7 @@ Use generic error messages for non-privileged users.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9de0a1b7-4dcb-41b9-9527-383e9104d220</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>45c738ba-d1ed-47a4-aeba-1199eff56442</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35119,7 +35405,7 @@ Patch applications when overflows are identified in vendor products.</ATTRIBUTE_
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>811dd7f4-6fe8-4b59-9daf-1515150c4feb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b7f41f98-f562-4a0b-995e-d2638cad1294</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35303,7 +35589,7 @@ If old versions of the application or components are still installed on the syst
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cc5b8e9a-08e5-4b28-9fda-a905059f91a7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2c24b971-cb13-4452-a27a-67f30677b644</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35446,7 +35732,7 @@ If application updates are not checked on at least on a weekly basis and applied
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>86412aea-8620-42f5-bd2a-3cb3dc91ab67</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>50034330-9616-463e-adc3-c0fb752f5eb7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35589,7 +35875,7 @@ If the application is designed to perform security function testing and does not
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>655661a9-c2b0-4ec5-927b-2cf06da4942d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>10d5c5c3-d9af-43f9-883a-228ebab445ac</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35734,7 +36020,7 @@ If the application is designed to perform security function testing and does not
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0d1762e5-c693-458b-80e7-b46d46ccebc5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>399423c5-311e-4ca1-80d0-8385ebce6b1f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -35883,7 +36169,7 @@ If the application is designed to perform security function testing and does not
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>204b86db-b10c-4831-a832-8d7d3a36795d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>083f7576-fdc1-40d1-8191-82defd7fc86d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36040,7 +36326,7 @@ If the code has not been signed or the application warns that a control cannot b
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e02126a4-f60c-47af-ae33-ce73b50c01ee</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b0da0549-5530-453c-b62c-748ad8eb8f12</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36175,7 +36461,7 @@ If a documented account management process does not exist or unauthorized users 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d3e70063-f69b-47c3-bb3d-e445dda9b356</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6f767923-2162-468e-b28e-f9a1270512a0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36343,7 +36629,7 @@ If the application is tiered and the network infrastructure hosting the applicat
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>72b94e60-e1b0-4254-91de-bf62c6b85350</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>51a535de-e05c-4a3a-9eab-cd0d3d6923a3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36484,7 +36770,7 @@ If audit logs have not been retained for 30 months (12 months active + 18 months
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b4e5f5c1-3c7f-43a9-8a44-35f02adbdb9f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>dd51385f-0189-4c59-b40c-8cdfbc3ab5a2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36619,7 +36905,7 @@ Maintain a log or records of dates and times audit logs are reviewed.</ATTRIBUTE
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c09750c3-b05f-4434-b0a6-cdeebe901f8c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1f071537-4876-4cfb-9bfc-95402e17792b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36752,7 +37038,7 @@ If there is no policy for reporting IA violations, this is a finding.</ATTRIBUTE
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>591ea98a-1c95-4b5b-99ec-6b021d33bf61</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>555a6b57-c9ad-4506-8b35-bf61e1934b21</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -36913,7 +37199,7 @@ Address discovered vulnerabilities.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ab169a61-6952-43e8-a623-7e8e46d8e16a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d82ca245-bb82-481f-9825-dc1263b3de2e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37062,7 +37348,7 @@ If deadlock issues are not being addressed via documented web service configurat
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2e3c7536-238d-4eed-ae1c-ca3408b5cd79</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6cf18fa8-8554-41f2-8005-053b5be0f2f9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37207,7 +37493,7 @@ If the application user data is located in the same directory as the application
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7d02f47f-6b70-4c8c-96ea-c2f25fae75ed</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>db17f9e9-d745-4752-92bd-4183aa50e401</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37355,7 +37641,7 @@ or vendor literature and lock down guides, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c60c7ce6-481c-410b-93d5-ca503b641536</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7bb2ddb4-5654-48d9-8a8a-c82b8ca45ccf</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37509,7 +37795,7 @@ Verify that all ports, protocols, and services are used in accordance with the D
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3a9ba96a-08bf-4f7b-a0a3-3e2f9648cdf4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>47a2ac5f-c845-4875-a8cb-4e116c9551a6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37642,7 +37928,7 @@ If the application requires registration, and is not registered or all ports use
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6e03677e-e060-4273-94f0-857c6962ff82</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2507a419-304d-407c-a42f-bc843c86bace</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37787,7 +38073,7 @@ If CM repository is not at the latest security patch level and is not operating 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>48abf0b0-6423-4188-b920-3426bc636c2e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>50b387d2-89f1-4617-b9e8-0bfe67555e9d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -37936,7 +38222,7 @@ If CM access privileges have not been reviewed within the last three months, thi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d0a07a75-c8b6-4299-bb58-2f1247dc7bd2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>22ee16ae-ab30-419c-9fad-5d0d5c43da47</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38214,7 +38500,7 @@ If the CMR does not audit for modifications, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7da95e3b-e120-442e-bf4b-920acc40dd02</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>52b3b8f6-2f0e-4829-b221-ebc626754098</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38361,7 +38647,7 @@ If there is no evidence of CCB activity or meetings prior to the last release cy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d830337d-ac7f-4345-ae4f-631ed68c806f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a1bfc9f4-9c04-49a8-a177-10147a6482b0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38496,7 +38782,7 @@ If the application environment is not compliant with all DoD IPv6 Standards Prof
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>00e7e1c0-d59a-493e-9d51-4279bc397cac</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c5a9c72d-64a9-430b-ba3c-53f5d2e9ae91</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38633,7 +38919,7 @@ If a mission critical application is deployed onto the same server as non-missio
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6fdb128e-e1a3-49cd-a2b6-c37a0238070e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9645e4a4-a2d8-4667-b09f-7f14c877b2c8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38774,7 +39060,7 @@ If the contingency plan does not exist or does not meet the severity level requi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5c17bbd1-3794-4a4e-b5ba-95c839f16da6</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5958235e-3551-486a-bb1c-e9238c73d75a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -38913,7 +39199,7 @@ If the application is not part of the site’s disaster recovery plan, or if any
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>23e365e5-1731-4187-91ff-f813ede07cf9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f904d432-570b-424c-a35e-946d08bb0511</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39074,7 +39360,7 @@ If any of the requirements above for the associated risk level of the applicatio
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e0975d9b-c3a3-427f-b3eb-519c334557ae</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fc331dae-c70f-41bb-9031-1c3acba84383</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39217,7 +39503,7 @@ If back-up copies of the application software or source code are not stored in a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e488a908-d746-4de6-aeb8-0a77021939dc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a0218108-d0cf-4876-a41e-2035ef092619</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39352,7 +39638,7 @@ If backup and restoration devices are not included in the recovery procedures, t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c1fbea99-4725-4312-a625-ed047f4216d7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ccba069b-599d-4eb3-8be0-5e7f8e39aab6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39489,7 +39775,7 @@ If the application does not implement encryption for key exchange, this is a fin
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8efa3b4e-a7dc-4dcf-bf52-94be717cdf1a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b51b8e44-020e-42ab-ba91-1def3a358e72</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39628,7 +39914,7 @@ The finding details should note specifically where the offending credentials or 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3ebbdcab-e650-4f06-bbef-a9b9f211d469</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0dd5e91d-1096-4e44-9e92-7774156f8415</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39814,7 +40100,7 @@ After completing the test, destroy all printed output using the site’s preferr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>81582ffa-e70d-4a81-b811-2d4d23aba343</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ca53f498-af88-4ea0-b24b-e98e40040596</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -39957,7 +40243,7 @@ If test plans, procedures, and results do not exist, or are not updated for each
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>53b27649-b961-4b3f-aa90-c4c4171aa951</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d53c5c3c-e468-4029-b92d-49e7d46d2352</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40114,7 +40400,7 @@ Application Admins validate cryptographic hashes prior to deploying the applicat
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e1e5b539-330c-4866-99a3-349c9f2cc7d3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c81cadce-c67e-453b-b705-574891653780</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40253,7 +40539,7 @@ If the organization has not designated personnel to conduct security testing, th
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>eba49287-8145-4581-8e8a-0e93f398aace</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9031c307-3c8e-479a-9639-7f4d6e916e94</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40392,7 +40678,7 @@ If annual testing procedures do not exist, or if administrators are unable to pr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d3c073f4-8d98-4e8a-aff3-bf5164f211c6</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cdc287ae-60f9-48cb-905e-7e27016ce1af</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40565,7 +40851,7 @@ If the organization does not conduct code reviews on the application that attemp
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6ef469fc-59bd-4683-a56d-fa8d77cf8398</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9266dcbb-aae4-416d-bf6a-1f3b493fe810</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40712,7 +40998,7 @@ If these code coverage statistics do not exist, this is a finding.</ATTRIBUTE_DA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8ccbe160-910a-4301-ac77-d3a428171ac0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1ccdc355-7749-426f-bd42-08f17ce51e2e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40851,7 +41137,7 @@ If there is no configuration management repository or the code review flaws are 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0045b223-bf15-434d-b9e8-cdfc65871935</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8b764ebb-4f2c-4949-b6e3-670d8a5b2bd7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -40988,7 +41274,7 @@ If IA impact analysis is not performed, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>28a42565-ab03-41ff-a761-a85d196676df</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fb9ef073-5aea-48e2-8509-5cd8bc563157</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41129,7 +41415,7 @@ If security flaws are not addressed in the project plan or there is no process t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8ab9d668-c3f5-4657-9c43-abb1e450a05a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>be2747a0-357f-4b51-835e-d1227340fd29</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41283,7 +41569,7 @@ Include programming best practices based on the languages being used for applica
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ed5fdadd-7b48-4bc0-8679-3a58c5b93757</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cf69ceee-6ba3-4272-9b5f-bdcfd7b7dc8d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41446,7 +41732,7 @@ If the design document is incomplete, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f65d1e11-b303-489d-8bc3-d696f12823eb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>12853e06-4c65-4385-8069-e2457d596ac6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41613,7 +41899,7 @@ If the described threat model documentation does not exist, this is a finding.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>28874b7f-5132-4355-92ee-1b0e2ce08a44</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>755120c3-a4d7-4dc0-b5ce-3a5b2ca39494</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41756,7 +42042,7 @@ If no test results are available for review, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>72c3cf3f-17f3-4714-8bc9-e3bbfeba1ec7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3c69c5e7-d9ae-4a80-9d9d-ae14d6738d28</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -41912,7 +42198,7 @@ If the application incident response plan does not exist and at a minimum does n
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>940eb74f-b1bd-4602-bd1d-69ad541fc892</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f06a4467-e3d1-4f06-9815-04dbd1349433</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42057,7 +42343,7 @@ If any of the software components are not supported by a COTS vendor or a GOTS o
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2bd4af35-2dee-4188-9c72-096d80e52207</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cb2c465a-d68e-48c4-b576-20546be848ee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42198,7 +42484,7 @@ If the application or any of the application components are not being maintained
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1a0eee89-fc40-40f3-a98e-82aad098920d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fbbd6007-023e-483b-a6a5-d84d7eccb5d6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42341,7 +42627,7 @@ If provisions are not in place to notify users when an application is decommissi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>de429916-2fc3-4a68-844d-088c2939036c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c3aecfad-69b7-4f91-b8d4-b390f5b07497</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42484,7 +42770,7 @@ If these accounts are not necessary to run the application, or if the accounts a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8a90dadb-0e5a-4d45-875d-8c890dfa6742</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4da2363f-69b3-40dc-8674-a4d3d3340f8e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42619,7 +42905,7 @@ If authentication is successful, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b6cdb256-1177-4ee6-9347-94047e869ce8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>93c15b09-0ac8-40a2-bf30-0574ffa8456b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42817,7 +43103,7 @@ Verify the application configuration guide is distributed along  with the applic
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0c277d9d-b352-4aaa-ae43-533cc989408e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>11219f21-e74a-4626-a6e9-3f94a45cb4ce</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -42974,7 +43260,7 @@ If the security classification guide does not exist, or does not contain applica
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f750e266-d776-4b9b-a111-c9f9450c6ca3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f1ccaa71-6519-43f7-8cd4-0b74fe2f0ce0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43143,7 +43429,7 @@ If uncategorized mobile code types are found, ask the application administrator 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>85dcd948-30be-4eda-866a-a44c054a8fce</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e19dee6a-84a4-42a5-b8e5-89aa0721f8be</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43282,7 +43568,7 @@ If any database exports include sensitive data and that data is not sanitized or
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8fc7fea2-9209-4ffe-8739-e902aba4e20f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0c4977a6-da46-4a43-ac66-480bf41b9597</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43421,7 +43707,7 @@ If mitigations for DoS attacks are identified in the threat model but are not im
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0690dab7-7819-4a55-baa2-e497a7aa98c5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e7a4f051-295e-4ea1-89bc-57bb9ff365ae</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43556,7 +43842,7 @@ If this monitoring capability does not exist, this is a finding.</ATTRIBUTE_DATA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7f64cc2b-a655-4a66-b93b-0895d2a875bc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ac20f0f-83bd-464f-9b84-7945e305359f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43693,7 +43979,7 @@ If no deployment personnel are registered to receive the alerts, this is a findi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0be7a238-19df-4f5e-9ad1-4a917416b263</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9ae9b960-02d2-4d56-a148-d8662afafa90</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43840,7 +44126,7 @@ Include a description of the issue, a summary of risk as well as potential mitig
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>343e121f-c763-4533-99e0-d772e7a08de2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3274ab5d-026c-467d-934c-cfafad042422</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -43973,7 +44259,7 @@ If the application is publicly accessible and traffic is not being routed throug
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f18f172d-aa4d-4cdd-9e58-5b74694f68e7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>dd4339c4-4583-4c8a-9477-cfcb356849bc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -44114,7 +44400,7 @@ If the application does not create an audit record when concurrent logons occur 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>39a2a87c-4727-4b35-a03f-984922739544</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>543f011d-81db-44c4-bd8c-3093bfe74609</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -44268,7 +44554,7 @@ If there is no evidence of security training, this is a finding.</ATTRIBUTE_DATA
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1f2a2ba8-1b32-4b5f-8a88-4c9b303426c9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2a2b4701-c8bb-4ebd-8cd7-d76bd0dc8be0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -44451,7 +44737,7 @@ Implement NSA-validated type-1 encryption of all SAMI data stored in the enclave
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e6059853-11a4-4acc-8fc4-084cff1627b2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0eb03398-5a33-4f8c-92de-253a8eb769de</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
