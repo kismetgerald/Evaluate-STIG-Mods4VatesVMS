@@ -23,7 +23,7 @@ an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD u
 | Module | STIG / SRG Applied | Target | Checks | Implementation Status |
 |---|---|---|---|---|
 | `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | **Complete** — all 126 checks automated (121 CAT II + 5 CAT I) |
-| `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | **In Progress** — 109/286 checks automated (38%); 7 CAT II batches complete; 177 stubs remaining |
+| `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | **In Progress** — 123/286 checks automated (43%); 8 CAT II batches complete; 163 stubs remaining |
 | `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | **Stub** — all checks return `Not_Reviewed` with auditor guidance (no CAT I in GPOS SRG) |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 204 | **Partial** — 3 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
 | `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 368 | **Partial** — 12 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
