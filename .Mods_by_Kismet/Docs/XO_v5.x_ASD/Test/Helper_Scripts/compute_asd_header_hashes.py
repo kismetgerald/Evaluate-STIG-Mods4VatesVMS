@@ -13,7 +13,7 @@ import re
 
 XCCDF_PATH = r"d:\Dropbox\IT Docs\Scripts\VatesVMS-Evaluate-STIG\v1.2507.6_Mod4VatesVMS_OpenCode\Evaluate-STIG\StigContent\U_ASD_STIG_V6R4_Manual-xccdf.xml"
 
-# All implemented VulnIDs (Batches 1-4)
+# All implemented VulnIDs (Batches 1-9)
 IMPLEMENTED_VULNIDS = [
     "V-222389", "V-222390", "V-222391", "V-222392", "V-222393",
     "V-222394", "V-222395", "V-222396", "V-222397", "V-222398",
@@ -31,6 +31,26 @@ IMPLEMENTED_VULNIDS = [
     "V-222441", "V-222442", "V-222443", "V-222444", "V-222445",
     "V-222446", "V-222447", "V-222448", "V-222449", "V-222450",
     "V-222451", "V-222452",
+    # Batch 6: Access Control Continuation
+    "V-222453", "V-222454", "V-222455", "V-222456", "V-222457",
+    "V-222458", "V-222459", "V-222460", "V-222461", "V-222462",
+    "V-222463", "V-222464", "V-222465", "V-222466", "V-222467",
+    "V-222468", "V-222469", "V-222470",
+    # Batch 7: Audit Record Generation & Logging
+    "V-222471", "V-222472", "V-222473", "V-222474", "V-222475",
+    "V-222476", "V-222477", "V-222478", "V-222479", "V-222480",
+    "V-222481",
+    # Batch 8: Audit Record Management
+    "V-222482", "V-222483", "V-222484", "V-222485", "V-222486",
+    "V-222487", "V-222488", "V-222489", "V-222490", "V-222491",
+    "V-222492", "V-222493", "V-222494", "V-222495",
+    # Batch 9: Audit Info Protection, Software/Config Controls
+    "V-222496", "V-222497", "V-222498", "V-222499", "V-222500",
+    "V-222501", "V-222502", "V-222503", "V-222504", "V-222505",
+    "V-222506", "V-222507", "V-222508", "V-222509", "V-222510",
+    "V-222511", "V-222512", "V-222513", "V-222514", "V-222515",
+    "V-222516", "V-222517", "V-222518", "V-222519", "V-222520",
+    "V-222521",
 ]
 
 def md5(text):
