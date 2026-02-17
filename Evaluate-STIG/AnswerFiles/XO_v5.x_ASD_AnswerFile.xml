@@ -439,17 +439,17 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML not configured — control does not apply-->
+        <!--SAML not configured â€” control does not apply-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no active SAML configuration in XO config files (/opt/xo/xo-server/config.toml or /etc/xo-server/config.toml). XO supports SAML via the @xen-orchestra/auth-saml plugin, but SAML is not enabled on this system. This control requires SAML authentication to be configured and active; since SAML is not in use, the control is Not Applicable.
 
-If SAML is later enabled, this finding must be re-evaluated. The SAML IdP must generate a unique assertion ID (the saml:Assertion ID attribute) for every assertion it issues. Verify the IdP configuration enforces uniqueness — most modern IdPs (ADFS, Okta, Azure AD) do this by default.</ValidTrueComment>
+If SAML is later enabled, this finding must be re-evaluated. The SAML IdP must generate a unique assertion ID (the saml:Assertion ID attribute) for every assertion it issues. Verify the IdP configuration enforces uniqueness â€” most modern IdPs (ADFS, Okta, Azure AD) do this by default.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML configured — manual review required-->
+        <!--SAML configured â€” manual review required-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected active SAML configuration in XO config.toml. XO delegates SAML assertion handling to the configured Identity Provider (IdP). This control requires the ISSO/ISSM to verify with the IdP administrator that:
@@ -469,7 +469,7 @@ Action required: Obtain documentation or configuration evidence from the IdP adm
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--XO uses REST/JSON API — WS-Security/SOAP intermediary assertions do not apply-->
+        <!--XO uses REST/JSON API â€” WS-Security/SOAP intermediary assertions do not apply-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Automated scan confirmed XO (Xen Orchestra) uses a REST/JSON API architecture, not SOAP/WS-Security. WS-Security encrypted assertion tokens are a SOAP-specific mechanism (WS-Security standard, OASIS 2004). XO has no SOAP endpoint, no WS-Security middleware, and no assertion intermediary in the SOAP sense.
@@ -515,7 +515,7 @@ Note: If a future XO deployment introduces a SOAP-based integration gateway, thi
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML not configured — control does not apply-->
+        <!--SAML not configured â€” control does not apply-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no active SAML configuration on this system. The OneTimeUse element is a SAML 2.0 Conditions element restriction that prevents assertion replay. Since SAML is not configured, no SAML assertions are generated and this control does not apply.
@@ -525,14 +525,14 @@ If SAML is later enabled, verify: (1) the IdP only includes at most one OneTimeU
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML configured — manual review required-->
+        <!--SAML configured â€” manual review required-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected active SAML configuration. SAML 2.0 Core (section 2.5.1.5) requires that the Conditions element contain at most one OneTimeUse element per assertion. XO delegates SAML assertion processing to the @xen-orchestra/auth-saml plugin and the upstream IdP.
 
 Action required: The ISSO/ISSM must verify with the IdP administrator that:
 1. The IdP never includes more than one OneTimeUse element in the Conditions block of any assertion sent to XO.
-2. The XO SAML plugin enforces OneTimeUse semantics — each assertion is only accepted once (replay protection).
+2. The XO SAML plugin enforces OneTimeUse semantics â€” each assertion is only accepted once (replay protection).
 
 Document the IdP product, version, and the configuration or code reference confirming OneTimeUse enforcement. Common IdPs (ADFS, Okta, Azure AD) enforce this by default and may be documented by citing the product compliance statement.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
@@ -545,7 +545,7 @@ Document the IdP product, version, and the configuration or code reference confi
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML not configured — control does not apply-->
+        <!--SAML not configured â€” control does not apply-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no active SAML configuration on this system. The SessionIndex attribute is a SAML 2.0 element used in AuthnStatement to correlate the IdP session with the SP session. Since SAML is not configured, no SAML SessionIndex values are generated or transmitted, and this control does not apply.
@@ -555,7 +555,7 @@ If SAML is later enabled, verify: (1) all SAML messages containing a SessionInde
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--SAML configured — manual review required-->
+        <!--SAML configured â€” manual review required-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected active SAML configuration. SAML 2.0 SessionIndex values that are correlated with user privacy data must be transmitted only over encrypted channels.
@@ -576,7 +576,7 @@ Verify the ACS URL registered in the IdP for XO uses https:// not http://. Docum
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--LDAP/AD integration detected — automated account management satisfied-->
+        <!--LDAP/AD integration detected â€” automated account management satisfied-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected LDAP or Active Directory integration configured in XO config.toml. LDAP/AD integration satisfies the requirement for automated account management mechanisms by delegating user provisioning, disabling, and removal to the enterprise directory service.
@@ -588,7 +588,7 @@ The ISSO/ISSM should document the LDAP/AD integration as the automated account m
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--No LDAP/AD — manual account management only-->
+        <!--No LDAP/AD â€” manual account management only-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no LDAP or Active Directory integration in XO config files. XO is operating with local account management only, which requires manual administrative action for each account lifecycle event.
@@ -624,7 +624,7 @@ Reference: config.toml LDAP configuration requires: ldap.url, ldap.bindDn, ldap.
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--XO has no native 72-hour temporary account expiry — manual process or LDAP required-->
+        <!--XO has no native 72-hour temporary account expiry â€” manual process or LDAP required-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan confirmed XO does not have a native mechanism to automatically expire or disable temporary accounts after 72 hours. XO account management is primarily through the web UI or xo-cli; there is no built-in account expiry field or scheduled deprovisioning job.
@@ -645,7 +645,7 @@ Document the chosen approach in the ISSO/ISSM authorization artifacts. If no tem
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--XO has no emergency account concept — control does not apply-->
+        <!--XO has no emergency account concept â€” control does not apply-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no emergency account designation or protection mechanism in XO. XO does not implement a concept of "emergency accounts" (also called break-glass or PACE accounts) as a distinct account type with protected status. All XO administrator accounts have equal administrative rights and can be enabled or disabled by any other administrator.
@@ -663,7 +663,7 @@ Since XO has no application-level emergency account feature or account type dist
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--XO lacks native 35-day inactivity disable — LDAP or manual process required-->
+        <!--XO lacks native 35-day inactivity disable â€” LDAP or manual process required-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no native inactivity-based account disable mechanism in XO. XO does not track last-login timestamps for accounts or automatically disable accounts after a period of inactivity. The XO LevelDB database stores user credentials but does not implement inactivity enforcement.
@@ -684,10 +684,10 @@ Document the chosen approach in the ISSO/ISSM authorization artifacts with evide
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Manual account review required — no automated enforcement of "unnecessary" policy-->
+        <!--Manual account review required â€” no automated enforcement of "unnecessary" policy-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>Automated scan enumerated XO user accounts from the LevelDB database or XO REST API. The scan cannot automatically determine which accounts are "unnecessary" — this requires human judgment based on current organizational roles and responsibilities.
+        <ValidTrueComment>Automated scan enumerated XO user accounts from the LevelDB database or XO REST API. The scan cannot automatically determine which accounts are "unnecessary" â€” this requires human judgment based on current organizational roles and responsibilities.
 
 Action required:
 1. Review the list of XO user accounts displayed in the Finding Details section.
@@ -1296,7 +1296,7 @@ fully automated. The approved account unlock procedure must meet all of the foll
 
 Required procedure elements (STIG requirement):
 1. Written procedure document with ISSO and ISSM approval signatures
-2. Identity verification step — administrator must confirm user identity before unlocking
+2. Identity verification step â€” administrator must confirm user identity before unlocking
 3. Ticket/request workflow creating an auditable trail for each unlock event
 4. Documentation of the business justification for the unlock
 
@@ -1337,7 +1337,7 @@ prohibition of unauthorized use, and user consent to monitoring conditions.</Val
 Edition does not include a built-in banner feature. The banner must be implemented via one of
 the following methods:
 
-Option 1 — Nginx reverse proxy pre-authentication page (recommended):
+Option 1 â€” Nginx reverse proxy pre-authentication page (recommended):
 1. Install nginx: apt-get install -y nginx
 2. Create a consent page that displays the DoD banner with an Accept button
 3. Configure nginx to require banner acknowledgment before proxying to XO:
@@ -1346,11 +1346,11 @@ Option 1 — Nginx reverse proxy pre-authentication page (recommended):
 4. Configure XO to listen only on localhost (127.0.0.1)
 5. Test: browse to XO URL and verify banner appears before login page
 
-Option 2 — Network-level pre-authentication page:
+Option 2 â€” Network-level pre-authentication page:
 Configure a captive portal or network access control system to present the banner
 before granting network access to the XO server.
 
-Required DoD banner text (abbreviated — use full approved text):
+Required DoD banner text (abbreviated â€” use full approved text):
 "You are accessing a U.S. Government (USG) Information System (IS) that is provided for
 USG-authorized use only. By using this IS, you consent to monitoring of your use..."
 
@@ -1379,7 +1379,7 @@ present in the login page or pre-authentication page.</ValidTrueComment>
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>The DoD banner acknowledgment mechanism was not detected. The banner must be retained until
-the user takes an explicit action to accept it — simply displaying it without requiring
+the user takes an explicit action to accept it â€” simply displaying it without requiring
 acknowledgment does not satisfy this requirement.
 
 Implementation requirements:
@@ -1730,7 +1730,7 @@ simultaneously. Implementing both with a single nginx pre-auth page is the recom
       <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Xen Orchestra does not implement data classification categories, MAC security labels, or compartmentalized data protection. XO is a virtualization management platform that uses RBAC (Admin/Operator/Viewer roles) — not data classification levels. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data and data protection. This condition applies to XO deployments.</ValidTrueComment>
+        <ValidTrueComment>Xen Orchestra does not implement data classification categories, MAC security labels, or compartmentalized data protection. XO is a virtualization management platform that uses RBAC (Admin/Operator/Viewer roles) â€” not data classification levels. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data and data protection. This condition applies to XO deployments.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -2055,154 +2055,402 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Perfo
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222471">
-    <!--RuleTitle: The application must log user actions involving access to data.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO provides audit logging of user data access operations. The XO audit plugin (@xen-orchestra/audit) is installed and records all user API operations, including read/list/get actions that constitute data access. Each audit record includes the action name (API method), userId of the authenticated user, and timestamp. All data access is performed via the XO JSON-RPC API, and the audit plugin intercepts all API calls at the middleware layer.
+
+ISSO VERIFICATION:
+1. Confirm XO audit plugin is enabled in XO web UI (Settings &gt; Plugins &gt; Audit)
+2. Review audit records via API: GET /rest/v0/plugins/audit/records
+3. Verify read-type actions (vm.list, host.get, etc.) are present in audit records
+4. Confirm audit records are retained per organizational policy (minimum 1 year for DoD)</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO audit logging of user data access operations was not confirmed. The XO audit plugin may not be installed or enabled.
+
+REMEDIATION STEPS:
+1. Install XO audit plugin: In XO web UI, go to Settings &gt; Plugins
+2. Find '@xen-orchestra/audit' or 'audit' plugin and enable it
+3. For XOCE: npm install @xen-orchestra/audit in the XO packages directory
+4. Verify the plugin logs user data access events after enabling
+5. Test by performing a data access operation and reviewing audit records
+
+ALTERNATIVE: If using a SIEM or external logging solution that captures all XO API calls, provide documentation showing data access events are captured and attributed to users.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222472">
-    <!--RuleTitle: The application must log user actions involving changes to data.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO provides audit logging of user data change operations. The XO audit plugin (@xen-orchestra/audit) records all create, update, and delete API operations. Each modification action (vm.create, vm.set, vm.delete, acl.add, acl.remove, etc.) is logged with the full action name, authenticated userId, and timestamp.
+
+ISSO VERIFICATION:
+1. Confirm XO audit plugin is enabled in XO web UI (Settings &gt; Plugins &gt; Audit)
+2. Perform a change operation (e.g., start a VM, modify a setting)
+3. Verify the change appears in audit records: GET /rest/v0/plugins/audit/records
+4. Confirm the record includes: action name, userId, and timestamp
+5. Retain audit records per organizational policy (minimum 1 year for DoD)</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO audit logging of user data change operations was not confirmed. The XO audit plugin may not be installed or enabled.
+
+REMEDIATION STEPS:
+1. Install and enable XO audit plugin via XO web UI (Settings &gt; Plugins)
+2. For XOCE deployments: install @xen-orchestra/audit package
+3. Verify change operations (create/update/delete) are captured in audit records
+4. Test by creating or modifying a resource and checking audit log
+
+If application design documents specify protected data elements, verify those specific elements' changes are also captured. Consult XO documentation for audit plugin configuration.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222473">
-    <!--RuleTitle: The application must produce audit records containing information to establish when (date and time) the events occurred.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO audit records include date and time stamps on all log entries. systemd journal provides precise ISO 8601 timestamps (YYYY-MM-DDTHH:MM:SS+TZ) for all xo-server events as a function of the journald service. Timestamps are added at the kernel level and cannot be disabled without disabling journald.
+
+ISSO VERIFICATION:
+1. Run: journalctl -u xo-server --no-pager -n 10 --output=short-iso
+2. Confirm each line has an ISO 8601 timestamp prefix
+3. If using file-based logging: tail -5 /var/log/xo-server.log
+4. Note: Per V-222425, timestamps should use UTC/GMT for DoD compliance
+   (local timezone detected as non-UTC - separate finding)</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Date/time stamps in XO audit records could not be confirmed by automated check. Manual verification is required.
+
+VERIFICATION STEPS:
+1. Access the system: ssh root@xo1
+2. Review journal: journalctl -u xo-server --no-pager -n 20 --output=short-iso
+3. Verify each audit entry has a date/time stamp
+4. Review log files if file-based logging is configured
+
+If timestamps are absent, configure application or application server to include date and time in all audit log entries.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222474">
-    <!--RuleTitle: The application must produce audit records containing enough information to establish which component, feature or function of the application triggered the audit event.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO audit records identify which component, feature, or function triggered each audit event. The XO audit plugin records the API action name (e.g., 'vm.create', 'acl.add', 'user.set') for each logged event. This action name identifies the specific XO component and operation that triggered the audit record. The systemd journal additionally tags all entries with _SYSTEMD_UNIT=xo-server.service as the source component.
+
+ISSO VERIFICATION:
+1. Review audit records: GET /rest/v0/plugins/audit/records?limit=10
+2. Verify each record includes an 'action' field (e.g., 'vm.start', 'host.get')
+3. Confirm the action name identifies the XO feature/function that triggered the event
+4. Document key XO components: web server (express), API server (xo-server),    database (LevelDB), session store (Redis)</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO audit records identifying the triggering component/function were not confirmed. Manual review of application documentation and logs is required.
+
+VERIFICATION STEPS:
+1. Obtain architecture documentation identifying XO components:
+   - Web/API server: xo-server (Node.js/Express)
+   - Data store: LevelDB at /var/lib/xo-server
+   - Session store: Redis
+   - Authentication: local + optional LDAP/SAML plugins
+2. Access audit logs and verify component identification in entries
+3. If XO audit plugin is not installed, install it to enable structured audit records
+   with action names identifying the triggering component/function</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222475">
-    <!--RuleTitle: When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO is configured with centralized logging AND includes a unique application identifier in forwarded log entries. The hostname and application name (xo-server) are included in all log entries forwarded to the centralized logging solution.
+
+ISSO VERIFICATION:
+1. Verify centralized logging configuration: grep -rE '@@?' /etc/rsyslog.conf /etc/rsyslog.d/
+2. Confirm forwarded entries include hostname: check rsyslog template or default format
+3. Verify application name (xo-server) is identifiable in centralized log entries
+4. Test by reviewing a sample of centralized log entries for XO source identification</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO is configured with centralized logging but a unique application identifier was not confirmed in the forwarded log entries.
+
+REMEDIATION STEPS:
+1. Configure rsyslog/syslog-ng to include hostname and program name in all log entries
+2. Example rsyslog template: $template CustomFormat,"%HOSTNAME% %programname% %msg%
+"
+3. Verify xo-server is identifiable as the application in centralized log storage
+4. Coordinate with SIEM team to confirm XO logs are distinguishable from other sources</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This requirement is Not Applicable. XO is not configured to use a centralized logging solution. Per STIG check content: if the application logs locally and does not utilize a centralized logging solution, this requirement is Not Applicable.
+
+XO currently logs to the local systemd journal and/or local log files only. No remote syslog, syslog-ng, or systemd-journal-upload destinations are configured.
+
+NOTE: For DoD environments, configuring centralized audit log forwarding is strongly recommended to satisfy V-222481 (off-load audit records) and support SIEM integration. See VATES_COMPLIANCE_BLOCKERS.md for implementation guidance.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222476">
-    <!--RuleTitle: The application must produce audit records that contain information to establish the outcome of the events.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO audit records include event outcome information. The XO audit plugin records action results, including error conditions. The systemd journal captures success/error states for xo-server operations. Successful API calls are logged by the audit plugin; errors are logged by both the audit plugin and the application-level error handlers.
+
+ISSO VERIFICATION:
+1. Review audit records for outcome fields: GET /rest/v0/plugins/audit/records
+2. Check for error records: journalctl -u xo-server -n 50 | grep -i 'error\|fail'
+3. Verify successful operations are also captured (implied by default per STIG)
+4. Document that success events may be implied if documented as organizational baseline</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Event outcome information in XO audit records was not confirmed. Manual verification of audit log format is required.
+
+VERIFICATION STEPS:
+1. Perform both a successful and a failed operation in XO
+2. Review audit records and confirm both outcomes are captured
+3. Verify the audit plugin records error conditions and success states
+
+REMEDIATION: Install/enable XO audit plugin to capture structured audit records that include event outcomes. Configure application error handlers to log failure details.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222477">
-    <!--RuleTitle: The application must generate audit records containing information that establishes the identity of any individual or process associated with the event.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO audit records include user identity information for all events. The XO audit plugin records the authenticated userId (XO user account ID) for every API action. This userId is the primary identity associated with each audit event, establishing accountability for all privileged and non-privileged operations.
+
+ISSO VERIFICATION:
+1. Review audit records: GET /rest/v0/plugins/audit/records?limit=10
+2. Verify each record includes a 'userId' field with the authenticated user's ID
+3. Cross-reference userId with XO user accounts: GET /rest/v0/users
+4. For LDAP/AD users, verify userId maps to the AD account identity
+5. Confirm system-level processes are identified differently from user actions</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>User identity in XO audit records was not confirmed by automated check. Manual review is required.
+
+VERIFICATION STEPS:
+1. Log into XO as a test user and perform an action
+2. Review audit records: GET /rest/v0/plugins/audit/records
+3. Verify the action record includes the userId of the test account
+
+REMEDIATION: Install/enable XO audit plugin. Without the audit plugin, XO does not produce structured per-user audit records. The audit plugin is required for DoD compliance.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222478">
-    <!--RuleTitle: The application must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO audit records capture the full API action details for all privileged commands. XO uses a JSON-RPC API architecture where all privileged commands are API method calls (e.g., 'vm.create', 'vm.delete', 'acl.add', 'host.set'). The XO audit plugin records the complete method name (action) along with the authenticated userId for every privileged operation, fulfilling the full-text recording requirement.
+
+ISSO VERIFICATION:
+1. Perform a privileged operation (create VM, modify ACL, add user)
+2. Review audit records: GET /rest/v0/plugins/audit/records
+3. Verify the record includes the full action name and userId
+4. Confirm privileged commands (admin operations) are distinguishable from user actions
+5. For group account scenarios: verify individual userId is always recorded (no shared accounts)</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Full-text recording of privileged commands in XO audit records was not confirmed. Manual verification is required.
+
+VERIFICATION STEPS:
+1. Perform privileged operations as an admin user
+2. Review audit records and verify full action details are captured
+3. Confirm each record includes: action name, userId, timestamp, and relevant parameters
+
+REMEDIATION: Install/enable XO audit plugin. This is the only mechanism in XO that provides structured full-text recording of privileged API commands with user attribution.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222479">
-    <!--RuleTitle: The application must implement transaction recovery logs when transaction based.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>A relational database was detected but transaction recovery logging configuration was not confirmed. Manual review of database transaction logging settings is required.
+
+VERIFICATION STEPS:
+1. Identify the database being used by XO
+2. For PostgreSQL: verify WAL (Write-Ahead Logging) is enabled
+   SELECT name, setting FROM pg_settings WHERE name LIKE 'wal%';
+3. For MySQL/MariaDB: verify binary logging is enabled
+   SHOW VARIABLES LIKE 'log_bin';
+4. Document transaction log retention settings
+
+REMEDIATION: Configure database transaction logging appropriate for the RDBMS in use. Ensure transaction logs are retained per organizational data retention policy.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This requirement is Not Applicable. XO does not use a transaction-based relational database management system.
+
+XO's primary data store is LevelDB (a key-value store), not an RDBMS. LevelDB provides atomic batch writes (all-or-nothing operations) but does not produce SQL transaction logs or support BEGIN/COMMIT/ROLLBACK transactions.
+
+DATA STORE SUMMARY:
+- Primary: LevelDB at /var/lib/xo-server (key-value, no transaction logs)
+- Sessions: Redis (ephemeral session data, in-memory)
+- No PostgreSQL, MySQL, MariaDB, or SQLite detected
+
+This check applies to transaction-based applications using RDBMS backends with SQL transaction logging requirements. XO's LevelDB architecture is not in scope.</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222480">
-    <!--RuleTitle: The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No enterprise centralized logging solution was detected. Manual review of XO audit configuration management capability is required.
+
+VERIFICATION STEPS:
+1. Review XO audit plugin configuration in XO web UI (Settings &gt; Plugins &gt; Audit)
+2. Verify the audit plugin provides centralized configuration of audit record content
+3. Document what audit events are captured and how content is managed
+4. If a SIEM or centralized log management system is used (even if not detected by    automated check), provide documentation to satisfy this requirement
+
+REMEDIATION: Configure rsyslog or syslog-ng to forward XO logs to an enterprise centralized logging solution. Enterprise SIEM tools (Splunk, ELK, QRadar) provide centralized management of audit record content collection and configuration.</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This requirement is Not Applicable. XO is configured to log to an enterprise centralized logging solution that meets this requirement.
+
+Per STIG check content: if the application is configured to log application event entries to a centralized, enterprise-based logging solution, this requirement is Not Applicable.
+
+ISSO VERIFICATION:
+1. Confirm the centralized logging destination is an approved enterprise solution
+2. Verify XO audit records are being forwarded to the centralized system
+3. Document the centralized logging architecture (rsyslog/syslog-ng target server)
+4. Confirm the centralized solution provides configuration management of audit content</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222481">
-    <!--RuleTitle: The application must off-load audit records onto a different system or media than the system being audited.-->
+    <!--RuleTitle: See XCCDF for rule title.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Updated by implement-stig-check for Batch 7-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No audit log off-loading to a different system was detected. XO audit records are currently stored only on the local system.
+
+REMEDIATION STEPS:
+1. Configure rsyslog to forward XO logs to a centralized audit server:
+   echo '*.* @@audit-server.example.com:514' &gt;&gt; /etc/rsyslog.d/90-xo-remote.conf
+   systemctl restart rsyslog
+2. For journal-based forwarding: configure systemd-journal-upload to forward to
+   a systemd-journal-remote server
+3. Alternatively, configure logrotate postrotate scripts to rsync/scp logs to
+   a designated log archive server
+4. Verify automated tasks run per approved schedule to transfer audit records
+
+Obtain risk acceptance documentation if off-loading cannot be implemented immediately. Document compensating controls (e.g., daily backup to separate media).</ValidTrueComment>
+        <ValidFalseStatus></ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This requirement is Not Applicable. XO is configured to utilize a centralized logging solution that off-loads audit records to a different system.
+
+Per STIG check content: if the application is configured to utilize a centralized logging solution, this requirement is Not Applicable.
+
+ISSO VERIFICATION:
+1. Confirm audit records are being forwarded to a separate centralized log server
+2. Verify the receiving system is different from the XO host being audited
+3. Review log forwarding configuration: /etc/rsyslog.d/ or syslog-ng destinations
+4. Confirm forwarding occurs per the approved schedule or in real-time
+5. Verify receiving system has adequate capacity for log retention (DoD: 1+ year)</ValidTrueComment>
         <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
