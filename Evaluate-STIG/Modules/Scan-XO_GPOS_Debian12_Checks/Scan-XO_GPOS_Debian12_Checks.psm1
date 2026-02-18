@@ -188,7 +188,7 @@ Function FormatFinding {
 # GPOS Compliance Check Functions (Debian 12 Adapted)
 ################################################################################
 
-Function Get-V-203591 {
+Function Get-V203591 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203591
@@ -210,6 +210,15 @@ Function Get-V-203591 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -263,6 +272,7 @@ Function Get-V-203591 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -290,7 +300,7 @@ Function Get-V-203591 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203592 {
+Function Get-V203592 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203592
@@ -312,6 +322,15 @@ Function Get-V-203592 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -365,6 +384,7 @@ Function Get-V-203592 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -392,7 +412,7 @@ Function Get-V-203592 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203593 {
+Function Get-V203593 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203593
@@ -414,6 +434,15 @@ Function Get-V-203593 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -467,6 +496,7 @@ Function Get-V-203593 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -494,7 +524,7 @@ Function Get-V-203593 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203594 {
+Function Get-V203594 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203594
@@ -516,6 +546,15 @@ Function Get-V-203594 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -569,6 +608,7 @@ Function Get-V-203594 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -596,7 +636,7 @@ Function Get-V-203594 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203595 {
+Function Get-V203595 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203595
@@ -618,6 +658,15 @@ Function Get-V-203595 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -671,6 +720,7 @@ Function Get-V-203595 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -698,7 +748,7 @@ Function Get-V-203595 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203596 {
+Function Get-V203596 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203596
@@ -720,6 +770,15 @@ Function Get-V-203596 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -773,6 +832,7 @@ Function Get-V-203596 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -800,7 +860,7 @@ Function Get-V-203596 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203597 {
+Function Get-V203597 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203597
@@ -822,6 +882,15 @@ Function Get-V-203597 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -875,6 +944,7 @@ Function Get-V-203597 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -902,7 +972,7 @@ Function Get-V-203597 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203598 {
+Function Get-V203598 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203598
@@ -924,6 +994,15 @@ Function Get-V-203598 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -977,6 +1056,7 @@ Function Get-V-203598 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1004,7 +1084,7 @@ Function Get-V-203598 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203599 {
+Function Get-V203599 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203599
@@ -1026,6 +1106,15 @@ Function Get-V-203599 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1079,6 +1168,7 @@ Function Get-V-203599 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1106,7 +1196,7 @@ Function Get-V-203599 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203600 {
+Function Get-V203600 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203600
@@ -1128,6 +1218,15 @@ Function Get-V-203600 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1181,6 +1280,7 @@ Function Get-V-203600 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1208,7 +1308,7 @@ Function Get-V-203600 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203601 {
+Function Get-V203601 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203601
@@ -1230,6 +1330,15 @@ Function Get-V-203601 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1283,6 +1392,7 @@ Function Get-V-203601 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1310,7 +1420,7 @@ Function Get-V-203601 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203602 {
+Function Get-V203602 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203602
@@ -1332,6 +1442,15 @@ Function Get-V-203602 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1385,6 +1504,7 @@ Function Get-V-203602 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1412,7 +1532,7 @@ Function Get-V-203602 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203603 {
+Function Get-V203603 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203603
@@ -1434,6 +1554,15 @@ Function Get-V-203603 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1487,6 +1616,7 @@ Function Get-V-203603 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1514,7 +1644,7 @@ Function Get-V-203603 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203604 {
+Function Get-V203604 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203604
@@ -1536,6 +1666,15 @@ Function Get-V-203604 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1589,6 +1728,7 @@ Function Get-V-203604 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1616,7 +1756,7 @@ Function Get-V-203604 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203605 {
+Function Get-V203605 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203605
@@ -1638,6 +1778,15 @@ Function Get-V-203605 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1691,6 +1840,7 @@ Function Get-V-203605 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1718,7 +1868,7 @@ Function Get-V-203605 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203606 {
+Function Get-V203606 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203606
@@ -1740,6 +1890,15 @@ Function Get-V-203606 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1793,6 +1952,7 @@ Function Get-V-203606 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1820,7 +1980,7 @@ Function Get-V-203606 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203607 {
+Function Get-V203607 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203607
@@ -1842,6 +2002,15 @@ Function Get-V-203607 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1895,6 +2064,7 @@ Function Get-V-203607 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1922,7 +2092,7 @@ Function Get-V-203607 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203608 {
+Function Get-V203608 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203608
@@ -1944,6 +2114,15 @@ Function Get-V-203608 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1997,6 +2176,7 @@ Function Get-V-203608 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2024,7 +2204,7 @@ Function Get-V-203608 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203609 {
+Function Get-V203609 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203609
@@ -2046,6 +2226,15 @@ Function Get-V-203609 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2099,6 +2288,7 @@ Function Get-V-203609 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2126,7 +2316,7 @@ Function Get-V-203609 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203610 {
+Function Get-V203610 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203610
@@ -2148,6 +2338,15 @@ Function Get-V-203610 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2201,6 +2400,7 @@ Function Get-V-203610 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2228,7 +2428,7 @@ Function Get-V-203610 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203611 {
+Function Get-V203611 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203611
@@ -2250,6 +2450,15 @@ Function Get-V-203611 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2303,6 +2512,7 @@ Function Get-V-203611 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2330,7 +2540,7 @@ Function Get-V-203611 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203613 {
+Function Get-V203613 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203613
@@ -2352,6 +2562,15 @@ Function Get-V-203613 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2405,6 +2624,7 @@ Function Get-V-203613 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2432,7 +2652,7 @@ Function Get-V-203613 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203614 {
+Function Get-V203614 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203614
@@ -2454,6 +2674,15 @@ Function Get-V-203614 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2507,6 +2736,7 @@ Function Get-V-203614 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2534,7 +2764,7 @@ Function Get-V-203614 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203615 {
+Function Get-V203615 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203615
@@ -2556,6 +2786,15 @@ Function Get-V-203615 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2609,6 +2848,7 @@ Function Get-V-203615 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2636,7 +2876,7 @@ Function Get-V-203615 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203616 {
+Function Get-V203616 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203616
@@ -2658,6 +2898,15 @@ Function Get-V-203616 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2711,6 +2960,7 @@ Function Get-V-203616 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2738,7 +2988,7 @@ Function Get-V-203616 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203617 {
+Function Get-V203617 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203617
@@ -2760,6 +3010,15 @@ Function Get-V-203617 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2813,6 +3072,7 @@ Function Get-V-203617 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2840,7 +3100,7 @@ Function Get-V-203617 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203618 {
+Function Get-V203618 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203618
@@ -2862,6 +3122,15 @@ Function Get-V-203618 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -2915,6 +3184,7 @@ Function Get-V-203618 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2942,7 +3212,7 @@ Function Get-V-203618 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203619 {
+Function Get-V203619 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203619
@@ -2964,6 +3234,15 @@ Function Get-V-203619 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3017,6 +3296,7 @@ Function Get-V-203619 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3044,7 +3324,7 @@ Function Get-V-203619 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203620 {
+Function Get-V203620 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203620
@@ -3066,6 +3346,15 @@ Function Get-V-203620 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3119,6 +3408,7 @@ Function Get-V-203620 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3146,7 +3436,7 @@ Function Get-V-203620 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203621 {
+Function Get-V203621 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203621
@@ -3168,6 +3458,15 @@ Function Get-V-203621 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3221,6 +3520,7 @@ Function Get-V-203621 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3248,7 +3548,7 @@ Function Get-V-203621 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203622 {
+Function Get-V203622 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203622
@@ -3270,6 +3570,15 @@ Function Get-V-203622 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3323,6 +3632,7 @@ Function Get-V-203622 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3350,7 +3660,7 @@ Function Get-V-203622 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203623 {
+Function Get-V203623 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203623
@@ -3372,6 +3682,15 @@ Function Get-V-203623 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3425,6 +3744,7 @@ Function Get-V-203623 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3452,7 +3772,7 @@ Function Get-V-203623 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203624 {
+Function Get-V203624 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203624
@@ -3474,6 +3794,15 @@ Function Get-V-203624 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3527,6 +3856,7 @@ Function Get-V-203624 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3554,7 +3884,7 @@ Function Get-V-203624 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203625 {
+Function Get-V203625 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203625
@@ -3576,6 +3906,15 @@ Function Get-V-203625 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3629,6 +3968,7 @@ Function Get-V-203625 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3656,7 +3996,7 @@ Function Get-V-203625 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203626 {
+Function Get-V203626 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203626
@@ -3678,6 +4018,15 @@ Function Get-V-203626 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3731,6 +4080,7 @@ Function Get-V-203626 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3758,7 +4108,7 @@ Function Get-V-203626 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203627 {
+Function Get-V203627 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203627
@@ -3780,6 +4130,15 @@ Function Get-V-203627 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3833,6 +4192,7 @@ Function Get-V-203627 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3860,7 +4220,7 @@ Function Get-V-203627 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203628 {
+Function Get-V203628 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203628
@@ -3882,6 +4242,15 @@ Function Get-V-203628 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3935,6 +4304,7 @@ Function Get-V-203628 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3962,7 +4332,7 @@ Function Get-V-203628 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203629 {
+Function Get-V203629 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203629
@@ -3984,6 +4354,15 @@ Function Get-V-203629 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4037,6 +4416,7 @@ Function Get-V-203629 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4064,7 +4444,7 @@ Function Get-V-203629 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203630 {
+Function Get-V203630 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203630
@@ -4086,6 +4466,15 @@ Function Get-V-203630 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4139,6 +4528,7 @@ Function Get-V-203630 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4166,7 +4556,7 @@ Function Get-V-203630 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203631 {
+Function Get-V203631 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203631
@@ -4188,6 +4578,15 @@ Function Get-V-203631 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4241,6 +4640,7 @@ Function Get-V-203631 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4268,7 +4668,7 @@ Function Get-V-203631 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203632 {
+Function Get-V203632 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203632
@@ -4290,6 +4690,15 @@ Function Get-V-203632 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4343,6 +4752,7 @@ Function Get-V-203632 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4370,7 +4780,7 @@ Function Get-V-203632 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203634 {
+Function Get-V203634 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203634
@@ -4392,6 +4802,15 @@ Function Get-V-203634 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4445,6 +4864,7 @@ Function Get-V-203634 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4472,7 +4892,7 @@ Function Get-V-203634 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203635 {
+Function Get-V203635 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203635
@@ -4494,6 +4914,15 @@ Function Get-V-203635 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4547,6 +4976,7 @@ Function Get-V-203635 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4574,7 +5004,7 @@ Function Get-V-203635 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203636 {
+Function Get-V203636 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203636
@@ -4596,6 +5026,15 @@ Function Get-V-203636 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4649,6 +5088,7 @@ Function Get-V-203636 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4676,7 +5116,7 @@ Function Get-V-203636 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203637 {
+Function Get-V203637 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203637
@@ -4698,6 +5138,15 @@ Function Get-V-203637 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4751,6 +5200,7 @@ Function Get-V-203637 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4778,7 +5228,7 @@ Function Get-V-203637 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203638 {
+Function Get-V203638 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203638
@@ -4800,6 +5250,15 @@ Function Get-V-203638 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4853,6 +5312,7 @@ Function Get-V-203638 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4880,7 +5340,7 @@ Function Get-V-203638 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203639 {
+Function Get-V203639 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203639
@@ -4902,6 +5362,15 @@ Function Get-V-203639 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4955,6 +5424,7 @@ Function Get-V-203639 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4982,7 +5452,7 @@ Function Get-V-203639 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203640 {
+Function Get-V203640 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203640
@@ -5004,6 +5474,15 @@ Function Get-V-203640 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5057,6 +5536,7 @@ Function Get-V-203640 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5084,7 +5564,7 @@ Function Get-V-203640 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203641 {
+Function Get-V203641 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203641
@@ -5106,6 +5586,15 @@ Function Get-V-203641 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5159,6 +5648,7 @@ Function Get-V-203641 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5186,7 +5676,7 @@ Function Get-V-203641 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203642 {
+Function Get-V203642 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203642
@@ -5208,6 +5698,15 @@ Function Get-V-203642 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5261,6 +5760,7 @@ Function Get-V-203642 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5288,7 +5788,7 @@ Function Get-V-203642 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203643 {
+Function Get-V203643 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203643
@@ -5310,6 +5810,15 @@ Function Get-V-203643 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5363,6 +5872,7 @@ Function Get-V-203643 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5390,7 +5900,7 @@ Function Get-V-203643 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203644 {
+Function Get-V203644 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203644
@@ -5412,6 +5922,15 @@ Function Get-V-203644 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5465,6 +5984,7 @@ Function Get-V-203644 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5492,7 +6012,7 @@ Function Get-V-203644 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203645 {
+Function Get-V203645 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203645
@@ -5514,6 +6034,15 @@ Function Get-V-203645 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5567,6 +6096,7 @@ Function Get-V-203645 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5594,7 +6124,7 @@ Function Get-V-203645 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203646 {
+Function Get-V203646 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203646
@@ -5616,6 +6146,15 @@ Function Get-V-203646 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5669,6 +6208,7 @@ Function Get-V-203646 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5696,7 +6236,7 @@ Function Get-V-203646 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203647 {
+Function Get-V203647 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203647
@@ -5718,6 +6258,15 @@ Function Get-V-203647 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5771,6 +6320,7 @@ Function Get-V-203647 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5798,7 +6348,7 @@ Function Get-V-203647 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203648 {
+Function Get-V203648 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203648
@@ -5820,6 +6370,15 @@ Function Get-V-203648 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5873,6 +6432,7 @@ Function Get-V-203648 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5900,7 +6460,7 @@ Function Get-V-203648 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203649 {
+Function Get-V203649 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203649
@@ -5922,6 +6482,15 @@ Function Get-V-203649 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5975,6 +6544,7 @@ Function Get-V-203649 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6002,7 +6572,7 @@ Function Get-V-203649 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203650 {
+Function Get-V203650 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203650
@@ -6024,6 +6594,15 @@ Function Get-V-203650 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6077,6 +6656,7 @@ Function Get-V-203650 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6104,7 +6684,7 @@ Function Get-V-203650 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203651 {
+Function Get-V203651 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203651
@@ -6126,6 +6706,15 @@ Function Get-V-203651 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6179,6 +6768,7 @@ Function Get-V-203651 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6206,7 +6796,7 @@ Function Get-V-203651 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203652 {
+Function Get-V203652 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203652
@@ -6228,6 +6818,15 @@ Function Get-V-203652 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6281,6 +6880,7 @@ Function Get-V-203652 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6308,7 +6908,7 @@ Function Get-V-203652 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203653 {
+Function Get-V203653 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203653
@@ -6330,6 +6930,15 @@ Function Get-V-203653 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6383,6 +6992,7 @@ Function Get-V-203653 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6410,7 +7020,7 @@ Function Get-V-203653 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203655 {
+Function Get-V203655 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203655
@@ -6432,6 +7042,15 @@ Function Get-V-203655 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6485,6 +7104,7 @@ Function Get-V-203655 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6512,7 +7132,7 @@ Function Get-V-203655 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203656 {
+Function Get-V203656 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203656
@@ -6534,6 +7154,15 @@ Function Get-V-203656 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6587,6 +7216,7 @@ Function Get-V-203656 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6614,7 +7244,7 @@ Function Get-V-203656 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203657 {
+Function Get-V203657 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203657
@@ -6636,6 +7266,15 @@ Function Get-V-203657 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6689,6 +7328,7 @@ Function Get-V-203657 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6716,7 +7356,7 @@ Function Get-V-203657 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203658 {
+Function Get-V203658 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203658
@@ -6738,6 +7378,15 @@ Function Get-V-203658 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6791,6 +7440,7 @@ Function Get-V-203658 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6818,7 +7468,7 @@ Function Get-V-203658 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203659 {
+Function Get-V203659 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203659
@@ -6840,6 +7490,15 @@ Function Get-V-203659 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6893,6 +7552,7 @@ Function Get-V-203659 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6920,7 +7580,7 @@ Function Get-V-203659 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203660 {
+Function Get-V203660 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203660
@@ -6942,6 +7602,15 @@ Function Get-V-203660 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -6995,6 +7664,7 @@ Function Get-V-203660 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7022,7 +7692,7 @@ Function Get-V-203660 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203661 {
+Function Get-V203661 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203661
@@ -7044,6 +7714,15 @@ Function Get-V-203661 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7097,6 +7776,7 @@ Function Get-V-203661 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7124,7 +7804,7 @@ Function Get-V-203661 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203663 {
+Function Get-V203663 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203663
@@ -7146,6 +7826,15 @@ Function Get-V-203663 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7199,6 +7888,7 @@ Function Get-V-203663 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7226,7 +7916,7 @@ Function Get-V-203663 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203664 {
+Function Get-V203664 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203664
@@ -7248,6 +7938,15 @@ Function Get-V-203664 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7301,6 +8000,7 @@ Function Get-V-203664 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7328,7 +8028,7 @@ Function Get-V-203664 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203665 {
+Function Get-V203665 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203665
@@ -7350,6 +8050,15 @@ Function Get-V-203665 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7403,6 +8112,7 @@ Function Get-V-203665 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7430,7 +8140,7 @@ Function Get-V-203665 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203666 {
+Function Get-V203666 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203666
@@ -7452,6 +8162,15 @@ Function Get-V-203666 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7505,6 +8224,7 @@ Function Get-V-203666 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7532,7 +8252,7 @@ Function Get-V-203666 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203667 {
+Function Get-V203667 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203667
@@ -7554,6 +8274,15 @@ Function Get-V-203667 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7607,6 +8336,7 @@ Function Get-V-203667 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7634,7 +8364,7 @@ Function Get-V-203667 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203668 {
+Function Get-V203668 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203668
@@ -7656,6 +8386,15 @@ Function Get-V-203668 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7709,6 +8448,7 @@ Function Get-V-203668 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7736,7 +8476,7 @@ Function Get-V-203668 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203669 {
+Function Get-V203669 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203669
@@ -7758,6 +8498,15 @@ Function Get-V-203669 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7811,6 +8560,7 @@ Function Get-V-203669 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7838,7 +8588,7 @@ Function Get-V-203669 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203670 {
+Function Get-V203670 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203670
@@ -7860,6 +8610,15 @@ Function Get-V-203670 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -7913,6 +8672,7 @@ Function Get-V-203670 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7940,7 +8700,7 @@ Function Get-V-203670 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203671 {
+Function Get-V203671 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203671
@@ -7962,6 +8722,15 @@ Function Get-V-203671 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8015,6 +8784,7 @@ Function Get-V-203671 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8042,7 +8812,7 @@ Function Get-V-203671 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203672 {
+Function Get-V203672 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203672
@@ -8064,6 +8834,15 @@ Function Get-V-203672 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8117,6 +8896,7 @@ Function Get-V-203672 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8144,7 +8924,7 @@ Function Get-V-203672 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203673 {
+Function Get-V203673 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203673
@@ -8166,6 +8946,15 @@ Function Get-V-203673 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8219,6 +9008,7 @@ Function Get-V-203673 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8246,7 +9036,7 @@ Function Get-V-203673 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203674 {
+Function Get-V203674 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203674
@@ -8268,6 +9058,15 @@ Function Get-V-203674 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8321,6 +9120,7 @@ Function Get-V-203674 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8348,7 +9148,7 @@ Function Get-V-203674 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203675 {
+Function Get-V203675 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203675
@@ -8370,6 +9170,15 @@ Function Get-V-203675 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8423,6 +9232,7 @@ Function Get-V-203675 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8450,7 +9260,7 @@ Function Get-V-203675 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203676 {
+Function Get-V203676 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203676
@@ -8472,6 +9282,15 @@ Function Get-V-203676 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8525,6 +9344,7 @@ Function Get-V-203676 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8552,7 +9372,7 @@ Function Get-V-203676 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203677 {
+Function Get-V203677 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203677
@@ -8574,6 +9394,15 @@ Function Get-V-203677 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8627,6 +9456,7 @@ Function Get-V-203677 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8654,7 +9484,7 @@ Function Get-V-203677 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203678 {
+Function Get-V203678 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203678
@@ -8676,6 +9506,15 @@ Function Get-V-203678 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8729,6 +9568,7 @@ Function Get-V-203678 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8756,7 +9596,7 @@ Function Get-V-203678 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203679 {
+Function Get-V203679 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203679
@@ -8778,6 +9618,15 @@ Function Get-V-203679 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8831,6 +9680,7 @@ Function Get-V-203679 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8858,7 +9708,7 @@ Function Get-V-203679 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203680 {
+Function Get-V203680 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203680
@@ -8880,6 +9730,15 @@ Function Get-V-203680 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8933,6 +9792,7 @@ Function Get-V-203680 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8960,7 +9820,7 @@ Function Get-V-203680 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203681 {
+Function Get-V203681 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203681
@@ -8982,6 +9842,15 @@ Function Get-V-203681 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9035,6 +9904,7 @@ Function Get-V-203681 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9062,7 +9932,7 @@ Function Get-V-203681 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203682 {
+Function Get-V203682 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203682
@@ -9084,6 +9954,15 @@ Function Get-V-203682 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9137,6 +10016,7 @@ Function Get-V-203682 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9164,7 +10044,7 @@ Function Get-V-203682 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203683 {
+Function Get-V203683 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203683
@@ -9186,6 +10066,15 @@ Function Get-V-203683 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9239,6 +10128,7 @@ Function Get-V-203683 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9266,7 +10156,7 @@ Function Get-V-203683 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203684 {
+Function Get-V203684 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203684
@@ -9288,6 +10178,15 @@ Function Get-V-203684 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9341,6 +10240,7 @@ Function Get-V-203684 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9368,7 +10268,7 @@ Function Get-V-203684 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203685 {
+Function Get-V203685 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203685
@@ -9390,6 +10290,15 @@ Function Get-V-203685 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9443,6 +10352,7 @@ Function Get-V-203685 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9470,7 +10380,7 @@ Function Get-V-203685 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203686 {
+Function Get-V203686 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203686
@@ -9492,6 +10402,15 @@ Function Get-V-203686 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9545,6 +10464,7 @@ Function Get-V-203686 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9572,7 +10492,7 @@ Function Get-V-203686 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203687 {
+Function Get-V203687 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203687
@@ -9594,6 +10514,15 @@ Function Get-V-203687 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9647,6 +10576,7 @@ Function Get-V-203687 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9674,7 +10604,7 @@ Function Get-V-203687 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203688 {
+Function Get-V203688 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203688
@@ -9696,6 +10626,15 @@ Function Get-V-203688 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9749,6 +10688,7 @@ Function Get-V-203688 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9776,7 +10716,7 @@ Function Get-V-203688 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203689 {
+Function Get-V203689 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203689
@@ -9798,6 +10738,15 @@ Function Get-V-203689 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9851,6 +10800,7 @@ Function Get-V-203689 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9878,7 +10828,7 @@ Function Get-V-203689 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203690 {
+Function Get-V203690 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203690
@@ -9900,6 +10850,15 @@ Function Get-V-203690 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9953,6 +10912,7 @@ Function Get-V-203690 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9980,7 +10940,7 @@ Function Get-V-203690 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203691 {
+Function Get-V203691 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203691
@@ -10002,6 +10962,15 @@ Function Get-V-203691 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10055,6 +11024,7 @@ Function Get-V-203691 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10082,7 +11052,7 @@ Function Get-V-203691 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203692 {
+Function Get-V203692 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203692
@@ -10104,6 +11074,15 @@ Function Get-V-203692 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10157,6 +11136,7 @@ Function Get-V-203692 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10184,7 +11164,7 @@ Function Get-V-203692 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203693 {
+Function Get-V203693 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203693
@@ -10206,6 +11186,15 @@ Function Get-V-203693 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10259,6 +11248,7 @@ Function Get-V-203693 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10286,7 +11276,7 @@ Function Get-V-203693 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203694 {
+Function Get-V203694 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203694
@@ -10308,6 +11298,15 @@ Function Get-V-203694 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10361,6 +11360,7 @@ Function Get-V-203694 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10388,7 +11388,7 @@ Function Get-V-203694 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203695 {
+Function Get-V203695 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203695
@@ -10410,6 +11410,15 @@ Function Get-V-203695 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10463,6 +11472,7 @@ Function Get-V-203695 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10490,7 +11500,7 @@ Function Get-V-203695 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203696 {
+Function Get-V203696 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203696
@@ -10512,6 +11522,15 @@ Function Get-V-203696 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10565,6 +11584,7 @@ Function Get-V-203696 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10592,7 +11612,7 @@ Function Get-V-203696 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203697 {
+Function Get-V203697 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203697
@@ -10614,6 +11634,15 @@ Function Get-V-203697 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10667,6 +11696,7 @@ Function Get-V-203697 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10694,7 +11724,7 @@ Function Get-V-203697 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203698 {
+Function Get-V203698 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203698
@@ -10716,6 +11746,15 @@ Function Get-V-203698 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10769,6 +11808,7 @@ Function Get-V-203698 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10796,7 +11836,7 @@ Function Get-V-203698 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203699 {
+Function Get-V203699 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203699
@@ -10818,6 +11858,15 @@ Function Get-V-203699 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10871,6 +11920,7 @@ Function Get-V-203699 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10898,7 +11948,7 @@ Function Get-V-203699 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203700 {
+Function Get-V203700 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203700
@@ -10920,6 +11970,15 @@ Function Get-V-203700 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -10973,6 +12032,7 @@ Function Get-V-203700 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11000,7 +12060,7 @@ Function Get-V-203700 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203701 {
+Function Get-V203701 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203701
@@ -11022,6 +12082,15 @@ Function Get-V-203701 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11075,6 +12144,7 @@ Function Get-V-203701 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11102,7 +12172,7 @@ Function Get-V-203701 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203702 {
+Function Get-V203702 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203702
@@ -11124,6 +12194,15 @@ Function Get-V-203702 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11177,6 +12256,7 @@ Function Get-V-203702 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11204,7 +12284,7 @@ Function Get-V-203702 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203703 {
+Function Get-V203703 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203703
@@ -11226,6 +12306,15 @@ Function Get-V-203703 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11279,6 +12368,7 @@ Function Get-V-203703 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11306,7 +12396,7 @@ Function Get-V-203703 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203704 {
+Function Get-V203704 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203704
@@ -11328,6 +12418,15 @@ Function Get-V-203704 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11381,6 +12480,7 @@ Function Get-V-203704 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11408,7 +12508,7 @@ Function Get-V-203704 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203705 {
+Function Get-V203705 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203705
@@ -11430,6 +12530,15 @@ Function Get-V-203705 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11483,6 +12592,7 @@ Function Get-V-203705 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11510,7 +12620,7 @@ Function Get-V-203705 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203706 {
+Function Get-V203706 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203706
@@ -11532,6 +12642,15 @@ Function Get-V-203706 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11585,6 +12704,7 @@ Function Get-V-203706 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11612,7 +12732,7 @@ Function Get-V-203706 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203707 {
+Function Get-V203707 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203707
@@ -11634,6 +12754,15 @@ Function Get-V-203707 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11687,6 +12816,7 @@ Function Get-V-203707 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11714,7 +12844,7 @@ Function Get-V-203707 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203708 {
+Function Get-V203708 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203708
@@ -11736,6 +12866,15 @@ Function Get-V-203708 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11789,6 +12928,7 @@ Function Get-V-203708 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11816,7 +12956,7 @@ Function Get-V-203708 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203709 {
+Function Get-V203709 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203709
@@ -11838,6 +12978,15 @@ Function Get-V-203709 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11891,6 +13040,7 @@ Function Get-V-203709 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11918,7 +13068,7 @@ Function Get-V-203709 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203710 {
+Function Get-V203710 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203710
@@ -11940,6 +13090,15 @@ Function Get-V-203710 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11993,6 +13152,7 @@ Function Get-V-203710 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12020,7 +13180,7 @@ Function Get-V-203710 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203711 {
+Function Get-V203711 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203711
@@ -12042,6 +13202,15 @@ Function Get-V-203711 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12095,6 +13264,7 @@ Function Get-V-203711 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12122,7 +13292,7 @@ Function Get-V-203711 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203712 {
+Function Get-V203712 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203712
@@ -12144,6 +13314,15 @@ Function Get-V-203712 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12197,6 +13376,7 @@ Function Get-V-203712 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12224,7 +13404,7 @@ Function Get-V-203712 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203713 {
+Function Get-V203713 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203713
@@ -12246,6 +13426,15 @@ Function Get-V-203713 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12299,6 +13488,7 @@ Function Get-V-203713 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12326,7 +13516,7 @@ Function Get-V-203713 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203714 {
+Function Get-V203714 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203714
@@ -12348,6 +13538,15 @@ Function Get-V-203714 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12401,6 +13600,7 @@ Function Get-V-203714 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12428,7 +13628,7 @@ Function Get-V-203714 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203715 {
+Function Get-V203715 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203715
@@ -12450,6 +13650,15 @@ Function Get-V-203715 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12503,6 +13712,7 @@ Function Get-V-203715 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12530,7 +13740,7 @@ Function Get-V-203715 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203716 {
+Function Get-V203716 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203716
@@ -12552,6 +13762,15 @@ Function Get-V-203716 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12605,6 +13824,7 @@ Function Get-V-203716 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12632,7 +13852,7 @@ Function Get-V-203716 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203717 {
+Function Get-V203717 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203717
@@ -12654,6 +13874,15 @@ Function Get-V-203717 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12707,6 +13936,7 @@ Function Get-V-203717 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12734,7 +13964,7 @@ Function Get-V-203717 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203718 {
+Function Get-V203718 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203718
@@ -12756,6 +13986,15 @@ Function Get-V-203718 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12809,6 +14048,7 @@ Function Get-V-203718 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12836,7 +14076,7 @@ Function Get-V-203718 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203719 {
+Function Get-V203719 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203719
@@ -12858,6 +14098,15 @@ Function Get-V-203719 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -12911,6 +14160,7 @@ Function Get-V-203719 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12938,7 +14188,7 @@ Function Get-V-203719 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203720 {
+Function Get-V203720 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203720
@@ -12960,6 +14210,15 @@ Function Get-V-203720 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13013,6 +14272,7 @@ Function Get-V-203720 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13040,7 +14300,7 @@ Function Get-V-203720 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203721 {
+Function Get-V203721 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203721
@@ -13062,6 +14322,15 @@ Function Get-V-203721 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13115,6 +14384,7 @@ Function Get-V-203721 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13142,7 +14412,7 @@ Function Get-V-203721 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203722 {
+Function Get-V203722 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203722
@@ -13164,6 +14434,15 @@ Function Get-V-203722 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13217,6 +14496,7 @@ Function Get-V-203722 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13244,7 +14524,7 @@ Function Get-V-203722 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203723 {
+Function Get-V203723 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203723
@@ -13266,6 +14546,15 @@ Function Get-V-203723 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13319,6 +14608,7 @@ Function Get-V-203723 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13346,7 +14636,7 @@ Function Get-V-203723 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203724 {
+Function Get-V203724 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203724
@@ -13368,6 +14658,15 @@ Function Get-V-203724 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13421,6 +14720,7 @@ Function Get-V-203724 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13448,7 +14748,7 @@ Function Get-V-203724 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203725 {
+Function Get-V203725 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203725
@@ -13470,6 +14770,15 @@ Function Get-V-203725 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13523,6 +14832,7 @@ Function Get-V-203725 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13550,7 +14860,7 @@ Function Get-V-203725 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203727 {
+Function Get-V203727 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203727
@@ -13572,6 +14882,15 @@ Function Get-V-203727 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13625,6 +14944,7 @@ Function Get-V-203727 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13652,7 +14972,7 @@ Function Get-V-203727 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203728 {
+Function Get-V203728 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203728
@@ -13674,6 +14994,15 @@ Function Get-V-203728 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13727,6 +15056,7 @@ Function Get-V-203728 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13754,7 +15084,7 @@ Function Get-V-203728 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203729 {
+Function Get-V203729 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203729
@@ -13776,6 +15106,15 @@ Function Get-V-203729 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13829,6 +15168,7 @@ Function Get-V-203729 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13856,7 +15196,7 @@ Function Get-V-203729 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203730 {
+Function Get-V203730 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203730
@@ -13878,6 +15218,15 @@ Function Get-V-203730 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -13931,6 +15280,7 @@ Function Get-V-203730 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13958,7 +15308,7 @@ Function Get-V-203730 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203731 {
+Function Get-V203731 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203731
@@ -13980,6 +15330,15 @@ Function Get-V-203731 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14033,6 +15392,7 @@ Function Get-V-203731 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14060,7 +15420,7 @@ Function Get-V-203731 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203733 {
+Function Get-V203733 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203733
@@ -14082,6 +15442,15 @@ Function Get-V-203733 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14135,6 +15504,7 @@ Function Get-V-203733 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14162,7 +15532,7 @@ Function Get-V-203733 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203734 {
+Function Get-V203734 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203734
@@ -14184,6 +15554,15 @@ Function Get-V-203734 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14237,6 +15616,7 @@ Function Get-V-203734 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14264,7 +15644,7 @@ Function Get-V-203734 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203735 {
+Function Get-V203735 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203735
@@ -14286,6 +15666,15 @@ Function Get-V-203735 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14339,6 +15728,7 @@ Function Get-V-203735 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14366,7 +15756,7 @@ Function Get-V-203735 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203736 {
+Function Get-V203736 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203736
@@ -14388,6 +15778,15 @@ Function Get-V-203736 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14441,6 +15840,7 @@ Function Get-V-203736 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14468,7 +15868,7 @@ Function Get-V-203736 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203737 {
+Function Get-V203737 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203737
@@ -14490,6 +15890,15 @@ Function Get-V-203737 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14543,6 +15952,7 @@ Function Get-V-203737 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14570,7 +15980,7 @@ Function Get-V-203737 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203738 {
+Function Get-V203738 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203738
@@ -14592,6 +16002,15 @@ Function Get-V-203738 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14645,6 +16064,7 @@ Function Get-V-203738 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14672,7 +16092,7 @@ Function Get-V-203738 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203739 {
+Function Get-V203739 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203739
@@ -14694,6 +16114,15 @@ Function Get-V-203739 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14747,6 +16176,7 @@ Function Get-V-203739 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14774,7 +16204,7 @@ Function Get-V-203739 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203744 {
+Function Get-V203744 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203744
@@ -14796,6 +16226,15 @@ Function Get-V-203744 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14849,6 +16288,7 @@ Function Get-V-203744 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14876,7 +16316,7 @@ Function Get-V-203744 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203745 {
+Function Get-V203745 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203745
@@ -14898,6 +16338,15 @@ Function Get-V-203745 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -14951,6 +16400,7 @@ Function Get-V-203745 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14978,7 +16428,7 @@ Function Get-V-203745 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203746 {
+Function Get-V203746 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203746
@@ -15000,6 +16450,15 @@ Function Get-V-203746 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15053,6 +16512,7 @@ Function Get-V-203746 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15080,7 +16540,7 @@ Function Get-V-203746 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203747 {
+Function Get-V203747 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203747
@@ -15102,6 +16562,15 @@ Function Get-V-203747 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15155,6 +16624,7 @@ Function Get-V-203747 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15182,7 +16652,7 @@ Function Get-V-203747 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203748 {
+Function Get-V203748 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203748
@@ -15204,6 +16674,15 @@ Function Get-V-203748 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15257,6 +16736,7 @@ Function Get-V-203748 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15284,7 +16764,7 @@ Function Get-V-203748 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203749 {
+Function Get-V203749 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203749
@@ -15306,6 +16786,15 @@ Function Get-V-203749 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15359,6 +16848,7 @@ Function Get-V-203749 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15386,7 +16876,7 @@ Function Get-V-203749 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203750 {
+Function Get-V203750 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203750
@@ -15408,6 +16898,15 @@ Function Get-V-203750 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15461,6 +16960,7 @@ Function Get-V-203750 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15488,7 +16988,7 @@ Function Get-V-203750 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203751 {
+Function Get-V203751 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203751
@@ -15510,6 +17010,15 @@ Function Get-V-203751 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15563,6 +17072,7 @@ Function Get-V-203751 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15590,7 +17100,7 @@ Function Get-V-203751 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203752 {
+Function Get-V203752 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203752
@@ -15612,6 +17122,15 @@ Function Get-V-203752 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15665,6 +17184,7 @@ Function Get-V-203752 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15692,7 +17212,7 @@ Function Get-V-203752 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203753 {
+Function Get-V203753 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203753
@@ -15714,6 +17234,15 @@ Function Get-V-203753 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15767,6 +17296,7 @@ Function Get-V-203753 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15794,7 +17324,7 @@ Function Get-V-203753 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203754 {
+Function Get-V203754 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203754
@@ -15816,6 +17346,15 @@ Function Get-V-203754 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15869,6 +17408,7 @@ Function Get-V-203754 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15896,7 +17436,7 @@ Function Get-V-203754 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203755 {
+Function Get-V203755 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203755
@@ -15918,6 +17458,15 @@ Function Get-V-203755 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -15971,6 +17520,7 @@ Function Get-V-203755 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15998,7 +17548,7 @@ Function Get-V-203755 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203756 {
+Function Get-V203756 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203756
@@ -16020,6 +17570,15 @@ Function Get-V-203756 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16073,6 +17632,7 @@ Function Get-V-203756 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16100,7 +17660,7 @@ Function Get-V-203756 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203757 {
+Function Get-V203757 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203757
@@ -16122,6 +17682,15 @@ Function Get-V-203757 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16175,6 +17744,7 @@ Function Get-V-203757 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16202,7 +17772,7 @@ Function Get-V-203757 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203758 {
+Function Get-V203758 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203758
@@ -16224,6 +17794,15 @@ Function Get-V-203758 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16277,6 +17856,7 @@ Function Get-V-203758 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16304,7 +17884,7 @@ Function Get-V-203758 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203759 {
+Function Get-V203759 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203759
@@ -16326,6 +17906,15 @@ Function Get-V-203759 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16379,6 +17968,7 @@ Function Get-V-203759 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16406,7 +17996,7 @@ Function Get-V-203759 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203760 {
+Function Get-V203760 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203760
@@ -16428,6 +18018,15 @@ Function Get-V-203760 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16481,6 +18080,7 @@ Function Get-V-203760 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16508,7 +18108,7 @@ Function Get-V-203760 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203761 {
+Function Get-V203761 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203761
@@ -16530,6 +18130,15 @@ Function Get-V-203761 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16583,6 +18192,7 @@ Function Get-V-203761 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16610,7 +18220,7 @@ Function Get-V-203761 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203762 {
+Function Get-V203762 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203762
@@ -16632,6 +18242,15 @@ Function Get-V-203762 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16685,6 +18304,7 @@ Function Get-V-203762 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16712,7 +18332,7 @@ Function Get-V-203762 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203763 {
+Function Get-V203763 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203763
@@ -16734,6 +18354,15 @@ Function Get-V-203763 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16787,6 +18416,7 @@ Function Get-V-203763 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16814,7 +18444,7 @@ Function Get-V-203763 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203764 {
+Function Get-V203764 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203764
@@ -16836,6 +18466,15 @@ Function Get-V-203764 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16889,6 +18528,7 @@ Function Get-V-203764 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16916,7 +18556,7 @@ Function Get-V-203764 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203765 {
+Function Get-V203765 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203765
@@ -16938,6 +18578,15 @@ Function Get-V-203765 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -16991,6 +18640,7 @@ Function Get-V-203765 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17018,7 +18668,7 @@ Function Get-V-203765 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203766 {
+Function Get-V203766 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203766
@@ -17040,6 +18690,15 @@ Function Get-V-203766 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17093,6 +18752,7 @@ Function Get-V-203766 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17120,7 +18780,7 @@ Function Get-V-203766 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203767 {
+Function Get-V203767 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203767
@@ -17142,6 +18802,15 @@ Function Get-V-203767 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17195,6 +18864,7 @@ Function Get-V-203767 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17222,7 +18892,7 @@ Function Get-V-203767 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203768 {
+Function Get-V203768 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203768
@@ -17244,6 +18914,15 @@ Function Get-V-203768 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17297,6 +18976,7 @@ Function Get-V-203768 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17324,7 +19004,7 @@ Function Get-V-203768 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203769 {
+Function Get-V203769 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203769
@@ -17346,6 +19026,15 @@ Function Get-V-203769 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17399,6 +19088,7 @@ Function Get-V-203769 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17426,7 +19116,7 @@ Function Get-V-203769 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203770 {
+Function Get-V203770 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203770
@@ -17448,6 +19138,15 @@ Function Get-V-203770 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17501,6 +19200,7 @@ Function Get-V-203770 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17528,7 +19228,7 @@ Function Get-V-203770 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203771 {
+Function Get-V203771 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203771
@@ -17550,6 +19250,15 @@ Function Get-V-203771 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17603,6 +19312,7 @@ Function Get-V-203771 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17630,7 +19340,7 @@ Function Get-V-203771 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203772 {
+Function Get-V203772 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203772
@@ -17652,6 +19362,15 @@ Function Get-V-203772 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17705,6 +19424,7 @@ Function Get-V-203772 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17732,7 +19452,7 @@ Function Get-V-203772 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203773 {
+Function Get-V203773 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203773
@@ -17754,6 +19474,15 @@ Function Get-V-203773 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17807,6 +19536,7 @@ Function Get-V-203773 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17834,7 +19564,7 @@ Function Get-V-203773 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203774 {
+Function Get-V203774 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203774
@@ -17856,6 +19586,15 @@ Function Get-V-203774 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -17909,6 +19648,7 @@ Function Get-V-203774 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17936,7 +19676,7 @@ Function Get-V-203774 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203775 {
+Function Get-V203775 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203775
@@ -17958,6 +19698,15 @@ Function Get-V-203775 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18011,6 +19760,7 @@ Function Get-V-203775 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18038,7 +19788,7 @@ Function Get-V-203775 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203776 {
+Function Get-V203776 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203776
@@ -18060,6 +19810,15 @@ Function Get-V-203776 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18113,6 +19872,7 @@ Function Get-V-203776 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18140,7 +19900,7 @@ Function Get-V-203776 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203777 {
+Function Get-V203777 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203777
@@ -18162,6 +19922,15 @@ Function Get-V-203777 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18215,6 +19984,7 @@ Function Get-V-203777 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18242,7 +20012,7 @@ Function Get-V-203777 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203778 {
+Function Get-V203778 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203778
@@ -18264,6 +20034,15 @@ Function Get-V-203778 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18317,6 +20096,7 @@ Function Get-V-203778 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18344,7 +20124,7 @@ Function Get-V-203778 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203779 {
+Function Get-V203779 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203779
@@ -18366,6 +20146,15 @@ Function Get-V-203779 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18419,6 +20208,7 @@ Function Get-V-203779 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18446,7 +20236,7 @@ Function Get-V-203779 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203780 {
+Function Get-V203780 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203780
@@ -18468,6 +20258,15 @@ Function Get-V-203780 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18521,6 +20320,7 @@ Function Get-V-203780 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18548,7 +20348,7 @@ Function Get-V-203780 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203781 {
+Function Get-V203781 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203781
@@ -18570,6 +20370,15 @@ Function Get-V-203781 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18623,6 +20432,7 @@ Function Get-V-203781 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18650,7 +20460,7 @@ Function Get-V-203781 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203782 {
+Function Get-V203782 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203782
@@ -18672,6 +20482,15 @@ Function Get-V-203782 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18725,6 +20544,7 @@ Function Get-V-203782 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18752,7 +20572,7 @@ Function Get-V-203782 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203783 {
+Function Get-V203783 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203783
@@ -18774,6 +20594,15 @@ Function Get-V-203783 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18827,6 +20656,7 @@ Function Get-V-203783 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18854,7 +20684,7 @@ Function Get-V-203783 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-203784 {
+Function Get-V203784 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203784
@@ -18876,6 +20706,15 @@ Function Get-V-203784 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -18929,6 +20768,7 @@ Function Get-V-203784 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18956,7 +20796,7 @@ Function Get-V-203784 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-252688 {
+Function Get-V252688 {
     <#
     .DESCRIPTION
         Vuln ID    : V-252688
@@ -18978,6 +20818,15 @@ Function Get-V-252688 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19031,6 +20880,7 @@ Function Get-V-252688 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19058,7 +20908,7 @@ Function Get-V-252688 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-259333 {
+Function Get-V259333 {
     <#
     .DESCRIPTION
         Vuln ID    : V-259333
@@ -19080,6 +20930,15 @@ Function Get-V-259333 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19133,6 +20992,7 @@ Function Get-V-259333 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19160,7 +21020,7 @@ Function Get-V-259333 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263650 {
+Function Get-V263650 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263650
@@ -19182,6 +21042,15 @@ Function Get-V-263650 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19235,6 +21104,7 @@ Function Get-V-263650 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19262,7 +21132,7 @@ Function Get-V-263650 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263651 {
+Function Get-V263651 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263651
@@ -19284,6 +21154,15 @@ Function Get-V-263651 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19337,6 +21216,7 @@ Function Get-V-263651 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19364,7 +21244,7 @@ Function Get-V-263651 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263652 {
+Function Get-V263652 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263652
@@ -19386,6 +21266,15 @@ Function Get-V-263652 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19439,6 +21328,7 @@ Function Get-V-263652 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19466,7 +21356,7 @@ Function Get-V-263652 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263653 {
+Function Get-V263653 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263653
@@ -19488,6 +21378,15 @@ Function Get-V-263653 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19541,6 +21440,7 @@ Function Get-V-263653 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19568,7 +21468,7 @@ Function Get-V-263653 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263654 {
+Function Get-V263654 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263654
@@ -19590,6 +21490,15 @@ Function Get-V-263654 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19643,6 +21552,7 @@ Function Get-V-263654 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19670,7 +21580,7 @@ Function Get-V-263654 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263655 {
+Function Get-V263655 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263655
@@ -19692,6 +21602,15 @@ Function Get-V-263655 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19745,6 +21664,7 @@ Function Get-V-263655 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19772,7 +21692,7 @@ Function Get-V-263655 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263656 {
+Function Get-V263656 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263656
@@ -19794,6 +21714,15 @@ Function Get-V-263656 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19847,6 +21776,7 @@ Function Get-V-263656 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19874,7 +21804,7 @@ Function Get-V-263656 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263657 {
+Function Get-V263657 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263657
@@ -19896,6 +21826,15 @@ Function Get-V-263657 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -19949,6 +21888,7 @@ Function Get-V-263657 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19976,7 +21916,7 @@ Function Get-V-263657 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263658 {
+Function Get-V263658 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263658
@@ -19998,6 +21938,15 @@ Function Get-V-263658 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -20051,6 +22000,7 @@ Function Get-V-263658 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20078,7 +22028,7 @@ Function Get-V-263658 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263659 {
+Function Get-V263659 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263659
@@ -20100,6 +22050,15 @@ Function Get-V-263659 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -20153,6 +22112,7 @@ Function Get-V-263659 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20180,7 +22140,7 @@ Function Get-V-263659 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263660 {
+Function Get-V263660 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263660
@@ -20202,6 +22162,15 @@ Function Get-V-263660 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -20255,6 +22224,7 @@ Function Get-V-263660 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20282,7 +22252,7 @@ Function Get-V-263660 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V-263661 {
+Function Get-V263661 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263661
@@ -20304,6 +22274,15 @@ Function Get-V-263661 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -20357,6 +22336,7 @@ Function Get-V-263661 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
+            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
