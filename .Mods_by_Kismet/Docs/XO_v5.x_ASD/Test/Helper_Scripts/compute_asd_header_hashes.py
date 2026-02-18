@@ -58,6 +58,15 @@ IMPLEMENTED_VULNIDS = [
     # Batch 11: Password Complexity (Phase 4)
     "V-222537", "V-222538", "V-222539", "V-222540", "V-222541",
     "V-222544", "V-222545",
+    # Batch 12: Password Reuse, Temp Passwords, PKI, PIV, FICAM (Phase 5)
+    "V-222546", "V-222547", "V-222548", "V-222549", "V-222552",
+    "V-222553", "V-222556", "V-222557", "V-222558", "V-222559",
+    "V-222560",
+    # Batch 13: Non-Local Maintenance, Race Conditions, FIPS, SAML, Cookies (Phase 5)
+    "V-222561", "V-222562", "V-222563", "V-222564", "V-222565",
+    "V-222566", "V-222567", "V-222568", "V-222570", "V-222571",
+    "V-222572", "V-222573", "V-222574", "V-222575", "V-222576",
+    "V-222579", "V-222580",
 ]
 
 def md5(text):
