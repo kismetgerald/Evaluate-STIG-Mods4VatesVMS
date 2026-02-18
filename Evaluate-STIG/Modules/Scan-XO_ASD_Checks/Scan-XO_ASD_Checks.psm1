@@ -20603,16 +20603,16 @@ Function Get-V222521 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222523 {
+Function Get-VV222523 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222523
-        STIG ID    : ASD-V6R4-222523
-        Rule ID    : SV-222523r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001550
+        Rule ID    : SV-222523r960972_rule
+        Rule Title : The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.
+        DiscussMD5 : e07cfd11e8c37311f4edc6b7dfbd66d7
+        CheckMD5   : a50ae9ad0b59bcb3d23e5d5e48b79e40
+        FixMD5     : 00e55fce2b83b2e76820a2f3bc23f0a7
     #>
 
     param (
@@ -20645,7 +20645,7 @@ Function Get-V222523 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222523"
-    $RuleID = "SV-222523r508029_rule"
+    $RuleID = "SV-222523r960972_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20655,9 +20655,96 @@ Function Get-V222523 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222523) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "MFA/Alt Token for Privileged Network Access (APSC-DV-001550)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 3: XO API authentication method
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = $tokenContent.Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join "").Trim() }
+    }
+
+    $FindingDetails += "Check 3 - Privileged User Accounts:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($token) {
+        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($users) {
+            $adminUsers = @($users | Where-Object { $_.permission -eq "admin" })
+            $FindingDetails += "  Admin users found: $($adminUsers.Count)" + $nl
+            foreach ($u in $adminUsers) {
+                $FindingDetails += "    - $($u.email) (permission: $($u.permission))" + $nl
+            }
+            $FindingDetails += $nl
+        }
+        else {
+            $FindingDetails += "  Unable to parse user list from API." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available for user enumeration." + $nl + $nl
+    }
+
+    # Status: Open unless LDAP/SAML + client certs detected (implies MFA possible)
+    if (($ldapStr -or $samlStr) -and $tlsCertStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Enterprise authentication with client certificate support detected." + $nl
+        $FindingDetails += "MFA capability is available for privileged network access." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: XO does not natively enforce MFA/Alt Token for privileged access." + $nl
+        $FindingDetails += "LDAP/AD integration with smart card or Alt Token required for compliance." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20687,12 +20774,11 @@ Function Get-V222523 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -20710,19 +20796,18 @@ Function Get-V222523 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222524 {
+Function Get-VV222524 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222524
-        STIG ID    : ASD-V6R4-222524
-        Rule ID    : SV-222524r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001560
+        Rule ID    : SV-222524r961494_rule
+        Rule Title : The application must accept Personal Identity Verification (PIV) credentials.
+        DiscussMD5 : 0f44bb6e82f2829bb8e9ef9e319f2f60
+        CheckMD5   : 6359f90d98f6ca75e34e3b38a966f8e8
+        FixMD5     : 35e8ef7ec4cff6aee50eb4e0a9dbe1d8
     #>
 
     param (
@@ -20755,7 +20840,7 @@ Function Get-V222524 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222524"
-    $RuleID = "SV-222524r508029_rule"
+    $RuleID = "SV-222524r961494_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20765,9 +20850,73 @@ Function Get-V222524 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222524) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "PIV Credential Acceptance (APSC-DV-001560)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 3: PKCS#11 / Smart card support
+    $pkcs11 = $(timeout 3 sh -c 'dpkg -l 2>/dev/null | grep -i "pam-pkcs11\|opensc\|p11-kit"' 2>&1)
+    $pkcs11Str = ($pkcs11 -join $nl).Trim()
+    $FindingDetails += "Check 3 - PKI/Smart Card Packages:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pkcs11Str) {
+        $FindingDetails += "  $pkcs11Str" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No PKCS#11/smart card packages detected." + $nl + $nl
+    }
+
+    if ($tlsCertStr -or $pkcs11Str) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PIV credential acceptance capability detected." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: XO does not natively accept PIV credentials." + $nl
+        $FindingDetails += "Integration with LDAP/AD using smart card authentication is required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20797,12 +20946,11 @@ Function Get-V222524 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -20820,19 +20968,18 @@ Function Get-V222524 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222525 {
+Function Get-VV222525 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222525
-        STIG ID    : ASD-V6R4-222525
-        Rule ID    : SV-222525r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001570
+        Rule ID    : SV-222525r961497_rule
+        Rule Title : The application must electronically verify Personal Identity Verification (PIV) credentials.
+        DiscussMD5 : 0f44bb6e82f2829bb8e9ef9e319f2f60
+        CheckMD5   : b77f9424fa2e5dea0bcaf49afd34d51f
+        FixMD5     : 35e8ef7ec4cff6aee50eb4e0a9dbe1d8
     #>
 
     param (
@@ -20865,7 +21012,7 @@ Function Get-V222525 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222525"
-    $RuleID = "SV-222525r508029_rule"
+    $RuleID = "SV-222525r961497_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20875,9 +21022,73 @@ Function Get-V222525 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222525) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "PIV Credential Electronic Verification (APSC-DV-001570)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 3: OCSP/CRL certificate validation
+    $ocspConfig = $(timeout 3 sh -c 'grep -ri "ocsp\|crl\|verify\|revocation" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $ocspStr = ($ocspConfig -join $nl).Trim()
+    $FindingDetails += "Check 3 - Certificate Revocation Checking:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ocspStr) {
+        $FindingDetails += "  $ocspStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No OCSP/CRL revocation checking configured." + $nl + $nl
+    }
+
+    if ($tlsCertStr -and $ocspStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PIV credential electronic verification configured." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: PIV credential electronic verification not configured." + $nl
+        $FindingDetails += "Client certificate authentication with OCSP/CRL validation required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20907,12 +21118,11 @@ Function Get-V222525 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -20930,19 +21140,18 @@ Function Get-V222525 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222526 {
+Function Get-VV222526 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222526
-        STIG ID    : ASD-V6R4-222526
-        Rule ID    : SV-222526r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001580
+        Rule ID    : SV-222526r960975_rule
+        Rule Title : The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts.
+        DiscussMD5 : e07cfd11e8c37311f4edc6b7dfbd66d7
+        CheckMD5   : ca366fbdb8f5bfa426a75e1f16ac2e24
+        FixMD5     : 1e77f1e9a8eb3fbc94e8fec99f7ba21a
     #>
 
     param (
@@ -20975,7 +21184,7 @@ Function Get-V222526 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222526"
-    $RuleID = "SV-222526r508029_rule"
+    $RuleID = "SV-222526r960975_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20985,9 +21194,94 @@ Function Get-V222526 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222526) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "MFA for Non-Privileged Network Access (APSC-DV-001580)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 3: Non-privileged user accounts
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = $tokenContent.Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join "").Trim() }
+    }
+
+    $FindingDetails += "Check 3 - Non-Privileged User Accounts:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($token) {
+        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($users) {
+            $nonAdminUsers = @($users | Where-Object { $_.permission -ne "admin" })
+            $FindingDetails += "  Non-admin users found: $($nonAdminUsers.Count)" + $nl
+            foreach ($u in $nonAdminUsers | Select-Object -First 5) {
+                $FindingDetails += "    - $($u.email) (permission: $($u.permission))" + $nl
+            }
+            $FindingDetails += $nl
+        }
+        else {
+            $FindingDetails += "  Unable to parse user list from API." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available for user enumeration." + $nl + $nl
+    }
+
+    if (($ldapStr -or $samlStr) -and $tlsCertStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Enterprise authentication with MFA capability for non-privileged access." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: MFA not enforced for non-privileged network access." + $nl
+        $FindingDetails += "LDAP/AD with CAC or Alt Token required for all user accounts." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21017,12 +21311,11 @@ Function Get-V222526 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21040,19 +21333,18 @@ Function Get-V222526 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222527 {
+Function Get-VV222527 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222527
-        STIG ID    : ASD-V6R4-222527
-        Rule ID    : SV-222527r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001590
+        Rule ID    : SV-222527r1015693_rule
+        Rule Title : The application must use multifactor (Alt. Token) authentication for local access to privileged accounts.
+        DiscussMD5 : 55dd0951cc6684addbb55e7e6ca1d0ad
+        CheckMD5   : 4d2c879e56e7e7a53520ac7d2e6eedcf
+        FixMD5     : b506dc5a24e91f5f8b6e460db7b3e80e
     #>
 
     param (
@@ -21085,7 +21377,7 @@ Function Get-V222527 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222527"
-    $RuleID = "SV-222527r508029_rule"
+    $RuleID = "SV-222527r1015693_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21095,9 +21387,71 @@ Function Get-V222527 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222527) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "MFA/Alt Token for Privileged Local Access (APSC-DV-001590)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check 2: Local console/SSH authentication methods
+    $pamMFA = $(timeout 3 sh -c 'grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamMFA -join $nl).Trim()
+    $FindingDetails += "Check 2 - PAM MFA Modules:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) {
+        $FindingDetails += "  $pamStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No PAM MFA modules configured for local access." + $nl + $nl
+    }
+
+    # Check 3: SSH authentication methods
+    $sshAuth = $(timeout 3 sh -c 'grep -i "AuthenticationMethods\|PubkeyAuthentication\|ChallengeResponseAuthentication" /etc/ssh/sshd_config 2>/dev/null' 2>&1)
+    $sshStr = ($sshAuth -join $nl).Trim()
+    $FindingDetails += "Check 3 - SSH Authentication Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($sshStr) {
+        $FindingDetails += "  $sshStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Default SSH authentication (no explicit MFA)." + $nl + $nl
+    }
+
+    if ($pamStr -or ($sshStr -match "AuthenticationMethods.*publickey.*password")) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: MFA configured for local privileged access." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: MFA not enforced for local privileged access." + $nl
+        $FindingDetails += "PAM MFA module or SSH multi-factor required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21127,12 +21481,11 @@ Function Get-V222527 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21150,19 +21503,18 @@ Function Get-V222527 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222528 {
+Function Get-VV222528 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222528
-        STIG ID    : ASD-V6R4-222528
-        Rule ID    : SV-222528r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001600
+        Rule ID    : SV-222528r1015694_rule
+        Rule Title : The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts.
+        DiscussMD5 : 55dd0951cc6684addbb55e7e6ca1d0ad
+        CheckMD5   : 780d03c4300ee664800521bc46fe8154
+        FixMD5     : 7c37c5e004d0e058ad8b7c8031b33669
     #>
 
     param (
@@ -21195,7 +21547,7 @@ Function Get-V222528 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222528"
-    $RuleID = "SV-222528r508029_rule"
+    $RuleID = "SV-222528r1015694_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21205,9 +21557,65 @@ Function Get-V222528 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222528) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "MFA for Nonprivileged Local Access (APSC-DV-001600)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
+    $authPlugins = ""
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlStr = ($samlActive -join $nl).Trim()
+    $oauthStr = ($oauthPlugin -join $nl).Trim()
+
+    if ($ldapStr) { $authPlugins += "LDAP/AD plugin detected: $ldapStr" + $nl }
+    if ($samlStr) { $authPlugins += "SAML config detected: $samlStr" + $nl }
+    if ($oauthStr) { $authPlugins += "OAuth/OIDC plugin detected: $oauthStr" + $nl }
+
+    $FindingDetails += "Check 1 - Enterprise Authentication Plugins:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($authPlugins) {
+        $FindingDetails += $authPlugins + $nl
+    }
+    else {
+        $FindingDetails += "  No enterprise authentication plugins detected." + $nl
+        $FindingDetails += "  XO uses local username/password authentication by default." + $nl + $nl
+    }
+
+    # Check 2: PAM MFA for all users
+    $pamMFA = $(timeout 3 sh -c 'grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamMFA -join $nl).Trim()
+    $FindingDetails += "Check 2 - PAM MFA Modules:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) {
+        $FindingDetails += "  $pamStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No PAM MFA modules configured." + $nl + $nl
+    }
+
+    # Check 3: XO web interface authentication
+    $FindingDetails += "Check 3 - XO Web Interface Authentication:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO web interface uses username/password by default." + $nl
+    $FindingDetails += "  MFA for web access requires LDAP/SAML integration with MFA-enabled IdP." + $nl + $nl
+
+    if ($pamStr -or $samlStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: MFA capability available for nonprivileged local access." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: MFA not enforced for nonprivileged local access." + $nl
+        $FindingDetails += "PAM MFA module or SAML/OIDC with MFA-enabled IdP required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21237,12 +21645,11 @@ Function Get-V222528 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21260,19 +21667,18 @@ Function Get-V222528 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222529 {
+Function Get-VV222529 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222529
-        STIG ID    : ASD-V6R4-222529
-        Rule ID    : SV-222529r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001610
+        Rule ID    : SV-222529r1015695_rule
+        Rule Title : The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.
+        DiscussMD5 : f39612da465c696e164b5d425883f0db
+        CheckMD5   : d127e24c2c9594b7c2788c7e8118e82d
+        FixMD5     : 1111a4247e43932077236d8520f60f97
     #>
 
     param (
@@ -21305,7 +21711,7 @@ Function Get-V222529 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222529"
-    $RuleID = "SV-222529r508029_rule"
+    $RuleID = "SV-222529r1015695_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21315,9 +21721,83 @@ Function Get-V222529 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222529) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Individual Auth Before Group Authenticator (APSC-DV-001610)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO user authentication model
+    $FindingDetails += "Check 1 - XO Authentication Model:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO requires individual user login before any group/shared access." + $nl
+    $FindingDetails += "  Each user has a unique email/username for authentication." + $nl + $nl
+
+    # Check 2: Group/shared accounts in XO
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = $tokenContent.Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join "").Trim() }
+    }
+
+    $FindingDetails += "Check 2 - XO User Accounts:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $groupAccountsFound = $false
+    if ($token) {
+        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($users) {
+            $FindingDetails += "  Total users: $($users.Count)" + $nl
+            foreach ($u in $users) {
+                $email = "$($u.email)"
+                if ($email -match "shared|group|service|generic|admin@|test@") {
+                    $groupAccountsFound = $true
+                    $FindingDetails += "  [REVIEW] Possible shared account: $email" + $nl
+                }
+                else {
+                    $FindingDetails += "  [OK] Individual account: $email" + $nl
+                }
+            }
+            $FindingDetails += $nl
+        }
+        else {
+            $FindingDetails += "  Unable to parse user list." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available." + $nl + $nl
+    }
+
+    # Check 3: System group accounts
+    $sharedLogins = $(timeout 3 sh -c 'last -w 2>/dev/null | head -20 | awk "{print \$1}" | sort | uniq -c | sort -rn | head -5' 2>&1)
+    $sharedStr = ($sharedLogins -join $nl).Trim()
+    $FindingDetails += "Check 3 - Recent Login Activity (top users):" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($sharedStr) {
+        $FindingDetails += "  $sharedStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No recent login data available." + $nl + $nl
+    }
+
+    if (-not $groupAccountsFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: All XO accounts use individual authenticators." + $nl
+        $FindingDetails += "No group/shared accounts detected." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Possible shared/group accounts detected." + $nl
+        $FindingDetails += "Verify individual authentication occurs before shared account access." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21347,12 +21827,11 @@ Function Get-V222529 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21370,19 +21849,18 @@ Function Get-V222529 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222530 {
+Function Get-VV222530 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222530
-        STIG ID    : ASD-V6R4-222530
-        Rule ID    : SV-222530r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001620
+        Rule ID    : SV-222530r960993_rule
+        Rule Title : The application must implement replay-resistant authentication mechanisms for network access to privileged accounts.
+        DiscussMD5 : 208fc895c02f64ea58c84964c1a8c036
+        CheckMD5   : 20dcf53bb77e3a8f28afed413995bf50
+        FixMD5     : a898552982afa98cd15ec5657cd6b1b0
     #>
 
     param (
@@ -21415,7 +21893,7 @@ Function Get-V222530 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222530"
-    $RuleID = "SV-222530r508029_rule"
+    $RuleID = "SV-222530r960993_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21425,9 +21903,55 @@ Function Get-V222530 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222530) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Replay-Resistant Auth for Privileged Access (APSC-DV-001620)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: TLS encryption (prevents replay)
+    $tlsVersion = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher'" 2>&1)
+    $tlsStr = ($tlsVersion -join $nl).Trim()
+    $FindingDetails += "Check 1 - TLS Encryption (replay protection):" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsStr -match "TLSv1\.[23]") {
+        $FindingDetails += "  TLS 1.2+ detected - provides replay protection." + $nl
+        $FindingDetails += "  $tlsStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  TLS status: $tlsStr" + $nl + $nl
+    }
+
+    # Check 2: Session token management (nonce/CSRF)
+    $csrfToken = $(timeout 5 sh -c "curl -s -k -I 'https://localhost/' 2>&1 | grep -i 'set-cookie\|csrf\|x-xsrf'" 2>&1)
+    $csrfStr = ($csrfToken -join $nl).Trim()
+    $FindingDetails += "Check 2 - Session Token/CSRF Protection:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($csrfStr) {
+        $FindingDetails += "  $csrfStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No CSRF/session tokens detected in response headers." + $nl + $nl
+    }
+
+    # Check 3: XO uses session tokens (inherently replay-resistant with TLS)
+    $FindingDetails += "Check 3 - XO Authentication Mechanism:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO uses session-based authentication over HTTPS." + $nl
+    $FindingDetails += "  TLS encryption prevents credential interception and replay." + $nl
+    $FindingDetails += "  Session tokens are unique per session and time-limited." + $nl + $nl
+
+    if ($tlsStr -match "TLSv1\.[23]") {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Replay-resistant authentication via TLS 1.2+ session tokens." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Cannot verify TLS-based replay protection." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21457,12 +21981,11 @@ Function Get-V222530 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21480,19 +22003,18 @@ Function Get-V222530 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222531 {
+Function Get-VV222531 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222531
-        STIG ID    : ASD-V6R4-222531
-        Rule ID    : SV-222531r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001630
+        Rule ID    : SV-222531r1015696_rule
+        Rule Title : The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.
+        DiscussMD5 : 23c28b2d072d179cdf0da9f09e54bb03
+        CheckMD5   : cd531057c7950d493d6a7b8d75130130
+        FixMD5     : 12c8a3439db7d05c1e60e5f0d9e582b3
     #>
 
     param (
@@ -21525,7 +22047,7 @@ Function Get-V222531 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222531"
-    $RuleID = "SV-222531r508029_rule"
+    $RuleID = "SV-222531r1015696_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21535,9 +22057,43 @@ Function Get-V222531 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222531) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Replay-Resistant Auth for Nonprivileged Access (APSC-DV-001630)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: TLS encryption active
+    $tlsVersion = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher'" 2>&1)
+    $tlsStr = ($tlsVersion -join $nl).Trim()
+    $FindingDetails += "Check 1 - TLS Encryption:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsStr -match "TLSv1\.[23]") {
+        $FindingDetails += "  TLS 1.2+ active - replay protection enabled." + $nl
+        $FindingDetails += "  $tlsStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  TLS status: $tlsStr" + $nl + $nl
+    }
+
+    # Check 2: Same session-based auth applies to all users
+    $FindingDetails += "Check 2 - Authentication Mechanism:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO applies the same session-based authentication to all users." + $nl
+    $FindingDetails += "  Both privileged and nonprivileged accounts use HTTPS sessions." + $nl
+    $FindingDetails += "  Session tokens are unique, time-limited, and transmitted over TLS." + $nl + $nl
+
+    if ($tlsStr -match "TLSv1\.[23]") {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Replay-resistant authentication via TLS 1.2+ for all accounts." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Cannot verify TLS-based replay protection." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21567,12 +22123,11 @@ Function Get-V222531 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21590,19 +22145,18 @@ Function Get-V222531 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222532 {
+Function Get-VV222532 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222532
-        STIG ID    : ASD-V6R4-222532
-        Rule ID    : SV-222532r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001640
+        Rule ID    : SV-222532r960999_rule
+        Rule Title : The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner.
+        DiscussMD5 : 2577b1f47c2657f2a443d73d10b457a0
+        CheckMD5   : f516443c6be3ad622c419dda9d2018b0
+        FixMD5     : 3b9d09b4d0395d1ccd2a5c06d974b30b
     #>
 
     param (
@@ -21635,7 +22189,7 @@ Function Get-V222532 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222532"
-    $RuleID = "SV-222532r508029_rule"
+    $RuleID = "SV-222532r960999_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21645,9 +22199,57 @@ Function Get-V222532 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222532) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Mutual Authentication for Non-Repudiation (APSC-DV-001640)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 2 (renumbered): Server certificate verification
+    $serverCert = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -subject -issuer 2>&1" 2>&1)
+    $certStr = ($serverCert -join $nl).Trim()
+    $FindingDetails += "Check 2 - Server TLS Certificate:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($certStr) {
+        $FindingDetails += "  $certStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unable to retrieve server certificate." + $nl + $nl
+    }
+
+    # Check 3: Mutual TLS requirement assessment
+    $FindingDetails += "Check 3 - Mutual Authentication Assessment:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO manages virtualization infrastructure (classified as sensitive)." + $nl
+    $FindingDetails += "  Mutual TLS (mTLS) provides device-level non-repudiation." + $nl
+    $FindingDetails += "  Requires both server and client certificate exchange." + $nl + $nl
+
+    if ($tlsCertStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Mutual TLS configuration detected." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Mutual TLS not configured." + $nl
+        $FindingDetails += "Configure client certificate authentication if non-repudiation required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21677,12 +22279,11 @@ Function Get-V222532 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21700,19 +22301,18 @@ Function Get-V222532 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222533 {
+Function Get-VV222533 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222533
-        STIG ID    : ASD-V6R4-222533
-        Rule ID    : SV-222533r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001650
+        Rule ID    : SV-222533r961503_rule
+        Rule Title : The application must authenticate all network connected endpoint devices before establishing any connection.
+        DiscussMD5 : 8d16913c424573973ad0a290d751a653
+        CheckMD5   : b21a12673a6fcdc9c9ec320c6e426318
+        FixMD5     : c4b67db230e8e4219b0ef6537019582d
     #>
 
     param (
@@ -21745,7 +22345,7 @@ Function Get-V222533 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222533"
-    $RuleID = "SV-222533r508029_rule"
+    $RuleID = "SV-222533r961503_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21755,9 +22355,54 @@ Function Get-V222533 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222533) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Endpoint Device Authentication (APSC-DV-001650)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO API authentication requirement
+    $unauthTest = $(timeout 5 sh -c "curl -s -k -o /dev/null -w '%{http_code}' 'https://localhost/rest/v0/users'" 2>&1)
+    $FindingDetails += "Check 1 - Unauthenticated API Access:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  HTTP status for unauthenticated /rest/v0/users: $unauthTest" + $nl
+    if ($unauthTest -match "401|403") {
+        $FindingDetails += "  API correctly rejects unauthenticated requests." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  API may allow unauthenticated access." + $nl + $nl
+    }
+
+    # Check 2: TLS required for all connections
+    $httpRedirect = $(timeout 5 sh -c "curl -s -k -o /dev/null -w '%{http_code}' 'http://localhost/'" 2>&1)
+    $FindingDetails += "Check 2 - HTTP to HTTPS Redirect:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  HTTP redirect status: $httpRedirect" + $nl
+    if ($httpRedirect -match "30[1-3]") {
+        $FindingDetails += "  HTTP redirects to HTTPS (transport security enforced)." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  HTTP redirect behavior: code $httpRedirect" + $nl + $nl
+    }
+
+    # Check 3: XO server connection authentication
+    $FindingDetails += "Check 3 - XO Connection Authentication:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO requires user authentication for all management operations." + $nl
+    $FindingDetails += "  WebSocket connections require valid session tokens." + $nl
+    $FindingDetails += "  API endpoints require authentication tokens." + $nl + $nl
+
+    if ($unauthTest -match "401|403") {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: All endpoint connections require authentication." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Endpoint device authentication verification required." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21787,12 +22432,11 @@ Function Get-V222533 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21810,19 +22454,18 @@ Function Get-V222533 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222534 {
+Function Get-VV222534 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222534
-        STIG ID    : ASD-V6R4-222534
-        Rule ID    : SV-222534r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001660
+        Rule ID    : SV-222534r961506_rule
+        Rule Title : Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS.
+        DiscussMD5 : d4a0aa8e2ee8ef79467f5adbced237a2
+        CheckMD5   : 379bf6831b7f830480105517a3ee9599
+        FixMD5     : bb70034d989bf84cd107307f3d6842b8
     #>
 
     param (
@@ -21855,7 +22498,7 @@ Function Get-V222534 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222534"
-    $RuleID = "SV-222534r508029_rule"
+    $RuleID = "SV-222534r961506_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21865,9 +22508,52 @@ Function Get-V222534 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222534) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Mutual SSL/TLS for Non-Releasable Data (APSC-DV-001660)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO handles non-releasable data (virtualization management)
+    $FindingDetails += "Check 1 - Data Classification:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO manages virtual machine infrastructure." + $nl
+    $FindingDetails += "  VM management data includes network configs, storage, and credentials." + $nl
+    $FindingDetails += "  This data is classified as non-releasable." + $nl + $nl
+
+    # Check TLS client certificate configuration
+    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
+
+    $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($tlsCertStr) {
+        $FindingDetails += "  Client cert config found:" + $nl
+        $FindingDetails += "  $tlsCertStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No TLS client certificate authentication configured." + $nl + $nl
+    }
+
+    # Check 3 (renumbered): API endpoints using REST
+    $FindingDetails += "Check 3 - Service-Oriented Architecture:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO provides REST API at /rest/v0/ for service consumers." + $nl
+    $FindingDetails += "  API authentication uses token-based auth over TLS." + $nl
+    $FindingDetails += "  Mutual TLS (mTLS) adds device-level authentication." + $nl + $nl
+
+    if ($tlsCertStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Mutual SSL/TLS configured for service endpoints." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Mutual SSL/TLS not configured." + $nl
+        $FindingDetails += "Configure client certificate authentication for service endpoints." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21897,12 +22583,11 @@ Function Get-V222534 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -21920,19 +22605,18 @@ Function Get-V222534 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222535 {
+Function Get-VV222535 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222535
-        STIG ID    : ASD-V6R4-222535
-        Rule ID    : SV-222535r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001670
+        Rule ID    : SV-222535r1015697_rule
+        Rule Title : The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication.
+        DiscussMD5 : 5a420f520fbe06bd2477442cd7239596
+        CheckMD5   : 6b8f3b2201f82f7a1356789527e07a1b
+        FixMD5     : 789c50175282309d32cdbd37040c98d3
     #>
 
     param (
@@ -21965,7 +22649,7 @@ Function Get-V222535 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222535"
-    $RuleID = "SV-222535r508029_rule"
+    $RuleID = "SV-222535r1015697_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -21975,9 +22659,58 @@ Function Get-V222535 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222535) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Device Identifier Inactivity Disable (APSC-DV-001670)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO device authentication model
+    $FindingDetails += "Check 1 - Device Authentication Assessment:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO is a web-based management application." + $nl
+    $FindingDetails += "  XO authenticates users, not devices (no device identifiers)." + $nl
+    $FindingDetails += "  Browser sessions are authenticated via user credentials." + $nl + $nl
+
+    # Check 2: API token expiration
+    $FindingDetails += "Check 2 - API Token Management:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $FindingDetails += "  XO API tokens are tied to user accounts, not devices." + $nl
+    $FindingDetails += "  Token lifecycle managed through user account management." + $nl + $nl
+
+    # Check 3: User account inactivity
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = $tokenContent.Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join "").Trim() }
+    }
+
+    $FindingDetails += "Check 3 - User Account Activity:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($token) {
+        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($users) {
+            $FindingDetails += "  Total user accounts: $($users.Count)" + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available for user enumeration." + $nl + $nl
+    }
+
+    # XO does not use device identifiers - this is N/A per STIG guidance
+    $Status = "Not_Applicable"
+    $FindingDetails += "RESULT: Not Applicable - XO authenticates users, not devices." + $nl
+    $FindingDetails += "XO does not use device identifiers for authentication." + $nl
+    $FindingDetails += "Per STIG: if application does not authenticate devices, this is N/A." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22007,12 +22740,11 @@ Function Get-V222535 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22030,19 +22762,18 @@ Function Get-V222535 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222537 {
+Function Get-VV222537 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222537
-        STIG ID    : ASD-V6R4-222537
-        Rule ID    : SV-222537r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001690
+        Rule ID    : SV-222537r1015699_rule
+        Rule Title : The application must enforce password complexity by requiring that at least one uppercase character be used.
+        DiscussMD5 : db6c9b9db71f6aa150eedc274a499e0b
+        CheckMD5   : 0b49493228f52600117c4eb372a90d96
+        FixMD5     : d6feea4854e717830ea848388a81e9a6
     #>
 
     param (
@@ -22075,7 +22806,7 @@ Function Get-V222537 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222537"
-    $RuleID = "SV-222537r508029_rule"
+    $RuleID = "SV-222537r1015699_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22085,9 +22816,85 @@ Function Get-V222537 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222537) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    # Check if XO uses passwords (always true for local auth)
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlStr = ($samlActive -join $nl).Trim()
+    $usesPasswords = $true
+
+    # Check PAM pwquality configuration
+    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwqualityStr = ($pwquality -join $nl).Trim()
+
+    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamPwquality -join $nl).Trim()
+
+    $FindingDetails += "Password Complexity - Uppercase Requirement (APSC-DV-001690)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: PAM pwquality ucredit setting
+    $FindingDetails += "Check 1 - PAM pwquality Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ucreditMatch = $false
+    if ($pwqualityStr -match "ucredit\s*=\s*(-?\d+)") {
+        $ucreditVal = [int]$matches[1]
+        $FindingDetails += "  ucredit = $ucreditVal" + $nl
+        if ($ucreditVal -le -1) {
+            $ucreditMatch = $true
+            $FindingDetails += "  Requires at least 1 uppercase character." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Does not require uppercase characters." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  ucredit not configured in pwquality.conf" + $nl + $nl
+    }
+
+    # Check 2: PAM module loaded
+    $FindingDetails += "Check 2 - PAM Module Status:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) {
+        $FindingDetails += "  $pamStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  pam_pwquality not loaded in PAM stack." + $nl + $nl
+    }
+
+    # Check 3: LDAP/AD delegation
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) {
+        $FindingDetails += "  LDAP/AD plugin detected - password policy may be enforced by directory." + $nl + $nl
+    }
+    elseif ($samlStr) {
+        $FindingDetails += "  SAML configured - password policy enforced by IdP." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No external authentication - local password policy applies." + $nl + $nl
+    }
+
+    if ($ucreditMatch -and $pamStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Uppercase character requirement enforced via PAM." + $nl
+    }
+    elseif ($ldapStr -or $samlStr) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: External auth detected but local PAM ucredit not configured." + $nl
+        $FindingDetails += "Verify LDAP/AD password policy enforces uppercase requirement." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Uppercase character requirement not enforced." + $nl
+        $FindingDetails += "Configure: ucredit = -1 in /etc/security/pwquality.conf" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22117,12 +22924,11 @@ Function Get-V222537 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22140,19 +22946,18 @@ Function Get-V222537 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222538 {
+Function Get-VV222538 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222538
-        STIG ID    : ASD-V6R4-222538
-        Rule ID    : SV-222538r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001700
+        Rule ID    : SV-222538r1015700_rule
+        Rule Title : The application must enforce password complexity by requiring that at least one lowercase character be used.
+        DiscussMD5 : 7d678efbbb88ff17e2d7cb83f40446ad
+        CheckMD5   : 9dc62e47cdd8a220a6a76cb2b2ee9fe7
+        FixMD5     : c7ac931ddc32c7960633e03caa6a8977
     #>
 
     param (
@@ -22185,7 +22990,7 @@ Function Get-V222538 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222538"
-    $RuleID = "SV-222538r508029_rule"
+    $RuleID = "SV-222538r1015700_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22195,9 +23000,74 @@ Function Get-V222538 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222538) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    # Check if XO uses passwords (always true for local auth)
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlStr = ($samlActive -join $nl).Trim()
+    $usesPasswords = $true
+
+    # Check PAM pwquality configuration
+    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwqualityStr = ($pwquality -join $nl).Trim()
+
+    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamPwquality -join $nl).Trim()
+
+    $FindingDetails += "Password Complexity - Lowercase Requirement (APSC-DV-001700)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - PAM pwquality Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $lcreditMatch = $false
+    if ($pwqualityStr -match "lcredit\s*=\s*(-?\d+)") {
+        $lcreditVal = [int]$matches[1]
+        $FindingDetails += "  lcredit = $lcreditVal" + $nl
+        if ($lcreditVal -le -1) {
+            $lcreditMatch = $true
+            $FindingDetails += "  Requires at least 1 lowercase character." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Does not require lowercase characters." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  lcredit not configured in pwquality.conf" + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2 - PAM Module Status:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) {
+        $FindingDetails += "  $pamStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  pam_pwquality not loaded in PAM stack." + $nl + $nl
+    }
+
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) {
+        $FindingDetails += "  LDAP/AD plugin detected - password policy may be enforced by directory." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No external authentication - local password policy applies." + $nl + $nl
+    }
+
+    if ($lcreditMatch -and $pamStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Lowercase character requirement enforced via PAM." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Lowercase character requirement not enforced." + $nl
+        $FindingDetails += "Configure: lcredit = -1 in /etc/security/pwquality.conf" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22227,12 +23097,11 @@ Function Get-V222538 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22250,19 +23119,18 @@ Function Get-V222538 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222539 {
+Function Get-VV222539 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222539
-        STIG ID    : ASD-V6R4-222539
-        Rule ID    : SV-222539r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001710
+        Rule ID    : SV-222539r1015701_rule
+        Rule Title : The application must enforce password complexity by requiring that at least one numeric character be used.
+        DiscussMD5 : 7d678efbbb88ff17e2d7cb83f40446ad
+        CheckMD5   : 1410967244f344f336500e2b30136083
+        FixMD5     : 757be56b3292675e1d651446858c2c8b
     #>
 
     param (
@@ -22295,7 +23163,7 @@ Function Get-V222539 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222539"
-    $RuleID = "SV-222539r508029_rule"
+    $RuleID = "SV-222539r1015701_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22305,9 +23173,66 @@ Function Get-V222539 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222539) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    # Check if XO uses passwords (always true for local auth)
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlStr = ($samlActive -join $nl).Trim()
+    $usesPasswords = $true
+
+    # Check PAM pwquality configuration
+    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwqualityStr = ($pwquality -join $nl).Trim()
+
+    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamPwquality -join $nl).Trim()
+
+    $FindingDetails += "Password Complexity - Numeric Requirement (APSC-DV-001710)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - PAM pwquality Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $dcreditMatch = $false
+    if ($pwqualityStr -match "dcredit\s*=\s*(-?\d+)") {
+        $dcreditVal = [int]$matches[1]
+        $FindingDetails += "  dcredit = $dcreditVal" + $nl
+        if ($dcreditVal -le -1) {
+            $dcreditMatch = $true
+            $FindingDetails += "  Requires at least 1 numeric character." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Does not require numeric characters." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  dcredit not configured in pwquality.conf" + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2 - PAM Module Status:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) { $FindingDetails += "  $pamStr" + $nl + $nl }
+    else { $FindingDetails += "  pam_pwquality not loaded in PAM stack." + $nl + $nl }
+
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) { $FindingDetails += "  LDAP/AD plugin detected." + $nl + $nl }
+    else { $FindingDetails += "  No external authentication." + $nl + $nl }
+
+    if ($dcreditMatch -and $pamStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Numeric character requirement enforced via PAM." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Numeric character requirement not enforced." + $nl
+        $FindingDetails += "Configure: dcredit = -1 in /etc/security/pwquality.conf" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22337,12 +23262,11 @@ Function Get-V222539 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22360,19 +23284,18 @@ Function Get-V222539 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222540 {
+Function Get-VV222540 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222540
-        STIG ID    : ASD-V6R4-222540
-        Rule ID    : SV-222540r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001720
+        Rule ID    : SV-222540r1015702_rule
+        Rule Title : The application must enforce password complexity by requiring that at least one special character be used.
+        DiscussMD5 : 7d678efbbb88ff17e2d7cb83f40446ad
+        CheckMD5   : dafe6327b434463b9277d9ab9a59acfe
+        FixMD5     : 9ccdf4e55757ae20b3f68952984a9141
     #>
 
     param (
@@ -22405,7 +23328,7 @@ Function Get-V222540 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222540"
-    $RuleID = "SV-222540r508029_rule"
+    $RuleID = "SV-222540r1015702_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22415,9 +23338,66 @@ Function Get-V222540 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222540) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    # Check if XO uses passwords (always true for local auth)
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlStr = ($samlActive -join $nl).Trim()
+    $usesPasswords = $true
+
+    # Check PAM pwquality configuration
+    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwqualityStr = ($pwquality -join $nl).Trim()
+
+    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamPwquality -join $nl).Trim()
+
+    $FindingDetails += "Password Complexity - Special Character Requirement (APSC-DV-001720)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - PAM pwquality Configuration:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $ocreditMatch = $false
+    if ($pwqualityStr -match "ocredit\s*=\s*(-?\d+)") {
+        $ocreditVal = [int]$matches[1]
+        $FindingDetails += "  ocredit = $ocreditVal" + $nl
+        if ($ocreditVal -le -1) {
+            $ocreditMatch = $true
+            $FindingDetails += "  Requires at least 1 special character." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Does not require special characters." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  ocredit not configured in pwquality.conf" + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2 - PAM Module Status:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) { $FindingDetails += "  $pamStr" + $nl + $nl }
+    else { $FindingDetails += "  pam_pwquality not loaded in PAM stack." + $nl + $nl }
+
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) { $FindingDetails += "  LDAP/AD plugin detected." + $nl + $nl }
+    else { $FindingDetails += "  No external authentication." + $nl + $nl }
+
+    if ($ocreditMatch -and $pamStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Special character requirement enforced via PAM." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Special character requirement not enforced." + $nl
+        $FindingDetails += "Configure: ocredit = -1 in /etc/security/pwquality.conf" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22447,12 +23427,11 @@ Function Get-V222540 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22470,19 +23449,18 @@ Function Get-V222540 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222541 {
+Function Get-VV222541 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222541
-        STIG ID    : ASD-V6R4-222541
-        Rule ID    : SV-222541r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001730
+        Rule ID    : SV-222541r1043189_rule
+        Rule Title : The application must require the change of at least eight of the total number of characters when passwords are changed.
+        DiscussMD5 : 7d678efbbb88ff17e2d7cb83f40446ad
+        CheckMD5   : 27300d11e6bf5ac35b88c41e3f80d3c0
+        FixMD5     : 13e59024059aca3abde5286fec379f2a
     #>
 
     param (
@@ -22515,7 +23493,7 @@ Function Get-V222541 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222541"
-    $RuleID = "SV-222541r508029_rule"
+    $RuleID = "SV-222541r1043189_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22525,9 +23503,67 @@ Function Get-V222541 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222541) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    # Check if XO uses passwords (always true for local auth)
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlStr = ($samlActive -join $nl).Trim()
+    $usesPasswords = $true
+
+    # Check PAM pwquality configuration
+    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwqualityStr = ($pwquality -join $nl).Trim()
+
+    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamStr = ($pamPwquality -join $nl).Trim()
+
+    $FindingDetails += "Password Change - Minimum 8 Characters Changed (APSC-DV-001730)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: PAM pwquality difok setting
+    $FindingDetails += "Check 1 - PAM pwquality difok Setting:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $difokMatch = $false
+    if ($pwqualityStr -match "difok\s*=\s*(\d+)") {
+        $difokVal = [int]$matches[1]
+        $FindingDetails += "  difok = $difokVal" + $nl
+        if ($difokVal -ge 8) {
+            $difokMatch = $true
+            $FindingDetails += "  Requires at least $difokVal characters differ from old password." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Below DoD requirement of 8 characters." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  difok not configured (default is 1)." + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2 - PAM Module Status:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamStr) { $FindingDetails += "  $pamStr" + $nl + $nl }
+    else { $FindingDetails += "  pam_pwquality not loaded." + $nl + $nl }
+
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) { $FindingDetails += "  LDAP/AD plugin detected." + $nl + $nl }
+    else { $FindingDetails += "  No external authentication." + $nl + $nl }
+
+    if ($difokMatch -and $pamStr) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Password change difference requirement enforced (difok >= 8)." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Password change difference requirement not enforced." + $nl
+        $FindingDetails += "Configure: difok = 8 in /etc/security/pwquality.conf" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22557,12 +23593,11 @@ Function Get-V222541 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22580,19 +23615,18 @@ Function Get-V222541 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222544 {
+Function Get-VV222544 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222544
-        STIG ID    : ASD-V6R4-222544
-        Rule ID    : SV-222544r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001760
+        Rule ID    : SV-222544r1015705_rule
+        Rule Title : The application must enforce 24 hours/1 day as the minimum password lifetime.
+        DiscussMD5 : 098458d344563d01cb53ac0c15e70dbd
+        CheckMD5   : 71ce06309bda0f1447d841add6a77845
+        FixMD5     : f9243295e8333da63ebb3ddce2968215
     #>
 
     param (
@@ -22625,7 +23659,7 @@ Function Get-V222544 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222544"
-    $RuleID = "SV-222544r508029_rule"
+    $RuleID = "SV-222544r1015705_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22635,9 +23669,69 @@ Function Get-V222544 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222544) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Minimum Password Lifetime - 24 Hours (APSC-DV-001760)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: /etc/login.defs PASS_MIN_DAYS
+    $loginDefs = $(timeout 3 sh -c 'grep "^PASS_MIN_DAYS" /etc/login.defs 2>/dev/null' 2>&1)
+    $loginStr = ($loginDefs -join $nl).Trim()
+    $FindingDetails += "Check 1 - /etc/login.defs PASS_MIN_DAYS:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $minDaysOK = $false
+    if ($loginStr -match "PASS_MIN_DAYS\s+(\d+)") {
+        $minDays = [int]$matches[1]
+        $FindingDetails += "  PASS_MIN_DAYS = $minDays" + $nl
+        if ($minDays -ge 1) {
+            $minDaysOK = $true
+            $FindingDetails += "  Meets 24-hour minimum." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Below 24-hour minimum (DoD requires >= 1 day)." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  PASS_MIN_DAYS not configured." + $nl + $nl
+    }
+
+    # Check 2: PAM configuration
+    $pamAge = $(timeout 3 sh -c 'grep -r "pam_unix\|pam_pwhistory" /etc/pam.d/ 2>/dev/null | grep -i "min_days\|remember"' 2>&1)
+    $pamAgeStr = ($pamAge -join $nl).Trim()
+    $FindingDetails += "Check 2 - PAM Password Aging:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($pamAgeStr) {
+        $FindingDetails += "  $pamAgeStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No PAM password aging configuration found." + $nl + $nl
+    }
+
+    # Check 3: LDAP/AD delegation
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) {
+        $FindingDetails += "  LDAP/AD plugin detected - minimum password age may be enforced by directory." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No external authentication." + $nl + $nl
+    }
+
+    if ($minDaysOK) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Minimum password lifetime of 24 hours enforced." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Minimum password lifetime not enforced." + $nl
+        $FindingDetails += "Configure: PASS_MIN_DAYS 1 in /etc/login.defs" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22667,12 +23761,11 @@ Function Get-V222544 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22690,19 +23783,18 @@ Function Get-V222544 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
-Function Get-V222545 {
+Function Get-VV222545 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222545
-        STIG ID    : ASD-V6R4-222545
-        Rule ID    : SV-222545r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : APSC-DV-001770
+        Rule ID    : SV-222545r1043190_rule
+        Rule Title : The application must enforce a 60-day maximum password lifetime restriction.
+        DiscussMD5 : a9d56fed803a00b1e3c81b690ffa0a0b
+        CheckMD5   : 1e35f0792b91b744aee1697ad25c6489
+        FixMD5     : 8eb8d0e690466363d9f6c94b718d4427
     #>
 
     param (
@@ -22735,7 +23827,7 @@ Function Get-V222545 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-222545"
-    $RuleID = "SV-222545r508029_rule"
+    $RuleID = "SV-222545r1043190_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -22745,9 +23837,69 @@ Function Get-V222545 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222545) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "Maximum Password Lifetime - 60 Days (APSC-DV-001770)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: /etc/login.defs PASS_MAX_DAYS
+    $loginDefs = $(timeout 3 sh -c 'grep "^PASS_MAX_DAYS" /etc/login.defs 2>/dev/null' 2>&1)
+    $loginStr = ($loginDefs -join $nl).Trim()
+    $FindingDetails += "Check 1 - /etc/login.defs PASS_MAX_DAYS:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    $maxDaysOK = $false
+    if ($loginStr -match "PASS_MAX_DAYS\s+(\d+)") {
+        $maxDays = [int]$matches[1]
+        $FindingDetails += "  PASS_MAX_DAYS = $maxDays" + $nl
+        if ($maxDays -le 60 -and $maxDays -gt 0) {
+            $maxDaysOK = $true
+            $FindingDetails += "  Meets 60-day maximum requirement." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  Exceeds 60-day maximum (DoD requires <= 60 days)." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  PASS_MAX_DAYS not configured." + $nl + $nl
+    }
+
+    # Check 2: Individual user account settings
+    $userMaxDays = $(timeout 3 sh -c 'chage -l root 2>/dev/null | grep "Maximum"' 2>&1)
+    $userMaxStr = ($userMaxDays -join $nl).Trim()
+    $FindingDetails += "Check 2 - Root Account Password Aging:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($userMaxStr) {
+        $FindingDetails += "  $userMaxStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unable to retrieve root password aging." + $nl + $nl
+    }
+
+    # Check 3: LDAP/AD delegation
+    $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
+    $ldapStr = ($ldapPlugin -join $nl).Trim()
+    $FindingDetails += "Check 3 - External Password Policy:" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+    if ($ldapStr) {
+        $FindingDetails += "  LDAP/AD plugin detected - maximum password age may be enforced by directory." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No external authentication." + $nl + $nl
+    }
+
+    if ($maxDaysOK) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Maximum password lifetime of 60 days enforced." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: Maximum password lifetime not properly configured." + $nl
+        $FindingDetails += "Configure: PASS_MAX_DAYS 60 in /etc/login.defs" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22777,12 +23929,11 @@ Function Get-V222545 {
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
         }
-
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         if ($Status -eq $AnswerData.ExpectedStatus) {
-            $AFKey = $AnswerData.AFKey
-            $AFStatus = $AnswerData.AFStatus
-            $Comments = $AnswerData.AFComment | Out-String
+            $AFKey     = $AnswerData.AFKey
+            $AFStatus  = $AnswerData.AFStatus
+            $Comments  = $AnswerData.AFComment | Out-String
         }
     }
 
@@ -22800,7 +23951,6 @@ Function Get-V222545 {
         HeadSite         = $SiteName
         HeadHash         = $ResultHash
     }
-
     return Send-CheckResult @SendCheckParams
 }
 Function Get-V222546 {

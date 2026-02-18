@@ -781,6 +781,128 @@ HEADER_DATA = {
         "check":   "4efd5e60c5b503bf524d01f2dba60e72",
         "fix":     "12731d2d4c80d7732d683ad903558675",
     },
+    # Batch 10: Authentication Methods (Phase 4)
+    "V-222523": {
+        "title": "The application must use multifactor (Alt. Token) authentication for network access to privileged accounts.",
+        "discuss": "e07cfd11e8c37311f4edc6b7dfbd66d7",
+        "check":   "a50ae9ad0b59bcb3d23e5d5e48b79e40",
+        "fix":     "00e55fce2b83b2e76820a2f3bc23f0a7",
+    },
+    "V-222524": {
+        "title": "The application must accept Personal Identity Verification (PIV) credentials.",
+        "discuss": "0f44bb6e82f2829bb8e9ef9e319f2f60",
+        "check":   "6359f90d98f6ca75e34e3b38a966f8e8",
+        "fix":     "35e8ef7ec4cff6aee50eb4e0a9dbe1d8",
+    },
+    "V-222525": {
+        "title": "The application must electronically verify Personal Identity Verification (PIV) credentials.",
+        "discuss": "0f44bb6e82f2829bb8e9ef9e319f2f60",
+        "check":   "b77f9424fa2e5dea0bcaf49afd34d51f",
+        "fix":     "35e8ef7ec4cff6aee50eb4e0a9dbe1d8",
+    },
+    "V-222526": {
+        "title": "The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts.",
+        "discuss": "e07cfd11e8c37311f4edc6b7dfbd66d7",
+        "check":   "ca366fbdb8f5bfa426a75e1f16ac2e24",
+        "fix":     "1e77f1e9a8eb3fbc94e8fec99f7ba21a",
+    },
+    "V-222527": {
+        "title": "The application must use multifactor (Alt. Token) authentication for local access to privileged accounts.",
+        "discuss": "55dd0951cc6684addbb55e7e6ca1d0ad",
+        "check":   "4d2c879e56e7e7a53520ac7d2e6eedcf",
+        "fix":     "b506dc5a24e91f5f8b6e460db7b3e80e",
+    },
+    "V-222528": {
+        "title": "The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts.",
+        "discuss": "55dd0951cc6684addbb55e7e6ca1d0ad",
+        "check":   "780d03c4300ee664800521bc46fe8154",
+        "fix":     "7c37c5e004d0e058ad8b7c8031b33669",
+    },
+    "V-222529": {
+        "title": "The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator.",
+        "discuss": "f39612da465c696e164b5d425883f0db",
+        "check":   "d127e24c2c9594b7c2788c7e8118e82d",
+        "fix":     "1111a4247e43932077236d8520f60f97",
+    },
+    "V-222530": {
+        "title": "The application must implement replay-resistant authentication mechanisms for network access to privileged accounts.",
+        "discuss": "208fc895c02f64ea58c84964c1a8c036",
+        "check":   "20dcf53bb77e3a8f28afed413995bf50",
+        "fix":     "a898552982afa98cd15ec5657cd6b1b0",
+    },
+    "V-222531": {
+        "title": "The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.",
+        "discuss": "23c28b2d072d179cdf0da9f09e54bb03",
+        "check":   "cd531057c7950d493d6a7b8d75130130",
+        "fix":     "12c8a3439db7d05c1e60e5f0d9e582b3",
+    },
+    "V-222532": {
+        "title": "The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner.",
+        "discuss": "2577b1f47c2657f2a443d73d10b457a0",
+        "check":   "f516443c6be3ad622c419dda9d2018b0",
+        "fix":     "3b9d09b4d0395d1ccd2a5c06d974b30b",
+    },
+    "V-222533": {
+        "title": "The application must authenticate all network connected endpoint devices before establishing any connection.",
+        "discuss": "8d16913c424573973ad0a290d751a653",
+        "check":   "b21a12673a6fcdc9c9ec320c6e426318",
+        "fix":     "c4b67db230e8e4219b0ef6537019582d",
+    },
+    "V-222534": {
+        "title": "Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS.",
+        "discuss": "d4a0aa8e2ee8ef79467f5adbced237a2",
+        "check":   "379bf6831b7f830480105517a3ee9599",
+        "fix":     "bb70034d989bf84cd107307f3d6842b8",
+    },
+    "V-222535": {
+        "title": "The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication.",
+        "discuss": "5a420f520fbe06bd2477442cd7239596",
+        "check":   "6b8f3b2201f82f7a1356789527e07a1b",
+        "fix":     "789c50175282309d32cdbd37040c98d3",
+    },
+    # Batch 11: Password Complexity (Phase 4)
+    "V-222537": {
+        "title": "The application must enforce password complexity by requiring that at least one uppercase character be used.",
+        "discuss": "db6c9b9db71f6aa150eedc274a499e0b",
+        "check":   "0b49493228f52600117c4eb372a90d96",
+        "fix":     "d6feea4854e717830ea848388a81e9a6",
+    },
+    "V-222538": {
+        "title": "The application must enforce password complexity by requiring that at least one lowercase character be used.",
+        "discuss": "7d678efbbb88ff17e2d7cb83f40446ad",
+        "check":   "9dc62e47cdd8a220a6a76cb2b2ee9fe7",
+        "fix":     "c7ac931ddc32c7960633e03caa6a8977",
+    },
+    "V-222539": {
+        "title": "The application must enforce password complexity by requiring that at least one numeric character be used.",
+        "discuss": "7d678efbbb88ff17e2d7cb83f40446ad",
+        "check":   "1410967244f344f336500e2b30136083",
+        "fix":     "757be56b3292675e1d651446858c2c8b",
+    },
+    "V-222540": {
+        "title": "The application must enforce password complexity by requiring that at least one special character be used.",
+        "discuss": "7d678efbbb88ff17e2d7cb83f40446ad",
+        "check":   "dafe6327b434463b9277d9ab9a59acfe",
+        "fix":     "9ccdf4e55757ae20b3f68952984a9141",
+    },
+    "V-222541": {
+        "title": "The application must require the change of at least eight of the total number of characters when passwords are changed.",
+        "discuss": "7d678efbbb88ff17e2d7cb83f40446ad",
+        "check":   "27300d11e6bf5ac35b88c41e3f80d3c0",
+        "fix":     "13e59024059aca3abde5286fec379f2a",
+    },
+    "V-222544": {
+        "title": "The application must enforce 24 hours/1 day as the minimum password lifetime.",
+        "discuss": "098458d344563d01cb53ac0c15e70dbd",
+        "check":   "71ce06309bda0f1447d841add6a77845",
+        "fix":     "f9243295e8333da63ebb3ddce2968215",
+    },
+    "V-222545": {
+        "title": "The application must enforce a 60-day maximum password lifetime restriction.",
+        "discuss": "a9d56fed803a00b1e3c81b690ffa0a0b",
+        "check":   "1e35f0792b91b744aee1697ad25c6489",
+        "fix":     "8eb8d0e690466363d9f6c94b718d4427",
+    },
 }
 
 def fix_header_block(text, vuln_id, data):
