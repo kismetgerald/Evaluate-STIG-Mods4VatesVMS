@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <STIGComments Name="XO_ASD">
   
   <Vuln ID="V-222387">
@@ -5408,56 +5408,72 @@ The automated check could not fully verify session validation. Manual verificati
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222581">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO uses Express.js cookie-based session management. Session identifiers are transmitted exclusively via HTTP Set-Cookie headers, not embedded in URLs. No URL rewriting or session ID query parameters are configured. This meets the STIG requirement to avoid URL-embedded session IDs, preventing session fixation via referrer headers or browser history.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Session ID transmission method requires verification. Review XO and any reverse proxy configuration to confirm session tokens are not appended to URLs as query parameters or path segments. Ensure Express.js session middleware uses cookie transport exclusively. Check for URL rewriting rules that might expose session identifiers in application logs or referrer headers.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222582">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO generates new session IDs upon each authentication event. Express.js session management creates unique identifiers per login and invalidates previous sessions on logout. Session IDs are not reused or recycled after user logout. The session store (in-memory or Redis) enforces TTL-based expiration preventing stale session reuse.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Session ID lifecycle management requires verification. Confirm that XO regenerates session identifiers on authentication and does not reuse session IDs after logout. Test by logging in, noting the session cookie value, logging out, and logging back in to verify a new session ID is assigned. Check session store configuration for proper expiration settings.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222583">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO uses Node.js crypto.randomBytes() via the uid-safe library for session ID generation. The system is in FIPS mode (fips_enabled=1), confirming FIPS 140-2/140-3 validated random number generation for session identifiers. OpenSSL provides the CSPRNG backend with FIPS-validated algorithms.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>System FIPS mode is not enabled. While XO uses OpenSSL CSPRNG via Node.js crypto.randomBytes() for session ID generation (which provides cryptographic-quality randomness), FIPS 140-2/140-3 validation requires system-level FIPS mode. Enable FIPS mode: edit /etc/default/grub to add fips=1 to GRUB_CMDLINE_LINUX, run update-grub, and install the libssl FIPS provider package, then reboot.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222584">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO server certificate is issued by a DoD-approved Certificate Authority. The certificate chain validates to a trusted DoD PKI or ECA root CA. Certificate details confirm proper issuance and validity dates. DoD CA certificates are installed in the system trust store.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO server is using a self-signed or non-DoD certificate. For DoD environments, obtain and install a certificate from a DoD-approved PKI or ECA Certificate Authority. Update /etc/xo-server/config.toml (XOA) or /opt/xo/xo-server/config.toml (XOCE) with the new certificate and key paths. Import DoD root CA certificates into the system trust store at /usr/local/share/ca-certificates/ and run update-ca-certificates.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -5478,28 +5494,36 @@ The automated check could not fully verify session validation. Manual verificati
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222586">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO preserves failure diagnostic information via systemd journal and application log files. Error events are captured with timestamps, severity levels, and contextual information sufficient for root cause analysis. The Winston logging framework provides structured log output. Journal persistence ensures log data survives service restarts.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Diagnostic information preservation could not be verified. Ensure XO logging is configured to capture error events with sufficient detail for root cause analysis. Verify systemd journal is configured for persistent storage (Storage=persistent in /etc/systemd/journald.conf). Configure log rotation to preserve historical diagnostic data. Document operational requirements for failure recovery information.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222587">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO stored data is protected with appropriate file system permissions. Data directories (/var/lib/xo-server, /etc/xo-server) have restrictive permissions preventing unauthorized access. No world-readable files exist in sensitive data directories. Configuration files containing credentials are protected with owner-only read permissions.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Data protection concerns identified. Review and tighten file permissions on XO data directories. Ensure /var/lib/xo-server and /etc/xo-server are not world-readable (chmod 750 or stricter). Remove world-readable permissions from sensitive files. Consider enabling disk encryption (LUKS/dm-crypt) for data at rest protection. Document data classification and protection requirements per organizational policy.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -5548,70 +5572,97 @@ The automated check could not fully verify session validation. Manual verificati
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222591">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO maintains separate execution domains for each process. Node.js V8 isolates provide memory and execution separation between JavaScript contexts. The xo-server process runs under its own user context with systemd service management. Process isolation is enforced at the operating system level through standard Linux process separation mechanisms.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Process execution domain separation requires verification. Confirm that XO server processes run under dedicated user accounts. Review systemd service unit for sandboxing directives (PrivateTmp, ProtectSystem, ProtectHome, NoNewPrivileges). Consider enabling additional systemd security features to enhance process isolation. Verify that plugin execution does not share memory space with the main application.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222592">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO does not share system resources with other applications via file sharing protocols. No NFS or SMB services are running on the system. Data directories are protected by file system permissions restricting access to the xo-server process. Network listeners are limited to application-specific ports (HTTPS 443).</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>File sharing services or shared resources detected. Verify that XO data is not accessible via NFS, SMB, or other file sharing protocols. If file sharing services are required for other purposes, ensure XO data directories are excluded from shared exports. Implement security boundaries (file permissions, network segmentation) to prevent unauthorized information transfer between applications.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222593">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>XO does not utilize XML-based web services. The application uses JSON for all API communication via REST endpoints. No SOAP, WSDL, or XML-RPC services are exposed. XML DoS protections (entity expansion, recursive payloads, oversized payloads) are not applicable to this JSON-based application.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>If XO has been configured to process XML input (custom plugins, third-party integrations), verify protections against XML DoS attacks including: validation against recursive payloads (billion laughs), validation against oversized payloads, protection against XML entity expansion (XXE), validation against overlong element names, and optimized configuration for maximum message throughput.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222594">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO has adequate DoS protections in place. Firewall rules restrict network access, rate limiting prevents abuse, and system-level connection limits are configured. The application cannot be weaponized to attack other systems due to restricted outbound access and purpose-built architecture.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>DoS protection assessment requires organizational verification. Implement: firewall rules (UFW/iptables) to restrict access to authorized networks, application-level rate limiting in XO configuration, fail2ban for brute-force protection, system connection limits (net.core.somaxconn), and network-level DDoS mitigation. ISSO must confirm anti-DoS controls are adequate for the deployment risk profile.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222595">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO high availability requirements are met with redundancy mechanisms including load balancers, redundant application instances, and automated failover. The deployment architecture meets documented availability requirements.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XO is deployed as a single instance without high availability mechanisms. If designated as a high availability system, implement: load balancer (HAProxy/nginx) for traffic distribution, multiple XO instances for redundancy, shared session store (Redis) for session persistence across instances, database replication for data availability, and documented failover procedures. If not designated as HA, document the risk acceptance.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>XO has not been designated as a high availability system. This requirement only applies to applications that have been designated as requiring high availability. Per STIG guidance, if the application has not been designated as a high availability system, this requirement is not applicable.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -5632,56 +5683,72 @@ The automated check could not fully verify session validation. Manual verificati
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222597">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO implements TLS encryption for all data transmission. TLS 1.2 is confirmed active with strong cipher suites. HTTPS is configured on port 443 with valid certificate. HTTP to HTTPS redirect is configured. All management API communications between XO and XCP-ng hosts use TLS-encrypted XAPI connections.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>TLS encryption for data transmission could not be confirmed. Ensure HTTPS is properly configured in XO server configuration (/etc/xo-server/config.toml or /opt/xo/xo-server/config.toml). Verify TLS 1.2 or higher is enabled. Configure HTTP to HTTPS redirect. Ensure inter-tier communications (XO to XCP-ng) use TLS. Test with: openssl s_client -connect hostname:443 -tls1_2</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222598">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO maintains data confidentiality during preparation for transmission. All data is encrypted via TLS/HTTPS before being transmitted. The HTTPS listener on port 443 confirms that data is protected from the point of preparation through transmission. Node.js TLS module handles encryption before network transmission.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>HTTPS listener not confirmed on port 443. Verify TLS is configured for all XO communications. Ensure the XO server binds to HTTPS and that no unencrypted HTTP endpoints are exposed for data transmission. Configure TLS certificates and enable HTTPS in the XO server configuration. For tiered deployments, verify encryption between all application tiers.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222599">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO maintains data confidentiality during reception. All incoming connections are received via TLS/HTTPS on port 443. The TLS handshake completes before any application data is exchanged, ensuring confidentiality from the point of reception. Inter-tier communication with XCP-ng hosts uses TLS-encrypted XAPI connections.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>HTTPS reception not confirmed. Verify that all incoming connections to XO are received over TLS. Ensure port 443 has an active HTTPS listener. If HTTP port 80 is open, verify it redirects to HTTPS. Check that no application data is received over unencrypted channels. For tiered deployments, verify all communication tiers use encryption.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222600">
-    
     <AnswerKey Name="XO">
-      
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XO does not disclose unnecessary technical information to users. Server response headers do not reveal technology stack details. Error pages return generic responses without stack traces, internal paths, or debugging information. The application suppresses detailed error messages in production mode.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Information disclosure detected in server response headers or error pages. Remove X-Powered-By header by configuring Express.js: app.disable('x-powered-by'). Configure custom error pages that do not reveal stack traces, internal file paths, or technology versions. Set NODE_ENV=production to suppress detailed error messages. Review all HTTP response headers for unnecessary information disclosure.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>

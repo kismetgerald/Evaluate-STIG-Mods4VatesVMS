@@ -1073,6 +1073,98 @@ HEADER_DATA = {
         "check":   "b51b3486b1ede9eadbb6e58071d406ac",
         "fix":     "8ba8d801e4476d62b22508daea5d5e5f",
     },
+    # --- Phase 6 Batch 14: Session IDs, Certificates, Data Protection ---
+    "V-222581": {
+        "title": "Applications must not use URL embedded session IDs.",
+        "discuss": "13afb3c11c9081c5340b948d83eb3428",
+        "check":   "0b44af29d5f41dc2f8b9aee741359bba",
+        "fix":     "7045aa3cc43e5ae1920e835af3032751",
+    },
+    "V-222582": {
+        "title": "The application must not re-use or recycle session IDs.",
+        "discuss": "953a1ef6acedb7e889f4cacdc9e336a9",
+        "check":   "ecd9c1412184e3ffdb36352229360407",
+        "fix":     "d642be546f9538872cd468e3d6d8d997",
+    },
+    "V-222583": {
+        "title": "The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator.",
+        "discuss": "910a488a92752e2e8ae8668ba0913ec9",
+        "check":   "9b182a2c22796eee4a918daea935c96e",
+        "fix":     "17a6560ce73df6e1db1cf6e304f5332f",
+    },
+    "V-222584": {
+        "title": "The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions.",
+        "discuss": "fd73b82db81554b49fbc35283e3e2e0d",
+        "check":   "10fff3971bb8cf89dba44fcf418af919",
+        "fix":     "f683f8cd879f0510af8723bdaaf46747",
+    },
+    "V-222586": {
+        "title": "In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.",
+        "discuss": "f35fedac4a1e6364cd64fdacfee0a1a0",
+        "check":   "2935abc748d3dadf0e70775fd26186ca",
+        "fix":     "ce1d8d66c5082afc3fd3f0dbe7259306",
+    },
+    "V-222587": {
+        "title": "The application must protect the confidentiality and integrity of stored information when required by DoD policy or the information owner.",
+        "discuss": "9148c715f3cfad30586dc5cf448dc43a",
+        "check":   "2e0701348de02824ab03a5edd9471b68",
+        "fix":     "4a23d13cbcb6db7fdab165ff47acfc17",
+    },
+    "V-222591": {
+        "title": "The application must maintain a separate execution domain for each executing process.",
+        "discuss": "87684c37f117c2a3546222ca127bf2c9",
+        "check":   "1e5db8780fdf801ea6a8d856b4fbca17",
+        "fix":     "4afb2087608bb9d675c5f61a0dbaeefb",
+    },
+    "V-222592": {
+        "title": "Applications must prevent unauthorized and unintended information transfer via shared system resources.",
+        "discuss": "877a917c0b8db0b55921a41a66fd51a6",
+        "check":   "17664aaba65d14107f4d59e67cf5b581",
+        "fix":     "65d9440d95790c6cbd4c18370f5e3968",
+    },
+    # --- Phase 6 Batch 15: DoS, HA, Transmission Security, Info Disclosure ---
+    "V-222593": {
+        "title": "XML-based applications must mitigate DoS attacks by using XML filters, parser options, or gateways.",
+        "discuss": "34dcb8c1669562575ac349f3e7ac1bce",
+        "check":   "7d2c6a237417e26528767b7178381d96",
+        "fix":     "529cfc7e7502b3faca7b314a6abad94d",
+    },
+    "V-222594": {
+        "title": "The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems.",
+        "discuss": "487f7ef37c1e4f3a813e426118720b23",
+        "check":   "ca7848f2d9204c7b4e77308c16363057",
+        "fix":     "42fa75fc707388d1355e35e2af113287",
+    },
+    "V-222595": {
+        "title": "The web service design must include redundancy mechanisms when used with high-availability systems.",
+        "discuss": "d595d2726051d542b46bd1108de7e708",
+        "check":   "31c56008404d241b09108c4e47dad11e",
+        "fix":     "a45e2fc8b1e0e2e8d89bf40c6aec2a42",
+    },
+    "V-222597": {
+        "title": "The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission.",
+        "discuss": "9916fc22daa4b7158011203413f5777f",
+        "check":   "c7604a27d2f9ae837b88b64566a2c2e4",
+        "fix":     "c7a64d716536f3122109d01410e5b7d4",
+    },
+    "V-222598": {
+        "title": "The application must maintain the confidentiality and integrity of information during preparation for transmission.",
+        "discuss": "268ebe610ecddd43b894f1148454780b",
+        "check":   "0a7393fd57f5cd7f48a892452dbf1af0",
+        "fix":     "886d6de574db9f3692e18cbe85fad7d0",
+    },
+    "V-222599": {
+        "title": "The application must maintain the confidentiality and integrity of information during reception.",
+        "discuss": "268ebe610ecddd43b894f1148454780b",
+        "check":   "f2125f81cd8c2367873ffb3952825da3",
+        "fix":     "886d6de574db9f3692e18cbe85fad7d0",
+    },
+    "V-222600": {
+        "title": "The application must not disclose unnecessary information to users.",
+        "discuss": "3dd15de34bca73f426681ca82b78d930",
+        "check":   "dcbd547ab83c192db7b45216157715de",
+        "fix":     "27d412b2740cebfd1542ff656df6b554",
+    },
 }
 
 def fix_header_block(text, vuln_id, data):
