@@ -22,17 +22,15 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;sr0&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;'&#xA;sr0">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+1024M
 DeviceID                       '//'
-Index                          '//sr0/'
-1024M</Size>
+Index                          '//sr0/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +40,15 @@ Index                          '//sr0/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;'&#xA;xvda">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+30G
 DeviceID                       '//'
-Index                          '//xvda/'
-30G</Size>
+Index                          '//xvda/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +58,16 @@ Index                          '//xvda/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda1&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-boot
-
-Size                           [512M]</DeviceID>
+Size                           [512M]
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
+512M
 DeviceID                       '///boot/efi'
-Index                          '//xvda1/'
-512M</Size>
+Index                          '//xvda1/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +77,15 @@ Index                          '//xvda1/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+28.5G
 DeviceID                       '///'
-Index                          '//xvda2/'
-28.5G</Size>
+Index                          '//xvda2/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +95,15 @@ Index                          '//xvda2/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda3&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;[SWAP]'&#xA;xvda3">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+976M
 SWAP
-Index                          '//xvda3/'
-976M</Size>
+Index                          '//xvda3/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -128,17 +119,17 @@ Index                          '//xvda3/'
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>71</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>80</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>55</WeightedAvg>
+      <WeightedAvg>60</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-18T04:43:59.5940919-05:00" EvalScore="32.17">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-18T04:09:54.7966266-05:00" EvalScore="29.02">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -175,7 +166,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="29" Open="94" NotAFinding="52" Not_Reviewed="55">
+      <CAT_II Total="230" Not_Applicable="28" Open="88" NotAFinding="44" Not_Reviewed="70">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -339,22 +330,22 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The application must set the secure flag on session cookies." Status="NotAFinding" ID="V-222576" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Applications must use system-generated session identifiers that protect against session fixation." Status="NotAFinding" ID="V-222579" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Applications must validate session identifiers." Status="NotAFinding" ID="V-222580" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications must not use URL embedded session IDs." Status="NotAFinding" ID="V-222581" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not re-use or recycle session IDs." Status="NotAFinding" ID="V-222582" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator." Status="Open" ID="V-222583" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions." Status="Open" ID="V-222584" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes." Status="NotAFinding" ID="V-222586" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must protect the confidentiality and integrity of stored information when required by DOD policy or the information owner." Status="Open" ID="V-222587" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications must not use URL embedded session IDs." Status="Not_Reviewed" ID="V-222581" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not re-use or recycle session IDs." Status="Not_Reviewed" ID="V-222582" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator." Status="Not_Reviewed" ID="V-222583" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must only allow the use of DoD-approved certificate authorities for verification of the establishment of protected sessions." Status="Not_Reviewed" ID="V-222584" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="In the event of a system failure, applications must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes." Status="Not_Reviewed" ID="V-222586" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must protect the confidentiality and integrity of stored information when required by DOD policy or the information owner." Status="Not_Reviewed" ID="V-222587" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must isolate security functions from non-security functions." Status="Not_Reviewed" ID="V-222590" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must maintain a separate execution domain for each executing process." Status="NotAFinding" ID="V-222591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications must prevent unauthorized and unintended information transfer via shared system resources." Status="NotAFinding" ID="V-222592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="XML-based applications must mitigate DoS attacks by using XML filters, parser options, or gateways." Status="Not_Applicable" ID="V-222593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems." Status="Open" ID="V-222594" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web service design must include redundancy mechanisms when used with high-availability systems." Status="Open" ID="V-222595" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS)." Status="Open" ID="V-222597" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must maintain the confidentiality and integrity of information during preparation for transmission." Status="NotAFinding" ID="V-222598" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must maintain the confidentiality and integrity of information during reception." Status="NotAFinding" ID="V-222599" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not disclose unnecessary information to users." Status="NotAFinding" ID="V-222600" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must maintain a separate execution domain for each executing process." Status="Not_Reviewed" ID="V-222591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications must prevent unauthorized and unintended information transfer via shared system resources." Status="Not_Reviewed" ID="V-222592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="XML-based applications must mitigate DoS attacks by using XML filters, parser options, or gateways." Status="Not_Reviewed" ID="V-222593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must restrict the ability to launch Denial of Service (DoS) attacks against itself or other information systems." Status="Not_Reviewed" ID="V-222594" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web service design must include redundancy mechanisms when used with high-availability systems." Status="Not_Reviewed" ID="V-222595" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS)." Status="Not_Reviewed" ID="V-222597" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must maintain the confidentiality and integrity of information during preparation for transmission." Status="Not_Reviewed" ID="V-222598" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must maintain the confidentiality and integrity of information during reception." Status="Not_Reviewed" ID="V-222599" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not disclose unnecessary information to users." Status="Not_Reviewed" ID="V-222600" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must protect from Cross-Site Request Forgery (CSRF) vulnerabilities." Status="Not_Reviewed" ID="V-222603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must protect from canonical representation vulnerabilities." Status="Not_Reviewed" ID="V-222605" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must validate all input." Status="Not_Reviewed" ID="V-222606" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
