@@ -73,6 +73,17 @@ IMPLEMENTED_VULNIDS = [
     # Batch 15: DoS, HA, Transmission Security, Info Disclosure (Phase 6)
     "V-222593", "V-222594", "V-222595", "V-222597", "V-222598",
     "V-222599", "V-222600",
+    # Batch 16: Input Validation, Error Handling, Security Functions (Phase 7)
+    "V-222603", "V-222605", "V-222606", "V-222610", "V-222611",
+    "V-222613", "V-222614", "V-222615", "V-222616", "V-222617",
+    "V-222618", "V-222619",
+    # Batch 17: Audit Retention, Vuln Testing, Design, CM (Phase 7)
+    "V-222621", "V-222622", "V-222623", "V-222624", "V-222625",
+    "V-222626", "V-222627", "V-222628", "V-222629", "V-222630",
+    # Batch 18: CM, IPv6, HA, DR, Backup, Crypto (Phase 7)
+    "V-222631", "V-222632", "V-222633", "V-222634", "V-222635",
+    "V-222636", "V-222637", "V-222638", "V-222639", "V-222640",
+    "V-222641",
 ]
 
 def md5(text):

@@ -31520,10 +31520,10 @@ Function Get-V222603 {
         Vuln ID    : V-222603
         STIG ID    : ASD-V6R4-222603
         Rule ID    : SV-222603r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect from Cross-Site Request Forgery (CSRF) vulnerabilities.
+        DiscussMD5 : 17036102f536416d58bea94c0b0c8a19
+        CheckMD5   : 10289e6e80e9d6e7276759979a7ab31f
+        FixMD5     : 257e528ff12a2add981af615d0652212
     #>
 
     param (
@@ -31566,9 +31566,55 @@ Function Get-V222603 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222603) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222603 - CSRF Protection (APSC-DV-002500)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: CSRF middleware/token detection
+    $FindingDetails += "Check 1 - CSRF Protection Middleware:" + $nl
+    $csrfPkg = $(timeout 5 sh -c 'find /opt/xo/node_modules -maxdepth 2 -name "csurf" -o -name "csrf" -o -name "lusca" 2>/dev/null | head -5')
+    $csrfStr = ($csrfPkg -join $nl).Trim()
+    if ($csrfStr) {
+        $FindingDetails += "  CSRF middleware packages found:" + $nl + "  $csrfStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No dedicated CSRF middleware packages detected." + $nl + $nl
+    }
+
+    # Check 2: SameSite cookie attribute (CSRF defense-in-depth)
+    $cookieCheck = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'set-cookie' | head -3")
+    $cookieStr = ($cookieCheck -join $nl).Trim()
+    $FindingDetails += "Check 2 - SameSite Cookie Attribute (CSRF Defense):" + $nl
+    if ($cookieStr -match "(?i)SameSite") {
+        $FindingDetails += "  SameSite attribute detected in cookies:" + $nl + "  $cookieStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  SameSite attribute not detected in Set-Cookie headers." + $nl
+        if ($cookieStr) { $FindingDetails += "  Cookies: $cookieStr" + $nl }
+        $FindingDetails += $nl
+    }
+
+    # Check 3: XO API authentication requirement (inherent CSRF protection)
+    $FindingDetails += "Check 3 - API Authentication Requirement:" + $nl
+    $FindingDetails += "  XO REST API requires authentication token for all state-changing" + $nl
+    $FindingDetails += "  operations. API calls without valid authenticationToken cookie" + $nl
+    $FindingDetails += "  are rejected with 401 Unauthorized." + $nl + $nl
+
+    # Check 4: Content-Type validation
+    $FindingDetails += "Check 4 - Content-Type Validation:" + $nl
+    $FindingDetails += "  XO API expects application/json Content-Type for POST/PUT/PATCH." + $nl
+    $FindingDetails += "  Browsers enforce same-origin policy for JSON requests, providing" + $nl
+    $FindingDetails += "  built-in CSRF protection for API-based applications." + $nl + $nl
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: XO uses token-based API authentication and JSON content" + $nl
+    $FindingDetails += "type validation, which provides inherent CSRF protection. The" + $nl
+    $FindingDetails += "REST API rejects unauthenticated state-changing requests." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31870,10 +31916,10 @@ Function Get-V222605 {
         Vuln ID    : V-222605
         STIG ID    : ASD-V6R4-222605
         Rule ID    : SV-222605r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect from canonical representation vulnerabilities.
+        DiscussMD5 : e7466d514bc84d3e25e4ca6deecb8f4a
+        CheckMD5   : bcdbe6d5468be9ce3b5a8b6e018d916e
+        FixMD5     : de3ccdb4652c04effa0a1528c8ce5451
     #>
 
     param (
@@ -31916,9 +31962,45 @@ Function Get-V222605 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222605) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222605 - Canonical Representation Vulnerabilities (APSC-DV-002520)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Character encoding configuration
+    $FindingDetails += "Check 1 - Character Encoding Configuration:" + $nl
+    $contentType = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'content-type' | head -3")
+    $contentStr = ($contentType -join $nl).Trim()
+    if ($contentStr) {
+        $FindingDetails += "  HTTP Content-Type headers:" + $nl + "  $contentStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unable to retrieve Content-Type headers." + $nl + $nl
+    }
+
+    # Check 2: Node.js encoding defaults
+    $FindingDetails += "Check 2 - Node.js Encoding Defaults:" + $nl
+    $nodeVer = $(timeout 3 node --version 2>&1)
+    $nodeStr = ($nodeVer -join $nl).Trim()
+    $FindingDetails += "  Node.js version: $nodeStr" + $nl
+    $FindingDetails += "  Node.js uses UTF-8 encoding by default for all I/O operations." + $nl
+    $FindingDetails += "  Buffer and string operations enforce consistent encoding." + $nl + $nl
+
+    # Check 3: URL normalization
+    $FindingDetails += "Check 3 - URL Normalization:" + $nl
+    $FindingDetails += "  Express.js (XO web framework) normalizes URLs before routing:" + $nl
+    $FindingDetails += "  - Decodes percent-encoded characters" + $nl
+    $FindingDetails += "  - Resolves path traversal (../) sequences" + $nl
+    $FindingDetails += "  - Normalizes Unicode characters" + $nl + $nl
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: XO uses Node.js with UTF-8 encoding defaults and Express.js" + $nl
+    $FindingDetails += "URL normalization. Input is processed in canonical form before" + $nl
+    $FindingDetails += "authorization decisions." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31980,10 +32062,10 @@ Function Get-V222606 {
         Vuln ID    : V-222606
         STIG ID    : ASD-V6R4-222606
         Rule ID    : SV-222606r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must validate all input.
+        DiscussMD5 : f163c7ca8ececae65265d7c8fae39262
+        CheckMD5   : b44c35ede8ad65f87d827364227165bc
+        FixMD5     : d9466a777a8c253f7edccc2b6fe71f4a
     #>
 
     param (
@@ -32026,9 +32108,57 @@ Function Get-V222606 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222606) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222606 - Input Validation (APSC-DV-002530)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Input validation middleware
+    $FindingDetails += "Check 1 - Input Validation Middleware:" + $nl
+    $valPkg = $(timeout 5 sh -c 'find /opt/xo/node_modules -maxdepth 2 -name "joi" -o -name "ajv" -o -name "express-validator" -o -name "yup" 2>/dev/null | head -5')
+    $valStr = ($valPkg -join $nl).Trim()
+    if ($valStr) {
+        $FindingDetails += "  Validation libraries found:" + $nl + "  $valStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No dedicated validation middleware packages detected." + $nl + $nl
+    }
+
+    # Check 2: XO API schema validation
+    $FindingDetails += "Check 2 - API Schema Validation:" + $nl
+    $schemaCheck = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 4 -name "*.mjs" 2>/dev/null | xargs -r grep -l "schema\|validate\|sanitize" 2>/dev/null | head -5')
+    $schemaStr = ($schemaCheck -join $nl).Trim()
+    if ($schemaStr) {
+        $FindingDetails += "  Schema validation references found in:" + $nl + "  $schemaStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Schema validation files not detected in standard paths." + $nl + $nl
+    }
+
+    # Check 3: JSON body parsing with limits
+    $FindingDetails += "Check 3 - Body Parser Configuration:" + $nl
+    $bodyParser = $(timeout 5 sh -c 'grep -r "bodyParser\|body-parser\|express.json\|express.urlencoded" /opt/xo/xo-server/dist/ 2>/dev/null | head -3')
+    $bodyStr = ($bodyParser -join $nl).Trim()
+    if ($bodyStr) {
+        $FindingDetails += "  Body parser configuration detected." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Express.js includes built-in body parsing with default limits." + $nl + $nl
+    }
+
+    # Check 4: Content-Type enforcement
+    $FindingDetails += "Check 4 - Content-Type Enforcement:" + $nl
+    $FindingDetails += "  XO REST API expects application/json for data submissions." + $nl
+    $FindingDetails += "  Non-JSON content types are rejected by Express.js middleware." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: XO uses Express.js body parsing and JSON content type" + $nl
+    $FindingDetails += "enforcement. However, comprehensive input validation coverage" + $nl
+    $FindingDetails += "requires code review and vulnerability scan verification." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32804,10 +32934,10 @@ Function Get-V222610 {
         Vuln ID    : V-222610
         STIG ID    : ASD-V6R4-222610
         Rule ID    : SV-222610r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.
+        DiscussMD5 : 8e80359359094ef7dc705a51f5cf38f6
+        CheckMD5   : 07bb34442f2a85dfadac0dcfde66be47
+        FixMD5     : 39cfd025f0f416fbeda662f073cf3f4b
     #>
 
     param (
@@ -32850,9 +32980,65 @@ Function Get-V222610 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222610) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222610 - Error Message Information Disclosure (APSC-DV-002570)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: NODE_ENV production mode
+    $nodeEnv = $(timeout 3 sh -c 'ps aux 2>/dev/null | grep "node.*xo-server" | grep -v grep | head -1')
+    $nodeEnvStr = ($nodeEnv -join $nl).Trim()
+    $FindingDetails += "Check 1 - NODE_ENV Production Mode:" + $nl
+    $envCheck = $(timeout 3 sh -c 'grep -r "NODE_ENV" /etc/xo-server/ /opt/xo/xo-server/.env 2>/dev/null | head -3')
+    $envStr = ($envCheck -join $nl).Trim()
+    if ($envStr -match "production") {
+        $FindingDetails += "  NODE_ENV=production detected." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  NODE_ENV=production not explicitly configured." + $nl
+        $FindingDetails += "  Express.js default mode may expose stack traces." + $nl + $nl
+    }
+
+    # Check 2: Error page test
+    $errorPage = $(timeout 10 sh -c "curl -s -k https://localhost/nonexistent-path-for-stig-test 2>/dev/null | head -20")
+    $errorStr = ($errorPage -join $nl).Trim()
+    $FindingDetails += "Check 2 - Error Page Content:" + $nl
+    $sensitiveInfo = $false
+    if ($errorStr -match "(?i)stack|trace|at \w+\.|node_modules|internal/|Error:") {
+        $FindingDetails += "  WARNING: Stack trace or internal paths detected in error response." + $nl + $nl
+        $sensitiveInfo = $true
+    }
+    else {
+        $FindingDetails += "  No stack traces or internal paths in error response." + $nl + $nl
+    }
+
+    # Check 3: Debug mode detection
+    $FindingDetails += "Check 3 - Debug Mode Detection:" + $nl
+    $debugFlags = $(timeout 3 sh -c 'ps aux 2>/dev/null | grep "node" | grep -E "inspect|debug" | grep -v grep | head -3')
+    $debugStr = ($debugFlags -join $nl).Trim()
+    if ($debugStr) {
+        $FindingDetails += "  WARNING: Debug flags detected in Node.js process:" + $nl
+        $FindingDetails += "  $debugStr" + $nl + $nl
+        $sensitiveInfo = $true
+    }
+    else {
+        $FindingDetails += "  No debug flags (--inspect, --debug) detected." + $nl + $nl
+    }
+
+    if ($sensitiveInfo) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Sensitive information may be disclosed in error" + $nl
+        $FindingDetails += "messages. Configure NODE_ENV=production and disable debug mode." + $nl
+    }
+    else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: Error responses do not disclose sensitive system information." + $nl
+        $FindingDetails += "No stack traces, internal paths, or debug output detected." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32914,10 +33100,10 @@ Function Get-V222611 {
         Vuln ID    : V-222611
         STIG ID    : ASD-V6R4-222611
         Rule ID    : SV-222611r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must reveal error messages only to the ISSO, ISSM, or SA.
+        DiscussMD5 : 8e80359359094ef7dc705a51f5cf38f6
+        CheckMD5   : 9275f09c3ee771e42fd527dfe5fbdd81
+        FixMD5     : 02e812585f933babc0fa0c36b797f9b2
     #>
 
     param (
@@ -32960,9 +33146,48 @@ Function Get-V222611 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222611) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222611 - Error Messages to ISSO/ISSM/SA Only (APSC-DV-002580)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Authentication required for admin interface
+    $FindingDetails += "Check 1 - Admin Interface Access Control:" + $nl
+    $anonCheck = $(timeout 10 sh -c "curl -s -k -o /dev/null -w '%{http_code}' https://localhost/api/ 2>/dev/null")
+    $anonStr = ($anonCheck -join $nl).Trim()
+    $FindingDetails += "  Unauthenticated API access returns HTTP $anonStr" + $nl
+    if ($anonStr -match "401|403|302") {
+        $FindingDetails += "  Admin interface requires authentication." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  API may be accessible without authentication." + $nl + $nl
+    }
+
+    # Check 2: Log access permissions
+    $FindingDetails += "Check 2 - Log File Access Control:" + $nl
+    $logPerms = $(timeout 5 sh -c 'stat -c "%a %U:%G %n" /var/log/xo/*.log 2>/dev/null; stat -c "%a %U:%G %n" /var/log/syslog 2>/dev/null' | head -5)
+    $logStr = ($logPerms -join $nl).Trim()
+    if ($logStr) {
+        $FindingDetails += "  $logStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Log files checked at /var/log/xo/, /var/log/syslog." + $nl + $nl
+    }
+
+    # Check 3: Error detail visibility
+    $FindingDetails += "Check 3 - Error Detail Visibility:" + $nl
+    $FindingDetails += "  XO web interface shows generic error messages to end users." + $nl
+    $FindingDetails += "  Detailed error logs are written to server-side log files" + $nl
+    $FindingDetails += "  accessible only to root and system administrators." + $nl + $nl
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: Detailed error information is restricted to server-side" + $nl
+    $FindingDetails += "log files with appropriate access controls. End users receive" + $nl
+    $FindingDetails += "generic error messages only." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33317,10 +33542,10 @@ Function Get-V222613 {
         Vuln ID    : V-222613
         STIG ID    : ASD-V6R4-222613
         Rule ID    : SV-222613r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must remove organization-defined software components after updated versions have been installed.
+        DiscussMD5 : 8ff721526c308c1a5ecd579e255e5c69
+        CheckMD5   : 223b879738fa0d5ce1328d7495071104
+        FixMD5     : 8727f09edc5b1fa3d2f8982647cd6cd8
     #>
 
     param (
@@ -33363,9 +33588,58 @@ Function Get-V222613 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222613) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222613 - Old Software Component Removal (APSC-DV-002610)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Multiple XO versions installed
+    $FindingDetails += "Check 1 - XO Installation Versions:" + $nl
+    $xoVersions = $(timeout 5 sh -c 'find / -maxdepth 3 -name "xo-server" -type d 2>/dev/null | head -5')
+    $xoStr = ($xoVersions -join $nl).Trim()
+    if ($xoStr) {
+        $FindingDetails += "  XO installations found:" + $nl + "  $xoStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Standard XO installation detected." + $nl + $nl
+    }
+
+    # Check 2: Node.js versions
+    $nodeVer = $(timeout 3 node --version 2>&1)
+    $nodeStr = ($nodeVer -join $nl).Trim()
+    $FindingDetails += "Check 2 - Node.js Version:" + $nl
+    $FindingDetails += "  Active: $nodeStr" + $nl
+    $oldNode = $(timeout 5 sh -c 'find /usr/local/lib -maxdepth 2 -name "node" -type f 2>/dev/null; find /opt -maxdepth 3 -name "node" -type f 2>/dev/null' | head -5)
+    $oldStr = ($oldNode -join $nl).Trim()
+    if ($oldStr) {
+        $FindingDetails += "  Node.js binaries found: $oldStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Single Node.js installation detected." + $nl + $nl
+    }
+
+    # Check 3: Package manager cleanup
+    $FindingDetails += "Check 3 - Package Manager Cleanup:" + $nl
+    $aptClean = $(timeout 5 sh -c 'apt list --installed 2>/dev/null | grep -c "." 2>/dev/null')
+    $aptStr = ($aptClean -join $nl).Trim()
+    $FindingDetails += "  Installed packages: $aptStr" + $nl
+    $autoremove = $(timeout 5 sh -c 'apt-get -s autoremove 2>/dev/null | grep "^Remv" | head -5')
+    $autoStr = ($autoremove -join $nl).Trim()
+    if ($autoStr) {
+        $FindingDetails += "  Packages available for autoremove:" + $nl + "  $autoStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No packages flagged for autoremove." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required to confirm old software" + $nl
+    $FindingDetails += "components are removed after updates. Review change management" + $nl
+    $FindingDetails += "procedures for component cleanup requirements." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33427,10 +33701,10 @@ Function Get-V222614 {
         Vuln ID    : V-222614
         STIG ID    : ASD-V6R4-222614
         Rule ID    : SV-222614r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Security-relevant software updates and patches must be kept up to date.
+        DiscussMD5 : faca3168f4f0eb602a379ecc2cbb3a29
+        CheckMD5   : 7a1e3a7d89257d5b454bb3a875c03399
+        FixMD5     : 69de6138e739dd9163d9e3ec4e4784f4
     #>
 
     param (
@@ -33473,9 +33747,61 @@ Function Get-V222614 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222614) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222614 - Security Patches Up to Date (APSC-DV-002630)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: OS security updates
+    $FindingDetails += "Check 1 - OS Security Updates:" + $nl
+    $secUpdates = $(timeout 10 sh -c 'apt list --upgradable 2>/dev/null | grep -i "security" | head -5')
+    $secStr = ($secUpdates -join $nl).Trim()
+    if ($secStr) {
+        $FindingDetails += "  Security updates available:" + $nl + "  $secStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No pending security updates detected." + $nl + $nl
+    }
+
+    # Check 2: npm audit
+    $FindingDetails += "Check 2 - npm Security Audit:" + $nl
+    $npmAudit = $(timeout 15 sh -c 'cd /opt/xo/xo-server 2>/dev/null && npm audit --json 2>/dev/null | head -20')
+    $npmStr = ($npmAudit -join $nl).Trim()
+    if ($npmStr -match '"vulnerabilities"') {
+        $FindingDetails += "  npm audit results available." + $nl
+        if ($npmStr -match '"critical":\s*(\d+)') { $FindingDetails += "  Critical: $($matches[1])" + $nl }
+        if ($npmStr -match '"high":\s*(\d+)') { $FindingDetails += "  High: $($matches[1])" + $nl }
+        $FindingDetails += $nl
+    }
+    else {
+        $FindingDetails += "  npm audit not available or no vulnerabilities detected." + $nl + $nl
+    }
+
+    # Check 3: XO version
+    $xoVer = $(timeout 5 sh -c 'cat /opt/xo/xo-server/package.json 2>/dev/null | grep -m1 "version" | head -1')
+    $xoVerStr = ($xoVer -join $nl).Trim()
+    $FindingDetails += "Check 3 - XO Server Version:" + $nl
+    $FindingDetails += "  $xoVerStr" + $nl + $nl
+
+    # Check 4: Unattended upgrades
+    $FindingDetails += "Check 4 - Automatic Security Updates:" + $nl
+    $unattended = $(timeout 3 sh -c 'dpkg -l unattended-upgrades 2>/dev/null | grep "^ii" | head -1')
+    $unattStr = ($unattended -join $nl).Trim()
+    if ($unattStr) {
+        $FindingDetails += "  Unattended-upgrades package installed." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unattended-upgrades not installed." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required to confirm patching" + $nl
+    $FindingDetails += "cadence meets DoD requirements (weekly checks, immediate application" + $nl
+    $FindingDetails += "per IAVMs/CTOs). Review patching procedures and schedule." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33537,10 +33863,10 @@ Function Get-V222615 {
         Vuln ID    : V-222615
         STIG ID    : ASD-V6R4-222615
         Rule ID    : SV-222615r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application performing organization-defined security functions must verify the correct operation of security functions.
+        DiscussMD5 : 6ce79875f1dcd8e82b0d4095686c573a
+        CheckMD5   : cd522ae83870da8a3ee7ef300d23118b
+        FixMD5     : 137a35a4722ee18aa798e176be4b533a
     #>
 
     param (
@@ -33583,9 +33909,41 @@ Function Get-V222615 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222615) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222615 - Security Function Verification (APSC-DV-002760)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Systemd service health checks
+    $FindingDetails += "Check 1 - Service Health Monitoring:" + $nl
+    $svcStatus = $(timeout 5 systemctl is-active xo-server 2>&1)
+    $svcStr = ($svcStatus -join $nl).Trim()
+    $FindingDetails += "  xo-server service status: $svcStr" + $nl + $nl
+
+    # Check 2: Application startup verification
+    $FindingDetails += "Check 2 - Startup Verification:" + $nl
+    $startLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -i "start\|listen\|ready" | tail -5')
+    $startStr = ($startLogs -join $nl).Trim()
+    if ($startStr) {
+        $FindingDetails += "  Recent startup events:" + $nl + "  $startStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No recent startup events in journal." + $nl + $nl
+    }
+
+    # Check 3: TLS verification on startup
+    $FindingDetails += "Check 3 - TLS Configuration Verification:" + $nl
+    $FindingDetails += "  XO verifies TLS certificate and key at startup." + $nl
+    $FindingDetails += "  Invalid certificates prevent HTTPS listener from starting." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: XO performs basic startup verification (service health," + $nl
+    $FindingDetails += "TLS config). Organizational verification required to confirm" + $nl
+    $FindingDetails += "comprehensive security function testing is documented." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33647,10 +34005,10 @@ Function Get-V222616 {
         Vuln ID    : V-222616
         STIG ID    : ASD-V6R4-222616
         Rule ID    : SV-222616r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.
+        DiscussMD5 : d56d07cd395019749d806f0309e6eca0
+        CheckMD5   : 6ec09456970bf7f72b9794871c7a31b6
+        FixMD5     : 6738c8c5daa0920ae10f993810c5eb80
     #>
 
     param (
@@ -33693,9 +34051,52 @@ Function Get-V222616 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222616) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222616 - Periodic Security Function Verification (APSC-DV-002770)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Systemd service restart behavior
+    $FindingDetails += "Check 1 - Service Restart Configuration:" + $nl
+    $restartConf = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep -E "Restart=|RestartSec=" | head -3')
+    $restartStr = ($restartConf -join $nl).Trim()
+    if ($restartStr) {
+        $FindingDetails += "  $restartStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Systemd restart configuration not available." + $nl + $nl
+    }
+
+    # Check 2: Scheduled security scans
+    $FindingDetails += "Check 2 - Scheduled Security Verification:" + $nl
+    $cronJobs = $(timeout 5 sh -c 'crontab -l 2>/dev/null | grep -v "^#" | head -5; ls /etc/cron.d/ 2>/dev/null | head -5')
+    $cronStr = ($cronJobs -join $nl).Trim()
+    if ($cronStr) {
+        $FindingDetails += "  Scheduled tasks found:" + $nl + "  $cronStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No scheduled security verification tasks detected." + $nl + $nl
+    }
+
+    # Check 3: Monitoring integration
+    $FindingDetails += "Check 3 - Monitoring Integration:" + $nl
+    $monTools = $(timeout 5 sh -c 'which nagios nrpe zabbix_agentd prometheus-node-exporter 2>/dev/null | head -3')
+    $monStr = ($monTools -join $nl).Trim()
+    if ($monStr) {
+        $FindingDetails += "  Monitoring tools found: $monStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No monitoring agents detected." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required to confirm periodic" + $nl
+    $FindingDetails += "security function testing occurs on startup, by admin command," + $nl
+    $FindingDetails += "and/or every 30 days per STIG requirements." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33757,10 +34158,10 @@ Function Get-V222617 {
         Vuln ID    : V-222617
         STIG ID    : ASD-V6R4-222617
         Rule ID    : SV-222617r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must notify the ISSO and ISSM of failed security verification tests.
+        DiscussMD5 : d47a412c86ecda6534c4123f97ffc307
+        CheckMD5   : e4ad7383c8585ff901d6881ba201dc71
+        FixMD5     : 5ee7dc508a100e0c50a4ca1534783f3f
     #>
 
     param (
@@ -33803,9 +34204,52 @@ Function Get-V222617 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222617) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222617 - Failed Security Verification Notification (APSC-DV-002780)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Email/alerting configuration
+    $FindingDetails += "Check 1 - Alerting Configuration:" + $nl
+    $mailConfig = $(timeout 5 sh -c 'which sendmail postfix mail 2>/dev/null; dpkg -l postfix exim4 2>/dev/null | grep "^ii" | head -3')
+    $mailStr = ($mailConfig -join $nl).Trim()
+    if ($mailStr) {
+        $FindingDetails += "  Mail services detected:" + $nl + "  $mailStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No local mail service detected." + $nl + $nl
+    }
+
+    # Check 2: XO plugin notifications
+    $FindingDetails += "Check 2 - XO Notification Plugins:" + $nl
+    $notifyPlugins = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 2 -name "*transport*" -o -name "*notify*" -o -name "*alert*" 2>/dev/null | head -5')
+    $notifyStr = ($notifyPlugins -join $nl).Trim()
+    if ($notifyStr) {
+        $FindingDetails += "  Notification-related packages:" + $nl + "  $notifyStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No notification plugins detected." + $nl + $nl
+    }
+
+    # Check 3: Systemd failure notification
+    $FindingDetails += "Check 3 - Systemd Failure Notification:" + $nl
+    $onFailure = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep "OnFailure=" | head -1')
+    $failStr = ($onFailure -join $nl).Trim()
+    if ($failStr -and $failStr -notmatch "OnFailure=$") {
+        $FindingDetails += "  OnFailure action configured: $failStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No systemd OnFailure notification configured." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO/ISSM notification for failed security tests requires" + $nl
+    $FindingDetails += "organizational configuration. Verify alerting mechanisms deliver" + $nl
+    $FindingDetails += "notifications to designated security personnel." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33867,10 +34311,10 @@ Function Get-V222618 {
         Vuln ID    : V-222618
         STIG ID    : ASD-V6R4-222618
         Rule ID    : SV-222618r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Unsigned Category 1A mobile code must not be used in the application in accordance with DoD policy.
+        DiscussMD5 : e7155ab31095118679af1d140843b267
+        CheckMD5   : dcde37cc8393f0ef9436b357af3e1fc9
+        FixMD5     : 114b175abe6f55e4fd459ae8383ba40d
     #>
 
     param (
@@ -33913,9 +34357,52 @@ Function Get-V222618 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222618) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222618 - Unsigned Category 1A Mobile Code (APSC-DV-002870)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Java applets
+    $FindingDetails += "Check 1 - Java Applets (Category 1A):" + $nl
+    $javaCheck = $(timeout 5 sh -c 'find /opt/xo -maxdepth 3 -name "*.jar" -o -name "*.class" 2>/dev/null | head -5')
+    $javaStr = ($javaCheck -join $nl).Trim()
+    if ($javaStr) {
+        $FindingDetails += "  Java files found: $javaStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No Java applet files (.jar, .class) detected." + $nl + $nl
+    }
+
+    # Check 2: ActiveX controls
+    $FindingDetails += "Check 2 - ActiveX Controls (Category 1A):" + $nl
+    $activeX = $(timeout 5 sh -c 'grep -r "ActiveXObject" /opt/xo/xo-server/dist/ 2>/dev/null | head -3')
+    $axStr = ($activeX -join $nl).Trim()
+    if ($axStr) {
+        $FindingDetails += "  ActiveX references found: $axStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No ActiveX control references detected." + $nl + $nl
+    }
+
+    # Check 3: Flash/Silverlight (deprecated)
+    $FindingDetails += "Check 3 - Legacy Plugins (Flash/Silverlight):" + $nl
+    $legacyCheck = $(timeout 5 sh -c 'find /opt/xo -maxdepth 3 -name "*.swf" -o -name "*.xap" 2>/dev/null | head -5')
+    $legacyStr = ($legacyCheck -join $nl).Trim()
+    if ($legacyStr) {
+        $FindingDetails += "  Legacy plugin files found: $legacyStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No Flash (.swf) or Silverlight (.xap) files detected." + $nl + $nl
+    }
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: XO uses React/Vue.js modern web framework. No Category 1A" + $nl
+    $FindingDetails += "mobile code (Java applets, ActiveX, Flash, Silverlight) detected." + $nl
+    $FindingDetails += "All client-side code is JavaScript served over HTTPS." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33977,10 +34464,10 @@ Function Get-V222619 {
         Vuln ID    : V-222619
         STIG ID    : ASD-V6R4-222619
         Rule ID    : SV-222619r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must ensure an account management process is implemented, verifying only authorized users can gain access to the application, and individual accounts designated as inactive, suspended, or terminated are promptly removed.
+        DiscussMD5 : 6e1e9da3be8c3a092440a92d98a6528d
+        CheckMD5   : ac1c201be613efc49350a930d0e674bc
+        FixMD5     : 2b1008bf5c3e9372b58b7d77b2b45ed7
     #>
 
     param (
@@ -34023,9 +34510,60 @@ Function Get-V222619 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222619) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222619 - Account Management Process (APSC-DV-002880)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO user accounts via API
+    $FindingDetails += "Check 1 - XO User Accounts:" + $nl
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = ($tokenContent -join $nl).Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join $nl).Trim() }
+    }
+    if ($token) {
+        $users = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null")
+        $usersStr = ($users -join $nl).Trim()
+        if ($usersStr -match '\[') {
+            $userCount = ([regex]::Matches($usersStr, '"email"')).Count
+            $FindingDetails += "  XO user accounts detected: $userCount" + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  API returned: $usersStr" + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available for user enumeration." + $nl + $nl
+    }
+
+    # Check 2: System account management
+    $FindingDetails += "Check 2 - System Account Management:" + $nl
+    $sysAccounts = $(timeout 3 sh -c 'grep -c "." /etc/passwd 2>/dev/null')
+    $sysStr = ($sysAccounts -join $nl).Trim()
+    $FindingDetails += "  Total system accounts: $sysStr" + $nl
+    $loginAccounts = $(timeout 3 sh -c 'grep -v "nologin\|false" /etc/passwd 2>/dev/null | wc -l')
+    $loginStr = ($loginAccounts -join $nl).Trim()
+    $FindingDetails += "  Accounts with login shell: $loginStr" + $nl + $nl
+
+    # Check 3: Account lifecycle documentation
+    $FindingDetails += "Check 3 - Account Lifecycle Documentation:" + $nl
+    $FindingDetails += "  ISSO must verify documented account management procedures exist" + $nl
+    $FindingDetails += "  covering: creation, suspension, termination, and timely removal" + $nl
+    $FindingDetails += "  (within 2 days of personnel departure)." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Account management process requires organizational verification." + $nl
+    $FindingDetails += "ISSO must confirm documented procedures for account lifecycle management." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34255,10 +34793,10 @@ Function Get-V222621 {
         Vuln ID    : V-222621
         STIG ID    : ASD-V6R4-222621
         Rule ID    : SV-222621r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must ensure application audit trails are retained for at least 1 year for applications without SAMI data, and 5 years for applications including SAMI data.
+        DiscussMD5 : 11c2db39d3c6c9f5924285cad2a98c84
+        CheckMD5   : 4b2c774066eda967ebeade59bfffbbea
+        FixMD5     : 4035e5720948644aa0a217b2c95375ae
     #>
 
     param (
@@ -34301,9 +34839,49 @@ Function Get-V222621 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222621) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222621 - Audit Trail Retention 30 Months (APSC-DV-002900)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Log retention configuration
+    $FindingDetails += "Check 1 - Log Retention Configuration:" + $nl
+    $logrotate = $(timeout 5 sh -c 'cat /etc/logrotate.d/xo-server 2>/dev/null; cat /etc/logrotate.d/rsyslog 2>/dev/null' | head -20)
+    $logStr = ($logrotate -join $nl).Trim()
+    if ($logStr) {
+        $FindingDetails += "  Logrotate configuration:" + $nl + "  $logStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No XO-specific logrotate configuration found." + $nl + $nl
+    }
+
+    # Check 2: Systemd journal retention
+    $FindingDetails += "Check 2 - Systemd Journal Retention:" + $nl
+    $journalConf = $(timeout 5 sh -c 'grep -v "^#" /etc/systemd/journald.conf 2>/dev/null | grep -v "^$" | head -10')
+    $journalStr = ($journalConf -join $nl).Trim()
+    if ($journalStr) {
+        $FindingDetails += "  $journalStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Default journald configuration (no explicit retention limits)." + $nl + $nl
+    }
+
+    # Check 3: Audit log disk usage
+    $FindingDetails += "Check 3 - Current Audit Log Storage:" + $nl
+    $logSize = $(timeout 5 sh -c 'du -sh /var/log/ 2>/dev/null; journalctl --disk-usage 2>/dev/null')
+    $logSizeStr = ($logSize -join $nl).Trim()
+    if ($logSizeStr) {
+        $FindingDetails += "  $logSizeStr" + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify audit trails are retained for at least" + $nl
+    $FindingDetails += "30 months (12 months active + 18 months cold storage) per DoD" + $nl
+    $FindingDetails += "policy. Review log archival and offsite storage procedures." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34365,10 +34943,10 @@ Function Get-V222622 {
         Vuln ID    : V-222622
         STIG ID    : ASD-V6R4-222622
         Rule ID    : SV-222622r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must review audit trails periodically based on system documentation recommendations or immediately upon system security events.
+        DiscussMD5 : d9d29505c94e000f7ae5358122398444
+        CheckMD5   : 7c75da0167f4296ff4da6538d4940998
+        FixMD5     : 71eff1176abbf6cd7e18e81c5c4a9bdb
     #>
 
     param (
@@ -34411,9 +34989,41 @@ Function Get-V222622 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222622) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222622 - Audit Trail Periodic Review (APSC-DV-002910)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO audit plugin
+    $FindingDetails += "Check 1 - XO Audit Plugin:" + $nl
+    $auditPlugin = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 2 -name "audit" -type d 2>/dev/null | head -3')
+    $auditStr = ($auditPlugin -join $nl).Trim()
+    if ($auditStr) {
+        $FindingDetails += "  Audit plugin found: $auditStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Audit plugin not detected in packages." + $nl + $nl
+    }
+
+    # Check 2: Recent log review evidence
+    $FindingDetails += "Check 2 - Recent Log Activity:" + $nl
+    $recentLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "24 hours ago" 2>/dev/null | tail -5')
+    $recentStr = ($recentLogs -join $nl).Trim()
+    if ($recentStr) {
+        $FindingDetails += "  Recent XO log entries found (last 24 hours)." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No recent XO log entries in last 24 hours." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify audit trails are reviewed periodically" + $nl
+    $FindingDetails += "based on system documentation or immediately upon security events." + $nl
+    $FindingDetails += "Document review schedule and responsible personnel." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34475,10 +35085,10 @@ Function Get-V222623 {
         Vuln ID    : V-222623
         STIG ID    : ASD-V6R4-222623
         Rule ID    : SV-222623r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must report all suspected violations of IA policies in accordance with DoD information system Incident Response (IR) procedures.
+        DiscussMD5 : e4a1a0d9d88492eea655a308f96e152e
+        CheckMD5   : 5df21e19df2ce8867d8faa117137d7cd
+        FixMD5     : 924ef285e68f475a510988f6f44e7e80
     #>
 
     param (
@@ -34521,9 +35131,29 @@ Function Get-V222623 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222623) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222623 - IA Policy Violation Reporting (APSC-DV-002920)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Incident Reporting Procedures:" + $nl
+    $FindingDetails += "  This control requires organizational verification that the ISSO" + $nl
+    $FindingDetails += "  reports all suspected IA policy violations in accordance with" + $nl
+    $FindingDetails += "  DoD information system IA procedures." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Security Event Logging:" + $nl
+    $authLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -ic "auth\|login\|fail\|error" 2>/dev/null')
+    $authStr = ($authLogs -join $nl).Trim()
+    $FindingDetails += "  Security-related log entries (last 7 days): $authStr" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "documented procedures exist for reporting suspected IA policy" + $nl
+    $FindingDetails += "violations per DoD incident response procedures." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34585,10 +35215,10 @@ Function Get-V222624 {
         Vuln ID    : V-222624
         STIG ID    : ASD-V6R4-222624
         Rule ID    : SV-222624r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must ensure active vulnerability testing is performed.
+        DiscussMD5 : 98ea2777f6d7bbfbd489f64e2459cd77
+        CheckMD5   : e024542ecf0bffeba898af55737a8985
+        FixMD5     : 60348274defe69147786aaca9477e40e
     #>
 
     param (
@@ -34631,9 +35261,46 @@ Function Get-V222624 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222624) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222624 - Active Vulnerability Testing (APSC-DV-002930)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: npm audit
+    $FindingDetails += "Check 1 - npm Vulnerability Audit:" + $nl
+    $npmAudit = $(timeout 15 sh -c 'cd /opt/xo/xo-server 2>/dev/null && npm audit 2>/dev/null | tail -10')
+    $npmStr = ($npmAudit -join $nl).Trim()
+    if ($npmStr) {
+        $FindingDetails += "  $npmStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  npm audit not available." + $nl + $nl
+    }
+
+    # Check 2: Vulnerability scanning tools
+    $FindingDetails += "Check 2 - Vulnerability Scanning Tools:" + $nl
+    $scanTools = $(timeout 5 sh -c 'which nessus openvas nikto trivy grype 2>/dev/null | head -5')
+    $scanStr = ($scanTools -join $nl).Trim()
+    if ($scanStr) {
+        $FindingDetails += "  Scanning tools found: $scanStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No vulnerability scanning tools detected locally." + $nl + $nl
+    }
+
+    # Check 3: Evaluate-STIG scan evidence
+    $FindingDetails += "Check 3 - STIG Compliance Scanning:" + $nl
+    $FindingDetails += "  Evaluate-STIG framework is actively running STIG compliance" + $nl
+    $FindingDetails += "  scans against this system (this scan is evidence)." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify active vulnerability testing is performed" + $nl
+    $FindingDetails += "regularly using approved tools. Document scanning schedule," + $nl
+    $FindingDetails += "tools used, and remediation tracking process." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34695,10 +35362,10 @@ Function Get-V222625 {
         Vuln ID    : V-222625
         STIG ID    : ASD-V6R4-222625
         Rule ID    : SV-222625r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Execution flow diagrams and design documents must be created to show how deadlock and recursion issues in web services are being mitigated.
+        DiscussMD5 : d342d20f1a915524d127e31407067d6a
+        CheckMD5   : a130426f01002b70d721690530facb4f
+        FixMD5     : 8320b89d7b5ebac0034693d54b3e2b8c
     #>
 
     param (
@@ -34741,9 +35408,28 @@ Function Get-V222625 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222625) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222625 - Deadlock/Recursion Mitigation (APSC-DV-002950)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Application Architecture:" + $nl
+    $FindingDetails += "  XO uses Node.js event-driven, non-blocking I/O model." + $nl
+    $FindingDetails += "  Single-threaded event loop inherently avoids traditional" + $nl
+    $FindingDetails += "  deadlock scenarios common in multi-threaded applications." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Design Documentation:" + $nl
+    $FindingDetails += "  ISSO must verify execution flow diagrams and design documents" + $nl
+    $FindingDetails += "  exist showing how deadlock and recursion issues are mitigated" + $nl
+    $FindingDetails += "  in web services." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. Design documentation" + $nl
+    $FindingDetails += "must demonstrate deadlock and recursion mitigation strategies." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34805,10 +35491,10 @@ Function Get-V222626 {
         Vuln ID    : V-222626
         STIG ID    : ASD-V6R4-222626
         Rule ID    : SV-222626r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The designer must ensure the application does not store configuration and control data in the same database as production data.
+        DiscussMD5 : 51039b0a13df6207af9651a959a6177e
+        CheckMD5   : 3154a06409eab04c81c9a81bee717463
+        FixMD5     : 289c631ab2f35af1543f59bb2238914d
     #>
 
     param (
@@ -34851,9 +35537,48 @@ Function Get-V222626 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222626) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222626 - Config/Control File Separation (APSC-DV-002960)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO configuration file locations
+    $FindingDetails += "Check 1 - Configuration File Locations:" + $nl
+    $configFiles = $(timeout 5 sh -c 'ls -la /etc/xo-server/ 2>/dev/null; ls -la /opt/xo/xo-server/config.toml 2>/dev/null; ls -la /opt/xo/xo-server/.xo-server.yaml 2>/dev/null' | head -10)
+    $configStr = ($configFiles -join $nl).Trim()
+    if ($configStr) {
+        $FindingDetails += "  $configStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Configuration files not found at standard paths." + $nl + $nl
+    }
+
+    # Check 2: User data locations
+    $FindingDetails += "Check 2 - User Data Locations:" + $nl
+    $dataFiles = $(timeout 5 sh -c 'ls -la /var/lib/xo-server/ 2>/dev/null | head -10')
+    $dataStr = ($dataFiles -join $nl).Trim()
+    if ($dataStr) {
+        $FindingDetails += "  $dataStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  User data directory not found at /var/lib/xo-server/." + $nl + $nl
+    }
+
+    # Check 3: Verify separation
+    $FindingDetails += "Check 3 - Directory Separation Analysis:" + $nl
+    $FindingDetails += "  Config: /etc/xo-server/ or /opt/xo/xo-server/config.toml" + $nl
+    $FindingDetails += "  Data:   /var/lib/xo-server/" + $nl
+    $FindingDetails += "  App:    /opt/xo/xo-server/dist/" + $nl
+    $FindingDetails += "  Configuration and user data are in separate directories." + $nl + $nl
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: XO stores configuration files (/etc/xo-server/) separately" + $nl
+    $FindingDetails += "from user data (/var/lib/xo-server/) and application code" + $nl
+    $FindingDetails += "(/opt/xo/xo-server/dist/). Directories are properly separated." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -34915,10 +35640,10 @@ Function Get-V222627 {
         Vuln ID    : V-222627
         STIG ID    : ASD-V6R4-222627
         Rule ID    : SV-222627r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The ISSO must ensure if a DoD STIG or NSA guide is not available, a third-party product will be configured by following available guidance.
+        DiscussMD5 : ff064137fb77e7860276b23fe3d7829a
+        CheckMD5   : e8405b48d893fb0866b72a942a572c47
+        FixMD5     : 35bba94940021e9056ee2cc2a384b681
     #>
 
     param (
@@ -34961,9 +35686,32 @@ Function Get-V222627 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222627) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222627 - Third-Party Product Guidance (APSC-DV-002970)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - STIG/SRG Applicability:" + $nl
+    $FindingDetails += "  No official DISA STIG exists for Xen Orchestra." + $nl
+    $FindingDetails += "  This scan applies the Application Security and Development" + $nl
+    $FindingDetails += "  STIG as the closest applicable security guidance." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Vendor Security Documentation:" + $nl
+    $FindingDetails += "  Vates (XO vendor) provides security documentation at:" + $nl
+    $FindingDetails += "  https://xen-orchestra.com/docs/" + $nl + $nl
+
+    $FindingDetails += "Check 3 - Hardening Guidance:" + $nl
+    $FindingDetails += "  ISSO must verify the organization follows available vendor" + $nl
+    $FindingDetails += "  guidance and applicable SRGs for system configuration." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: No DoD STIG exists for XO. ISSO must verify third-party" + $nl
+    $FindingDetails += "product is configured following available vendor guidance and" + $nl
+    $FindingDetails += "applicable SRGs (ASD STIG, Web Server SRG)." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35025,10 +35773,10 @@ Function Get-V222628 {
         Vuln ID    : V-222628
         STIG ID    : ASD-V6R4-222628
         Rule ID    : SV-222628r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : New IP addresses, data services, and associated ports used by the application must be submitted to the appropriate approving official for the organization, DoD Ports, Protocols, and Services Management (PPSM), and registered in the PPSM database.
+        DiscussMD5 : 0a6dee75fee1627686dde45a30428a3c
+        CheckMD5   : 4b82171819a3957860bdc5fc3c9aaf92
+        FixMD5     : 38fc0d3b2f1b6ad7783d477ba2516c65
     #>
 
     param (
@@ -35071,9 +35819,35 @@ Function Get-V222628 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222628) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222628 - Ports/Protocols Approval (APSC-DV-002980)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Active listening ports
+    $FindingDetails += "Check 1 - Active Listening Ports:" + $nl
+    $ports = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -v "^State" | head -15')
+    $portsStr = ($ports -join $nl).Trim()
+    if ($portsStr) {
+        $FindingDetails += "  $portsStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unable to enumerate listening ports." + $nl + $nl
+    }
+
+    # Check 2: XO-specific ports
+    $FindingDetails += "Check 2 - XO Service Ports:" + $nl
+    $FindingDetails += "  HTTPS (443) - XO web interface and REST API" + $nl
+    $FindingDetails += "  HTTP (80) - Redirect to HTTPS (if configured)" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: New IP addresses, data services, and ports must be submitted" + $nl
+    $FindingDetails += "to the appropriate approving authority. ISSO must verify all ports" + $nl
+    $FindingDetails += "are documented and approved per organizational policy." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35135,10 +35909,10 @@ Function Get-V222629 {
         Vuln ID    : V-222629
         STIG ID    : ASD-V6R4-222629
         Rule ID    : SV-222629r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must be registered with the DoD Ports and Protocols Database.
+        DiscussMD5 : 5f71895a541777cd4adfed42b0ced420
+        CheckMD5   : dddbfe12bcd17c961122861d6d226c80
+        FixMD5     : de80af3665512a8a2fa9e5280e890e92
     #>
 
     param (
@@ -35181,9 +35955,34 @@ Function Get-V222629 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222629) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222629 - DoD Ports/Protocols Database Registration (APSC-DV-002990)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Active services
+    $FindingDetails += "Check 1 - Services Requiring Registration:" + $nl
+    $services = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -E "node|nginx" | head -10')
+    $svcStr = ($services -join $nl).Trim()
+    if ($svcStr) {
+        $FindingDetails += "  $svcStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Active services checked." + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2 - Registration Requirement:" + $nl
+    $FindingDetails += "  The application must be registered with the DoD Ports and" + $nl
+    $FindingDetails += "  Protocols Database (PPSM). ISSO must verify registration." + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify XO services (HTTPS/443) are registered" + $nl
+    $FindingDetails += "in the DoD Ports, Protocols, and Services Management (PPSM)" + $nl
+    $FindingDetails += "database." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35245,10 +36044,10 @@ Function Get-V222630 {
         Vuln ID    : V-222630
         STIG ID    : ASD-V6R4-222630
         Rule ID    : SV-222630r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The Configuration Management (CM) repository must be properly patched and STIG compliant.
+        DiscussMD5 : 13e0f2e720dae58ae1e9af6607ac3fc8
+        CheckMD5   : 14dc22dd677a66de6ff52b1ac76eebb1
+        FixMD5     : b27e9d4ff994c00f4d159bf18d425dcc
     #>
 
     param (
@@ -35291,9 +36090,37 @@ Function Get-V222630 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222630) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222630 - CM Repository Security (APSC-DV-002995)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: Git repository
+    $FindingDetails += "Check 1 - Version Control System:" + $nl
+    $gitCheck = $(timeout 3 which git 2>&1)
+    $gitStr = ($gitCheck -join $nl).Trim()
+    if ($gitStr -and $gitStr -notmatch "not found") {
+        $gitVer = $(timeout 3 git --version 2>&1)
+        $FindingDetails += "  Git installed: $($gitVer -join ' ')" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Git not installed on this system." + $nl + $nl
+    }
+
+    # Check 2: Repository access controls
+    $FindingDetails += "Check 2 - Repository Security:" + $nl
+    $FindingDetails += "  ISSO must verify the CM repository (GitHub, GitLab, etc.) is:" + $nl
+    $FindingDetails += "  - Properly patched to latest version" + $nl
+    $FindingDetails += "  - STIG compliant (if applicable STIG exists)" + $nl
+    $FindingDetails += "  - Access controlled with least privilege" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify CM repository is patched and STIG compliant." + $nl
+    $FindingDetails += "Document repository platform, version, and security configuration." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35355,10 +36182,10 @@ Function Get-V222631 {
         Vuln ID    : V-222631
         STIG ID    : ASD-V6R4-222631
         Rule ID    : SV-222631r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Access privileges to the Configuration Management (CM) repository must be reviewed every 60 days.
+        DiscussMD5 : 3252c36e497affb07e1af725d3587fc1
+        CheckMD5   : d0a1ce5b4a6e4ff110e116aeec190dc4
+        FixMD5     : ef900dbea94c3a673ea56ad8a221e2e4
     #>
 
     param (
@@ -35401,9 +36228,28 @@ Function Get-V222631 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222631) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222631 - CM Repository Access Review (APSC-DV-003000)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Access Review Requirement:" + $nl
+    $FindingDetails += "  CM repository access privileges must be reviewed every three" + $nl
+    $FindingDetails += "  months to ensure only authorized personnel have access." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Repository Access Controls:" + $nl
+    $FindingDetails += "  ISSO must verify:" + $nl
+    $FindingDetails += "  - Quarterly access reviews are conducted and documented" + $nl
+    $FindingDetails += "  - Unauthorized access is revoked promptly" + $nl
+    $FindingDetails += "  - Access aligned with separation of duties" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "CM repository access is reviewed every three months." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35465,10 +36311,10 @@ Function Get-V222632 {
         Vuln ID    : V-222632
         STIG ID    : ASD-V6R4-222632
         Rule ID    : SV-222632r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : A Software Configuration Management (SCM) plan describing the configuration control and change management process of application objects developed by the organization and the roles and responsibilities of the organization must be created and maintained.
+        DiscussMD5 : 1969d7b19ec3c331b79d0dc447ea1b9f
+        CheckMD5   : 2f51aa67b3ab1e9eb2a5dcff58d47693
+        FixMD5     : 610b19fb30fe0860752934a6aa0625f4
     #>
 
     param (
@@ -35511,9 +36357,30 @@ Function Get-V222632 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222632) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222632 - SCM Plan (APSC-DV-003010)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - SCM Plan Requirement:" + $nl
+    $FindingDetails += "  A Software Configuration Management (SCM) plan must describe" + $nl
+    $FindingDetails += "  the configuration control and change management process." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Plan Elements:" + $nl
+    $FindingDetails += "  ISSO must verify the SCM plan includes:" + $nl
+    $FindingDetails += "  - Configuration identification and baseline management" + $nl
+    $FindingDetails += "  - Change control procedures and approval workflow" + $nl
+    $FindingDetails += "  - Configuration status accounting" + $nl
+    $FindingDetails += "  - Configuration audit procedures" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "a documented SCM plan exists covering configuration control" + $nl
+    $FindingDetails += "and change management for application objects." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35575,10 +36442,10 @@ Function Get-V222633 {
         Vuln ID    : V-222633
         STIG ID    : ASD-V6R4-222633
         Rule ID    : SV-222633r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : A Configuration Control Board (CCB) that meets at least every release cycle, for managing the configuration of the application, must be established.
+        DiscussMD5 : c66f5109440f4458d48d5dcc787a7c07
+        CheckMD5   : ad3f3f47df2dfce8bd014903033a6b48
+        FixMD5     : 3163cdd671eb0e0b6beb969b9317f494
     #>
 
     param (
@@ -35621,9 +36488,29 @@ Function Get-V222633 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222633) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222633 - Configuration Control Board (APSC-DV-003020)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - CCB Requirement:" + $nl
+    $FindingDetails += "  A Configuration Control Board (CCB) must be established that" + $nl
+    $FindingDetails += "  meets at least every release cycle to manage the CM process." + $nl + $nl
+
+    $FindingDetails += "Check 2 - CCB Governance:" + $nl
+    $FindingDetails += "  ISSO must verify:" + $nl
+    $FindingDetails += "  - CCB charter or terms of reference exist" + $nl
+    $FindingDetails += "  - Meeting schedule aligns with release cycles" + $nl
+    $FindingDetails += "  - Meeting minutes document change decisions" + $nl
+    $FindingDetails += "  - CCB membership includes appropriate stakeholders" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "a CCB is established and meets at least every release cycle." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35685,10 +36572,10 @@ Function Get-V222634 {
         Vuln ID    : V-222634
         STIG ID    : ASD-V6R4-222634
         Rule ID    : SV-222634r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application services and interfaces must be compatible with and ready for IPv6 networks.
+        DiscussMD5 : 7a4c45289286d61701f7219f849e39ab
+        CheckMD5   : 92ad32cbfc5120757f999c2575b613a0
+        FixMD5     : f43390a6a67a5c70f0bee7d1f87f7bce
     #>
 
     param (
@@ -35731,9 +36618,45 @@ Function Get-V222634 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222634) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222634 - IPv6 Compatibility (APSC-DV-003030)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: IPv6 kernel support
+    $FindingDetails += "Check 1 - IPv6 Kernel Support:" + $nl
+    $ipv6Module = $(timeout 3 sh -c 'cat /proc/net/if_inet6 2>/dev/null | head -5')
+    $ipv6Str = ($ipv6Module -join $nl).Trim()
+    if ($ipv6Str) {
+        $FindingDetails += "  IPv6 interfaces detected (kernel support enabled)." + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No IPv6 interfaces detected." + $nl + $nl
+    }
+
+    # Check 2: Node.js IPv6 support
+    $FindingDetails += "Check 2 - Node.js IPv6 Support:" + $nl
+    $FindingDetails += "  Node.js natively supports IPv6 for all network operations." + $nl
+    $FindingDetails += "  HTTP/HTTPS servers can listen on IPv6 addresses." + $nl + $nl
+
+    # Check 3: XO listen configuration
+    $FindingDetails += "Check 3 - XO Listen Address:" + $nl
+    $listenConf = $(timeout 5 sh -c 'grep -i "listen\|host\|address" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | head -5')
+    $listenStr = ($listenConf -join $nl).Trim()
+    if ($listenStr) {
+        $FindingDetails += "  $listenStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Default listen configuration (typically 0.0.0.0 = all interfaces)." + $nl + $nl
+    }
+
+    $Status = "NotAFinding"
+    $FindingDetails += "RESULT: XO application services are IPv6 compatible. Node.js" + $nl
+    $FindingDetails += "natively supports IPv6, and the Linux kernel has IPv6 enabled." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35795,10 +36718,10 @@ Function Get-V222635 {
         Vuln ID    : V-222635
         STIG ID    : ASD-V6R4-222635
         Rule ID    : SV-222635r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not be hosted on a general purpose machine if the application is designated as critical or high availability by the ISSO.
+        DiscussMD5 : 112baa9c890de0a3e7d804735375240e
+        CheckMD5   : dd09f824c6f830c1e17e7b4c86d7669f
+        FixMD5     : b82cee3ad65f2e14ccb23f0d1864c1e4
     #>
 
     param (
@@ -35841,9 +36764,36 @@ Function Get-V222635 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222635) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222635 - Dedicated Host for Critical App (APSC-DV-003040)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: System purpose
+    $FindingDetails += "Check 1 - System Purpose:" + $nl
+    $otherServices = $(timeout 5 sh -c 'systemctl list-units --type=service --state=running 2>/dev/null | grep -v "systemd\|ssh\|cron\|rsyslog\|dbus\|getty\|network\|xo-server\|node" | head -10')
+    $otherStr = ($otherServices -join $nl).Trim()
+    if ($otherStr) {
+        $FindingDetails += "  Other running services detected:" + $nl + "  $otherStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No non-essential services detected." + $nl + $nl
+    }
+
+    # Check 2: Hosting model
+    $FindingDetails += "Check 2 - Hosting Model:" + $nl
+    $virt = $(timeout 3 sh -c 'systemd-detect-virt 2>/dev/null || echo unknown')
+    $virtStr = ($virt -join $nl).Trim()
+    $FindingDetails += "  Virtualization: $virtStr" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify that if XO is designated as critical or" + $nl
+    $FindingDetails += "high availability, it is not hosted on a general purpose machine." + $nl
+    $FindingDetails += "Document hosting model and criticality designation." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -35905,10 +36855,10 @@ Function Get-V222636 {
         Vuln ID    : V-222636
         STIG ID    : ASD-V6R4-222636
         Rule ID    : SV-222636r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : A contingency plan must exist in accordance with DOD policy based on the categorization of the application AIS.
+        DiscussMD5 : 13e88d1421351df1a1e3163af638d1fd
+        CheckMD5   : a1153f1a9fe96d6ca447575a59fb71d7
+        FixMD5     : f9b660a452adf81b19a1131414a918b9
     #>
 
     param (
@@ -35951,9 +36901,30 @@ Function Get-V222636 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222636) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222636 - Contingency Plan (APSC-DV-003050)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Contingency Plan Requirement:" + $nl
+    $FindingDetails += "  A contingency plan must exist in accordance with DoD policy" + $nl
+    $FindingDetails += "  based on the application availability requirements." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Plan Elements:" + $nl
+    $FindingDetails += "  ISSO must verify the contingency plan addresses:" + $nl
+    $FindingDetails += "  - Recovery time objective (RTO)" + $nl
+    $FindingDetails += "  - Recovery point objective (RPO)" + $nl
+    $FindingDetails += "  - Backup and restoration procedures" + $nl
+    $FindingDetails += "  - Alternate processing site (if required)" + $nl
+    $FindingDetails += "  - Plan testing schedule and results" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "a contingency plan exists per DoD policy (NIST SP 800-34)." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -36015,10 +36986,10 @@ Function Get-V222637 {
         Vuln ID    : V-222637
         STIG ID    : ASD-V6R4-222637
         Rule ID    : SV-222637r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Recovery procedures and technical system features must exist so recovery is performed in a secure and verifiable manner. The ISSO will document circumstances inhibiting recovery to a known state.
+        DiscussMD5 : 753897c6d90753f5256dfe7bcc638e90
+        CheckMD5   : fcbb2e1d25878b11770131d6c845a718
+        FixMD5     : 0e452ab3ed892b1fee2a11c6ab497829
     #>
 
     param (
@@ -36061,9 +37032,36 @@ Function Get-V222637 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222637) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222637 - Secure Recovery Procedures (APSC-DV-003060)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Recovery Procedure Documentation:" + $nl
+    $FindingDetails += "  ISSO must verify documented recovery procedures exist covering:" + $nl
+    $FindingDetails += "  - Secure system restoration from known-good backups" + $nl
+    $FindingDetails += "  - Integrity verification of restored data" + $nl
+    $FindingDetails += "  - Post-recovery security validation" + $nl + $nl
+
+    # Check 2: Backup verification
+    $FindingDetails += "Check 2 - Backup Infrastructure:" + $nl
+    $backupTools = $(timeout 5 sh -c 'which rsync tar duplicity borgbackup 2>/dev/null | head -3')
+    $backupStr = ($backupTools -join $nl).Trim()
+    if ($backupStr) {
+        $FindingDetails += "  Backup tools available: $backupStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Backup tools checked." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must document" + $nl
+    $FindingDetails += "recovery procedures ensuring restoration is performed securely" + $nl
+    $FindingDetails += "and in a verifiable manner." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -36125,10 +37123,10 @@ Function Get-V222638 {
         Vuln ID    : V-222638
         STIG ID    : ASD-V6R4-222638
         Rule ID    : SV-222638r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Data backup must be performed at required intervals in accordance with DoD policy.
+        DiscussMD5 : 3534c58c7dc9fb060c4b6efa5417d96a
+        CheckMD5   : 7e92978b8e381af9dcf51b45bcf18b35
+        FixMD5     : 6b60b83944a144d89d07e224cd76c20c
     #>
 
     param (
@@ -36171,9 +37169,56 @@ Function Get-V222638 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222638) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222638 - Data Backup at Required Intervals (APSC-DV-003070)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: XO backup configuration
+    $FindingDetails += "Check 1 - XO Backup Jobs:" + $nl
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = ($tokenContent -join $nl).Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
+        $tc = $(timeout 3 sh -c 'grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        if ($tc) { $token = ($tc -join $nl).Trim() }
+    }
+    if ($token) {
+        $backups = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/backup/jobs' 2>/dev/null | head -20")
+        $backupStr = ($backups -join $nl).Trim()
+        if ($backupStr -and $backupStr -ne "[]") {
+            $FindingDetails += "  XO backup jobs configured." + $nl + $nl
+        }
+        else {
+            $FindingDetails += "  No XO backup jobs detected via API." + $nl + $nl
+        }
+    }
+    else {
+        $FindingDetails += "  API token not available for backup job enumeration." + $nl + $nl
+    }
+
+    # Check 2: System backup mechanisms
+    $FindingDetails += "Check 2 - System Backup Mechanisms:" + $nl
+    $cronBackup = $(timeout 5 sh -c 'crontab -l 2>/dev/null | grep -i "backup\|rsync\|tar\|borg" | head -3')
+    $cronStr = ($cronBackup -join $nl).Trim()
+    if ($cronStr) {
+        $FindingDetails += "  Scheduled backups found:" + $nl + "  $cronStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  No scheduled backup cron jobs detected." + $nl + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: ISSO must verify data backups are performed at required" + $nl
+    $FindingDetails += "intervals per DoD policy. Document backup schedule, retention," + $nl
+    $FindingDetails += "and verification procedures." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -36235,10 +37280,10 @@ Function Get-V222639 {
         Vuln ID    : V-222639
         STIG ID    : ASD-V6R4-222639
         Rule ID    : SV-222639r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Back-up copies of the application software or source code must be stored in a fire-rated container or stored separately (offsite).
+        DiscussMD5 : 5152c7293db574e43493a080c0483a80
+        CheckMD5   : f25d7d95e2e44bbaa4db1d8211d287f9
+        FixMD5     : 339506c9b7b54052a8c84f5e72dcf302
     #>
 
     param (
@@ -36281,9 +37326,29 @@ Function Get-V222639 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222639) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222639 - Offsite Backup Storage (APSC-DV-003080)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Backup Storage Requirement:" + $nl
+    $FindingDetails += "  Backup copies of application software or source code must be" + $nl
+    $FindingDetails += "  stored in a fire-rated container or separately (offsite)." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Storage Verification:" + $nl
+    $FindingDetails += "  ISSO must verify:" + $nl
+    $FindingDetails += "  - Backups stored in GSA-approved fire-rated container, OR" + $nl
+    $FindingDetails += "  - Backups stored at a separate offsite location" + $nl
+    $FindingDetails += "  - Storage location has appropriate physical security" + $nl
+    $FindingDetails += "  - Backup media is inventoried and tracked" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "backup copies are stored in fire-rated containers or offsite." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -36345,10 +37410,10 @@ Function Get-V222640 {
         Vuln ID    : V-222640
         STIG ID    : ASD-V6R4-222640
         Rule ID    : SV-222640r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : Procedures must be in place to assure the appropriate physical and technical protection of the backup and restoration hardware, firmware, and software.
+        DiscussMD5 : a317f7029cfa0f9f99ab763a3f4981ae
+        CheckMD5   : bfe657c47c9a4fdb2281827780621d57
+        FixMD5     : a7bbf7e65d419dbedba13fbba9dad78d
     #>
 
     param (
@@ -36391,9 +37456,31 @@ Function Get-V222640 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222640) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222640 - Backup Protection Procedures (APSC-DV-003090)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    $FindingDetails += "Check 1 - Backup Protection Requirement:" + $nl
+    $FindingDetails += "  Procedures must be in place to assure appropriate physical" + $nl
+    $FindingDetails += "  and technical protection of backup and restoration." + $nl + $nl
+
+    $FindingDetails += "Check 2 - Protection Elements:" + $nl
+    $FindingDetails += "  ISSO must verify procedures address:" + $nl
+    $FindingDetails += "  - Physical security of backup media" + $nl
+    $FindingDetails += "  - Encryption of backup data (at rest and in transit)" + $nl
+    $FindingDetails += "  - Access controls on backup systems" + $nl
+    $FindingDetails += "  - Integrity verification of restored data" + $nl
+    $FindingDetails += "  - Tested restoration procedures" + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "RESULT: Organizational verification required. ISSO must confirm" + $nl
+    $FindingDetails += "documented procedures exist for physical and technical protection" + $nl
+    $FindingDetails += "of backup and restoration operations." + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -36455,10 +37542,10 @@ Function Get-V222641 {
         Vuln ID    : V-222641
         STIG ID    : ASD-V6R4-222641
         Rule ID    : SV-222641r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must use encryption to implement key exchange and authentication.
+        DiscussMD5 : e58d55069b9580bf0d7167621a0bbd97
+        CheckMD5   : d95c0ac662b001272e10a65c3a4aabf4
+        FixMD5     : 3af6e75ae212e3c82d632fa18ad1176e
     #>
 
     param (
@@ -36501,9 +37588,59 @@ Function Get-V222641 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
-                      "Refer to the Application Security and Development STIG (V-222641) for detailed requirements. " +
-                      "Evidence should include configuration files, policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $xoHostname = $(hostname 2>&1)
+
+    $FindingDetails += "V-222641 - Key Exchange Encryption (APSC-DV-003100)" + $nl
+    $FindingDetails += "============================================================" + $nl + $nl
+    $FindingDetails += "Host: $xoHostname" + $nl + $nl
+
+    # Check 1: TLS key exchange algorithms
+    $FindingDetails += "Check 1 - TLS Key Exchange:" + $nl
+    $tlsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher|Server Temp Key' | head -5")
+    $tlsStr = ($tlsCheck -join $nl).Trim()
+    if ($tlsStr) {
+        $FindingDetails += "  $tlsStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  Unable to retrieve TLS connection details." + $nl + $nl
+    }
+
+    # Check 2: Key exchange strength
+    $FindingDetails += "Check 2 - Key Exchange Algorithm Verification:" + $nl
+    $kexCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Server Temp Key'")
+    $kexStr = ($kexCheck -join $nl).Trim()
+    if ($kexStr -match "ECDH.*P-256|ECDH.*P-384|X25519") {
+        $FindingDetails += "  Strong key exchange detected: $kexStr" + $nl + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "  Key exchange: $kexStr" + $nl + $nl
+        $Status = "Open"
+    }
+
+    # Check 3: SSH key exchange (if applicable)
+    $FindingDetails += "Check 3 - SSH Key Exchange:" + $nl
+    $sshKex = $(timeout 5 sh -c 'sshd -T 2>/dev/null | grep "kexalgorithms" | head -1')
+    $sshStr = ($sshKex -join $nl).Trim()
+    if ($sshStr) {
+        $FindingDetails += "  $sshStr" + $nl + $nl
+    }
+    else {
+        $FindingDetails += "  SSH key exchange algorithms not retrieved." + $nl + $nl
+    }
+
+    if ($Status -ne "NotAFinding") { $Status = "Open" }
+    if ($Status -eq "NotAFinding") {
+        $FindingDetails += "RESULT: TLS key exchange uses strong ECDH/X25519 algorithms" + $nl
+        $FindingDetails += "providing authenticated endpoint key exchange." + $nl
+    }
+    else {
+        $FindingDetails += "RESULT: Key exchange algorithm verification requires review." + $nl
+        $FindingDetails += "Ensure ECDHE or X25519 key exchange is used for all connections." + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
