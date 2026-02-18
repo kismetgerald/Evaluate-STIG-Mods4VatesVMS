@@ -67,6 +67,12 @@ IMPLEMENTED_VULNIDS = [
     "V-222566", "V-222567", "V-222568", "V-222570", "V-222571",
     "V-222572", "V-222573", "V-222574", "V-222575", "V-222576",
     "V-222579", "V-222580",
+    # Batch 14: Session IDs, Certificates, Data Protection (Phase 6)
+    "V-222581", "V-222582", "V-222583", "V-222584", "V-222586",
+    "V-222587", "V-222591", "V-222592",
+    # Batch 15: DoS, HA, Transmission Security, Info Disclosure (Phase 6)
+    "V-222593", "V-222594", "V-222595", "V-222597", "V-222598",
+    "V-222599", "V-222600",
 ]
 
 def md5(text):
