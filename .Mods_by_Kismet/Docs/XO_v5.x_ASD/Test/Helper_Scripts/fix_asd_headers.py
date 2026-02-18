@@ -928,6 +928,25 @@ HEADER_DATA = {
         "check":   "b0f72abc650542488c784310657a0944",
         "fix":     "0c1b5e79e5c05a80c59d61623399a0e6",
     },
+    # CAT I: PKI Cert Path, Private Key, Cleartext Password
+    "V-222550": {
+        "title": "The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.",
+        "discuss": "2f239a366a698c08a47af1d26774b617",
+        "check":   "7639b42210cafcaac12b91a79d00455b",
+        "fix":     "226123cb330f21543cc6eaf637881cfa",
+    },
+    "V-222551": {
+        "title": "The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key.",
+        "discuss": "749b0f5145654705f3ee2c42eaa77ff5",
+        "check":   "26deb62d9956386b2dbada250e101936",
+        "fix":     "59051fab5fd546b196a8dd31ed30c8a8",
+    },
+    "V-222554": {
+        "title": "The application must not display passwords/PINs as clear text.",
+        "discuss": "a3caa3b56d4aba55af85cb9daa4bc205",
+        "check":   "7bc12523297be50abdd93367abd02c71",
+        "fix":     "5bc13a7fc78c657306c0a4c2f318800d",
+    },
     "V-222552": {
         "title": "The application must map the authenticated identity to the individual user or group account for PKI-based authentication.",
         "discuss": "c89714178f186a3e4ddfcfbc5a5012e2",
@@ -1061,6 +1080,19 @@ HEADER_DATA = {
         "check":   "f6e3be19c510df2d9bafac05bdf4de28",
         "fix":     "6189517abe9975270a0db2bf28cd4b0a",
     },
+    # CAT I: Session ID Exposure, Session Destruction
+    "V-222577": {
+        "title": "The application must not expose session IDs.",
+        "discuss": "4389a0476df2ecbce4b2bd852fa99861",
+        "check":   "e0aad336d2fbfe2774087c8d4623c13d",
+        "fix":     "f2fd6fe3190b28d181c6906cf87af779",
+    },
+    "V-222578": {
+        "title": "The application must destroy the session ID value and/or cookie on logoff or browser close.",
+        "discuss": "bb8aa637be0db87ffe5b8019c2ae5958",
+        "check":   "bb571abdc6dfbb81d4d9fbf50b39adb9",
+        "fix":     "8bf9ef3cdbcdb2e051fb7597fd837421",
+    },
     "V-222579": {
         "title": "Applications must use system-generated session identifiers that protect against session fixation.",
         "discuss": "86b0b2d43b14a8dd92a661761071a0eb",
@@ -1141,6 +1173,13 @@ HEADER_DATA = {
         "check":   "31c56008404d241b09108c4e47dad11e",
         "fix":     "a45e2fc8b1e0e2e8d89bf40c6aec2a42",
     },
+    # CAT I: Transmitted Info Protection
+    "V-222596": {
+        "title": "The application must protect the confidentiality and integrity of transmitted information.",
+        "discuss": "849bc9e8be1d896ea1ab446b4b2afe93",
+        "check":   "bae5f333ed205930a2916dd1b5693313",
+        "fix":     "9e9ecdb8d38c9f13064c95b84eb63c64",
+    },
     "V-222597": {
         "title": "The application must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission.",
         "discuss": "9916fc22daa4b7158011203413f5777f",
@@ -1164,6 +1203,37 @@ HEADER_DATA = {
         "discuss": "3dd15de34bca73f426681ca82b78d930",
         "check":   "dcbd547ab83c192db7b45216157715de",
         "fix":     "27d412b2740cebfd1542ff656df6b554",
+    },
+    # CAT I: Hidden Fields, XSS, Injection, Input Validation, Memory Protection
+    "V-222601": {
+        "title": "The application must not store sensitive information in hidden fields.",
+        "discuss": "235535eb4ac7198faa3a89b577e0f963",
+        "check":   "3ecec14de255c8e1bb9a7e7e3211a60f",
+        "fix":     "b309403b7c5d5643432d3cfe37a3ccc1",
+    },
+    "V-222602": {
+        "title": "The application must protect from Cross-Site Scripting (XSS) vulnerabilities.",
+        "discuss": "ac6a38baeb7dbe7469446bce433f1626",
+        "check":   "957c9d043afc8cfc5f848a21128a023d",
+        "fix":     "658e541dfdf5e38f1aa3d9869a6028ac",
+    },
+    "V-222604": {
+        "title": "The application must protect from command injection.",
+        "discuss": "a0ac3c6eb98b8156b8775a027550b045",
+        "check":   "4f7ac99f35c71fea8acc8f30d4a7d48b",
+        "fix":     "124cfd9cb58a3b636ce862df95eb3afb",
+    },
+    "V-222609": {
+        "title": "The application must not be subject to input handling vulnerabilities.",
+        "discuss": "77e2f843610eae2ce8b81a902cead301",
+        "check":   "aa6370bc45f1eeaa15d82e94463a9362",
+        "fix":     "f736170e81bc85e4089fd03b42220677",
+    },
+    "V-222612": {
+        "title": "The application must not be vulnerable to overflow attacks.",
+        "discuss": "7fbe39d4cfaa9c7d11f920f84b723fa3",
+        "check":   "2074785322ddb4247101420a550627d9",
+        "fix":     "547b45966c327e027c07e709818eeecf",
     },
     # --- Phase 7 Batch 16: Input Validation, Error Handling, Security Functions ---
     "V-222603": {
@@ -1365,6 +1435,13 @@ HEADER_DATA = {
         "discuss": "e58d55069b9580bf0d7167621a0bbd97",
         "check":   "d95c0ac662b001272e10a65c3a4aabf4",
         "fix":     "3af6e75ae212e3c82d632fa18ad1176e",
+    },
+    # CAT I: Hardcoded Credentials
+    "V-222642": {
+        "title": "The application must not contain embedded authentication data.",
+        "discuss": "0639b8690f7faf4bef16d9f149bfd3c9",
+        "check":   "31b816d88f2f00212903928f5bf42d61",
+        "fix":     "7ef54d1936dd2b6bec9fe70cf1ff4d5f",
     },
     # Batch 19: Security Design, Threat Modeling, Architecture (Phase 8)
     "V-222644": {
