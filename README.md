@@ -22,11 +22,11 @@ an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD u
 
 | Module | STIG / SRG Applied | Target | Checks | Implementation Status |
 |---|---|---|---|---|
-| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | **Complete** — all 126 checks automated (121 CAT II + 5 CAT I) |
-| `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | **In Progress** — 149/286 checks automated (52%); 9 CAT II batches complete; 137 stubs remaining |
-| `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | **Stub** — all checks return `Not_Reviewed` with auditor guidance (no CAT I in GPOS SRG) |
-| `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 204 | **Partial** — 3 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
-| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 368 | **Partial** — 12 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
+| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | :white_check_mark: **Complete** — all 126 checks automated (121 CAT II + 5 CAT I) |
+| `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | :construction: **In Progress** — 169/286 checks automated (59%); 11 CAT II batches + CAT I complete; 117 stubs remaining |
+| `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | :clipboard: **Stub** — all checks return `Not_Reviewed` with auditor guidance (no CAT I in GPOS SRG) |
+| `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 204 | :hammer_and_wrench: **Partial** — 3 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
+| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 368 | :hammer_and_wrench: **Partial** — 12 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
 
 ### Modified Framework Files (`Evaluate-STIG/xml/`)
 
