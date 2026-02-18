@@ -435,7 +435,7 @@ tag at the very end of the file, add the following five STIG entries:
     <ContentHash>916AB279D897DF209F09669BAF9325F834D5D2A5B3F07A12553DA4B650FA2335</ContentHash>
     <StigSource>GPOS_SRG.zip</StigSource>
     <SourceHash>916AB279D897DF209F09669BAF9325F834D5D2A5B3F07A12553DA4B650FA2335</SourceHash>
-    <Counts CATI="0" CATII="152" CATIII="8" />
+    <Counts CATI="18" CATII="170" CATIII="10" />
     <DisaCommonName>General Purpose Operating System (GPOS) SRG</DisaCommonName>
     <DisaStatus>Active</DisaStatus>
     <DetectionCode>Return (Test-IsRunningOS -Version Debian12)</DetectionCode>
