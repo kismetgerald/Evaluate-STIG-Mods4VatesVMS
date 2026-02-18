@@ -1366,6 +1366,177 @@ HEADER_DATA = {
         "check":   "d95c0ac662b001272e10a65c3a4aabf4",
         "fix":     "3af6e75ae212e3c82d632fa18ad1176e",
     },
+    # Batch 19: Security Design, Threat Modeling, Architecture (Phase 8)
+    "V-222644": {
+        "title": "Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed.",
+        "discuss": "1fed847a4db78669dbea58d48b3e5c7b",
+        "check":   "42910b908086a6447c0d2965f6d72fc9",
+        "fix":     "abbfbbbd7d5b5ebbb2629eb1474d693a",
+    },
+    "V-222645": {
+        "title": "Application files must be cryptographically hashed prior to deploying to DoD operational networks.",
+        "discuss": "f2721ae28c6c87af0b4adee1c5b66cfe",
+        "check":   "8ea89970d76eb8d4ac0a3f131b53e3ac",
+        "fix":     "deb7e8644440b318951ece55c0c34a68",
+    },
+    "V-222646": {
+        "title": "At least one tester must be designated to test for security flaws in addition to functional testing.",
+        "discuss": "c47455af0da0333ac6b5d141b3ce1c8c",
+        "check":   "f214ec9c279c02c25bbabbd03168356a",
+        "fix":     "c171f6f36eb601bdec0ebd03ba003624",
+    },
+    "V-222647": {
+        "title": "Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state.",
+        "discuss": "daacb9f4661c2176b7355a209dcb7a47",
+        "check":   "eaabcccd89042eabbe3abbf0c79c0cd0",
+        "fix":     "28e5c64f9af8ac930a940f746462f47b",
+    },
+    "V-222648": {
+        "title": "An application code review must be performed on the application.",
+        "discuss": "bd324d948adbea91682f5f8caebd6745",
+        "check":   "c88279fd9f3cd9a7453b505b0520786c",
+        "fix":     "af539ceb2d9bdc9353191800ad6d5ee3",
+    },
+    "V-222649": {
+        "title": "Code coverage statistics must be maintained for each release of the application.",
+        "discuss": "bb199c27ed412370ce925def0a56d95e",
+        "check":   "6ea64a2ca66faf4b56e44a462aabff19",
+        "fix":     "ecc95b461cd572db9d921f9f00d4c125",
+    },
+    "V-222650": {
+        "title": "Flaws found during a code review must be tracked in a defect tracking system.",
+        "discuss": "f00fbdcd9fe26c950b4a677b0335415d",
+        "check":   "40f5d780782fb30f59e7cd1fb3f712d3",
+        "fix":     "ec2101b556f90cc89df2ee81a158bfc5",
+    },
+    "V-222651": {
+        "title": "The changes to the application must be assessed for IA and accreditation impact prior to implementation.",
+        "discuss": "a5bdedec009197d57ce1646b5b8471f1",
+        "check":   "fe5ffe9f4ec522cc5d4dfdd671530cf4",
+        "fix":     "64cbda3ab1acf52bafa990158272a8c6",
+    },
+    "V-222652": {
+        "title": "Security flaws must be fixed or addressed in the project plan.",
+        "discuss": "a36f77744fd967e8945e961b30acb791",
+        "check":   "0c70b2694ae456228b58b8b6573c30d2",
+        "fix":     "bb57e20961fd3614c0090b3d7172992c",
+    },
+    "V-222653": {
+        "title": "The application development team must follow a set of coding standards.",
+        "discuss": "6f3f03e75a63ea4a097af823d7cdd516",
+        "check":   "8741b52a1c4e9712b02dc52b3cfc33c8",
+        "fix":     "252336c35caa32704ce9af1d81569256",
+    },
+    "V-222654": {
+        "title": "The designer must create and update the Design Document for each release of the application.",
+        "discuss": "ed725713937283fdb340909fb5aaaf86",
+        "check":   "c776292b3ea817ac82c924cab03cd0c0",
+        "fix":     "be531a319563ec488fefa5cbcfdde242",
+    },
+    "V-222655": {
+        "title": "Threat models must be documented and reviewed for each application release and updated as required by design and functionality changes or when new threats are discovered.",
+        "discuss": "9fb8fae4f693f7e02adc25db3a402375",
+        "check":   "3228593a0ed0a7b384f1da8ca7479179",
+        "fix":     "0375035b009db7e7cf535e92ec27f9c8",
+    },
+    "V-222656": {
+        "title": "The application must not be subject to error handling vulnerabilities.",
+        "discuss": "49a9d11c48d606bfd2a4927bda9b7dae",
+        "check":   "d9d43e2cb21c7cf691d53f0c34e7d228",
+        "fix":     "33d627e969fc7420ec3730ede4c8ca71",
+    },
+    "V-222657": {
+        "title": "The application development team must provide an application incident response plan.",
+        "discuss": "ec455ca5ccd374d92802885d339bf0d7",
+        "check":   "4b6ac9d42311a5cfad25a5e09905e1dc",
+        "fix":     "c8a24425a8be02fbccdc8162fc6b7efe",
+    },
+    # Batch 20: Code Review, Security Testing (Phase 8)
+    "V-222660": {
+        "title": "Procedures must be in place to notify users when an application is decommissioned.",
+        "discuss": "071d1231165d323ac1e9611dbf424976",
+        "check":   "a6c02131544dc15bcc7c01e527b016a7",
+        "fix":     "b01a971b32d941ca31e2c3231a129da5",
+    },
+    "V-222661": {
+        "title": "Unnecessary built-in application accounts must be disabled.",
+        "discuss": "a62127d25fa8dcdebbfa42e9e8c3aa24",
+        "check":   "7489e306c6113cf0b13322f4800df8ec",
+        "fix":     "25104b8994cb8c87652a06e63c8c55ae",
+    },
+    "V-222663": {
+        "title": "An Application Configuration Guide must be created and included with the application.",
+        "discuss": "f88cd9b07e13cb3c55db933c7786f477",
+        "check":   "c024cad42f77fd4c458fcf6ced9eda09",
+        "fix":     "36f569c6e3f326f239097b68ead8de89",
+    },
+    "V-222664": {
+        "title": "If the application contains classified data, a Security Classification Guide must exist containing data elements and their classification.",
+        "discuss": "11ba0cdbff870fdc7a12cc512f4b236a",
+        "check":   "3e0c7166231fddd9dad9545fdc4e6214",
+        "fix":     "7bee127115022c8037cc6385e0bb6478",
+    },
+    "V-222665": {
+        "title": "The designer must ensure uncategorized or emerging mobile code is not used in applications.",
+        "discuss": "a63c965e15f2c344d354af238fcae166",
+        "check":   "c06a383fe836605c3da05001d77cc796",
+        "fix":     "3089f62c860c83ecb907cc839e001205",
+    },
+    # Batch 21: Supply Chain, SBOM, Patch Management (Phase 8)
+    "V-222666": {
+        "title": "Production database exports must have database administration credentials and sensitive data removed before releasing the export.",
+        "discuss": "30c702c71a010415f88859039160a004",
+        "check":   "300d3dcea89974d552c940fb1907b0f7",
+        "fix":     "ef5406fc189f6874c531bf9619a89d7d",
+    },
+    "V-222667": {
+        "title": "Protections against DoS attacks must be implemented.",
+        "discuss": "f832dfc6d5fbd4df8c1da0e52cfcdcd2",
+        "check":   "13893448822a105b5f48340ce0b8cefb",
+        "fix":     "50624c3d23857f249c09e921d8637d83",
+    },
+    "V-222668": {
+        "title": "The system must alert an administrator when low resource conditions are encountered.",
+        "discuss": "11953bf312c94afe1287b6cc70bab071",
+        "check":   "a84540da6eed4972dd776e5c5cee4d75",
+        "fix":     "d93e717be0731c10bad817364617f3ba",
+    },
+    "V-222669": {
+        "title": "At least one application administrator must be registered to receive update notifications, or security alerts, when automated alerts are available.",
+        "discuss": "d0aa1463fa26c322550bff024a2623e7",
+        "check":   "c80aa76b6b576ba536c89c2025edce5f",
+        "fix":     "ab1bd770c7a3bb1fe0e9a07b9837a581",
+    },
+    "V-222670": {
+        "title": "The application must provide notifications or alerts when product update and security related patches are available.",
+        "discuss": "29eece9b0de9c369cf65961735ef58a5",
+        "check":   "e197b27474a6c1bc69f0648a9b0f55e1",
+        "fix":     "22983099ff0d7ef359afa1bebd13d416",
+    },
+    "V-222671": {
+        "title": "Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ.",
+        "discuss": "5d08043f0bca9cc653b9f3bc5a5d363d",
+        "check":   "202ddeb7b0333932a94b6b9d8b49c617",
+        "fix":     "f6385668607b42b889998661fcee62ac",
+    },
+    "V-222672": {
+        "title": "The application must generate audit records when concurrent logons from different workstations occur.",
+        "discuss": "68466b9f265c221d0a3c86ecaa76ea74",
+        "check":   "fb883eba6cb8a488eed0abb012810e8a",
+        "fix":     "d84589c16992873193c1b2f5e100adff",
+    },
+    "V-222673": {
+        "title": "The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function.",
+        "discuss": "6cf51a4a1fb5d0f91bd76ecfab2725d7",
+        "check":   "2fb1b8219c7c3547cd2aefdaebe06de2",
+        "fix":     "c156a24ab96b2034a26d476bc13c7429",
+    },
+    "V-265634": {
+        "title": "The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.",
+        "discuss": "a6e6ac44ed0e7f0068d8016132267e7c",
+        "check":   "55fb5b3dd82c287cde9f833895937949",
+        "fix":     "fc61639060fe8f7d074f3470edbdd4f6",
+    },
 }
 
 def fix_header_block(text, vuln_id, data):

@@ -123,17 +123,17 @@ Index                          '//xvda3/'</Size>
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>49</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>63</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
-      <CATIII_OpenNRTotal>2</CATIII_OpenNRTotal>
+      <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>31</WeightedAvg>
+      <WeightedAvg>50</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-18T07:51:20.9998291-05:00" EvalScore="41.61">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-18T05:20:20.0017979-05:00" EvalScore="34.97">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -170,7 +170,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="38" Open="123" NotAFinding="65" Not_Reviewed="4">
+      <CAT_II Total="230" Not_Applicable="29" Open="118" NotAFinding="60" Not_Reviewed="23">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -382,27 +382,27 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="Back-up copies of the application software or source code must be stored in a fire-rated container or stored separately (offsite)." Status="Open" ID="V-222639" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Procedures must be in place to assure the appropriate physical and technical protection of the backup and restoration of the application." Status="Open" ID="V-222640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must use encryption to implement key exchange and authenticate endpoints prior to establishing a communication channel for key exchange." Status="NotAFinding" ID="V-222641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Application files must be cryptographically hashed prior to deploying to DoD operational networks." Status="NotAFinding" ID="V-222645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="At least one tester must be designated to test for security flaws in addition to functional testing." Status="Not_Applicable" ID="V-222646" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="An application code review must be performed on the application." Status="Not_Applicable" ID="V-222648" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Flaws found during a code review must be tracked in a defect tracking system." Status="Not_Applicable" ID="V-222650" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The changes to the application must be assessed for IA and accreditation impact prior to implementation." Status="Open" ID="V-222651" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Security flaws must be fixed or addressed in the project plan." Status="Not_Applicable" ID="V-222652" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Threat models must be documented and reviewed for each application release and updated as required by design and functionality changes or when new threats are discovered." Status="Not_Applicable" ID="V-222655" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not be subject to error handling vulnerabilities." Status="NotAFinding" ID="V-222656" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application development team must provide an application incident response plan." Status="Not_Applicable" ID="V-222657" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Unnecessary built-in application accounts must be disabled." Status="NotAFinding" ID="V-222661" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="An Application Configuration Guide must be created and included with the application." Status="Open" ID="V-222663" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="If the application contains classified data, a Security Classification Guide must exist containing data elements and their classification." Status="Not_Applicable" ID="V-222664" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The designer must ensure uncategorized or emerging mobile code is not used in applications." Status="NotAFinding" ID="V-222665" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Production database exports must have database administration credentials and sensitive data removed before releasing the export." Status="Open" ID="V-222666" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Protections against DoS attacks must be implemented." Status="Open" ID="V-222667" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The system must alert an administrator when low resource conditions are encountered." Status="Open" ID="V-222668" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ." Status="NotAFinding" ID="V-222671" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function." Status="Not_Applicable" ID="V-222673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Applicable" ID="V-265634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Application files must be cryptographically hashed prior to deploying to DoD operational networks." Status="Not_Reviewed" ID="V-222645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="At least one tester must be designated to test for security flaws in addition to functional testing." Status="Not_Reviewed" ID="V-222646" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="An application code review must be performed on the application." Status="Not_Reviewed" ID="V-222648" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Flaws found during a code review must be tracked in a defect tracking system." Status="Not_Reviewed" ID="V-222650" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The changes to the application must be assessed for IA and accreditation impact prior to implementation." Status="Not_Reviewed" ID="V-222651" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Security flaws must be fixed or addressed in the project plan." Status="Not_Reviewed" ID="V-222652" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Threat models must be documented and reviewed for each application release and updated as required by design and functionality changes or when new threats are discovered." Status="Not_Reviewed" ID="V-222655" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not be subject to error handling vulnerabilities." Status="Not_Reviewed" ID="V-222656" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application development team must provide an application incident response plan." Status="Not_Reviewed" ID="V-222657" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Unnecessary built-in application accounts must be disabled." Status="Not_Reviewed" ID="V-222661" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="An Application Configuration Guide must be created and included with the application." Status="Not_Reviewed" ID="V-222663" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="If the application contains classified data, a Security Classification Guide must exist containing data elements and their classification." Status="Not_Reviewed" ID="V-222664" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The designer must ensure uncategorized or emerging mobile code is not used in applications." Status="Not_Reviewed" ID="V-222665" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Production database exports must have database administration credentials and sensitive data removed before releasing the export." Status="Not_Reviewed" ID="V-222666" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Protections against DoS attacks must be implemented." Status="Not_Reviewed" ID="V-222667" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The system must alert an administrator when low resource conditions are encountered." Status="Not_Reviewed" ID="V-222668" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Connections between the DoD enclave and the Internet or other public or commercial wide area networks must require a DMZ." Status="Not_Reviewed" ID="V-222671" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Program Manager must verify all levels of program management, designers, developers, and testers receive annual security training pertaining to their job function." Status="Not_Reviewed" ID="V-222673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-265634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
-      <CAT_III Total="22" Not_Applicable="5" Open="16" NotAFinding="1" Not_Reviewed="0">
+      <CAT_III Total="22" Not_Applicable="1" Open="12" NotAFinding="0" Not_Reviewed="9">
         <Vuln RuleTitle="The application must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-222392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must have a process, feature or function that prevents removal or disabling of emergency accounts." Status="Not_Applicable" ID="V-222410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically disable accounts after a 35 day period of account inactivity." Status="Open" ID="V-222411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -416,15 +416,15 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The publicly accessible application must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the application." Status="Open" ID="V-222436" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must display the time and date of the users last successful logon." Status="Open" ID="V-222437" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must notify the ISSO and ISSM of failed security verification tests." Status="Open" ID="V-222617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed." Status="Not_Applicable" ID="V-222644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state." Status="Open" ID="V-222647" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Code coverage statistics must be maintained for each release of the application." Status="Not_Applicable" ID="V-222649" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application development team must follow a set of coding standards." Status="Not_Applicable" ID="V-222653" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The designer must create and update the Design Document for each release of the application." Status="Not_Applicable" ID="V-222654" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Procedures must be in place to notify users when an application is decommissioned." Status="Open" ID="V-222660" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="At least one application administrator must be registered to receive update notifications, or security alerts, when automated alerts are available." Status="Open" ID="V-222669" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must provide notifications or alerts when product update and security related patches are available." Status="Open" ID="V-222670" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Prior to each release of the application, updates to system, or applying patches; tests plans and procedures must be created and executed." Status="Not_Reviewed" ID="V-222644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Test procedures must be created and at least annually executed to ensure system initialization, shutdown, and aborts are configured to verify the system remains in a secure state." Status="Not_Reviewed" ID="V-222647" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Code coverage statistics must be maintained for each release of the application." Status="Not_Reviewed" ID="V-222649" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application development team must follow a set of coding standards." Status="Not_Reviewed" ID="V-222653" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The designer must create and update the Design Document for each release of the application." Status="Not_Reviewed" ID="V-222654" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Procedures must be in place to notify users when an application is decommissioned." Status="Not_Reviewed" ID="V-222660" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="At least one application administrator must be registered to receive update notifications, or security alerts, when automated alerts are available." Status="Not_Reviewed" ID="V-222669" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must provide notifications or alerts when product update and security related patches are available." Status="Not_Reviewed" ID="V-222670" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="Not_Reviewed" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
   </Results>
