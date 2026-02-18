@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>02/18/2026</ScanDate>
+    <ScanDate>02/17/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -22,15 +22,16 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;'&#xA;sr0">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;Size                           [1024M]&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
+
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//sr0/'
 1024M
-DeviceID                       '//'
-Index                          '//sr0/'</Size>
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -40,15 +41,16 @@ Index                          '//sr0/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;'&#xA;xvda">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;Size                           [30G]&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
+
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//xvda/'
 30G
-DeviceID                       '//'
-Index                          '//xvda/'</Size>
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -58,16 +60,17 @@ Index                          '//xvda/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;&#xA;xvda1">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
+
 Size                           [512M]
 boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//xvda1/'
 512M
-DeviceID                       '///boot/efi'
-Index                          '//xvda1/'</Size>
+DeviceID                       '///boot/efi'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -77,15 +80,16 @@ Index                          '//xvda1/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;&#xA;xvda2">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
+
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//xvda2/'
 28.5G
-DeviceID                       '///'
-Index                          '//xvda2/'</Size>
+DeviceID                       '///'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -95,15 +99,16 @@ Index                          '//xvda2/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;[SWAP]'&#xA;xvda3">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;Size                           [976M]&#xA;[SWAP]'">
         <DeviceID>Name                           Value
 ----                           -----
+
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//xvda3/'
 976M
-SWAP
-Index                          '//xvda3/'</Size>
+SWAP</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -119,17 +124,17 @@ Index                          '//xvda3/'</Size>
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>80</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>92</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>60</WeightedAvg>
+      <WeightedAvg>66</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-18T04:09:54.7966266-05:00" EvalScore="29.02">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-17T19:55:14.4064212-05:00" EvalScore="24.83">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -166,7 +171,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="28" Open="88" NotAFinding="44" Not_Reviewed="70">
+      <CAT_II Total="230" Not_Applicable="27" Open="72" NotAFinding="33" Not_Reviewed="98">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -302,34 +307,34 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must require the change of at least eight of the total number of characters when passwords are changed." Status="Open" ID="V-222541" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must enforce 24 hours/1 day as the minimum password lifetime." Status="Open" ID="V-222544" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must enforce a 60-day maximum password lifetime restriction." Status="Open" ID="V-222545" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must prohibit password reuse for a minimum of five generations." Status="Open" ID="V-222546" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must allow the use of a temporary password for system logons with an immediate change to a permanent password." Status="Open" ID="V-222547" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application password must not be changeable by users other than the administrator or the user with which the password is associated." Status="NotAFinding" ID="V-222548" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must terminate existing user sessions upon account deletion." Status="Open" ID="V-222549" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must map the authenticated identity to the individual user or group account for PKI-based authentication." Status="Open" ID="V-222552" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network." Status="Open" ID="V-222553" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)." Status="Open" ID="V-222556" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must accept Personal Identity Verification (PIV) credentials from other federal agencies." Status="Open" ID="V-222557" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must electronically verify Personal Identity Verification (PIV) credentials from other federal agencies." Status="Open" ID="V-222558" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must accept Federal Identity, Credential, and Access Management (FICAM)-approved third-party credentials." Status="Open" ID="V-222559" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must conform to Federal Identity, Credential, and Access Management (FICAM)-issued profiles." Status="Open" ID="V-222560" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications used for non-local maintenance sessions must audit non-local maintenance and diagnostic sessions for organization-defined auditable events." Status="NotAFinding" ID="V-222561" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications." Status="NotAFinding" ID="V-222562" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications." Status="NotAFinding" ID="V-222563" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications used for non-local maintenance sessions must verify remote disconnection at the termination of non-local maintenance and diagnostic sessions." Status="NotAFinding" ID="V-222564" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions." Status="Open" ID="V-222565" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must terminate all sessions and network connections when nonlocal maintenance is completed." Status="Open" ID="V-222566" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not be vulnerable to race conditions." Status="Open" ID="V-222567" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must terminate all network connections associated with a communications session at the end of the session." Status="NotAFinding" ID="V-222568" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when signing application components." Status="Open" ID="V-222570" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when generating cryptographic hashes." Status="Open" ID="V-222571" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when protecting unclassified information that requires cryptographic protection." Status="Open" ID="V-222572" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications making SAML assertions must use FIPS-approved random numbers in the generation of SessionIndex in the SAML element AuthnStatement." Status="Not_Applicable" ID="V-222573" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application user interface must be either physically or logically separated from data storage and management interfaces." Status="NotAFinding" ID="V-222574" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must set the HTTPOnly flag on session cookies." Status="NotAFinding" ID="V-222575" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must set the secure flag on session cookies." Status="NotAFinding" ID="V-222576" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications must use system-generated session identifiers that protect against session fixation." Status="NotAFinding" ID="V-222579" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Applications must validate session identifiers." Status="NotAFinding" ID="V-222580" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must prohibit password reuse for a minimum of five generations." Status="Not_Reviewed" ID="V-222546" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must allow the use of a temporary password for system logons with an immediate change to a permanent password." Status="Not_Reviewed" ID="V-222547" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application password must not be changeable by users other than the administrator or the user with which the password is associated." Status="Not_Reviewed" ID="V-222548" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must terminate existing user sessions upon account deletion." Status="Not_Reviewed" ID="V-222549" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must map the authenticated identity to the individual user or group account for PKI-based authentication." Status="Not_Reviewed" ID="V-222552" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network." Status="Not_Reviewed" ID="V-222553" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must uniquely identify and authenticate non-organizational users (or processes acting on behalf of non-organizational users)." Status="Not_Reviewed" ID="V-222556" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must accept Personal Identity Verification (PIV) credentials from other federal agencies." Status="Not_Reviewed" ID="V-222557" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must electronically verify Personal Identity Verification (PIV) credentials from other federal agencies." Status="Not_Reviewed" ID="V-222558" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must accept Federal Identity, Credential, and Access Management (FICAM)-approved third-party credentials." Status="Not_Reviewed" ID="V-222559" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must conform to Federal Identity, Credential, and Access Management (FICAM)-issued profiles." Status="Not_Reviewed" ID="V-222560" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications used for non-local maintenance sessions must audit non-local maintenance and diagnostic sessions for organization-defined auditable events." Status="Not_Reviewed" ID="V-222561" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the integrity of non-local maintenance and diagnostic communications." Status="Not_Reviewed" ID="V-222562" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications used for non-local maintenance sessions must implement cryptographic mechanisms to protect the confidentiality of non-local maintenance and diagnostic communications." Status="Not_Reviewed" ID="V-222563" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications used for non-local maintenance sessions must verify remote disconnection at the termination of non-local maintenance and diagnostic sessions." Status="Not_Reviewed" ID="V-222564" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must employ strong authenticators in the establishment of non-local maintenance and diagnostic sessions." Status="Not_Reviewed" ID="V-222565" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must terminate all sessions and network connections when nonlocal maintenance is completed." Status="Not_Reviewed" ID="V-222566" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not be vulnerable to race conditions." Status="Not_Reviewed" ID="V-222567" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must terminate all network connections associated with a communications session at the end of the session." Status="Not_Reviewed" ID="V-222568" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when signing application components." Status="Not_Reviewed" ID="V-222570" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when generating cryptographic hashes." Status="Not_Reviewed" ID="V-222571" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must utilize FIPS-validated cryptographic modules when protecting unclassified information that requires cryptographic protection." Status="Not_Reviewed" ID="V-222572" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications making SAML assertions must use FIPS-approved random numbers in the generation of SessionIndex in the SAML element AuthnStatement." Status="Not_Reviewed" ID="V-222573" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application user interface must be either physically or logically separated from data storage and management interfaces." Status="Not_Reviewed" ID="V-222574" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must set the HTTPOnly flag on session cookies." Status="Not_Reviewed" ID="V-222575" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must set the secure flag on session cookies." Status="Not_Reviewed" ID="V-222576" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications must use system-generated session identifiers that protect against session fixation." Status="Not_Reviewed" ID="V-222579" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Applications must validate session identifiers." Status="Not_Reviewed" ID="V-222580" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Applications must not use URL embedded session IDs." Status="Not_Reviewed" ID="V-222581" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not re-use or recycle session IDs." Status="Not_Reviewed" ID="V-222582" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must generate a unique session identifier using a FIPS 140-2/140-3 approved random number generator." Status="Not_Reviewed" ID="V-222583" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
