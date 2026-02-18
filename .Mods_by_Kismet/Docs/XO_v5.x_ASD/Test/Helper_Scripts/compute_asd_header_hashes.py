@@ -58,6 +58,8 @@ IMPLEMENTED_VULNIDS = [
     # Batch 11: Password Complexity (Phase 4)
     "V-222537", "V-222538", "V-222539", "V-222540", "V-222541",
     "V-222544", "V-222545",
+    # CAT I: PKI Cert Path, Private Key, Cleartext Password (between Batches 11-12)
+    "V-222550", "V-222551", "V-222554",
     # Batch 12: Password Reuse, Temp Passwords, PKI, PIV, FICAM (Phase 5)
     "V-222546", "V-222547", "V-222548", "V-222549", "V-222552",
     "V-222553", "V-222556", "V-222557", "V-222558", "V-222559",
@@ -66,13 +68,20 @@ IMPLEMENTED_VULNIDS = [
     "V-222561", "V-222562", "V-222563", "V-222564", "V-222565",
     "V-222566", "V-222567", "V-222568", "V-222570", "V-222571",
     "V-222572", "V-222573", "V-222574", "V-222575", "V-222576",
+    # CAT I: Session ID Exposure, Session Destruction (between Batches 13-14)
+    "V-222577", "V-222578",
     "V-222579", "V-222580",
     # Batch 14: Session IDs, Certificates, Data Protection (Phase 6)
     "V-222581", "V-222582", "V-222583", "V-222584", "V-222586",
     "V-222587", "V-222591", "V-222592",
     # Batch 15: DoS, HA, Transmission Security, Info Disclosure (Phase 6)
-    "V-222593", "V-222594", "V-222595", "V-222597", "V-222598",
+    "V-222593", "V-222594", "V-222595",
+    # CAT I: Transmitted Info Protection (between Batches 15-16)
+    "V-222596",
+    "V-222597", "V-222598",
     "V-222599", "V-222600",
+    # CAT I: Hidden Fields, XSS, Injection, Input Validation, Memory Protection (between Batches 15-16)
+    "V-222601", "V-222602", "V-222604", "V-222609", "V-222612",
     # Batch 16: Input Validation, Error Handling, Security Functions (Phase 7)
     "V-222603", "V-222605", "V-222606", "V-222610", "V-222611",
     "V-222613", "V-222614", "V-222615", "V-222616", "V-222617",
@@ -84,6 +93,8 @@ IMPLEMENTED_VULNIDS = [
     "V-222631", "V-222632", "V-222633", "V-222634", "V-222635",
     "V-222636", "V-222637", "V-222638", "V-222639", "V-222640",
     "V-222641",
+    # CAT I: Hardcoded Credentials (between Batches 18-19)
+    "V-222642",
     # Batch 19: Security Design, Threat Modeling, Architecture (Phase 8)
     "V-222644", "V-222645", "V-222646", "V-222647", "V-222648",
     "V-222649", "V-222650", "V-222651", "V-222652", "V-222653",

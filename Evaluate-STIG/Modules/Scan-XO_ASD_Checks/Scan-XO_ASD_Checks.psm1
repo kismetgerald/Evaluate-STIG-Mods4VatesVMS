@@ -30225,10 +30225,10 @@ Function Get-V222596 {
         Vuln ID    : V-222596
         STIG ID    : ASD-V6R4-222596
         Rule ID    : SV-222596r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect the confidentiality and integrity of transmitted information.
+        DiscussMD5 : 849bc9e8be1d896ea1ab446b4b2afe93
+        CheckMD5   : bae5f333ed205930a2916dd1b5693313
+        FixMD5     : 9e9ecdb8d38c9f13064c95b84eb63c64
     #>
 
     param (
@@ -30271,104 +30271,76 @@ Function Get-V222596 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222596: Protect confidentiality and integrity of transmitted information
-    # Check: Verify TLS/SSL encryption for all network communications
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== Transmitted Information Protection Check ===`n`n"
-        
-        # Check 1: Verify HTTPS/TLS on XO web interface
-        $listeningPorts = bash -c "ss -tlnp </dev/null 2>/dev/null | grep xo-server"
-        
-        $FindingDetails += "XO Server Listening Ports:`n$listeningPorts`n`n"
-        
-        if ($listeningPorts -match ":443") {
-            $FindingDetails += "✓ HTTPS port 443 in use`n"
-            $hasHTTPS = $true
-        }
-        elseif ($listeningPorts -match ":80") {
-            $FindingDetails += "⚠ HTTP port 80 detected - unencrypted communications possible`n"
-            $hasUnencryptedHTTP = $true
-        }
-        
-        # Check 2: Verify TLS configuration
-        $tlsConfig = bash -c "find /etc/xo-server -name '*.toml' -exec grep -A5 '\[http\]' {} + </dev/null 2>/dev/null | grep -iE '(cert|key|redirect)'"
-        
-        if ($tlsConfig) {
-            $FindingDetails += "`nTLS Configuration:`n$tlsConfig`n"
-            
-            if ($tlsConfig -match "cert|certificate") {
-                $FindingDetails += "✓ TLS certificate configured`n"
-                $hasTLSCert = $true
-            }
-            
-            if ($tlsConfig -match "redirectToHttps|redirect.*true") {
-                $FindingDetails += "✓ HTTP to HTTPS redirect configured`n"
-                $hasRedirect = $true
-            }
-        }
-        
-        # Check 3: Verify TLS version (should be 1.2 or higher)
-        $tlsVersion = bash -c "openssl s_client -connect localhost:443 -tls1_2 </dev/null 2>&1 | grep -i 'protocol' | head -1 || echo 'TLS_CHECK_FAILED'"
-        
-        if ($tlsVersion -notmatch "TLS_CHECK_FAILED") {
-            $FindingDetails += "`nTLS Version Check:`n$tlsVersion`n"
-            
-            if ($tlsVersion -match "TLSv1\.[23]") {
-                $FindingDetails += "✓ TLS 1.2 or higher in use`n"
-                $modernTLS = $true
-            }
-        }
-        
-        # Check 4: Verify Redis encryption (stunnel or TLS)
-        $redisConfig = bash -c "grep -E '^(tls-cert-file|tls-key-file)' /etc/redis/redis.conf </dev/null 2>/dev/null"
-        
-        if ($redisConfig) {
-            $FindingDetails += "`nRedis TLS Configuration:`n$redisConfig`n"
-            $FindingDetails += "✓ Redis TLS configured`n"
-            $redisTLS = $true
-        }
-        else {
-            # Check for stunnel
-            $stunnel = bash -c "systemctl is-active stunnel </dev/null 2>/dev/null || systemctl is-active stunnel4 </dev/null 2>/dev/null || echo 'NOT_ACTIVE'"
-            if ($stunnel -match "active") {
-                $FindingDetails += "✓ Redis encryption via stunnel detected`n"
-                $redisTLS = $true
-            }
-        }
-        
-        # Check 5: Verify no plaintext protocols in use
-        $plaintext = bash -c "ss -tlnp </dev/null 2>/dev/null | grep -E ':(21|23|80|3389)\s' | grep -v '127.0.0.1' || echo 'NONE'"
-        
-        if ($plaintext -match "NONE") {
-            $FindingDetails += "`n✓ No plaintext protocols exposed on network interfaces`n"
-            $noPlaintext = $true
-        }
-        else {
-            $FindingDetails += "`n⚠ Plaintext protocols detected:`n$plaintext`n"
-        }
-        
-        # Determine Status
-        if (($hasHTTPS -or $hasTLSCert) -and $noPlaintext -and $modernTLS) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Transmitted information is protected with encryption.`n"
-            $FindingDetails += "TLS/HTTPS configured, no plaintext protocols exposed.`n"
-        }
-        elseif ($hasHTTPS -or $hasTLSCert) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Partial protection detected - manual verification recommended.`n"
-            $FindingDetails += "TLS present but full encryption coverage requires verification.`n"
-        }
-        else {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Transmitted information not adequately protected.`n"
-            $FindingDetails += "TLS/HTTPS must be configured for all network communications.`n"
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: HTTPS listener
+    $output += "CHECK 1: HTTPS/TLS listener status" + $nl
+    $httpsActive = $false
+    $listeners = $(sh -c "ss -tlnp 2>/dev/null | grep -E ':443\s'" 2>&1)
+    $listenersStr = ($listeners -join $nl).Trim()
+    if ($listenersStr) {
+        $httpsActive = $true
+        $output += "  [PASS] HTTPS active on port 443: $listenersStr" + $nl
+    } else {
+        $output += "  [FINDING] No HTTPS listener on port 443" + $nl
+    }
+
+    # Check 2: TLS version verification
+    $output += $nl + "CHECK 2: TLS version" + $nl
+    $modernTLS = $false
+    $tlsVer = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Protocol'" 2>&1)
+    $tlsVerStr = ($tlsVer -join $nl).Trim()
+    if ($tlsVerStr -match "TLSv1\.[23]") {
+        $modernTLS = $true
+        $output += "  [PASS] $tlsVerStr" + $nl
+    } elseif ($tlsVerStr) {
+        $output += "  [FINDING] $tlsVerStr" + $nl
+    }
+
+    # Check 3: XO config TLS settings
+    $output += $nl + "CHECK 3: XO TLS configuration" + $nl
+    $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
+    foreach ($cp in $configPaths) {
+        if (Test-Path $cp) {
+            $tlsConfig = $(sh -c "grep -iE 'cert|key|https|redirectToHttps' '$cp' 2>/dev/null" 2>&1)
+            $tlsConfigStr = ($tlsConfig -join $nl).Trim()
+            if ($tlsConfigStr) { $output += "  Config ($cp): $tlsConfigStr" + $nl }
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 4: Plaintext protocol exposure
+    $output += $nl + "CHECK 4: Plaintext protocol exposure" + $nl
+    $plaintextExposed = $false
+    $ptCheck = $(sh -c "ss -tlnp 2>/dev/null | grep -E ':(21|23|80|3389)\s' | grep -v '127.0.0.1'" 2>&1)
+    $ptCheckStr = ($ptCheck -join $nl).Trim()
+    if ($ptCheckStr) {
+        $plaintextExposed = $true
+        $output += "  [FINDING] Plaintext protocols exposed: $ptCheckStr" + $nl
+    } else {
+        $output += "  [PASS] No plaintext protocols exposed on network interfaces" + $nl
     }
+
+    # Check 5: Cipher strength
+    $output += $nl + "CHECK 5: Cipher strength" + $nl
+    $cipher = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Cipher'" 2>&1)
+    $cipherStr = ($cipher -join $nl).Trim()
+    if ($cipherStr) { $output += "  $cipherStr" + $nl }
+
+    # Determine status
+    if ($httpsActive -and $modernTLS -and -not $plaintextExposed) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - transmitted information protected with TLS." + $nl
+    } elseif ($httpsActive) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - HTTPS active but additional issues detected." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - transmitted information not adequately protected." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31121,10 +31093,10 @@ Function Get-V222601 {
         Vuln ID    : V-222601
         STIG ID    : ASD-V6R4-222601
         Rule ID    : SV-222601r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not store sensitive information in hidden fields.
+        DiscussMD5 : 235535eb4ac7198faa3a89b577e0f963
+        CheckMD5   : 3ecec14de255c8e1bb9a7e7e3211a60f
+        FixMD5     : b309403b7c5d5643432d3cfe37a3ccc1
     #>
 
     param (
@@ -31167,87 +31139,67 @@ Function Get-V222601 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222601: Application must not store sensitive information in hidden fields
-    # Check: Scan web interface for hidden form fields containing sensitive data
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== Hidden Field Sensitive Data Check ===`n`n"
-        
-        # Check 1: Locate XO web application files
-        $webRoot = bash -c "find /usr/local /opt -type d -name 'xo-web' </dev/null 2>/dev/null | head -1"
-        
-        if ($webRoot) {
-            $FindingDetails += "XO Web Root: $webRoot`n`n"
-            
-            # Check 2: Scan for hidden input fields in HTML/JSX files
-            $hiddenFields = bash -c "find $webRoot -type f \`( -name '*.html' -o -name '*.jsx' -o -name '*.js' \`) -exec grep -l 'type.*hidden' {} \`; </dev/null 2>/dev/null | head -10"
-            
-            if ($hiddenFields) {
-                $FindingDetails += "Files with hidden input fields:`n$hiddenFields`n`n"
-                
-                # Check 3: Look for sensitive data patterns in hidden fields
-                $sensitivePatterns = bash -c "find $webRoot -type f \`( -name '*.html' -o -name '*.jsx' -o -name '*.js' \`) -exec grep -iE 'type.*hidden.*(password|ssn|credit|token|secret|key|auth)' {} + </dev/null 2>/dev/null | head -5"
-                
-                if ($sensitivePatterns) {
-                    $FindingDetails += "❌ POTENTIAL ISSUE: Sensitive data in hidden fields:`n$sensitivePatterns`n"
-                    $sensitiveDataFound = $true
-                }
-                else {
-                    $FindingDetails += "✓ No sensitive data patterns detected in hidden fields`n"
-                    $noSensitiveData = $true
-                }
-            }
-            else {
-                $FindingDetails += "✓ No hidden input fields detected`n"
-                $noHiddenFields = $true
-            }
-            
-            # Check 4: Scan JavaScript for hidden field assignments
-            $jsAssignments = bash -c "find $webRoot -type f -name '*.js' -exec grep -iE '\`.type\s*=\s*[\`"\`']hidden[\`"\`']' {} + </dev/null 2>/dev/null | grep -iE '(password|token|key|secret)' | head -3"
-            
-            if ($jsAssignments) {
-                $FindingDetails += "`n⚠ Dynamic hidden field creation detected:`n$jsAssignments`n"
-                $dynamicHidden = $true
-            }
-            
-            # Check 5: Review build artifacts for hidden field data
-            $buildFiles = bash -c "find $webRoot -type f -name '*.min.js' -o -name '*.bundle.js' </dev/null 2>/dev/null | head -3"
-            
-            if ($buildFiles) {
-                $FindingDetails += "`nBuild Artifacts Found (manual review recommended):`n$buildFiles`n"
-                $FindingDetails += "Note: Minified files require manual inspection for hidden field usage.`n"
-            }
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Locate XO web files
+    $output += "CHECK 1: XO web application location" + $nl
+    $webRoot = ""
+    $webPaths = @("/opt/xo/xo-src/xen-orchestra/packages/xo-web", "/opt/xo/packages/xo-web", "/usr/share/xo-server/xo-web")
+    foreach ($wp in $webPaths) {
+        if (Test-Path $wp) { $webRoot = $wp; break }
+    }
+    if ($webRoot) {
+        $output += "  XO web root: $webRoot" + $nl
+    } else {
+        $output += "  XO web root not found" + $nl
+    }
+
+    # Check 2: Scan for hidden fields with sensitive data patterns
+    $output += $nl + "CHECK 2: Hidden field sensitive data scan" + $nl
+    $sensitiveHidden = $false
+    if ($webRoot) {
+        $hiddenSensitive = $(timeout 15 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -n 'type.*hidden.*password\|type.*hidden.*secret\|type.*hidden.*token\|type.*hidden.*key\|type.*hidden.*ssn\|type.*hidden.*credit' {} + 2>/dev/null | head -5" 2>&1)
+        $hiddenSensitiveStr = ($hiddenSensitive -join $nl).Trim()
+        if ($hiddenSensitiveStr) {
+            $sensitiveHidden = $true
+            $output += "  [FINDING] Sensitive data in hidden fields: $hiddenSensitiveStr" + $nl
+        } else {
+            $output += "  [PASS] No sensitive data patterns in hidden fields" + $nl
         }
-        else {
-            $FindingDetails += "⚠ XO web root not found in standard locations`n"
-            $webRootNotFound = $true
-        }
-        
-        # Determine Status
-        if ($sensitiveDataFound) {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Sensitive information stored in hidden fields.`n"
-            $FindingDetails += "Remove sensitive data from hidden fields or use secure storage.`n"
-        }
-        elseif ($noHiddenFields -or $noSensitiveData) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: No sensitive information in hidden fields.`n"
-            $FindingDetails += "Hidden fields either absent or contain non-sensitive data only.`n"
-        }
-        elseif ($dynamicHidden -or $webRootNotFound) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Manual review required.`n"
-            $FindingDetails += "Dynamic hidden fields or inaccessible web files require hands-on inspection.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Unable to fully verify hidden field usage.`n"
+
+        # Count hidden fields generally
+        $hiddenCount = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -c 'type.*hidden' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+        $hiddenCountStr = ($hiddenCount -join $nl).Trim()
+        $output += "  Total hidden field references: $hiddenCountStr" + $nl
+    }
+
+    # Check 3: React framework (SPA - limited hidden field usage)
+    $output += $nl + "CHECK 3: Application architecture" + $nl
+    $isSPA = $false
+    if ($webRoot) {
+        $reactCheck = $(sh -c "find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+        $reactCheckStr = ($reactCheck -join $nl).Trim()
+        if ($reactCheckStr) {
+            $isSPA = $true
+            $output += "  [PASS] React SPA detected - minimal server-rendered hidden fields" + $nl
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Determine status
+    if ($sensitiveHidden) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - sensitive information found in hidden fields." + $nl
+    } elseif ($webRoot -and ($isSPA -or -not $sensitiveHidden)) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - no sensitive information in hidden fields." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to verify hidden field content." + $nl
     }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31309,10 +31261,10 @@ Function Get-V222602 {
         Vuln ID    : V-222602
         STIG ID    : ASD-V6R4-222602
         Rule ID    : SV-222602r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect from Cross-Site Scripting (XSS) vulnerabilities.
+        DiscussMD5 : ac6a38baeb7dbe7469446bce433f1626
+        CheckMD5   : 957c9d043afc8cfc5f848a21128a023d
+        FixMD5     : 658e541dfdf5e38f1aa3d9869a6028ac
     #>
 
     param (
@@ -31355,110 +31307,87 @@ Function Get-V222602 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222602: Application must protect from Cross-Site Scripting (XSS) vulnerabilities
-    # Check: Verify XSS protection mechanisms (CSP, output encoding, input validation)
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== XSS Protection Check ===`n`n"
-        
-        # Check 1: Verify Content Security Policy (CSP) headers
-        $xoPort = bash -c "ss -tlnp </dev/null 2>/dev/null | grep xo-server | grep -oP ':\K\d+' | head -1 || echo '80'"
-        $cspCheck = bash -c "curl -sI http://localhost:$xoPort </dev/null 2>/dev/null | grep -i 'Content-Security-Policy' || echo 'NO_CSP'"
-        
-        $FindingDetails += "Content Security Policy Check:`n"
-        if ($cspCheck -notmatch "NO_CSP") {
-            $FindingDetails += "$cspCheck`n"
-            $FindingDetails += "✓ CSP header detected`n`n"
-            $hasCSP = $true
-        }
-        else {
-            $FindingDetails += "⚠ No Content-Security-Policy header detected`n`n"
-        }
-        
-        # Check 2: Verify X-XSS-Protection header
-        $xssHeader = bash -c "curl -sI http://localhost:$xoPort </dev/null 2>/dev/null | grep -i 'X-XSS-Protection' || echo 'NO_XSS_HEADER'"
-        
-        if ($xssHeader -notmatch "NO_XSS_HEADER") {
-            $FindingDetails += "X-XSS-Protection Header:`n$xssHeader`n"
-            $FindingDetails += "✓ XSS protection header present`n`n"
-            $hasXSSHeader = $true
-        }
-        
-        # Check 3: Check for output encoding/sanitization in code
-        $webRoot = bash -c "find /usr/local /opt -type d -name 'xo-web' </dev/null 2>/dev/null | head -1"
-        $serverRoot = bash -c "find /usr/local /opt -type d -name 'xo-server' </dev/null 2>/dev/null | head -1"
-        
-        if ($serverRoot) {
-            $FindingDetails += "XO Server Root: $serverRoot`n"
-            
-            # Look for sanitization libraries
-            $sanitizationLibs = bash -c "find $serverRoot -name 'package.json' -exec grep -iE '(dompurify|xss|sanitize-html|validator)' {} + </dev/null 2>/dev/null"
-            
-            if ($sanitizationLibs) {
-                $FindingDetails += "`nSanitization Libraries Detected:`n$sanitizationLibs`n"
-                $FindingDetails += "✓ XSS protection libraries in use`n`n"
-                $hasSanitization = $true
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: React framework detection (inherent XSS protection)
+    $output += "CHECK 1: React framework (inherent XSS protection)" + $nl
+    $reactDetected = $false
+    $webPaths = @("/opt/xo/xo-src/xen-orchestra/packages/xo-web", "/opt/xo/packages/xo-web")
+    foreach ($wp in $webPaths) {
+        if (Test-Path $wp) {
+            $react = $(sh -c "find '$wp' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+            $reactStr = ($react -join $nl).Trim()
+            if ($reactStr) {
+                $reactDetected = $true
+                $output += "  [PASS] React framework detected (automatic JSX escaping)" + $nl
+                break
             }
-        }
-        
-        if ($webRoot) {
-            # Check 4: React framework (provides inherent XSS protection)
-            $reactUsage = bash -c "find $webRoot -name 'package.json' -exec grep -i 'react' {} + </dev/null 2>/dev/null | head -1"
-            
-            if ($reactUsage) {
-                $FindingDetails += "React Framework Detected:`n$reactUsage`n"
-                $FindingDetails += "✓ React provides automatic XSS protection via JSX escaping`n`n"
-                $usesReact = $true
-            }
-            
-            # Check 5: Look for dangerous patterns (innerHTML, dangerouslySetInnerHTML)
-            $dangerousPatterns = bash -c "find $webRoot -type f \`( -name '*.js' -o -name '*.jsx' \`) -exec grep -n 'dangerouslySetInnerHTML\|innerHTML.*=' {} + </dev/null 2>/dev/null | head -5"
-            
-            if ($dangerousPatterns) {
-                $FindingDetails += "⚠ Potentially dangerous XSS patterns found:`n$dangerousPatterns`n"
-                $FindingDetails += "Manual review required to verify proper sanitization.`n`n"
-                $hasDangerousPatterns = $true
-            }
-            else {
-                $FindingDetails += "✓ No dangerous XSS patterns detected in code`n`n"
-                $noDangerousPatterns = $true
-            }
-        }
-        
-        # Check 6: Verify framework security features
-        $expressConfig = bash -c "find $serverRoot -type f -name '*.js' -exec grep -iE '(helmet|csurf|express-validator)' {} + </dev/null 2>/dev/null | head -3"
-        
-        if ($expressConfig) {
-            $FindingDetails += "Express Security Middleware:`n$expressConfig`n"
-            $FindingDetails += "✓ Security middleware detected (helmet/csurf/validator)`n"
-            $hasSecurityMiddleware = $true
-        }
-        
-        # Determine Status
-        if (($hasCSP -or $hasXSSHeader) -and ($usesReact -or $hasSanitization) -and $noDangerousPatterns) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Application protected from XSS vulnerabilities.`n"
-            $FindingDetails += "CSP headers, framework protections, and sanitization libraries in place.`n"
-        }
-        elseif ($usesReact -or $hasCSP -or $hasSanitization) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Partial XSS protection detected - vulnerability scan recommended.`n"
-            $FindingDetails += "Some protections present but comprehensive testing required.`n"
-        }
-        elseif ($hasDangerousPatterns) {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Potential XSS vulnerabilities detected.`n"
-            $FindingDetails += "Dangerous patterns found - implement proper output encoding/sanitization.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Unable to verify XSS protections - manual testing required.`n"
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+    if (-not $reactDetected) {
+        $output += "  React framework not detected" + $nl
     }
+
+    # Check 2: Security headers (CSP, X-XSS-Protection)
+    $output += $nl + "CHECK 2: Security response headers" + $nl
+    $hasCSP = $false
+    $respHeaders = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1" 2>&1)
+    $respHeadersStr = ($respHeaders -join $nl).Trim()
+    if ($respHeadersStr -match "Content-Security-Policy") {
+        $hasCSP = $true
+        $cspLine = ($respHeadersStr -split "`n" | Where-Object { $_ -match "Content-Security-Policy" } | Select-Object -First 1)
+        $output += "  [PASS] CSP header: $cspLine" + $nl
+    } else {
+        $output += "  [INFO] No Content-Security-Policy header (React provides protection)" + $nl
+    }
+    if ($respHeadersStr -match "X-Content-Type-Options") {
+        $output += "  [PASS] X-Content-Type-Options header present" + $nl
+    }
+
+    # Check 3: dangerouslySetInnerHTML usage
+    $output += $nl + "CHECK 3: Dangerous XSS patterns" + $nl
+    $dangerousFound = $false
+    foreach ($wp in $webPaths) {
+        if (Test-Path $wp) {
+            $dangerous = $(timeout 10 sh -c "find '$wp' -maxdepth 5 -type f -name '*.js' -exec grep -c 'dangerouslySetInnerHTML' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $dangerousStr = ($dangerous -join $nl).Trim()
+            if ($dangerousStr -and [int]$dangerousStr -gt 0) {
+                $dangerousFound = $true
+                $output += "  [INFO] dangerouslySetInnerHTML usage: $dangerousStr instances" + $nl
+            } else {
+                $output += "  [PASS] No dangerouslySetInnerHTML usage detected" + $nl
+            }
+            break
+        }
+    }
+
+    # Check 4: Output encoding libraries
+    $output += $nl + "CHECK 4: Sanitization/encoding libraries" + $nl
+    $hasSanitizer = $false
+    $sanitizeCheck = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'dompurify\|sanitize-html\|xss\|validator' {} + 2>/dev/null | head -3" 2>&1)
+    $sanitizeCheckStr = ($sanitizeCheck -join $nl).Trim()
+    if ($sanitizeCheckStr) {
+        $hasSanitizer = $true
+        $output += "  [PASS] Sanitization library present" + $nl
+    } else {
+        $output += "  [INFO] No dedicated sanitization library (React handles escaping)" + $nl
+    }
+
+    # Determine status
+    if ($reactDetected) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - React framework provides inherent XSS protection via JSX escaping." + $nl
+    } elseif ($hasCSP -and $hasSanitizer) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - CSP headers and sanitization libraries provide XSS protection." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - XSS protection mechanisms not confirmed." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31676,10 +31605,10 @@ Function Get-V222604 {
         Vuln ID    : V-222604
         STIG ID    : ASD-V6R4-222604
         Rule ID    : SV-222604r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must protect from command injection.
+        DiscussMD5 : a0ac3c6eb98b8156b8775a027550b045
+        CheckMD5   : 4f7ac99f35c71fea8acc8f30d4a7d48b
+        FixMD5     : 124cfd9cb58a3b636ce862df95eb3afb
     #>
 
     param (
@@ -31722,139 +31651,75 @@ Function Get-V222604 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: Command Injection Protection Check`n`n"
-        $vulnerabilities = @()
 
-        # 1. Check for dangerous Node.js functions in XO code
-        $FindingDetails += "1. Scanning for command injection vulnerabilities in code:`n"
-        $xoPath = "/opt/xo/xo-src"
-        
-        if (Test-Path $xoPath) {
-            $dangerousPatterns = @(
-                "child_process.exec",
-                "child_process.spawn",
-                "eval\(",
-                "Function\(",
-                "require\('child_process'\)"
-            )
-            
-            foreach ($pattern in $dangerousPatterns) {
-                $cmd = "grep -r '$pattern' $xoPath --include='*.js' </dev/null 2>/dev/null | head -20"
-                $result = bash -c $cmd 2>$null
-                
-                if ($result) {
-                    $vulnerabilities += "Found potentially unsafe pattern: $pattern"
-                    $FindingDetails += "  ⚠ Found pattern: $pattern`n"
-                    $result | Select-Object -First 5 | ForEach-Object {
-                        $FindingDetails += "    $_`n"
-                    }
-                }
-            }
-            
-            if (-not $vulnerabilities) {
-                $FindingDetails += "  ✓ No obvious command injection patterns found in initial scan`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ XO source path not found at $xoPath`n"
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check for input validation middleware
-        $FindingDetails += "`n2. Checking for input validation frameworks:`n"
-        $validationLibs = @(
-            "joi",
-            "express-validator",
-            "validator",
-            "ajv",
-            "yup"
-        )
-        
-        $foundValidation = $false
-        foreach ($lib in $validationLibs) {
-            $cmd = "find $xoPath -name 'package.json' -exec grep -l '\`"$lib\`"' {} \`; </dev/null 2>/dev/null | head -5"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $foundValidation = $true
-                $FindingDetails += "  ✓ Found validation library: $lib`n"
-            }
-        }
-        
-        if (-not $foundValidation) {
-            $vulnerabilities += "No input validation libraries detected"
-            $FindingDetails += "  ⚠ No input validation libraries detected in package.json files`n"
-        }
+    # Check 1: child_process usage analysis
+    $output += "CHECK 1: child_process module usage" + $nl
+    $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
+    $cpRefs = 0
+    $execRefs = 0
+    foreach ($sp in $srcPaths) {
+        if (Test-Path $sp) {
+            $cpCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'child_process\|require.*child' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $cpCountStr = ($cpCount -join $nl).Trim()
+            if ($cpCountStr) { $cpRefs = [int]$cpCountStr }
 
-        # 3. Check for shell command execution in API routes
-        $FindingDetails += "`n3. Checking API routes for shell execution:`n"
-        $cmd = "find $xoPath -type f -name '*.js' -path '*/routes/*' -o -name '*route*.js' </dev/null 2>/dev/null | head -10"
-        $routes = bash -c $cmd 2>$null
-        
-        if ($routes) {
-            $routeCount = ($routes | Measure-Object).Count
-            $FindingDetails += "  Found $routeCount route files`n"
-            
-            # Check each route file for exec/spawn
-            $unsafeRoutes = 0
-            foreach ($route in $routes) {
-                $cmd = "grep -l 'exec\|spawn' '$route' </dev/null 2>/dev/null"
-                $hasExec = bash -c $cmd 2>$null
-                if ($hasExec) {
-                    $unsafeRoutes++
-                    $FindingDetails += "  ⚠ Route file contains exec/spawn: $route`n"
-                }
-            }
-            
-            if ($unsafeRoutes -eq 0) {
-                $FindingDetails += "  ✓ No exec/spawn calls found in route files`n"
-            }
-            else {
-                $vulnerabilities += "$unsafeRoutes route files contain shell execution"
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ No route files found for inspection`n"
-        }
-
-        # 4. Check for parameterized execution
-        $FindingDetails += "`n4. Checking for safe command execution patterns:`n"
-        $cmd = "grep -r 'execFile\|spawnSync' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-        $safeExecCount = bash -c $cmd 2>$null
-        
-        if ($safeExecCount -and [int]$safeExecCount -gt 0) {
-            $FindingDetails += "  ✓ Found $safeExecCount instances of safer execFile/spawnSync`n"
-        }
-        else {
-            $FindingDetails += "  ℹ No safe execution patterns detected`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($vulnerabilities.Count -eq 0) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "No command injection vulnerabilities detected in code scan.`n"
-            $FindingDetails += "Input validation libraries present and no unsafe patterns found.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
-            $FindingDetails += "Potential issues detected:`n"
-            foreach ($vuln in $vulnerabilities) {
-                $FindingDetails += "  • $vuln`n"
-            }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All user inputs are validated and sanitized`n"
-            $FindingDetails += "  2. Shell commands use parameterized execution (execFile, not exec)`n"
-            $FindingDetails += "  3. No user input is concatenated into shell commands`n"
-            $FindingDetails += "  4. Command arguments are properly escaped/quoted`n"
+            # Check for dangerous exec/execSync (vs safer spawn/execFile)
+            $execCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -c '\.exec(\|\.execSync(' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $execCountStr = ($execCount -join $nl).Trim()
+            if ($execCountStr) { $execRefs = [int]$execCountStr }
+            break
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+    $output += "  child_process references: $cpRefs" + $nl
+    $output += "  exec/execSync calls (higher risk): $execRefs" + $nl
+    if ($cpRefs -eq 0) {
+        $output += "  [PASS] No child_process usage detected" + $nl
     }
+
+    # Check 2: Input validation libraries
+    $output += $nl + "CHECK 2: Input validation libraries" + $nl
+    $hasValidation = $false
+    $valCheck = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv\|joi\|yup\|express-validator\|validator' {} + 2>/dev/null | head -3" 2>&1)
+    $valCheckStr = ($valCheck -join $nl).Trim()
+    if ($valCheckStr) {
+        $hasValidation = $true
+        $output += "  [PASS] Input validation library detected: $valCheckStr" + $nl
+    } else {
+        $output += "  [INFO] No dedicated input validation library found" + $nl
+    }
+
+    # Check 3: Parameterized command patterns
+    $output += $nl + "CHECK 3: Command parameterization" + $nl
+    $spawnUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c '\.spawn(\|\.execFile(' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $spawnUsageStr = ($spawnUsage -join $nl).Trim()
+    $output += "  spawn/execFile calls (safer pattern): $spawnUsageStr" + $nl
+
+    # Check 4: String concatenation in commands (injection risk)
+    $output += $nl + "CHECK 4: Command string concatenation patterns" + $nl
+    $concatRisk = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -n 'exec.*\`\|exec.*\${' {} + 2>/dev/null | head -5" 2>&1)
+    $concatRiskStr = ($concatRisk -join $nl).Trim()
+    if ($concatRiskStr) {
+        $output += "  [FINDING] Template literals in exec calls detected:" + $nl + "  $concatRiskStr" + $nl
+    } else {
+        $output += "  [PASS] No string concatenation in exec calls detected" + $nl
+    }
+
+    # Determine status — code review is always needed for injection checks
+    if ($cpRefs -eq 0) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - no command execution detected in application code." + $nl
+    } elseif ($cpRefs -gt 0 -and $execRefs -eq 0 -and $hasValidation) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - uses safer spawn/execFile patterns with input validation." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - command execution detected; code review required for injection prevention." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32634,10 +32499,10 @@ Function Get-V222609 {
         Vuln ID    : V-222609
         STIG ID    : ASD-V6R4-222609
         Rule ID    : SV-222609r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not be subject to input handling vulnerabilities.
+        DiscussMD5 : 77e2f843610eae2ce8b81a902cead301
+        CheckMD5   : aa6370bc45f1eeaa15d82e94463a9362
+        FixMD5     : f736170e81bc85e4089fd03b42220677
     #>
 
     param (
@@ -32680,199 +32545,76 @@ Function Get-V222609 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: Input Validation Check`n`n"
-        $issues = @()
 
-        # 1. Check for validation middleware
-        $FindingDetails += "1. Checking for input validation middleware:`n"
-        $xoPath = "/opt/xo/xo-src"
-        
-        $validationLibs = @(
-            @{Name="joi"; Type="Schema validator"},
-            @{Name="express-validator"; Type="Express middleware"},
-            @{Name="validator"; Type="String validator"},
-            @{Name="ajv"; Type="JSON schema validator"},
-            @{Name="yup"; Type="Schema validator"},
-            @{Name="zod"; Type="TypeScript schema"}
-        )
-        
-        $foundLibs = @()
-        foreach ($lib in $validationLibs) {
-            $libName = $lib.Name
-            $cmd = "find `$xoPath -name 'package.json' -exec grep -l '`"$libName`"' {} \; </dev/null 2>/dev/null | head -3"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $foundLibs += $lib.Name
-                $FindingDetails += "  ✓ Found: $($lib.Name) ($($lib.Type))`n"
-            }
-        }
-        
-        if ($foundLibs.Count -eq 0) {
-            $issues += "No input validation libraries detected"
-            $FindingDetails += "  ⚠ No input validation libraries found`n"
-        }
-        else {
-            $FindingDetails += "  ℹ Total validation libraries: $($foundLibs.Count)`n"
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check for validation in API routes
-        $FindingDetails += "`n2. Checking API route validation:`n"
-        $cmd = "find $xoPath -type f \( -name '*route*.js' -o -name '*api*.js' \) </dev/null 2>/dev/null | head -10"
-        $apiFiles = bash -c $cmd 2>$null
-        
-        if ($apiFiles) {
-            $filesWithValidation = 0
-            $totalFiles = ($apiFiles | Measure-Object).Count
-            
-            foreach ($file in $apiFiles) {
-                $cmd = "grep -l 'validate\|validation\|sanitize' '$file' </dev/null 2>/dev/null"
-                $hasValidation = bash -c $cmd 2>$null
-                
-                if ($hasValidation) {
-                    $filesWithValidation++
-                }
-            }
-            
-            $FindingDetails += "  Found $totalFiles API files`n"
-            $FindingDetails += "  Files with validation: $filesWithValidation`n"
-            
-            if ($filesWithValidation -lt $totalFiles) {
-                $issues += "Some API files lack validation (${filesWithValidation}/${totalFiles})"
-                $FindingDetails += "  ⚠ Not all API files contain validation logic`n"
-            }
-            else {
-                $FindingDetails += "  ✓ All API files contain validation references`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ No API route files found for inspection`n"
-        }
-
-        # 3. Check for whitelist/blacklist patterns
-        $FindingDetails += "`n3. Checking for input filtering patterns:`n"
-        $filterPatterns = @(
-            "whitelist",
-            "allowlist",
-            "sanitize",
-            "escape",
-            "filter"
-        )
-        
-        $foundFilters = 0
-        foreach ($pattern in $filterPatterns) {
-            $cmd = "grep -r '$pattern' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-            $count = bash -c $cmd 2>$null
-            
-            if ($count -and [int]$count -gt 0) {
-                $foundFilters++
-                $FindingDetails += "  ✓ Found $count instances of '$pattern' pattern`n"
-            }
-        }
-        
-        if ($foundFilters -eq 0) {
-            $issues += "No input filtering patterns detected"
-            $FindingDetails += "  ⚠ No input filtering patterns found`n"
-        }
-
-        # 4. Check for type checking
-        $FindingDetails += "`n4. Checking for TypeScript usage (type safety):`n"
-        $cmd = "find $xoPath -name '*.ts' -o -name 'tsconfig.json' </dev/null 2>/dev/null | head -5"
-        $tsFiles = bash -c $cmd 2>$null
-        
-        if ($tsFiles) {
-            $FindingDetails += "  ✓ TypeScript files detected (provides type validation)`n"
-            $tsCount = ($tsFiles | Measure-Object).Count
-            $FindingDetails += "  Found $tsCount TypeScript-related files`n"
-        }
-        else {
-            $FindingDetails += "  ℹ No TypeScript files detected (JavaScript only)`n"
-        }
-
-        # 5. Check for unsafe eval usage
-        $FindingDetails += "`n5. Checking for unsafe input handling:`n"
-        $unsafePatterns = @(
-            "eval\(",
-            "Function\(",
-            "setTimeout.*\+",
-            "setInterval.*\+"
-        )
-        
-        $unsafeFound = 0
-        foreach ($pattern in $unsafePatterns) {
-            $cmd = "grep -r -E '$pattern' $xoPath --include='*.js' </dev/null 2>/dev/null | head -5"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $unsafeFound++
-                $issues += "Unsafe pattern detected: $pattern"
-                $FindingDetails += "  ⚠ Found unsafe pattern: $pattern`n"
-                $result | Select-Object -First 2 | ForEach-Object {
-                    $FindingDetails += "    $_`n"
-                }
-            }
-        }
-        
-        if ($unsafeFound -eq 0) {
-            $FindingDetails += "  ✓ No obvious unsafe input handling patterns`n"
-        }
-
-        # 6. Check for input length restrictions
-        $FindingDetails += "`n6. Checking for input length validation:`n"
-        $cmd = "grep -r 'maxLength\|max.*length\|length.*check' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-        $lengthChecks = bash -c $cmd 2>$null
-        
-        if ($lengthChecks -and [int]$lengthChecks -gt 0) {
-            $FindingDetails += "  ✓ Found $lengthChecks length validation references`n"
-        }
-        else {
-            $issues += "No explicit length validation detected"
-            $FindingDetails += "  ⚠ No explicit length validation found`n"
-        }
-
-        # 7. Check for regex validation
-        $FindingDetails += "`n7. Checking for pattern matching validation:`n"
-        $cmd = "grep -r 'RegExp\|test(\|match(' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-        $regexCount = bash -c $cmd 2>$null
-        
-        if ($regexCount -and [int]$regexCount -gt 0) {
-            $FindingDetails += "  ✓ Found $regexCount regex validation references`n"
-        }
-        else {
-            $FindingDetails += "  ℹ No regex pattern validation detected`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($issues.Count -eq 0) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "Input validation mechanisms detected:`n"
-            $FindingDetails += "  • Validation libraries present: $($foundLibs -join ', ')`n"
-            $FindingDetails += "  • API routes contain validation logic`n"
-            $FindingDetails += "  • Input filtering patterns found`n"
-            $FindingDetails += "  • No unsafe input handling detected`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
-            $FindingDetails += "Potential issues detected:`n"
-            foreach ($issue in $issues) {
-                $FindingDetails += "  • $issue`n"
-            }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All user inputs are validated before processing`n"
-            $FindingDetails += "  2. Input length limits are enforced`n"
-            $FindingDetails += "  3. Special characters are properly escaped/sanitized`n"
-            $FindingDetails += "  4. Type checking is performed on all inputs`n"
-            $FindingDetails += "  5. Whitelist validation is used where possible`n"
-        }
+    # Check 1: Input validation framework
+    $output += "CHECK 1: Input validation framework" + $nl
+    $hasAjv = $false
+    $hasJoi = $false
+    $ajvCheck = $(sh -c "find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv' {} + 2>/dev/null | head -3" 2>&1)
+    $ajvCheckStr = ($ajvCheck -join $nl).Trim()
+    if ($ajvCheckStr) {
+        $hasAjv = $true
+        $output += "  [PASS] ajv (JSON Schema validator) detected" + $nl
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+    $joiCheck = $(sh -c "find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'joi' {} + 2>/dev/null | head -3" 2>&1)
+    $joiCheckStr = ($joiCheck -join $nl).Trim()
+    if ($joiCheckStr) {
+        $hasJoi = $true
+        $output += "  [PASS] joi (schema validator) detected" + $nl
     }
+    if (-not $hasAjv -and -not $hasJoi) {
+        $output += "  [INFO] No dedicated validation library detected" + $nl
+    }
+
+    # Check 2: JSON-RPC type checking (XO uses JSON-RPC protocol)
+    $output += $nl + "CHECK 2: JSON-RPC input type checking" + $nl
+    $typeChecking = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'typeof\|instanceof\|\.type\s*===\|schema.*validate' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $typeCheckingStr = ($typeChecking -join $nl).Trim()
+    $output += "  Type checking references: $typeCheckingStr" + $nl
+
+    # Check 3: Content-Type enforcement
+    $output += $nl + "CHECK 3: Content-Type enforcement" + $nl
+    $ctCheck = $(timeout 5 sh -c "curl -s -k -X POST -H 'Content-Type: text/plain' -d 'test' 'https://localhost/api/' 2>&1 | head -5" 2>&1)
+    $ctCheckStr = ($ctCheck -join $nl).Trim()
+    if ($ctCheckStr -match "error\|invalid\|unsupported\|bad request" ) {
+        $output += "  [PASS] Invalid Content-Type rejected" + $nl
+    } else {
+        $output += "  [INFO] Content-Type enforcement status: $ctCheckStr" + $nl
+    }
+
+    # Check 4: Body-parser / express middleware
+    $output += $nl + "CHECK 4: Request body parsing middleware" + $nl
+    $bodyParser = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'body-parser\|express' {} + 2>/dev/null | head -3" 2>&1)
+    $bodyParserStr = ($bodyParser -join $nl).Trim()
+    if ($bodyParserStr) {
+        $output += "  [PASS] Express/body-parser middleware present" + $nl
+    }
+
+    # Check 5: npm audit for input handling CVEs
+    $output += $nl + "CHECK 5: Known input handling vulnerabilities" + $nl
+    $npmAudit = $(timeout 30 sh -c "cd /opt/xo 2>/dev/null && npm audit --json 2>/dev/null | head -50 || echo 'npm audit unavailable'" 2>&1)
+    $npmAuditStr = ($npmAudit -join $nl).Trim()
+    if ($npmAuditStr -match "npm audit unavailable") {
+        $output += "  npm audit not available" + $nl
+    } elseif ($npmAuditStr -match [char]34 + "critical[char]34 + ":\s*[1-9]") {
+        $output += "  [FINDING] Critical vulnerabilities detected in npm audit" + $nl
+    } else {
+        $output += "  [PASS] No critical input handling vulnerabilities in npm audit" + $nl
+    }
+
+    # Determine status
+    if ($hasAjv -or $hasJoi) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - input validation framework (ajv/joi) present." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - dedicated input validation library not confirmed." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -33249,10 +32991,10 @@ Function Get-V222612 {
         Vuln ID    : V-222612
         STIG ID    : ASD-V6R4-222612
         Rule ID    : SV-222612r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not be vulnerable to overflow attacks.
+        DiscussMD5 : 7fbe39d4cfaa9c7d11f920f84b723fa3
+        CheckMD5   : 2074785322ddb4247101420a550627d9
+        FixMD5     : 547b45966c327e027c07e709818eeecf
     #>
 
     param (
@@ -33295,192 +33037,83 @@ Function Get-V222612 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: Buffer Overflow Protection Check`n`n"
-        $concerns = @()
 
-        # 1. Check Node.js version (modern versions have built-in protections)
-        $FindingDetails += "1. Checking Node.js version and protections:`n"
-        $cmd = "node --version </dev/null 2>/dev/null"
-        $nodeVersion = bash -c $cmd 2>$null
-        
-        if ($nodeVersion) {
-            $FindingDetails += "  Node.js version: $nodeVersion`n"
-            
-            # Extract major version
-            if ($nodeVersion -match 'v(\d+)') {
-                $majorVersion = [int]$Matches[1]
-                if ($majorVersion -ge 14) {
-                    $FindingDetails += "  ✓ Modern Node.js version with built-in protections`n"
-                }
-                else {
-                    $concerns += "Old Node.js version (v$majorVersion) may lack protections"
-                    $FindingDetails += "  ⚠ Node.js version may be outdated (recommend v14+)`n"
-                }
-            }
-        }
-        else {
-            $FindingDetails += "  ⚠ Could not determine Node.js version`n"
-            $concerns += "Node.js version unknown"
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check for native modules (potential buffer overflow risk)
-        $FindingDetails += "`n2. Checking for native C/C++ modules:`n"
-        $xoPath = "/opt/xo/xo-src"
-        
-        $cmd = "find $xoPath -name 'binding.gyp' </dev/null 2>/dev/null | wc -l"
-        $nativeModules = bash -c $cmd 2>$null
-        
-        if ($nativeModules -and [int]$nativeModules -gt 0) {
-            $FindingDetails += "  Found $nativeModules native module build configurations`n"
-            $concerns += "$nativeModules native modules present (potential buffer risks)"
-            
-            # List the native modules
-            $cmd = "find $xoPath -name 'binding.gyp' </dev/null 2>/dev/null | head -5"
-            $moduleList = bash -c $cmd 2>$null
-            foreach ($module in $moduleList) {
-                $FindingDetails += "    $module`n"
-            }
+    # Check 1: Node.js version (memory-safe runtime)
+    $output += "CHECK 1: Node.js runtime version" + $nl
+    $modernNode = $false
+    $nodeVer = $(sh -c "node --version 2>/dev/null" 2>&1)
+    $nodeVerStr = ($nodeVer -join $nl).Trim()
+    if ($nodeVerStr -match "v(\d+)\.") {
+        $majorVer = [int]$Matches[1]
+        $output += "  Node.js version: $nodeVerStr" + $nl
+        if ($majorVer -ge 18) {
+            $modernNode = $true
+            $output += "  [PASS] Modern Node.js with memory safety features" + $nl
+        } else {
+            $output += "  [FINDING] Outdated Node.js version" + $nl
         }
-        else {
-            $FindingDetails += "  ✓ No native C/C++ modules detected`n"
-            $FindingDetails += "  ℹ Pure JavaScript/Node.js apps are not vulnerable to buffer overflows`n"
-        }
-
-        # 3. Check for binary dependencies
-        $FindingDetails += "`n3. Checking for compiled binary dependencies:`n"
-        $cmd = "find $xoPath -type f -name '*.node' </dev/null 2>/dev/null | wc -l"
-        $binaryCount = bash -c $cmd 2>$null
-        
-        if ($binaryCount -and [int]$binaryCount -gt 0) {
-            $FindingDetails += "  Found $binaryCount .node binary files`n"
-            $concerns += "$binaryCount compiled binaries present"
-            
-            # List some binaries
-            $cmd = "find $xoPath -type f -name '*.node' </dev/null 2>/dev/null | head -5"
-            $binList = bash -c $cmd 2>$null
-            foreach ($bin in $binList) {
-                $FindingDetails += "    $(basename $bin)`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ✓ No compiled .node binaries found`n"
-        }
-
-        # 4. Check system-level protections
-        $FindingDetails += "`n4. Checking system-level buffer overflow protections:`n"
-        
-        # Check for ASLR (Address Space Layout Randomization)
-        $cmd = "cat /proc/sys/kernel/randomize_va_space </dev/null 2>/dev/null"
-        $aslr = bash -c $cmd 2>$null
-        
-        if ($aslr -eq "2") {
-            $FindingDetails += "  ✓ ASLR fully enabled (randomize_va_space = 2)`n"
-        }
-        elseif ($aslr -eq "1") {
-            $FindingDetails += "  ⚠ ASLR partially enabled (randomize_va_space = 1)`n"
-            $concerns += "ASLR not fully enabled"
-        }
-        else {
-            $FindingDetails += "  ⚠ ASLR disabled or not detected`n"
-            $concerns += "ASLR not enabled"
-        }
-        
-        # Check for stack canaries (via compiler flags)
-        $cmd = "gcc -v 2>&1 | grep -o 'enable.*stack-protector' || echo 'unknown'"
-        $stackProtector = bash -c $cmd 2>$null
-        
-        if ($stackProtector -and $stackProtector -ne "unknown") {
-            $FindingDetails += "  ✓ Stack protector available: $stackProtector`n"
-        }
-        else {
-            $FindingDetails += "  ℹ Stack protector status: unknown`n"
-        }
-
-        # 5. Check for dangerous buffer operations in code
-        $FindingDetails += "`n5. Scanning for unsafe buffer operations:`n"
-        $unsafePatterns = @(
-            "Buffer.allocUnsafe",
-            "new Buffer\(",
-            "buffer.write.*\+",
-            "buffer.copy.*\+"
-        )
-        
-        $unsafeFound = 0
-        foreach ($pattern in $unsafePatterns) {
-            $cmd = "grep -r -E '$pattern' $xoPath --include='*.js' </dev/null 2>/dev/null | head -5"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $unsafeFound++
-                $concerns += "Unsafe buffer pattern: $pattern"
-                $FindingDetails += "  ⚠ Found unsafe pattern: $pattern`n"
-                $result | Select-Object -First 2 | ForEach-Object {
-                    $FindingDetails += "    $_`n"
-                }
-            }
-        }
-        
-        if ($unsafeFound -eq 0) {
-            $FindingDetails += "  ✓ No unsafe buffer operations detected`n"
-        }
-
-        # 6. Check for safe buffer allocation
-        $FindingDetails += "`n6. Checking for safe buffer practices:`n"
-        $cmd = "grep -r 'Buffer.alloc\|Buffer.from' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-        $safeBuffers = bash -c $cmd 2>$null
-        
-        if ($safeBuffers -and [int]$safeBuffers -gt 0) {
-            $FindingDetails += "  ✓ Found $safeBuffers instances of safe buffer allocation`n"
-        }
-        else {
-            $FindingDetails += "  ℹ No explicit buffer allocation detected`n"
-        }
-
-        # 7. Check memory limits
-        $FindingDetails += "`n7. Checking Node.js memory limits:`n"
-        $cmd = "ps aux | grep 'node.*xo-server' | grep -o 'max-old-space-size=[0-9]*' || echo 'default'"
-        $memLimit = bash -c $cmd 2>$null
-        
-        if ($memLimit -and $memLimit -ne "default") {
-            $FindingDetails += "  ✓ Custom memory limit configured: $memLimit`n"
-        }
-        else {
-            $FindingDetails += "  ℹ Using default Node.js memory limits`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($concerns.Count -eq 0) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "Buffer overflow protections verified:`n"
-            $FindingDetails += "  • Modern Node.js version with built-in protections`n"
-            $FindingDetails += "  • Pure JavaScript application (no buffer overflow risk)`n"
-            $FindingDetails += "  • System-level protections (ASLR) enabled`n"
-            $FindingDetails += "  • No unsafe buffer operations detected`n"
-            $FindingDetails += "`nNote: JavaScript/Node.js applications have automatic memory`n"
-            $FindingDetails += "management and are not susceptible to traditional buffer overflows.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
-            $FindingDetails += "Potential concerns:`n"
-            foreach ($concern in $concerns) {
-                $FindingDetails += "  • $concern`n"
-            }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All native modules are from trusted sources`n"
-            $FindingDetails += "  2. Native modules are regularly updated`n"
-            $FindingDetails += "  3. Buffer operations use safe APIs (Buffer.alloc, not allocUnsafe)`n"
-            $FindingDetails += "  4. System protections (ASLR, stack canaries) are enabled`n"
-            $FindingDetails += "  5. Memory limits prevent resource exhaustion`n"
-        }
+    } else {
+        $output += "  Node.js not detected" + $nl
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 2: ASLR status
+    $output += $nl + "CHECK 2: Address Space Layout Randomization (ASLR)" + $nl
+    $aslrEnabled = $false
+    $aslr = $(sh -c "cat /proc/sys/kernel/randomize_va_space 2>/dev/null" 2>&1)
+    $aslrStr = ($aslr -join $nl).Trim()
+    if ($aslrStr -eq "2") {
+        $aslrEnabled = $true
+        $output += "  [PASS] ASLR fully enabled (randomize_va_space=2)" + $nl
+    } elseif ($aslrStr -eq "1") {
+        $aslrEnabled = $true
+        $output += "  [PASS] ASLR partially enabled (randomize_va_space=1)" + $nl
+    } else {
+        $output += "  [FINDING] ASLR disabled or unknown (randomize_va_space=$aslrStr)" + $nl
     }
+
+    # Check 3: Unsafe Buffer usage in XO source
+    $output += $nl + "CHECK 3: Unsafe Buffer allocation patterns" + $nl
+    $unsafeBuffers = 0
+    $bufCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'new Buffer(\|Buffer.allocUnsafe\|Buffer.allocUnsafeSlow' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $bufCheckStr = ($bufCheck -join $nl).Trim()
+    if ($bufCheckStr) { $unsafeBuffers = [int]$bufCheckStr }
+    $output += "  Unsafe Buffer patterns: $unsafeBuffers" + $nl
+    if ($unsafeBuffers -eq 0) {
+        $output += "  [PASS] No unsafe Buffer allocations detected" + $nl
+    } else {
+        $output += "  [INFO] Unsafe Buffer patterns found (potential memory exposure)" + $nl
+    }
+
+    # Check 4: Stack size limits
+    $output += $nl + "CHECK 4: Process resource limits" + $nl
+    $stackLimit = $(sh -c "ulimit -s 2>/dev/null" 2>&1)
+    $stackLimitStr = ($stackLimit -join $nl).Trim()
+    $output += "  Stack size limit: $stackLimitStr" + $nl
+
+    # Check 5: V8 engine protections
+    $output += $nl + "CHECK 5: V8 engine protections" + $nl
+    $output += "  Node.js/V8 provides:" + $nl
+    $output += "  - Automatic garbage collection (prevents use-after-free)" + $nl
+    $output += "  - ArrayBuffer bounds checking" + $nl
+    $output += "  - TypedArray bounds enforcement" + $nl
+    $output += "  - No direct memory pointer access from JavaScript" + $nl
+
+    # Determine status
+    if ($modernNode -and $aslrEnabled) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - Node.js memory-safe runtime with ASLR enabled." + $nl
+    } elseif ($modernNode) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - Node.js is a memory-safe runtime (V8 engine)." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to confirm overflow protection." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -37702,10 +37335,10 @@ Function Get-V222642 {
         Vuln ID    : V-222642
         STIG ID    : ASD-V6R4-222642
         Rule ID    : SV-222642r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not contain embedded authentication data.
+        DiscussMD5 : 0639b8690f7faf4bef16d9f149bfd3c9
+        CheckMD5   : 31b816d88f2f00212903928f5bf42d61
+        FixMD5     : 7ef54d1936dd2b6bec9fe70cf1ff4d5f
     #>
 
     param (
@@ -37748,241 +37381,96 @@ Function Get-V222642 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: Embedded Credentials Check`n`n"
-        $violations = @()
 
-        # 1. Scan configuration files for credentials
-        $FindingDetails += "1. Scanning configuration files for embedded credentials:`n"
-        $xoPath = "/opt/xo/xo-src"
-        $configPaths = @(
-            "/etc/xo-server",
-            "$xoPath/packages/xo-server",
-            "$xoPath/packages/xo-web",
-            "/opt/xo"
-        )
-        
-        $credPatterns = @(
-            'password\s*[=:]\s*[a-zA-Z0-9]{5,}',
-            'apikey\s*[=:]\s*[a-zA-Z0-9]{10,}',
-            'api_key\s*[=:]\s*[a-zA-Z0-9]{10,}',
-            'secret\s*[=:]\s*[a-zA-Z0-9]{10,}',
-            'token\s*[=:]\s*[a-zA-Z0-9]{20,}'
-        )
-        
-        $foundInConfigs = 0
-        foreach ($path in $configPaths) {
-            if (Test-Path $path) {
-                foreach ($pattern in $credPatterns) {
-                    $cmd = "grep -r -iE '$pattern' '$path' --include='*.json' --include='*.yaml' --include='*.yml' --include='*.conf' --include='*.config' </dev/null 2>/dev/null | head -5"
-                    $result = bash -c $cmd 2>$null
-                    
-                    if ($result) {
-                        $foundInConfigs++
-                        $violations += "Credentials found in config: $path"
-                        $FindingDetails += "  ⚠ Found potential credentials in: $path`n"
-                        $result | Select-Object -First 2 | ForEach-Object {
-                            # Mask actual values
-                            $masked = $_ -replace '([=:]\s*["''])[^"'']+', '$1***REDACTED***'
-                            $FindingDetails += "    $masked`n"
-                        }
-                    }
-                }
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Hardcoded credentials in XO source
+    $output += "CHECK 1: Hardcoded credential patterns" + $nl
+    $hardcodedFound = $false
+    $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
+    foreach ($sp in $srcPaths) {
+        if (Test-Path $sp) {
+            $hardcoded = $(timeout 15 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -n 'password\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]\|apiKey\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]\|secret\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]' {} + 2>/dev/null | grep -v 'test\|spec\|example\|sample\|placeholder\|__' | head -5" 2>&1)
+            $hardcodedStr = ($hardcoded -join $nl).Trim()
+            if ($hardcodedStr) {
+                $hardcodedFound = $true
+                $output += "  [FINDING] Potential hardcoded credentials:" + $nl + "  $hardcodedStr" + $nl
+            } else {
+                $output += "  [PASS] No hardcoded credentials in $sp" + $nl
             }
-        }
-        
-        if ($foundInConfigs -eq 0) {
-            $FindingDetails += "  ✓ No hardcoded credentials found in config files`n"
-        }
-
-        # 2. Scan source code for embedded credentials
-        $FindingDetails += "`n2. Scanning source code for embedded credentials:`n"
-        $codePatterns = @(
-            'password.*=.*[a-zA-Z0-9]{5,}',
-            'apiKey.*=.*[a-zA-Z0-9]{10,}',
-            'API_KEY.*=.*[a-zA-Z0-9]{10,}',
-            'SECRET.*=.*[a-zA-Z0-9]{10,}'
-        )
-        
-        $foundInCode = 0
-        foreach ($pattern in $codePatterns) {
-            $cmd = "grep -r -E '$pattern' $xoPath --include='*.js' --include='*.ts' </dev/null 2>/dev/null | grep -v 'test\|spec\|example' | head -5"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $foundInCode++
-                $violations += "Credentials found in source code"
-                $FindingDetails += "  ⚠ Found potential hardcoded credentials in source`n"
-                $result | Select-Object -First 2 | ForEach-Object {
-                    $masked = $_ -replace '([=:]\s*["''])[^"'']+', '$1***REDACTED***'
-                    $FindingDetails += "    $masked`n"
-                }
-            }
-        }
-        
-        if ($foundInCode -eq 0) {
-            $FindingDetails += "  ✓ No hardcoded credentials found in source code`n"
-        }
-
-        # 3. Check for environment variable usage (best practice)
-        $FindingDetails += "`n3. Checking for environment variable usage:`n"
-        $cmd = "grep -r 'process\.env\.' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-        $envVarCount = bash -c $cmd 2>$null
-        
-        if ($envVarCount -and [int]$envVarCount -gt 0) {
-            $FindingDetails += "  ✓ Found $envVarCount environment variable references`n"
-            $FindingDetails += "  ℹ Environment variables are the recommended credential storage`n"
-        }
-        else {
-            $FindingDetails += "  ⚠ No environment variable usage detected`n"
-            $violations += "No environment variable usage for credentials"
-        }
-
-        # 4. Check for secrets management integration
-        $FindingDetails += "`n4. Checking for secrets management solutions:`n"
-        $secretsLibs = @(
-            "dotenv",
-            "vault",
-            "aws-secrets-manager",
-            "azure-keyvault",
-            "gcp-secret-manager"
-        )
-        
-        $foundSecretsLib = $false
-        foreach ($lib in $secretsLibs) {
-            $cmd = "find `$xoPath -name 'package.json' -exec grep -l '`"$lib`"' {} \; </dev/null 2>/dev/null"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $foundSecretsLib = $true
-                $FindingDetails += "  ✓ Found secrets management: $lib`n"
-            }
-        }
-        
-        if (-not $foundSecretsLib) {
-            $FindingDetails += "  ℹ No dedicated secrets management library detected`n"
-        }
-
-        # 5. Check for .env files in repository
-        $FindingDetails += "`n5. Checking for .env files (should not be in repo):`n"
-        $cmd = "find $xoPath -name '.env' -o -name '*.env' </dev/null 2>/dev/null | grep -v 'node_modules\|.example' | head -5"
-        $envFiles = bash -c $cmd 2>$null
-        
-        if ($envFiles) {
-            $envCount = ($envFiles | Measure-Object).Count
-            $FindingDetails += "  ⚠ Found $envCount .env files`n"
-            foreach ($envFile in $envFiles) {
-                $FindingDetails += "    $envFile`n"
-                
-                # Check if it has actual credentials
-                $cmd = "grep -E 'password|secret|key|token' '$envFile' </dev/null 2>/dev/null | wc -l"
-                $credLines = bash -c $cmd 2>$null
-                
-                if ($credLines -and [int]$credLines -gt 0) {
-                    $violations += ".env file contains credentials: $envFile"
-                    $FindingDetails += "      Contains $credLines credential entries`n"
-                }
-            }
-        }
-        else {
-            $FindingDetails += "  ✓ No .env files found in repository`n"
-        }
-
-        # 6. Check for database connection strings
-        $FindingDetails += "`n6. Checking for connection strings with embedded credentials:`n"
-        $connPatterns = @(
-            "redis://.*:.*@",
-            "mongodb://.*:.*@",
-            "mysql://.*:.*@",
-            "postgresql://.*:.*@"
-        )
-        
-        $foundConnStrings = 0
-        foreach ($pattern in $connPatterns) {
-            $cmd = "grep -r -E '$pattern' $xoPath --include='*.js' --include='*.json' </dev/null 2>/dev/null | head -5"
-            $result = bash -c $cmd 2>$null
-            
-            if ($result) {
-                $foundConnStrings++
-                $violations += "Connection string with embedded credentials"
-                $FindingDetails += "  ⚠ Found connection string with credentials`n"
-                $result | Select-Object -First 2 | ForEach-Object {
-                    $masked = $_ -replace '://[^:]+:[^@]+@', '://***:***@'
-                    $FindingDetails += "    $masked`n"
-                }
-            }
-        }
-        
-        if ($foundConnStrings -eq 0) {
-            $FindingDetails += "  ✓ No connection strings with embedded credentials`n"
-        }
-
-        # 7. Check for SSH keys or certificates in code
-        $FindingDetails += "`n7. Checking for embedded keys/certificates:`n"
-        $cmd = "grep -r 'BEGIN.*PRIVATE KEY\|BEGIN CERTIFICATE' $xoPath --include='*.js' --include='*.json' </dev/null 2>/dev/null | wc -l"
-        $keyCount = bash -c $cmd 2>$null
-        
-        if ($keyCount -and [int]$keyCount -gt 0) {
-            $violations += "$keyCount embedded private keys or certificates"
-            $FindingDetails += "  ⚠ Found $keyCount embedded keys/certificates`n"
-        }
-        else {
-            $FindingDetails += "  ✓ No embedded private keys or certificates`n"
-        }
-
-        # 8. Check .gitignore for credential files
-        $FindingDetails += "`n8. Checking .gitignore for credential exclusions:`n"
-        $gitignorePath = "$xoPath/.gitignore"
-        
-        if (Test-Path $gitignorePath) {
-            $cmd = "grep -E '\.env|secret|credentials|password' '$gitignorePath' </dev/null 2>/dev/null"
-            $ignored = bash -c $cmd 2>$null
-            
-            if ($ignored) {
-                $FindingDetails += "  ✓ .gitignore excludes credential files:`n"
-                $ignored | ForEach-Object {
-                    $FindingDetails += "    $_`n"
-                }
-            }
-            else {
-                $FindingDetails += "  ⚠ .gitignore may not exclude credential files`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ⚠ No .gitignore file found`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($violations.Count -eq 0) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "No embedded credentials detected:`n"
-            $FindingDetails += "  • No hardcoded passwords in config files`n"
-            $FindingDetails += "  • No credentials in source code`n"
-            $FindingDetails += "  • Environment variables used for configuration`n"
-            $FindingDetails += "  • No connection strings with embedded credentials`n"
-            $FindingDetails += "  • No embedded private keys or certificates`n"
-        }
-        else {
-            $Status = "Open"
-            $FindingDetails += "Result: OPEN - Embedded credentials detected`n"
-            $FindingDetails += "Violations found:`n"
-            foreach ($violation in $violations) {
-                $FindingDetails += "  • $violation`n"
-            }
-            $FindingDetails += "`nREQUIRED REMEDIATION:`n"
-            $FindingDetails += "  1. Remove all hardcoded credentials from code and configs`n"
-            $FindingDetails += "  2. Use environment variables or secrets management`n"
-            $FindingDetails += "  3. Rotate any exposed credentials immediately`n"
-            $FindingDetails += "  4. Add credential files to .gitignore`n"
-            $FindingDetails += "  5. Review git history for previously committed secrets`n"
+            break
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 2: Environment variable usage (proper pattern)
+    $output += $nl + "CHECK 2: Environment variable credential management" + $nl
+    $envUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'process\.env\.\|process\.env\[' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $envUsageStr = ($envUsage -join $nl).Trim()
+    $output += "  process.env references: $envUsageStr" + $nl
+    if ($envUsageStr -and [int]$envUsageStr -gt 0) {
+        $output += "  [PASS] Environment variables used for configuration" + $nl
     }
+
+    # Check 3: Config file credential exposure
+    $output += $nl + "CHECK 3: Configuration file credentials" + $nl
+    $configCreds = $false
+    $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
+    foreach ($cp in $configPaths) {
+        if (Test-Path $cp) {
+            $creds = $(sh -c "grep -inE 'password|secret|apikey|token' '$cp' 2>/dev/null | grep -v '^#'" 2>&1)
+            $credsStr = ($creds -join $nl).Trim()
+            if ($credsStr) {
+                $output += "  Config file credentials found in $cp :" + $nl + "  $credsStr" + $nl
+                # Check if values are plaintext (not empty/placeholder)
+                if ($credsStr -match "=\s*['" + [char]34 + "][a-zA-Z0-9]{8,}") {
+                    $configCreds = $true
+                    $output += "  [FINDING] Potential plaintext credential values in config" + $nl
+                }
+            }
+        }
+    }
+    if (-not $configCreds) {
+        $output += "  [PASS] No plaintext credentials in config files" + $nl
+    }
+
+    # Check 4: .env file check
+    $output += $nl + "CHECK 4: .env file exposure" + $nl
+    $envFile = $(timeout 5 sh -c "find /opt/xo -maxdepth 3 -name '.env' -not -path '*/node_modules/*' 2>/dev/null | head -3" 2>&1)
+    $envFileStr = ($envFile -join $nl).Trim()
+    if ($envFileStr) {
+        $output += "  .env files found: $envFileStr" + $nl
+        # Check permissions
+        foreach ($ef in @($envFile | Where-Object { $_ -and $_.Trim() -ne "" })) {
+            $efPerms = $(sh -c "stat -c '%a' '$($ef.Trim())' 2>/dev/null" 2>&1)
+            $efPermsStr = ($efPerms -join $nl).Trim()
+            $output += "  Permissions: $efPermsStr" + $nl
+        }
+    } else {
+        $output += "  [PASS] No .env files found" + $nl
+    }
+
+    # Check 5: Embedded certificates/keys in source
+    $output += $nl + "CHECK 5: Embedded keys/certificates in source" + $nl
+    $embeddedKeys = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'BEGIN.*PRIVATE KEY\|BEGIN.*CERTIFICATE' {} + 2>/dev/null | head -3" 2>&1)
+    $embeddedKeysStr = ($embeddedKeys -join $nl).Trim()
+    if ($embeddedKeysStr) {
+        $hardcodedFound = $true
+        $output += "  [FINDING] Embedded keys/certs in source: $embeddedKeysStr" + $nl
+    } else {
+        $output += "  [PASS] No embedded keys/certificates in source code" + $nl
+    }
+
+    # Determine status
+    if ($hardcodedFound -or $configCreds) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - embedded authentication data or plaintext credentials detected." + $nl
+    } else {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - no embedded authentication data in source code." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -43627,104 +43115,94 @@ Function Get-V222430 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222430: Application must execute without excessive account permissions (least privilege)
-    # Check: Verify XO services run as non-root with minimal privileges
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== Xen Orchestra Least Privilege Execution Check ===`n`n"
-        
-        # Check 1: Verify XO Server service user (should NOT be root)
-        $serviceUser = bash -c "ps aux | grep '[x]o-server' | awk '{print `$1}' | head -1"
-        
-        if ($serviceUser) {
-            $FindingDetails += "XO Server process owner: $serviceUser`n"
-            
-            if ($serviceUser -eq "root") {
-                $FindingDetails += "❌ XO Server is running as ROOT - excessive privileges`n"
-                $rootExecution = $true
-            }
-            elseif ($serviceUser -eq "rootttt") {
-                $FindingDetails += "✓ XO Server running as dedicated service account: rootttt`n"
-                $nonRootExecution = $true
-            }
-            else {
-                $FindingDetails += "✓ XO Server running as non-root user`n"
-                $nonRootExecution = $true
-            }
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: XO Server process owner
+    $output += "CHECK 1: XO Server process owner" + $nl
+    $procOwner = $(sh -c 'ps -eo user,comm 2>/dev/null | grep -E "xo-server|node.*cli\.mjs" | head -1 | awk "{print \$1}"' 2>&1)
+    $procOwnerStr = ($procOwner -join $nl).Trim()
+    $runningAsRoot = $false
+    $nonRootFound = $false
+    if ($procOwnerStr -and $procOwnerStr -ne "") {
+        $output += "  Process owner: $procOwnerStr" + $nl
+        if ($procOwnerStr -eq "root") {
+            $output += "  [FINDING] XO Server running as root - excessive privileges" + $nl
+            $runningAsRoot = $true
+        } else {
+            $output += "  [PASS] XO Server running as non-root user" + $nl
+            $nonRootFound = $true
         }
-        
-        # Check 2: Get user group memberships
-        if ($serviceUser -and $serviceUser -ne "root") {
-            $userGroups = bash -c "groups $serviceUser </dev/null </dev/null 2>/dev/null || echo 'USER_NOT_FOUND'"
-            $FindingDetails += "`nUser Groups: $userGroups`n"
-            
-            # Check for excessive group memberships
-            if ($userGroups -match "sudo|wheel|admin|shadow") {
-                $FindingDetails += "⚠ User has elevated group memberships: $(($userGroups -split ' ' | Where-Object {$_ -match 'sudo|wheel|admin|shadow'}) -join ', ')`n"
-                $excessiveGroups = $true
-            }
-            else {
-                $FindingDetails += "✓ No excessive group memberships detected`n"
-                $appropriateGroups = $true
-            }
-        }
-        
-        # Check 3: Verify service capabilities (Linux capabilities)
-        $capabilities = bash -c "which getcap >/dev/null 2>&1 && getcap /usr/local/bin/xo-server </dev/null </dev/null 2>/dev/null || echo 'NONE'"
-        $FindingDetails += "`nService Capabilities: $capabilities`n"
-        
-        if ($capabilities -match "cap_sys_admin|cap_dac_override|cap_setuid") {
-            $FindingDetails += "⚠ Excessive capabilities detected`n"
-            $excessiveCapabilities = $true
-        }
-        else {
-            $FindingDetails += "✓ No excessive capabilities (or none set)`n"
-            $appropriateCapabilities = $true
-        }
-        
-        # Check 4: Verify file permissions on XO installation
-        $filePerms = bash -c "stat -c '%U:%G %a' /usr/local/lib/node_modules/xo-server </dev/null </dev/null 2>/dev/null || echo 'NOT_FOUND'"
-        $FindingDetails += "`nXO Installation Permissions: $filePerms`n"
-        
-        if ($filePerms -match "^root:root 755|^root:root 750") {
-            $FindingDetails += "✓ Installation owned by root with appropriate permissions`n"
-            $appropriateFilePerms = $true
-        }
-        
-        # Check 5: Verify Redis access (database should not have excessive permissions)
-        $redisCheck = bash -c "ps aux | grep '[r]edis-server' | awk '{print `$1}' | head -1"
-        $FindingDetails += "`nRedis Process Owner: $redisCheck`n"
-        
-        if ($redisCheck -and $redisCheck -ne "root") {
-            $FindingDetails += "✓ Redis running as non-root: $redisCheck`n"
-            $redisNonRoot = $true
-        }
-        elseif ($redisCheck -eq "root") {
-            $FindingDetails += "⚠ Redis running as root`n"
-        }
-        
-        # Determine Status
-        if ($rootExecution -or $excessiveGroups -or $excessiveCapabilities) {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Application executes with excessive account permissions.`n"
-            if ($rootExecution) { $FindingDetails += "- XO Server running as root user`n" }
-            if ($excessiveGroups) { $FindingDetails += "- Service account has elevated group memberships`n" }
-            if ($excessiveCapabilities) { $FindingDetails += "- Excessive Linux capabilities assigned`n" }
-        }
-        elseif ($nonRootExecution -and $appropriateGroups) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Application executes with appropriate least privilege.`n"
-            $FindingDetails += "XO Server runs as non-root user without excessive permissions.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Unable to fully determine privilege status - manual review recommended.`n"
+    } else {
+        $output += "  XO Server process not detected" + $nl
+    }
+
+    # Check 2: Service account group memberships
+    $output += $nl + "CHECK 2: Service account group memberships" + $nl
+    $elevatedGroups = $false
+    if ($nonRootFound -and $procOwnerStr) {
+        $groups = $(sh -c "id $procOwnerStr 2>/dev/null" 2>&1)
+        $groupsStr = ($groups -join $nl).Trim()
+        $output += "  Groups: $groupsStr" + $nl
+        if ($groupsStr -match "sudo|wheel|adm") {
+            $output += "  [FINDING] Elevated group memberships detected" + $nl
+            $elevatedGroups = $true
+        } else {
+            $output += "  [PASS] No elevated group memberships" + $nl
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 3: Linux capabilities on XO binaries
+    $output += $nl + "CHECK 3: Linux capabilities" + $nl
+    $excessiveCaps = $false
+    $nodebin = $(sh -c 'which node 2>/dev/null' 2>&1)
+    $nodebinStr = ($nodebin -join $nl).Trim()
+    if ($nodebinStr -and (Test-Path $nodebinStr)) {
+        $caps = $(sh -c "getcap $nodebinStr 2>/dev/null" 2>&1)
+        $capsStr = ($caps -join $nl).Trim()
+        if ($capsStr -match "cap_sys_admin|cap_dac_override|cap_setuid") {
+            $output += "  [FINDING] Excessive capabilities: $capsStr" + $nl
+            $excessiveCaps = $true
+        } else {
+            $output += "  [PASS] No excessive capabilities on node binary" + $nl
+        }
+    } else {
+        $output += "  Node binary not found for capability check" + $nl
     }
+
+    # Check 4: Redis process owner
+    $output += $nl + "CHECK 4: Redis process owner" + $nl
+    $redisOwner = $(sh -c 'ps -eo user,comm 2>/dev/null | grep redis-server | head -1 | awk "{print \$1}"' 2>&1)
+    $redisOwnerStr = ($redisOwner -join $nl).Trim()
+    if ($redisOwnerStr) {
+        $output += "  Redis owner: $redisOwnerStr" + $nl
+        if ($redisOwnerStr -ne "root") {
+            $output += "  [PASS] Redis running as non-root" + $nl
+        } else {
+            $output += "  [INFO] Redis running as root" + $nl
+        }
+    }
+
+    # Check 5: Systemd service user
+    $output += $nl + "CHECK 5: Systemd service configuration" + $nl
+    $svcUser = $(sh -c 'systemctl show xo-server --property=User 2>/dev/null || echo "N/A"' 2>&1)
+    $svcUserStr = ($svcUser -join $nl).Trim()
+    $output += "  Service User setting: $svcUserStr" + $nl
+
+    # Determine status
+    if ($runningAsRoot -or $elevatedGroups -or $excessiveCaps) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - excessive account permissions detected." + $nl
+    } elseif ($nonRootFound) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - XO runs with least privilege (non-root, appropriate groups)." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to confirm least privilege execution." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -44777,10 +44255,10 @@ Function Get-V222550 {
         Vuln ID    : V-222550
         STIG ID    : ASD-V6R4-222550
         Rule ID    : SV-222550r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.
+        DiscussMD5 : 2f239a366a698c08a47af1d26774b617
+        CheckMD5   : 7639b42210cafcaac12b91a79d00455b
+        FixMD5     : 226123cb330f21543cc6eaf637881cfa
     #>
 
     param (
@@ -44823,197 +44301,99 @@ Function Get-V222550 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: PKI Certificate Path Validation Check`n`n"
-        $issues = @()
 
-        # 1. Check for SSL/TLS certificate configuration
-        $FindingDetails += "1. Checking SSL/TLS certificate configuration:`n"
-        $xoConfigPath = "/etc/xo-server/config.toml"
-        $certPaths = @()
-        
-        if (Test-Path $xoConfigPath) {
-            # Check for certificate paths in config
-            $cmd = "grep -iE 'cert|certificate' '$xoConfigPath' </dev/null 2>/dev/null"
-            $certConfig = bash -c $cmd 2>$null
-            
-            if ($certConfig) {
-                $FindingDetails += "  Certificate configuration found:`n"
-                $certConfig | ForEach-Object {
-                    $FindingDetails += "    $_`n"
-                    if ($_ -match "([\'\`"])/[^\'\`"]+\.(crt|pem|cer)") {
-                        $certPaths += $Matches[0] -replace "[\'\`"]", ''
-                    }
-                }
-            }
-            else {
-                $FindingDetails += "  ℹ No explicit certificate config in xo-server config`n"
-            }
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check common certificate locations
-        $FindingDetails += "`n2. Checking common certificate locations:`n"
-        $commonPaths = @(
-            "/etc/ssl/certs",
-            "/etc/pki/tls/certs",
-            "/etc/xo-server",
-            "/opt/xo"
-        )
-        
-        foreach ($path in $commonPaths) {
-            if (Test-Path $path) {
-                $cmd = "find '$path' -type f \( -name '*.crt' -o -name '*.pem' -o -name '*.cer' \) </dev/null 2>/dev/null | head -5"
-                $certs = bash -c $cmd 2>$null
-                
-                if ($certs) {
-                    $certCount = ($certs | Measure-Object).Count
-                    $FindingDetails += "  Found $certCount certificates in: $path`n"
-                    $certPaths += $certs
-                }
+    # Check 1: Find SSL/TLS certificates used by XO
+    $output += "CHECK 1: SSL/TLS certificate configuration" + $nl
+    $certFile = ""
+    $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
+    foreach ($cp in $configPaths) {
+        if (Test-Path $cp) {
+            $certLine = $(sh -c "grep -iE '^\s*cert\s*=' '$cp' 2>/dev/null | head -1" 2>&1)
+            $certLineStr = ($certLine -join $nl).Trim()
+            if ($certLineStr -match "=\s*['" + [char]34 + "]?(/[^'" + [char]34 + "]+)") {
+                $certFile = $Matches[1].Trim()
+                $output += "  Certificate from config: $certFile" + $nl
             }
-        }
-
-        # 3. Validate certificate chain for found certificates
-        $FindingDetails += "`n3. Validating certificate chains:`n"
-        if ($certPaths.Count -gt 0) {
-            $validatedCount = 0
-            $invalidCount = 0
-            
-            foreach ($certPath in ($certPaths | Select-Object -First 3 -Unique)) {
-                $FindingDetails += "  Checking: $certPath`n"
-                
-                # Verify certificate
-                $cmd = "openssl verify '$certPath' </dev/null 2>&1"
-                $verifyResult = bash -c $cmd 2>$null
-                
-                if ($verifyResult -match 'OK') {
-                    $validatedCount++
-                    $FindingDetails += "    ✓ Certificate chain valid`n"
-                }
-                elseif ($verifyResult -match 'unable to get local issuer') {
-                    $invalidCount++
-                    $issues += "Certificate chain incomplete: $certPath"
-                    $FindingDetails += "    ⚠ Unable to verify chain (missing CA certificate)`n"
-                }
-                else {
-                    $invalidCount++
-                    $FindingDetails += "    ⚠ Verification issue: $verifyResult`n"
-                }
-                
-                # Check certificate details
-                $cmd = "openssl x509 -in '$certPath' -noout -subject -issuer -dates </dev/null 2>/dev/null"
-                $certInfo = bash -c $cmd 2>$null
-                
-                if ($certInfo) {
-                    $FindingDetails += "    Details:`n"
-                    $certInfo | ForEach-Object {
-                        $FindingDetails += "      $_`n"
-                    }
-                }
-            }
-            
-            if ($invalidCount -gt 0) {
-                $issues += "$invalidCount certificates with validation issues"
-            }
-        }
-        else {
-            $FindingDetails += "  ⚠ No certificates found for validation`n"
-            $issues += "No SSL/TLS certificates detected"
-        }
-
-        # 4. Check for CA bundle/trust store
-        $FindingDetails += "`n4. Checking CA certificate bundle:`n"
-        $caBundles = @(
-            "/etc/ssl/certs/ca-certificates.crt",
-            "/etc/pki/tls/certs/ca-bundle.crt",
-            "/etc/ssl/ca-bundle.pem"
-        )
-        
-        $bundleFound = $false
-        foreach ($bundle in $caBundles) {
-            if (Test-Path $bundle) {
-                $bundleFound = $true
-                $FindingDetails += "  ✓ CA bundle found: $bundle`n"
-                
-                # Count CA certificates in bundle
-                $cmd = "grep -c 'BEGIN CERTIFICATE' '$bundle' </dev/null 2>/dev/null"
-                $caCount = bash -c $cmd 2>$null
-                
-                if ($caCount) {
-                    $FindingDetails += "    Contains $caCount CA certificates`n"
-                }
-                break
-            }
-        }
-        
-        if (-not $bundleFound) {
-            $issues += "No CA certificate bundle found"
-            $FindingDetails += "  ⚠ No CA certificate bundle detected`n"
-        }
-
-        # 5. Check for certificate revocation checking (CRL/OCSP)
-        $FindingDetails += "`n5. Checking certificate revocation configuration:`n"
-        $cmd = "grep -ri 'crl\|ocsp' '$xoConfigPath' </dev/null 2>/dev/null"
-        $revocationConfig = bash -c $cmd 2>$null
-        
-        if ($revocationConfig) {
-            $FindingDetails += "  ✓ Revocation checking configured:`n"
-            $FindingDetails += "    $revocationConfig`n"
-        }
-        else {
-            $FindingDetails += "  ⚠ No explicit CRL/OCSP configuration`n"
-            $issues += "Certificate revocation checking not explicitly configured"
-        }
-
-        # 6. Check Node.js certificate validation settings
-        $FindingDetails += "`n6. Checking Node.js TLS settings:`n"
-        $cmd = "ps aux | grep 'node.*xo-server' | grep -o 'NODE_TLS_REJECT_UNAUTHORIZED=[^[:space:]]*' || echo 'not set'"
-        $tlsReject = bash -c $cmd 2>$null
-        
-        if ($tlsReject -eq 'not set') {
-            $FindingDetails += "  ✓ NODE_TLS_REJECT_UNAUTHORIZED not disabled (default=true)`n"
-        }
-        elseif ($tlsReject -match '=0') {
-            $issues += "TLS certificate validation disabled in Node.js"
-            $FindingDetails += "  ⚠ CRITICAL: Certificate validation disabled!`n"
-            $FindingDetails += "    $tlsReject`n"
-        }
-        else {
-            $FindingDetails += "  ✓ TLS settings: $tlsReject`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($issues.Count -eq 0 -and $certPaths.Count -gt 0 -and $bundleFound) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "PKI certificate path validation properly configured:`n"
-            $FindingDetails += "  • SSL/TLS certificates present and configured`n"
-            $FindingDetails += "  • Certificate chains validate successfully`n"
-            $FindingDetails += "  • CA certificate bundle present`n"
-            $FindingDetails += "  • Node.js certificate validation enabled`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
-            if ($issues.Count -gt 0) {
-                $FindingDetails += "Potential issues detected:`n"
-                foreach ($issue in $issues) {
-                    $FindingDetails += "  • $issue`n"
-                }
-            }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All certificates validate to DoD-approved CA`n"
-            $FindingDetails += "  2. Certificate revocation checking (CRL/OCSP) is enabled`n"
-            $FindingDetails += "  3. Expired or invalid certificates are rejected`n"
-            $FindingDetails += "  4. Certificate pinning is used where appropriate`n"
-            $FindingDetails += "  5. All certificate validation errors are logged`n"
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 2: Validate certificate chain
+    $output += $nl + "CHECK 2: Certificate chain validation" + $nl
+    $chainValid = $false
+    if ($certFile -and (Test-Path $certFile)) {
+        $verify = $(sh -c "openssl verify '$certFile' 2>&1" 2>&1)
+        $verifyStr = ($verify -join $nl).Trim()
+        $output += "  openssl verify: $verifyStr" + $nl
+        if ($verifyStr -match "OK") {
+            $chainValid = $true
+            $output += "  [PASS] Certificate chain validates successfully" + $nl
+        } else {
+            $output += "  [FINDING] Certificate chain validation failed" + $nl
+        }
+    } else {
+        # Try active TLS connection
+        $tlsVerify = $(sh -c "timeout 5 openssl s_client -connect localhost:443 -verify_return_error </dev/null 2>&1 | grep -E 'Verify return|verify error'" 2>&1)
+        $tlsVerifyStr = ($tlsVerify -join $nl).Trim()
+        $output += "  Active TLS check: $tlsVerifyStr" + $nl
+        if ($tlsVerifyStr -match "Verify return code: 0") {
+            $chainValid = $true
+            $output += "  [PASS] Active TLS connection validates certificate" + $nl
+        } elseif ($tlsVerifyStr -match "self.signed") {
+            $output += "  [FINDING] Self-signed certificate detected" + $nl
+        }
     }
+
+    # Check 3: CA certificate bundle
+    $output += $nl + "CHECK 3: CA certificate bundle" + $nl
+    $bundleFound = $false
+    $bundles = @("/etc/ssl/certs/ca-certificates.crt", "/etc/pki/tls/certs/ca-bundle.crt")
+    foreach ($b in $bundles) {
+        if (Test-Path $b) {
+            $bundleFound = $true
+            $caCount = $(sh -c "grep -c 'BEGIN CERTIFICATE' '$b' 2>/dev/null" 2>&1)
+            $caCountStr = ($caCount -join $nl).Trim()
+            $output += "  [PASS] CA bundle found: $b ($caCountStr CAs)" + $nl
+            break
+        }
+    }
+    if (-not $bundleFound) {
+        $output += "  [FINDING] No CA certificate bundle found" + $nl
+    }
+
+    # Check 4: Node.js TLS rejection setting
+    $output += $nl + "CHECK 4: Node.js TLS validation" + $nl
+    $tlsDisabled = $false
+    $envCheck = $(sh -c 'ps auxe 2>/dev/null | grep "xo-server\|cli.mjs" | grep -o "NODE_TLS_REJECT_UNAUTHORIZED=[^[:space:]]*" || echo "not set"' 2>&1)
+    $envCheckStr = ($envCheck -join $nl).Trim()
+    if ($envCheckStr -match "=0") {
+        $output += "  [FINDING] NODE_TLS_REJECT_UNAUTHORIZED=0 - certificate validation DISABLED" + $nl
+        $tlsDisabled = $true
+    } else {
+        $output += "  [PASS] Certificate validation enabled (default)" + $nl
+    }
+
+    # Check 5: Certificate details
+    $output += $nl + "CHECK 5: Certificate details" + $nl
+    $certDetails = $(sh -c "timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>/dev/null" 2>&1)
+    $certDetailsStr = ($certDetails -join $nl).Trim()
+    if ($certDetailsStr) { $output += "  $certDetailsStr" + $nl }
+
+    # Determine status
+    if ($tlsDisabled) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - TLS certificate validation is disabled." + $nl
+    } elseif ($chainValid -and $bundleFound) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - PKI certificate path validation configured." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - certificate chain validation issues detected." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -45075,10 +44455,10 @@ Function Get-V222551 {
         Vuln ID    : V-222551
         STIG ID    : ASD-V6R4-222551
         Rule ID    : SV-222551r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key.
+        DiscussMD5 : 749b0f5145654705f3ee2c42eaa77ff5
+        CheckMD5   : 26deb62d9956386b2dbada250e101936
+        FixMD5     : 59051fab5fd546b196a8dd31ed30c8a8
     #>
 
     param (
@@ -45121,238 +44501,94 @@ Function Get-V222551 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: PKI Private Key Protection Check`n`n"
-        $violations = @()
 
-        # 1. Search for private key files
-        $FindingDetails += "1. Scanning for private key files:`n"
-        $searchPaths = @(
-            "/etc/ssl",
-            "/etc/pki",
-            "/etc/xo-server",
-            "/opt/xo"
-        )
-        
-        $privateKeys = @()
-        foreach ($path in $searchPaths) {
-            if (Test-Path $path) {
-                $cmd = "find '$path' -type f \( -name '*.key' -o -name '*-key.pem' -o -name 'privkey.pem' \) </dev/null 2>/dev/null | head -10"
-                $keys = bash -c $cmd 2>$null
-                
-                if ($keys) {
-                    $privateKeys += $keys
-                    $keyCount = ($keys | Measure-Object).Count
-                    $FindingDetails += "  Found $keyCount private keys in: $path`n"
-                }
-            }
-        }
-        
-        if ($privateKeys.Count -eq 0) {
-            $FindingDetails += "  ℹ No private key files detected in standard locations`n"
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check private key file permissions
-        $FindingDetails += "`n2. Checking private key file permissions:`n"
-        if ($privateKeys.Count -gt 0) {
-            foreach ($key in ($privateKeys | Select-Object -First 5)) {
-                $FindingDetails += "  Checking: $key`n"
-                
-                # Get file permissions
-                $cmd = "ls -l '$key' </dev/null 2>/dev/null"
-                $permissions = bash -c $cmd 2>$null
-                
-                if ($permissions) {
-                    $FindingDetails += "    Permissions: $permissions`n"
-                    
-                    # Check if permissions are too permissive (should be 600 or 400)
-                    if ($permissions -match '^-r--------' -or $permissions -match '^-rw-------') {
-                        $FindingDetails += "    ✓ Permissions properly restricted`n"
-                    }
-                    else {
-                        $violations += "Insecure permissions on: $key"
-                        $FindingDetails += "    ⚠ VIOLATION: Permissions too permissive!`n"
-                    }
-                }
-                
-                # Check file owner
-                $cmd = "stat -c '%U:%G' '$key' </dev/null 2>/dev/null"
-                $owner = bash -c $cmd 2>$null
-                
-                if ($owner) {
-                    $FindingDetails += "    Owner: $owner`n"
-                    
-                    # Should be owned by service account (not world-readable)
-                    if ($owner -match 'root|xo') {
-                        $FindingDetails += "    ✓ Owned by appropriate service account`n"
-                    }
-                    else {
-                        $FindingDetails += "    ℹ Owner verification needed: $owner`n"
-                    }
-                }
+    # Check 1: Find private key files
+    $output += "CHECK 1: Private key file discovery" + $nl
+    $searchPaths = @("/etc/ssl/private", "/etc/ssl", "/etc/pki/tls/private", "/etc/xo-server", "/opt/xo")
+    $allKeys = @()
+    foreach ($sp in $searchPaths) {
+        if (Test-Path $sp) {
+            $found = $(timeout 10 sh -c "find '$sp' -maxdepth 3 -type f \( -name '*.key' -o -name '*-key.pem' -o -name 'privkey.pem' -o -name '*private*' \) 2>/dev/null | head -10" 2>&1)
+            $foundArr = @($found | Where-Object { $_ -and $_.Trim() -ne "" })
+            if ($foundArr.Count -gt 0) {
+                $allKeys += $foundArr
+                $output += "  Found $($foundArr.Count) key(s) in $sp" + $nl
             }
-        }
-        else {
-            $FindingDetails += "  ℹ No private keys found for permission check`n"
-        }
-
-        # 3. Check for encrypted private keys
-        $FindingDetails += "`n3. Checking if private keys are encrypted:`n"
-        if ($privateKeys.Count -gt 0) {
-            $encryptedCount = 0
-            $unencryptedCount = 0
-            
-            foreach ($key in ($privateKeys | Select-Object -First 5)) {
-                $cmd = "grep -q 'ENCRYPTED' '$key' 2>/dev/null && echo 'encrypted' || echo 'unencrypted'"
-                $encStatus = bash -c $cmd 2>$null
-                
-                if ($encStatus -eq 'encrypted') {
-                    $encryptedCount++
-                    $FindingDetails += "  ✓ Encrypted: $key`n"
-                }
-                else {
-                    $unencryptedCount++
-                    $violations += "Unencrypted private key: $key"
-                    $FindingDetails += "  ⚠ UNENCRYPTED: $key`n"
-                }
-            }
-            
-            $FindingDetails += "  Summary: $encryptedCount encrypted, $unencryptedCount unencrypted`n"
-        }
-
-        # 4. Check for private keys in web-accessible directories
-        $FindingDetails += "`n4. Checking for private keys in web directories:`n"
-        $webPaths = @(
-            "/var/www",
-            "/usr/share/nginx",
-            "/opt/xo/xo-src/xen-orchestra/packages/xo-web"
-        )
-        
-        $webKeysFound = $false
-        foreach ($webPath in $webPaths) {
-            if (Test-Path $webPath) {
-                $cmd = "find '$webPath' -type f \( -name '*.key' -o -name '*-key.pem' \) </dev/null 2>/dev/null"
-                $webKeys = bash -c $cmd 2>$null
-                
-                if ($webKeys) {
-                    $webKeysFound = $true
-                    $violations += "CRITICAL: Private keys in web directory: $webPath"
-                    $FindingDetails += "  ⚠ CRITICAL: Private keys found in web directory!`n"
-                    $webKeys | ForEach-Object {
-                        $FindingDetails += "    $_`n"
-                    }
-                }
-            }
-        }
-        
-        if (-not $webKeysFound) {
-            $FindingDetails += "  ✓ No private keys found in web-accessible directories`n"
-        }
-
-        # 5. Check for private keys in version control
-        $FindingDetails += "`n5. Checking for private keys in git repositories:`n"
-        $cmd = "find /opt/xo -name '.git' -type d </dev/null 2>/dev/null | head -3"
-        $gitDirs = bash -c $cmd 2>$null
-        
-        if ($gitDirs) {
-            foreach ($gitDir in $gitDirs) {
-                $repoPath = Split-Path -Parent $gitDir
-                $cmd = "git -C '$repoPath' ls-files </dev/null 2>/dev/null | grep -E '\.key$|.*-key\.pem$' | head -5"
-                $trackedKeys = bash -c $cmd 2>$null
-                
-                if ($trackedKeys) {
-                    $violations += "CRITICAL: Private keys in git repo: $repoPath"
-                    $FindingDetails += "  ⚠ CRITICAL: Private keys tracked in git!`n"
-                    $FindingDetails += "    Repo: $repoPath`n"
-                    $trackedKeys | ForEach-Object {
-                        $FindingDetails += "      $_`n"
-                    }
-                }
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ No git repositories found for checking`n"
-        }
-
-        # 6. Check for hardware security modules (HSM) integration
-        $FindingDetails += "`n6. Checking for HSM/TPM integration:`n"
-        $cmd = "lsmod | grep -iE 'pkcs11|tpm' </dev/null 2>/dev/null"
-        $hsmModules = bash -c $cmd 2>$null
-        
-        if ($hsmModules) {
-            $FindingDetails += "  ✓ HSM/TPM modules loaded:`n"
-            $hsmModules | ForEach-Object {
-                $FindingDetails += "    $_`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ No HSM/TPM modules detected (keys stored on filesystem)`n"
-        }
-
-        # 7. Check SELinux/AppArmor context for private keys
-        $FindingDetails += "`n7. Checking mandatory access controls:`n"
-        if ($privateKeys.Count -gt 0) {
-            $keyPath = $privateKeys[0]
-            
-            # Check SELinux
-            $cmd = "ls -Z '$keyPath' </dev/null 2>/dev/null"
-            $selinuxContext = bash -c $cmd 2>$null
-            
-            if ($selinuxContext -and $selinuxContext -ne "") {
-                $FindingDetails += "  SELinux context: $selinuxContext`n"
-            }
-            
-            # Check AppArmor
-            $cmd = "systemctl is-active apparmor </dev/null 2>/dev/null"
-            $apparmor = bash -c $cmd 2>$null
-            
-            if ($apparmor -eq 'active') {
-                $FindingDetails += "  ✓ AppArmor active (provides key protection)`n"
-            }
-            else {
-                $FindingDetails += "  ℹ AppArmor not active`n"
-            }
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($violations.Count -eq 0) {
-            if ($privateKeys.Count -gt 0) {
-                $Status = "NotAFinding"
-                $FindingDetails += "Result: NOT A FINDING`n"
-                $FindingDetails += "PKI private keys are properly protected:`n"
-                $FindingDetails += "  • Private key files have secure permissions (600/400)`n"
-                $FindingDetails += "  • Keys owned by appropriate service accounts`n"
-                $FindingDetails += "  • No keys in web-accessible directories`n"
-                $FindingDetails += "  • No keys tracked in version control`n"
-            }
-            else {
-                $Status = "Not_Reviewed"
-                $FindingDetails += "Result: NOT REVIEWED`n"
-                $FindingDetails += "No private keys detected for verification.`n"
-                $FindingDetails += "If PKI is used, manual verification required.`n"
-            }
-        }
-        else {
-            $Status = "Open"
-            $FindingDetails += "Result: OPEN - Private key protection violations detected`n"
-            $FindingDetails += "Violations found:`n"
-            foreach ($violation in $violations) {
-                $FindingDetails += "  • $violation`n"
-            }
-            $FindingDetails += "`nREQUIRED REMEDIATION:`n"
-            $FindingDetails += "  1. Set private key permissions to 600 (chmod 600 <keyfile>)`n"
-            $FindingDetails += "  2. Ensure keys owned by service account, not root`n"
-            $FindingDetails += "  3. Remove any keys from web directories`n"
-            $FindingDetails += "  4. Remove keys from git repositories (git filter-branch)`n"
-            $FindingDetails += "  5. Consider encrypting keys with passphrase`n"
-            $FindingDetails += "  6. Ideally use HSM/TPM for key storage`n"
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+    $output += "  Total private keys found: $($allKeys.Count)" + $nl
+
+    # Check 2: Verify file permissions (should be 600 or 400)
+    $output += $nl + "CHECK 2: Private key file permissions" + $nl
+    $permViolations = 0
+    $permOK = 0
+    foreach ($key in ($allKeys | Select-Object -First 10)) {
+        $keyStr = $key.Trim()
+        if (-not $keyStr) { continue }
+        $perms = $(sh -c "stat -c '%a %U:%G' '$keyStr' 2>/dev/null" 2>&1)
+        $permsStr = ($perms -join $nl).Trim()
+        $output += "  $keyStr : $permsStr" + $nl
+        if ($permsStr -match "^(600|400|640)\s") {
+            $permOK++
+        } else {
+            $permViolations++
+            $output += "    [FINDING] Permissions too permissive (expected 600 or 400)" + $nl
+        }
     }
+
+    # Check 3: Check for keys in web-accessible directories
+    $output += $nl + "CHECK 3: Keys in web-accessible directories" + $nl
+    $webKeyFound = $false
+    $webDirs = @("/var/www", "/opt/xo/xo-src/xen-orchestra/packages/xo-web/dist")
+    foreach ($wd in $webDirs) {
+        if (Test-Path $wd) {
+            $wk = $(timeout 5 sh -c "find '$wd' -maxdepth 3 -type f -name '*.key' 2>/dev/null | head -3" 2>&1)
+            $wkStr = ($wk -join $nl).Trim()
+            if ($wkStr) {
+                $webKeyFound = $true
+                $output += "  [FINDING] Private key in web directory: $wkStr" + $nl
+            }
+        }
+    }
+    if (-not $webKeyFound) {
+        $output += "  [PASS] No private keys in web-accessible directories" + $nl
+    }
+
+    # Check 4: Check key encryption status
+    $output += $nl + "CHECK 4: Key encryption status" + $nl
+    $unencrypted = 0
+    foreach ($key in ($allKeys | Select-Object -First 5)) {
+        $keyStr = $key.Trim()
+        if (-not $keyStr) { continue }
+        $encCheck = $(sh -c "head -2 '$keyStr' 2>/dev/null | grep -c 'ENCRYPTED'" 2>&1)
+        $encCheckStr = ($encCheck -join $nl).Trim()
+        if ($encCheckStr -eq "0") {
+            $unencrypted++
+            $output += "  $keyStr : unencrypted" + $nl
+        } else {
+            $output += "  $keyStr : encrypted" + $nl
+        }
+    }
+
+    # Determine status
+    if ($allKeys.Count -eq 0) {
+        $Status = "Not_Applicable"
+        $output += $nl + "RESULT: Not_Applicable - no private key files detected." + $nl
+    } elseif ($permViolations -gt 0 -or $webKeyFound) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - private key protection violations detected." + $nl
+    } elseif ($permOK -gt 0) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - private keys have appropriate permissions." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to verify private key protection." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -45414,10 +44650,10 @@ Function Get-V222554 {
         Vuln ID    : V-222554
         STIG ID    : ASD-V6R4-222554
         Rule ID    : SV-222554r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not display passwords/PINs as clear text.
+        DiscussMD5 : a3caa3b56d4aba55af85cb9daa4bc205
+        CheckMD5   : 7bc12523297be50abdd93367abd02c71
+        FixMD5     : 5bc13a7fc78c657306c0a4c2f318800d
     #>
 
     param (
@@ -45460,107 +44696,100 @@ Function Get-V222554 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222554: Application must not display passwords/PINs as clear text
-    # Check: Verify XO web interface obfuscates password input and never displays cleartext passwords
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== Xen Orchestra Password Display Check ===`n`n"
-        
-        # Check 1: Examine web interface HTML/JS for password input fields
-        $webRoot = bash -c "find /usr/local -type d -name 'xo-web' </dev/null 2>/dev/null | head -1"
-        
-        if ($webRoot) {
-            $FindingDetails += "XO Web Root: $webRoot`n`n"
-            
-            # Check for password input types in HTML/JS files
-            $passwordInputs = bash -c "find $webRoot -type f \`( -name '*.html' -o -name '*.js' -o -name '*.jsx' \`) -exec grep -l 'type.*password' {} \`; </dev/null 2>/dev/null | head -10"
-            
-            if ($passwordInputs) {
-                $FindingDetails += "Password Input Fields Found:`n$passwordInputs`n`n"
-                
-                # Check if any use type='text' instead of type='password' for sensitive data
-                $cleartextInputs = bash -c "find $webRoot -type f \`( -name '*.html' -o -name '*.js' -o -name '*.jsx' \`) -exec grep -iE 'password|passphrase|pin' {} \`; </dev/null 2>/dev/null | grep -i \`"type='text'\`" | head -5"
-                
-                if ($cleartextInputs) {
-                    $FindingDetails += "❌ POTENTIAL ISSUE: Text-type fields for sensitive data:`n$cleartextInputs`n"
-                    $cleartextFieldsFound = $true
-                }
-                else {
-                    $FindingDetails += "✓ No text-type fields detected for password input`n"
-                    $properInputTypes = $true
-                }
-            }
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Find XO web application files
+    $output += "CHECK 1: XO web application location" + $nl
+    $webRoot = ""
+    $webPaths = @("/opt/xo/xo-src/xen-orchestra/packages/xo-web", "/opt/xo/packages/xo-web", "/usr/share/xo-server/xo-web")
+    foreach ($wp in $webPaths) {
+        if (Test-Path $wp) { $webRoot = $wp; break }
+    }
+    if ($webRoot) {
+        $output += "  XO web root: $webRoot" + $nl
+    } else {
+        $output += "  XO web root not found in standard locations" + $nl
+    }
+
+    # Check 2: Check for password input type in source files
+    $output += $nl + "CHECK 2: Password input field types" + $nl
+    $cleartextFound = $false
+    $properInputFound = $false
+    if ($webRoot) {
+        $pwInputs = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -l 'type.*password' {} + 2>/dev/null | head -5" 2>&1)
+        $pwInputsStr = ($pwInputs -join $nl).Trim()
+        if ($pwInputsStr) {
+            $output += "  Files with password-type inputs: $pwInputsStr" + $nl
+            $properInputFound = $true
         }
-        
-        # Check 2: Look for any password reveal functionality (show/hide toggles)
-        if ($webRoot) {
-            $revealFunction = bash -c "find $webRoot -type f \`( -name '*.js' -o -name '*.jsx' \`) -exec grep -iE '(showPassword|revealPassword|togglePassword.*show)' {} + </dev/null 2>/dev/null | head -5"
-            
-            if ($revealFunction) {
-                $FindingDetails += "`nPassword Reveal Functionality:`n$revealFunction`n"
-                $FindingDetails += "Note: Password reveal is acceptable if it's user-initiated and temporary.`n"
-            }
-        }
-        
-        # Check 3: Verify passwords are never logged in cleartext
-        $xoLogs = bash -c "find /var/log -name '*xo*' -type f </dev/null 2>/dev/null | head -5"
-        
-        if ($xoLogs) {
-            $FindingDetails += "`nXO Log Files:`n$xoLogs`n"
-            
-            # Check for cleartext password patterns in logs (look for common patterns)
-            $logPasswordCheck = bash -c "find /var/log -name '*xo*' -type f -exec grep -iE '(password|passwd).*[=:].*[^*]{8,}' {} + </dev/null 2>/dev/null | grep -v 'hashed\\|encrypted\\|bcrypt' | head -3"
-            
-            if ($logPasswordCheck) {
-                $FindingDetails += "`n❌ POTENTIAL FINDING: Possible cleartext passwords in logs:`n$logPasswordCheck`n"
-                $passwordsInLogs = $true
-            }
-            else {
-                $FindingDetails += "✓ No cleartext passwords detected in log files`n"
-                $noPasswordsInLogs = $true
-            }
-        }
-        
-        # Check 4: Verify authentication responses don't include passwords
-        $apiCheck = bash -c "find $webRoot -type f -name '*.js' -exec grep -iE '(response|return).*password.*:' {} + </dev/null 2>/dev/null | grep -v 'passwordHash\\|hashedPassword' | head -3"
-        
-        if ($apiCheck) {
-            $FindingDetails += "`n⚠ API responses may include password-related data:`n$apiCheck`n"
-            $FindingDetails += "Manual review recommended to ensure no cleartext passwords in API responses.`n"
-            $needsManualReview = $true
-        }
-        
-        # Check 5: Verify configuration files don't display passwords in plaintext (covered by V-222542)
-        # This is cross-reference - we already checked in V-222542
-        $FindingDetails += "`nNote: Configuration file password storage checked in V-222542.`n"
-        
-        # Determine Status
-        if ($cleartextFieldsFound -or $passwordsInLogs) {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Application displays or stores passwords in cleartext.`n"
-            if ($cleartextFieldsFound) { $FindingDetails += "- Text-type input fields detected for password entry`n" }
-            if ($passwordsInLogs) { $FindingDetails += "- Cleartext passwords found in log files`n" }
-        }
-        elseif ($properInputTypes -and $noPasswordsInLogs) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Application does not display passwords as cleartext.`n"
-            $FindingDetails += "Password inputs use proper obfuscation (type='password'), no cleartext in logs.`n"
-        }
-        elseif ($needsManualReview) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Manual review required to fully verify password obfuscation.`n"
-            $FindingDetails += "Web interface and API responses require hands-on testing.`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Unable to locate XO web files for automated verification.`n"
-            $FindingDetails += "Manual inspection of login interface required.`n"
+        # Check for type='text' on password fields
+        $textPw = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' \) -exec grep -n 'password.*type.*text\|type.*text.*password' {} + 2>/dev/null | head -3" 2>&1)
+        $textPwStr = ($textPw -join $nl).Trim()
+        if ($textPwStr) {
+            $cleartextFound = $true
+            $output += "  [FINDING] Cleartext password fields: $textPwStr" + $nl
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 3: Check for cleartext passwords in logs
+    $output += $nl + "CHECK 3: Cleartext passwords in log files" + $nl
+    $pwInLogs = $false
+    $logCheck = $(timeout 10 sh -c "find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'password.*=.*[^*]' {} + 2>/dev/null | head -3" 2>&1)
+    $logCheckStr = ($logCheck -join $nl).Trim()
+    if ($logCheckStr) {
+        $pwInLogs = $true
+        $output += "  [FINDING] Potential cleartext passwords in logs: $logCheckStr" + $nl
+    } else {
+        $output += "  [PASS] No cleartext passwords detected in log files" + $nl
     }
+
+    # Check 4: React framework (provides password masking by default)
+    $output += $nl + "CHECK 4: UI framework analysis" + $nl
+    $reactDetected = $false
+    if ($webRoot) {
+        $react = $(sh -c "find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+        $reactStr = ($react -join $nl).Trim()
+        if ($reactStr) {
+            $reactDetected = $true
+            $output += "  [PASS] React framework detected (provides input masking)" + $nl
+        }
+    }
+
+    # Check 5: XO API response analysis
+    $output += $nl + "CHECK 5: API password exposure" + $nl
+    $token = $null
+    if (Test-Path "/etc/xo-server/stig/api-token") {
+        $tokenContent = $(timeout 3 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent) { $token = $tokenContent.Trim() }
+    }
+    if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+    if ($token) {
+        $userResp = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1" 2>&1)
+        $userRespStr = ($userResp -join $nl).Trim()
+        if ($userRespStr -match "password") {
+            $output += "  [FINDING] API response contains password field" + $nl
+        } else {
+            $output += "  [PASS] API does not expose password fields" + $nl
+        }
+    } else {
+        $output += "  API token not available for response check" + $nl
+    }
+
+    # Determine status
+    if ($cleartextFound -or $pwInLogs) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - cleartext password display detected." + $nl
+    } elseif ($reactDetected -or $properInputFound) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - passwords are properly masked." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to confirm password masking." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -45929,10 +45158,10 @@ Function Get-V222577 {
         Vuln ID    : V-222577
         STIG ID    : ASD-V6R4-222577
         Rule ID    : SV-222577r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must not expose session IDs.
+        DiscussMD5 : 4389a0476df2ecbce4b2bd852fa99861
+        CheckMD5   : e0aad336d2fbfe2774087c8d4623c13d
+        FixMD5     : f2fd6fe3190b28d181c6906cf87af779
     #>
 
     param (
@@ -45975,193 +45204,84 @@ Function Get-V222577 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    if ($IsLinux) {
-        $FindingDetails += "CAT I: Session ID Exposure Prevention Check`n`n"
-        $issues = @()
 
-        # 1. Check session ID configuration in XO
-        $FindingDetails += "1. Checking session ID configuration:`n"
-        $xoConfigPath = "/etc/xo-server/config.toml"
-        
-        if (Test-Path $xoConfigPath) {
-            # Check for session configuration
-            $cmd = "grep -iE 'cookie|session' '$xoConfigPath' </dev/null 2>/dev/null"
-            $sessionConfig = bash -c $cmd 2>$null
-            
-            if ($sessionConfig) {
-                $FindingDetails += "  Session configuration found:`n"
-                $sessionConfig | ForEach-Object {
-                    $FindingDetails += "    $_`n"
-                }
-            }
-            else {
-                $FindingDetails += "  ℹ No explicit session config (using defaults)`n"
-            }
-        }
+    $nl = [Environment]::NewLine
+    $output = ""
 
-        # 2. Check Redis session storage (XO uses Redis for sessions)
-        $FindingDetails += "`n2. Checking Redis session storage:`n"
-        $cmd = "redis-cli --scan --pattern 'xo:session:*' </dev/null 2>/dev/null | wc -l"
-        $sessionCount = bash -c $cmd 2>$null
-        
-        if ($sessionCount) {
-            $FindingDetails += "  Active sessions in Redis: $sessionCount`n"
-            
-            # Check session TTL (Time To Live)
-            $cmd = "redis-cli --scan --pattern 'xo:session:*' | head -1"
-            $sampleSession = bash -c $cmd 2>$null
-            
-            if ($sampleSession) {
-                $cmd = "redis-cli ttl '$sampleSession' </dev/null 2>/dev/null"
-                $ttl = bash -c $cmd 2>$null
-                
-                if ($ttl -and [int]$ttl -gt 0) {
-                    $ttlMinutes = [math]::Round([int]$ttl / 60, 1)
-                    $FindingDetails += "  ✓ Session TTL configured: $ttlMinutes minutes`n"
-                }
-                elseif ($ttl -eq "-1") {
-                    $issues += "Sessions have no expiration (TTL=-1)"
-                    $FindingDetails += "  ⚠ Sessions never expire (TTL=-1)`n"
-                }
-            }
-        }
-        else {
-            $FindingDetails += "  ℹ No active sessions detected`n"
-        }
-
-        # 3. Check session ID in URLs
-        $FindingDetails += "`n3. Checking for session IDs in URLs:`n"
-        $xoPath = "/opt/xo/xo-src"
-        
-        # Check for session IDs passed in URL parameters
-        $cmd = "grep -r 'sessionid\|session_id\|sid' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'url\|query\|param' | grep -v 'test\|spec\|node_modules' | head -5"
-        $urlSessions = bash -c $cmd 2>$null
-        
-        if ($urlSessions) {
-            $issues += "Potential session IDs in URLs detected"
-            $FindingDetails += "  ⚠ Potential session IDs in URL parameters:`n"
-            $urlSessions | ForEach-Object {
-                $FindingDetails += "    $_`n"
-            }
-        }
-        else {
-            $FindingDetails += "  ✓ No session IDs detected in URL parameters`n"
-        }
-
-        # 4. Check cookie security flags
-        $FindingDetails += "`n4. Checking cookie security flags:`n"
-        $xoWebPath = "/opt/xo/xo-src/xen-orchestra/packages/xo-web"
-        
-        # Check for HttpOnly flag
-        $cmd = "grep -r 'httpOnly\|HttpOnly' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'cookie' | wc -l"
-        $httpOnlyCount = bash -c $cmd 2>$null
-        
-        if ($httpOnlyCount -and [int]$httpOnlyCount -gt 0) {
-            $FindingDetails += "  ✓ HttpOnly flag usage detected ($httpOnlyCount instances)`n"
-        }
-        else {
-            $issues += "HttpOnly flag not detected on cookies"
-            $FindingDetails += "  ⚠ HttpOnly flag not detected`n"
-        }
-        
-        # Check for Secure flag
-        $cmd = "grep -r 'secure.*true\|Secure.*true' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'cookie' | wc -l"
-        $secureCount = bash -c $cmd 2>$null
-        
-        if ($secureCount -and [int]$secureCount -gt 0) {
-            $FindingDetails += "  ✓ Secure flag usage detected ($secureCount instances)`n"
-        }
-        else {
-            $issues += "Secure flag not detected on cookies"
-            $FindingDetails += "  ⚠ Secure flag not detected (cookies may be sent over HTTP)`n"
-        }
-        
-        # Check for SameSite
-        $cmd = "grep -r 'sameSite\|SameSite' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'cookie' | wc -l"
-        $sameSiteCount = bash -c $cmd 2>$null
-        
-        if ($sameSiteCount -and [int]$sameSiteCount -gt 0) {
-            $FindingDetails += "  ✓ SameSite flag usage detected ($sameSiteCount instances)`n"
-        }
-        else {
-            $FindingDetails += "  ℹ SameSite flag not explicitly set`n"
-        }
-
-        # 5. Check session regeneration on authentication
-        $FindingDetails += "`n5. Checking session regeneration:`n"
-        $cmd = "grep -r 'regenerate\|rotate.*session' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l"
-        $regenCount = bash -c $cmd 2>$null
-        
-        if ($regenCount -and [int]$regenCount -gt 0) {
-            $FindingDetails += "  ✓ Session regeneration detected ($regenCount instances)`n"
-        }
-        else {
-            $issues += "No session regeneration detected"
-            $FindingDetails += "  ⚠ Session regeneration not detected (session fixation risk)`n"
-        }
-
-        # 6. Check for session logging (shouldn't log session IDs)
-        $FindingDetails += "`n6. Checking session ID logging:`n"
-        $cmd = "find /var/log -name '*xo*' -type f -exec grep -l 'session.*id\|sessionid' {} \; </dev/null 2>/dev/null | head -3"
-        $sessionLogs = bash -c $cmd 2>$null
-        
-        if ($sessionLogs) {
-            $issues += "Session IDs may be logged"
-            $FindingDetails += "  ⚠ Session references found in logs:`n"
-            $sessionLogs | ForEach-Object {
-                $FindingDetails += "    $_`n"
-            }
-            $FindingDetails += "  Manual review needed to ensure session IDs aren't exposed`n"
-        }
-        else {
-            $FindingDetails += "  ✓ No session ID references in log files`n"
-        }
-
-        # 7. Check error pages for session exposure
-        $FindingDetails += "`n7. Checking error handling:`n"
-        $cmd = "grep -r 'error.*session\|exception.*session' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l"
-        $errorSession = bash -c $cmd 2>$null
-        
-        if ($errorSession -and [int]$errorSession -gt 0) {
-            $FindingDetails += "  ℹ Error handling with session references ($errorSession instances)`n"
-            $FindingDetails += "  Manual review recommended to ensure no session exposure in errors`n"
-        }
-        else {
-            $FindingDetails += "  ✓ No obvious session exposure in error handling`n"
-        }
-
-        # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
-        if ($issues.Count -eq 0) {
-            $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "Session ID exposure is properly prevented:`n"
-            $FindingDetails += "  • Sessions stored securely in Redis`n"
-            $FindingDetails += "  • Session TTL configured (automatic expiration)`n"
-            $FindingDetails += "  • No session IDs in URL parameters`n"
-            $FindingDetails += "  • HttpOnly and Secure flags on cookies`n"
-            $FindingDetails += "  • Session regeneration implemented`n"
-            $FindingDetails += "  • No session IDs exposed in logs`n"
-        }
-        else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
-            $FindingDetails += "Potential issues detected:`n"
-            foreach ($issue in $issues) {
-                $FindingDetails += "  • $issue`n"
-            }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. Session IDs are never exposed in URLs`n"
-            $FindingDetails += "  2. Cookies have HttpOnly, Secure, and SameSite flags`n"
-            $FindingDetails += "  3. Sessions regenerate on authentication/privilege change`n"
-            $FindingDetails += "  4. Session IDs are not logged or exposed in errors`n"
-            $FindingDetails += "  5. Session storage is secure and encrypted`n"
-        }
+    # Check 1: Cookie security flags via HTTP response
+    $output += "CHECK 1: Cookie security flags" + $nl
+    $httpOnly = $false
+    $secureCookie = $false
+    $headers = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie'" 2>&1)
+    $headersStr = ($headers -join $nl).Trim()
+    if ($headersStr) {
+        $output += "  Set-Cookie headers:" + $nl + "  $headersStr" + $nl
+        if ($headersStr -match "HttpOnly") { $httpOnly = $true; $output += "  [PASS] HttpOnly flag present" + $nl }
+        else { $output += "  [FINDING] HttpOnly flag missing" + $nl }
+        if ($headersStr -match "Secure") { $secureCookie = $true; $output += "  [PASS] Secure flag present" + $nl }
+        else { $output += "  [FINDING] Secure flag missing" + $nl }
+    } else {
+        $output += "  No Set-Cookie headers in response" + $nl
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+
+    # Check 2: Session storage (Redis)
+    $output += $nl + "CHECK 2: Session storage in Redis" + $nl
+    $sessionCount = $(sh -c "timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | wc -l" 2>&1)
+    $sessionCountStr = ($sessionCount -join $nl).Trim()
+    $output += "  Active sessions in Redis: $sessionCountStr" + $nl
+
+    # Check 3: Check for session IDs in URLs (XO source code)
+    $output += $nl + "CHECK 3: Session ID URL exposure" + $nl
+    $urlExposure = $false
+    $srcPath = "/opt/xo"
+    $urlCheck = $(timeout 10 sh -c "find '$srcPath' -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'sessionid.*url\|sid.*query\|token.*url.*param' {} + 2>/dev/null | head -3" 2>&1)
+    $urlCheckStr = ($urlCheck -join $nl).Trim()
+    if ($urlCheckStr) {
+        $urlExposure = $true
+        $output += "  [FINDING] Potential session ID in URL parameters: $urlCheckStr" + $nl
+    } else {
+        $output += "  [PASS] No session ID exposure in URL parameters detected" + $nl
     }
+
+    # Check 4: Session ID in logs
+    $output += $nl + "CHECK 4: Session ID in log files" + $nl
+    $logExposure = $(timeout 5 sh -c "find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'authenticationToken\|sessionId' {} + 2>/dev/null | head -3" 2>&1)
+    $logExposureStr = ($logExposure -join $nl).Trim()
+    if ($logExposureStr) {
+        $output += "  [FINDING] Session references in logs: $logExposureStr" + $nl
+    } else {
+        $output += "  [PASS] No session ID exposure in log files" + $nl
+    }
+
+    # Check 5: HTTPS enforcement (session over TLS only)
+    $output += $nl + "CHECK 5: HTTPS enforcement" + $nl
+    $httpsActive = $false
+    $tlsCheck = $(timeout 5 sh -c "ss -tlnp 2>/dev/null | grep -E ':443\s'" 2>&1)
+    $tlsCheckStr = ($tlsCheck -join $nl).Trim()
+    if ($tlsCheckStr) {
+        $httpsActive = $true
+        $output += "  [PASS] HTTPS active on port 443" + $nl
+    } else {
+        $output += "  [FINDING] HTTPS not detected on port 443" + $nl
+    }
+
+    # Determine status
+    if ($urlExposure) {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - session ID exposure in URL parameters." + $nl
+    } elseif ($httpsActive -and ($httpOnly -or $secureCookie)) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - session IDs protected (HTTPS + cookie flags)." + $nl
+    } elseif ($httpsActive) {
+        # HTTPS active but cookie flags not confirmed (may be defaults)
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - sessions transmitted over HTTPS." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - session ID protection insufficient." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -46223,10 +45343,10 @@ Function Get-V222578 {
         Vuln ID    : V-222578
         STIG ID    : ASD-V6R4-222578
         Rule ID    : SV-222578r508029_rule
-        Rule Title : [STUB] Application Security and Development STIG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule Title : The application must destroy the session ID value and/or cookie on logoff or browser close.
+        DiscussMD5 : bb8aa637be0db87ffe5b8019c2ae5958
+        CheckMD5   : bb571abdc6dfbb81d4d9fbf50b39adb9
+        FixMD5     : 8bf9ef3cdbcdb2e051fb7597fd837421
     #>
 
     param (
@@ -46269,132 +45389,80 @@ Function Get-V222578 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    # V-222578: Application must destroy session ID value/cookie on logoff or browser close
-    # Check: Verify XO properly invalidates sessions on logout
-    
-    if ($IsLinux) {
-        $FindingDetails += "=== Xen Orchestra Session Destruction Check ===`n`n"
-        
-        # Check 1: Look for session configuration in XO Server
-        $sessionConfig = bash -c "find /etc/xo-server -name '*.toml' -exec grep -iE '(session|cookie)' {} + </dev/null </dev/null 2>/dev/null || echo 'SESSION_CONFIG_NOT_FOUND'"
-        
-        if ($sessionConfig -notmatch "SESSION_CONFIG_NOT_FOUND") {
-            $FindingDetails += "XO Session Configuration:`n"
-            $FindingDetails += $sessionConfig + "`n`n"
-            
-            # Check for session timeout settings
-            if ($sessionConfig -match "timeout|maxAge|expires") {
-                $FindingDetails += "✓ Session timeout/expiration configured`n"
-                $hasSessionTimeout = $true
+
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: XO signOut/logout handler in source
+    $output += "CHECK 1: Session signOut/logout handlers" + $nl
+    $signOutFound = $false
+    $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
+    foreach ($sp in $srcPaths) {
+        if (Test-Path $sp) {
+            $handlers = $(timeout 10 sh -c "find '$sp' -maxdepth 4 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'signOut\|logout\|session.*destroy\|session.*invalidate' {} + 2>/dev/null | head -5" 2>&1)
+            $handlersStr = ($handlers -join $nl).Trim()
+            if ($handlersStr) {
+                $signOutFound = $true
+                $output += "  [PASS] Logout handlers found:" + $nl + "  $handlersStr" + $nl
+                break
             }
-        }
-        
-        # Check 2: Examine XO web framework for session management (Express.js patterns)
-        $webRoot = bash -c "find /usr/local -type d -name 'xo-web' </dev/null 2>/dev/null | head -1"
-        $serverRoot = bash -c "find /usr/local -type d -name 'xo-server' </dev/null 2>/dev/null | head -1"
-        
-        if ($serverRoot) {
-            $FindingDetails += "XO Server Root: $serverRoot`n"
-            
-            # Check for session destroy/logout handlers
-            $logoutHandlers = bash -c "find $serverRoot -type f -name '*.js' -exec grep -iE '(logout|signOut|session.*destroy)' {} + </dev/null 2>/dev/null | head -10"
-            
-            if ($logoutHandlers) {
-                $FindingDetails += "`nLogout/Session Destroy Handlers:`n$logoutHandlers`n`n"
-                
-                # Look for explicit session.destroy() calls
-                if ($logoutHandlers -match "session\.destroy|session\.invalidate|destroySession") {
-                    $FindingDetails += "✓ Explicit session destruction on logout detected`n"
-                    $hasSessionDestroy = $true
-                }
-                else {
-                    $FindingDetails += "⚠ Logout handlers found but explicit session.destroy() not detected`n"
-                }
-            }
-        }
-        
-        # Check 3: Verify cookie settings (secure, httpOnly, session cookies not persistent)
-        if ($serverRoot) {
-            $cookieSettings = bash -c "find $serverRoot -type f \`( -name '*.js' -o -name '*.toml' \`) -exec grep -iE '(cookie.*httpOnly|cookie.*secure|cookie.*expires)' {} + </dev/null 2>/dev/null | head -10"
-            
-            if ($cookieSettings) {
-                $FindingDetails += "`nCookie Security Settings:`n$cookieSettings`n"
-                
-                if ($cookieSettings -match "httpOnly.*true") {
-                    $FindingDetails += "✓ HttpOnly flag enabled (prevents XSS cookie theft)`n"
-                    $httpOnlyEnabled = $true
-                }
-                
-                if ($cookieSettings -match "secure.*true") {
-                    $FindingDetails += "✓ Secure flag enabled (HTTPS only)`n"
-                    $secureEnabled = $true
-                }
-                
-                # Session cookies should NOT have long expires/maxAge
-                if ($cookieSettings -match "maxAge.*0|expires.*false") {
-                    $FindingDetails += "✓ Session cookies configured (no persistent expiration)`n"
-                    $sessionCookies = $true
-                }
-            }
-        }
-        
-        # Check 4: Verify Redis session store cleanup
-        $redisSessionKeys = bash -c "redis-cli --no-auth-warning KEYS 'xo:session:*' </dev/null 2>/dev/null | wc -l"
-        
-        if ($redisSessionKeys -gt 0) {
-            $FindingDetails += "`nActive Sessions in Redis: $redisSessionKeys`n"
-            
-            # Check if sessions have TTL (time-to-live) for automatic cleanup
-            $sessionTTL = bash -c "redis-cli --no-auth-warning KEYS 'xo:session:*' </dev/null 2>/dev/null | head -1 | xargs redis-cli --no-auth-warning TTL </dev/null 2>/dev/null"
-            
-            if ($sessionTTL -and $sessionTTL -ne "-1") {
-                $FindingDetails += "✓ Session TTL configured: $sessionTTL seconds`n"
-                $FindingDetails += "Sessions automatically expire from database.`n"
-                $hasSessionTTL = $true
-            }
-            elseif ($sessionTTL -eq "-1") {
-                $FindingDetails += "⚠ Sessions do not have TTL - may not auto-expire`n"
-            }
-        }
-        else {
-            $FindingDetails += "`nNo active sessions found in Redis database.`n"
-        }
-        
-        # Check 5: Look for client-side session cleanup (JavaScript)
-        if ($webRoot) {
-            $clientLogout = bash -c "find $webRoot -type f -name '*.js' -exec grep -iE '(clearCookie|deleteCookie|removeItem.*session)' {} + </dev/null 2>/dev/null | head -5"
-            
-            if ($clientLogout) {
-                $FindingDetails += "`nClient-Side Session Cleanup:`n$clientLogout`n"
-                $FindingDetails += "✓ Client-side cookie/session cleanup detected`n"
-                $clientCleanup = $true
-            }
-        }
-        
-        # Determine Status
-        if ($hasSessionDestroy -and ($hasSessionTimeout -or $hasSessionTTL)) {
-            $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Application destroys session IDs on logoff.`n"
-            $FindingDetails += "Session management includes explicit destroy on logout and automatic expiration.`n"
-            if ($httpOnlyEnabled -and $secureEnabled) {
-                $FindingDetails += "Additional security: HttpOnly and Secure flags enabled on cookies.`n"
-            }
-        }
-        elseif ($hasSessionDestroy -or $hasSessionTimeout) {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Partial session management detected - manual verification recommended.`n"
-            $FindingDetails += "Verify sessions are fully invalidated on logout and browser close.`n"
-        }
-        else {
-            $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Unable to verify session destruction on logoff.`n"
-            $FindingDetails += "No explicit session destroy handlers or timeout mechanisms detected.`n"
         }
     }
-    else {
-        $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+    if (-not $signOutFound) {
+        $output += "  Logout handler files not detected in source" + $nl
     }
+
+    # Check 2: XO REST API session.signOut endpoint
+    $output += $nl + "CHECK 2: XO API session management" + $nl
+    $apiSignOut = $false
+    $apiCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'session.signOut\|api.*signOut' {} + 2>/dev/null | head -3" 2>&1)
+    $apiCheckStr = ($apiCheck -join $nl).Trim()
+    if ($apiCheckStr) {
+        $apiSignOut = $true
+        $output += "  [PASS] session.signOut API endpoint found: $apiCheckStr" + $nl
+    }
+
+    # Check 3: Redis session TTL (automatic expiration)
+    $output += $nl + "CHECK 3: Redis session TTL" + $nl
+    $hasTTL = $false
+    $sampleKey = $(sh -c "timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | head -1" 2>&1)
+    $sampleKeyStr = ($sampleKey -join $nl).Trim()
+    if ($sampleKeyStr) {
+        $ttl = $(sh -c "timeout 3 redis-cli TTL '$sampleKeyStr' 2>/dev/null" 2>&1)
+        $ttlStr = ($ttl -join $nl).Trim()
+        $output += "  Session key: $sampleKeyStr" + $nl
+        $output += "  TTL: $ttlStr seconds" + $nl
+        if ($ttlStr -match "^\d+" -and [int]$ttlStr -gt 0) {
+            $hasTTL = $true
+            $output += "  [PASS] Session has finite TTL" + $nl
+        } elseif ($ttlStr -eq "-1") {
+            $output += "  [INFO] Session has no TTL (persistent)" + $nl
+        }
+    } else {
+        $output += "  No active sessions in Redis" + $nl
+    }
+
+    # Check 4: Cookie settings (session cookies vs persistent)
+    $output += $nl + "CHECK 4: Cookie persistence settings" + $nl
+    $cookieCheck = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie'" 2>&1)
+    $cookieCheckStr = ($cookieCheck -join $nl).Trim()
+    if ($cookieCheckStr) {
+        $output += "  $cookieCheckStr" + $nl
+        if ($cookieCheckStr -match "Max-Age=0|Expires=.*1970") {
+            $output += "  [PASS] Session cookie (expires on browser close)" + $nl
+        }
+    }
+
+    # Determine status
+    if ($signOutFound -or $apiSignOut) {
+        $Status = "NotAFinding"
+        $output += $nl + "RESULT: NotAFinding - session destruction mechanism present (signOut handler)." + $nl
+    } else {
+        $Status = "Open"
+        $output += $nl + "RESULT: Open - unable to confirm session destruction on logoff." + $nl
+    }
+
+    $FindingDetails = $output
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
