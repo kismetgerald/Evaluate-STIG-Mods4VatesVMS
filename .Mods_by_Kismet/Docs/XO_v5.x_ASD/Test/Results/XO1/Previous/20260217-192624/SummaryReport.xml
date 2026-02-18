@@ -124,17 +124,17 @@ SWAP</Size>
     <Score>
       <CATI_OpenNRTotal>0</CATI_OpenNRTotal>
       <CATI_PossibleTotal>0</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>92</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>98</CATII_OpenNRTotal>
       <CATII_PossibleTotal>152</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>7</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>8</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>66</WeightedAvg>
+      <WeightedAvg>69</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-17T19:55:14.4064212-05:00" EvalScore="24.83">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-02-17T19:23:42.9153958-05:00" EvalScore="22.73">
       <CAT_I Total="34" Not_Applicable="4" Open="15" NotAFinding="6" Not_Reviewed="9">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -171,7 +171,7 @@ SWAP</Size>
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="27" Open="72" NotAFinding="33" Not_Reviewed="98">
+      <CAT_II Total="230" Not_Applicable="26" Open="58" NotAFinding="28" Not_Reviewed="118">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Not_Reviewed" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Not_Reviewed" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -287,26 +287,26 @@ SWAP</Size>
         <Vuln RuleTitle="The application must be configured to use only functions, ports, and protocols permitted to it in the PPSM CAL." Status="Open" ID="V-222519" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must require users to reauthenticate when organization-defined circumstances or situations require reauthentication." Status="Open" ID="V-222520" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must require devices to reauthenticate when organization-defined circumstances or situations requiring reauthentication." Status="Open" ID="V-222521" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must use multifactor (Alt. Token) authentication for network access to privileged accounts." Status="Open" ID="V-222523" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must accept Personal Identity Verification (PIV) credentials." Status="NotAFinding" ID="V-222524" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must electronically verify Personal Identity Verification (PIV) credentials." Status="Open" ID="V-222525" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts." Status="Open" ID="V-222526" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must use multifactor (Alt. Token) authentication for local access to privileged accounts." Status="Open" ID="V-222527" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts." Status="Open" ID="V-222528" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator." Status="NotAFinding" ID="V-222529" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="NotAFinding" ID="V-222530" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="NotAFinding" ID="V-222531" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner." Status="Open" ID="V-222532" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must authenticate all network connected endpoint devices before establishing any connection." Status="NotAFinding" ID="V-222533" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS." Status="Open" ID="V-222534" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication." Status="Not_Applicable" ID="V-222535" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one uppercase character be used." Status="Open" ID="V-222537" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one lowercase character be used." Status="Open" ID="V-222538" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one numeric character be used." Status="Open" ID="V-222539" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one special character be used." Status="Open" ID="V-222540" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must require the change of at least eight of the total number of characters when passwords are changed." Status="Open" ID="V-222541" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce 24 hours/1 day as the minimum password lifetime." Status="Open" ID="V-222544" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must enforce a 60-day maximum password lifetime restriction." Status="Open" ID="V-222545" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must use multifactor (Alt. Token) authentication for network access to privileged accounts." Status="Not_Reviewed" ID="V-222523" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must accept Personal Identity Verification (PIV) credentials." Status="Not_Reviewed" ID="V-222524" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must electronically verify Personal Identity Verification (PIV) credentials." Status="Not_Reviewed" ID="V-222525" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must use multifactor (e.g., CAC, Alt. Token) authentication for network access to non-privileged accounts." Status="Not_Reviewed" ID="V-222526" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must use multifactor (Alt. Token) authentication for local access to privileged accounts." Status="Not_Reviewed" ID="V-222527" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must use multifactor (e.g., CAC, Alt. Token) authentication for local access to nonprivileged accounts." Status="Not_Reviewed" ID="V-222528" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must ensure users are authenticated with an individual authenticator prior to using a group authenticator." Status="Not_Reviewed" ID="V-222529" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="Not_Reviewed" ID="V-222530" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="Not_Reviewed" ID="V-222531" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must utilize mutual authentication when endpoint device non-repudiation protections are required by DoD policy or by the data owner." Status="Not_Reviewed" ID="V-222532" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must authenticate all network connected endpoint devices before establishing any connection." Status="Not_Reviewed" ID="V-222533" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Service-Oriented Applications handling non-releasable data must authenticate endpoint devices via mutual SSL/TLS." Status="Not_Reviewed" ID="V-222534" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must disable device identifiers after 35 days of inactivity unless a cryptographic certificate is used for authentication." Status="Not_Reviewed" ID="V-222535" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one uppercase character be used." Status="Not_Reviewed" ID="V-222537" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one lowercase character be used." Status="Not_Reviewed" ID="V-222538" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one numeric character be used." Status="Not_Reviewed" ID="V-222539" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce password complexity by requiring that at least one special character be used." Status="Not_Reviewed" ID="V-222540" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must require the change of at least eight of the total number of characters when passwords are changed." Status="Not_Reviewed" ID="V-222541" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce 24 hours/1 day as the minimum password lifetime." Status="Not_Reviewed" ID="V-222544" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must enforce a 60-day maximum password lifetime restriction." Status="Not_Reviewed" ID="V-222545" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must prohibit password reuse for a minimum of five generations." Status="Not_Reviewed" ID="V-222546" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must allow the use of a temporary password for system logons with an immediate change to a permanent password." Status="Not_Reviewed" ID="V-222547" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application password must not be changeable by users other than the administrator or the user with which the password is associated." Status="Not_Reviewed" ID="V-222548" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
