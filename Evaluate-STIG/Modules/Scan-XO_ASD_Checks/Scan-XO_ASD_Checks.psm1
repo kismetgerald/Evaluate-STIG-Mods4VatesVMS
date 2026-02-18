@@ -20603,7 +20603,7 @@ Function Get-V222521 {
 
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222523 {
+Function Get-V222523 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222523
@@ -20798,7 +20798,7 @@ Function Get-VV222523 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222524 {
+Function Get-V222524 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222524
@@ -20970,7 +20970,7 @@ Function Get-VV222524 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222525 {
+Function Get-V222525 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222525
@@ -21142,7 +21142,7 @@ Function Get-VV222525 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222526 {
+Function Get-V222526 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222526
@@ -21335,7 +21335,7 @@ Function Get-VV222526 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222527 {
+Function Get-V222527 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222527
@@ -21505,7 +21505,7 @@ Function Get-VV222527 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222528 {
+Function Get-V222528 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222528
@@ -21669,7 +21669,7 @@ Function Get-VV222528 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222529 {
+Function Get-V222529 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222529
@@ -21851,7 +21851,7 @@ Function Get-VV222529 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222530 {
+Function Get-V222530 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222530
@@ -22005,7 +22005,7 @@ Function Get-VV222530 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222531 {
+Function Get-V222531 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222531
@@ -22147,7 +22147,7 @@ Function Get-VV222531 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222532 {
+Function Get-V222532 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222532
@@ -22303,7 +22303,7 @@ Function Get-VV222532 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222533 {
+Function Get-V222533 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222533
@@ -22456,7 +22456,7 @@ Function Get-VV222533 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222534 {
+Function Get-V222534 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222534
@@ -22607,7 +22607,7 @@ Function Get-VV222534 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222535 {
+Function Get-V222535 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222535
@@ -22764,7 +22764,7 @@ Function Get-VV222535 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222537 {
+Function Get-V222537 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222537
@@ -22948,7 +22948,7 @@ Function Get-VV222537 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222538 {
+Function Get-V222538 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222538
@@ -23121,7 +23121,7 @@ Function Get-VV222538 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222539 {
+Function Get-V222539 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222539
@@ -23286,7 +23286,7 @@ Function Get-VV222539 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222540 {
+Function Get-V222540 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222540
@@ -23451,7 +23451,7 @@ Function Get-VV222540 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222541 {
+Function Get-V222541 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222541
@@ -23617,7 +23617,7 @@ Function Get-VV222541 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222544 {
+Function Get-V222544 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222544
@@ -23785,7 +23785,7 @@ Function Get-VV222544 {
     }
     return Send-CheckResult @SendCheckParams
 }
-Function Get-VV222545 {
+Function Get-V222545 {
     <#
     .DESCRIPTION
         Vuln ID    : V-222545
