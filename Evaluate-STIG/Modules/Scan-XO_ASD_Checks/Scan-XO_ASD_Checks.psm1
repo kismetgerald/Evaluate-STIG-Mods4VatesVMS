@@ -31170,7 +31170,7 @@ Function Get-V222601 {
         }
 
         # Count hidden fields generally
-        $hiddenCount = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -c 'type.*hidden' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+        $hiddenCount = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep 'type.*hidden' {} + 2>/dev/null | wc -l" 2>&1)
         $hiddenCountStr = ($hiddenCount -join $nl).Trim()
         $output += "  Total hidden field references: $hiddenCountStr" + $nl
     }
@@ -31351,7 +31351,7 @@ Function Get-V222602 {
     $dangerousFound = $false
     foreach ($wp in $webPaths) {
         if (Test-Path $wp) {
-            $dangerous = $(timeout 10 sh -c "find '$wp' -maxdepth 5 -type f -name '*.js' -exec grep -c 'dangerouslySetInnerHTML' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $dangerous = $(timeout 10 sh -c "find '$wp' -maxdepth 5 -type f -name '*.js' -exec grep 'dangerouslySetInnerHTML' {} + 2>/dev/null | wc -l" 2>&1)
             $dangerousStr = ($dangerous -join $nl).Trim()
             if ($dangerousStr -and [int]$dangerousStr -gt 0) {
                 $dangerousFound = $true
@@ -31662,12 +31662,12 @@ Function Get-V222604 {
     $execRefs = 0
     foreach ($sp in $srcPaths) {
         if (Test-Path $sp) {
-            $cpCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'child_process\|require.*child' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $cpCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep 'child_process\|require.*child' {} + 2>/dev/null | wc -l" 2>&1)
             $cpCountStr = ($cpCount -join $nl).Trim()
             if ($cpCountStr) { $cpRefs = [int]$cpCountStr }
 
             # Check for dangerous exec/execSync (vs safer spawn/execFile)
-            $execCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -c '\.exec(\|\.execSync(' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+            $execCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.exec(\|\.execSync(' {} + 2>/dev/null | wc -l" 2>&1)
             $execCountStr = ($execCount -join $nl).Trim()
             if ($execCountStr) { $execRefs = [int]$execCountStr }
             break
@@ -31693,13 +31693,13 @@ Function Get-V222604 {
 
     # Check 3: Parameterized command patterns
     $output += $nl + "CHECK 3: Command parameterization" + $nl
-    $spawnUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c '\.spawn(\|\.execFile(' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $spawnUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.spawn(\|\.execFile(' {} + 2>/dev/null | wc -l" 2>&1)
     $spawnUsageStr = ($spawnUsage -join $nl).Trim()
     $output += "  spawn/execFile calls (safer pattern): $spawnUsageStr" + $nl
 
     # Check 4: String concatenation in commands (injection risk)
     $output += $nl + "CHECK 4: Command string concatenation patterns" + $nl
-    $concatRisk = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -n 'exec.*\`\|exec.*\${' {} + 2>/dev/null | head -5" 2>&1)
+    $concatRisk = $(timeout 10 sh -c 'find /opt/xo -maxdepth 6 -name "*.js" -not -path "*/node_modules/*" -exec grep -nE "exec\(|execSync\(" {} + 2>/dev/null | grep -v execFile | head -5' 2>&1)
     $concatRiskStr = ($concatRisk -join $nl).Trim()
     if ($concatRiskStr) {
         $output += "  [FINDING] Template literals in exec calls detected:" + $nl + "  $concatRiskStr" + $nl
@@ -32571,7 +32571,7 @@ Function Get-V222609 {
 
     # Check 2: JSON-RPC type checking (XO uses JSON-RPC protocol)
     $output += $nl + "CHECK 2: JSON-RPC input type checking" + $nl
-    $typeChecking = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'typeof\|instanceof\|\.type\s*===\|schema.*validate' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $typeChecking = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'typeof\|instanceof\|\.type\s*===\|schema.*validate' {} + 2>/dev/null | wc -l" 2>&1)
     $typeCheckingStr = ($typeChecking -join $nl).Trim()
     $output += "  Type checking references: $typeCheckingStr" + $nl
 
@@ -32599,7 +32599,7 @@ Function Get-V222609 {
     $npmAuditStr = ($npmAudit -join $nl).Trim()
     if ($npmAuditStr -match "npm audit unavailable") {
         $output += "  npm audit not available" + $nl
-    } elseif ($npmAuditStr -match [char]34 + "critical[char]34 + ":\s*[1-9]") {
+    } elseif ($npmAuditStr -match '"critical":\s*[1-9]') {
         $output += "  [FINDING] Critical vulnerabilities detected in npm audit" + $nl
     } else {
         $output += "  [PASS] No critical input handling vulnerabilities in npm audit" + $nl
@@ -33077,7 +33077,7 @@ Function Get-V222612 {
     # Check 3: Unsafe Buffer usage in XO source
     $output += $nl + "CHECK 3: Unsafe Buffer allocation patterns" + $nl
     $unsafeBuffers = 0
-    $bufCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'new Buffer(\|Buffer.allocUnsafe\|Buffer.allocUnsafeSlow' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $bufCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'new Buffer(\|Buffer.allocUnsafe\|Buffer.allocUnsafeSlow' {} + 2>/dev/null | wc -l" 2>&1)
     $bufCheckStr = ($bufCheck -join $nl).Trim()
     if ($bufCheckStr) { $unsafeBuffers = [int]$bufCheckStr }
     $output += "  Unsafe Buffer patterns: $unsafeBuffers" + $nl
@@ -37391,7 +37391,7 @@ Function Get-V222642 {
     $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
     foreach ($sp in $srcPaths) {
         if (Test-Path $sp) {
-            $hardcoded = $(timeout 15 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -n 'password\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]\|apiKey\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]\|secret\s*[:=]\s*['" + [char]34 + "][^'" + [char]34 + "]*['" + [char]34 + "]' {} + 2>/dev/null | grep -v 'test\|spec\|example\|sample\|placeholder\|__' | head -5" 2>&1)
+            $hardcoded = $(timeout 15 sh -c "find $sp -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -nEi 'password\s*[:=]|apiKey\s*[:=]|secret\s*[:=]' {} + 2>/dev/null | grep -vi 'test\|spec\|example\|sample\|placeholder\|__' | head -5" 2>&1)
             $hardcodedStr = ($hardcoded -join $nl).Trim()
             if ($hardcodedStr) {
                 $hardcodedFound = $true
@@ -37405,7 +37405,7 @@ Function Get-V222642 {
 
     # Check 2: Environment variable usage (proper pattern)
     $output += $nl + "CHECK 2: Environment variable credential management" + $nl
-    $envUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -c 'process\.env\.\|process\.env\[' {} + 2>/dev/null | awk -F: '{s+=\$NF}END{print s}'" 2>&1)
+    $envUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'process\.env\.\|process\.env\[' {} + 2>/dev/null | wc -l" 2>&1)
     $envUsageStr = ($envUsage -join $nl).Trim()
     $output += "  process.env references: $envUsageStr" + $nl
     if ($envUsageStr -and [int]$envUsageStr -gt 0) {
