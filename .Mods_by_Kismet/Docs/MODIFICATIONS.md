@@ -115,12 +115,12 @@ Function Get-XCPngVersion {
   <DetectionCode>Return (Test-IsRunningOS -Version XCPng)</DetectionCode>
   <PsModule>Scan-XCP-ng_Dom0_GPOS_Checks</PsModule>
   <PsModuleVer>1.2026.1.16</PsModuleVer>
-  <Counts CATI="0" CATII="152" CATIII="8" />
+  <Counts CATI="18" CATII="170" CATIII="10" />
   ...
 </STIG>
 ```
-**Rationale:** Enable GPOS SRG scanning for Dom0 OS hardening  
-**Scope:** 198 controls (0 CAT I, 152 CAT II, 8 CAT III)
+**Rationale:** Enable GPOS SRG scanning for Dom0 OS hardening
+**Scope:** 198 controls (18 CAT I, 170 CAT II, 10 CAT III)
 
 #### Lines 2208-2225: XO_ASD module reference updated
 ```xml
@@ -372,7 +372,7 @@ Priority: **HIGH** (0 CAT I, 162 CAT II, 31 CAT III)
 - Estimated effort: 40-60 hours
 
 ### Phase 2: GPOS SRG (Dom0 OS hardening)
-Priority: **HIGH** (0 CAT I, 152 CAT II, 8 CAT III)
+Priority: **HIGH** (18 CAT I, 170 CAT II, 10 CAT III)
 - Adapt RHEL 8 GPOS checks for XCP-ng Dom0 (CentOS 8-based)
 - Focus on SSH, sudo, user management, file permissions
 - Estimated effort: 30-50 hours
