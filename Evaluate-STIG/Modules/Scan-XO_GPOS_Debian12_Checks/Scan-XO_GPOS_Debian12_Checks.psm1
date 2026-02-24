@@ -272,7 +272,6 @@ Function Get-V203591 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -384,7 +383,6 @@ Function Get-V203592 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -496,7 +494,6 @@ Function Get-V203593 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -608,7 +605,6 @@ Function Get-V203594 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -720,7 +716,6 @@ Function Get-V203595 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -832,7 +827,6 @@ Function Get-V203596 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -944,7 +938,6 @@ Function Get-V203597 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1056,7 +1049,6 @@ Function Get-V203598 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1168,7 +1160,6 @@ Function Get-V203599 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1280,7 +1271,6 @@ Function Get-V203600 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1392,7 +1382,6 @@ Function Get-V203601 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1504,7 +1493,6 @@ Function Get-V203602 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1536,10 +1524,10 @@ Function Get-V203603 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203603
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203603r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000033-GPOS-00014
+        Rule ID    : SV-203603r958408_rule
+        Rule Title : The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -1554,7 +1542,6 @@ Function Get-V203603 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1563,6 +1550,7 @@ Function Get-V203603 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1575,7 +1563,7 @@ Function Get-V203603 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203603"
-    $RuleID = "SV-203603r877420_rule"
+    $RuleID = "SV-203603r958408_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -1585,9 +1573,118 @@ Function Get-V203603 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203603) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203603 - DoD-Approved Encryption for Remote Access Sessions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Get effective SSH configuration
+    $FindingDetails += "Check 1: SSH Cipher Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $weakCiphers = @("3des-cbc", "blowfish-cbc", "cast128-cbc", "arcfour", "arcfour128", "arcfour256")
+    $weakFound = $false
+
+    if ($sshdStr -match "(?m)^ciphers\s+(.+)$") {
+        $cipherLine = $matches[1].Trim()
+        $cipherList = $cipherLine -split ","
+        $FindingDetails += "Configured ciphers: " + $cipherLine + $nl + $nl
+
+        foreach ($c in $cipherList) {
+            $c = $c.Trim()
+            if ($c -in $weakCiphers) {
+                $FindingDetails += "  FAIL: Weak cipher: " + $c + $nl
+                $weakFound = $true
+            }
+        }
+        if (-not $weakFound) {
+            $FindingDetails += "  PASS: No weak ciphers detected" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH cipher configuration" + $nl
+        $weakFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Verify MACs are FIPS-approved
+    $FindingDetails += "Check 2: SSH MAC Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $weakMACs = @("hmac-md5", "hmac-md5-96", "hmac-ripemd160", "hmac-sha1-96", "umac-64@openssh.com")
+    $weakMacFound = $false
+
+    if ($sshdStr -match "(?m)^macs\s+(.+)$") {
+        $macLine = $matches[1].Trim()
+        $macList = $macLine -split ","
+        $FindingDetails += "Configured MACs: " + $macLine + $nl + $nl
+
+        foreach ($m in $macList) {
+            $m = $m.Trim()
+            if ($m -in $weakMACs) {
+                $FindingDetails += "  FAIL: Weak MAC: " + $m + $nl
+                $weakMacFound = $true
+            }
+        }
+        if (-not $weakMacFound) {
+            $FindingDetails += "  PASS: No weak MACs detected" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH MAC configuration" + $nl
+        $weakMacFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Verify KexAlgorithms
+    $FindingDetails += "Check 3: SSH Key Exchange Algorithms" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $weakKex = @("diffie-hellman-group1-sha1", "diffie-hellman-group-exchange-sha1", "diffie-hellman-group14-sha1")
+    $weakKexFound = $false
+
+    if ($sshdStr -match "(?m)^kexalgorithms\s+(.+)$") {
+        $kexLine = $matches[1].Trim()
+        $kexList = $kexLine -split ","
+        $FindingDetails += "Configured KexAlgorithms: " + $kexLine + $nl + $nl
+
+        foreach ($k in $kexList) {
+            $k = $k.Trim()
+            if ($k -in $weakKex) {
+                $FindingDetails += "  FAIL: Weak KexAlgorithm: " + $k + $nl
+                $weakKexFound = $true
+            }
+        }
+        if (-not $weakKexFound) {
+            $FindingDetails += "  PASS: No weak key exchange algorithms detected" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH KexAlgorithm configuration" + $nl
+        $weakKexFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: SSH Protocol version
+    $FindingDetails += "Check 4: SSH Protocol Version" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshVersion = $(ssh -V 2>&1)
+    $sshVersionStr = ($sshVersion -join $nl)
+    $FindingDetails += "SSH Version: " + $sshVersionStr + $nl
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($weakFound -or $weakMacFound -or $weakKexFound) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Non-approved cryptographic algorithms detected in SSH configuration" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - SSH configured with DoD-approved encryption algorithms" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1616,7 +1713,6 @@ Function Get-V203603 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1728,7 +1824,6 @@ Function Get-V203604 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1840,7 +1935,6 @@ Function Get-V203605 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -1952,7 +2046,6 @@ Function Get-V203606 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2064,7 +2157,6 @@ Function Get-V203607 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2176,7 +2268,6 @@ Function Get-V203608 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2288,7 +2379,6 @@ Function Get-V203609 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2400,7 +2490,6 @@ Function Get-V203610 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2512,7 +2601,6 @@ Function Get-V203611 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2624,7 +2712,6 @@ Function Get-V203613 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2736,7 +2823,6 @@ Function Get-V203614 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2848,7 +2934,6 @@ Function Get-V203615 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -2960,7 +3045,6 @@ Function Get-V203616 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3072,7 +3156,6 @@ Function Get-V203617 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3184,7 +3267,6 @@ Function Get-V203618 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3296,7 +3378,6 @@ Function Get-V203619 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3408,7 +3489,6 @@ Function Get-V203620 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3520,7 +3600,6 @@ Function Get-V203621 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3632,7 +3711,6 @@ Function Get-V203622 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3744,7 +3822,6 @@ Function Get-V203623 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3856,7 +3933,6 @@ Function Get-V203624 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -3968,7 +4044,6 @@ Function Get-V203625 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4080,7 +4155,6 @@ Function Get-V203626 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4192,7 +4266,6 @@ Function Get-V203627 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4304,7 +4377,6 @@ Function Get-V203628 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4336,10 +4408,10 @@ Function Get-V203629 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203629
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203629r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000073-GPOS-00041
+        Rule ID    : SV-203629r982199_rule
+        Rule Title : The operating system must store only encrypted representations of passwords.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -4375,7 +4447,7 @@ Function Get-V203629 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203629"
-    $RuleID = "SV-203629r877420_rule"
+    $RuleID = "SV-203629r982199_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4385,9 +4457,100 @@ Function Get-V203629 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203629) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203629 - Store Only Encrypted Representations of Passwords" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Verify password hashing algorithm in /etc/login.defs
+    $FindingDetails += "Check 1: System Password Hashing Algorithm (/etc/login.defs)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $loginDefs = Get-Content /etc/login.defs -ErrorAction SilentlyContinue
+    $loginDefsStr = ($loginDefs -join $nl)
+    $encryptMethod = ""
+
+    if ($loginDefsStr -match "(?m)^ENCRYPT_METHOD\s+(\S+)") {
+        $encryptMethod = $matches[1]
+        $FindingDetails += "ENCRYPT_METHOD: " + $encryptMethod + $nl
+    } else {
+        $FindingDetails += "ENCRYPT_METHOD: Not configured (default)" + $nl
+    }
+
+    $approvedHashes = @("SHA512", "YESCRYPT")
+    $hashOk = $encryptMethod -in $approvedHashes
+    if ($hashOk) {
+        $FindingDetails += "  PASS: Using approved hashing algorithm" + $nl
+    } else {
+        $FindingDetails += "  FAIL: Expected SHA512 or YESCRYPT" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Verify /etc/shadow uses hashed passwords
+    $FindingDetails += "Check 2: Password Hash Verification (/etc/shadow)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $shadowContent = Get-Content /etc/shadow -ErrorAction SilentlyContinue
+    $unhashed = 0
+    $locked = 0
+    $hashed = 0
+    $totalAccts = 0
+
+    foreach ($line in $shadowContent) {
+        if ($line -match "^([^:]+):([^:]*):") {
+            $acctName = $matches[1]
+            $hashField = $matches[2]
+            $totalAccts++
+
+            if ($hashField -eq "" -or $hashField -eq " ") {
+                $FindingDetails += "  FAIL: Empty password field for account: " + $acctName + $nl
+                $unhashed++
+            } elseif ($hashField -match "^[!*]") {
+                $locked++
+            } elseif ($hashField -match "^\$") {
+                $hashed++
+            }
+        }
+    }
+
+    $FindingDetails += "Total accounts: " + $totalAccts + $nl
+    $FindingDetails += "Hashed passwords: " + $hashed + $nl
+    $FindingDetails += "Locked/disabled: " + $locked + $nl
+    $FindingDetails += "Empty/unhashed: " + $unhashed + $nl
+
+    $FindingDetails += $nl
+
+    # Check 3: Verify PAM password module configuration
+    $FindingDetails += "Check 3: PAM Password Hashing (/etc/pam.d/common-password)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $pamPw = Get-Content /etc/pam.d/common-password -ErrorAction SilentlyContinue
+    $pamPwStr = ($pamPw -join $nl)
+    $pamHashOk = $false
+
+    if ($pamPwStr -match "pam_unix\.so.*sha512") {
+        $FindingDetails += "PAM: sha512 hashing configured" + $nl
+        $pamHashOk = $true
+    } elseif ($pamPwStr -match "pam_unix\.so.*yescrypt") {
+        $FindingDetails += "PAM: yescrypt hashing configured" + $nl
+        $pamHashOk = $true
+    } else {
+        $FindingDetails += "PAM: No explicit strong hashing algorithm configured" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($unhashed -gt 0) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Accounts with empty/unhashed passwords detected" + $nl
+    } elseif (-not $hashOk -and -not $pamHashOk) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - No approved password hashing algorithm configured" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - All passwords stored using approved hashing algorithms" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4416,7 +4579,6 @@ Function Get-V203629 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4448,10 +4610,10 @@ Function Get-V203630 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203630
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203630r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000074-GPOS-00042
+        Rule ID    : SV-203630r987796_rule
+        Rule Title : The operating system must transmit only encrypted representations of passwords.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -4487,7 +4649,7 @@ Function Get-V203630 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203630"
-    $RuleID = "SV-203630r877420_rule"
+    $RuleID = "SV-203630r987796_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -4497,9 +4659,78 @@ Function Get-V203630 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203630) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203630 - Transmit Only Encrypted Representations of Passwords" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Verify SSH encrypts all traffic including passwords
+    $FindingDetails += "Check 1: SSH Encryption of Password Transmission" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    if ($sshdStr -match "(?m)^ciphers\s+(.+)$") {
+        $cipherLine = $matches[1].Trim()
+        $FindingDetails += "SSH Ciphers: " + $cipherLine + $nl
+        $FindingDetails += "  PASS: SSH encrypts all traffic, including password transmission" + $nl
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH cipher configuration" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Verify no unencrypted remote access (telnet, rsh, ftp)
+    $FindingDetails += "Check 2: Unencrypted Remote Access Services" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $insecureServices = @("telnetd", "rshd", "rlogind", "ftpd", "vsftpd", "proftpd")
+    $insecureFound = $false
+
+    foreach ($svc in $insecureServices) {
+        $pkgCheck = $(dpkg -l $svc 2>&1)
+        $pkgStr = ($pkgCheck -join $nl)
+        if ($pkgStr -match "^ii\s") {
+            $FindingDetails += "  FAIL: Insecure service installed: " + $svc + $nl
+            $insecureFound = $true
+        }
+    }
+
+    if (-not $insecureFound) {
+        $FindingDetails += "  PASS: No insecure remote access services installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Verify PermitEmptyPasswords is disabled
+    $FindingDetails += "Check 3: SSH PermitEmptyPasswords" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $emptyPwOk = $true
+    if ($sshdStr -match "(?m)^permitemptypasswords\s+(\S+)") {
+        $permitEmpty = $matches[1].Trim()
+        $FindingDetails += "PermitEmptyPasswords: " + $permitEmpty + $nl
+        if ($permitEmpty -eq "yes") {
+            $FindingDetails += "  FAIL: Empty passwords are permitted" + $nl
+            $emptyPwOk = $false
+        } else {
+            $FindingDetails += "  PASS: Empty passwords are denied" + $nl
+        }
+    } else {
+        $FindingDetails += "PermitEmptyPasswords: not set (default: no)" + $nl
+        $FindingDetails += "  PASS: Default denies empty passwords" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($insecureFound -or -not $emptyPwOk) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Unencrypted password transmission possible" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Passwords transmitted only via encrypted channels (SSH)" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4528,7 +4759,6 @@ Function Get-V203630 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4640,7 +4870,6 @@ Function Get-V203631 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4752,7 +4981,6 @@ Function Get-V203632 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4864,7 +5092,6 @@ Function Get-V203634 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -4976,7 +5203,6 @@ Function Get-V203635 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5088,7 +5314,6 @@ Function Get-V203636 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5200,7 +5425,6 @@ Function Get-V203637 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5312,7 +5536,6 @@ Function Get-V203638 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5424,7 +5647,6 @@ Function Get-V203639 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5536,7 +5758,6 @@ Function Get-V203640 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5648,7 +5869,6 @@ Function Get-V203641 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5760,7 +5980,6 @@ Function Get-V203642 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5872,7 +6091,6 @@ Function Get-V203643 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -5984,7 +6202,6 @@ Function Get-V203644 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6096,7 +6313,6 @@ Function Get-V203645 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6208,7 +6424,6 @@ Function Get-V203646 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6320,7 +6535,6 @@ Function Get-V203647 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6432,7 +6646,6 @@ Function Get-V203648 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6544,7 +6757,6 @@ Function Get-V203649 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6656,7 +6868,6 @@ Function Get-V203650 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6768,7 +6979,6 @@ Function Get-V203651 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6880,7 +7090,6 @@ Function Get-V203652 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -6912,10 +7121,10 @@ Function Get-V203653 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203653
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203653r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000125-GPOS-00065
+        Rule ID    : SV-203653r958510_rule
+        Rule Title : The operating system must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -6951,7 +7160,7 @@ Function Get-V203653 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203653"
-    $RuleID = "SV-203653r877420_rule"
+    $RuleID = "SV-203653r958510_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -6961,9 +7170,92 @@ Function Get-V203653 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203653) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203653 - Strong Authenticators for Nonlocal Maintenance Sessions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: SSH public key authentication enabled
+    $FindingDetails += "Check 1: SSH Public Key Authentication" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $pubkeyEnabled = $false
+    if ($sshdStr -match "(?m)^pubkeyauthentication\s+(\S+)") {
+        $pubkeyVal = $matches[1].Trim()
+        $FindingDetails += "PubkeyAuthentication: " + $pubkeyVal + $nl
+        if ($pubkeyVal -eq "yes") {
+            $pubkeyEnabled = $true
+            $FindingDetails += "  PASS: Public key authentication is enabled" + $nl
+        } else {
+            $FindingDetails += "  FAIL: Public key authentication is disabled" + $nl
+        }
+    } else {
+        $FindingDetails += "PubkeyAuthentication: not set (default: yes)" + $nl
+        $pubkeyEnabled = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Password-only authentication should be restricted
+    $FindingDetails += "Check 2: Password Authentication Status" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    if ($sshdStr -match "(?m)^passwordauthentication\s+(\S+)") {
+        $pwAuth = $matches[1].Trim()
+        $FindingDetails += "PasswordAuthentication: " + $pwAuth + $nl
+    }
+
+    if ($sshdStr -match "(?m)^kbdinteractiveauthentication\s+(\S+)") {
+        $kbdAuth = $matches[1].Trim()
+        $FindingDetails += "KbdInteractiveAuthentication: " + $kbdAuth + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Root login restrictions
+    $FindingDetails += "Check 3: Root Login Restrictions" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $rootRestricted = $false
+    if ($sshdStr -match "(?m)^permitrootlogin\s+(\S+)") {
+        $rootLogin = $matches[1].Trim()
+        $FindingDetails += "PermitRootLogin: " + $rootLogin + $nl
+        if ($rootLogin -eq "prohibit-password" -or $rootLogin -eq "forced-commands-only" -or $rootLogin -eq "no") {
+            $rootRestricted = $true
+            $FindingDetails += "  PASS: Root password login is restricted" + $nl
+        } else {
+            $FindingDetails += "  INFO: Root login with password is allowed" + $nl
+        }
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: Authorized keys exist for maintenance users
+    $FindingDetails += "Check 4: SSH Authorized Keys" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $authKeysFound = $false
+    $rootAuthKeys = "/root/.ssh/authorized_keys"
+    if (Test-Path $rootAuthKeys) {
+        $keyCount = (Get-Content $rootAuthKeys -ErrorAction SilentlyContinue | Where-Object { $_ -match "^ssh-" }).Count
+        $FindingDetails += "Root authorized_keys: " + $keyCount + " key(s)" + $nl
+        if ($keyCount -gt 0) { $authKeysFound = $true }
+    } else {
+        $FindingDetails += "Root authorized_keys: Not found" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($pubkeyEnabled -and ($authKeysFound -or $rootRestricted)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Strong authenticators (public key) are employed for nonlocal maintenance" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Strong authenticators not fully configured for nonlocal maintenance sessions" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6992,7 +7284,6 @@ Function Get-V203653 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7104,7 +7395,6 @@ Function Get-V203655 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7216,7 +7506,6 @@ Function Get-V203656 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7328,7 +7617,6 @@ Function Get-V203657 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7440,7 +7728,6 @@ Function Get-V203658 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7552,7 +7839,6 @@ Function Get-V203659 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7664,7 +7950,6 @@ Function Get-V203660 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7776,7 +8061,6 @@ Function Get-V203661 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -7888,7 +8172,6 @@ Function Get-V203663 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8000,7 +8283,6 @@ Function Get-V203664 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8112,7 +8394,6 @@ Function Get-V203665 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8224,7 +8505,6 @@ Function Get-V203666 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8336,7 +8616,6 @@ Function Get-V203667 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8448,7 +8727,6 @@ Function Get-V203668 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8480,10 +8758,10 @@ Function Get-V203669 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203669
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203669r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000250-GPOS-00093
+        Rule ID    : SV-203669r991554_rule
+        Rule Title : The operating system must implement cryptography to protect the integrity of remote access sessions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -8519,7 +8797,7 @@ Function Get-V203669 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203669"
-    $RuleID = "SV-203669r877420_rule"
+    $RuleID = "SV-203669r991554_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -8529,9 +8807,146 @@ Function Get-V203669 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203669) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203669 - Cryptographic Integrity for Remote Access Sessions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $allPass = $true
+
+    # Check 1: SSH MAC algorithms (integrity protection for remote sessions)
+    $FindingDetails += "Check 1: SSH MAC Algorithms (Integrity)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $weakMACs = @("hmac-md5", "hmac-md5-96", "hmac-sha1-96", "umac-64@openssh.com")
+
+    if ($sshdStr -match "(?m)^macs\s+(.+)$") {
+        $macLine = $matches[1].Trim()
+        $macList = $macLine -split ","
+        $FindingDetails += "Configured MACs: " + $macLine + $nl
+
+        $weakMacFound = $false
+        foreach ($m in $macList) {
+            $m = $m.Trim()
+            if ($m -in $weakMACs) {
+                $FindingDetails += "  FAIL: Weak MAC algorithm detected: " + $m + $nl
+                $weakMacFound = $true
+                $allPass = $false
+            }
+        }
+        if (-not $weakMacFound) {
+            $FindingDetails += "  PASS: All MAC algorithms provide adequate integrity protection" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH MAC configuration" + $nl
+        $allPass = $false
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: SSH host key algorithms (server authentication integrity)
+    $FindingDetails += "Check 2: SSH Host Key Algorithms" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    if ($sshdStr -match "(?m)^hostkeyalgorithms\s+(.+)$") {
+        $hkaLine = $matches[1].Trim()
+        $FindingDetails += "Host key algorithms: " + $hkaLine + $nl
+
+        $weakHKA = @("ssh-dss", "ssh-dsa")
+        $weakHkaFound = $false
+        $hkaList = $hkaLine -split ","
+        foreach ($h in $hkaList) {
+            $h = $h.Trim()
+            if ($h -in $weakHKA) {
+                $FindingDetails += "  FAIL: Weak host key algorithm: " + $h + $nl
+                $weakHkaFound = $true
+                $allPass = $false
+            }
+        }
+        if (-not $weakHkaFound) {
+            $FindingDetails += "  PASS: All host key algorithms meet integrity requirements" + $nl
+        }
+    } else {
+        $FindingDetails += "Host key algorithms: Using OpenSSH defaults (acceptable)" + $nl
+        # OpenSSH defaults exclude weak algorithms on Debian 12
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: SSH protocol version
+    $FindingDetails += "Check 3: SSH Protocol Version" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshVersion = $(ssh -V 2>&1)
+    $sshVerStr = ($sshVersion -join $nl).Trim()
+    $FindingDetails += "SSH version: " + $sshVerStr + $nl
+
+    if ($sshVerStr -match "OpenSSH_(\d+)\.(\d+)") {
+        $majorVer = [int]$matches[1]
+        if ($majorVer -ge 7) {
+            $FindingDetails += "  PASS: OpenSSH version supports SSH protocol 2 only" + $nl
+        } else {
+            $FindingDetails += "  FAIL: OpenSSH version may support deprecated protocol 1" + $nl
+            $allPass = $false
+        }
+    } else {
+        $FindingDetails += "  INFO: Could not parse SSH version" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: Insecure remote access services
+    $FindingDetails += "Check 4: Insecure Remote Access Services" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $insecurePkgs = @("telnetd", "rsh-server", "rlogin", "rexecd")
+    $insecureFound = $false
+    foreach ($pkg in $insecurePkgs) {
+        $pkgCheck = $(dpkg -l $pkg 2>&1)
+        $pkgStr = ($pkgCheck -join $nl)
+        if ($pkgStr -match "^ii\s") {
+            $FindingDetails += "  FAIL: Insecure service installed: " + $pkg + $nl
+            $insecureFound = $true
+            $allPass = $false
+        }
+    }
+    if (-not $insecureFound) {
+        $FindingDetails += "  PASS: No insecure remote access services installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 5: SSH service active
+    $FindingDetails += "Check 5: SSH Service Status" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshActive = $(systemctl is-active sshd 2>&1)
+    $sshStr = ($sshActive -join $nl).Trim()
+    if ($sshStr -ne "active") {
+        $sshActive = $(systemctl is-active ssh 2>&1)
+        $sshStr = ($sshActive -join $nl).Trim()
+    }
+    $FindingDetails += "SSH service status: " + $sshStr + $nl
+
+    if ($sshStr -eq "active") {
+        $FindingDetails += "  PASS: SSH is the active remote access method" + $nl
+    } else {
+        $FindingDetails += "  WARNING: SSH service not active" + $nl
+        $allPass = $false
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($allPass) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Cryptographic integrity protections implemented for remote access sessions" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Remote access integrity protection deficiencies detected" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8560,7 +8975,6 @@ Function Get-V203669 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8672,7 +9086,6 @@ Function Get-V203670 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8784,7 +9197,6 @@ Function Get-V203671 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -8896,7 +9308,6 @@ Function Get-V203672 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9008,7 +9419,6 @@ Function Get-V203673 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9120,7 +9530,6 @@ Function Get-V203674 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9232,7 +9641,6 @@ Function Get-V203675 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9344,7 +9752,6 @@ Function Get-V203676 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9456,7 +9863,6 @@ Function Get-V203677 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9568,7 +9974,6 @@ Function Get-V203678 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9680,7 +10085,6 @@ Function Get-V203679 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9792,7 +10196,6 @@ Function Get-V203680 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9904,7 +10307,6 @@ Function Get-V203681 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -9936,10 +10338,10 @@ Function Get-V203682 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203682
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203682r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000278-GPOS-00108
+        Rule ID    : SV-203682r991567_rule
+        Rule Title : The operating system must use cryptographic mechanisms to protect the integrity of audit tools.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -9975,7 +10377,7 @@ Function Get-V203682 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203682"
-    $RuleID = "SV-203682r877420_rule"
+    $RuleID = "SV-203682r991567_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -9985,9 +10387,95 @@ Function Get-V203682 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203682) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203682 - Cryptographic Integrity of Audit Tools" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Verify AIDE (Advanced Intrusion Detection Environment) is installed
+    $FindingDetails += "Check 1: File Integrity Monitoring Tool" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $aideInstalled = $false
+    $tripwireInstalled = $false
+
+    $aidePkg = $(dpkg -l aide 2>&1)
+    $aideStr = ($aidePkg -join $nl)
+    if ($aideStr -match "^ii\s") {
+        $FindingDetails += "AIDE: Installed" + $nl
+        $aideInstalled = $true
+    } else {
+        $FindingDetails += "AIDE: Not installed" + $nl
+    }
+
+    $tripwirePkg = $(dpkg -l tripwire 2>&1)
+    $tripwireStr = ($tripwirePkg -join $nl)
+    if ($tripwireStr -match "^ii\s") {
+        $FindingDetails += "Tripwire: Installed" + $nl
+        $tripwireInstalled = $true
+    } else {
+        $FindingDetails += "Tripwire: Not installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Verify audit tool packages have not been tampered with
+    $FindingDetails += "Check 2: Audit Package Integrity (dpkg -V)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $auditPkgs = @("auditd", "audispd-plugins", "libaudit1", "libaudit-common")
+    $tamperFound = $false
+
+    foreach ($pkg in $auditPkgs) {
+        $pkgCheck = $(dpkg -l $pkg 2>&1)
+        $pkgStr = ($pkgCheck -join $nl)
+        if ($pkgStr -match "^ii\s") {
+            $verifyResult = $(dpkg -V $pkg 2>&1)
+            $verifyStr = ($verifyResult -join $nl).Trim()
+            if ($verifyStr -ne "") {
+                $FindingDetails += "  " + $pkg + ": MODIFIED - " + $verifyStr + $nl
+                $tamperFound = $true
+            } else {
+                $FindingDetails += "  " + $pkg + ": Integrity OK" + $nl
+            }
+        }
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: AIDE configuration (if installed)
+    if ($aideInstalled) {
+        $FindingDetails += "Check 3: AIDE Configuration" + $nl
+        $FindingDetails += ("-" * 40) + $nl
+
+        if (Test-Path /etc/aide/aide.conf) {
+            $aideConf = Get-Content /etc/aide/aide.conf -ErrorAction SilentlyContinue
+            $aideConfStr = ($aideConf -join $nl)
+
+            if ($aideConfStr -match "sha256|sha512") {
+                $FindingDetails += "AIDE uses cryptographic hashes (SHA-256/SHA-512)" + $nl
+            } else {
+                $FindingDetails += "AIDE configuration does not reference SHA-256/SHA-512 hashes" + $nl
+            }
+
+            $aideDbExists = Test-Path /var/lib/aide/aide.db
+            $FindingDetails += "AIDE database exists: " + $aideDbExists + $nl
+        } else {
+            $FindingDetails += "AIDE config file not found at /etc/aide/aide.conf" + $nl
+        }
+        $FindingDetails += $nl
+    }
+
+    # Status determination
+    if (-not $aideInstalled -and -not $tripwireInstalled) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - No file integrity monitoring tool installed (AIDE or Tripwire required)" + $nl
+    } elseif ($tamperFound) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Audit tool package tampering detected" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Cryptographic integrity of audit tools verified" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10016,7 +10504,6 @@ Function Get-V203682 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10128,7 +10615,6 @@ Function Get-V203683 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10240,7 +10726,6 @@ Function Get-V203684 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10352,7 +10837,6 @@ Function Get-V203685 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10464,7 +10948,6 @@ Function Get-V203686 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10576,7 +11059,6 @@ Function Get-V203687 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10688,7 +11170,6 @@ Function Get-V203688 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10800,7 +11281,6 @@ Function Get-V203689 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -10912,7 +11392,6 @@ Function Get-V203690 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11024,7 +11503,6 @@ Function Get-V203691 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11136,7 +11614,6 @@ Function Get-V203692 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11248,7 +11725,6 @@ Function Get-V203693 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11360,7 +11836,6 @@ Function Get-V203694 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11392,10 +11867,10 @@ Function Get-V203695 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203695
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203695r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000324-GPOS-00125
+        Rule ID    : SV-203695r958726_rule
+        Rule Title : The operating system must prevent nonprivileged users from executing privileged functions.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -11431,7 +11906,7 @@ Function Get-V203695 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203695"
-    $RuleID = "SV-203695r877420_rule"
+    $RuleID = "SV-203695r958726_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -11441,9 +11916,94 @@ Function Get-V203695 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203695) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203695 - Prevent Nonprivileged Users from Executing Privileged Functions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: sudo configuration (privilege escalation control)
+    $FindingDetails += "Check 1: Sudo Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sudoInstalled = $false
+    $sudoPkg = $(dpkg -l sudo 2>&1)
+    if (($sudoPkg -join $nl) -match "^ii\s") {
+        $sudoInstalled = $true
+        $FindingDetails += "sudo: Installed" + $nl
+
+        # Check sudoers for NOPASSWD rules (potential weakness)
+        $sudoersContent = Get-Content /etc/sudoers -ErrorAction SilentlyContinue
+        $sudoersStr = ($sudoersContent -join $nl)
+        $noPasswdCount = ($sudoersContent | Where-Object { $_ -match "NOPASSWD" -and $_ -notmatch "^\s*#" }).Count
+        $FindingDetails += "NOPASSWD rules in /etc/sudoers: " + $noPasswdCount + $nl
+
+        # Check sudoers.d directory
+        if (Test-Path /etc/sudoers.d) {
+            $sudoersDFiles = Get-ChildItem /etc/sudoers.d -ErrorAction SilentlyContinue
+            $FindingDetails += "Files in /etc/sudoers.d/: " + $sudoersDFiles.Count + $nl
+        }
+    } else {
+        $FindingDetails += "sudo: Not installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: AppArmor status (mandatory access control)
+    $FindingDetails += "Check 2: AppArmor Mandatory Access Control" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $aaStatus = $(apparmor_status 2>&1)
+    $aaStr = ($aaStatus -join $nl)
+    $aaActive = $false
+
+    if ($aaStr -match "(\d+) profiles are loaded") {
+        $profileCount = $matches[1]
+        $FindingDetails += "AppArmor profiles loaded: " + $profileCount + $nl
+        $aaActive = $true
+
+        if ($aaStr -match "(\d+) profiles are in enforce mode") {
+            $FindingDetails += "Profiles in enforce mode: " + $matches[1] + $nl
+        }
+        if ($aaStr -match "(\d+) profiles are in complain mode") {
+            $FindingDetails += "Profiles in complain mode: " + $matches[1] + $nl
+        }
+    } else {
+        $FindingDetails += "AppArmor: Not active or not installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Non-root users with UID 0
+    $FindingDetails += "Check 3: Accounts with UID 0 (Root Equivalents)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $uid0Issue = $false
+    $passwdContent = Get-Content /etc/passwd -ErrorAction SilentlyContinue
+    foreach ($line in $passwdContent) {
+        if ($line -match "^([^:]+):[^:]*:0:") {
+            $acctName = $matches[1]
+            if ($acctName -ne "root") {
+                $FindingDetails += "  FAIL: Non-root account with UID 0: " + $acctName + $nl
+                $uid0Issue = $true
+            }
+        }
+    }
+    if (-not $uid0Issue) {
+        $FindingDetails += "  PASS: Only root has UID 0" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($uid0Issue) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Non-root accounts with UID 0 detected (root-equivalent access)" + $nl
+    } elseif (-not $sudoInstalled) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - sudo not installed; no privilege escalation control mechanism" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Privilege escalation controlled via sudo; no unauthorized UID 0 accounts" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11472,7 +12032,6 @@ Function Get-V203695 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11584,7 +12143,6 @@ Function Get-V203696 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11696,7 +12254,6 @@ Function Get-V203697 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11808,7 +12365,6 @@ Function Get-V203698 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -11920,7 +12476,6 @@ Function Get-V203699 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12032,7 +12587,6 @@ Function Get-V203700 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12144,7 +12698,6 @@ Function Get-V203701 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12256,7 +12809,6 @@ Function Get-V203702 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12368,7 +12920,6 @@ Function Get-V203703 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12480,7 +13031,6 @@ Function Get-V203704 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12592,7 +13142,6 @@ Function Get-V203705 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12704,7 +13253,6 @@ Function Get-V203706 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12816,7 +13364,6 @@ Function Get-V203707 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -12928,7 +13475,6 @@ Function Get-V203708 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13040,7 +13586,6 @@ Function Get-V203709 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13152,7 +13697,6 @@ Function Get-V203710 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13264,7 +13808,6 @@ Function Get-V203711 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13376,7 +13919,6 @@ Function Get-V203712 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13488,7 +14030,6 @@ Function Get-V203713 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13600,7 +14141,6 @@ Function Get-V203714 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13712,7 +14252,6 @@ Function Get-V203715 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13824,7 +14363,6 @@ Function Get-V203716 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -13936,7 +14474,6 @@ Function Get-V203717 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14048,7 +14585,6 @@ Function Get-V203718 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14160,7 +14696,6 @@ Function Get-V203719 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14192,10 +14727,10 @@ Function Get-V203720 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203720
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203720r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000366-GPOS-00153
+        Rule ID    : SV-203720r982212_rule
+        Rule Title : The operating system must prevent the installation of patches, service packs, device drivers, or operating system components without verification they have been digitally signed.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -14231,7 +14766,7 @@ Function Get-V203720 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203720"
-    $RuleID = "SV-203720r877420_rule"
+    $RuleID = "SV-203720r982212_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -14241,9 +14776,88 @@ Function Get-V203720 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203720) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203720 - Prevent Installation of Unsigned Packages" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: APT signature verification settings
+    $FindingDetails += "Check 1: APT Signature Verification" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $aptConfig = $(apt-config dump 2>&1)
+    $aptStr = ($aptConfig -join $nl)
+
+    $allowUnauth = $false
+    if ($aptStr -match "APT::Get::AllowUnauthenticated") {
+        if ($aptStr -match 'APT::Get::AllowUnauthenticated\s+"true"') {
+            $FindingDetails += "AllowUnauthenticated: true (INSECURE)" + $nl
+            $allowUnauth = $true
+        } else {
+            $FindingDetails += "AllowUnauthenticated: false (Secure)" + $nl
+        }
+    } else {
+        $FindingDetails += "AllowUnauthenticated: not set (default: false - Secure)" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: APT trusted GPG keys
+    $FindingDetails += "Check 2: Trusted GPG Keys" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $gpgKeys = $(apt-key list 2>&1)
+    $gpgStr = ($gpgKeys -join $nl)
+
+    if (Test-Path /etc/apt/trusted.gpg.d) {
+        $trustedKeys = Get-ChildItem /etc/apt/trusted.gpg.d -ErrorAction SilentlyContinue
+        $FindingDetails += "Keys in /etc/apt/trusted.gpg.d/: " + $trustedKeys.Count + $nl
+        foreach ($key in $trustedKeys) {
+            $FindingDetails += "  " + $key.Name + $nl
+        }
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Repository configuration (sources use signed repos)
+    $FindingDetails += "Check 3: APT Source Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $unsignedRepo = $false
+    $sourceFiles = Get-ChildItem /etc/apt/sources.list.d/ -Filter "*.list" -ErrorAction SilentlyContinue
+    $sourceFiles += Get-ChildItem /etc/apt/sources.list.d/ -Filter "*.sources" -ErrorAction SilentlyContinue
+
+    if (Test-Path /etc/apt/sources.list) {
+        $mainSources = Get-Content /etc/apt/sources.list -ErrorAction SilentlyContinue
+        $mainStr = ($mainSources -join $nl)
+        if ($mainStr -match "\[trusted=yes\]") {
+            $FindingDetails += "  FAIL: sources.list contains [trusted=yes] (bypasses signature)" + $nl
+            $unsignedRepo = $true
+        }
+    }
+
+    foreach ($sf in $sourceFiles) {
+        $sfContent = Get-Content $sf.FullName -ErrorAction SilentlyContinue
+        $sfStr = ($sfContent -join $nl)
+        if ($sfStr -match "\[trusted=yes\]" -or $sfStr -match "Trusted:\s*yes") {
+            $FindingDetails += "  FAIL: " + $sf.Name + " bypasses signature verification" + $nl
+            $unsignedRepo = $true
+        }
+    }
+
+    if (-not $unsignedRepo) {
+        $FindingDetails += "  PASS: All configured repositories require signature verification" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($allowUnauth -or $unsignedRepo) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - APT is configured to allow unsigned package installation" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - APT enforces digital signature verification for all packages" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14272,7 +14886,6 @@ Function Get-V203720 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14384,7 +14997,6 @@ Function Get-V203721 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14496,7 +15108,6 @@ Function Get-V203722 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14608,7 +15219,6 @@ Function Get-V203723 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14720,7 +15330,6 @@ Function Get-V203724 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14832,7 +15441,6 @@ Function Get-V203725 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -14944,7 +15552,6 @@ Function Get-V203727 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15056,7 +15663,6 @@ Function Get-V203728 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15168,7 +15774,6 @@ Function Get-V203729 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15280,7 +15885,6 @@ Function Get-V203730 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15392,7 +15996,6 @@ Function Get-V203731 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15504,7 +16107,6 @@ Function Get-V203733 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15616,7 +16218,6 @@ Function Get-V203734 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15728,7 +16329,6 @@ Function Get-V203735 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15760,10 +16360,10 @@ Function Get-V203736 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203736
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203736r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000393-GPOS-00173
+        Rule ID    : SV-203736r958848_rule
+        Rule Title : The operating system must implement cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -15799,7 +16399,7 @@ Function Get-V203736 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203736"
-    $RuleID = "SV-203736r877420_rule"
+    $RuleID = "SV-203736r958848_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -15809,9 +16409,66 @@ Function Get-V203736 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203736) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203736 - Cryptographic Integrity for Nonlocal Maintenance (SSH MACs)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: SSH MAC algorithms (integrity protection)
+    $FindingDetails += "Check 1: SSH MAC Algorithms for Integrity" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $approvedMACs = @("hmac-sha2-256", "hmac-sha2-512", "hmac-sha2-256-etm@openssh.com", "hmac-sha2-512-etm@openssh.com")
+    $weakMACs = @("hmac-md5", "hmac-md5-96", "hmac-sha1-96", "umac-64@openssh.com")
+    $weakMacFound = $false
+
+    if ($sshdStr -match "(?m)^macs\s+(.+)$") {
+        $macLine = $matches[1].Trim()
+        $macList = $macLine -split ","
+        $FindingDetails += "Configured MACs: " + $macLine + $nl + $nl
+
+        foreach ($m in $macList) {
+            $m = $m.Trim()
+            if ($m -in $weakMACs) {
+                $FindingDetails += "  FAIL: Weak MAC algorithm: " + $m + $nl
+                $weakMacFound = $true
+            }
+        }
+        if (-not $weakMacFound) {
+            $FindingDetails += "  PASS: All MAC algorithms meet integrity requirements" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH MAC configuration" + $nl
+        $weakMacFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: SSH service is the only remote maintenance method
+    $FindingDetails += "Check 2: Remote Maintenance Method" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshActive = $(systemctl is-active sshd 2>&1)
+    $sshStr = ($sshActive -join $nl).Trim()
+    $FindingDetails += "SSH service status: " + $sshStr + $nl
+
+    $telnetPkg = $(dpkg -l telnetd 2>&1)
+    $telnetStr = ($telnetPkg -join $nl)
+    $telnetInstalled = $telnetStr -match "^ii\s"
+    $FindingDetails += "Telnet server installed: " + $telnetInstalled + $nl
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($weakMacFound -or $telnetInstalled) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Nonlocal maintenance integrity protection insufficient" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - SSH provides cryptographic integrity for nonlocal maintenance" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15840,7 +16497,6 @@ Function Get-V203736 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -15872,10 +16528,10 @@ Function Get-V203737 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203737
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203737r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000394-GPOS-00174
+        Rule ID    : SV-203737r958850_rule
+        Rule Title : The operating system must implement cryptographic mechanisms to protect the confidentiality of nonlocal maintenance and diagnostic communications.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -15911,7 +16567,7 @@ Function Get-V203737 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203737"
-    $RuleID = "SV-203737r877420_rule"
+    $RuleID = "SV-203737r958850_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -15921,9 +16577,69 @@ Function Get-V203737 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203737) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203737 - Cryptographic Confidentiality for Nonlocal Maintenance (SSH Ciphers)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: SSH cipher algorithms (confidentiality)
+    $FindingDetails += "Check 1: SSH Cipher Algorithms for Confidentiality" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $weakCiphers = @("3des-cbc", "blowfish-cbc", "cast128-cbc", "arcfour", "arcfour128", "arcfour256")
+    $weakFound = $false
+
+    if ($sshdStr -match "(?m)^ciphers\s+(.+)$") {
+        $cipherLine = $matches[1].Trim()
+        $cipherList = $cipherLine -split ","
+        $FindingDetails += "Configured ciphers: " + $cipherLine + $nl + $nl
+
+        foreach ($c in $cipherList) {
+            $c = $c.Trim()
+            if ($c -in $weakCiphers) {
+                $FindingDetails += "  FAIL: Weak cipher: " + $c + $nl
+                $weakFound = $true
+            }
+        }
+        if (-not $weakFound) {
+            $FindingDetails += "  PASS: All ciphers provide adequate confidentiality" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH cipher configuration" + $nl
+        $weakFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: No unencrypted maintenance channels
+    $FindingDetails += "Check 2: Unencrypted Maintenance Channels" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $insecurePkgs = @("telnetd", "rshd", "rlogind")
+    $insecureFound = $false
+    foreach ($pkg in $insecurePkgs) {
+        $pkgCheck = $(dpkg -l $pkg 2>&1)
+        if (($pkgCheck -join $nl) -match "^ii\s") {
+            $FindingDetails += "  FAIL: Insecure service installed: " + $pkg + $nl
+            $insecureFound = $true
+        }
+    }
+    if (-not $insecureFound) {
+        $FindingDetails += "  PASS: No insecure remote maintenance services installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($weakFound -or $insecureFound) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Nonlocal maintenance confidentiality protection insufficient" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - SSH provides cryptographic confidentiality for nonlocal maintenance" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15952,7 +16668,6 @@ Function Get-V203737 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16064,7 +16779,6 @@ Function Get-V203738 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16096,10 +16810,10 @@ Function Get-V203739 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203739
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203739r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000396-GPOS-00176
+        Rule ID    : SV-203739r987791_rule
+        Rule Title : The operating system must implement NSA-approved cryptography to protect classified information.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -16135,7 +16849,7 @@ Function Get-V203739 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203739"
-    $RuleID = "SV-203739r877420_rule"
+    $RuleID = "SV-203739r987791_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -16145,9 +16859,85 @@ Function Get-V203739 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203739) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203739 - NSA-Approved Cryptography for Classified Information" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Kernel FIPS mode
+    $FindingDetails += "Check 1: Kernel FIPS Mode" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $fipsEnabled = $false
+    if (Test-Path /proc/sys/crypto/fips_enabled) {
+        $fipsValue = (Get-Content /proc/sys/crypto/fips_enabled -ErrorAction SilentlyContinue).Trim()
+        $FindingDetails += "fips_enabled: " + $fipsValue + $nl
+        if ($fipsValue -eq "1") {
+            $fipsEnabled = $true
+            $FindingDetails += "  PASS: FIPS mode is enabled" + $nl
+        } else {
+            $FindingDetails += "  FAIL: FIPS mode is not enabled" + $nl
+        }
+    } else {
+        $FindingDetails += "  FAIL: /proc/sys/crypto/fips_enabled not found" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: OpenSSL FIPS provider
+    $FindingDetails += "Check 2: OpenSSL FIPS Configuration" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $opensslVersion = $(openssl version 2>&1)
+    $opensslStr = ($opensslVersion -join $nl)
+    $FindingDetails += "OpenSSL version: " + $opensslStr + $nl
+
+    $opensslProviders = $(openssl list -providers 2>&1)
+    $providersStr = ($opensslProviders -join $nl)
+    $fipsProviderLoaded = $providersStr -match "fips"
+    $FindingDetails += "FIPS provider loaded: " + $fipsProviderLoaded + $nl
+
+    $FindingDetails += $nl
+
+    # Check 3: GRUB FIPS boot parameter
+    $FindingDetails += "Check 3: GRUB FIPS Boot Parameter" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $cmdline = Get-Content /proc/cmdline -ErrorAction SilentlyContinue
+    $cmdlineStr = ($cmdline -join $nl)
+
+    if ($cmdlineStr -match "fips=1") {
+        $FindingDetails += "Kernel cmdline contains fips=1: Yes" + $nl
+        $FindingDetails += "  PASS: FIPS boot parameter configured" + $nl
+    } else {
+        $FindingDetails += "Kernel cmdline contains fips=1: No" + $nl
+        $FindingDetails += "  FAIL: FIPS boot parameter not set" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: libgcrypt FIPS (used by many Debian crypto tools)
+    $FindingDetails += "Check 4: libgcrypt FIPS Support" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $libgcryptPkg = $(dpkg -l libgcrypt20 2>&1)
+    $libgcryptStr = ($libgcryptPkg -join $nl)
+    if ($libgcryptStr -match "^ii\s+\S+\s+(\S+)") {
+        $FindingDetails += "libgcrypt20 version: " + $matches[1] + $nl
+    } else {
+        $FindingDetails += "libgcrypt20: Not installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($fipsEnabled) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Kernel FIPS mode is enabled; NSA-approved cryptography active" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - FIPS mode is not enabled. NSA-approved cryptography not enforced." + $nl
+        $FindingDetails += "NOTE: Enabling FIPS on Debian 12 requires fips=1 kernel parameter and FIPS-validated crypto libraries." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16176,7 +16966,6 @@ Function Get-V203739 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16288,7 +17077,6 @@ Function Get-V203744 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16320,10 +17108,10 @@ Function Get-V203745 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203745
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203745r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000404-GPOS-00183
+        Rule ID    : SV-203745r958870_rule
+        Rule Title : The operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -16359,7 +17147,7 @@ Function Get-V203745 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203745"
-    $RuleID = "SV-203745r877420_rule"
+    $RuleID = "SV-203745r958870_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -16369,9 +17157,69 @@ Function Get-V203745 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203745) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203745 - Cryptographic Protection Against Unauthorized Modification (Data at Rest)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: LUKS/dm-crypt disk encryption
+    $FindingDetails += "Check 1: Disk Encryption (LUKS/dm-crypt)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $luksFound = $false
+    $lsblkOutput = $(lsblk -f 2>&1)
+    $lsblkStr = ($lsblkOutput -join $nl)
+    $FindingDetails += $lsblkStr + $nl + $nl
+
+    if ($lsblkStr -match "crypto_LUKS") {
+        $luksFound = $true
+        $FindingDetails += "  PASS: LUKS encrypted partition(s) detected" + $nl
+    } else {
+        $FindingDetails += "  INFO: No LUKS encrypted partitions detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: dm-crypt device mapper status
+    $FindingDetails += "Check 2: Device Mapper Encryption Status" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $dmsetupOutput = $(dmsetup status 2>&1)
+    $dmsetupStr = ($dmsetupOutput -join $nl)
+
+    if ($dmsetupStr -match "crypt") {
+        $FindingDetails += "Active dm-crypt mappings found:" + $nl
+        $FindingDetails += $dmsetupStr + $nl
+        $luksFound = $true
+    } elseif ($dmsetupStr -match "No devices found") {
+        $FindingDetails += "No dm-crypt devices active" + $nl
+    } else {
+        $FindingDetails += $dmsetupStr + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: cryptsetup package
+    $FindingDetails += "Check 3: Encryption Tools" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $cryptsetupPkg = $(dpkg -l cryptsetup 2>&1)
+    $cryptsetupStr = ($cryptsetupPkg -join $nl)
+    if ($cryptsetupStr -match "^ii\s+\S+\s+(\S+)") {
+        $FindingDetails += "cryptsetup: " + $matches[1] + $nl
+    } else {
+        $FindingDetails += "cryptsetup: Not installed" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($luksFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Disk encryption (LUKS/dm-crypt) is in use to protect data at rest" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - No disk encryption detected. LUKS/dm-crypt required to protect data at rest from unauthorized modification." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16400,7 +17248,6 @@ Function Get-V203745 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16432,10 +17279,10 @@ Function Get-V203746 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203746
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203746r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000405-GPOS-00184
+        Rule ID    : SV-203746r958872_rule
+        Rule Title : The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -16471,7 +17318,7 @@ Function Get-V203746 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203746"
-    $RuleID = "SV-203746r877420_rule"
+    $RuleID = "SV-203746r958872_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -16481,9 +17328,65 @@ Function Get-V203746 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203746) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203746 - Cryptographic Protection Against Unauthorized Disclosure (Data at Rest)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: LUKS/dm-crypt disk encryption
+    $FindingDetails += "Check 1: Full Disk Encryption (LUKS/dm-crypt)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $luksFound = $false
+    $lsblkOutput = $(lsblk -f 2>&1)
+    $lsblkStr = ($lsblkOutput -join $nl)
+    $FindingDetails += $lsblkStr + $nl + $nl
+
+    if ($lsblkStr -match "crypto_LUKS") {
+        $luksFound = $true
+        $FindingDetails += "  PASS: LUKS encrypted partition(s) detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Active encrypted volumes
+    $FindingDetails += "Check 2: Active Encrypted Volumes" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $dmsetupOutput = $(dmsetup status 2>&1)
+    $dmsetupStr = ($dmsetupOutput -join $nl)
+
+    if ($dmsetupStr -match "crypt") {
+        $FindingDetails += "Active dm-crypt mappings:" + $nl
+        $FindingDetails += $dmsetupStr + $nl
+        $luksFound = $true
+    } else {
+        $FindingDetails += "No active dm-crypt volumes" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: Sensitive data directories on encrypted filesystems
+    $FindingDetails += "Check 3: Sensitive Directory Encryption Coverage" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sensitiveDirs = @("/home", "/var/lib/xo-server", "/opt/xo", "/etc")
+    foreach ($dir in $sensitiveDirs) {
+        if (Test-Path $dir) {
+            $mountPoint = $(df --output=source $dir 2>&1 | Select-Object -Last 1)
+            $FindingDetails += "  " + $dir + " -> " + $mountPoint + $nl
+        }
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($luksFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Disk encryption protects information at rest from unauthorized disclosure" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - No disk encryption detected. LUKS/dm-crypt required to prevent unauthorized disclosure of data at rest." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16512,7 +17415,6 @@ Function Get-V203746 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16624,7 +17526,6 @@ Function Get-V203747 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16656,10 +17557,10 @@ Function Get-V203748 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203748
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203748r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000423-GPOS-00187
+        Rule ID    : SV-203748r958908_rule
+        Rule Title : The operating system must protect the confidentiality and integrity of transmitted information.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -16695,7 +17596,7 @@ Function Get-V203748 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203748"
-    $RuleID = "SV-203748r877420_rule"
+    $RuleID = "SV-203748r958908_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -16705,9 +17606,84 @@ Function Get-V203748 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203748) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203748 - Protect Confidentiality and Integrity of Transmitted Information" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: SSH ciphers and MACs (combined confidentiality + integrity)
+    $FindingDetails += "Check 1: SSH Transmission Protection (Ciphers + MACs)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $weakCiphers = @("3des-cbc", "blowfish-cbc", "cast128-cbc", "arcfour", "arcfour128", "arcfour256")
+    $weakMACs = @("hmac-md5", "hmac-md5-96", "hmac-sha1-96", "umac-64@openssh.com")
+    $sshIssue = $false
+
+    if ($sshdStr -match "(?m)^ciphers\s+(.+)$") {
+        $cipherLine = $matches[1].Trim()
+        $FindingDetails += "Ciphers: " + $cipherLine + $nl
+        foreach ($c in ($cipherLine -split ",")) {
+            if ($c.Trim() -in $weakCiphers) {
+                $FindingDetails += "  FAIL: Weak cipher: " + $c.Trim() + $nl
+                $sshIssue = $true
+            }
+        }
+    }
+
+    if ($sshdStr -match "(?m)^macs\s+(.+)$") {
+        $macLine = $matches[1].Trim()
+        $FindingDetails += "MACs: " + $macLine + $nl
+        foreach ($m in ($macLine -split ",")) {
+            if ($m.Trim() -in $weakMACs) {
+                $FindingDetails += "  FAIL: Weak MAC: " + $m.Trim() + $nl
+                $sshIssue = $true
+            }
+        }
+    }
+
+    if (-not $sshIssue) {
+        $FindingDetails += "  PASS: SSH ciphers and MACs meet requirements" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: XO web interface TLS (port 443)
+    $FindingDetails += "Check 2: XO Web Interface TLS Protection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $xoHostname = $Hostname
+    if (-not $xoHostname) { $xoHostname = $(hostname 2>&1) -join "" }
+
+    $tlsCheck = $(timeout 5 openssl s_client -connect ${xoHostname}:443 -tls1_2 2>&1)
+    $tlsStr = ($tlsCheck -join $nl)
+    $tlsOk = $false
+
+    if ($tlsStr -match "Protocol\s*:\s*TLSv1\.[23]") {
+        $FindingDetails += "TLS 1.2+ connection to port 443: Successful" + $nl
+        $tlsOk = $true
+    } elseif ($tlsStr -match "CONNECTED") {
+        $FindingDetails += "TLS connection to port 443: Connected (protocol details below)" + $nl
+        $tlsOk = $true
+    } else {
+        $FindingDetails += "TLS connection to port 443: Unable to establish" + $nl
+    }
+
+    if ($tlsStr -match "Cipher\s*:\s*(\S+)") {
+        $FindingDetails += "Cipher: " + $matches[1] + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($sshIssue) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Weak cryptographic algorithms detected in SSH configuration" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Transmitted information protected with approved cryptographic mechanisms" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16736,7 +17712,6 @@ Function Get-V203748 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16768,10 +17743,10 @@ Function Get-V203749 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203749
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203749r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000424-GPOS-00188
+        Rule ID    : SV-203749r971547_rule
+        Rule Title : The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information during transmission.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -16807,7 +17782,7 @@ Function Get-V203749 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203749"
-    $RuleID = "SV-203749r877420_rule"
+    $RuleID = "SV-203749r971547_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -16817,9 +17792,96 @@ Function Get-V203749 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203749) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203749 - Cryptographic Protection Against Unauthorized Disclosure (Transmission)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: SSH encryption ciphers
+    $FindingDetails += "Check 1: SSH Encryption Ciphers" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+
+    $weakCiphers = @("3des-cbc", "blowfish-cbc", "cast128-cbc", "arcfour", "arcfour128", "arcfour256")
+    $weakFound = $false
+
+    if ($sshdStr -match "(?m)^ciphers\s+(.+)$") {
+        $cipherLine = $matches[1].Trim()
+        $FindingDetails += "Ciphers: " + $cipherLine + $nl
+
+        foreach ($c in ($cipherLine -split ",")) {
+            if ($c.Trim() -in $weakCiphers) {
+                $FindingDetails += "  FAIL: Weak cipher: " + $c.Trim() + $nl
+                $weakFound = $true
+            }
+        }
+        if (-not $weakFound) {
+            $FindingDetails += "  PASS: All ciphers provide strong encryption" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve SSH cipher configuration" + $nl
+        $weakFound = $true
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: SSH KexAlgorithms (key exchange for forward secrecy)
+    $FindingDetails += "Check 2: SSH Key Exchange Algorithms" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $weakKex = @("diffie-hellman-group1-sha1", "diffie-hellman-group-exchange-sha1")
+    $weakKexFound = $false
+
+    if ($sshdStr -match "(?m)^kexalgorithms\s+(.+)$") {
+        $kexLine = $matches[1].Trim()
+        $FindingDetails += "KexAlgorithms: " + $kexLine + $nl
+
+        foreach ($k in ($kexLine -split ",")) {
+            if ($k.Trim() -in $weakKex) {
+                $FindingDetails += "  FAIL: Weak key exchange: " + $k.Trim() + $nl
+                $weakKexFound = $true
+            }
+        }
+        if (-not $weakKexFound) {
+            $FindingDetails += "  PASS: Key exchange algorithms provide forward secrecy" + $nl
+        }
+    } else {
+        $FindingDetails += "WARNING: Unable to retrieve KexAlgorithm configuration" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: No plaintext services listening
+    $FindingDetails += "Check 3: Plaintext Service Detection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $plaintextPorts = $(ss -tlnp 2>&1)
+    $portsStr = ($plaintextPorts -join $nl)
+
+    $plaintextFound = $false
+    if ($portsStr -match ":23\s") {
+        $FindingDetails += "  FAIL: Telnet (port 23) listening" + $nl
+        $plaintextFound = $true
+    }
+    if ($portsStr -match ":21\s") {
+        $FindingDetails += "  FAIL: FTP (port 21) listening" + $nl
+        $plaintextFound = $true
+    }
+    if (-not $plaintextFound) {
+        $FindingDetails += "  PASS: No plaintext services detected on common ports" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($weakFound -or $weakKexFound -or $plaintextFound) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Cryptographic protection for transmitted information is insufficient" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - Cryptographic mechanisms prevent unauthorized disclosure during transmission" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16848,7 +17910,6 @@ Function Get-V203749 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -16960,7 +18021,6 @@ Function Get-V203750 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17072,7 +18132,6 @@ Function Get-V203751 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17184,7 +18243,6 @@ Function Get-V203752 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17296,7 +18354,6 @@ Function Get-V203753 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17408,7 +18465,6 @@ Function Get-V203754 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17520,7 +18576,6 @@ Function Get-V203755 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17632,7 +18687,6 @@ Function Get-V203756 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17744,7 +18798,6 @@ Function Get-V203757 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17856,7 +18909,6 @@ Function Get-V203758 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -17968,7 +19020,6 @@ Function Get-V203759 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18080,7 +19131,6 @@ Function Get-V203760 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18192,7 +19242,6 @@ Function Get-V203761 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18304,7 +19353,6 @@ Function Get-V203762 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18416,7 +19464,6 @@ Function Get-V203763 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18528,7 +19575,6 @@ Function Get-V203764 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18640,7 +19686,6 @@ Function Get-V203765 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18752,7 +19797,6 @@ Function Get-V203766 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18864,7 +19908,6 @@ Function Get-V203767 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -18976,7 +20019,6 @@ Function Get-V203768 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19088,7 +20130,6 @@ Function Get-V203769 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19200,7 +20241,6 @@ Function Get-V203770 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19312,7 +20352,6 @@ Function Get-V203771 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19424,7 +20463,6 @@ Function Get-V203772 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19536,7 +20574,6 @@ Function Get-V203773 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19648,7 +20685,6 @@ Function Get-V203774 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19760,7 +20796,6 @@ Function Get-V203775 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19792,10 +20827,10 @@ Function Get-V203776 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203776
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203776r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000478-GPOS-00223
+        Rule ID    : SV-203776r959006_rule
+        Rule Title : The operating system must implement NIST FIPS-validated cryptography for digital signatures, cryptographic hashes, and confidentiality protection.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -19831,7 +20866,7 @@ Function Get-V203776 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203776"
-    $RuleID = "SV-203776r877420_rule"
+    $RuleID = "SV-203776r959006_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -19841,9 +20876,76 @@ Function Get-V203776 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203776) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203776 - NIST FIPS-Validated Cryptography" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Kernel FIPS mode
+    $FindingDetails += "Check 1: Kernel FIPS Mode (/proc/sys/crypto/fips_enabled)" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $fipsEnabled = $false
+    if (Test-Path /proc/sys/crypto/fips_enabled) {
+        $fipsValue = (Get-Content /proc/sys/crypto/fips_enabled -ErrorAction SilentlyContinue).Trim()
+        $FindingDetails += "fips_enabled: " + $fipsValue + $nl
+        if ($fipsValue -eq "1") {
+            $fipsEnabled = $true
+        }
+    } else {
+        $FindingDetails += "fips_enabled: file not found" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: OpenSSL version and FIPS provider
+    $FindingDetails += "Check 2: OpenSSL FIPS Status" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $opensslVer = $(openssl version 2>&1)
+    $FindingDetails += "OpenSSL: " + ($opensslVer -join $nl) + $nl
+
+    $opensslProviders = $(openssl list -providers 2>&1)
+    $providersStr = ($opensslProviders -join $nl)
+    $FindingDetails += "Providers: " + $providersStr + $nl
+
+    $FindingDetails += $nl
+
+    # Check 3: Kernel boot parameters
+    $FindingDetails += "Check 3: FIPS Boot Parameters" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $cmdline = (Get-Content /proc/cmdline -ErrorAction SilentlyContinue) -join " "
+    $hasFipsBoot = $cmdline -match "fips=1"
+    $FindingDetails += "Kernel cmdline: " + $cmdline + $nl
+    $FindingDetails += "fips=1 present: " + $hasFipsBoot + $nl
+
+    $FindingDetails += $nl
+
+    # Check 4: FIPS crypto packages
+    $FindingDetails += "Check 4: FIPS Crypto Packages" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $fipsPkgs = @("libssl3", "libgcrypt20", "libgnutls30")
+    foreach ($pkg in $fipsPkgs) {
+        $pkgInfo = $(dpkg -l $pkg 2>&1)
+        $pkgStr = ($pkgInfo -join $nl)
+        if ($pkgStr -match "^ii\s+\S+\s+(\S+)") {
+            $FindingDetails += "  " + $pkg + ": " + $matches[1] + $nl
+        } else {
+            $FindingDetails += "  " + $pkg + ": Not installed" + $nl
+        }
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($fipsEnabled) {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - NIST FIPS-validated cryptography is enabled" + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - FIPS mode is not enabled. System does not enforce NIST FIPS-validated cryptography." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -19872,7 +20974,6 @@ Function Get-V203776 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -19984,7 +21085,6 @@ Function Get-V203777 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20096,7 +21196,6 @@ Function Get-V203778 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20208,7 +21307,6 @@ Function Get-V203779 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20320,7 +21418,6 @@ Function Get-V203780 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20432,7 +21529,6 @@ Function Get-V203781 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20464,10 +21560,10 @@ Function Get-V203782 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203782
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203782r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000480-GPOS-00229
+        Rule ID    : SV-203782r991591_rule
+        Rule Title : The operating system must not allow an unattended or automatic logon to the system.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -20503,7 +21599,7 @@ Function Get-V203782 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203782"
-    $RuleID = "SV-203782r877420_rule"
+    $RuleID = "SV-203782r991591_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20513,9 +21609,114 @@ Function Get-V203782 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203782) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-203782 - No Unattended or Automatic Logon" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Getty autologin (console)
+    $FindingDetails += "Check 1: Getty/Console Autologin" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $autologinFound = $false
+    $gettyOverrides = @(
+        "/etc/systemd/system/getty@tty1.service.d/override.conf",
+        "/etc/systemd/system/serial-getty@.service.d/override.conf"
+    )
+
+    foreach ($overrideFile in $gettyOverrides) {
+        if (Test-Path $overrideFile) {
+            $overrideContent = Get-Content $overrideFile -ErrorAction SilentlyContinue
+            $overrideStr = ($overrideContent -join $nl)
+            if ($overrideStr -match "autologin|--autologin") {
+                $FindingDetails += "  FAIL: Autologin configured in " + $overrideFile + $nl
+                $autologinFound = $true
+            }
+        }
+    }
+
+    if (-not $autologinFound) {
+        $FindingDetails += "  PASS: No getty autologin overrides detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Display manager autologin (GDM3, LightDM)
+    $FindingDetails += "Check 2: Display Manager Autologin" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $dmAutologin = $false
+
+    # GDM3
+    if (Test-Path /etc/gdm3/custom.conf) {
+        $gdmConf = Get-Content /etc/gdm3/custom.conf -ErrorAction SilentlyContinue
+        $gdmStr = ($gdmConf -join $nl)
+        if ($gdmStr -match "(?m)^AutomaticLoginEnable\s*=\s*[Tt]rue") {
+            $FindingDetails += "  FAIL: GDM3 automatic login is enabled" + $nl
+            $dmAutologin = $true
+        }
+    }
+
+    # LightDM
+    if (Test-Path /etc/lightdm/lightdm.conf) {
+        $ldmConf = Get-Content /etc/lightdm/lightdm.conf -ErrorAction SilentlyContinue
+        $ldmStr = ($ldmConf -join $nl)
+        if ($ldmStr -match "(?m)^autologin-user\s*=\s*\S+") {
+            $FindingDetails += "  FAIL: LightDM autologin user is configured" + $nl
+            $dmAutologin = $true
+        }
+    }
+
+    if (-not $dmAutologin) {
+        $FindingDetails += "  PASS: No display manager autologin detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 3: SSH PermitEmptyPasswords (allows passwordless login)
+    $FindingDetails += "Check 3: SSH Empty Password Access" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $sshdConfig = $(sshd -T 2>&1)
+    $sshdStr = ($sshdConfig -join $nl)
+    $emptyPwIssue = $false
+
+    if ($sshdStr -match "(?m)^permitemptypasswords\s+yes") {
+        $FindingDetails += "  FAIL: SSH permits empty passwords" + $nl
+        $emptyPwIssue = $true
+    } else {
+        $FindingDetails += "  PASS: SSH denies empty passwords" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: Accounts with empty password fields
+    $FindingDetails += "Check 4: Accounts with Empty Passwords" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $emptyPwAccts = $false
+    $shadowContent = Get-Content /etc/shadow -ErrorAction SilentlyContinue
+    foreach ($line in $shadowContent) {
+        if ($line -match "^([^:]+):([^:]*):") {
+            if ($matches[2] -eq "" -or $matches[2] -eq " ") {
+                $FindingDetails += "  FAIL: Empty password for: " + $matches[1] + $nl
+                $emptyPwAccts = $true
+            }
+        }
+    }
+    if (-not $emptyPwAccts) {
+        $FindingDetails += "  PASS: No accounts with empty passwords" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($autologinFound -or $dmAutologin -or $emptyPwIssue -or $emptyPwAccts) {
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Unattended or automatic logon is possible" + $nl
+    } else {
+        $Status = "NotAFinding"
+        $FindingDetails += "RESULT: PASS - No unattended or automatic logon mechanisms detected" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20544,7 +21745,6 @@ Function Get-V203782 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20656,7 +21856,6 @@ Function Get-V203783 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20768,7 +21967,6 @@ Function Get-V203784 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20800,10 +21998,10 @@ Function Get-V252688 {
     <#
     .DESCRIPTION
         Vuln ID    : V-252688
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-252688r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
+        STIG ID    : SRG-OS-000481-GPOS-00481
+        Rule ID    : SV-252688r958358_rule
+        Rule Title : The operating system must protect the confidentiality and integrity of communications with wireless peripherals.
+        DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 00000000000000000000000000000000
         FixMD5     : 00000000000000000000000000000000
     #>
@@ -20839,7 +22037,7 @@ Function Get-V252688 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-252688"
-    $RuleID = "SV-252688r877420_rule"
+    $RuleID = "SV-252688r958358_rule"
     $Status = "Not_Reviewed"
     $FindingDetails = ""
     $Comments = ""
@@ -20849,9 +22047,103 @@ Function Get-V252688 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-252688) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $FindingDetails = "V-252688 - Wireless Peripheral Communications Protection" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Bluetooth hardware/subsystem detection
+    $FindingDetails += "Check 1: Bluetooth Hardware Detection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $btDevices = $(timeout 5 sh -c 'ls /sys/class/bluetooth/ 2>/dev/null')
+    $btStr = ($btDevices -join $nl).Trim()
+    $btFound = ($btStr.Length -gt 0)
+
+    if ($btFound) {
+        $FindingDetails += "Bluetooth devices detected: " + $btStr + $nl
+    } else {
+        $FindingDetails += "No Bluetooth hardware detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 2: Bluetooth service status
+    $FindingDetails += "Check 2: Bluetooth Service Status" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $btService = $(systemctl is-active bluetooth 2>&1)
+    $btServiceStr = ($btService -join $nl).Trim()
+    $FindingDetails += "Bluetooth service: " + $btServiceStr + $nl
+
+    $btEnabled = $(systemctl is-enabled bluetooth 2>&1)
+    $btEnabledStr = ($btEnabled -join $nl).Trim()
+    $FindingDetails += "Bluetooth enabled: " + $btEnabledStr + $nl
+
+    $btActive = ($btServiceStr -eq "active")
+
+    $FindingDetails += $nl
+
+    # Check 3: Wi-Fi hardware detection
+    $FindingDetails += "Check 3: Wireless Network Hardware Detection" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $wifiDevices = $(timeout 5 sh -c 'ls /sys/class/net/*/wireless 2>/dev/null')
+    $wifiStr = ($wifiDevices -join $nl).Trim()
+    $wifiFound = ($wifiStr.Length -gt 0)
+
+    if ($wifiFound) {
+        $FindingDetails += "Wireless network interfaces detected: " + $wifiStr + $nl
+    } else {
+        $FindingDetails += "No wireless network interfaces detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 4: USB wireless adapter kernel modules
+    $FindingDetails += "Check 4: Wireless Kernel Modules" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $wirelessMods = $(timeout 5 sh -c 'lsmod 2>/dev/null | grep -iE "bluetooth|btusb|iwlwifi|ath9k|ath10k|rtl8|mt76|brcmfmac" 2>/dev/null')
+    $wirelessModStr = ($wirelessMods -join $nl).Trim()
+
+    if ($wirelessModStr.Length -gt 0) {
+        $FindingDetails += "Wireless kernel modules loaded:" + $nl + $wirelessModStr + $nl
+    } else {
+        $FindingDetails += "No wireless kernel modules loaded" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Check 5: VM/hypervisor environment detection
+    $FindingDetails += "Check 5: Virtualization Environment" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    $virtType = $(systemd-detect-virt 2>&1)
+    $virtStr = ($virtType -join $nl).Trim()
+    $FindingDetails += "Virtualization type: " + $virtStr + $nl
+
+    $isVM = ($virtStr -ne "none" -and $virtStr.Length -gt 0)
+    if ($isVM) {
+        $FindingDetails += "  INFO: System is a virtual machine - wireless peripherals not physically attached" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # Status determination
+    $hasWireless = ($btFound -or $btActive -or $wifiFound -or ($wirelessModStr.Length -gt 0))
+
+    if (-not $hasWireless) {
+        $Status = "Not_Applicable"
+        $FindingDetails += "RESULT: NOT APPLICABLE - No wireless peripheral hardware or services detected" + $nl
+        if ($isVM) {
+            $FindingDetails += "System is a virtual machine with no wireless hardware passthrough" + $nl
+        }
+    } else {
+        # Wireless hardware detected - check if properly secured
+        $Status = "Open"
+        $FindingDetails += "RESULT: FAIL - Wireless hardware/services detected. Verify communications" + $nl
+        $FindingDetails += "are protected with DoD-approved cryptographic mechanisms." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20880,7 +22172,6 @@ Function Get-V252688 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -20992,7 +22283,6 @@ Function Get-V259333 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21104,7 +22394,6 @@ Function Get-V263650 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21216,7 +22505,6 @@ Function Get-V263651 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21328,7 +22616,6 @@ Function Get-V263652 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21440,7 +22727,6 @@ Function Get-V263653 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21552,7 +22838,6 @@ Function Get-V263654 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21664,7 +22949,6 @@ Function Get-V263655 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21776,7 +23060,6 @@ Function Get-V263656 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -21888,7 +23171,6 @@ Function Get-V263657 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -22000,7 +23282,6 @@ Function Get-V263658 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -22112,7 +23393,6 @@ Function Get-V263659 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -22224,7 +23504,6 @@ Function Get-V263660 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
@@ -22336,7 +23615,6 @@ Function Get-V263661 {
             LogPath      = $LogPath
             LogComponent = $LogComponent
             OSPlatform   = $OSPlatform
-            StigType     = $StigType
         }
 
         $AnswerData = (Get-CorporateComment @GetCorpParams)
