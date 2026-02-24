@@ -54,7 +54,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     | <AnswerKey Name> |   16   |
     |==================|========|
 **************************************************************************************-->
-<STIGComments Name="M_VMM">
+<STIGComments Name="XCP-ng_VMM">
   <!--Evaluate-STIG answer file for VMM-->
   <Vuln ID="V-207338">
     <!--RuleTitle: The VMM must provide automated mechanisms for supporting account management functions.-->

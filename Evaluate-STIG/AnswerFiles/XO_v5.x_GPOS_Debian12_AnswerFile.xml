@@ -54,7 +54,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     | <AnswerKey Name> |   16   |
     |==================|========|
 **************************************************************************************-->
-<STIGComments Name="M_GeneralPurposeOperatingSystem">
+<STIGComments Name="XO_GPOS_Debian12">
   <!--Evaluate-STIG answer file for Xen Orchestra (based on the General Purpose Operating System SRG)-->
   <Vuln ID="V-203591">
     <!--RuleTitle: The operating system must provide automated mechanisms for supporting account management functions.-->
@@ -227,14 +227,47 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203603">
     <!--RuleTitle: The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH ciphers, MACs, KexAlgorithms against weak algorithm lists-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant: All SSH algorithms meet DoD requirements-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host operating system (Debian 12) has been verified to implement DoD-approved encryption for remote access sessions.
+
+The automated check confirmed:
+(1) SSH cipher algorithms do not include weak ciphers (3des-cbc, blowfish-cbc, cast128-cbc, arcfour variants)
+(2) SSH MAC algorithms do not include weak MACs (hmac-md5, hmac-md5-96, hmac-sha1-96, umac-64)
+(3) SSH key exchange algorithms do not include weak KexAlgorithms (diffie-hellman-group1-sha1, diffie-hellman-group14-sha1, diffie-hellman-group-exchange-sha1)
+(4) SSH version confirmed as OpenSSH 9.x supporting only Protocol 2
+
+Debian 12 ships with OpenSSH 9.2+ which defaults to strong cryptographic algorithms. The system administrator has not weakened the default configuration. All remote access sessions are protected with FIPS-compatible encryption meeting NIST SP 800-52 and DoD requirements for confidentiality.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used. If status is NotAFinding but evidence cannot be confirmed, manual verification is required.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant: Weak SSH algorithms detected-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host operating system has weak SSH cryptographic algorithms configured that do not meet DoD requirements.
+
+The automated check found one or more of the following deficiencies:
+- Weak cipher algorithms enabled (3des-cbc, blowfish-cbc, cast128-cbc, arcfour variants)
+- Weak MAC algorithms enabled (hmac-md5, hmac-md5-96, hmac-sha1-96, umac-64)
+- Weak key exchange algorithms enabled (diffie-hellman-group1-sha1, group14-sha1, group-exchange-sha1)
+
+Remediation Steps:
+1. Edit /etc/ssh/sshd_config
+2. Set Ciphers to only approved algorithms: aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr
+3. Set MACs to only approved algorithms: hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+4. Set KexAlgorithms to: curve25519-sha256,curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group16-sha512,diffie-hellman-group18-sha512
+5. Restart SSH: systemctl restart sshd
+6. Verify: sshd -T | grep -E 'ciphers|macs|kexalgorithms'
+
+Contact the system administrator to harden SSH configuration per DISA STIG requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -577,28 +610,83 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203629">
     <!--RuleTitle: The operating system must store only encrypted representations of passwords.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies /etc/login.defs ENCRYPT_METHOD, /etc/shadow, PAM config-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) stores only encrypted representations of passwords.
+
+The automated check confirmed:
+(1) /etc/login.defs ENCRYPT_METHOD is set to SHA512 or YESCRYPT (approved hash algorithms)
+(2) /etc/shadow contains no accounts with unhashed/plaintext password fields
+(3) PAM common-password module uses sha512 or yescrypt for password hashing
+
+Debian 12 defaults to yescrypt for password hashing, which exceeds the minimum SHA-512 requirement. All local account passwords are stored as one-way cryptographic hashes that cannot be reversed to obtain the original password.
+
+This meets NIST SP 800-132 requirements for password storage and DoD policy for protecting authentication credentials at rest.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly store encrypted representations of passwords.
+
+The automated check found one or more deficiencies:
+- /etc/login.defs ENCRYPT_METHOD not set to SHA512 or YESCRYPT
+- Accounts in /etc/shadow with empty or plaintext password fields
+- PAM not configured for approved hashing algorithms
+
+Remediation:
+1. Edit /etc/login.defs and set ENCRYPT_METHOD to SHA512 or YESCRYPT
+2. Lock any accounts with empty passwords: passwd -l USERNAME
+3. Configure PAM: ensure /etc/pam.d/common-password includes pam_unix.so with sha512 or yescrypt
+4. Force password changes for affected accounts: chage -d 0 USERNAME
+5. Verify: grep ENCRYPT_METHOD /etc/login.defs
+
+Contact system administrator to remediate password storage configuration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203630">
     <!--RuleTitle: The operating system must transmit only encrypted representations of passwords.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH encryption, insecure services, PermitEmptyPasswords-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) transmits only encrypted representations of passwords.
+
+The automated check confirmed:
+(1) SSH is configured with strong cipher algorithms for encrypted password transmission
+(2) No insecure plaintext services installed (telnetd, rsh-server, rlogin, rexecd, ftpd)
+(3) SSH PermitEmptyPasswords is set to no, preventing authentication bypass
+(4) All remote authentication occurs over encrypted SSH channels
+
+Password transmission over the network is protected by SSH encryption. No unencrypted authentication protocols are available on the system.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system may transmit passwords in plaintext.
+
+The automated check found one or more deficiencies:
+- Insecure plaintext services installed (telnet, rsh, ftp)
+- SSH PermitEmptyPasswords not explicitly disabled
+- Weak SSH ciphers allowing potential password interception
+
+Remediation:
+1. Remove insecure services: apt remove telnetd rsh-server
+2. Set PermitEmptyPasswords no in /etc/ssh/sshd_config
+3. Configure strong SSH ciphers (see V-203603 remediation)
+4. Restart SSH: systemctl restart sshd
+5. Verify no plaintext listeners: ss -tlnp | grep -E ':23 |:21 |:513 '</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -899,14 +987,41 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203653">
     <!--RuleTitle: The operating system must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH pubkey auth, PasswordAuthentication, PermitRootLogin, authorized_keys-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) employs strong authenticators for nonlocal maintenance sessions.
+
+The automated check confirmed:
+(1) SSH PubkeyAuthentication is enabled (strong cryptographic authentication)
+(2) SSH PasswordAuthentication status verified (pubkey preferred)
+(3) SSH PermitRootLogin configuration reviewed for secure access
+(4) Authorized_keys files exist with proper permissions for key-based authentication
+
+SSH public key authentication provides strong two-factor authentication (possession of private key + knowledge of passphrase). This meets DoD requirements for strong authenticators in nonlocal maintenance sessions per NIST SP 800-63B.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not employ strong authenticators for nonlocal maintenance.
+
+Deficiencies found:
+- PubkeyAuthentication may be disabled
+- Only password authentication available (no key-based auth)
+- Root login may be permitted without restrictions
+
+Remediation:
+1. Enable public key authentication: Set PubkeyAuthentication yes in /etc/ssh/sshd_config
+2. Generate SSH keys: ssh-keygen -t ed25519 or ssh-keygen -t rsa -b 4096
+3. Deploy authorized keys to ~/.ssh/authorized_keys with permissions 600
+4. Set PermitRootLogin to prohibit-password or no
+5. Consider disabling password auth: PasswordAuthentication no
+6. Restart SSH: systemctl restart sshd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1095,14 +1210,43 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203669">
     <!--RuleTitle: The operating system must implement cryptography to protect the integrity of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH MACs, host key algorithms, protocol version, insecure services-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptography to protect the integrity of remote access sessions.
+
+The automated check confirmed:
+(1) SSH MAC algorithms do not include weak integrity algorithms (hmac-md5, hmac-md5-96, hmac-sha1-96, umac-64)
+(2) SSH host key algorithms do not include weak algorithms (ssh-dss)
+(3) OpenSSH version supports only SSH Protocol 2 (Protocol 1 deprecated)
+(4) No insecure remote access services installed (telnet, rsh, rlogin, rexec)
+(5) SSH service is active as the primary remote access method
+
+SSH Message Authentication Codes (MACs) provide cryptographic integrity verification for all data transmitted during remote sessions. This meets CCI-001453 requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system has deficiencies in cryptographic integrity protection for remote access sessions.
+
+Deficiencies found may include:
+- Weak SSH MAC algorithms configured (hmac-md5, umac-64, etc.)
+- Weak host key algorithms (ssh-dss)
+- Insecure remote access services installed (telnet, rsh)
+
+Remediation:
+1. Configure strong MACs in /etc/ssh/sshd_config:
+   MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,hmac-sha2-512,hmac-sha2-256
+2. Configure strong host key algorithms:
+   HostKeyAlgorithms ssh-ed25519,rsa-sha2-512,rsa-sha2-256
+3. Remove insecure services: apt remove telnetd rsh-server
+4. Restart SSH: systemctl restart sshd
+5. Verify: sshd -T | grep macs</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1277,14 +1421,43 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203682">
     <!--RuleTitle: The operating system must use cryptographic mechanisms to protect the integrity of audit tools.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies AIDE/Tripwire installation, dpkg -V package integrity, AIDE config-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) uses cryptographic mechanisms to protect audit tool integrity.
+
+The automated check confirmed:
+(1) File integrity monitoring tool installed (AIDE or Tripwire)
+(2) Audit package integrity verified via dpkg -V (no modifications detected)
+(3) AIDE configuration uses cryptographic hash algorithms (SHA256/SHA512) for integrity verification
+
+File integrity monitoring ensures that audit tools (auditd, auditctl, ausearch, aureport) have not been tampered with. The dpkg package manager also maintains cryptographic checksums for all installed files. This meets NIST SP 800-53 AU-9(3) requirements for protecting audit tools.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately protect audit tool integrity with cryptographic mechanisms.
+
+Deficiencies found:
+- No file integrity monitoring tool installed (AIDE or Tripwire)
+- Audit package integrity failures detected by dpkg -V
+- AIDE not configured to monitor audit tool binaries
+
+Remediation:
+1. Install AIDE: apt install aide
+2. Initialize AIDE database: aideinit
+3. Configure AIDE to monitor audit tools in /etc/aide/aide.conf:
+   /usr/sbin/auditd p+i+n+u+g+s+b+acl+xattrs+sha256
+   /usr/sbin/auditctl p+i+n+u+g+s+b+acl+xattrs+sha256
+   /usr/sbin/ausearch p+i+n+u+g+s+b+acl+xattrs+sha256
+   /usr/sbin/aureport p+i+n+u+g+s+b+acl+xattrs+sha256
+4. Schedule daily integrity checks: add to /etc/cron.daily/
+5. Verify: aide --check</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1459,14 +1632,42 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203695">
     <!--RuleTitle: The operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies sudo, AppArmor, NOPASSWD rules, UID 0 accounts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) prevents nonprivileged users from executing privileged functions.
+
+The automated check confirmed:
+(1) sudo is installed and configured for controlled privilege escalation
+(2) No NOPASSWD rules found in sudoers configuration (all escalation requires authentication)
+(3) AppArmor is active and enforcing mandatory access control profiles
+(4) Only root (UID 0) has unrestricted system access - no additional UID 0 accounts
+
+The combination of sudo for discretionary access control and AppArmor for mandatory access control ensures that nonprivileged users cannot disable, circumvent, or alter security safeguards without proper authorization.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately prevent nonprivileged users from executing privileged functions.
+
+Deficiencies found may include:
+- NOPASSWD sudo rules allowing passwordless privilege escalation
+- AppArmor not active or in complain mode
+- Additional accounts with UID 0 besides root
+- sudo not installed or improperly configured
+
+Remediation:
+1. Remove NOPASSWD rules from /etc/sudoers and /etc/sudoers.d/*
+2. Enable AppArmor: systemctl enable --now apparmor
+3. Set profiles to enforce mode: aa-enforce /etc/apparmor.d/*
+4. Remove extra UID 0 accounts: userdel ACCOUNT
+5. Review sudo configuration: visudo
+6. Verify: apparmor_status, grep NOPASSWD /etc/sudoers /etc/sudoers.d/*</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1809,14 +2010,39 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203720">
     <!--RuleTitle: The operating system must prevent the installation of patches, service packs, device drivers, or operating system components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies APT signature enforcement, trusted keys, source list-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) prevents installation of unsigned software packages.
+
+The automated check confirmed:
+(1) APT AllowUnauthenticated is not set to true (signature verification enforced)
+(2) Trusted GPG keys are present in the APT keyring for repository verification
+(3) No source list entries use [trusted=yes] to bypass signature checks
+
+Debian APT package manager enforces GPG signature verification by default. All packages from official Debian repositories and Vates XO repositories are cryptographically signed. This meets the DoD requirement for digital signature verification of all installed software.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system allows installation of unsigned software packages.
+
+Deficiencies found:
+- APT AllowUnauthenticated may be enabled
+- Repository sources using [trusted=yes] bypass signature verification
+- Missing or expired GPG keys for package repositories
+
+Remediation:
+1. Remove AllowUnauthenticated from /etc/apt/apt.conf.d/ configuration files
+2. Remove [trusted=yes] from repository entries in /etc/apt/sources.list and /etc/apt/sources.list.d/
+3. Import required GPG keys for all configured repositories
+4. Update package lists: apt update
+5. Verify: apt-config dump | grep -i AllowUnauthenticated</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2005,28 +2231,66 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203736">
     <!--RuleTitle: The operating system must implement cryptographic mechanisms to protect the integrity of nonlocal maintenance and diagnostic communications, when used for nonlocal maintenance sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH MACs, telnet absence, SSH service active-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptographic mechanisms to protect the integrity of nonlocal maintenance communications.
+
+The automated check confirmed:
+(1) SSH MAC algorithms do not include weak algorithms (hmac-md5, hmac-md5-96, hmac-sha1-96, umac-64)
+(2) Telnet server is not installed (no unencrypted maintenance channel)
+(3) SSH service is active and provides the sole remote maintenance method
+
+SSH MACs (Message Authentication Codes) provide cryptographic integrity verification ensuring that maintenance session data cannot be modified in transit without detection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system has deficiencies in integrity protection for nonlocal maintenance.
+
+Remediation:
+1. Configure strong MACs in /etc/ssh/sshd_config
+2. Remove telnet: apt remove telnetd
+3. Ensure SSH is active: systemctl enable --now sshd
+4. Verify: sshd -T | grep macs</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203737">
     <!--RuleTitle: The operating system must implement cryptographic mechanisms to protect the confidentiality of nonlocal maintenance and diagnostic communications, when used for nonlocal maintenance sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH ciphers, insecure service absence-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptographic mechanisms to protect the confidentiality of nonlocal maintenance communications.
+
+The automated check confirmed:
+(1) SSH cipher algorithms do not include weak ciphers (3des-cbc, blowfish-cbc, cast128-cbc, arcfour variants)
+(2) No insecure remote maintenance services installed (telnetd, rsh-server)
+(3) All remote maintenance sessions are encrypted via SSH
+
+SSH encryption ensures that all maintenance session data (including commands, output, and credentials) is protected from eavesdropping during transmission.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system has deficiencies in confidentiality protection for nonlocal maintenance.
+
+Remediation:
+1. Configure strong ciphers in /etc/ssh/sshd_config (see V-203603 remediation)
+2. Remove insecure services: apt remove telnetd rsh-server
+3. Restart SSH: systemctl restart sshd
+4. Verify: sshd -T | grep ciphers</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2047,14 +2311,43 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203739">
     <!--RuleTitle: The operating system must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies FIPS kernel mode, OpenSSL providers, boot params, libgcrypt-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements NSA-approved cryptography for classified information protection.
+
+The automated check confirmed:
+(1) FIPS mode is enabled (/proc/sys/crypto/fips_enabled = 1)
+(2) OpenSSL FIPS provider is available and configured
+(3) Kernel boot parameters include fips=1
+(4) libgcrypt20 version supports FIPS-validated algorithms
+
+FIPS 140-2/140-3 validated cryptographic modules are in use for all cryptographic operations. This meets NSA requirements for protection of classified information.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not implement NSA-approved FIPS cryptography.
+
+Deficiencies found:
+- FIPS mode not enabled in kernel (/proc/sys/crypto/fips_enabled = 0)
+- OpenSSL FIPS provider not configured
+- Boot parameters missing fips=1
+
+Remediation:
+1. Install FIPS packages: apt install libssl3 libgcrypt20
+2. Enable FIPS mode: Add fips=1 to kernel boot parameters in /etc/default/grub
+3. Update GRUB: update-grub
+4. Configure OpenSSL: Enable FIPS provider in /etc/ssl/openssl.cnf
+5. Reboot the system
+6. Verify: cat /proc/sys/crypto/fips_enabled (should return 1)
+
+Note: Enabling FIPS mode may require Vates/vendor support for Debian 12. See VATES_COMPLIANCE_BLOCKERS.md for details on FIPS compliance gaps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2075,28 +2368,76 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203745">
     <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest on all operating system components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies LUKS/dm-crypt disk encryption-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptographic mechanisms to prevent unauthorized modification of data at rest.
+
+The automated check confirmed:
+(1) LUKS (Linux Unified Key Setup) encrypted volumes detected via lsblk
+(2) dm-crypt device mapper targets active
+(3) cryptsetup package installed for encryption management
+
+Full disk encryption using LUKS/dm-crypt prevents unauthorized modification of data at rest, as any changes to the encrypted volume without the correct key would result in corrupted data that cannot be read.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not implement disk encryption to protect data at rest from unauthorized modification.
+
+No LUKS/dm-crypt encrypted volumes were detected.
+
+Remediation:
+1. Install cryptsetup: apt install cryptsetup
+2. Encrypt data partitions using LUKS: cryptsetup luksFormat /dev/sdX
+3. For new installations, select full disk encryption during Debian installer
+4. For existing systems, back up data, encrypt partitions, restore data
+5. Verify: lsblk -f (should show crypto_LUKS type)
+
+Note: Encrypting the root filesystem of an existing system requires careful planning and a maintenance window. Consider re-deploying the XO VM with LUKS encryption enabled during installation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203746">
     <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest on all operating system components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies LUKS/dm-crypt for disclosure protection-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptographic mechanisms to prevent unauthorized disclosure of data at rest.
+
+The automated check confirmed:
+(1) LUKS encrypted volumes detected (crypto_LUKS filesystem type)
+(2) dm-crypt targets active for disk encryption
+(3) cryptsetup package installed
+(4) Sensitive directories (/opt/xo, /etc/xo-server, /var/lib/xo-server) reside on encrypted volumes
+
+Full disk encryption using LUKS/dm-crypt ensures that data at rest cannot be read without the correct decryption key, preventing unauthorized disclosure if physical media is compromised.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not implement disk encryption to prevent unauthorized disclosure of data at rest.
+
+No LUKS/dm-crypt encrypted volumes were detected. Data on this system could be read if physical media is accessed without authorization.
+
+Remediation:
+1. Install cryptsetup: apt install cryptsetup
+2. For new deployments: select full disk encryption during Debian installer
+3. For existing systems: back up data, encrypt partitions with LUKS, restore data
+4. Verify encryption: lsblk -f (should show crypto_LUKS), dmsetup status
+
+See V-203745 remediation for detailed steps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2117,28 +2458,78 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203748">
     <!--RuleTitle: The operating system must protect the confidentiality and integrity of transmitted information.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH ciphers+MACs and XO web interface TLS-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) protects the confidentiality and integrity of transmitted information.
+
+The automated check confirmed:
+(1) SSH ciphers provide confidentiality for administrative sessions
+(2) SSH MACs provide integrity for administrative sessions
+(3) XO web interface is accessible via HTTPS (TLS 1.2/1.3 verified via openssl s_client)
+(4) No weak ciphers or MACs configured
+
+Both SSH and HTTPS channels use strong cryptographic algorithms ensuring that all transmitted information is protected from eavesdropping and tampering.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately protect transmitted information.
+
+Deficiencies found may include:
+- Weak SSH ciphers or MACs configured
+- XO web interface not using HTTPS or using weak TLS
+- Plaintext services available
+
+Remediation:
+1. Harden SSH: Configure strong ciphers and MACs (see V-203603)
+2. Enable HTTPS for XO: Configure TLS certificate in /etc/xo-server/config.toml
+3. Disable plaintext services: Remove telnet, FTP, etc.
+4. Verify: openssl s_client -connect HOSTNAME:443 -tls1_2</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203749">
     <!--RuleTitle: The operating system must implement cryptographic mechanisms to prevent unauthorized disclosure of information and/or detect changes to information during transmission unless otherwise protected by alternative physical safeguards, such as, at a minimum, a Protected Distribution System (PDS).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies SSH ciphers, KexAlgorithms, plaintext service detection-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements cryptographic mechanisms to prevent unauthorized disclosure during transmission.
+
+The automated check confirmed:
+(1) SSH ciphers use strong encryption (AES-256/AES-128 GCM or CTR modes)
+(2) SSH key exchange algorithms use approved methods (curve25519, ECDH)
+(3) No plaintext services detected listening on ports 23 (telnet) or 21 (FTP)
+(4) All remote access occurs over encrypted channels
+
+Cryptographic protection during transmission meets CCI-002418 requirements. No alternative physical safeguards (PDS) are required when cryptographic mechanisms are properly implemented.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system has deficiencies in cryptographic protection of transmitted information.
+
+Deficiencies found may include:
+- Weak SSH ciphers or key exchange algorithms
+- Plaintext services listening (telnet port 23, FTP port 21)
+- Weak KexAlgorithms configured
+
+Remediation:
+1. Configure strong SSH ciphers and KexAlgorithms (see V-203603)
+2. Remove plaintext services: apt remove telnetd vsftpd
+3. Verify no plaintext listeners: ss -tlnp | grep -E ':23 |:21 '
+4. Restart SSH: systemctl restart sshd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2509,14 +2900,40 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203776">
     <!--RuleTitle: The operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies FIPS kernel mode, OpenSSL FIPS provider, boot params, crypto libraries-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) implements NIST FIPS-validated cryptography.
+
+The automated check confirmed:
+(1) FIPS mode enabled in kernel (/proc/sys/crypto/fips_enabled = 1)
+(2) OpenSSL FIPS provider available for digital signatures and hashing
+(3) Kernel boot parameters include fips=1
+(4) Cryptographic libraries (libgcrypt20, libssl3) support FIPS-validated algorithms
+
+FIPS 140-2/140-3 validated modules are used for digital signatures (RSA, ECDSA), cryptographic hashes (SHA-256, SHA-512), and data protection (AES-256). This meets NIST and DoD requirements for unclassified information protection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not implement NIST FIPS-validated cryptography.
+
+FIPS mode is not enabled. Cryptographic operations may use non-validated algorithms.
+
+Remediation:
+1. Enable FIPS kernel mode: Add fips=1 to GRUB_CMDLINE_LINUX in /etc/default/grub
+2. Update GRUB: update-grub
+3. Configure OpenSSL FIPS provider in /etc/ssl/openssl.cnf
+4. Reboot the system
+5. Verify: cat /proc/sys/crypto/fips_enabled (should return 1)
+6. Verify OpenSSL: openssl list -providers (should show fips provider)
+
+Note: Debian 12 FIPS enablement may require additional Vates vendor support. See VATES_COMPLIANCE_BLOCKERS.md.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2593,14 +3010,41 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203782">
     <!--RuleTitle: The operating system must not allow an unattended or automatic logon to the system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check verifies getty autologin, display manager, SSH, empty passwords-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) does not allow unattended or automatic logon.
+
+The automated check confirmed:
+(1) No getty autologin overrides configured in systemd service files
+(2) No display manager autologin configured (GDM3, LightDM)
+(3) SSH PermitEmptyPasswords is set to no
+(4) No accounts in /etc/shadow with empty password fields
+
+All console and remote access requires explicit authentication credentials. The system does not permit automatic logon to any account.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system allows unattended or automatic logon.
+
+Deficiencies found may include:
+- Getty autologin configured in systemd override files
+- Display manager autologin enabled
+- SSH PermitEmptyPasswords not disabled
+- Accounts with empty password fields in /etc/shadow
+
+Remediation:
+1. Remove getty autologin: Check /etc/systemd/system/getty@tty1.service.d/ for autologin
+2. Disable display manager autologin in /etc/gdm3/daemon.conf or /etc/lightdm/lightdm.conf
+3. Set PermitEmptyPasswords no in /etc/ssh/sshd_config
+4. Lock accounts with empty passwords: passwd -l USERNAME
+5. Restart SSH: systemctl restart sshd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2635,14 +3079,50 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-252688">
     <!--RuleTitle: The operating system must protect the confidentiality and integrity of communications with wireless peripherals.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #50: Automated check detects Bluetooth, Wi-Fi, wireless modules, VM environment-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) protects wireless peripheral communications.
+
+Wireless hardware was detected and verified to use encrypted communications (Bluetooth pairing with encryption or WPA2/WPA3 for Wi-Fi peripherals). Wireless kernel modules are loaded but configured securely.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Wireless hardware or services were detected but communications may not be adequately protected.
+
+Deficiencies found may include:
+- Bluetooth enabled without encryption requirements
+- Wireless kernel modules loaded without security policies
+- Wi-Fi interfaces active without WPA2/WPA3
+
+Remediation:
+1. If wireless is not needed, disable Bluetooth: systemctl disable --now bluetooth
+2. Blacklist wireless modules: echo 'blacklist btusb' &gt;&gt; /etc/modprobe.d/blacklist-wireless.conf
+3. If wireless is required, ensure WPA2/WPA3 encryption
+4. Remove unnecessary wireless packages: apt remove bluez
+5. Verify: systemctl status bluetooth, lsmod | grep -i bluetooth</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This requirement is not applicable. The Xen Orchestra host is a virtual machine running on a XCP-ng hypervisor with no wireless peripheral hardware attached.
+
+The automated check confirmed:
+(1) No Bluetooth hardware detected (/sys/class/bluetooth/ empty)
+(2) Bluetooth service not active or not installed
+(3) No wireless network interfaces detected
+(4) No wireless kernel modules loaded (btusb, iwlwifi, etc.)
+(5) System detected as a virtual machine (no physical wireless hardware passthrough)
+
+As a server VM in a data center environment, XO has no wireless peripherals. All management access is via wired network (SSH and HTTPS). This control does not apply to systems without wireless capability.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

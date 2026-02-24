@@ -54,7 +54,7 @@ This file contains answers for known opens and findings that cannot be evaluated
     | <AnswerKey Name> |   16   |
     |==================|========|
 **************************************************************************************-->
-<STIGComments Name="RHEL7">
+<STIGComments Name="XCP-ng_Dom0_RHEL7">
   <!--Evaluate-STIG answer file for XCP-ng v8.3 (based on RHEL 7 STIG)-->
   <Vuln ID="V-204392">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values.-->
