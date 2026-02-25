@@ -16,7 +16,7 @@
 | **Stubs (Not_Reviewed)** | 150 |
 | **Completion** | 24.2% |
 
-**Last validated test:** Test152 (Feb 25, 2026) — Exit 0, EvalScore 5.05%, 9 NF / 28 O / 1 NA / 160 NR
+**Last validated test:** Test153b (Feb 25, 2026) — Exit 0, EvalScore 5.05%, 10 NF / 38 O / 1 NA / 150 NR (Batch 3 all Open, COMMENTS 198/198)
 
 ---
 
@@ -117,16 +117,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203625 | SV-203625r982195 | At least 1 uppercase character | -- | -- | #55 | Pending test |
-| V-203626 | SV-203626r982196 | At least 1 lowercase character | -- | -- | #55 | Pending test |
-| V-203627 | SV-203627r982197 | At least 1 numeric character | -- | -- | #55 | Pending test |
-| V-203628 | SV-203628r982198 | Change at least 50% of characters | -- | -- | #55 | Pending test |
-| V-203631 | SV-203631r982188 | 24-hour minimum password lifetime | -- | -- | #55 | Pending test |
-| V-203632 | SV-203632r1038967 | 60-day maximum password lifetime | -- | -- | #55 | Pending test |
-| V-203634 | SV-203634r982202 | Minimum 15-character password length | -- | -- | #55 | Pending test |
-| V-203676 | SV-203676r991561 | At least 1 special character | -- | -- | #55 | Pending test |
-| V-203778 | SV-203778r991587 | Prevent dictionary words | -- | -- | #55 | Pending test |
-| V-263653 | SV-263653r982229 | Verify password when changed | -- | -- | #55 | Pending test |
+| V-203625 | SV-203625r982195 | At least 1 uppercase character | O | Test153b | #55 | ucredit not configured, pam_pwquality not loaded, libpam-pwquality not installed |
+| V-203626 | SV-203626r982196 | At least 1 lowercase character | O | Test153b | #55 | lcredit not configured, pam_pwquality not loaded, libpam-pwquality not installed |
+| V-203627 | SV-203627r982197 | At least 1 numeric character | O | Test153b | #55 | dcredit not configured, pam_pwquality not loaded, libpam-pwquality not installed |
+| V-203628 | SV-203628r982198 | Change at least 50% of characters | O | Test153b | #55 | difok not configured, pam_pwquality not loaded |
+| V-203631 | SV-203631r982188 | 24-hour minimum password lifetime | O | Test153b | #55 | PASS_MIN_DAYS=0 (requires >=1), per-user check failed |
+| V-203632 | SV-203632r1038967 | 60-day maximum password lifetime | O | Test153b | #55 | PASS_MAX_DAYS=99999 (requires <=60), per-user check failed |
+| V-203634 | SV-203634r982202 | Minimum 15-character password length | O | Test153b | #55 | minlen not configured, pam_pwquality not loaded |
+| V-203676 | SV-203676r991561 | At least 1 special character | O | Test153b | #55 | ocredit not configured, pam_pwquality not loaded, libpam-pwquality not installed |
+| V-203778 | SV-203778r991587 | Prevent dictionary words | O | Test153b | #55 | dictcheck not configured, pam_pwquality not loaded, no dictionary files |
+| V-263653 | SV-263653r982229 | Verify password when changed | O | Test153b | #55 | dictcheck not configured, pam_pwquality not loaded, no wordlist files |
 
 ### Batch 4: SSH Configuration (10 functions)
 
@@ -367,3 +367,5 @@
 | Test150c | Feb 24 | #52 | Phase 1 final | 198 | PASS | 4.04% | All 18 CAT I COMMENTS populated, 0 errors |
 | Test151 | Feb 24 | #53 | Phase 2 Batch 1 | 198 | PASS | 4.04% | 10 Account Mgmt functions, all Open |
 | Test152 | Feb 25 | #54 | Phase 2 Batch 2 | 198 | PASS | 5.05% | 10 Auth & Login, 2 NF + 8 Open |
+| Test153 | Feb 25 | #55 | Phase 2 Batch 3 | 198 | FAIL | 5.05% | Answer file schema error (missing ValidationCode) |
+| Test153b | Feb 25 | #55 | Phase 2 Batch 3 | 198 | PASS | 5.05% | 10 Password Policy, all Open, COMMENTS 198/198 |
