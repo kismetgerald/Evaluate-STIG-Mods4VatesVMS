@@ -12,9 +12,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 38 (18 CAT I + 19 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 160 |
-| **Completion** | 19.2% |
+| **Implemented** | 48 (18 CAT I + 29 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 150 |
+| **Completion** | 24.2% |
 
 **Last validated test:** Test152 (Feb 25, 2026) — Exit 0, EvalScore 5.05%, 9 NF / 28 O / 1 NA / 160 NR
 
@@ -117,16 +117,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203625 | SV-203625r982195 | At least 1 uppercase character | NR | -- | -- | -- |
-| V-203626 | SV-203626r982196 | At least 1 lowercase character | NR | -- | -- | -- |
-| V-203627 | SV-203627r982197 | At least 1 numeric character | NR | -- | -- | -- |
-| V-203628 | SV-203628r982198 | Change at least 50% of characters | NR | -- | -- | -- |
-| V-203631 | SV-203631r982188 | 24-hour minimum password lifetime | NR | -- | -- | -- |
-| V-203632 | SV-203632r1038967 | 60-day maximum password lifetime | NR | -- | -- | -- |
-| V-203634 | SV-203634r982202 | Minimum 15-character password length | NR | -- | -- | -- |
-| V-203676 | SV-203676r991561 | At least 1 special character | NR | -- | -- | -- |
-| V-203778 | SV-203778r991587 | Prevent dictionary words | NR | -- | -- | -- |
-| V-263653 | SV-263653r982229 | Verify password when changed | NR | -- | -- | -- |
+| V-203625 | SV-203625r982195 | At least 1 uppercase character | -- | -- | #55 | Pending test |
+| V-203626 | SV-203626r982196 | At least 1 lowercase character | -- | -- | #55 | Pending test |
+| V-203627 | SV-203627r982197 | At least 1 numeric character | -- | -- | #55 | Pending test |
+| V-203628 | SV-203628r982198 | Change at least 50% of characters | -- | -- | #55 | Pending test |
+| V-203631 | SV-203631r982188 | 24-hour minimum password lifetime | -- | -- | #55 | Pending test |
+| V-203632 | SV-203632r1038967 | 60-day maximum password lifetime | -- | -- | #55 | Pending test |
+| V-203634 | SV-203634r982202 | Minimum 15-character password length | -- | -- | #55 | Pending test |
+| V-203676 | SV-203676r991561 | At least 1 special character | -- | -- | #55 | Pending test |
+| V-203778 | SV-203778r991587 | Prevent dictionary words | -- | -- | #55 | Pending test |
+| V-263653 | SV-263653r982229 | Verify password when changed | -- | -- | #55 | Pending test |
 
 ### Batch 4: SSH Configuration (10 functions)
 

@@ -4871,12 +4871,12 @@ Function Get-V203625 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203625
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203625r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000069-GPOS-00037
+        Rule ID    : SV-203625r982195_rule
+        Rule Title : Enforce at least one uppercase character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : 496fdd17dbbaf166ee75c3cbf2efea43
+        FixMD5     : ae57efbe228547b2e48aef050b5615fb
     #>
 
     param (
@@ -4889,7 +4889,6 @@ Function Get-V203625 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4898,6 +4897,7 @@ Function Get-V203625 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4910,8 +4910,8 @@ Function Get-V203625 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203625"
-    $RuleID = "SV-203625r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203625r982195_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4920,9 +4920,74 @@ Function Get-V203625 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203625) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf ucredit setting
+    $output += "Check 1: pwquality.conf ucredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ucredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "ucredit\s*=\s*(-?\d+)") {
+            $ucreditVal = [int]$Matches[1]
+            $output += "  ucredit = $ucreditVal${nl}"
+            if ($ucreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($ucreditVal)) uppercase character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] ucredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] ucredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "ucredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4982,12 +5047,12 @@ Function Get-V203626 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203626
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203626r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000070-GPOS-00038
+        Rule ID    : SV-203626r982196_rule
+        Rule Title : Enforce at least one lowercase character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : e6a734b4a402bdf7eb43fdee70aaa9b7
+        FixMD5     : 2eb316478931bee6469f556fcba2ac66
     #>
 
     param (
@@ -5000,7 +5065,6 @@ Function Get-V203626 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5009,6 +5073,7 @@ Function Get-V203626 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5021,8 +5086,8 @@ Function Get-V203626 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203626"
-    $RuleID = "SV-203626r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203626r982196_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5031,9 +5096,74 @@ Function Get-V203626 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203626) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf lcredit setting
+    $output += "Check 1: pwquality.conf lcredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'lcredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "lcredit\s*=\s*(-?\d+)") {
+            $lcreditVal = [int]$Matches[1]
+            $output += "  lcredit = $lcreditVal${nl}"
+            if ($lcreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($lcreditVal)) lowercase character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] lcredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] lcredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "lcredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5093,12 +5223,12 @@ Function Get-V203627 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203627
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203627r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000071-GPOS-00039
+        Rule ID    : SV-203627r982197_rule
+        Rule Title : Enforce at least one numeric character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : 5dc2ecf906da00aa9583b69a95dfc884
+        FixMD5     : 50c1ccfbbd81a52d874a6f5583cb42c2
     #>
 
     param (
@@ -5111,7 +5241,6 @@ Function Get-V203627 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5120,6 +5249,7 @@ Function Get-V203627 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5132,8 +5262,8 @@ Function Get-V203627 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203627"
-    $RuleID = "SV-203627r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203627r982197_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5142,9 +5272,74 @@ Function Get-V203627 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203627) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf dcredit setting
+    $output += "Check 1: pwquality.conf dcredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dcredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dcredit\s*=\s*(-?\d+)") {
+            $dcreditVal = [int]$Matches[1]
+            $output += "  dcredit = $dcreditVal${nl}"
+            if ($dcreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($dcreditVal)) numeric character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] dcredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] dcredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "dcredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5204,12 +5399,12 @@ Function Get-V203628 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203628
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203628r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000072-GPOS-00040
+        Rule ID    : SV-203628r982198_rule
+        Rule Title : Require change of at least 50 percent of characters when passwords are changed
+        DiscussMD5 : 94b34da36f3cd5b68971b25689c6ab88
+        CheckMD5   : 518709842be86b47f0a1d41e1776759c
+        FixMD5     : 8a617271f33fe51dc45fc7b042539922
     #>
 
     param (
@@ -5222,7 +5417,6 @@ Function Get-V203628 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5231,6 +5425,7 @@ Function Get-V203628 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5243,8 +5438,8 @@ Function Get-V203628 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203628"
-    $RuleID = "SV-203628r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203628r982198_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5253,9 +5448,78 @@ Function Get-V203628 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203628) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf difok setting (minimum different characters)
+    $output += "Check 1: pwquality.conf difok Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'difok'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "difok\s*=\s*(\d+)") {
+            $difokVal = [int]$Matches[1]
+            $output += "  difok = $difokVal${nl}"
+            if ($difokVal -ge 8) {
+                $output += "  [PASS] Requires at least $difokVal different characters (meets 50% of 15-char minimum)${nl}"
+            }
+            else {
+                $output += "  [FAIL] difok must be 8 or greater (50% of 15-character minimum = 8)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] difok not configured in /etc/security/pwquality.conf (default is 1)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Current minlen to validate difok ratio
+    $output += "Check 3: Minimum Password Length (for difok ratio)${nl}"
+    try {
+        $minlenConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $minlenStr = ($minlenConf -join $nl).Trim()
+        if ($minlenStr -match "minlen\s*=\s*(\d+)") {
+            $minlenVal = [int]$Matches[1]
+            $requiredDifok = [Math]::Ceiling($minlenVal / 2)
+            $output += "  minlen = $minlenVal (50% = $requiredDifok characters must differ)${nl}"
+        }
+        else {
+            $output += "  [INFO] minlen not set (default 8; STIG requires 15)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - difok >= 8 AND pam_pwquality loaded
+    if ($pwqStr -match "difok\s*=\s*(\d+)") {
+        $checkVal = [int]$Matches[1]
+        if ($checkVal -ge 8 -and $pamStr) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5697,12 +5961,12 @@ Function Get-V203631 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203631
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203631r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000075-GPOS-00043
+        Rule ID    : SV-203631r982188_rule
+        Rule Title : Enforce 24 hours/1 day as the minimum password lifetime
+        DiscussMD5 : a13f8dd5b3602a221cac064dec313195
+        CheckMD5   : 82307decda9dbd3f788fde0641ffa11e
+        FixMD5     : c0047ac489fd3595604723612131808b
     #>
 
     param (
@@ -5715,7 +5979,6 @@ Function Get-V203631 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5724,6 +5987,7 @@ Function Get-V203631 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5736,8 +6000,8 @@ Function Get-V203631 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203631"
-    $RuleID = "SV-203631r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203631r982188_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5746,9 +6010,77 @@ Function Get-V203631 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203631) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $globalPass = $false
+
+    # Check 1: /etc/login.defs PASS_MIN_DAYS
+    $output += "Check 1: /etc/login.defs PASS_MIN_DAYS${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_DAYS'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MIN_DAYS\s+(\d+)") {
+            $minDays = [int]$Matches[1]
+            $output += "  PASS_MIN_DAYS = $minDays${nl}"
+            if ($minDays -ge 1) {
+                $output += "  [PASS] Minimum password lifetime is $minDays day(s)${nl}"
+                $globalPass = $true
+            }
+            else {
+                $output += "  [FAIL] PASS_MIN_DAYS must be 1 or greater (24 hours)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] PASS_MIN_DAYS not configured in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user PASS_MIN_DAYS via chage
+    $output += "Check 2: Per-User Minimum Password Age${nl}"
+    try {
+        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userStr = ($userAccounts -join $nl).Trim()
+        if ($userStr) {
+            $users = $userStr -split $nl
+            $badUsers = @()
+            foreach ($user in $users) {
+                $u = $user.Trim()
+                if (-not $u) { continue }
+                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Minimum'" 2>&1)
+                $chageStr = ($chageOut -join $nl).Trim()
+                if ($chageStr -match ":\s*(\d+)") {
+                    $userMin = [int]$Matches[1]
+                    if ($userMin -lt 1) {
+                        $badUsers += "$u (min=$userMin)"
+                    }
+                }
+                $output += "  $u : $chageStr${nl}"
+            }
+            if ($badUsers.Count -gt 0) {
+                $output += "  [FAIL] Users with min password age below 1 day: $($badUsers -join ', ')${nl}"
+            }
+            else {
+                $output += "  [PASS] All interactive users have minimum password age of 1+ day${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($globalPass -and $badUsers.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5808,12 +6140,12 @@ Function Get-V203632 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203632
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203632r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000076-GPOS-00044
+        Rule ID    : SV-203632r1038967_rule
+        Rule Title : Enforce a 60-day maximum password lifetime restriction
+        DiscussMD5 : aafd6d9d8ba33d1cb645c142d188e48a
+        CheckMD5   : e709a33284431dac88ebae638e6071d5
+        FixMD5     : 2fc20f1d6dbcf9cf50aaf30431af82f3
     #>
 
     param (
@@ -5826,7 +6158,6 @@ Function Get-V203632 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5835,6 +6166,7 @@ Function Get-V203632 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5847,8 +6179,8 @@ Function Get-V203632 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203632"
-    $RuleID = "SV-203632r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203632r1038967_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5857,9 +6189,77 @@ Function Get-V203632 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203632) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $globalPass = $false
+
+    # Check 1: /etc/login.defs PASS_MAX_DAYS
+    $output += "Check 1: /etc/login.defs PASS_MAX_DAYS${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MAX_DAYS'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MAX_DAYS\s+(\d+)") {
+            $maxDays = [int]$Matches[1]
+            $output += "  PASS_MAX_DAYS = $maxDays${nl}"
+            if ($maxDays -le 60 -and $maxDays -gt 0) {
+                $output += "  [PASS] Maximum password lifetime is $maxDays days${nl}"
+                $globalPass = $true
+            }
+            else {
+                $output += "  [FAIL] PASS_MAX_DAYS must be 60 or less (and greater than 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] PASS_MAX_DAYS not configured in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user PASS_MAX_DAYS via chage
+    $output += "Check 2: Per-User Maximum Password Age${nl}"
+    try {
+        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userStr = ($userAccounts -join $nl).Trim()
+        if ($userStr) {
+            $users = $userStr -split $nl
+            $badUsers = @()
+            foreach ($user in $users) {
+                $u = $user.Trim()
+                if (-not $u) { continue }
+                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Maximum'" 2>&1)
+                $chageStr = ($chageOut -join $nl).Trim()
+                if ($chageStr -match ":\s*(\d+)") {
+                    $userMax = [int]$Matches[1]
+                    if ($userMax -gt 60 -or $userMax -eq 0) {
+                        $badUsers += "$u (max=$userMax)"
+                    }
+                }
+                $output += "  $u : $chageStr${nl}"
+            }
+            if ($badUsers.Count -gt 0) {
+                $output += "  [FAIL] Users with max password age above 60 days: $($badUsers -join ', ')${nl}"
+            }
+            else {
+                $output += "  [PASS] All interactive users have maximum password age of 60 days or less${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($globalPass -and $badUsers.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5919,12 +6319,12 @@ Function Get-V203634 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203634
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203634r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000078-GPOS-00046
+        Rule ID    : SV-203634r982202_rule
+        Rule Title : Enforce a minimum 15-character password length
+        DiscussMD5 : ac553fb941e0c109b52498035d2d0328
+        CheckMD5   : cd37e0071acf688fdcfaabcfac908939
+        FixMD5     : df1131797123cfe3a5e954aaea4b40e3
     #>
 
     param (
@@ -5937,7 +6337,6 @@ Function Get-V203634 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5946,6 +6345,7 @@ Function Get-V203634 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5958,8 +6358,8 @@ Function Get-V203634 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203634"
-    $RuleID = "SV-203634r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203634r982202_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5968,9 +6368,83 @@ Function Get-V203634 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203634) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf minlen setting
+    $output += "Check 1: pwquality.conf minlen Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "minlen\s*=\s*(\d+)") {
+            $minlenVal = [int]$Matches[1]
+            $output += "  minlen = $minlenVal${nl}"
+            if ($minlenVal -ge 15) {
+                $output += "  [PASS] Minimum password length is $minlenVal characters${nl}"
+            }
+            else {
+                $output += "  [FAIL] minlen must be 15 or greater (DoD requirement)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] minlen not configured in /etc/security/pwquality.conf (default is 8)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: /etc/login.defs PASS_MIN_LEN
+    $output += "Check 3: /etc/login.defs PASS_MIN_LEN${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_LEN'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MIN_LEN\s+(\d+)") {
+            $passMinLen = [int]$Matches[1]
+            $output += "  PASS_MIN_LEN = $passMinLen${nl}"
+            if ($passMinLen -ge 15) {
+                $output += "  [PASS] login.defs minimum length is $passMinLen${nl}"
+            }
+            else {
+                $output += "  [INFO] login.defs PASS_MIN_LEN is $passMinLen (pwquality.conf takes precedence when pam_pwquality is loaded)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] PASS_MIN_LEN not explicitly set in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - pwquality minlen >= 15 AND pam_pwquality loaded
+    if ($pwqStr -match "minlen\s*=\s*(\d+)") {
+        $checkVal = [int]$Matches[1]
+        if ($checkVal -ge 15 -and $pamStr) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11093,12 +11567,12 @@ Function Get-V203676 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203676
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203676r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000266-GPOS-00101
+        Rule ID    : SV-203676r991561_rule
+        Rule Title : Enforce at least one special character in passwords
+        DiscussMD5 : 15b707da51bf342b536d1be547c4516f
+        CheckMD5   : 6d90f4e6729486d680e70e37e587faa4
+        FixMD5     : 598a3ab78b88651b4bc8a8b37db7c709
     #>
 
     param (
@@ -11111,7 +11585,6 @@ Function Get-V203676 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -11120,6 +11593,7 @@ Function Get-V203676 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -11132,8 +11606,8 @@ Function Get-V203676 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203676"
-    $RuleID = "SV-203676r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203676r991561_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -11142,9 +11616,74 @@ Function Get-V203676 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203676) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf ocredit setting
+    $output += "Check 1: pwquality.conf ocredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ocredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "ocredit\s*=\s*(-?\d+)") {
+            $ocreditVal = [int]$Matches[1]
+            $output += "  ocredit = $ocreditVal${nl}"
+            if ($ocreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($ocreditVal)) special character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] ocredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] ocredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "ocredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22606,12 +23145,12 @@ Function Get-V203778 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203778
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203778r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000480-GPOS-00225
+        Rule ID    : SV-203778r991587_rule
+        Rule Title : Prevent the use of dictionary words for passwords
+        DiscussMD5 : 9cb543ada83a7e715bb0ce789ff8bd25
+        CheckMD5   : 9602171ad83aad48e3feb2d59eca6c55
+        FixMD5     : 6c093c4b7380d0aecb95eaed5f85132c
     #>
 
     param (
@@ -22624,7 +23163,6 @@ Function Get-V203778 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -22633,6 +23171,7 @@ Function Get-V203778 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -22645,8 +23184,8 @@ Function Get-V203778 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203778"
-    $RuleID = "SV-203778r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203778r991587_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -22655,9 +23194,78 @@ Function Get-V203778 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203778) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $dictCheckPass = $false
+
+    # Check 1: pwquality.conf dictcheck setting
+    $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
+            $dictcheckVal = [int]$Matches[1]
+            $output += "  dictcheck = $dictcheckVal${nl}"
+            if ($dictcheckVal -ge 1) {
+                $output += "  [PASS] Dictionary check enabled${nl}"
+                $dictCheckPass = $true
+            }
+            else {
+                $output += "  [FAIL] dictcheck is disabled (set to 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] dictcheck not explicitly set (default is 1 = enabled in pwquality 1.4.4+)${nl}"
+            $dictCheckPass = $true
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Dictionary files available (cracklib)
+    $output += "Check 3: Dictionary Files${nl}"
+    try {
+        $dictFiles = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l libpam-cracklib 2>/dev/null | grep '^ii'" 2>&1)
+        $dictStr = ($dictFiles -join $nl).Trim()
+        if ($dictStr) {
+            foreach ($line in ($dictStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No dictionary files or cracklib packages found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - dictcheck enabled (or default) AND pam_pwquality loaded
+    if ($dictCheckPass -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24211,12 +24819,12 @@ Function Get-V263653 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263653
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-263653r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000710-GPOS-00160
+        Rule ID    : SV-263653r982229_rule
+        Rule Title : Verify passwords not found on commonly-used, compromised password lists
+        DiscussMD5 : 013e737dbcd96e4dd0461a8e25c3fbfb
+        CheckMD5   : 64577a6a45f6e808ffb6264db9dad2e1
+        FixMD5     : d2b3c8b240803accec4cbf73a4ba54be
     #>
 
     param (
@@ -24229,7 +24837,6 @@ Function Get-V263653 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -24238,6 +24845,7 @@ Function Get-V263653 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -24250,8 +24858,8 @@ Function Get-V263653 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-263653"
-    $RuleID = "SV-263653r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-263653r982229_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -24260,9 +24868,113 @@ Function Get-V263653 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-263653) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $dictCheckPass = $false
+    $wordlistFound = $false
+
+    # Check 1: pwquality.conf dictcheck setting
+    $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
+            $dictcheckVal = [int]$Matches[1]
+            $output += "  dictcheck = $dictcheckVal${nl}"
+            if ($dictcheckVal -ge 1) {
+                $output += "  [PASS] Dictionary check enabled${nl}"
+                $dictCheckPass = $true
+            }
+            else {
+                $output += "  [FAIL] dictcheck is disabled (set to 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] dictcheck not explicitly set (default is 1 = enabled in pwquality 1.4.4+)${nl}"
+            $dictCheckPass = $true
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Wordlist/dictionary files for compromised password checking
+    $output += "Check 3: Compromised Password Wordlists${nl}"
+    try {
+        $wordlists = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; ls -la /usr/share/cracklib/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l wamerican 2>/dev/null | grep '^ii'; dpkg -l wamerican-large 2>/dev/null | grep '^ii'" 2>&1)
+        $wordStr = ($wordlists -join $nl).Trim()
+        if ($wordStr) {
+            foreach ($line in ($wordStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            if ($wordStr -match "(cracklib|wamerican|words)") {
+                $wordlistFound = $true
+                $output += "  [PASS] Dictionary/wordlist files available for password checking${nl}"
+            }
+            else {
+                $output += "  [INFO] Dictionary directory exists but standard wordlists not confirmed${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No dictionary/wordlist files found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: pwquality dictpath for custom compromised password list
+    $output += "Check 4: Custom Compromised Password List${nl}"
+    try {
+        $dictpath = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictpath'" 2>&1)
+        $dictpathStr = ($dictpath -join $nl).Trim()
+        if ($dictpathStr -match "dictpath\s*=\s*(.+)") {
+            $customPath = $Matches[1].Trim()
+            $output += "  dictpath = $customPath${nl}"
+            $pathCheck = $(timeout 5 sh -c "ls -la ${customPath}* 2>/dev/null" 2>&1)
+            $pathStr = ($pathCheck -join $nl).Trim()
+            if ($pathStr) {
+                $output += "  [PASS] Custom dictionary path exists${nl}"
+                $wordlistFound = $true
+            }
+            else {
+                $output += "  [FAIL] Custom dictionary path configured but files not found${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No custom dictpath configured (uses system default)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - dictcheck enabled AND pam_pwquality loaded AND wordlists available
+    if ($dictCheckPass -and $pamStr -and $wordlistFound) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
