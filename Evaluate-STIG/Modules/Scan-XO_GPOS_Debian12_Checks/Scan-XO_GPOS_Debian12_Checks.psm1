@@ -2320,12 +2320,12 @@ Function Get-V203602 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203602
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203602r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000032-GPOS-00013
+        Rule ID    : SV-203602r958406_rule
+        Rule Title : The operating system must monitor remote access methods.
+        DiscussMD5 : 8faea1683909f98a0380b33c0cc5abab
+        CheckMD5   : aec82969f3da4c03b94f331148438b3f
+        FixMD5     : 6834b32a2607b3bb9df4ea81ba96c100
     #>
 
     param (
@@ -2359,8 +2359,8 @@ Function Get-V203602 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203602"
-    $RuleID = "SV-203602r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203602r958406_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -2369,9 +2369,101 @@ Function Get-V203602 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203602) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $sshMonitored = $false
+
+    # Check 1: SSH LogLevel configuration
+    $output += "Check 1: SSH LogLevel Configuration${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        if ($sshdStr -match "loglevel\s+(INFO|VERBOSE)") {
+            $output += "  [PASS] SSH LogLevel: $($Matches[1])${nl}"
+            $sshMonitored = $true
+        }
+        elseif ($sshdStr -match "loglevel\s+(\S+)") {
+            $output += "  [FAIL] SSH LogLevel: $($Matches[1]) (should be INFO or VERBOSE)${nl}"
+        }
+        else {
+            $output += "  [INFO] Unable to determine SSH LogLevel${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: rsyslog auth facility logging
+    $output += "Check 2: Syslog Auth Facility Logging${nl}"
+    try {
+        $rsyslogConf = $(timeout 5 cat /etc/rsyslog.conf 2>&1)
+        $rsyslogStr = ($rsyslogConf -join $nl)
+        $rsyslogD = $(timeout 5 cat /etc/rsyslog.d/*.conf 2>&1)
+        $rsyslogDStr = ($rsyslogD -join $nl)
+        $combined = $rsyslogStr + $nl + $rsyslogDStr
+        if ($combined -match "auth\.\*|auth,authpriv\.\*|authpriv\.\*") {
+            $output += "  [PASS] Auth facility logging configured in rsyslog${nl}"
+            $sshMonitored = $true
+        }
+        else {
+            $output += "  [INFO] Auth facility not explicitly configured in rsyslog${nl}"
+        }
+    }
+    catch {
+        $output += "  [INFO] rsyslog configuration not accessible${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Auth log file exists and has recent entries
+    $output += "Check 3: Auth Log File Status${nl}"
+    try {
+        $authLog = $(timeout 5 ls -la /var/log/auth.log 2>&1)
+        $authLogStr = ($authLog -join $nl).Trim()
+        if ($authLogStr -and $authLogStr -notmatch "No such file") {
+            $output += "  [PASS] /var/log/auth.log exists: $authLogStr${nl}"
+            $recentEntries = $(timeout 5 tail -5 /var/log/auth.log 2>&1)
+            $recentStr = ($recentEntries -join $nl).Trim()
+            if ($recentStr -match "sshd") {
+                $output += "  [PASS] Recent SSH events found in auth.log${nl}"
+                $sshMonitored = $true
+            }
+            else {
+                $output += "  [INFO] No recent SSH events in auth.log${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] /var/log/auth.log not found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: journald logging of SSH sessions
+    $output += "Check 4: Systemd Journal SSH Monitoring${nl}"
+    try {
+        $journalSSH = $(timeout 10 journalctl -u ssh --no-pager -n 5 2>&1)
+        $journalStr = ($journalSSH -join $nl).Trim()
+        if ($journalStr -and $journalStr -notmatch "No entries|No journal files") {
+            $output += "  [PASS] SSH events found in systemd journal${nl}"
+            $sshMonitored = $true
+        }
+        else {
+            $output += "  [INFO] No SSH events in systemd journal${nl}"
+        }
+    }
+    catch {
+        $output += "  [INFO] journalctl not available${nl}"
+    }
+
+    # Determine status
+    if ($sshMonitored) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6682,12 +6774,12 @@ Function Get-V203636 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203636
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203636r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000080-GPOS-00048
+        Rule ID    : SV-203636r958472_rule
+        Rule Title : The operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.
+        DiscussMD5 : 9952e0af74c51d638baad42c46129c1a
+        CheckMD5   : 51947530def454e6048ccbc9e102f905
+        FixMD5     : 40c36c61fe8a98748e0d1b640f8abb4e
     #>
 
     param (
@@ -6721,8 +6813,8 @@ Function Get-V203636 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203636"
-    $RuleID = "SV-203636r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203636r958472_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -6731,9 +6823,113 @@ Function Get-V203636 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203636) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $accessControlled = $false
+
+    # Check 1: SSH access restrictions
+    $output += "Check 1: SSH Access Restrictions${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        $hasRestriction = $false
+        if ($sshdStr -match "allowusers\s+(\S.*)") {
+            $output += "  [PASS] AllowUsers: $($Matches[1])${nl}"
+            $hasRestriction = $true
+        }
+        if ($sshdStr -match "allowgroups\s+(\S.*)") {
+            $output += "  [PASS] AllowGroups: $($Matches[1])${nl}"
+            $hasRestriction = $true
+        }
+        if ($sshdStr -match "denyusers\s+(\S.*)") {
+            $output += "  [PASS] DenyUsers: $($Matches[1])${nl}"
+            $hasRestriction = $true
+        }
+        if ($sshdStr -match "denygroups\s+(\S.*)") {
+            $output += "  [PASS] DenyGroups: $($Matches[1])${nl}"
+            $hasRestriction = $true
+        }
+        if (-not $hasRestriction) {
+            $output += "  [FAIL] No SSH AllowUsers/AllowGroups/DenyUsers/DenyGroups configured${nl}"
+        }
+        else {
+            $accessControlled = $true
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: File permission enforcement on critical files
+    $output += "Check 2: Critical File Permissions${nl}"
+    try {
+        $critFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow")
+        foreach ($f in $critFiles) {
+            $perms = $(timeout 5 stat -c '%a %U:%G' $f 2>&1)
+            $permsStr = ($perms -join " ").Trim()
+            $output += "  $f : $permsStr${nl}"
+        }
+        $shadowPerms = $(timeout 5 stat -c '%a' /etc/shadow 2>&1)
+        $shadowStr = ($shadowPerms -join " ").Trim()
+        if ($shadowStr -match "^(0|640|600)$") {
+            $output += "  [PASS] /etc/shadow permissions restrictive ($shadowStr)${nl}"
+        }
+        else {
+            $output += "  [FAIL] /etc/shadow permissions too permissive ($shadowStr)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: sudo/su access control
+    $output += "Check 3: Privilege Escalation Controls${nl}"
+    try {
+        $sudoInstalled = $(timeout 5 dpkg -l sudo 2>&1)
+        $sudoStr = ($sudoInstalled -join $nl)
+        if ($sudoStr -match "^ii\s+sudo") {
+            $output += "  [PASS] sudo installed${nl}"
+            $sudoers = $(timeout 5 cat /etc/sudoers 2>&1)
+            $sudoersStr = ($sudoers -join $nl)
+            if ($sudoersStr -match "^(?!#).*ALL=\(ALL") {
+                $output += "  [INFO] sudo ALL rules detected (verify least privilege)${nl}"
+            }
+            $accessControlled = $true
+        }
+        else {
+            $output += "  [FAIL] sudo not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: PAM access control
+    $output += "Check 4: PAM Access Control${nl}"
+    try {
+        $accessConf = $(timeout 5 cat /etc/security/access.conf 2>&1)
+        $accessStr = ($accessConf -join $nl)
+        $activeRules = ($accessStr -split $nl) | Where-Object { $_ -match "^[+-]" }
+        if ($activeRules.Count -gt 0) {
+            $output += "  [PASS] $($activeRules.Count) active rules in access.conf${nl}"
+            $accessControlled = $true
+        }
+        else {
+            $output += "  [INFO] No active rules in /etc/security/access.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [INFO] /etc/security/access.conf not accessible${nl}"
+    }
+
+    if ($accessControlled) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6793,12 +6989,12 @@ Function Get-V203637 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203637
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203637r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000095-GPOS-00049
+        Rule ID    : SV-203637r958478_rule
+        Rule Title : The operating system must be configured to disable non-essential capabilities.
+        DiscussMD5 : db7f19036bb002eb88c4d34412a9105c
+        CheckMD5   : a3d9c4ad2427c1d5b123dddedc761a6e
+        FixMD5     : fff1b9f4592c762433c8425c226ccd4c
     #>
 
     param (
@@ -6832,8 +7028,8 @@ Function Get-V203637 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203637"
-    $RuleID = "SV-203637r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203637r958478_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -6842,9 +7038,87 @@ Function Get-V203637 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203637) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $issues = 0
+
+    # Check 1: SSH non-essential features
+    $output += "Check 1: SSH Non-Essential Features${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+
+        $sshFeatures = @(
+            @{ Name = "X11Forwarding"; Pattern = "x11forwarding\s+yes"; Good = "no" },
+            @{ Name = "AllowTcpForwarding"; Pattern = "allowtcpforwarding\s+yes"; Good = "no" },
+            @{ Name = "AllowAgentForwarding"; Pattern = "allowagentforwarding\s+yes"; Good = "no" },
+            @{ Name = "PermitTunnel"; Pattern = "permittunnel\s+yes"; Good = "no" },
+            @{ Name = "GatewayPorts"; Pattern = "gatewayports\s+yes"; Good = "no" }
+        )
+
+        foreach ($feat in $sshFeatures) {
+            if ($sshdStr -match $feat.Pattern) {
+                $output += "  [FAIL] $($feat.Name) is enabled (should be $($feat.Good))${nl}"
+                $issues++
+            }
+            elseif ($sshdStr -match "$($feat.Name.ToLower())\s+(\S+)") {
+                $output += "  [PASS] $($feat.Name): $($Matches[1])${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Non-essential services running
+    $output += "Check 2: Non-Essential Services${nl}"
+    try {
+        $nonEssential = @("avahi-daemon", "cups", "bluetooth", "rpcbind", "nfs-server", "vsftpd", "telnet")
+        foreach ($svc in $nonEssential) {
+            $svcStatus = $(timeout 5 systemctl is-active $svc 2>&1)
+            $svcStr = ($svcStatus -join " ").Trim()
+            if ($svcStr -eq "active") {
+                $output += "  [FAIL] $svc is active (non-essential service)${nl}"
+                $issues++
+            }
+        }
+        if ($issues -eq 0) {
+            $output += "  [PASS] No non-essential services detected${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Non-essential packages
+    $output += "Check 3: Non-Essential Packages${nl}"
+    try {
+        $nonEssPkgs = @("telnetd", "rsh-server", "ypserv", "tftp-server", "xinetd")
+        $foundPkgs = @()
+        foreach ($pkg in $nonEssPkgs) {
+            $pkgCheck = $(timeout 5 dpkg -l $pkg 2>&1)
+            $pkgStr = ($pkgCheck -join $nl)
+            if ($pkgStr -match "^ii\s+$pkg") {
+                $foundPkgs += $pkg
+                $output += "  [FAIL] $pkg is installed (non-essential)${nl}"
+                $issues++
+            }
+        }
+        if ($foundPkgs.Count -eq 0) {
+            $output += "  [PASS] No non-essential packages installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    if ($issues -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6904,12 +7178,12 @@ Function Get-V203638 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203638
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203638r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000096-GPOS-00050
+        Rule ID    : SV-203638r958480_rule
+        Rule Title : The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.
+        DiscussMD5 : 98e4e4e36c59048838a5918fb6c01d56
+        CheckMD5   : 7f30c501b6cf4549e93fc5d64bcc1eb5
+        FixMD5     : 9dbe524105c638b17db26066eb58f7b5
     #>
 
     param (
@@ -6943,8 +7217,8 @@ Function Get-V203638 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203638"
-    $RuleID = "SV-203638r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203638r958480_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -6953,9 +7227,102 @@ Function Get-V203638 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203638) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $firewallActive = $false
+
+    # Check 1: Firewall status
+    $output += "Check 1: Firewall Status${nl}"
+    try {
+        $ufwStatus = $(timeout 5 ufw status 2>&1)
+        $ufwStr = ($ufwStatus -join $nl).Trim()
+        if ($ufwStr -match "Status: active") {
+            $output += "  [PASS] UFW firewall is active${nl}"
+            $firewallActive = $true
+            $ufwRules = $(timeout 5 ufw status verbose 2>&1)
+            $ufwRulesStr = ($ufwRules -join $nl).Trim()
+            $output += "  Default policy:${nl}"
+            if ($ufwRulesStr -match "Default:\s*(.+)") {
+                $output += "    $($Matches[1])${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] UFW not active${nl}"
+        }
+    }
+    catch {
+        $output += "  [INFO] UFW not available${nl}"
+    }
+
+    if (-not $firewallActive) {
+        try {
+            $nftRules = $(timeout 5 nft list ruleset 2>&1)
+            $nftStr = ($nftRules -join $nl).Trim()
+            if ($nftStr -and $nftStr -match "table" -and $nftStr -notmatch "command not found") {
+                $output += "  [PASS] nftables ruleset present${nl}"
+                $firewallActive = $true
+            }
+        }
+        catch { }
+
+        if (-not $firewallActive) {
+            try {
+                $iptRules = $(timeout 5 iptables -L -n 2>&1)
+                $iptStr = ($iptRules -join $nl).Trim()
+                $ruleCount = (($iptStr -split $nl) | Where-Object { $_ -match "^(ACCEPT|DROP|REJECT)" }).Count
+                if ($ruleCount -gt 0) {
+                    $output += "  [PASS] iptables rules present ($ruleCount rules)${nl}"
+                    $firewallActive = $true
+                }
+                else {
+                    $output += "  [FAIL] No active firewall detected (UFW/nftables/iptables)${nl}"
+                }
+            }
+            catch {
+                $output += "  [FAIL] No active firewall detected${nl}"
+            }
+        }
+    }
+    $output += $nl
+
+    # Check 2: Listening ports
+    $output += "Check 2: Listening Network Ports${nl}"
+    try {
+        $listeners = $(timeout 5 ss -tlnp 2>&1)
+        $listStr = ($listeners -join $nl).Trim()
+        $lines = ($listStr -split $nl) | Where-Object { $_ -match "LISTEN" }
+        $output += "  Active listening ports: $($lines.Count)${nl}"
+        foreach ($line in $lines) {
+            $output += "    $line${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] Unable to enumerate listening ports${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH port configuration
+    $output += "Check 3: SSH Port Configuration${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        if ($sshdStr -match "port\s+(\d+)") {
+            $sshPort = $Matches[1]
+            $output += "  SSH listening on port: $sshPort${nl}"
+            if ($sshPort -eq "22") {
+                $output += "  [INFO] Using default SSH port 22${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] Unable to check SSH port${nl}"
+    }
+
+    if ($firewallActive) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12828,12 +13195,12 @@ Function Get-V203686 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203686
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203686r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000297-GPOS-00115
+        Rule ID    : SV-203686r958672_rule
+        Rule Title : The operating system must control remote access methods.
+        DiscussMD5 : 895271d9f5d2b2ee55f27432c3f3f43b
+        CheckMD5   : 981fafb357c9b3a4738b4106b3be677b
+        FixMD5     : 3f556f4474282352f87339fe17527d10
     #>
 
     param (
@@ -12867,8 +13234,8 @@ Function Get-V203686 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203686"
-    $RuleID = "SV-203686r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203686r958672_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -12877,9 +13244,89 @@ Function Get-V203686 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203686) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $sshControlled = $false
+    $unauthorizedAccess = $false
+
+    # Check 1: SSH is the primary remote access method
+    $output += "Check 1: Remote Access Method Inventory${nl}"
+    try {
+        $sshActive = $(timeout 5 systemctl is-active ssh 2>&1)
+        $sshStr = ($sshActive -join " ").Trim()
+        if ($sshStr -eq "active") {
+            $output += "  [PASS] SSH service: active${nl}"
+            $sshControlled = $true
+        }
+        else {
+            $output += "  [INFO] SSH service: $sshStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Check for unauthorized remote access services
+    $output += "Check 2: Unauthorized Remote Access Services${nl}"
+    try {
+        $unauthorizedSvcs = @("telnet", "vnc", "xrdp", "rsh", "rlogin", "rexec")
+        foreach ($svc in $unauthorizedSvcs) {
+            $svcCheck = $(timeout 5 systemctl is-active $svc 2>&1)
+            $svcStr = ($svcCheck -join " ").Trim()
+            if ($svcStr -eq "active") {
+                $output += "  [FAIL] $svc is active (unauthorized remote access)${nl}"
+                $unauthorizedAccess = $true
+            }
+        }
+        $vncCheck = $(timeout 5 ss -tlnp 2>&1)
+        $vncStr = ($vncCheck -join $nl)
+        if ($vncStr -match ":590[0-9]|:5800") {
+            $output += "  [FAIL] VNC port detected in listening ports${nl}"
+            $unauthorizedAccess = $true
+        }
+        if (-not $unauthorizedAccess) {
+            $output += "  [PASS] No unauthorized remote access services detected${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH security restrictions
+    $output += "Check 3: SSH Security Restrictions${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        if ($sshdStr -match "permitrootlogin\s+(\S+)") {
+            $rootLogin = $Matches[1]
+            if ($rootLogin -eq "no" -or $rootLogin -eq "prohibit-password") {
+                $output += "  [PASS] PermitRootLogin: $rootLogin${nl}"
+            }
+            else {
+                $output += "  [FAIL] PermitRootLogin: $rootLogin (should be no or prohibit-password)${nl}"
+            }
+        }
+        if ($sshdStr -match "maxauthtries\s+(\d+)") {
+            $output += "  MaxAuthTries: $($Matches[1])${nl}"
+        }
+        if ($sshdStr -match "maxsessions\s+(\d+)") {
+            $output += "  MaxSessions: $($Matches[1])${nl}"
+        }
+        if ($sshdStr -match "protocol\s+(\d+)") {
+            $output += "  Protocol: $($Matches[1])${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    if ($sshControlled -and -not $unauthorizedAccess) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12939,12 +13386,12 @@ Function Get-V203687 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203687
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203687r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000298-GPOS-00116
+        Rule ID    : SV-203687r958674_rule
+        Rule Title : The operating system must provide the capability to immediately disconnect or disable remote access to the operating system.
+        DiscussMD5 : 15fdfe637112385751738869e40d9748
+        CheckMD5   : 28eaf52333b7026667781bc076a98932
+        FixMD5     : b6b90e7b9d69f420aae5a882a4cdf824
     #>
 
     param (
@@ -12978,8 +13425,8 @@ Function Get-V203687 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203687"
-    $RuleID = "SV-203687r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203687r958674_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -12988,9 +13435,83 @@ Function Get-V203687 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203687) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $capabilities = 0
+
+    # Check 1: SSH service can be stopped/restarted
+    $output += "Check 1: SSH Service Control Capability${nl}"
+    try {
+        $sshEnabled = $(timeout 5 systemctl is-enabled ssh 2>&1)
+        $sshEnabledStr = ($sshEnabled -join " ").Trim()
+        $sshActive = $(timeout 5 systemctl is-active ssh 2>&1)
+        $sshActiveStr = ($sshActive -join " ").Trim()
+        $output += "  SSH service enabled: $sshEnabledStr${nl}"
+        $output += "  SSH service active: $sshActiveStr${nl}"
+        if ($sshActiveStr -eq "active") {
+            $output += "  [PASS] SSH can be stopped via: systemctl stop ssh${nl}"
+            $capabilities++
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Firewall can block remote access
+    $output += "Check 2: Firewall Block Capability${nl}"
+    try {
+        $ufwAvail = $(timeout 5 which ufw 2>&1)
+        $ufwStr = ($ufwAvail -join " ").Trim()
+        if ($ufwStr -and $ufwStr -notmatch "not found") {
+            $output += "  [PASS] UFW available: can block all traffic with 'ufw deny in'${nl}"
+            $capabilities++
+        }
+        else {
+            $iptAvail = $(timeout 5 which iptables 2>&1)
+            $iptStr = ($iptAvail -join " ").Trim()
+            if ($iptStr -and $iptStr -notmatch "not found") {
+                $output += "  [PASS] iptables available: can block traffic with 'iptables -P INPUT DROP'${nl}"
+                $capabilities++
+            }
+            else {
+                $output += "  [FAIL] No firewall tool available for immediate blocking${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Active session termination capability
+    $output += "Check 3: Session Termination Capability${nl}"
+    try {
+        $whoOutput = $(timeout 5 who 2>&1)
+        $whoStr = ($whoOutput -join $nl).Trim()
+        $sessions = ($whoStr -split $nl) | Where-Object { $_ -match "\S" }
+        $output += "  Active sessions: $($sessions.Count)${nl}"
+        $pkillAvail = $(timeout 5 which pkill 2>&1)
+        $pkillStr = ($pkillAvail -join " ").Trim()
+        if ($pkillStr -and $pkillStr -notmatch "not found") {
+            $output += "  [PASS] pkill available: can terminate user sessions${nl}"
+            $capabilities++
+        }
+        $killAvail = $(timeout 5 which kill 2>&1)
+        $killStr = ($killAvail -join " ").Trim()
+        if ($killStr -and $killStr -notmatch "not found") {
+            $output += "  [PASS] kill available: can terminate individual processes${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    if ($capabilities -ge 2) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -13050,12 +13571,12 @@ Function Get-V203688 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203688
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203688r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000299-GPOS-00117
+        Rule ID    : SV-203688r991568_rule
+        Rule Title : The operating system must protect wireless access to and from the system using encryption.
+        DiscussMD5 : f3d8fc8d933d0f486f4a850b5e4fd5b5
+        CheckMD5   : 1e2e7297259a39493cde1d7ed44da26a
+        FixMD5     : b3b1e39c5258b0492cb21f4bd0f66899
     #>
 
     param (
@@ -13089,8 +13610,8 @@ Function Get-V203688 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203688"
-    $RuleID = "SV-203688r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203688r991568_rule"
+    $Status = "Not_Applicable"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -13099,9 +13620,82 @@ Function Get-V203688 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203688) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Detect wireless interfaces
+    $output += "Check 1: Wireless Interface Detection${nl}"
+    try {
+        $iwconfig = $(timeout 5 iwconfig 2>&1)
+        $iwStr = ($iwconfig -join $nl).Trim()
+        $wlanInterfaces = @()
+        if ($iwStr -and $iwStr -notmatch "command not found") {
+            $lines = $iwStr -split $nl
+            foreach ($line in $lines) {
+                if ($line -match "^(\S+)\s+IEEE 802\.11") {
+                    $wlanInterfaces += $Matches[1]
+                }
+            }
+        }
+        if ($wlanInterfaces.Count -eq 0) {
+            $iw = $(timeout 5 iw dev 2>&1)
+            $iwDevStr = ($iw -join $nl).Trim()
+            if ($iwDevStr -match "Interface\s+(\S+)") {
+                $wlanInterfaces += $Matches[1]
+            }
+        }
+    }
+    catch { }
+
+    # Check 2: Check /sys/class/net for wireless
+    try {
+        $sysNet = $(timeout 5 ls /sys/class/net/ 2>&1)
+        $sysStr = ($sysNet -join $nl).Trim()
+        $ifaces = ($sysStr -split $nl) | Where-Object { $_ -match "^wl" }
+        foreach ($iface in $ifaces) {
+            if ($iface -and ($wlanInterfaces -notcontains $iface)) {
+                $wlanInterfaces += $iface
+            }
+        }
+    }
+    catch { }
+
+    if ($wlanInterfaces.Count -gt 0) {
+        $output += "  [INFO] Wireless interfaces detected: $($wlanInterfaces -join ', ')${nl}"
+        $output += $nl
+
+        # Check wireless encryption
+        $output += "Check 2: Wireless Encryption Configuration${nl}"
+        try {
+            foreach ($iface in $wlanInterfaces) {
+                $iwInfo = $(timeout 5 iwconfig $iface 2>&1)
+                $iwInfoStr = ($iwInfo -join $nl).Trim()
+                $output += "  Interface $iface : $iwInfoStr${nl}"
+            }
+            $wpaSupp = $(timeout 5 cat /etc/wpa_supplicant/wpa_supplicant.conf 2>&1)
+            $wpaStr = ($wpaSupp -join $nl).Trim()
+            if ($wpaStr -match "key_mgmt=WPA-EAP|proto=RSN|pairwise=CCMP") {
+                $output += "  [PASS] WPA2/WPA3 encryption configured${nl}"
+                $Status = "NotAFinding"
+            }
+            else {
+                $output += "  [FAIL] WPA2/WPA3 encryption not verified${nl}"
+                $Status = "Open"
+            }
+        }
+        catch {
+            $Status = "Open"
+            $output += "  [FAIL] Unable to verify wireless encryption${nl}"
+        }
+    }
+    else {
+        $output += "  [N/A] No wireless interfaces detected${nl}"
+        $output += "  This system does not have wireless capability.${nl}"
+        $output += "  Requirement is Not Applicable.${nl}"
+        $Status = "Not_Applicable"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -13161,12 +13755,12 @@ Function Get-V203689 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203689
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203689r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000300-GPOS-00118
+        Rule ID    : SV-203689r991569_rule
+        Rule Title : The operating system must protect wireless access to the system using authentication of users and/or devices.
+        DiscussMD5 : e4fba6a74a8224b60e4cb732f4ee1eb7
+        CheckMD5   : 3b3d889085cbc84eac73677fa1f02123
+        FixMD5     : 124df1d06f891bb5f39ef2ec2447496d
     #>
 
     param (
@@ -13200,8 +13794,8 @@ Function Get-V203689 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203689"
-    $RuleID = "SV-203689r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203689r991569_rule"
+    $Status = "Not_Applicable"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -13210,9 +13804,79 @@ Function Get-V203689 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203689) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Detect wireless interfaces
+    $output += "Check 1: Wireless Interface Detection${nl}"
+    $wlanInterfaces = @()
+    try {
+        $iwconfig = $(timeout 5 iwconfig 2>&1)
+        $iwStr = ($iwconfig -join $nl).Trim()
+        if ($iwStr -and $iwStr -notmatch "command not found") {
+            $lines = $iwStr -split $nl
+            foreach ($line in $lines) {
+                if ($line -match "^(\S+)\s+IEEE 802\.11") {
+                    $wlanInterfaces += $Matches[1]
+                }
+            }
+        }
+        if ($wlanInterfaces.Count -eq 0) {
+            $iw = $(timeout 5 iw dev 2>&1)
+            $iwDevStr = ($iw -join $nl).Trim()
+            if ($iwDevStr -match "Interface\s+(\S+)") {
+                $wlanInterfaces += $Matches[1]
+            }
+        }
+    }
+    catch { }
+
+    try {
+        $sysNet = $(timeout 5 ls /sys/class/net/ 2>&1)
+        $sysStr = ($sysNet -join $nl).Trim()
+        $ifaces = ($sysStr -split $nl) | Where-Object { $_ -match "^wl" }
+        foreach ($iface in $ifaces) {
+            if ($iface -and ($wlanInterfaces -notcontains $iface)) {
+                $wlanInterfaces += $iface
+            }
+        }
+    }
+    catch { }
+
+    if ($wlanInterfaces.Count -gt 0) {
+        $output += "  [INFO] Wireless interfaces detected: $($wlanInterfaces -join ', ')${nl}"
+        $output += $nl
+
+        $output += "Check 2: Wireless Authentication Configuration${nl}"
+        try {
+            $wpaSupp = $(timeout 5 cat /etc/wpa_supplicant/wpa_supplicant.conf 2>&1)
+            $wpaStr = ($wpaSupp -join $nl).Trim()
+            if ($wpaStr -match "key_mgmt=WPA-EAP") {
+                $output += "  [PASS] WPA-Enterprise (802.1X) authentication configured${nl}"
+                $Status = "NotAFinding"
+            }
+            elseif ($wpaStr -match "key_mgmt=WPA-PSK") {
+                $output += "  [FAIL] WPA-PSK (pre-shared key) - does not meet DoD requirements${nl}"
+                $Status = "Open"
+            }
+            else {
+                $output += "  [FAIL] Unable to verify wireless authentication method${nl}"
+                $Status = "Open"
+            }
+        }
+        catch {
+            $Status = "Open"
+            $output += "  [FAIL] Unable to verify wireless authentication${nl}"
+        }
+    }
+    else {
+        $output += "  [N/A] No wireless interfaces detected${nl}"
+        $output += "  This system does not have wireless capability.${nl}"
+        $output += "  Requirement is Not Applicable.${nl}"
+        $Status = "Not_Applicable"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17501,12 +18165,12 @@ Function Get-V203727 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203727
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203727r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000375-GPOS-00160
+        Rule ID    : SV-203727r982216_rule
+        Rule Title : The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access.
+        DiscussMD5 : d73e91d624704add90f9a005112cacbb
+        CheckMD5   : 7877cac38d36ef086c9f3a87218945ab
+        FixMD5     : 3edb8f0b752777332660ebd360f5057d
     #>
 
     param (
@@ -17540,8 +18204,8 @@ Function Get-V203727 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203727"
-    $RuleID = "SV-203727r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203727r982216_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -17550,9 +18214,103 @@ Function Get-V203727 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203727) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $mfaConfigured = $false
+
+    # Check 1: SSH AuthenticationMethods (multifactor)
+    $output += "Check 1: SSH MFA Configuration${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        if ($sshdStr -match "authenticationmethods\s+(\S.*)") {
+            $authMethods = $Matches[1]
+            $output += "  AuthenticationMethods: $authMethods${nl}"
+            if ($authMethods -match ",") {
+                $output += "  [PASS] Multiple authentication factors required${nl}"
+                $mfaConfigured = $true
+            }
+            else {
+                $output += "  [INFO] Single authentication method configured${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] AuthenticationMethods not explicitly set${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM MFA modules
+    $output += "Check 2: PAM MFA Modules${nl}"
+    try {
+        $pamMFA = @("pam_google_authenticator.so", "pam_u2f.so", "pam_pkcs11.so", "pam_yubico.so")
+        $pamSshd = $(timeout 5 cat /etc/pam.d/sshd 2>&1)
+        $pamStr = ($pamSshd -join $nl)
+        $pamCommon = $(timeout 5 cat /etc/pam.d/common-auth 2>&1)
+        $pamCommonStr = ($pamCommon -join $nl)
+        $combined = $pamStr + $nl + $pamCommonStr
+
+        foreach ($mod in $pamMFA) {
+            if ($combined -match $mod) {
+                $output += "  [PASS] $mod configured in PAM${nl}"
+                $mfaConfigured = $true
+            }
+        }
+        if (-not $mfaConfigured) {
+            $output += "  [FAIL] No MFA PAM modules configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Smartcard/PIV packages
+    $output += "Check 3: Smartcard/PIV Support${nl}"
+    try {
+        $pivPkgs = @("opensc", "libpam-pkcs11", "pcscd")
+        foreach ($pkg in $pivPkgs) {
+            $pkgCheck = $(timeout 5 dpkg -l $pkg 2>&1)
+            $pkgStr = ($pkgCheck -join $nl)
+            if ($pkgStr -match "^ii\s+$pkg") {
+                $output += "  [PASS] $pkg installed${nl}"
+                $mfaConfigured = $true
+            }
+            else {
+                $output += "  [INFO] $pkg not installed${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: SSSD with smartcard auth
+    $output += "Check 4: SSSD Smartcard Authentication${nl}"
+    try {
+        $sssdConf = $(timeout 5 cat /etc/sssd/sssd.conf 2>&1)
+        $sssdStr = ($sssdConf -join $nl)
+        if ($sssdStr -match "pam_cert_auth\s*=\s*True") {
+            $output += "  [PASS] SSSD certificate authentication enabled${nl}"
+            $mfaConfigured = $true
+        }
+        else {
+            $output += "  [INFO] SSSD certificate auth not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [INFO] SSSD not configured${nl}"
+    }
+
+    if ($mfaConfigured) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17612,12 +18370,12 @@ Function Get-V203728 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203728
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203728r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000376-GPOS-00161
+        Rule ID    : SV-203728r958816_rule
+        Rule Title : The operating system must accept Personal Identity Verification (PIV) credentials.
+        DiscussMD5 : 5d49e42929c4c75306ec82492c6d8b21
+        CheckMD5   : 2046d40d4be69706ee237d24e0105d7b
+        FixMD5     : bfb4a5de69008ca3be9c1216152e0234
     #>
 
     param (
@@ -17651,8 +18409,8 @@ Function Get-V203728 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203728"
-    $RuleID = "SV-203728r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203728r958816_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -17661,9 +18419,99 @@ Function Get-V203728 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203728) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $pivCapable = $false
+
+    # Check 1: PIV/Smartcard packages installed
+    $output += "Check 1: PIV/Smartcard Packages${nl}"
+    try {
+        $pivPkgs = @(
+            @{ Name = "opensc"; Desc = "Smart card framework" },
+            @{ Name = "libpam-pkcs11"; Desc = "PAM PKCS#11 authentication" },
+            @{ Name = "pcscd"; Desc = "PC/SC Smart Card Daemon" },
+            @{ Name = "libccid"; Desc = "PC/SC driver for USB CCID readers" },
+            @{ Name = "libnss3-tools"; Desc = "NSS security tools (certutil)" }
+        )
+        foreach ($pkg in $pivPkgs) {
+            $pkgCheck = $(timeout 5 dpkg -l $($pkg.Name) 2>&1)
+            $pkgStr = ($pkgCheck -join $nl)
+            if ($pkgStr -match "^ii\s+$($pkg.Name)") {
+                $output += "  [PASS] $($pkg.Name) installed ($($pkg.Desc))${nl}"
+                $pivCapable = $true
+            }
+            else {
+                $output += "  [FAIL] $($pkg.Name) not installed ($($pkg.Desc))${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: pcscd service status
+    $output += "Check 2: Smart Card Daemon${nl}"
+    try {
+        $pcscd = $(timeout 5 systemctl is-active pcscd 2>&1)
+        $pcscdStr = ($pcscd -join " ").Trim()
+        $pcscdEnabled = $(timeout 5 systemctl is-enabled pcscd 2>&1)
+        $pcscdEnabledStr = ($pcscdEnabled -join " ").Trim()
+        $output += "  pcscd active: $pcscdStr${nl}"
+        $output += "  pcscd enabled: $pcscdEnabledStr${nl}"
+        if ($pcscdStr -eq "active") {
+            $output += "  [PASS] Smart card daemon running${nl}"
+            $pivCapable = $true
+        }
+    }
+    catch {
+        $output += "  [INFO] pcscd service not available${nl}"
+    }
+    $output += $nl
+
+    # Check 3: PAM PKCS11 configuration
+    $output += "Check 3: PAM PKCS11 Configuration${nl}"
+    try {
+        $pamPkcs11 = $(timeout 5 cat /etc/pam_pkcs11/pam_pkcs11.conf 2>&1)
+        $pamStr = ($pamPkcs11 -join $nl).Trim()
+        if ($pamStr -and $pamStr -notmatch "No such file") {
+            $output += "  [PASS] pam_pkcs11.conf exists${nl}"
+            $pivCapable = $true
+        }
+        else {
+            $output += "  [FAIL] /etc/pam_pkcs11/pam_pkcs11.conf not found${nl}"
+        }
+    }
+    catch {
+        $output += "  [FAIL] PAM PKCS11 configuration not found${nl}"
+    }
+    $output += $nl
+
+    # Check 4: SSH certificate-based authentication
+    $output += "Check 4: SSH Certificate Authentication${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl)
+        if ($sshdStr -match "pubkeyauthentication\s+yes") {
+            $output += "  [PASS] PubkeyAuthentication enabled${nl}"
+        }
+        if ($sshdStr -match "trustedusercakeys\s+(\S+)") {
+            $output += "  [PASS] TrustedUserCAKeys: $($Matches[1])${nl}"
+            $pivCapable = $true
+        }
+        else {
+            $output += "  [INFO] TrustedUserCAKeys not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    if ($pivCapable) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

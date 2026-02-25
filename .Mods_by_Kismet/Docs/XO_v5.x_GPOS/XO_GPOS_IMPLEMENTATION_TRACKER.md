@@ -12,9 +12,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 48 (18 CAT I + 29 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 150 |
-| **Completion** | 24.2% |
+| **Implemented** | 58 (18 CAT I + 39 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 140 |
+| **Completion** | 29.3% |
 
 **Last validated test:** Test153b (Feb 25, 2026) — Exit 0, EvalScore 5.05%, 10 NF / 38 O / 1 NA / 150 NR (Batch 3 all Open, COMMENTS 198/198)
 
@@ -132,16 +132,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203602 | SV-203602r958406 | Monitor remote access methods | NR | -- | -- | -- |
-| V-203636 | SV-203636r958472 | Enforce approved authorizations for logical access | NR | -- | -- | -- |
-| V-203637 | SV-203637r958478 | Disable non-essential capabilities | NR | -- | -- | -- |
-| V-203638 | SV-203638r958480 | Restrict use of functions/ports/protocols/services | NR | -- | -- | -- |
-| V-203686 | SV-203686r958672 | Control remote access methods | NR | -- | -- | -- |
-| V-203687 | SV-203687r958674 | Immediate disconnect/disable capability | NR | -- | -- | -- |
-| V-203688 | SV-203688r991568 | Wireless access encryption | NR | -- | -- | -- |
-| V-203689 | SV-203689r991569 | Wireless access authentication | NR | -- | -- | -- |
-| V-203727 | SV-203727r982216 | MFA for remote access (privileged) | NR | -- | -- | -- |
-| V-203728 | SV-203728r958816 | Accept PIV credentials | NR | -- | -- | -- |
+| V-203602 | SV-203602r958406 | Monitor remote access methods | -- | -- | #56 | SSH LogLevel, rsyslog auth, auth.log, journald |
+| V-203636 | SV-203636r958472 | Enforce approved authorizations for logical access | -- | -- | #56 | SSH access restrictions, file perms, sudo, PAM |
+| V-203637 | SV-203637r958478 | Disable non-essential capabilities | -- | -- | #56 | SSH features, services, packages |
+| V-203638 | SV-203638r958480 | Restrict use of functions/ports/protocols/services | -- | -- | #56 | Firewall (UFW/nft/ipt), listening ports, SSH port |
+| V-203686 | SV-203686r958672 | Control remote access methods | -- | -- | #56 | SSH only, no unauthorized services, restrictions |
+| V-203687 | SV-203687r958674 | Immediate disconnect/disable capability | -- | -- | #56 | SSH stop, firewall block, session termination |
+| V-203688 | SV-203688r991568 | Wireless access encryption | -- | -- | #56 | Wireless interface detection, WPA2/WPA3 (likely NA) |
+| V-203689 | SV-203689r991569 | Wireless access authentication | -- | -- | #56 | Wireless interface detection, 802.1X auth (likely NA) |
+| V-203727 | SV-203727r982216 | MFA for remote access (privileged) | -- | -- | #56 | SSH AuthMethods, PAM MFA, smartcard/PIV, SSSD |
+| V-203728 | SV-203728r958816 | Accept PIV credentials | -- | -- | #56 | opensc, pam_pkcs11, pcscd, SSH cert auth |
 
 ### Batch 5: Audit System - Rules (10 functions)
 

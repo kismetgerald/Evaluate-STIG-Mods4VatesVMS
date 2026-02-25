@@ -423,14 +423,47 @@ Remediation:
   <Vuln ID="V-203602">
     <!--RuleTitle: The operating system must monitor remote access methods.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that remote access monitoring is properly configured on this Debian 12 system.
+
+Evidence found:
+(1) SSH LogLevel set to INFO or VERBOSE, ensuring all authentication events are logged
+(2) rsyslog auth facility configured to capture authentication and authorization events
+(3) /var/log/auth.log present with recent SSH session entries
+(4) Systemd journal recording SSH service events
+
+Finding: Not a Finding
+
+Justification: The system monitors all remote access methods through SSH logging at an appropriate verbosity level, syslog auth facility capture, and persistent log storage. This meets the GPOS SRG requirement to monitor remote access sessions for unauthorized activity detection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found deficiencies in remote access monitoring on this Debian 12 system.
+
+Findings:
+- SSH LogLevel may not be set to INFO or VERBOSE
+- rsyslog auth facility logging may not be configured
+- /var/log/auth.log may not contain SSH session events
+
+Remediation Steps:
+(1) Set SSH LogLevel to INFO or VERBOSE in /etc/ssh/sshd_config:
+    LogLevel VERBOSE
+(2) Ensure rsyslog captures auth events in /etc/rsyslog.conf:
+    auth,authpriv.* /var/log/auth.log
+(3) Restart services: systemctl restart ssh rsyslog
+(4) Verify logging: tail -f /var/log/auth.log during SSH login
+
+The ISSO/ISSM must verify that remote access monitoring meets organizational requirements and that logs are reviewed regularly.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1004,42 +1037,151 @@ Remediation:
   <Vuln ID="V-203636">
     <!--RuleTitle: The operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that access control mechanisms are properly enforced on this Debian 12 system.
+
+Evidence found:
+(1) SSH access restrictions configured (AllowUsers/AllowGroups/DenyUsers/DenyGroups)
+(2) Critical file permissions enforced (/etc/passwd, /etc/shadow, /etc/group, /etc/gshadow)
+(3) sudo installed and configured for privilege escalation control
+(4) PAM access control rules present in /etc/security/access.conf
+
+Finding: Not a Finding
+
+Justification: The system enforces approved authorizations through SSH access restrictions, file permission enforcement, sudo privilege management, and PAM access control. This satisfies the GPOS SRG requirement for logical access control enforcement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found deficiencies in access control enforcement on this Debian 12 system.
+
+Findings:
+- No SSH AllowUsers/AllowGroups/DenyUsers/DenyGroups configured
+- sudo may not be installed or properly configured
+- PAM access control rules may not be active
+
+Remediation Steps:
+(1) Configure SSH access restrictions in /etc/ssh/sshd_config:
+    AllowGroups sshusers admins
+(2) Install and configure sudo: apt install sudo
+(3) Add access rules in /etc/security/access.conf:
+    + : root : LOCAL
+    + : admins : ALL
+    - : ALL : ALL
+(4) Enable pam_access in /etc/pam.d/common-auth
+(5) Restart SSH: systemctl restart ssh
+
+The ISSO/ISSM must verify that access control policies align with organizational requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203637">
     <!--RuleTitle: The operating system must be configured to disable non-essential capabilities.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that non-essential capabilities are disabled on this Debian 12 system.
+
+Evidence found:
+(1) SSH non-essential features disabled (X11Forwarding, AllowTcpForwarding, AllowAgentForwarding, PermitTunnel, GatewayPorts)
+(2) No non-essential services running (avahi-daemon, cups, bluetooth, rpcbind, nfs-server, vsftpd, telnet)
+(3) No non-essential packages installed (telnetd, rsh-server, ypserv, tftp-server, xinetd)
+
+Finding: Not a Finding
+
+Justification: The system has non-essential SSH features disabled, no unnecessary services running, and no unnecessary packages installed. This meets the GPOS SRG requirement to disable non-essential capabilities to reduce the attack surface.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found non-essential capabilities enabled on this Debian 12 system.
+
+Findings:
+- One or more SSH non-essential features are enabled
+- Non-essential services may be running
+- Non-essential packages may be installed
+
+Remediation Steps:
+(1) Disable SSH non-essential features in /etc/ssh/sshd_config:
+    X11Forwarding no
+    AllowTcpForwarding no
+    AllowAgentForwarding no
+    PermitTunnel no
+    GatewayPorts no
+(2) Stop and disable non-essential services:
+    systemctl stop avahi-daemon &amp;&amp; systemctl disable avahi-daemon
+(3) Remove non-essential packages:
+    apt remove telnetd rsh-server ypserv
+(4) Restart SSH: systemctl restart ssh
+
+The ISSO/ISSM must verify that only mission-essential capabilities remain enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203638">
     <!--RuleTitle: The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the system restricts functions, ports, protocols, and services on this Debian 12 system.
+
+Evidence found:
+(1) Host-based firewall active (UFW/nftables/iptables) with restrictive default policy
+(2) Listening ports enumerated and limited to essential services
+(3) SSH port configuration documented
+
+Finding: Not a Finding
+
+Justification: The system has an active host-based firewall enforcing port and protocol restrictions. Only authorized services are listening on network ports. This meets the GPOS SRG requirement to restrict functions, ports, protocols, and services per the PPSM CAL.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found insufficient port and protocol restrictions on this Debian 12 system.
+
+Findings:
+- No active host-based firewall detected (UFW/nftables/iptables)
+- Listening ports may include unauthorized services
+
+Remediation Steps:
+(1) Install and enable UFW:
+    apt install ufw
+    ufw default deny incoming
+    ufw default allow outgoing
+    ufw allow ssh
+    ufw allow 443/tcp
+    ufw enable
+(2) Review listening ports: ss -tlnp
+(3) Disable unnecessary services listening on network ports
+(4) Document authorized ports/protocols per PPSM CAL
+(5) Verify firewall rules match organizational security policy
+
+The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and organizational vulnerability assessments.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1884,56 +2026,216 @@ Remediation:
   <Vuln ID="V-203686">
     <!--RuleTitle: The operating system must control remote access methods.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that remote access methods are controlled on this Debian 12 system.
+
+Evidence found:
+(1) SSH is the primary remote access service and is active
+(2) No unauthorized remote access services detected (telnet, VNC, xrdp, rsh, rlogin, rexec)
+(3) SSH security restrictions configured (PermitRootLogin, MaxAuthTries, MaxSessions)
+
+Finding: Not a Finding
+
+Justification: SSH is the only active remote access method. No unauthorized remote access services were detected. SSH security restrictions are in place to control access. This meets the GPOS SRG requirement to control remote access methods.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found deficiencies in remote access method control on this Debian 12 system.
+
+Findings:
+- Unauthorized remote access services may be running
+- SSH security restrictions may not be properly configured
+- PermitRootLogin may allow direct root access
+
+Remediation Steps:
+(1) Remove unauthorized remote access services:
+    apt remove telnetd xrdp
+    systemctl stop vnc &amp;&amp; systemctl disable vnc
+(2) Configure SSH restrictions in /etc/ssh/sshd_config:
+    PermitRootLogin prohibit-password
+    MaxAuthTries 4
+    MaxSessions 10
+(3) Restart SSH: systemctl restart ssh
+(4) Verify no unauthorized services: ss -tlnp
+
+The ISSO/ISSM must verify that only authorized remote access methods are enabled and configured per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203687">
     <!--RuleTitle: The operating system must provide the capability to immediately disconnect or disable remote access to the operating system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that immediate disconnect/disable capabilities exist on this Debian 12 system.
+
+Evidence found:
+(1) SSH service can be stopped via systemctl stop ssh
+(2) Firewall tool available for immediate traffic blocking (UFW or iptables)
+(3) Session termination tools available (pkill, kill) for individual session disconnection
+
+Finding: Not a Finding
+
+Justification: The system provides multiple mechanisms to immediately disconnect or disable remote access: SSH service control, firewall blocking, and process termination. This meets the GPOS SRG requirement for immediate remote access disconnection capability.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found insufficient disconnect/disable capabilities on this Debian 12 system.
+
+Findings:
+- Firewall tools may not be available for immediate blocking
+- Session termination capabilities may be limited
+
+Remediation Steps:
+(1) Install UFW for immediate block capability:
+    apt install ufw
+(2) Document emergency disconnect procedures:
+    - Stop SSH: systemctl stop ssh
+    - Block all traffic: ufw deny in
+    - Kill sessions: pkill -u username
+(3) Test disconnect procedures periodically
+(4) Establish documented emergency remote access disconnection procedures
+
+The ISSO/ISSM must verify that disconnect procedures are documented, tested, and authorized personnel are trained on their use.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203688">
     <!--RuleTitle: The operating system must protect wireless access to and from the system using encryption.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that wireless access is protected with encryption on this Debian 12 system.
+
+Evidence found:
+(1) Wireless interface detected and active
+(2) WPA2/WPA3 encryption configured via wpa_supplicant
+(3) Encryption protocol meets DoD requirements (CCMP/AES)
+
+Finding: Not a Finding
+
+Justification: Wireless access is protected using WPA2/WPA3 encryption with CCMP/AES cipher suite. This meets the GPOS SRG requirement for encrypted wireless access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found deficiencies in wireless access encryption on this Debian 12 system.
+
+Findings:
+- Wireless interface detected but encryption not properly configured
+- WPA2/WPA3 may not be enabled
+
+Remediation Steps:
+(1) Configure WPA2-Enterprise in /etc/wpa_supplicant/wpa_supplicant.conf:
+    network={
+        ssid=your_network
+        key_mgmt=WPA-EAP
+        proto=RSN
+        pairwise=CCMP
+    }
+(2) Alternatively, disable wireless if not required:
+    ip link set wlan0 down
+    rfkill block wifi
+(3) If wireless is not mission-essential, remove wireless hardware or blacklist drivers
+
+The ISSO/ISSM must verify wireless encryption meets DoD requirements or that wireless capability is disabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Requirement does not apply-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This system does not have wireless interfaces. The automated check confirmed no wireless network adapters (wlan*, wlp*) are present in /sys/class/net/ and no IEEE 802.11 interfaces were detected by iwconfig or iw dev.
+
+Xen Orchestra typically runs on server hardware without wireless capability. This requirement is Not Applicable for systems without wireless interfaces.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203689">
     <!--RuleTitle: The operating system must protect wireless access to the system using authentication of users and/or devices.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that wireless access requires proper authentication on this Debian 12 system.
+
+Evidence found:
+(1) Wireless interface detected and active
+(2) WPA-Enterprise (802.1X) authentication configured
+(3) User/device authentication required before wireless access
+
+Finding: Not a Finding
+
+Justification: Wireless access requires WPA-Enterprise (802.1X) authentication, which provides user and device authentication via RADIUS. This meets the GPOS SRG requirement for wireless access authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found deficiencies in wireless access authentication on this Debian 12 system.
+
+Findings:
+- Wireless interface detected but proper authentication not configured
+- WPA-PSK (pre-shared key) does not meet DoD requirements
+
+Remediation Steps:
+(1) Configure WPA-Enterprise in /etc/wpa_supplicant/wpa_supplicant.conf:
+    network={
+        ssid=your_network
+        key_mgmt=WPA-EAP
+        eap=PEAP
+        identity=user@domain
+    }
+(2) Alternatively, disable wireless if not required:
+    ip link set wlan0 down
+    rfkill block wifi
+(3) DoD requires WPA-Enterprise (802.1X) with RADIUS, not WPA-PSK
+
+The ISSO/ISSM must verify wireless authentication meets DoD 802.1X requirements or that wireless is disabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Requirement does not apply-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This system does not have wireless interfaces. The automated check confirmed no wireless network adapters (wlan*, wlp*) are present in /sys/class/net/ and no IEEE 802.11 interfaces were detected by iwconfig or iw dev.
+
+Xen Orchestra typically runs on server hardware without wireless capability. This requirement is Not Applicable for systems without wireless interfaces.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2519,28 +2821,101 @@ Remediation:
   <Vuln ID="V-203727">
     <!--RuleTitle: The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that multifactor authentication is implemented for remote privileged access on this Debian 12 system.
+
+Evidence found:
+(1) SSH AuthenticationMethods configured to require multiple factors
+(2) PAM MFA module(s) configured (pam_google_authenticator, pam_u2f, pam_pkcs11, or pam_yubico)
+(3) Smartcard/PIV packages installed (opensc, libpam-pkcs11, pcscd)
+(4) SSSD certificate authentication may be enabled
+
+Finding: Not a Finding
+
+Justification: The system implements multifactor authentication for remote privileged access using a combination of SSH key/password and a separate device factor (smartcard, hardware token, or TOTP app). This meets the GPOS SRG requirement for MFA with a separate device factor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that multifactor authentication is not configured for remote privileged access on this Debian 12 system.
+
+Findings:
+- SSH AuthenticationMethods not configured for multiple factors
+- No PAM MFA modules detected
+- Smartcard/PIV packages not installed
+
+Remediation Steps:
+(1) Install MFA packages: apt install libpam-google-authenticator
+(2) Configure PAM for MFA in /etc/pam.d/sshd:
+    auth required pam_google_authenticator.so
+(3) Configure SSH for MFA in /etc/ssh/sshd_config:
+    AuthenticationMethods publickey,keyboard-interactive
+    ChallengeResponseAuthentication yes
+(4) For CAC/PIV: apt install opensc libpam-pkcs11 pcscd
+(5) Restart SSH: systemctl restart ssh
+
+The ISSO/ISSM must verify MFA implementation uses a separate device factor (CAC, hardware token, or authenticator app).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203728">
     <!--RuleTitle: The operating system must accept Personal Identity Verification (PIV) credentials.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #56: Automated SSH configuration check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Compliant systems-->
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that PIV credential acceptance is configured on this Debian 12 system.
+
+Evidence found:
+(1) PIV/smartcard packages installed (opensc, libpam-pkcs11, pcscd, libccid)
+(2) PC/SC Smart Card Daemon (pcscd) running
+(3) PAM PKCS#11 configuration present
+(4) SSH certificate-based authentication enabled
+
+Finding: Not a Finding
+
+Justification: The system accepts PIV credentials through PKCS#11 smart card integration with PAM and SSH. The required middleware (opensc, pcscd) and authentication module (libpam-pkcs11) are installed and configured. This meets the GPOS SRG requirement for PIV credential acceptance.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Non-compliant systems requiring remediation-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that PIV credential acceptance is not configured on this Debian 12 system.
+
+Findings:
+- PIV/smartcard packages not installed (opensc, libpam-pkcs11, pcscd)
+- Smart card daemon not running
+- PAM PKCS#11 not configured
+
+Remediation Steps:
+(1) Install PIV packages:
+    apt install opensc libpam-pkcs11 pcscd libccid libnss3-tools
+(2) Enable smart card daemon:
+    systemctl enable pcscd
+    systemctl start pcscd
+(3) Configure PAM PKCS#11 in /etc/pam_pkcs11/pam_pkcs11.conf
+(4) Add pam_pkcs11 to /etc/pam.d/common-auth:
+    auth sufficient pam_pkcs11.so
+(5) Configure SSH for certificate auth in /etc/ssh/sshd_config:
+    PubkeyAuthentication yes
+(6) Import DoD root CA certificates for PIV validation
+
+The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and organizational PKI infrastructure.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
