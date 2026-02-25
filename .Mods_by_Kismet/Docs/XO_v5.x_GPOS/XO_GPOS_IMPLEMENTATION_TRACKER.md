@@ -16,7 +16,7 @@
 | **Stubs (Not_Reviewed)** | 160 |
 | **Completion** | 19.2% |
 
-**Last validated test:** Test151 (Feb 24, 2026) — Exit 0, EvalScore 4.04%, 7 NF / 20 O / 1 NA / 170 NR
+**Last validated test:** Test152 (Feb 25, 2026) — Exit 0, EvalScore 5.05%, 9 NF / 28 O / 1 NA / 160 NR
 
 ---
 
@@ -102,16 +102,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203595 | SV-203595r958390 | DoD Notice and Consent Banner (GUI) | -- | -- | #54 | Pending test |
-| V-203596 | SV-203596r958392 | DoD Notice and Consent Banner (CLI) | -- | -- | #54 | Pending test |
-| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 (CAT III) | -- | -- | #54 | Pending test |
-| V-203598 | SV-203598r958400 | Retain session lock until re-auth | -- | -- | #54 | Pending test |
-| V-203599 | SV-203599r958402 | Session lock after 15 min inactivity | -- | -- | #54 | Pending test |
-| V-203600 | SV-203600r982194 | User-initiated session lock | -- | -- | #54 | Pending test |
-| V-203601 | SV-203601r958404 | Conceal info via session lock | -- | -- | #54 | Pending test |
-| V-203635 | SV-203635r958470 | Obscure auth feedback | -- | -- | #54 | Pending test |
-| V-203665 | SV-203665r958586 | Public connection banner | -- | -- | #54 | Pending test |
-| V-203779 | SV-203779r991588 | 4-second delay between logon attempts | -- | -- | #54 | Pending test |
+| V-203595 | SV-203595r958390 | DoD Notice and Consent Banner (GUI) | O | Test152 | #54 | No DoD keywords in /etc/issue or /etc/issue.net |
+| V-203596 | SV-203596r958392 | DoD Notice and Consent Banner (CLI) | O | Test152 | #54 | No banner configured |
+| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 (CAT III) | NF | Test152 | #54 | SSH MaxSessions=10 |
+| V-203598 | SV-203598r958400 | Retain session lock until re-auth | O | Test152 | #54 | No tmux/screen/vlock, no SSH timeout |
+| V-203599 | SV-203599r958402 | Session lock after 15 min inactivity | O | Test152 | #54 | No SSH timeout or TMOUT configured |
+| V-203600 | SV-203600r982194 | User-initiated session lock | O | Test152 | #54 | No lock utilities available |
+| V-203601 | SV-203601r958404 | Conceal info via session lock | O | Test152 | #54 | No lock utilities |
+| V-203635 | SV-203635r958470 | Obscure auth feedback | NF | Test152 | #54 | Linux naturally obscures, no pwfeedback |
+| V-203665 | SV-203665r958586 | Public connection banner | O | Test152 | #54 | No SSH banner file |
+| V-203779 | SV-203779r991588 | 4-second delay between logon attempts | O | Test152 | #54 | No pam_faildelay configured |
 
 ### Batch 3: Password Policy (10 functions)
 
@@ -344,7 +344,7 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 | NR | -- | -- | -- |
+| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 | NF | Test152 | #54 | SSH MaxSessions=10 |
 | V-203700 | SV-203700r958752 | Audit storage capacity (1 week min) | NR | -- | -- | -- |
 | V-203701 | SV-203701r958754 | Offload audit records | NR | -- | -- | -- |
 | V-203702 | SV-203702r971542 | Notify SA/ISSO on audit failure | NR | -- | -- | -- |
@@ -365,3 +365,5 @@
 | Test150 | Feb 23 | #51 | Phase 1 CAT I | 198 | PASS | 4.04% | 18 CAT I implemented, 5 Open expected |
 | Test150b | Feb 23 | #52 | Phase 1 fix | 198 | FAIL | -- | StigType param error in GetCorpParams |
 | Test150c | Feb 24 | #52 | Phase 1 final | 198 | PASS | 4.04% | All 18 CAT I COMMENTS populated, 0 errors |
+| Test151 | Feb 24 | #53 | Phase 2 Batch 1 | 198 | PASS | 4.04% | 10 Account Mgmt functions, all Open |
+| Test152 | Feb 25 | #54 | Phase 2 Batch 2 | 198 | PASS | 5.05% | 10 Auth & Login, 2 NF + 8 Open |
