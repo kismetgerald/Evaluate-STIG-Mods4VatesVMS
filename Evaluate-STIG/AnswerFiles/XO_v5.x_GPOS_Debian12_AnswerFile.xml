@@ -59,154 +59,364 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203591">
     <!--RuleTitle: The operating system must provide automated mechanisms for supporting account management functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Automated account management check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) provides automated mechanisms for account management.
+
+The automated check confirmed centralized account management via SSSD/LDAP/nslcd integration, which delegates account lifecycle operations (creation, modification, disabling, removal) to the enterprise directory service.
+
+Standard account management tools are available: useradd, usermod, userdel, chage, passwd, groupadd. PAM account management modules are configured for automated enforcement of account policies.
+
+This meets the SRG requirement for automated mechanisms supporting account management functions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have centralized account management configured.
+
+The automated check did not detect SSSD, LDAP, or nslcd integration for centralized account management. Local account management tools are present but centralized lifecycle management is required.
+
+Remediation:
+1. Install and configure SSSD for Active Directory integration: apt install sssd sssd-ad
+2. Configure /etc/sssd/sssd.conf with domain settings
+3. Join the system to the AD domain: realm join DOMAIN.COM
+4. Verify: id username@domain.com
+5. Alternatively, configure LDAP client: apt install libnss-ldapd
+
+Contact the system administrator to implement centralized account management per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203592">
     <!--RuleTitle: The operating system must automatically remove or disable temporary user accounts after 72 hours.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Temporary account auto-removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) is configured to automatically remove or disable temporary accounts after 72 hours.
+
+The automated check confirmed account expiration dates are set in /etc/shadow and automated cleanup mechanisms (cron jobs or systemd timers) are in place to enforce the 72-hour temporary account policy.
+
+This meets the SRG requirement for automatic removal or disabling of temporary accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have automated mechanisms for removing temporary accounts after 72 hours.
+
+Remediation:
+1. Set account expiration for temporary accounts: chage -E $(date -d "+3 days" +%Y-%m-%d) USERNAME
+2. Set default expiration in /etc/default/useradd: EXPIRE=3 (days)
+3. Create a cron job or systemd timer to check and disable expired accounts:
+   /etc/cron.daily/cleanup-temp-accounts
+4. Verify expiration: chage -l USERNAME
+5. Document temporary account procedures in organizational policy
+
+Contact the system administrator to implement automated temporary account lifecycle management.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203593">
     <!--RuleTitle: The operating system must audit all account creations.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account creations check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account creation events.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are also configured in /etc/audit/rules.d/ to survive reboots.
+
+Any account creation (useradd, adduser, groupadd) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account creation events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules for account files:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load
+
+Contact the system administrator to configure audit rules for account management files.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203594">
     <!--RuleTitle: The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Account lockout after 3 invalid logon attempts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) enforces account lockout after three consecutive invalid logon attempts within a 15-minute period.
+
+The automated check confirmed PAM faillock is configured with deny=3 (or less) and fail_interval=900 (15 minutes). SSH MaxAuthTries is also set appropriately to limit authentication attempts per session.
+
+This meets the DoD requirement for automated account lockout to protect against brute force attacks.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce account lockout after three consecutive invalid logon attempts.
+
+Remediation:
+1. Install pam_faillock (included in libpam-modules on Debian 12)
+2. Configure /etc/security/faillock.conf:
+   deny = 3
+   fail_interval = 900
+   unlock_time = 0 (or organization-defined period)
+3. Add pam_faillock to PAM stack:
+   Edit /etc/pam.d/common-auth to include faillock preauth and authfail
+4. Set SSH MaxAuthTries in /etc/ssh/sshd_config: MaxAuthTries 3
+5. Restart sshd: systemctl restart sshd
+6. Verify: faillock --user testuser
+
+Contact the system administrator to configure account lockout policies per DoD requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203595">
-    <!--RuleTitle: The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system.-->
+    <!--RuleTitle: Display Standard Mandatory DoD Notice and Consent Banner-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system displays the Standard Mandatory DoD Notice and Consent Banner.
+Automated checks verified:
+1. /etc/issue contains DoD banner keywords (USG, consent to monitoring, authorized use)
+2. /etc/issue.net contains DoD banner keywords for remote connections
+3. SSH banner file is configured in sshd_config
+Both local and remote login banners contain the required DoD notice text.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not display the Standard Mandatory DoD Notice and Consent Banner.
+Remediation:
+1. Create /etc/issue with the exact DoD banner text
+2. Create /etc/issue.net with the same DoD banner text
+3. Configure SSH: echo 'Banner /etc/issue.net' &gt;&gt; /etc/ssh/sshd_config
+4. Restart SSH: systemctl restart sshd
+5. Verify: cat /etc/issue; cat /etc/issue.net</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203596">
-    <!--RuleTitle: The operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access.-->
+    <!--RuleTitle: Display banner until user acknowledges and logs on-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system displays the DoD banner before user authentication.
+Automated checks verified:
+1. SSH banner file is configured and points to a valid file
+2. /etc/issue contains DoD banner content displayed before login prompt
+3. GDM3 graphical login (if installed) shows banner before authentication
+The banner is displayed before login and requires user acknowledgment via authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly display banner before authentication.
+Remediation:
+1. Configure SSH banner: echo 'Banner /etc/issue.net' &gt;&gt; /etc/ssh/sshd_config
+2. Populate /etc/issue with DoD banner text
+3. Populate /etc/issue.net with DoD banner text
+4. If GDM3 installed: gsettings set org.gnome.login-screen banner-message-enable true
+5. Restart SSH: systemctl restart sshd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203597">
-    <!--RuleTitle: The operating system must limit the number of concurrent sessions to ten for all accounts and/or account types.-->
+    <!--RuleTitle: Limit concurrent sessions to ten-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system limits concurrent sessions to 10 or fewer.
+Automated checks verified:
+1. /etc/security/limits.conf contains maxlogins entry &lt;= 10
+2. /etc/security/limits.d/ drop-in files checked for maxlogins
+3. SSH MaxSessions configured to &lt;= 10
+Session limits are enforced through PAM limits or SSH configuration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not limit concurrent sessions to 10.
+Remediation:
+1. Add to /etc/security/limits.conf: * hard maxlogins 10
+2. Verify SSH: grep MaxSessions /etc/ssh/sshd_config (set to 10 or less)
+3. Restart SSH if changed: systemctl restart sshd
+4. Verify: ulimit -u; ssh MaxSessions setting</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203598">
-    <!--RuleTitle: The operating system must retain a users session lock until that user reestablishes access using established identification and authentication procedures.-->
+    <!--RuleTitle: Retain session lock until re-authentication-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system retains session lock until user re-authenticates.
+Automated checks verified:
+1. tmux or screen installed for session lock capability
+2. vlock or physlock available for console lock requiring password
+3. SSH ClientAliveInterval configured to drop idle sessions
+Session lock requires re-authentication via password or key to unlock.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not retain session lock until re-authentication.
+Remediation:
+1. Install tmux: apt install tmux
+2. Install vlock: apt install vlock (or physlock)
+3. Configure SSH: ClientAliveInterval 900 in /etc/ssh/sshd_config
+4. Configure tmux lock: set -g lock-command vlock in /etc/tmux.conf
+5. Restart SSH: systemctl restart sshd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203599">
-    <!--RuleTitle: The operating system must initiate a session lock after a 15-minute period of inactivity for all connection types.-->
+    <!--RuleTitle: Initiate session lock after 15-minute inactivity-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system initiates session lock after 15 minutes of inactivity.
+Automated checks verified:
+1. SSH ClientAliveInterval set to &lt;= 900 seconds (15 minutes)
+2. TMOUT shell variable configured to &lt;= 900 seconds
+3. tmux lock-after-time configured (if applicable)
+Inactivity timeout enforced through SSH and/or shell timeout.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not lock sessions after 15 minutes of inactivity.
+Remediation:
+1. SSH: Set ClientAliveInterval 900 and ClientAliveCountMax 0 in /etc/ssh/sshd_config
+2. Shell: Add 'TMOUT=900; export TMOUT; readonly TMOUT' to /etc/profile.d/tmout.sh
+3. tmux: Add 'set -g lock-after-time 900' to /etc/tmux.conf
+4. Restart SSH: systemctl restart sshd
+5. Verify: sshd -T | grep clientaliveinterval</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203600">
-    <!--RuleTitle: The operating system must provide the capability for users to directly initiate a session lock for all connection types.-->
+    <!--RuleTitle: User-initiated session lock capability-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system provides user-initiated session lock capability.
+Automated checks verified:
+1. vlock or physlock installed for console lock (user can lock terminal)
+2. tmux installed (lock-session via Ctrl-b + L)
+3. GNU screen installed (lock via Ctrl-a + x)
+At least one session lock mechanism is available for user-initiated locking.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not provide user-initiated session lock capability.
+Remediation:
+1. Install tmux: apt install tmux (provides Ctrl-b + L lock)
+2. Install vlock: apt install vlock (provides console lock)
+3. Or install screen: apt install screen (provides Ctrl-a + x lock)
+4. Configure default tmux lock: echo 'set -g lock-command vlock' &gt;&gt; /etc/tmux.conf
+5. Verify: which tmux; which vlock</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203601">
-    <!--RuleTitle: The operating system must conceal, via the session lock, information previously visible on the display with a publicly viewable image.-->
+    <!--RuleTitle: Conceal display with publicly viewable image on session lock-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system conceals display content when session is locked.
+Automated checks verified:
+1. GDM3 screensaver lock clears display (if GUI installed)
+2. tmux lock-session clears terminal and shows lock screen
+3. vlock/physlock clears terminal display
+4. SSH timeout disconnects remote sessions clearing display
+Session lock utilities conceal previously visible information.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not conceal display content on session lock.
+Remediation:
+1. Install tmux: apt install tmux (lock-session clears display)
+2. Install vlock: apt install vlock (clears terminal on lock)
+3. If GUI: gsettings set org.gnome.desktop.screensaver lock-enabled true
+4. Configure tmux: set -g lock-command vlock in /etc/tmux.conf
+5. Verify lock conceals display by testing: tmux lock-session</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -552,58 +762,74 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203625">
-    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one uppercase character be used.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces password complexity requiring at least one uppercase character. The pwquality.conf ucredit setting is configured to -1 or less, requiring a minimum of one uppercase letter. The pam_pwquality module is loaded in the PAM stack via /etc/pam.d/common-password, and the libpam-pwquality package is installed. This configuration meets the STIG requirement for uppercase character enforcement in passwords.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce at least one uppercase character in passwords. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set ucredit = -1 in /etc/security/pwquality.conf. 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password with: password requisite pam_pwquality.so retry=3. 4) Verify with: grep ucredit /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203626">
-    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one lowercase character be used.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces password complexity requiring at least one lowercase character. The pwquality.conf lcredit setting is configured to -1 or less, requiring a minimum of one lowercase letter. The pam_pwquality module is loaded in the PAM stack via /etc/pam.d/common-password, and the libpam-pwquality package is installed.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce at least one lowercase character in passwords. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set lcredit = -1 in /etc/security/pwquality.conf. 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password with: password requisite pam_pwquality.so retry=3. 4) Verify with: grep lcredit /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203627">
-    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one numeric character be used.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces password complexity requiring at least one numeric character. The pwquality.conf dcredit setting is configured to -1 or less, requiring a minimum of one digit. The pam_pwquality module is loaded in the PAM stack via /etc/pam.d/common-password, and the libpam-pwquality package is installed.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce at least one numeric character in passwords. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set dcredit = -1 in /etc/security/pwquality.conf. 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password with: password requisite pam_pwquality.so retry=3. 4) Verify with: grep dcredit /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203628">
-    <!--RuleTitle: The operating system must require the change of at least 50 percent of the total number of characters when passwords are changed.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system requires at least 50 percent of characters to be different when passwords are changed. The pwquality.conf difok setting is configured to 8 or greater (50% of 15-character minimum), and the pam_pwquality module is loaded in the PAM stack. This ensures password changes are sufficiently different from previous passwords.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not require sufficient character changes when passwords are modified. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set difok = 8 in /etc/security/pwquality.conf (50% of 15-character DoD minimum). 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password. 4) Verify with: grep difok /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -691,58 +917,87 @@ Remediation:
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203631">
-    <!--RuleTitle: Operating systems must enforce 24 hours/1 day as the minimum password lifetime.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces a minimum password lifetime of 24 hours (1 day). The /etc/login.defs PASS_MIN_DAYS is set to 1 or greater, and per-user settings verified via chage confirm all interactive users have a minimum password age of at least 1 day. This prevents rapid password cycling to defeat password history requirements.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce a 24-hour minimum password lifetime. To remediate: 1) Set PASS_MIN_DAYS 1 in /etc/login.defs for new accounts. 2) For existing users, run: chage --mindays 1 [username]. 3) Verify global setting: grep PASS_MIN_DAYS /etc/login.defs. 4) Verify per-user: chage -l [username] | grep Minimum.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203632">
-    <!--RuleTitle: Operating systems must enforce a 60-day maximum password lifetime restriction.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces a maximum password lifetime of 60 days. The /etc/login.defs PASS_MAX_DAYS is set to 60 or less, and per-user settings verified via chage confirm all interactive users have a maximum password age within the 60-day limit. This ensures passwords are changed periodically to reduce compromise risk.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce a 60-day maximum password lifetime. To remediate: 1) Set PASS_MAX_DAYS 60 in /etc/login.defs for new accounts. 2) For existing users, run: chage --maxdays 60 [username]. 3) Verify global setting: grep PASS_MAX_DAYS /etc/login.defs. 4) Verify per-user: chage -l [username] | grep Maximum.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203634">
-    <!--RuleTitle: The operating system must enforce a minimum 15-character password length.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces a minimum 15-character password length. The pwquality.conf minlen setting is configured to 15 or greater, and the pam_pwquality module is loaded in the PAM stack. This meets the DoD requirement for minimum password length, increasing resistance to brute-force attacks.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce a minimum 15-character password length. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set minlen = 15 in /etc/security/pwquality.conf. 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password. 4) Verify with: grep minlen /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203635">
-    <!--RuleTitle: The operating system must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.-->
+    <!--RuleTitle: Obscure authentication feedback-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system obscures authentication feedback during password entry.
+Automated checks verified:
+1. PAM uses standard password input (no echo to terminal)
+2. SSH password authentication uses terminal no-echo mode by design
+3. sudo pwfeedback option is NOT enabled (no asterisk display)
+All authentication mechanisms properly obscure password input.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly obscure authentication feedback.
+Remediation:
+1. Remove pwfeedback from sudoers: visudo, remove 'Defaults pwfeedback'
+2. Verify PAM config: grep -v '^#' /etc/pam.d/common-password
+3. Ensure no custom login programs echo passwords
+4. Verify SSH: password input is not displayed (default behavior)
+5. Test: attempt SSH login and verify no characters displayed during password entry</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -917,14 +1172,33 @@ Remediation:
   <Vuln ID="V-203648">
     <!--RuleTitle: The operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Inactivity lockout after 35 days-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) disables account identifiers after 35 days of inactivity.
+
+The automated check confirmed INACTIVE is set to 35 or less in /etc/default/useradd, and all user accounts in /etc/shadow have compliant inactivity periods configured. No accounts were found with INACTIVE values exceeding 35 days.
+
+This meets the DoD requirement to automatically disable accounts after 35 days of inactivity to reduce the attack surface from dormant accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly disable accounts after 35 days of inactivity.
+
+Remediation:
+1. Set system default: useradd -D -f 35
+2. Verify /etc/default/useradd shows INACTIVE=35
+3. Set for existing accounts: chage -I 35 USERNAME (for each user)
+4. Verify per-user settings: chage -l USERNAME (check "Password inactive")
+5. For all users: awk -F: '{print $1}' /etc/passwd | xargs -I{} chage -I 35 {}
+
+Contact the system administrator to configure account inactivity lockout per DoD 35-day requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -973,14 +1247,31 @@ Remediation:
   <Vuln ID="V-203652">
     <!--RuleTitle: The information system must automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Emergency account auto-removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) has mechanisms to automatically remove or disable emergency accounts after the crisis is resolved or within 72 hours.
+
+The automated check confirmed account expiration dates are properly configured and automated cleanup mechanisms (cron jobs or systemd timers) are in place to enforce the 72-hour emergency account policy. Emergency account procedures are documented per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have adequate mechanisms for emergency account lifecycle management.
+
+Remediation:
+1. Create emergency accounts with mandatory expiration: useradd -e $(date -d "+3 days" +%Y-%m-%d) emergency_user
+2. Create automated cleanup script in /etc/cron.daily/cleanup-emergency-accounts
+3. Configure systemd timer for periodic account expiration checks
+4. Document emergency account procedures including creation, authorization, and removal
+5. Ensure all emergency accounts have expiration dates set: chage -l USERNAME
+
+Contact the ISSO/ISSM to document emergency account management procedures per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1152,58 +1443,141 @@ Remediation:
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203665">
-    <!--RuleTitle: Any publically accessible connection to the operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system.-->
+    <!--RuleTitle: Public connection DoD banner-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system displays the DoD banner for public/remote connections.
+Automated checks verified:
+1. SSH banner file configured and contains DoD notice text
+2. /etc/motd checked for post-login DoD banner
+3. /etc/issue.net contains DoD banner for remote connections
+The SSH banner file contains the required DoD consent and monitoring notice.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not display DoD banner for public connections.
+Remediation:
+1. Create banner file: echo 'You are accessing a U.S. Government...' &gt; /etc/issue.net
+2. Configure SSH: echo 'Banner /etc/issue.net' &gt;&gt; /etc/ssh/sshd_config
+3. Optionally populate /etc/motd with DoD banner text
+4. Restart SSH: systemctl restart sshd
+5. Verify: ssh user@host (should see banner before password prompt)</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203666">
     <!--RuleTitle: The operating system must audit all account modifications.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account modifications check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account modification events.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/ to survive reboots.
+
+Any account modification (usermod, passwd, chage, groupmod) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account modification events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203667">
     <!--RuleTitle: The operating system must audit all account disabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account disabling check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account disabling actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account disabling action (passwd -l, usermod -L, chage -E 0) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account disabling actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203668">
     <!--RuleTitle: The operating system must audit all account removal actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account removal actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account removal action (userdel, groupdel) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account removal actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1335,16 +1709,20 @@ Remediation:
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203676">
-    <!--RuleTitle: The operating system must enforce password complexity by requiring that at least one special character be used.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces password complexity requiring at least one special character. The pwquality.conf ocredit setting is configured to -1 or less, requiring a minimum of one special character (e.g., ~ ! @ # $ % ^ *). The pam_pwquality module is loaded in the PAM stack, and the libpam-pwquality package is installed.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce at least one special character in passwords. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Set ocredit = -1 in /etc/security/pwquality.conf. 3) Ensure pam_pwquality is loaded in /etc/pam.d/common-password with: password requisite pam_pwquality.so retry=3. 4) Verify with: grep ocredit /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1562,14 +1940,36 @@ Remediation:
   <Vuln ID="V-203690">
     <!--RuleTitle: The operating system must audit all account enabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account enabling check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account enabling actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account enabling action (passwd -u, usermod -U, chage -E -1) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account enabling actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2952,30 +3352,51 @@ Note: Debian 12 FIPS enablement may require additional Vates vendor support. See
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203778">
-    <!--RuleTitle: The operating system must prevent the use of dictionary words for passwords.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system prevents the use of dictionary words for passwords. The pwquality dictcheck feature is enabled (default value 1 in pwquality 1.4.4+), the pam_pwquality module is loaded in the PAM stack, and dictionary/wordlist files are available for password checking. This prevents users from selecting easily-guessable dictionary-based passwords.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately prevent dictionary word passwords. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Ensure dictcheck = 1 in /etc/security/pwquality.conf (or leave at default). 3) Install dictionary: apt install cracklib-runtime wamerican. 4) Ensure pam_pwquality is loaded in /etc/pam.d/common-password. 5) Verify with: grep dictcheck /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203779">
-    <!--RuleTitle: The operating system must enforce a delay of at least 4 seconds between logon prompts following a failed logon attempt.-->
+    <!--RuleTitle: Enforce 4-second delay after failed logon-->
     <AnswerKey Name="XO">
       <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system enforces a 4-second delay after failed logon attempts.
+Automated checks verified:
+1. pam_faildelay configured with delay &gt;= 4000000 microseconds (4 seconds)
+2. pam_unix nodelay option is NOT set (default delay preserved)
+3. SSH LoginGraceTime checked for reasonable timeout
+Authentication delay prevents brute-force and timing attacks.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce a 4-second delay after failed logon.
+Remediation:
+1. Add to /etc/pam.d/common-auth: auth optional pam_faildelay.so delay=4000000
+2. Verify pam_unix does NOT have nodelay: grep nodelay /etc/pam.d/common-auth
+3. Remove nodelay if present from pam_unix line
+4. Verify: faillock test or attempt failed login and time the delay
+5. The delay value is in microseconds: 4000000 = 4 seconds</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3183,16 +3604,20 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-263653">
-    <!--RuleTitle: The operating system must, for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in IA-5 (1) (a).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system verifies new passwords are not found on commonly-used or compromised password lists. The pwquality dictcheck feature is enabled, the pam_pwquality module is loaded in the PAM stack, and dictionary/wordlist files are available. This includes cracklib dictionaries that contain known compromised passwords, meeting the IA-5(1)(a) requirement.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not verify passwords against compromised password lists. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Install cracklib with compromised password dictionaries: apt install cracklib-runtime. 3) Ensure dictcheck = 1 in /etc/security/pwquality.conf. 4) Optionally configure dictpath for a custom compromised password list. 5) Ensure pam_pwquality is loaded in /etc/pam.d/common-password. 6) Verify with: grep -E 'dictcheck|dictpath' /etc/security/pwquality.conf.</ValidTrueComment>
+      <ValidFalseStatus>NR</ValidFalseStatus>
+      <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

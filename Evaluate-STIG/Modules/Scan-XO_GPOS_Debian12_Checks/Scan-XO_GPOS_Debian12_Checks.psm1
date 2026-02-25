@@ -193,11 +193,11 @@ Function Get-V203591 {
     .DESCRIPTION
         Vuln ID    : V-203591
         STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203591r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule ID    : SV-203591r958362_rule
+        Rule Title : The operating system must provide automated mechanisms for supporting account management functions.
+        DiscussMD5 : e8745279a444350222f06bee7279dcae
+        CheckMD5   : 4260619870759950e8b45eaf04fe931b
+        FixMD5     : a60e7461cd14b14bd7e412bd6471c425
     #>
 
     param (
@@ -231,8 +231,8 @@ Function Get-V203591 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203591"
-    $RuleID = "SV-203591r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203591r958362_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -241,9 +241,110 @@ Function Get-V203591 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203591) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Account management tools available
+    $output += "Check 1: Account Management Tools${nl}"
+    try {
+        $tools = @("useradd", "usermod", "userdel", "chage", "passwd", "groupadd")
+        $foundTools = @()
+        $missingTools = @()
+        foreach ($tool in $tools) {
+            $which = $(which $tool 2>&1)
+            $whichStr = ($which -join $nl).Trim()
+            if ($whichStr -and $whichStr -notmatch "not found") {
+                $foundTools += $tool
+            }
+            else {
+                $missingTools += $tool
+            }
+        }
+        $output += "  Found: $($foundTools -join ', ')${nl}"
+        if ($missingTools.Count -gt 0) {
+            $output += "  Missing: $($missingTools -join ', ')${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM account management modules
+    $output += "Check 2: PAM Account Management Configuration${nl}"
+    try {
+        $pamAccount = $(timeout 5 cat /etc/pam.d/common-account 2>&1)
+        $pamStr = ($pamAccount -join $nl).Trim()
+        if ($pamStr -match "pam_unix\.so") {
+            $output += "  [PASS] pam_unix.so configured for account management${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_unix.so not found in common-account${nl}"
+        }
+        if ($pamStr -match "pam_faillock\.so|pam_tally2\.so") {
+            $output += "  [PASS] Account lockout module configured${nl}"
+        }
+        else {
+            $output += "  [INFO] No account lockout module (pam_faillock/pam_tally2)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: LDAP/AD integration (centralized account management)
+    $output += "Check 3: Centralized Account Management${nl}"
+    try {
+        $sssd = $(timeout 5 systemctl is-active sssd 2>&1)
+        $sssdStr = ($sssd -join $nl).Trim()
+        $nslcd = $(timeout 5 systemctl is-active nslcd 2>&1)
+        $nslcdStr = ($nslcd -join $nl).Trim()
+        $pamLdap = $(timeout 5 dpkg -l libpam-ldapd 2>&1)
+        $pamLdapStr = ($pamLdap -join $nl).Trim()
+
+        if ($sssdStr -eq "active") {
+            $output += "  [PASS] SSSD active (centralized account management)${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($nslcdStr -eq "active") {
+            $output += "  [PASS] nslcd active (LDAP account management)${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($pamLdapStr -match "^ii\s+libpam-ldapd") {
+            $output += "  [INFO] libpam-ldapd installed (LDAP integration available)${nl}"
+        }
+        else {
+            $output += "  [INFO] No centralized account management detected (SSSD/LDAP)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: Account lifecycle (useradd defaults)
+    $output += "Check 4: Account Lifecycle Defaults${nl}"
+    try {
+        $defaults = $(timeout 5 useradd -D 2>&1)
+        $defaultsStr = ($defaults -join $nl).Trim()
+        if ($defaultsStr) {
+            $output += "  useradd defaults:${nl}"
+            foreach ($line in ($defaultsStr -split $nl)) {
+                $output += "    $line${nl}"
+            }
+        }
+        # If all 6 tools present AND (SSSD/LDAP active OR local tools functional)
+        if ($foundTools.Count -ge 5 -and $Status -ne "NotAFinding") {
+            $output += "  [INFO] Local account management tools available but no centralized management${nl}"
+            $output += "  [INFO] Verify organizational account management procedures are documented${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -303,12 +404,12 @@ Function Get-V203592 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203592
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203592r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000002-GPOS-00002
+        Rule ID    : SV-203592r958364_rule
+        Rule Title : The operating system must automatically remove or disable temporary user accounts after 72 hours.
+        DiscussMD5 : 83e9e5509dadc0e5cbfd813054b47310
+        CheckMD5   : 3a997104c141f6faca3ccfbcdec10683
+        FixMD5     : 2826c55467d5801f7fcb83bb792dc41e
     #>
 
     param (
@@ -342,8 +443,8 @@ Function Get-V203592 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203592"
-    $RuleID = "SV-203592r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203592r958364_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -352,9 +453,98 @@ Function Get-V203592 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203592) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Identify temporary/emergency accounts with expiration dates
+    $output += "Check 1: Account Expiration Configuration${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $expiredAccts = @()
+        $noExpiry = @()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $expireField = $matches[8]
+
+                # Skip system accounts and locked accounts
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($expireField -and $expireField -match "^\d+$") {
+                    $expireDays = [int]$expireField
+                    $expireDate = (Get-Date "1970-01-01").AddDays($expireDays)
+                    $output += "  Account: $acctName - Expires: $($expireDate.ToString('yyyy-MM-dd'))${nl}"
+                    $expiredAccts += $acctName
+                }
+                else {
+                    $noExpiry += $acctName
+                    $output += "  Account: $acctName - No expiration set${nl}"
+                }
+            }
+        }
+        if ($noExpiry.Count -eq 0 -and $expiredAccts.Count -eq 0) {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: useradd default EXPIRE setting
+    $output += "Check 2: Default Account Expiration (useradd -D)${nl}"
+    try {
+        $defaults = $(timeout 5 useradd -D 2>&1)
+        $defaultsStr = ($defaults -join $nl).Trim()
+        if ($defaultsStr -match "EXPIRE=(\S*)") {
+            $expireDefault = $matches[1]
+            if ($expireDefault -and $expireDefault -ne "") {
+                $output += "  [PASS] Default EXPIRE: $expireDefault${nl}"
+            }
+            else {
+                $output += "  [FAIL] Default EXPIRE is empty (no automatic expiration)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] EXPIRE not found in useradd defaults${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Automated account cleanup (cron/systemd timer)
+    $output += "Check 3: Automated Account Cleanup Mechanism${nl}"
+    try {
+        $cronCheck = $(timeout 5 grep -r "userdel\|usermod.*--expiredate\|chage" /etc/cron.d/ /etc/cron.daily/ /var/spool/cron/ 2>&1)
+        $cronStr = ($cronCheck -join $nl).Trim()
+        $timerCheck = $(timeout 5 systemctl list-timers --all 2>&1)
+        $timerStr = ($timerCheck -join $nl).Trim()
+
+        if ($cronStr -and $cronStr -notmatch "No such file") {
+            $output += "  [PASS] Account cleanup cron jobs detected${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($timerStr -match "account.*clean|user.*expire|cleanup") {
+            $output += "  [PASS] Account cleanup systemd timer detected${nl}"
+            $Status = "NotAFinding"
+        }
+        else {
+            $output += "  [INFO] No automated account cleanup mechanism found${nl}"
+            $output += "  [INFO] Verify organizational procedures for temporary account management${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -414,12 +604,12 @@ Function Get-V203593 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203593
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203593r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000004-GPOS-00004
+        Rule ID    : SV-203593r958368_rule
+        Rule Title : The operating system must audit all account creations.
+        DiscussMD5 : 61e3b8c1a541421dcc6d54f430ffb538
+        CheckMD5   : 961656542c8f3332ad649bb9a2a3eef0
+        FixMD5     : acdea85dc814b4efdb6d5df6b84e433a
     #>
 
     param (
@@ -453,8 +643,8 @@ Function Get-V203593 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203593"
-    $RuleID = "SV-203593r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203593r958368_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -463,9 +653,78 @@ Function Get-V203593 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203593) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account creation files
+    $output += "Check 2: Audit Rules for Account Creation${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -525,12 +784,12 @@ Function Get-V203594 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203594
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203594r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000021-GPOS-00005
+        Rule ID    : SV-203594r958388_rule
+        Rule Title : The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.
+        DiscussMD5 : e5184ee108663cd818b13b5900586349
+        CheckMD5   : f94712e2958b5fe7765acfa5e1a3048c
+        FixMD5     : f766fbe920f5893fe81bb66e8cdd28a8
     #>
 
     param (
@@ -564,8 +823,8 @@ Function Get-V203594 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203594"
-    $RuleID = "SV-203594r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203594r958388_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -574,9 +833,128 @@ Function Get-V203594 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203594) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: PAM faillock configuration
+    $output += "Check 1: PAM Account Lockout (pam_faillock)${nl}"
+    try {
+        $pamAuth = $(timeout 5 cat /etc/pam.d/common-auth 2>&1)
+        $pamAuthStr = ($pamAuth -join $nl).Trim()
+
+        if ($pamAuthStr -match "pam_faillock\.so") {
+            $output += "  [PASS] pam_faillock.so configured in common-auth${nl}"
+            # Extract deny parameter
+            if ($pamAuthStr -match "pam_faillock\.so.*deny=(\d+)") {
+                $denyCount = [int]$matches[1]
+                $output += "  deny=$denyCount (max attempts before lockout)${nl}"
+                if ($denyCount -le 3) {
+                    $output += "  [PASS] Meets DoD 3-attempt requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Exceeds DoD 3-attempt limit${nl}"
+                }
+            }
+            # Extract fail_interval (unlock_time)
+            if ($pamAuthStr -match "pam_faillock\.so.*fail_interval=(\d+)") {
+                $failInterval = [int]$matches[1]
+                $output += "  fail_interval=$failInterval seconds${nl}"
+                if ($failInterval -ge 900) {
+                    $output += "  [PASS] Meets DoD 15-minute (900s) window requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Below DoD 15-minute (900s) window requirement${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [INFO] pam_faillock.so not found in common-auth${nl}"
+        }
+
+        # Check for pam_tally2 (older alternative)
+        if ($pamAuthStr -match "pam_tally2\.so") {
+            $output += "  [INFO] pam_tally2.so found (deprecated, consider migrating to pam_faillock)${nl}"
+            if ($pamAuthStr -match "pam_tally2\.so.*deny=(\d+)") {
+                $denyCount = [int]$matches[1]
+                $output += "  deny=$denyCount${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: faillock.conf configuration file
+    $output += "Check 2: faillock.conf Configuration${nl}"
+    try {
+        $faillockConf = $(timeout 5 cat /etc/security/faillock.conf 2>&1)
+        $faillockStr = ($faillockConf -join $nl).Trim()
+        if ($faillockStr -and $faillockStr -notmatch "No such file") {
+            if ($faillockStr -match "(?m)^deny\s*=\s*(\d+)") {
+                $denyVal = [int]$matches[1]
+                $output += "  deny = $denyVal${nl}"
+                if ($denyVal -le 3) {
+                    $output += "  [PASS] Meets DoD 3-attempt requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Exceeds DoD 3-attempt limit${nl}"
+                }
+            }
+            if ($faillockStr -match "(?m)^fail_interval\s*=\s*(\d+)") {
+                $interval = [int]$matches[1]
+                $output += "  fail_interval = $interval seconds${nl}"
+                if ($interval -ge 900) {
+                    $output += "  [PASS] Meets 15-minute window${nl}"
+                }
+            }
+            if ($faillockStr -match "(?m)^unlock_time\s*=\s*(\d+)") {
+                $unlockTime = [int]$matches[1]
+                $output += "  unlock_time = $unlockTime seconds${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] /etc/security/faillock.conf not found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH-specific lockout (MaxAuthTries)
+    $output += "Check 3: SSH MaxAuthTries${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl).Trim()
+        if ($sshdStr -match "(?i)maxauthtries\s+(\d+)") {
+            $maxAuth = [int]$matches[1]
+            $output += "  MaxAuthTries = $maxAuth${nl}"
+            if ($maxAuth -le 3) {
+                $output += "  [PASS] SSH limits to $maxAuth attempts${nl}"
+            }
+            else {
+                $output += "  [FAIL] SSH allows $maxAuth attempts (DoD requires 3 or fewer)${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - need both PAM faillock AND deny <= 3
+    if ($pamAuthStr -match "pam_faillock\.so.*deny=(\d+)") {
+        if ([int]$matches[1] -le 3) {
+            $Status = "NotAFinding"
+        }
+    }
+    elseif ($faillockStr -match "(?m)^deny\s*=\s*(\d+)") {
+        if ([int]$matches[1] -le 3) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -636,12 +1014,12 @@ Function Get-V203595 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203595
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203595r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000023-GPOS-00006
+        Rule ID    : SV-203595r958390_rule
+        Rule Title : Display Standard Mandatory DoD Notice and Consent Banner
+        DiscussMD5 : fd76cffcf9d0a307406ac36b66acde49
+        CheckMD5   : bf4bf983073351c9bdfa2e7c31e01b10
+        FixMD5     : 1aa0ee25df9b6798d4d7b3e697a2f570
     #>
 
     param (
@@ -654,7 +1032,6 @@ Function Get-V203595 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -663,6 +1040,7 @@ Function Get-V203595 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -675,8 +1053,8 @@ Function Get-V203595 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203595"
-    $RuleID = "SV-203595r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203595r958390_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -685,9 +1063,89 @@ Function Get-V203595 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203595) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: /etc/issue file (local login banner)
+    $output += "Check 1: Local Login Banner (/etc/issue)${nl}"
+    try {
+        $issueContent = $(timeout 5 cat /etc/issue 2>&1)
+        $issueStr = ($issueContent -join $nl).Trim()
+        if ($issueStr) {
+            $output += "  /etc/issue content:${nl}"
+            foreach ($line in ($issueStr -split $nl | Select-Object -First 10)) {
+                $output += "    $line${nl}"
+            }
+            if ($issueStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+                $output += "  [PASS] DoD banner keywords detected in /etc/issue${nl}"
+            }
+            else {
+                $output += "  [FAIL] DoD banner keywords not found in /etc/issue${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] /etc/issue is empty or missing${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: /etc/issue.net (remote login banner)
+    $output += "Check 2: Remote Login Banner (/etc/issue.net)${nl}"
+    try {
+        $issueNetContent = $(timeout 5 cat /etc/issue.net 2>&1)
+        $issueNetStr = ($issueNetContent -join $nl).Trim()
+        if ($issueNetStr) {
+            $output += "  /etc/issue.net content:${nl}"
+            foreach ($line in ($issueNetStr -split $nl | Select-Object -First 10)) {
+                $output += "    $line${nl}"
+            }
+            if ($issueNetStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+                $output += "  [PASS] DoD banner keywords detected in /etc/issue.net${nl}"
+            }
+            else {
+                $output += "  [FAIL] DoD banner keywords not found in /etc/issue.net${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] /etc/issue.net is empty or missing${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH Banner configuration
+    $output += "Check 3: SSH Banner Configuration${nl}"
+    try {
+        $sshBanner = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i '^banner'" 2>&1)
+        $sshBannerStr = ($sshBanner -join $nl).Trim()
+        if ($sshBannerStr -match "banner\s+(/\S+)") {
+            $bannerPath = $matches[1]
+            $output += "  [PASS] SSH banner configured: $bannerPath${nl}"
+        }
+        elseif ($sshBannerStr -match "banner\s+none") {
+            $output += "  [FAIL] SSH banner set to none${nl}"
+        }
+        else {
+            $output += "  [INFO] SSH banner setting: $sshBannerStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    $issuePass = $issueStr -match "USG|U\.S\. Government|consent to monitoring|authorized use"
+    $issueNetPass = $issueNetStr -match "USG|U\.S\. Government|consent to monitoring|authorized use"
+    if ($issuePass -and $issueNetPass) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -747,12 +1205,12 @@ Function Get-V203596 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203596
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203596r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000024-GPOS-00007
+        Rule ID    : SV-203596r958392_rule
+        Rule Title : Display banner until user acknowledges and logs on
+        DiscussMD5 : 8873385dbcabf71cad7c9dd1daf30d0b
+        CheckMD5   : 7656c0828d00d985639a5b94ba27cbed
+        FixMD5     : 41394d03257dc2d7bdace0b04b95342d
     #>
 
     param (
@@ -765,7 +1223,6 @@ Function Get-V203596 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -774,6 +1231,7 @@ Function Get-V203596 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -786,8 +1244,8 @@ Function Get-V203596 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203596"
-    $RuleID = "SV-203596r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203596r958392_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -796,9 +1254,82 @@ Function Get-V203596 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203596) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: SSH PrintMotd and Banner settings
+    $output += "Check 1: SSH Banner Display Configuration${nl}"
+    try {
+        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(banner|printmotd|printlastlog)'" 2>&1)
+        $sshStr = ($sshConfig -join $nl).Trim()
+        if ($sshStr) {
+            foreach ($line in ($sshStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            if ($sshStr -match "banner\s+(/\S+)") {
+                $output += "  [PASS] SSH banner file configured${nl}"
+            }
+            else {
+                $output += "  [FAIL] SSH banner not configured to display a file${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] Unable to retrieve SSH configuration${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: /etc/issue contains DoD banner (displayed before login)
+    $output += "Check 2: Pre-Login Banner Content (/etc/issue)${nl}"
+    try {
+        $issueContent = $(timeout 5 cat /etc/issue 2>&1)
+        $issueStr = ($issueContent -join $nl).Trim()
+        if ($issueStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+            $output += "  [PASS] DoD banner present in /etc/issue (displayed before login prompt)${nl}"
+        }
+        elseif ($issueStr) {
+            $output += "  [FAIL] /etc/issue has content but missing DoD banner keywords${nl}"
+        }
+        else {
+            $output += "  [FAIL] /etc/issue is empty${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: GDM/GNOME banner (if GUI installed)
+    $output += "Check 3: Graphical Login Banner${nl}"
+    try {
+        $gdmInstalled = $(timeout 5 dpkg -l gdm3 2>&1)
+        $gdmStr = ($gdmInstalled -join $nl).Trim()
+        if ($gdmStr -match "^ii\s+gdm3") {
+            $bannerEnabled = $(timeout 5 sh -c "gsettings get org.gnome.login-screen banner-message-enable 2>/dev/null" 2>&1)
+            $bannerText = $(timeout 5 sh -c "gsettings get org.gnome.login-screen banner-message-text 2>/dev/null" 2>&1)
+            $output += "  GDM3 installed${nl}"
+            $output += "  Banner enabled: $(($bannerEnabled -join $nl).Trim())${nl}"
+            $output += "  Banner text: $(($bannerText -join $nl).Trim())${nl}"
+        }
+        else {
+            $output += "  [INFO] GDM3 not installed (no graphical login - CLI only)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    $bannerConfigured = $sshStr -match "banner\s+(/\S+)"
+    $bannerContent = $issueStr -match "USG|U\.S\. Government|consent to monitoring|authorized use"
+    if ($bannerConfigured -and $bannerContent) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -858,12 +1389,12 @@ Function Get-V203597 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203597
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203597r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000027-GPOS-00008
+        Rule ID    : SV-203597r958398_rule
+        Rule Title : Limit concurrent sessions to ten
+        DiscussMD5 : 188ce726c57de3a01af910a4e7c88eee
+        CheckMD5   : 7601a94d20fa138b5d09d8635fe1ce1b
+        FixMD5     : 7df266a99130f5f56a74bdc43580381b
     #>
 
     param (
@@ -876,7 +1407,6 @@ Function Get-V203597 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -885,6 +1415,7 @@ Function Get-V203597 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -897,8 +1428,8 @@ Function Get-V203597 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203597"
-    $RuleID = "SV-203597r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203597r958398_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -907,9 +1438,89 @@ Function Get-V203597 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203597) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: PAM limits.conf for maxlogins
+    $output += "Check 1: PAM Session Limits (/etc/security/limits.conf)${nl}"
+    try {
+        $limitsContent = $(timeout 5 sh -c "grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep -i maxlogins" 2>&1)
+        $limitsStr = ($limitsContent -join $nl).Trim()
+        if ($limitsStr -and $limitsStr -notmatch "No such file") {
+            $output += "  maxlogins entries found:${nl}"
+            foreach ($line in ($limitsStr -split $nl)) {
+                $output += "    $line${nl}"
+            }
+            if ($limitsStr -match "(\d+)") {
+                $maxVal = [int]$matches[1]
+                if ($maxVal -le 10) {
+                    $output += "  [PASS] maxlogins set to $maxVal (limit is 10)${nl}"
+                }
+                else {
+                    $output += "  [FAIL] maxlogins set to $maxVal (exceeds limit of 10)${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [FAIL] No maxlogins entry in /etc/security/limits.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: limits.d directory
+    $output += "Check 2: PAM Limits Drop-in (/etc/security/limits.d/)${nl}"
+    try {
+        $limitsD = $(timeout 5 sh -c "grep -r maxlogins /etc/security/limits.d/ 2>/dev/null" 2>&1)
+        $limitsDStr = ($limitsD -join $nl).Trim()
+        if ($limitsDStr -and $limitsDStr -notmatch "No such file") {
+            $output += "  maxlogins entries in limits.d:${nl}"
+            foreach ($line in ($limitsDStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No maxlogins entries in /etc/security/limits.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH MaxSessions
+    $output += "Check 3: SSH MaxSessions${nl}"
+    try {
+        $sshMax = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i maxsessions" 2>&1)
+        $sshMaxStr = ($sshMax -join $nl).Trim()
+        if ($sshMaxStr -match "maxsessions\s+(\d+)") {
+            $sshMaxVal = [int]$matches[1]
+            $output += "  SSH MaxSessions: $sshMaxVal${nl}"
+            if ($sshMaxVal -le 10) {
+                $output += "  [PASS] SSH MaxSessions within limit${nl}"
+            }
+            else {
+                $output += "  [FAIL] SSH MaxSessions exceeds 10${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] SSH MaxSessions: $sshMaxStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - need either limits.conf or SSH maxsessions set
+    $limitsPass = $limitsStr -match "maxlogins" -and $limitsStr -match "(\d+)" -and [int]$matches[1] -le 10
+    $sshPass = $sshMaxStr -match "maxsessions\s+(\d+)" -and [int]$matches[1] -le 10
+    if ($limitsPass -or $sshPass) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -969,12 +1580,12 @@ Function Get-V203598 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203598
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203598r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000028-GPOS-00009
+        Rule ID    : SV-203598r958400_rule
+        Rule Title : Retain session lock until re-authentication
+        DiscussMD5 : 0b5c88bcfa9e8f895e558377983b3c25
+        CheckMD5   : a04363881ef8ebb670aa5183e18ef76f
+        FixMD5     : 10f0425af0ac1d2754d295482121640c
     #>
 
     param (
@@ -987,7 +1598,6 @@ Function Get-V203598 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -996,6 +1606,7 @@ Function Get-V203598 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1008,8 +1619,8 @@ Function Get-V203598 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203598"
-    $RuleID = "SV-203598r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203598r958400_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -1018,9 +1629,82 @@ Function Get-V203598 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203598) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: tmux/screen session lock capability
+    $output += "Check 1: Terminal Multiplexer Session Lock${nl}"
+    $tmuxInstalled = $false
+    $screenInstalled = $false
+    try {
+        $tmuxCheck = $(timeout 5 which tmux 2>&1)
+        $tmuxStr = ($tmuxCheck -join $nl).Trim()
+        if ($tmuxStr -match "/tmux") {
+            $tmuxInstalled = $true
+            $output += "  [PASS] tmux installed: $tmuxStr${nl}"
+        }
+        else {
+            $output += "  [INFO] tmux not installed${nl}"
+        }
+        $screenCheck = $(timeout 5 which screen 2>&1)
+        $screenStr = ($screenCheck -join $nl).Trim()
+        if ($screenStr -match "/screen") {
+            $screenInstalled = $true
+            $output += "  [PASS] screen installed: $screenStr${nl}"
+        }
+        else {
+            $output += "  [INFO] screen not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: vlock/physlock for console lock
+    $output += "Check 2: Console Lock Utility${nl}"
+    $vlockInstalled = $false
+    try {
+        $vlockCheck = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlockStr = ($vlockCheck -join $nl).Trim()
+        if ($vlockStr -match "vlock|physlock") {
+            $vlockInstalled = $true
+            $output += "  [PASS] Console lock utility available: $vlockStr${nl}"
+        }
+        else {
+            $output += "  [INFO] No console lock utility (vlock/physlock) installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH re-authentication requirement
+    $output += "Check 3: SSH Session Re-authentication${nl}"
+    try {
+        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)'" 2>&1)
+        $sshStr = ($sshConfig -join $nl).Trim()
+        if ($sshStr) {
+            foreach ($line in ($sshStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            $output += "  [INFO] SSH drops idle sessions requiring re-authentication to resume${nl}"
+        }
+        else {
+            $output += "  [FAIL] SSH idle session settings not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if (($tmuxInstalled -or $screenInstalled -or $vlockInstalled) -and $sshStr -match "clientaliveinterval") {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1080,12 +1764,12 @@ Function Get-V203599 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203599
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203599r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000029-GPOS-00010
+        Rule ID    : SV-203599r958402_rule
+        Rule Title : Initiate session lock after 15-minute inactivity
+        DiscussMD5 : ef1b3e466dbaad856a1d89c0bcbdf400
+        CheckMD5   : 9f6337d878a1e79cf9e6f9b1b35d4f45
+        FixMD5     : 281c187def43332c9de61be584a8c81d
     #>
 
     param (
@@ -1098,7 +1782,6 @@ Function Get-V203599 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1107,6 +1790,7 @@ Function Get-V203599 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1119,8 +1803,8 @@ Function Get-V203599 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203599"
-    $RuleID = "SV-203599r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203599r958402_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -1129,9 +1813,98 @@ Function Get-V203599 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203599) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: SSH ClientAliveInterval (15 min = 900 sec max)
+    $output += "Check 1: SSH Inactivity Timeout${nl}"
+    $sshTimeoutPass = $false
+    try {
+        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)'" 2>&1)
+        $sshStr = ($sshConfig -join $nl).Trim()
+        if ($sshStr) {
+            foreach ($line in ($sshStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            if ($sshStr -match "clientaliveinterval\s+(\d+)") {
+                $interval = [int]$matches[1]
+                if ($interval -gt 0 -and $interval -le 900) {
+                    $output += "  [PASS] ClientAliveInterval=$interval seconds (max 900)${nl}"
+                    $sshTimeoutPass = $true
+                }
+                elseif ($interval -eq 0) {
+                    $output += "  [FAIL] ClientAliveInterval=0 (disabled)${nl}"
+                }
+                else {
+                    $output += "  [FAIL] ClientAliveInterval=$interval exceeds 900 seconds (15 min)${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [FAIL] SSH ClientAliveInterval not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: TMOUT environment variable
+    $output += "Check 2: Shell Inactivity Timeout (TMOUT)${nl}"
+    $tmoutPass = $false
+    try {
+        $tmoutFiles = $(timeout 5 sh -c "grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null" 2>&1)
+        $tmoutStr = ($tmoutFiles -join $nl).Trim()
+        if ($tmoutStr -and $tmoutStr -notmatch "No such file") {
+            foreach ($line in ($tmoutStr -split $nl | Select-Object -First 5)) {
+                $output += "  $line${nl}"
+            }
+            if ($tmoutStr -match "TMOUT=(\d+)") {
+                $tmoutVal = [int]$matches[1]
+                if ($tmoutVal -le 900 -and $tmoutVal -gt 0) {
+                    $output += "  [PASS] TMOUT=$tmoutVal seconds (max 900)${nl}"
+                    $tmoutPass = $true
+                }
+                else {
+                    $output += "  [FAIL] TMOUT=$tmoutVal (must be 1-900)${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [FAIL] TMOUT not configured in /etc/profile or /etc/bash.bashrc${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: tmux lock-after-time (if tmux is used)
+    $output += "Check 3: tmux Lock Timeout${nl}"
+    try {
+        $tmuxConf = $(timeout 5 sh -c "cat /etc/tmux.conf 2>/dev/null; cat ~/.tmux.conf 2>/dev/null" 2>&1)
+        $tmuxStr = ($tmuxConf -join $nl).Trim()
+        if ($tmuxStr -match "lock-after-time\s+(\d+)") {
+            $lockTime = [int]$matches[1]
+            $output += "  tmux lock-after-time: $lockTime seconds${nl}"
+            if ($lockTime -le 900 -and $lockTime -gt 0) {
+                $output += "  [PASS] tmux auto-lock within 15 minutes${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] tmux lock-after-time not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($sshTimeoutPass -or $tmoutPass) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1191,12 +1964,12 @@ Function Get-V203600 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203600
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203600r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000030-GPOS-00011
+        Rule ID    : SV-203600r982194_rule
+        Rule Title : User-initiated session lock capability
+        DiscussMD5 : 271d46ee6486cb76318252bcb2e914e8
+        CheckMD5   : 8aaeb3f0040a0af06a11904e579c2a71
+        FixMD5     : 17dba7326d5667e40a8f7e771db75942
     #>
 
     param (
@@ -1209,7 +1982,6 @@ Function Get-V203600 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1218,6 +1990,7 @@ Function Get-V203600 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1230,8 +2003,8 @@ Function Get-V203600 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203600"
-    $RuleID = "SV-203600r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203600r982194_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -1240,9 +2013,71 @@ Function Get-V203600 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203600) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $lockAvailable = $false
+
+    # Check 1: vlock or physlock for user-initiated console lock
+    $output += "Check 1: Console Lock Utilities${nl}"
+    try {
+        $vlock = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlockStr = ($vlock -join $nl).Trim()
+        if ($vlockStr -match "vlock|physlock") {
+            $output += "  [PASS] Console lock utility available: $vlockStr${nl}"
+            $lockAvailable = $true
+        }
+        else {
+            $output += "  [INFO] No console lock utility (vlock/physlock) installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: tmux lock-session capability
+    $output += "Check 2: tmux Session Lock${nl}"
+    try {
+        $tmuxPath = $(timeout 5 which tmux 2>&1)
+        $tmuxStr = ($tmuxPath -join $nl).Trim()
+        if ($tmuxStr -match "/tmux") {
+            $output += "  [PASS] tmux installed: $tmuxStr${nl}"
+            $output += "  [INFO] Users can lock with: tmux lock-session (Ctrl-b + L)${nl}"
+            $lockAvailable = $true
+        }
+        else {
+            $output += "  [INFO] tmux not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: screen lock capability
+    $output += "Check 3: GNU Screen Lock${nl}"
+    try {
+        $screenPath = $(timeout 5 which screen 2>&1)
+        $screenStr = ($screenPath -join $nl).Trim()
+        if ($screenStr -match "/screen") {
+            $output += "  [PASS] screen installed: $screenStr${nl}"
+            $output += "  [INFO] Users can lock with: Ctrl-a + x${nl}"
+            $lockAvailable = $true
+        }
+        else {
+            $output += "  [INFO] GNU screen not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($lockAvailable) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1302,12 +2137,12 @@ Function Get-V203601 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203601
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203601r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000031-GPOS-00012
+        Rule ID    : SV-203601r958404_rule
+        Rule Title : Conceal display with publicly viewable image on session lock
+        DiscussMD5 : dbae32b459af2626348f77c8e2d1cedc
+        CheckMD5   : 25ea53aa2c66da001ea97c240df53041
+        FixMD5     : cf92e96478f65282684582893f3da955
     #>
 
     param (
@@ -1320,7 +2155,6 @@ Function Get-V203601 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -1329,6 +2163,7 @@ Function Get-V203601 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -1341,8 +2176,8 @@ Function Get-V203601 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203601"
-    $RuleID = "SV-203601r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203601r958404_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -1351,9 +2186,81 @@ Function Get-V203601 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203601) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Graphical desktop environment
+    $output += "Check 1: Graphical Desktop Environment${nl}"
+    $hasGui = $false
+    try {
+        $gdm = $(timeout 5 dpkg -l gdm3 2>&1)
+        $gdmStr = ($gdm -join $nl).Trim()
+        if ($gdmStr -match "^ii\s+gdm3") {
+            $hasGui = $true
+            $output += "  [INFO] GDM3 installed - graphical lock screen applies${nl}"
+            $lockEnabled = $(timeout 5 sh -c "gsettings get org.gnome.desktop.screensaver lock-enabled 2>/dev/null" 2>&1)
+            $lockStr = ($lockEnabled -join $nl).Trim()
+            $output += "  Screensaver lock enabled: $lockStr${nl}"
+        }
+        else {
+            $output += "  [INFO] No graphical desktop installed (CLI-only server)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: CLI session lock concealment
+    $output += "Check 2: CLI Session Lock Behavior${nl}"
+    $cliLockConceals = $false
+    try {
+        $tmuxPath = $(timeout 5 which tmux 2>&1)
+        $tmuxStr = ($tmuxPath -join $nl).Trim()
+        if ($tmuxStr -match "/tmux") {
+            $output += "  [PASS] tmux installed - lock-session clears display and requires password${nl}"
+            $cliLockConceals = $true
+        }
+        $vlockPath = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlockStr = ($vlockPath -join $nl).Trim()
+        if ($vlockStr -match "vlock|physlock") {
+            $output += "  [PASS] Console lock utility clears terminal display: $vlockStr${nl}"
+            $cliLockConceals = $true
+        }
+        if (-not $cliLockConceals) {
+            $output += "  [FAIL] No session lock utility that conceals display content${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH disconnects clear remote display
+    $output += "Check 3: SSH Session Termination${nl}"
+    try {
+        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientaliveinterval" 2>&1)
+        $sshStr = ($sshConfig -join $nl).Trim()
+        if ($sshStr -match "clientaliveinterval\s+(\d+)") {
+            $interval = [int]$matches[1]
+            if ($interval -gt 0) {
+                $output += "  [PASS] SSH timeout configured ($interval sec) - disconnected sessions clear display${nl}"
+            }
+            else {
+                $output += "  [INFO] SSH ClientAliveInterval=0 (no automatic disconnect)${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($cliLockConceals -or ($hasGui -and $lockStr -eq "true")) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3964,12 +4871,12 @@ Function Get-V203625 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203625
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203625r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000069-GPOS-00037
+        Rule ID    : SV-203625r982195_rule
+        Rule Title : Enforce at least one uppercase character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : 496fdd17dbbaf166ee75c3cbf2efea43
+        FixMD5     : ae57efbe228547b2e48aef050b5615fb
     #>
 
     param (
@@ -3982,7 +4889,6 @@ Function Get-V203625 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -3991,6 +4897,7 @@ Function Get-V203625 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4003,8 +4910,8 @@ Function Get-V203625 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203625"
-    $RuleID = "SV-203625r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203625r982195_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4013,9 +4920,74 @@ Function Get-V203625 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203625) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf ucredit setting
+    $output += "Check 1: pwquality.conf ucredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ucredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "ucredit\s*=\s*(-?\d+)") {
+            $ucreditVal = [int]$Matches[1]
+            $output += "  ucredit = $ucreditVal${nl}"
+            if ($ucreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($ucreditVal)) uppercase character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] ucredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] ucredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "ucredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4075,12 +5047,12 @@ Function Get-V203626 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203626
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203626r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000070-GPOS-00038
+        Rule ID    : SV-203626r982196_rule
+        Rule Title : Enforce at least one lowercase character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : e6a734b4a402bdf7eb43fdee70aaa9b7
+        FixMD5     : 2eb316478931bee6469f556fcba2ac66
     #>
 
     param (
@@ -4093,7 +5065,6 @@ Function Get-V203626 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4102,6 +5073,7 @@ Function Get-V203626 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4114,8 +5086,8 @@ Function Get-V203626 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203626"
-    $RuleID = "SV-203626r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203626r982196_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4124,9 +5096,74 @@ Function Get-V203626 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203626) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf lcredit setting
+    $output += "Check 1: pwquality.conf lcredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'lcredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "lcredit\s*=\s*(-?\d+)") {
+            $lcreditVal = [int]$Matches[1]
+            $output += "  lcredit = $lcreditVal${nl}"
+            if ($lcreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($lcreditVal)) lowercase character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] lcredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] lcredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "lcredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4186,12 +5223,12 @@ Function Get-V203627 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203627
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203627r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000071-GPOS-00039
+        Rule ID    : SV-203627r982197_rule
+        Rule Title : Enforce at least one numeric character in passwords
+        DiscussMD5 : 99a2d25eeb7b76c3aa02868f9e43242f
+        CheckMD5   : 5dc2ecf906da00aa9583b69a95dfc884
+        FixMD5     : 50c1ccfbbd81a52d874a6f5583cb42c2
     #>
 
     param (
@@ -4204,7 +5241,6 @@ Function Get-V203627 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4213,6 +5249,7 @@ Function Get-V203627 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4225,8 +5262,8 @@ Function Get-V203627 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203627"
-    $RuleID = "SV-203627r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203627r982197_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4235,9 +5272,74 @@ Function Get-V203627 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203627) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf dcredit setting
+    $output += "Check 1: pwquality.conf dcredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dcredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dcredit\s*=\s*(-?\d+)") {
+            $dcreditVal = [int]$Matches[1]
+            $output += "  dcredit = $dcreditVal${nl}"
+            if ($dcreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($dcreditVal)) numeric character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] dcredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] dcredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "dcredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4297,12 +5399,12 @@ Function Get-V203628 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203628
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203628r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000072-GPOS-00040
+        Rule ID    : SV-203628r982198_rule
+        Rule Title : Require change of at least 50 percent of characters when passwords are changed
+        DiscussMD5 : 94b34da36f3cd5b68971b25689c6ab88
+        CheckMD5   : 518709842be86b47f0a1d41e1776759c
+        FixMD5     : 8a617271f33fe51dc45fc7b042539922
     #>
 
     param (
@@ -4315,7 +5417,6 @@ Function Get-V203628 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4324,6 +5425,7 @@ Function Get-V203628 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4336,8 +5438,8 @@ Function Get-V203628 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203628"
-    $RuleID = "SV-203628r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203628r982198_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4346,9 +5448,78 @@ Function Get-V203628 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203628) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf difok setting (minimum different characters)
+    $output += "Check 1: pwquality.conf difok Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'difok'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "difok\s*=\s*(\d+)") {
+            $difokVal = [int]$Matches[1]
+            $output += "  difok = $difokVal${nl}"
+            if ($difokVal -ge 8) {
+                $output += "  [PASS] Requires at least $difokVal different characters (meets 50% of 15-char minimum)${nl}"
+            }
+            else {
+                $output += "  [FAIL] difok must be 8 or greater (50% of 15-character minimum = 8)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] difok not configured in /etc/security/pwquality.conf (default is 1)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Current minlen to validate difok ratio
+    $output += "Check 3: Minimum Password Length (for difok ratio)${nl}"
+    try {
+        $minlenConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $minlenStr = ($minlenConf -join $nl).Trim()
+        if ($minlenStr -match "minlen\s*=\s*(\d+)") {
+            $minlenVal = [int]$Matches[1]
+            $requiredDifok = [Math]::Ceiling($minlenVal / 2)
+            $output += "  minlen = $minlenVal (50% = $requiredDifok characters must differ)${nl}"
+        }
+        else {
+            $output += "  [INFO] minlen not set (default 8; STIG requires 15)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - difok >= 8 AND pam_pwquality loaded
+    if ($pwqStr -match "difok\s*=\s*(\d+)") {
+        $checkVal = [int]$Matches[1]
+        if ($checkVal -ge 8 -and $pamStr) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4790,12 +5961,12 @@ Function Get-V203631 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203631
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203631r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000075-GPOS-00043
+        Rule ID    : SV-203631r982188_rule
+        Rule Title : Enforce 24 hours/1 day as the minimum password lifetime
+        DiscussMD5 : a13f8dd5b3602a221cac064dec313195
+        CheckMD5   : 82307decda9dbd3f788fde0641ffa11e
+        FixMD5     : c0047ac489fd3595604723612131808b
     #>
 
     param (
@@ -4808,7 +5979,6 @@ Function Get-V203631 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4817,6 +5987,7 @@ Function Get-V203631 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4829,8 +6000,8 @@ Function Get-V203631 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203631"
-    $RuleID = "SV-203631r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203631r982188_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4839,9 +6010,77 @@ Function Get-V203631 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203631) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $globalPass = $false
+
+    # Check 1: /etc/login.defs PASS_MIN_DAYS
+    $output += "Check 1: /etc/login.defs PASS_MIN_DAYS${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_DAYS'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MIN_DAYS\s+(\d+)") {
+            $minDays = [int]$Matches[1]
+            $output += "  PASS_MIN_DAYS = $minDays${nl}"
+            if ($minDays -ge 1) {
+                $output += "  [PASS] Minimum password lifetime is $minDays day(s)${nl}"
+                $globalPass = $true
+            }
+            else {
+                $output += "  [FAIL] PASS_MIN_DAYS must be 1 or greater (24 hours)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] PASS_MIN_DAYS not configured in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user PASS_MIN_DAYS via chage
+    $output += "Check 2: Per-User Minimum Password Age${nl}"
+    try {
+        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userStr = ($userAccounts -join $nl).Trim()
+        if ($userStr) {
+            $users = $userStr -split $nl
+            $badUsers = @()
+            foreach ($user in $users) {
+                $u = $user.Trim()
+                if (-not $u) { continue }
+                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Minimum'" 2>&1)
+                $chageStr = ($chageOut -join $nl).Trim()
+                if ($chageStr -match ":\s*(\d+)") {
+                    $userMin = [int]$Matches[1]
+                    if ($userMin -lt 1) {
+                        $badUsers += "$u (min=$userMin)"
+                    }
+                }
+                $output += "  $u : $chageStr${nl}"
+            }
+            if ($badUsers.Count -gt 0) {
+                $output += "  [FAIL] Users with min password age below 1 day: $($badUsers -join ', ')${nl}"
+            }
+            else {
+                $output += "  [PASS] All interactive users have minimum password age of 1+ day${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($globalPass -and $badUsers.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4901,12 +6140,12 @@ Function Get-V203632 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203632
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203632r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000076-GPOS-00044
+        Rule ID    : SV-203632r1038967_rule
+        Rule Title : Enforce a 60-day maximum password lifetime restriction
+        DiscussMD5 : aafd6d9d8ba33d1cb645c142d188e48a
+        CheckMD5   : e709a33284431dac88ebae638e6071d5
+        FixMD5     : 2fc20f1d6dbcf9cf50aaf30431af82f3
     #>
 
     param (
@@ -4919,7 +6158,6 @@ Function Get-V203632 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -4928,6 +6166,7 @@ Function Get-V203632 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -4940,8 +6179,8 @@ Function Get-V203632 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203632"
-    $RuleID = "SV-203632r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203632r1038967_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4950,9 +6189,77 @@ Function Get-V203632 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203632) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $globalPass = $false
+
+    # Check 1: /etc/login.defs PASS_MAX_DAYS
+    $output += "Check 1: /etc/login.defs PASS_MAX_DAYS${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MAX_DAYS'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MAX_DAYS\s+(\d+)") {
+            $maxDays = [int]$Matches[1]
+            $output += "  PASS_MAX_DAYS = $maxDays${nl}"
+            if ($maxDays -le 60 -and $maxDays -gt 0) {
+                $output += "  [PASS] Maximum password lifetime is $maxDays days${nl}"
+                $globalPass = $true
+            }
+            else {
+                $output += "  [FAIL] PASS_MAX_DAYS must be 60 or less (and greater than 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] PASS_MAX_DAYS not configured in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user PASS_MAX_DAYS via chage
+    $output += "Check 2: Per-User Maximum Password Age${nl}"
+    try {
+        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userStr = ($userAccounts -join $nl).Trim()
+        if ($userStr) {
+            $users = $userStr -split $nl
+            $badUsers = @()
+            foreach ($user in $users) {
+                $u = $user.Trim()
+                if (-not $u) { continue }
+                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Maximum'" 2>&1)
+                $chageStr = ($chageOut -join $nl).Trim()
+                if ($chageStr -match ":\s*(\d+)") {
+                    $userMax = [int]$Matches[1]
+                    if ($userMax -gt 60 -or $userMax -eq 0) {
+                        $badUsers += "$u (max=$userMax)"
+                    }
+                }
+                $output += "  $u : $chageStr${nl}"
+            }
+            if ($badUsers.Count -gt 0) {
+                $output += "  [FAIL] Users with max password age above 60 days: $($badUsers -join ', ')${nl}"
+            }
+            else {
+                $output += "  [PASS] All interactive users have maximum password age of 60 days or less${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($globalPass -and $badUsers.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5012,12 +6319,12 @@ Function Get-V203634 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203634
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203634r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000078-GPOS-00046
+        Rule ID    : SV-203634r982202_rule
+        Rule Title : Enforce a minimum 15-character password length
+        DiscussMD5 : ac553fb941e0c109b52498035d2d0328
+        CheckMD5   : cd37e0071acf688fdcfaabcfac908939
+        FixMD5     : df1131797123cfe3a5e954aaea4b40e3
     #>
 
     param (
@@ -5030,7 +6337,6 @@ Function Get-V203634 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5039,6 +6345,7 @@ Function Get-V203634 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5051,8 +6358,8 @@ Function Get-V203634 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203634"
-    $RuleID = "SV-203634r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203634r982202_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5061,9 +6368,83 @@ Function Get-V203634 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203634) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf minlen setting
+    $output += "Check 1: pwquality.conf minlen Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "minlen\s*=\s*(\d+)") {
+            $minlenVal = [int]$Matches[1]
+            $output += "  minlen = $minlenVal${nl}"
+            if ($minlenVal -ge 15) {
+                $output += "  [PASS] Minimum password length is $minlenVal characters${nl}"
+            }
+            else {
+                $output += "  [FAIL] minlen must be 15 or greater (DoD requirement)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] minlen not configured in /etc/security/pwquality.conf (default is 8)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: /etc/login.defs PASS_MIN_LEN
+    $output += "Check 3: /etc/login.defs PASS_MIN_LEN${nl}"
+    try {
+        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_LEN'" 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "PASS_MIN_LEN\s+(\d+)") {
+            $passMinLen = [int]$Matches[1]
+            $output += "  PASS_MIN_LEN = $passMinLen${nl}"
+            if ($passMinLen -ge 15) {
+                $output += "  [PASS] login.defs minimum length is $passMinLen${nl}"
+            }
+            else {
+                $output += "  [INFO] login.defs PASS_MIN_LEN is $passMinLen (pwquality.conf takes precedence when pam_pwquality is loaded)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] PASS_MIN_LEN not explicitly set in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - pwquality minlen >= 15 AND pam_pwquality loaded
+    if ($pwqStr -match "minlen\s*=\s*(\d+)") {
+        $checkVal = [int]$Matches[1]
+        if ($checkVal -ge 15 -and $pamStr) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5123,12 +6504,12 @@ Function Get-V203635 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203635
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203635r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000079-GPOS-00047
+        Rule ID    : SV-203635r958470_rule
+        Rule Title : Obscure authentication feedback
+        DiscussMD5 : a81ef6dcbd5c41cb990cb98f2763c292
+        CheckMD5   : cf3a1d21c85d46e0c090654364055fc3
+        FixMD5     : 88d7c7393f5d19486299be28af0606e3
     #>
 
     param (
@@ -5141,7 +6522,6 @@ Function Get-V203635 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -5150,6 +6530,7 @@ Function Get-V203635 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -5162,8 +6543,8 @@ Function Get-V203635 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203635"
-    $RuleID = "SV-203635r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203635r958470_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -5172,9 +6553,76 @@ Function Get-V203635 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203635) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $allPass = $true
+
+    # Check 1: PAM password feedback (pam_unix obscure_authtok)
+    $output += "Check 1: PAM Password Obscuring${nl}"
+    try {
+        $pamAuth = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_unix" 2>&1)
+        $pamStr = ($pamAuth -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  PAM password config: $pamStr${nl}"
+            if ($pamStr -match "obscure") {
+                $output += "  [PASS] obscure option enabled in PAM${nl}"
+            }
+            else {
+                $output += "  [INFO] obscure option not explicitly set (default behavior varies)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] pam_unix not found in common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: SSH password display (no echo)
+    $output += "Check 2: SSH Password Display${nl}"
+    try {
+        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(passwordauthentication|kbdinteractiveauthentication)'" 2>&1)
+        $sshStr = ($sshConfig -join $nl).Trim()
+        if ($sshStr) {
+            foreach ($line in ($sshStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            $output += "  [PASS] SSH uses standard terminal password input (no-echo by design)${nl}"
+        }
+        else {
+            $output += "  [INFO] SSH password settings not available${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: sudo password feedback
+    $output += "Check 3: sudo Password Feedback${nl}"
+    try {
+        $sudoConfig = $(timeout 5 sh -c "sudo -l 2>/dev/null | head -5; grep -r 'pwfeedback' /etc/sudoers /etc/sudoers.d/ 2>/dev/null" 2>&1)
+        $sudoStr = ($sudoConfig -join $nl).Trim()
+        if ($sudoStr -match "pwfeedback") {
+            $output += "  [FAIL] pwfeedback enabled in sudoers (shows asterisks - potential information leak)${nl}"
+            $allPass = $false
+        }
+        else {
+            $output += "  [PASS] pwfeedback not enabled (password input fully obscured)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - Linux CLI naturally obscures password input
+    if ($allPass) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6566,12 +8014,12 @@ Function Get-V203648 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203648
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203648r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000118-GPOS-00060
+        Rule ID    : SV-203648r982189_rule
+        Rule Title : The operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
+        DiscussMD5 : 702b0c109f871d307060ec75df670fdb
+        CheckMD5   : 5cb5e063a7c05fd3f2d3c5b0db00a189
+        FixMD5     : ffc4b94bc49a7086efdf35bdcc8b5102
     #>
 
     param (
@@ -6605,8 +8053,8 @@ Function Get-V203648 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203648"
-    $RuleID = "SV-203648r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203648r982189_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -6615,9 +8063,101 @@ Function Get-V203648 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203648) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: INACTIVE setting in /etc/default/useradd
+    $output += "Check 1: Default INACTIVE Setting${nl}"
+    try {
+        $useraddDefaults = $(timeout 5 cat /etc/default/useradd 2>&1)
+        $useraddStr = ($useraddDefaults -join $nl).Trim()
+        if ($useraddStr -match "(?m)^INACTIVE=(-?\d+)") {
+            $inactiveVal = [int]$matches[1]
+            $output += "  INACTIVE=$inactiveVal${nl}"
+            if ($inactiveVal -ge 0 -and $inactiveVal -le 35) {
+                $output += "  [PASS] Accounts disabled after $inactiveVal days of inactivity (meets 35-day requirement)${nl}"
+            }
+            elseif ($inactiveVal -eq -1) {
+                $output += "  [FAIL] INACTIVE=-1 means accounts are never disabled for inactivity${nl}"
+            }
+            else {
+                $output += "  [FAIL] INACTIVE=$inactiveVal exceeds 35-day DoD requirement${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] INACTIVE not configured in /etc/default/useradd${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user INACTIVE values in /etc/shadow
+    $output += "Check 2: Per-User Inactivity Settings (/etc/shadow)${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+        $nonCompliant = @()
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $inactiveField = $matches[7]
+
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($inactiveField -and $inactiveField -match "^\d+$") {
+                    $inactDays = [int]$inactiveField
+                    if ($inactDays -le 35) {
+                        $output += "  $acctName : INACTIVE=$inactDays [PASS]${nl}"
+                    }
+                    else {
+                        $output += "  $acctName : INACTIVE=$inactDays [FAIL - exceeds 35 days]${nl}"
+                        $nonCompliant += $acctName
+                    }
+                }
+                else {
+                    $output += "  $acctName : INACTIVE=not set [FAIL]${nl}"
+                    $nonCompliant += $acctName
+                }
+            }
+        }
+        if ($nonCompliant.Count -eq 0) {
+            $output += "  [PASS] All interactive accounts have INACTIVE <= 35 days${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: login.defs INACTIVE
+    $output += "Check 3: login.defs Configuration${nl}"
+    try {
+        $loginDefs = $(timeout 5 cat /etc/login.defs 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "(?m)^INACTIVE\s+(-?\d+)") {
+            $loginInactive = [int]$matches[1]
+            $output += "  login.defs INACTIVE=$loginInactive${nl}"
+        }
+        else {
+            $output += "  [INFO] INACTIVE not set in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($useraddStr -match "(?m)^INACTIVE=(\d+)" -and [int]$matches[1] -le 35 -and $nonCompliant.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7010,12 +8550,12 @@ Function Get-V203652 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203652
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203652r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000123-GPOS-00064
+        Rule ID    : SV-203652r958508_rule
+        Rule Title : The information system must automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.
+        DiscussMD5 : d7539b4d44342a1f1fc76e1e9154df5b
+        CheckMD5   : ea94c39bef68f27d8893d026ca387adb
+        FixMD5     : ef0bfbcbd07135ac0723add81ffc907a
     #>
 
     param (
@@ -7049,8 +8589,8 @@ Function Get-V203652 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203652"
-    $RuleID = "SV-203652r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203652r958508_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -7059,9 +8599,81 @@ Function Get-V203652 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203652) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Identify accounts with near-term expiration (emergency/temp)
+    $output += "Check 1: Accounts with Expiration Dates${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+        $acctWithExpiry = @()
+        $acctNoExpiry = @()
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $expireField = $matches[8]
+
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($expireField -and $expireField -match "^\d+$") {
+                    $expireDays = [int]$expireField
+                    $expireDate = (Get-Date "1970-01-01").AddDays($expireDays)
+                    $daysUntil = ($expireDate - (Get-Date)).Days
+                    $output += "  $acctName : expires $($expireDate.ToString('yyyy-MM-dd')) ($daysUntil days from now)${nl}"
+                    $acctWithExpiry += $acctName
+                }
+                else {
+                    $acctNoExpiry += $acctName
+                    $output += "  $acctName : no expiration set${nl}"
+                }
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Automated account cleanup mechanism
+    $output += "Check 2: Automated Emergency Account Cleanup${nl}"
+    try {
+        $cronCheck = $(timeout 10 grep -r "userdel\|usermod.*--expiredate\|chage.*-E" /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/ 2>&1)
+        $cronStr = ($cronCheck -join $nl).Trim()
+        if ($cronStr -and $cronStr -notmatch "No such file") {
+            $output += "  [PASS] Automated account cleanup cron jobs found${nl}"
+            foreach ($line in ($cronStr -split $nl | Select-Object -First 3)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No automated cleanup cron jobs found${nl}"
+        }
+
+        # Check systemd timers
+        $timerCheck = $(timeout 5 systemctl list-timers --all 2>&1)
+        $timerStr = ($timerCheck -join $nl).Trim()
+        if ($timerStr -match "account.*clean|emergency.*expire|temp.*account") {
+            $output += "  [PASS] Account cleanup systemd timer detected${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Emergency account documentation
+    $output += "Check 3: Emergency Account Policy${nl}"
+    $output += "  [INFO] Verify organizational procedures require:${nl}"
+    $output += "    - Emergency accounts have expiration date within 72 hours of creation${nl}"
+    $output += "    - Automated mechanism to disable/remove after crisis resolved${nl}"
+    $output += "    - Documentation of emergency account creation/removal events${nl}"
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8314,12 +9926,12 @@ Function Get-V203665 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203665
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203665r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000228-GPOS-00088
+        Rule ID    : SV-203665r958586_rule
+        Rule Title : Public connection DoD banner
+        DiscussMD5 : 179642ce1664f672230a1ec642585e03
+        CheckMD5   : 736321e82ecfcc193e8e036f8fba7839
+        FixMD5     : 475ce9616a5c79b8fa924f8fddebda02
     #>
 
     param (
@@ -8332,7 +9944,6 @@ Function Get-V203665 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -8341,6 +9952,7 @@ Function Get-V203665 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -8353,8 +9965,8 @@ Function Get-V203665 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203665"
-    $RuleID = "SV-203665r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203665r958586_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8363,9 +9975,85 @@ Function Get-V203665 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203665) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: SSH Banner for public connections
+    $output += "Check 1: SSH Banner for Public/Remote Connections${nl}"
+    $sshBannerPass = $false
+    try {
+        $sshBanner = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i '^banner'" 2>&1)
+        $sshBannerStr = ($sshBanner -join $nl).Trim()
+        if ($sshBannerStr -match "banner\s+(/\S+)") {
+            $bannerFile = $matches[1]
+            $output += "  SSH banner file: $bannerFile${nl}"
+            $bannerContent = $(timeout 5 cat $bannerFile 2>&1)
+            $bannerStr = ($bannerContent -join $nl).Trim()
+            if ($bannerStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+                $output += "  [PASS] DoD banner content verified in $bannerFile${nl}"
+                $sshBannerPass = $true
+            }
+            else {
+                $output += "  [FAIL] Banner file exists but missing DoD keywords${nl}"
+            }
+        }
+        elseif ($sshBannerStr -match "banner\s+none") {
+            $output += "  [FAIL] SSH banner set to none${nl}"
+        }
+        else {
+            $output += "  [FAIL] SSH banner not configured${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: /etc/motd (displayed after login)
+    $output += "Check 2: Post-Login Message (/etc/motd)${nl}"
+    try {
+        $motdContent = $(timeout 5 cat /etc/motd 2>&1)
+        $motdStr = ($motdContent -join $nl).Trim()
+        if ($motdStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+            $output += "  [PASS] DoD banner present in /etc/motd${nl}"
+        }
+        elseif ($motdStr) {
+            $output += "  [INFO] /etc/motd has content but missing DoD banner keywords${nl}"
+        }
+        else {
+            $output += "  [INFO] /etc/motd is empty or missing${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: /etc/issue.net (remote connections)
+    $output += "Check 3: Remote Login Banner (/etc/issue.net)${nl}"
+    try {
+        $issueNet = $(timeout 5 cat /etc/issue.net 2>&1)
+        $issueNetStr = ($issueNet -join $nl).Trim()
+        if ($issueNetStr -match "USG|U\.S\. Government|consent to monitoring|authorized use") {
+            $output += "  [PASS] DoD banner present in /etc/issue.net${nl}"
+        }
+        elseif ($issueNetStr) {
+            $output += "  [INFO] /etc/issue.net has content but missing DoD keywords${nl}"
+        }
+        else {
+            $output += "  [FAIL] /etc/issue.net is empty or missing${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($sshBannerPass) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8425,12 +10113,12 @@ Function Get-V203666 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203666
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203666r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000239-GPOS-00089
+        Rule ID    : SV-203666r991551_rule
+        Rule Title : The operating system must audit all account modifications.
+        DiscussMD5 : 3761871ff35c5ac54793fa47e3231e0b
+        CheckMD5   : 8594c9f9f472520a8aca87af063f23a7
+        FixMD5     : fc502dfb96e355ca36ad1ca46ef83d79
     #>
 
     param (
@@ -8464,8 +10152,8 @@ Function Get-V203666 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203666"
-    $RuleID = "SV-203666r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203666r991551_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8474,9 +10162,78 @@ Function Get-V203666 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203666) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account modification files
+    $output += "Check 2: Audit Rules for Account Modifications${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8536,12 +10293,12 @@ Function Get-V203667 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203667
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203667r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000240-GPOS-00090
+        Rule ID    : SV-203667r991552_rule
+        Rule Title : The operating system must audit all account disabling actions.
+        DiscussMD5 : bca8dd964c2e420799352c5b5e89209b
+        CheckMD5   : af23f946cbe7e03622c37a0b77f0a218
+        FixMD5     : 4ecb24bcbaebede6a525ea060e07bf53
     #>
 
     param (
@@ -8575,8 +10332,8 @@ Function Get-V203667 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203667"
-    $RuleID = "SV-203667r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203667r991552_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8585,9 +10342,78 @@ Function Get-V203667 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203667) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account disabling files
+    $output += "Check 2: Audit Rules for Account Disabling Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8647,12 +10473,12 @@ Function Get-V203668 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203668
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203668r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000241-GPOS-00091
+        Rule ID    : SV-203668r991553_rule
+        Rule Title : The operating system must audit all account removal actions.
+        DiscussMD5 : e17ca265049c657cb97367d40c88852e
+        CheckMD5   : aa4b1681010b9a137c1dfd30a8bf5675
+        FixMD5     : d6c9a7f75e4a9f0618088d8cee64ceee
     #>
 
     param (
@@ -8686,8 +10512,8 @@ Function Get-V203668 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203668"
-    $RuleID = "SV-203668r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203668r991553_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8696,9 +10522,78 @@ Function Get-V203668 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203668) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account removal files
+    $output += "Check 2: Audit Rules for Account Removal Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9672,12 +11567,12 @@ Function Get-V203676 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203676
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203676r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000266-GPOS-00101
+        Rule ID    : SV-203676r991561_rule
+        Rule Title : Enforce at least one special character in passwords
+        DiscussMD5 : 15b707da51bf342b536d1be547c4516f
+        CheckMD5   : 6d90f4e6729486d680e70e37e587faa4
+        FixMD5     : 598a3ab78b88651b4bc8a8b37db7c709
     #>
 
     param (
@@ -9690,7 +11585,6 @@ Function Get-V203676 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -9699,6 +11593,7 @@ Function Get-V203676 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -9711,8 +11606,8 @@ Function Get-V203676 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203676"
-    $RuleID = "SV-203676r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203676r991561_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -9721,9 +11616,74 @@ Function Get-V203676 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203676) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: pwquality.conf ocredit setting
+    $output += "Check 1: pwquality.conf ocredit Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ocredit'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "ocredit\s*=\s*(-?\d+)") {
+            $ocreditVal = [int]$Matches[1]
+            $output += "  ocredit = $ocreditVal${nl}"
+            if ($ocreditVal -le -1) {
+                $output += "  [PASS] Requires at least $([Math]::Abs($ocreditVal)) special character(s)${nl}"
+            }
+            else {
+                $output += "  [FAIL] ocredit must be -1 or less (negative = required minimum)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] ocredit not configured in /etc/security/pwquality.conf${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: libpam-pwquality package installed
+    $output += "Check 3: libpam-pwquality Package${nl}"
+    try {
+        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgStr = ($pkgCheck -join $nl).Trim()
+        if ($pkgStr) {
+            $output += "  $pkgStr${nl}"
+            $output += "  [PASS] libpam-pwquality installed${nl}"
+        }
+        else {
+            $output += "  [FAIL] libpam-pwquality not installed${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($pwqStr -match "ocredit\s*=\s*(-\d+)" -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11312,12 +13272,12 @@ Function Get-V203690 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203690
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203690r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000303-GPOS-00120
+        Rule ID    : SV-203690r958684_rule
+        Rule Title : The operating system must audit all account enabling actions.
+        DiscussMD5 : b60759e4f7e9f671b9f5628371a8d14e
+        CheckMD5   : a05f0b9b60b639f5b00caea1c11d3ba5
+        FixMD5     : 6fabdf374ad1a32b6a74a2ac90fd0dde
     #>
 
     param (
@@ -11351,8 +13311,8 @@ Function Get-V203690 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203690"
-    $RuleID = "SV-203690r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203690r958684_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -11361,9 +13321,78 @@ Function Get-V203690 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203690) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account enabling files
+    $output += "Check 2: Audit Rules for Account Enabling Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21116,12 +23145,12 @@ Function Get-V203778 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203778
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203778r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000480-GPOS-00225
+        Rule ID    : SV-203778r991587_rule
+        Rule Title : Prevent the use of dictionary words for passwords
+        DiscussMD5 : 9cb543ada83a7e715bb0ce789ff8bd25
+        CheckMD5   : 9602171ad83aad48e3feb2d59eca6c55
+        FixMD5     : 6c093c4b7380d0aecb95eaed5f85132c
     #>
 
     param (
@@ -21134,7 +23163,6 @@ Function Get-V203778 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -21143,6 +23171,7 @@ Function Get-V203778 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -21155,8 +23184,8 @@ Function Get-V203778 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203778"
-    $RuleID = "SV-203778r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203778r991587_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -21165,9 +23194,78 @@ Function Get-V203778 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203778) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $dictCheckPass = $false
+
+    # Check 1: pwquality.conf dictcheck setting
+    $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
+            $dictcheckVal = [int]$Matches[1]
+            $output += "  dictcheck = $dictcheckVal${nl}"
+            if ($dictcheckVal -ge 1) {
+                $output += "  [PASS] Dictionary check enabled${nl}"
+                $dictCheckPass = $true
+            }
+            else {
+                $output += "  [FAIL] dictcheck is disabled (set to 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] dictcheck not explicitly set (default is 1 = enabled in pwquality 1.4.4+)${nl}"
+            $dictCheckPass = $true
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Dictionary files available (cracklib)
+    $output += "Check 3: Dictionary Files${nl}"
+    try {
+        $dictFiles = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l libpam-cracklib 2>/dev/null | grep '^ii'" 2>&1)
+        $dictStr = ($dictFiles -join $nl).Trim()
+        if ($dictStr) {
+            foreach ($line in ($dictStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No dictionary files or cracklib packages found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - dictcheck enabled (or default) AND pam_pwquality loaded
+    if ($dictCheckPass -and $pamStr) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21227,12 +23325,12 @@ Function Get-V203779 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203779
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203779r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000480-GPOS-00226
+        Rule ID    : SV-203779r991588_rule
+        Rule Title : Enforce 4-second delay after failed logon
+        DiscussMD5 : 7c22d07c283abac40cc9dd2e8dc76d89
+        CheckMD5   : a5f88eae97ca1d47acc13394b31702f1
+        FixMD5     : 6a2ff3c02925b7b5b7a15a288d0a82e2
     #>
 
     param (
@@ -21245,7 +23343,6 @@ Function Get-V203779 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -21254,6 +23351,7 @@ Function Get-V203779 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -21266,8 +23364,8 @@ Function Get-V203779 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203779"
-    $RuleID = "SV-203779r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203779r991588_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -21276,9 +23374,83 @@ Function Get-V203779 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203779) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: PAM faildelay module
+    $output += "Check 1: PAM Fail Delay Configuration${nl}"
+    $faildelayPass = $false
+    try {
+        $pamAuth = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_faildelay" 2>&1)
+        $pamStr = ($pamAuth -join $nl).Trim()
+        if ($pamStr -match "pam_faildelay") {
+            $output += "  PAM faildelay config: $pamStr${nl}"
+            if ($pamStr -match "delay=(\d+)") {
+                $delayUs = [int64]$matches[1]
+                $delaySec = $delayUs / 1000000
+                if ($delaySec -ge 4) {
+                    $output += "  [PASS] Fail delay = $delaySec seconds (minimum 4 required)${nl}"
+                    $faildelayPass = $true
+                }
+                else {
+                    $output += "  [FAIL] Fail delay = $delaySec seconds (less than 4 required)${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [FAIL] pam_faildelay not configured in /etc/pam.d/common-auth${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: pam_unix nodelay option (should NOT be set)
+    $output += "Check 2: PAM Unix Delay Behavior${nl}"
+    $nodelayBad = $false
+    try {
+        $pamUnix = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_unix" 2>&1)
+        $pamUnixStr = ($pamUnix -join $nl).Trim()
+        if ($pamUnixStr) {
+            $output += "  PAM unix config: $pamUnixStr${nl}"
+            if ($pamUnixStr -match "nodelay") {
+                $output += "  [FAIL] nodelay option set - bypasses authentication delay${nl}"
+                $nodelayBad = $true
+            }
+            else {
+                $output += "  [PASS] nodelay not set (default delay behavior active)${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH LoginGraceTime
+    $output += "Check 3: SSH Login Grace Time${nl}"
+    try {
+        $sshGrace = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i logingracetime" 2>&1)
+        $sshStr = ($sshGrace -join $nl).Trim()
+        if ($sshStr -match "logingracetime\s+(\d+)") {
+            $graceTime = [int]$matches[1]
+            $output += "  SSH LoginGraceTime: $graceTime seconds${nl}"
+        }
+        else {
+            $output += "  [INFO] SSH LoginGraceTime: $sshStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($faildelayPass -and -not $nodelayBad) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22647,12 +24819,12 @@ Function Get-V263653 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263653
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-263653r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000710-GPOS-00160
+        Rule ID    : SV-263653r982229_rule
+        Rule Title : Verify passwords not found on commonly-used, compromised password lists
+        DiscussMD5 : 013e737dbcd96e4dd0461a8e25c3fbfb
+        CheckMD5   : 64577a6a45f6e808ffb6264db9dad2e1
+        FixMD5     : d2b3c8b240803accec4cbf73a4ba54be
     #>
 
     param (
@@ -22665,7 +24837,6 @@ Function Get-V263653 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -22674,6 +24845,7 @@ Function Get-V263653 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -22686,8 +24858,8 @@ Function Get-V263653 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-263653"
-    $RuleID = "SV-263653r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-263653r982229_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -22696,9 +24868,113 @@ Function Get-V263653 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-263653) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+    $dictCheckPass = $false
+    $wordlistFound = $false
+
+    # Check 1: pwquality.conf dictcheck setting
+    $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
+    try {
+        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqStr = ($pwqConf -join $nl).Trim()
+        if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
+            $dictcheckVal = [int]$Matches[1]
+            $output += "  dictcheck = $dictcheckVal${nl}"
+            if ($dictcheckVal -ge 1) {
+                $output += "  [PASS] Dictionary check enabled${nl}"
+                $dictCheckPass = $true
+            }
+            else {
+                $output += "  [FAIL] dictcheck is disabled (set to 0)${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] dictcheck not explicitly set (default is 1 = enabled in pwquality 1.4.4+)${nl}"
+            $dictCheckPass = $true
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM pwquality module loaded
+    $output += "Check 2: PAM pwquality Module${nl}"
+    try {
+        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamStr = ($pamConf -join $nl).Trim()
+        if ($pamStr) {
+            $output += "  $pamStr${nl}"
+            $output += "  [PASS] pam_pwquality loaded in PAM stack${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_pwquality not found in /etc/pam.d/common-password${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Wordlist/dictionary files for compromised password checking
+    $output += "Check 3: Compromised Password Wordlists${nl}"
+    try {
+        $wordlists = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; ls -la /usr/share/cracklib/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l wamerican 2>/dev/null | grep '^ii'; dpkg -l wamerican-large 2>/dev/null | grep '^ii'" 2>&1)
+        $wordStr = ($wordlists -join $nl).Trim()
+        if ($wordStr) {
+            foreach ($line in ($wordStr -split $nl)) {
+                $output += "  $line${nl}"
+            }
+            if ($wordStr -match "(cracklib|wamerican|words)") {
+                $wordlistFound = $true
+                $output += "  [PASS] Dictionary/wordlist files available for password checking${nl}"
+            }
+            else {
+                $output += "  [INFO] Dictionary directory exists but standard wordlists not confirmed${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No dictionary/wordlist files found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: pwquality dictpath for custom compromised password list
+    $output += "Check 4: Custom Compromised Password List${nl}"
+    try {
+        $dictpath = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictpath'" 2>&1)
+        $dictpathStr = ($dictpath -join $nl).Trim()
+        if ($dictpathStr -match "dictpath\s*=\s*(.+)") {
+            $customPath = $Matches[1].Trim()
+            $output += "  dictpath = $customPath${nl}"
+            $pathCheck = $(timeout 5 sh -c "ls -la ${customPath}* 2>/dev/null" 2>&1)
+            $pathStr = ($pathCheck -join $nl).Trim()
+            if ($pathStr) {
+                $output += "  [PASS] Custom dictionary path exists${nl}"
+                $wordlistFound = $true
+            }
+            else {
+                $output += "  [FAIL] Custom dictionary path configured but files not found${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No custom dictpath configured (uses system default)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - dictcheck enabled AND pam_pwquality loaded AND wordlists available
+    if ($dictCheckPass -and $pamStr -and $wordlistFound) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
