@@ -12,9 +12,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 28 (18 CAT I + 10 CAT II) |
-| **Stubs (Not_Reviewed)** | 170 |
-| **Completion** | 14.1% |
+| **Implemented** | 38 (18 CAT I + 19 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 160 |
+| **Completion** | 19.2% |
 
 **Last validated test:** Test151 (Feb 24, 2026) — Exit 0, EvalScore 4.04%, 7 NF / 20 O / 1 NA / 170 NR
 
@@ -102,16 +102,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203595 | SV-203595r958390 | DoD Notice and Consent Banner (GUI) | NR | -- | -- | -- |
-| V-203596 | SV-203596r958392 | DoD Notice and Consent Banner (CLI) | NR | -- | -- | -- |
-| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 (CAT III) | NR | -- | -- | -- |
-| V-203598 | SV-203598r958400 | Retain session lock until re-auth | NR | -- | -- | -- |
-| V-203599 | SV-203599r958402 | Session lock after 15 min inactivity | NR | -- | -- | -- |
-| V-203600 | SV-203600r982194 | User-initiated session lock | NR | -- | -- | -- |
-| V-203601 | SV-203601r958404 | Conceal info via session lock | NR | -- | -- | -- |
-| V-203635 | SV-203635r958470 | Obscure auth feedback | NR | -- | -- | -- |
-| V-203665 | SV-203665r958586 | Public connection banner | NR | -- | -- | -- |
-| V-203779 | SV-203779r991588 | 4-second delay between logon attempts | NR | -- | -- | -- |
+| V-203595 | SV-203595r958390 | DoD Notice and Consent Banner (GUI) | -- | -- | #54 | Pending test |
+| V-203596 | SV-203596r958392 | DoD Notice and Consent Banner (CLI) | -- | -- | #54 | Pending test |
+| V-203597 | SV-203597r958398 | Limit concurrent sessions to 10 (CAT III) | -- | -- | #54 | Pending test |
+| V-203598 | SV-203598r958400 | Retain session lock until re-auth | -- | -- | #54 | Pending test |
+| V-203599 | SV-203599r958402 | Session lock after 15 min inactivity | -- | -- | #54 | Pending test |
+| V-203600 | SV-203600r982194 | User-initiated session lock | -- | -- | #54 | Pending test |
+| V-203601 | SV-203601r958404 | Conceal info via session lock | -- | -- | #54 | Pending test |
+| V-203635 | SV-203635r958470 | Obscure auth feedback | -- | -- | #54 | Pending test |
+| V-203665 | SV-203665r958586 | Public connection banner | -- | -- | #54 | Pending test |
+| V-203779 | SV-203779r991588 | 4-second delay between logon attempts | -- | -- | #54 | Pending test |
 
 ### Batch 3: Password Policy (10 functions)
 
