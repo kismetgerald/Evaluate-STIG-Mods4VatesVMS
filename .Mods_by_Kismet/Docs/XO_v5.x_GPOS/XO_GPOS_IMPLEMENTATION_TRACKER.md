@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 0 |
-| **Stubs (Not_Reviewed)** | 198 |
-| **Completion** | 0% |
+| **Implemented** | 28 (18 CAT I + 10 CAT II) |
+| **Stubs (Not_Reviewed)** | 170 |
+| **Completion** | 14.1% |
 
-**Last validated test:** N/A (baseline test pending after Phase 0)
+**Last validated test:** Test151 (Feb 24, 2026) — Exit 0, EvalScore 4.04%, 7 NF / 20 O / 1 NA / 170 NR
 
 ---
 
@@ -32,52 +32,52 @@
 
 ---
 
-## Phase 0: Module Remediation
+## Phase 0: Module Remediation - COMPLETE
 
 | Defect | Status | Notes |
 |--------|--------|-------|
-| Function naming (Get-V- to Get-V) | Pending | 198 functions to rename |
-| PSD1 manifest mismatch | Pending | V-254xxx exports vs V-203xxx definitions |
-| Missing params ($Username, $UserSID, $Hostname) | Pending | 198 functions |
-| STIGList.xml CAT counts | Pending | CATI=0 to CATI=18, CATII=152 to 170, CATIII=8 to 10 |
-| Baseline framework test | Pending | Exit code 0, all 198 execute |
+| Function naming (Get-V- to Get-V) | DONE | 198 functions renamed (Session #50) |
+| PSD1 manifest mismatch | DONE | Regenerated FunctionsToExport (Session #50) |
+| Missing params ($Username, $UserSID, $Hostname) | DONE | 198 functions fixed (Session #50) |
+| STIGList.xml CAT counts | DONE | CATI=18, CATII=170, CATIII=10 (Session #50) |
+| Baseline framework test | DONE | Test149 — Exit 0, EvalScore 0%, all 198 execute (Session #50) |
 
 ---
 
-## Phase 1: CAT I Implementation (18 functions)
+## Phase 1: CAT I Implementation (18 functions) - COMPLETE
 
-### Batch CAT1-A: Cryptography and FIPS (10 functions)
-
-| Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
-|---------|---------|------------|--------|------|---------|---------|
-| V-203603 | SV-203603r958408 | DoD-approved encryption for remote access | NR | -- | -- | -- |
-| V-203630 | SV-203630r987796 | Transmit only encrypted representations of passwords | NR | -- | -- | -- |
-| V-203682 | SV-203682r991567 | Cryptographic integrity of transmitted info | NR | -- | -- | -- |
-| V-203736 | SV-203736r958848 | Cryptographic integrity of nonlocal maintenance | NR | -- | -- | -- |
-| V-203737 | SV-203737r958850 | Cryptographic confidentiality of nonlocal maintenance | NR | -- | -- | -- |
-| V-203739 | SV-203739r987791 | NSA-approved cryptography for classified info | NR | -- | -- | -- |
-| V-203745 | SV-203745r958870 | Crypto mechanisms prevent unauthorized disclosure | NR | -- | -- | -- |
-| V-203746 | SV-203746r958872 | Crypto mechanisms prevent unauthorized modification | NR | -- | -- | -- |
-| V-203748 | SV-203748r958908 | Protect confidentiality/integrity of transmitted info | NR | -- | -- | -- |
-| V-203749 | SV-203749r971547 | Crypto mechanisms prevent unauthorized disclosure (transmit) | NR | -- | -- | -- |
-
-### Batch CAT1-B: Authentication and Access Control (5 functions)
+### Batch CAT1-A: Cryptography and FIPS (10 functions) - Test150c
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203629 | SV-203629r982199 | Store only encrypted representations of passwords | NR | -- | -- | -- |
-| V-203653 | SV-203653r958510 | Strong authenticators for nonlocal maintenance | NR | -- | -- | -- |
-| V-203695 | SV-203695r958726 | Prevent nonprivileged users executing privileged functions | NR | -- | -- | -- |
-| V-203720 | SV-203720r982212 | Prevent unauthorized patch/update installation | NR | -- | -- | -- |
-| V-203782 | SV-203782r991591 | No unattended/automatic logon | NR | -- | -- | -- |
+| V-203603 | SV-203603r958408 | DoD-approved encryption for remote access | O | Test150c | #51 | umac-64 weak MAC |
+| V-203630 | SV-203630r987796 | Transmit only encrypted representations of passwords | NF | Test150c | #51 | SHA-512 hashing |
+| V-203682 | SV-203682r991567 | Cryptographic integrity of transmitted info | NF | Test150c | #51 | TLS 1.2+ configured |
+| V-203736 | SV-203736r958848 | Cryptographic integrity of nonlocal maintenance | O | Test150c | #51 | umac-64 weak MAC |
+| V-203737 | SV-203737r958850 | Cryptographic confidentiality of nonlocal maintenance | NF | Test150c | #51 | Approved ciphers |
+| V-203739 | SV-203739r987791 | NSA-approved cryptography for classified info | NF | Test150c | #51 | Approved ciphers |
+| V-203745 | SV-203745r958870 | Crypto mechanisms prevent unauthorized disclosure | NF | Test150c | #51 | Approved ciphers |
+| V-203746 | SV-203746r958872 | Crypto mechanisms prevent unauthorized modification | NF | Test150c | #51 | Approved MACs/ciphers |
+| V-203748 | SV-203748r958908 | Protect confidentiality/integrity of transmitted info | O | Test150c | #51 | umac-64 weak MAC |
+| V-203749 | SV-203749r971547 | Crypto mechanisms prevent unauthorized disclosure (transmit) | NF | Test150c | #51 | Approved ciphers |
 
-### Batch CAT1-C: Audit and Communications (3 functions)
+### Batch CAT1-B: Authentication and Access Control (5 functions) - Test150c
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203669 | SV-203669r991554 | Cryptographic integrity of audit tools | NR | -- | -- | -- |
-| V-203776 | SV-203776r959006 | NIST FIPS-validated cryptography | NR | -- | -- | -- |
-| V-252688 | SV-252688r958358 | Protect confidentiality/integrity of communications | NR | -- | -- | -- |
+| V-203629 | SV-203629r982199 | Store only encrypted representations of passwords | NF | Test150c | #51 | SHA-512 hashing |
+| V-203653 | SV-203653r958510 | Strong authenticators for nonlocal maintenance | O | Test150c | #51 | MFA not configured |
+| V-203695 | SV-203695r958726 | Prevent nonprivileged users executing privileged functions | O | Test150c | #51 | sudo not installed |
+| V-203720 | SV-203720r982212 | Prevent unauthorized patch/update installation | O | Test150c | #51 | apt config review |
+| V-203782 | SV-203782r991591 | No unattended/automatic logon | O | Test150c | #51 | Auto-login check |
+
+### Batch CAT1-C: Audit and Communications (3 functions) - Test150c
+
+| Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
+|---------|---------|------------|--------|------|---------|---------|
+| V-203669 | SV-203669r991554 | Cryptographic integrity of audit tools | O | Test150c | #52 | Audit tool integrity |
+| V-203776 | SV-203776r959006 | NIST FIPS-validated cryptography | O | Test150c | #51 | FIPS not enabled |
+| V-252688 | SV-252688r958358 | Protect confidentiality/integrity of communications | NA | Test150c | #52 | Wireless N/A |
 
 ---
 
@@ -87,16 +87,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203591 | SV-203591r958362 | Automated account management support | NR | -- | -- | -- |
-| V-203592 | SV-203592r958364 | Auto-remove/disable temp accounts | NR | -- | -- | -- |
-| V-203593 | SV-203593r958368 | Audit all account creations | NR | -- | -- | -- |
-| V-203594 | SV-203594r958388 | 3 consecutive invalid logon attempts | NR | -- | -- | -- |
-| V-203648 | SV-203648r982189 | Disable accounts after 35 days inactivity | NR | -- | -- | -- |
-| V-203652 | SV-203652r958508 | Auto-remove/disable emergency accounts | NR | -- | -- | -- |
-| V-203666 | SV-203666r991551 | Audit all account modifications | NR | -- | -- | -- |
-| V-203667 | SV-203667r991552 | Audit all account disabling actions | NR | -- | -- | -- |
-| V-203668 | SV-203668r991553 | Audit all account removal actions | NR | -- | -- | -- |
-| V-203690 | SV-203690r958684 | Audit all account enabling actions | NR | -- | -- | -- |
+| V-203591 | SV-203591r958362 | Automated account management support | O | Test151 | #53 | No SSSD/LDAP/AD |
+| V-203592 | SV-203592r958364 | Auto-remove/disable temp accounts | O | Test151 | #53 | No automated cleanup |
+| V-203593 | SV-203593r958368 | Audit all account creations | O | Test151 | #53 | auditd inactive |
+| V-203594 | SV-203594r958388 | 3 consecutive invalid logon attempts | O | Test151 | #53 | No faillock config |
+| V-203648 | SV-203648r982189 | Disable accounts after 35 days inactivity | O | Test151 | #53 | INACTIVE not set |
+| V-203652 | SV-203652r958508 | Auto-remove/disable emergency accounts | O | Test151 | #53 | No automated cleanup |
+| V-203666 | SV-203666r991551 | Audit all account modifications | O | Test151 | #53 | auditd inactive |
+| V-203667 | SV-203667r991552 | Audit all account disabling actions | O | Test151 | #53 | auditd inactive |
+| V-203668 | SV-203668r991553 | Audit all account removal actions | O | Test151 | #53 | auditd inactive |
+| V-203690 | SV-203690r958684 | Audit all account enabling actions | O | Test151 | #53 | auditd inactive |
 
 ### Batch 2: Authentication and Login (10 functions)
 
@@ -361,4 +361,7 @@
 
 | Test | Date | Session | Phase/Batch | Functions | Result | EvalScore | Notes |
 |------|------|---------|-------------|-----------|--------|-----------|-------|
-| -- | -- | -- | Phase 0 baseline | 198 | -- | -- | Pending |
+| Test149 | Feb 18 | #50 | Phase 0 baseline | 198 | PASS | 0% | Exit 0, all stubs execute |
+| Test150 | Feb 23 | #51 | Phase 1 CAT I | 198 | PASS | 4.04% | 18 CAT I implemented, 5 Open expected |
+| Test150b | Feb 23 | #52 | Phase 1 fix | 198 | FAIL | -- | StigType param error in GetCorpParams |
+| Test150c | Feb 24 | #52 | Phase 1 final | 198 | PASS | 4.04% | All 18 CAT I COMMENTS populated, 0 errors |

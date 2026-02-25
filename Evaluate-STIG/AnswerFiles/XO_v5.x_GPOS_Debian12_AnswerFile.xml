@@ -59,56 +59,147 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-203591">
     <!--RuleTitle: The operating system must provide automated mechanisms for supporting account management functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Automated account management check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) provides automated mechanisms for account management.
+
+The automated check confirmed centralized account management via SSSD/LDAP/nslcd integration, which delegates account lifecycle operations (creation, modification, disabling, removal) to the enterprise directory service.
+
+Standard account management tools are available: useradd, usermod, userdel, chage, passwd, groupadd. PAM account management modules are configured for automated enforcement of account policies.
+
+This meets the SRG requirement for automated mechanisms supporting account management functions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have centralized account management configured.
+
+The automated check did not detect SSSD, LDAP, or nslcd integration for centralized account management. Local account management tools are present but centralized lifecycle management is required.
+
+Remediation:
+1. Install and configure SSSD for Active Directory integration: apt install sssd sssd-ad
+2. Configure /etc/sssd/sssd.conf with domain settings
+3. Join the system to the AD domain: realm join DOMAIN.COM
+4. Verify: id username@domain.com
+5. Alternatively, configure LDAP client: apt install libnss-ldapd
+
+Contact the system administrator to implement centralized account management per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203592">
     <!--RuleTitle: The operating system must automatically remove or disable temporary user accounts after 72 hours.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Temporary account auto-removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) is configured to automatically remove or disable temporary accounts after 72 hours.
+
+The automated check confirmed account expiration dates are set in /etc/shadow and automated cleanup mechanisms (cron jobs or systemd timers) are in place to enforce the 72-hour temporary account policy.
+
+This meets the SRG requirement for automatic removal or disabling of temporary accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have automated mechanisms for removing temporary accounts after 72 hours.
+
+Remediation:
+1. Set account expiration for temporary accounts: chage -E $(date -d "+3 days" +%Y-%m-%d) USERNAME
+2. Set default expiration in /etc/default/useradd: EXPIRE=3 (days)
+3. Create a cron job or systemd timer to check and disable expired accounts:
+   /etc/cron.daily/cleanup-temp-accounts
+4. Verify expiration: chage -l USERNAME
+5. Document temporary account procedures in organizational policy
+
+Contact the system administrator to implement automated temporary account lifecycle management.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203593">
     <!--RuleTitle: The operating system must audit all account creations.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account creations check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account creation events.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are also configured in /etc/audit/rules.d/ to survive reboots.
+
+Any account creation (useradd, adduser, groupadd) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account creation events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules for account files:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load
+
+Contact the system administrator to configure audit rules for account management files.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203594">
     <!--RuleTitle: The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Account lockout after 3 invalid logon attempts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) enforces account lockout after three consecutive invalid logon attempts within a 15-minute period.
+
+The automated check confirmed PAM faillock is configured with deny=3 (or less) and fail_interval=900 (15 minutes). SSH MaxAuthTries is also set appropriately to limit authentication attempts per session.
+
+This meets the DoD requirement for automated account lockout to protect against brute force attacks.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not enforce account lockout after three consecutive invalid logon attempts.
+
+Remediation:
+1. Install pam_faillock (included in libpam-modules on Debian 12)
+2. Configure /etc/security/faillock.conf:
+   deny = 3
+   fail_interval = 900
+   unlock_time = 0 (or organization-defined period)
+3. Add pam_faillock to PAM stack:
+   Edit /etc/pam.d/common-auth to include faillock preauth and authfail
+4. Set SSH MaxAuthTries in /etc/ssh/sshd_config: MaxAuthTries 3
+5. Restart sshd: systemctl restart sshd
+6. Verify: faillock --user testuser
+
+Contact the system administrator to configure account lockout policies per DoD requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -917,14 +1008,33 @@ Remediation:
   <Vuln ID="V-203648">
     <!--RuleTitle: The operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Inactivity lockout after 35 days-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) disables account identifiers after 35 days of inactivity.
+
+The automated check confirmed INACTIVE is set to 35 or less in /etc/default/useradd, and all user accounts in /etc/shadow have compliant inactivity periods configured. No accounts were found with INACTIVE values exceeding 35 days.
+
+This meets the DoD requirement to automatically disable accounts after 35 days of inactivity to reduce the attack surface from dormant accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly disable accounts after 35 days of inactivity.
+
+Remediation:
+1. Set system default: useradd -D -f 35
+2. Verify /etc/default/useradd shows INACTIVE=35
+3. Set for existing accounts: chage -I 35 USERNAME (for each user)
+4. Verify per-user settings: chage -l USERNAME (check "Password inactive")
+5. For all users: awk -F: '{print $1}' /etc/passwd | xargs -I{} chage -I 35 {}
+
+Contact the system administrator to configure account inactivity lockout per DoD 35-day requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -973,14 +1083,31 @@ Remediation:
   <Vuln ID="V-203652">
     <!--RuleTitle: The information system must automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Emergency account auto-removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) has mechanisms to automatically remove or disable emergency accounts after the crisis is resolved or within 72 hours.
+
+The automated check confirmed account expiration dates are properly configured and automated cleanup mechanisms (cron jobs or systemd timers) are in place to enforce the 72-hour emergency account policy. Emergency account procedures are documented per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not have adequate mechanisms for emergency account lifecycle management.
+
+Remediation:
+1. Create emergency accounts with mandatory expiration: useradd -e $(date -d "+3 days" +%Y-%m-%d) emergency_user
+2. Create automated cleanup script in /etc/cron.daily/cleanup-emergency-accounts
+3. Configure systemd timer for periodic account expiration checks
+4. Document emergency account procedures including creation, authorization, and removal
+5. Ensure all emergency accounts have expiration dates set: chage -l USERNAME
+
+Contact the ISSO/ISSM to document emergency account management procedures per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1168,42 +1295,108 @@ Remediation:
   <Vuln ID="V-203666">
     <!--RuleTitle: The operating system must audit all account modifications.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account modifications check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account modification events.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/ to survive reboots.
+
+Any account modification (usermod, passwd, chage, groupmod) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account modification events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203667">
     <!--RuleTitle: The operating system must audit all account disabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account disabling check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account disabling actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account disabling action (passwd -l, usermod -L, chage -E 0) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account disabling actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203668">
     <!--RuleTitle: The operating system must audit all account removal actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account removal check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account removal actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account removal action (userdel, groupdel) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account removal actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1562,14 +1755,36 @@ Remediation:
   <Vuln ID="V-203690">
     <!--RuleTitle: The operating system must audit all account enabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1 CAT II: Audit account enabling check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits all account enabling actions.
+
+The automated check confirmed auditd is active and audit watch rules are configured for account files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/security/opasswd. Persistent rules are configured in /etc/audit/rules.d/.
+
+Any account enabling action (passwd -u, usermod -U, chage -E -1) triggers an audit record capturing the user, timestamp, and action taken.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account enabling actions.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add audit rules:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/security/opasswd -p wa -k identity
+4. Make persistent: add rules to /etc/audit/rules.d/identity.rules
+5. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

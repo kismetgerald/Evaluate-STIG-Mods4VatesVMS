@@ -193,11 +193,11 @@ Function Get-V203591 {
     .DESCRIPTION
         Vuln ID    : V-203591
         STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203591r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        Rule ID    : SV-203591r958362_rule
+        Rule Title : The operating system must provide automated mechanisms for supporting account management functions.
+        DiscussMD5 : e8745279a444350222f06bee7279dcae
+        CheckMD5   : 4260619870759950e8b45eaf04fe931b
+        FixMD5     : a60e7461cd14b14bd7e412bd6471c425
     #>
 
     param (
@@ -231,8 +231,8 @@ Function Get-V203591 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203591"
-    $RuleID = "SV-203591r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203591r958362_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -241,9 +241,110 @@ Function Get-V203591 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203591) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Account management tools available
+    $output += "Check 1: Account Management Tools${nl}"
+    try {
+        $tools = @("useradd", "usermod", "userdel", "chage", "passwd", "groupadd")
+        $foundTools = @()
+        $missingTools = @()
+        foreach ($tool in $tools) {
+            $which = $(which $tool 2>&1)
+            $whichStr = ($which -join $nl).Trim()
+            if ($whichStr -and $whichStr -notmatch "not found") {
+                $foundTools += $tool
+            }
+            else {
+                $missingTools += $tool
+            }
+        }
+        $output += "  Found: $($foundTools -join ', ')${nl}"
+        if ($missingTools.Count -gt 0) {
+            $output += "  Missing: $($missingTools -join ', ')${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: PAM account management modules
+    $output += "Check 2: PAM Account Management Configuration${nl}"
+    try {
+        $pamAccount = $(timeout 5 cat /etc/pam.d/common-account 2>&1)
+        $pamStr = ($pamAccount -join $nl).Trim()
+        if ($pamStr -match "pam_unix\.so") {
+            $output += "  [PASS] pam_unix.so configured for account management${nl}"
+        }
+        else {
+            $output += "  [FAIL] pam_unix.so not found in common-account${nl}"
+        }
+        if ($pamStr -match "pam_faillock\.so|pam_tally2\.so") {
+            $output += "  [PASS] Account lockout module configured${nl}"
+        }
+        else {
+            $output += "  [INFO] No account lockout module (pam_faillock/pam_tally2)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: LDAP/AD integration (centralized account management)
+    $output += "Check 3: Centralized Account Management${nl}"
+    try {
+        $sssd = $(timeout 5 systemctl is-active sssd 2>&1)
+        $sssdStr = ($sssd -join $nl).Trim()
+        $nslcd = $(timeout 5 systemctl is-active nslcd 2>&1)
+        $nslcdStr = ($nslcd -join $nl).Trim()
+        $pamLdap = $(timeout 5 dpkg -l libpam-ldapd 2>&1)
+        $pamLdapStr = ($pamLdap -join $nl).Trim()
+
+        if ($sssdStr -eq "active") {
+            $output += "  [PASS] SSSD active (centralized account management)${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($nslcdStr -eq "active") {
+            $output += "  [PASS] nslcd active (LDAP account management)${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($pamLdapStr -match "^ii\s+libpam-ldapd") {
+            $output += "  [INFO] libpam-ldapd installed (LDAP integration available)${nl}"
+        }
+        else {
+            $output += "  [INFO] No centralized account management detected (SSSD/LDAP)${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 4: Account lifecycle (useradd defaults)
+    $output += "Check 4: Account Lifecycle Defaults${nl}"
+    try {
+        $defaults = $(timeout 5 useradd -D 2>&1)
+        $defaultsStr = ($defaults -join $nl).Trim()
+        if ($defaultsStr) {
+            $output += "  useradd defaults:${nl}"
+            foreach ($line in ($defaultsStr -split $nl)) {
+                $output += "    $line${nl}"
+            }
+        }
+        # If all 6 tools present AND (SSSD/LDAP active OR local tools functional)
+        if ($foundTools.Count -ge 5 -and $Status -ne "NotAFinding") {
+            $output += "  [INFO] Local account management tools available but no centralized management${nl}"
+            $output += "  [INFO] Verify organizational account management procedures are documented${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -303,12 +404,12 @@ Function Get-V203592 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203592
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203592r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000002-GPOS-00002
+        Rule ID    : SV-203592r958364_rule
+        Rule Title : The operating system must automatically remove or disable temporary user accounts after 72 hours.
+        DiscussMD5 : 83e9e5509dadc0e5cbfd813054b47310
+        CheckMD5   : 3a997104c141f6faca3ccfbcdec10683
+        FixMD5     : 2826c55467d5801f7fcb83bb792dc41e
     #>
 
     param (
@@ -342,8 +443,8 @@ Function Get-V203592 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203592"
-    $RuleID = "SV-203592r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203592r958364_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -352,9 +453,98 @@ Function Get-V203592 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203592) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Identify temporary/emergency accounts with expiration dates
+    $output += "Check 1: Account Expiration Configuration${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $expiredAccts = @()
+        $noExpiry = @()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $expireField = $matches[8]
+
+                # Skip system accounts and locked accounts
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($expireField -and $expireField -match "^\d+$") {
+                    $expireDays = [int]$expireField
+                    $expireDate = (Get-Date "1970-01-01").AddDays($expireDays)
+                    $output += "  Account: $acctName - Expires: $($expireDate.ToString('yyyy-MM-dd'))${nl}"
+                    $expiredAccts += $acctName
+                }
+                else {
+                    $noExpiry += $acctName
+                    $output += "  Account: $acctName - No expiration set${nl}"
+                }
+            }
+        }
+        if ($noExpiry.Count -eq 0 -and $expiredAccts.Count -eq 0) {
+            $output += "  [INFO] No interactive user accounts found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: useradd default EXPIRE setting
+    $output += "Check 2: Default Account Expiration (useradd -D)${nl}"
+    try {
+        $defaults = $(timeout 5 useradd -D 2>&1)
+        $defaultsStr = ($defaults -join $nl).Trim()
+        if ($defaultsStr -match "EXPIRE=(\S*)") {
+            $expireDefault = $matches[1]
+            if ($expireDefault -and $expireDefault -ne "") {
+                $output += "  [PASS] Default EXPIRE: $expireDefault${nl}"
+            }
+            else {
+                $output += "  [FAIL] Default EXPIRE is empty (no automatic expiration)${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] EXPIRE not found in useradd defaults${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Automated account cleanup (cron/systemd timer)
+    $output += "Check 3: Automated Account Cleanup Mechanism${nl}"
+    try {
+        $cronCheck = $(timeout 5 grep -r "userdel\|usermod.*--expiredate\|chage" /etc/cron.d/ /etc/cron.daily/ /var/spool/cron/ 2>&1)
+        $cronStr = ($cronCheck -join $nl).Trim()
+        $timerCheck = $(timeout 5 systemctl list-timers --all 2>&1)
+        $timerStr = ($timerCheck -join $nl).Trim()
+
+        if ($cronStr -and $cronStr -notmatch "No such file") {
+            $output += "  [PASS] Account cleanup cron jobs detected${nl}"
+            $Status = "NotAFinding"
+        }
+        elseif ($timerStr -match "account.*clean|user.*expire|cleanup") {
+            $output += "  [PASS] Account cleanup systemd timer detected${nl}"
+            $Status = "NotAFinding"
+        }
+        else {
+            $output += "  [INFO] No automated account cleanup mechanism found${nl}"
+            $output += "  [INFO] Verify organizational procedures for temporary account management${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -414,12 +604,12 @@ Function Get-V203593 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203593
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203593r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000004-GPOS-00004
+        Rule ID    : SV-203593r958368_rule
+        Rule Title : The operating system must audit all account creations.
+        DiscussMD5 : 61e3b8c1a541421dcc6d54f430ffb538
+        CheckMD5   : 961656542c8f3332ad649bb9a2a3eef0
+        FixMD5     : acdea85dc814b4efdb6d5df6b84e433a
     #>
 
     param (
@@ -453,8 +643,8 @@ Function Get-V203593 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203593"
-    $RuleID = "SV-203593r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203593r958368_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -463,9 +653,78 @@ Function Get-V203593 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203593) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account creation files
+    $output += "Check 2: Audit Rules for Account Creation${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -525,12 +784,12 @@ Function Get-V203594 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203594
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203594r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000021-GPOS-00005
+        Rule ID    : SV-203594r958388_rule
+        Rule Title : The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.
+        DiscussMD5 : e5184ee108663cd818b13b5900586349
+        CheckMD5   : f94712e2958b5fe7765acfa5e1a3048c
+        FixMD5     : f766fbe920f5893fe81bb66e8cdd28a8
     #>
 
     param (
@@ -564,8 +823,8 @@ Function Get-V203594 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203594"
-    $RuleID = "SV-203594r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203594r958388_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -574,9 +833,128 @@ Function Get-V203594 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203594) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: PAM faillock configuration
+    $output += "Check 1: PAM Account Lockout (pam_faillock)${nl}"
+    try {
+        $pamAuth = $(timeout 5 cat /etc/pam.d/common-auth 2>&1)
+        $pamAuthStr = ($pamAuth -join $nl).Trim()
+
+        if ($pamAuthStr -match "pam_faillock\.so") {
+            $output += "  [PASS] pam_faillock.so configured in common-auth${nl}"
+            # Extract deny parameter
+            if ($pamAuthStr -match "pam_faillock\.so.*deny=(\d+)") {
+                $denyCount = [int]$matches[1]
+                $output += "  deny=$denyCount (max attempts before lockout)${nl}"
+                if ($denyCount -le 3) {
+                    $output += "  [PASS] Meets DoD 3-attempt requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Exceeds DoD 3-attempt limit${nl}"
+                }
+            }
+            # Extract fail_interval (unlock_time)
+            if ($pamAuthStr -match "pam_faillock\.so.*fail_interval=(\d+)") {
+                $failInterval = [int]$matches[1]
+                $output += "  fail_interval=$failInterval seconds${nl}"
+                if ($failInterval -ge 900) {
+                    $output += "  [PASS] Meets DoD 15-minute (900s) window requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Below DoD 15-minute (900s) window requirement${nl}"
+                }
+            }
+        }
+        else {
+            $output += "  [INFO] pam_faillock.so not found in common-auth${nl}"
+        }
+
+        # Check for pam_tally2 (older alternative)
+        if ($pamAuthStr -match "pam_tally2\.so") {
+            $output += "  [INFO] pam_tally2.so found (deprecated, consider migrating to pam_faillock)${nl}"
+            if ($pamAuthStr -match "pam_tally2\.so.*deny=(\d+)") {
+                $denyCount = [int]$matches[1]
+                $output += "  deny=$denyCount${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: faillock.conf configuration file
+    $output += "Check 2: faillock.conf Configuration${nl}"
+    try {
+        $faillockConf = $(timeout 5 cat /etc/security/faillock.conf 2>&1)
+        $faillockStr = ($faillockConf -join $nl).Trim()
+        if ($faillockStr -and $faillockStr -notmatch "No such file") {
+            if ($faillockStr -match "(?m)^deny\s*=\s*(\d+)") {
+                $denyVal = [int]$matches[1]
+                $output += "  deny = $denyVal${nl}"
+                if ($denyVal -le 3) {
+                    $output += "  [PASS] Meets DoD 3-attempt requirement${nl}"
+                }
+                else {
+                    $output += "  [FAIL] Exceeds DoD 3-attempt limit${nl}"
+                }
+            }
+            if ($faillockStr -match "(?m)^fail_interval\s*=\s*(\d+)") {
+                $interval = [int]$matches[1]
+                $output += "  fail_interval = $interval seconds${nl}"
+                if ($interval -ge 900) {
+                    $output += "  [PASS] Meets 15-minute window${nl}"
+                }
+            }
+            if ($faillockStr -match "(?m)^unlock_time\s*=\s*(\d+)") {
+                $unlockTime = [int]$matches[1]
+                $output += "  unlock_time = $unlockTime seconds${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] /etc/security/faillock.conf not found${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: SSH-specific lockout (MaxAuthTries)
+    $output += "Check 3: SSH MaxAuthTries${nl}"
+    try {
+        $sshdConfig = $(timeout 5 sshd -T 2>&1)
+        $sshdStr = ($sshdConfig -join $nl).Trim()
+        if ($sshdStr -match "(?i)maxauthtries\s+(\d+)") {
+            $maxAuth = [int]$matches[1]
+            $output += "  MaxAuthTries = $maxAuth${nl}"
+            if ($maxAuth -le 3) {
+                $output += "  [PASS] SSH limits to $maxAuth attempts${nl}"
+            }
+            else {
+                $output += "  [FAIL] SSH allows $maxAuth attempts (DoD requires 3 or fewer)${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status - need both PAM faillock AND deny <= 3
+    if ($pamAuthStr -match "pam_faillock\.so.*deny=(\d+)") {
+        if ([int]$matches[1] -le 3) {
+            $Status = "NotAFinding"
+        }
+    }
+    elseif ($faillockStr -match "(?m)^deny\s*=\s*(\d+)") {
+        if ([int]$matches[1] -le 3) {
+            $Status = "NotAFinding"
+        }
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6566,12 +6944,12 @@ Function Get-V203648 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203648
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203648r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000118-GPOS-00060
+        Rule ID    : SV-203648r982189_rule
+        Rule Title : The operating system must disable account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.
+        DiscussMD5 : 702b0c109f871d307060ec75df670fdb
+        CheckMD5   : 5cb5e063a7c05fd3f2d3c5b0db00a189
+        FixMD5     : ffc4b94bc49a7086efdf35bdcc8b5102
     #>
 
     param (
@@ -6605,8 +6983,8 @@ Function Get-V203648 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203648"
-    $RuleID = "SV-203648r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203648r982189_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -6615,9 +6993,101 @@ Function Get-V203648 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203648) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: INACTIVE setting in /etc/default/useradd
+    $output += "Check 1: Default INACTIVE Setting${nl}"
+    try {
+        $useraddDefaults = $(timeout 5 cat /etc/default/useradd 2>&1)
+        $useraddStr = ($useraddDefaults -join $nl).Trim()
+        if ($useraddStr -match "(?m)^INACTIVE=(-?\d+)") {
+            $inactiveVal = [int]$matches[1]
+            $output += "  INACTIVE=$inactiveVal${nl}"
+            if ($inactiveVal -ge 0 -and $inactiveVal -le 35) {
+                $output += "  [PASS] Accounts disabled after $inactiveVal days of inactivity (meets 35-day requirement)${nl}"
+            }
+            elseif ($inactiveVal -eq -1) {
+                $output += "  [FAIL] INACTIVE=-1 means accounts are never disabled for inactivity${nl}"
+            }
+            else {
+                $output += "  [FAIL] INACTIVE=$inactiveVal exceeds 35-day DoD requirement${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] INACTIVE not configured in /etc/default/useradd${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Per-user INACTIVE values in /etc/shadow
+    $output += "Check 2: Per-User Inactivity Settings (/etc/shadow)${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+        $nonCompliant = @()
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $inactiveField = $matches[7]
+
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($inactiveField -and $inactiveField -match "^\d+$") {
+                    $inactDays = [int]$inactiveField
+                    if ($inactDays -le 35) {
+                        $output += "  $acctName : INACTIVE=$inactDays [PASS]${nl}"
+                    }
+                    else {
+                        $output += "  $acctName : INACTIVE=$inactDays [FAIL - exceeds 35 days]${nl}"
+                        $nonCompliant += $acctName
+                    }
+                }
+                else {
+                    $output += "  $acctName : INACTIVE=not set [FAIL]${nl}"
+                    $nonCompliant += $acctName
+                }
+            }
+        }
+        if ($nonCompliant.Count -eq 0) {
+            $output += "  [PASS] All interactive accounts have INACTIVE <= 35 days${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: login.defs INACTIVE
+    $output += "Check 3: login.defs Configuration${nl}"
+    try {
+        $loginDefs = $(timeout 5 cat /etc/login.defs 2>&1)
+        $loginStr = ($loginDefs -join $nl).Trim()
+        if ($loginStr -match "(?m)^INACTIVE\s+(-?\d+)") {
+            $loginInactive = [int]$matches[1]
+            $output += "  login.defs INACTIVE=$loginInactive${nl}"
+        }
+        else {
+            $output += "  [INFO] INACTIVE not set in /etc/login.defs${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($useraddStr -match "(?m)^INACTIVE=(\d+)" -and [int]$matches[1] -le 35 -and $nonCompliant.Count -eq 0) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7010,12 +7480,12 @@ Function Get-V203652 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203652
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203652r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000123-GPOS-00064
+        Rule ID    : SV-203652r958508_rule
+        Rule Title : The information system must automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.
+        DiscussMD5 : d7539b4d44342a1f1fc76e1e9154df5b
+        CheckMD5   : ea94c39bef68f27d8893d026ca387adb
+        FixMD5     : ef0bfbcbd07135ac0723add81ffc907a
     #>
 
     param (
@@ -7049,8 +7519,8 @@ Function Get-V203652 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203652"
-    $RuleID = "SV-203652r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203652r958508_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -7059,9 +7529,81 @@ Function Get-V203652 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203652) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Identify accounts with near-term expiration (emergency/temp)
+    $output += "Check 1: Accounts with Expiration Dates${nl}"
+    try {
+        $shadowContent = $(timeout 5 cat /etc/shadow 2>&1)
+        $shadowStr = ($shadowContent -join $nl).Trim()
+        $systemAccts = @("root", "daemon", "bin", "sys", "sync", "games", "man", "lp", "mail", "news", "uucp", "proxy", "www-data", "backup", "list", "irc", "gnats", "nobody", "systemd-network", "systemd-resolve", "messagebus", "sshd", "_apt", "systemd-timesync")
+        $acctWithExpiry = @()
+        $acctNoExpiry = @()
+
+        foreach ($line in ($shadowStr -split $nl)) {
+            if ($line -match "^([^:]+):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):([^:]*):") {
+                $acctName = $matches[1]
+                $hashField = $matches[2]
+                $expireField = $matches[8]
+
+                if ($acctName -in $systemAccts) { continue }
+                if ($hashField -match "^[!*]") { continue }
+
+                if ($expireField -and $expireField -match "^\d+$") {
+                    $expireDays = [int]$expireField
+                    $expireDate = (Get-Date "1970-01-01").AddDays($expireDays)
+                    $daysUntil = ($expireDate - (Get-Date)).Days
+                    $output += "  $acctName : expires $($expireDate.ToString('yyyy-MM-dd')) ($daysUntil days from now)${nl}"
+                    $acctWithExpiry += $acctName
+                }
+                else {
+                    $acctNoExpiry += $acctName
+                    $output += "  $acctName : no expiration set${nl}"
+                }
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Automated account cleanup mechanism
+    $output += "Check 2: Automated Emergency Account Cleanup${nl}"
+    try {
+        $cronCheck = $(timeout 10 grep -r "userdel\|usermod.*--expiredate\|chage.*-E" /etc/cron.d/ /etc/cron.daily/ /etc/cron.hourly/ 2>&1)
+        $cronStr = ($cronCheck -join $nl).Trim()
+        if ($cronStr -and $cronStr -notmatch "No such file") {
+            $output += "  [PASS] Automated account cleanup cron jobs found${nl}"
+            foreach ($line in ($cronStr -split $nl | Select-Object -First 3)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [INFO] No automated cleanup cron jobs found${nl}"
+        }
+
+        # Check systemd timers
+        $timerCheck = $(timeout 5 systemctl list-timers --all 2>&1)
+        $timerStr = ($timerCheck -join $nl).Trim()
+        if ($timerStr -match "account.*clean|emergency.*expire|temp.*account") {
+            $output += "  [PASS] Account cleanup systemd timer detected${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Emergency account documentation
+    $output += "Check 3: Emergency Account Policy${nl}"
+    $output += "  [INFO] Verify organizational procedures require:${nl}"
+    $output += "    - Emergency accounts have expiration date within 72 hours of creation${nl}"
+    $output += "    - Automated mechanism to disable/remove after crisis resolved${nl}"
+    $output += "    - Documentation of emergency account creation/removal events${nl}"
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8425,12 +8967,12 @@ Function Get-V203666 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203666
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203666r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000239-GPOS-00089
+        Rule ID    : SV-203666r991551_rule
+        Rule Title : The operating system must audit all account modifications.
+        DiscussMD5 : 3761871ff35c5ac54793fa47e3231e0b
+        CheckMD5   : 8594c9f9f472520a8aca87af063f23a7
+        FixMD5     : fc502dfb96e355ca36ad1ca46ef83d79
     #>
 
     param (
@@ -8464,8 +9006,8 @@ Function Get-V203666 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203666"
-    $RuleID = "SV-203666r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203666r991551_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8474,9 +9016,78 @@ Function Get-V203666 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203666) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account modification files
+    $output += "Check 2: Audit Rules for Account Modifications${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8536,12 +9147,12 @@ Function Get-V203667 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203667
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203667r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000240-GPOS-00090
+        Rule ID    : SV-203667r991552_rule
+        Rule Title : The operating system must audit all account disabling actions.
+        DiscussMD5 : bca8dd964c2e420799352c5b5e89209b
+        CheckMD5   : af23f946cbe7e03622c37a0b77f0a218
+        FixMD5     : 4ecb24bcbaebede6a525ea060e07bf53
     #>
 
     param (
@@ -8575,8 +9186,8 @@ Function Get-V203667 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203667"
-    $RuleID = "SV-203667r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203667r991552_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8585,9 +9196,78 @@ Function Get-V203667 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203667) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account disabling files
+    $output += "Check 2: Audit Rules for Account Disabling Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8647,12 +9327,12 @@ Function Get-V203668 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203668
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203668r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000241-GPOS-00091
+        Rule ID    : SV-203668r991553_rule
+        Rule Title : The operating system must audit all account removal actions.
+        DiscussMD5 : e17ca265049c657cb97367d40c88852e
+        CheckMD5   : aa4b1681010b9a137c1dfd30a8bf5675
+        FixMD5     : d6c9a7f75e4a9f0618088d8cee64ceee
     #>
 
     param (
@@ -8686,8 +9366,8 @@ Function Get-V203668 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203668"
-    $RuleID = "SV-203668r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203668r991553_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -8696,9 +9376,78 @@ Function Get-V203668 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203668) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account removal files
+    $output += "Check 2: Audit Rules for Account Removal Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11312,12 +12061,12 @@ Function Get-V203690 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203690
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203690r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000303-GPOS-00120
+        Rule ID    : SV-203690r958684_rule
+        Rule Title : The operating system must audit all account enabling actions.
+        DiscussMD5 : b60759e4f7e9f671b9f5628371a8d14e
+        CheckMD5   : a05f0b9b60b639f5b00caea1c11d3ba5
+        FixMD5     : 6fabdf374ad1a32b6a74a2ac90fd0dde
     #>
 
     param (
@@ -11351,8 +12100,8 @@ Function Get-V203690 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203690"
-    $RuleID = "SV-203690r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203690r958684_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -11361,9 +12110,78 @@ Function Get-V203690 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203690) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $output = ""
+
+    # Check 1: Verify auditd is running
+    $output += "Check 1: Audit Service Status${nl}"
+    try {
+        $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+        $auditdStr = ($auditdStatus -join $nl).Trim()
+        if ($auditdStr -eq "active") {
+            $output += "  [PASS] auditd is active${nl}"
+        }
+        else {
+            $output += "  [FAIL] auditd is not active: $auditdStr${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 2: Audit rules for account enabling files
+    $output += "Check 2: Audit Rules for Account Enabling Actions${nl}"
+    try {
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
+        $rulesStr = ($auditRules -join $nl).Trim()
+
+        $requiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $foundRules = @()
+        $missingRules = @()
+
+        foreach ($file in $requiredFiles) {
+            if ($rulesStr -match [regex]::Escape($file)) {
+                $foundRules += $file
+                $matchedRule = ($rulesStr -split $nl | Where-Object { $_ -match [regex]::Escape($file) }) | Select-Object -First 1
+                $output += "  [PASS] Watch rule found: $matchedRule${nl}"
+            }
+            else {
+                $missingRules += $file
+                $output += "  [FAIL] No watch rule for: $file${nl}"
+            }
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+    $output += $nl
+
+    # Check 3: Persistent audit rules in rules.d
+    $output += "Check 3: Persistent Audit Rules${nl}"
+    try {
+        $persistRules = $(timeout 10 grep -r "passwd\|shadow\|group\|gshadow\|opasswd" /etc/audit/rules.d/ 2>&1)
+        $persistStr = ($persistRules -join $nl).Trim()
+        if ($persistStr -and $persistStr -notmatch "No such file") {
+            $output += "  [PASS] Persistent rules found in /etc/audit/rules.d/${nl}"
+            foreach ($line in ($persistStr -split $nl | Select-Object -First 5)) {
+                $output += "    $line${nl}"
+            }
+        }
+        else {
+            $output += "  [FAIL] No persistent rules for account files in /etc/audit/rules.d/${nl}"
+        }
+    }
+    catch {
+        $output += "  [ERROR] $($_.Exception.Message)${nl}"
+    }
+
+    # Determine status
+    if ($auditdStr -eq "active" -and $foundRules.Count -ge 3) {
+        $Status = "NotAFinding"
+    }
+
+    $FindingDetails = $output.TrimEnd()
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

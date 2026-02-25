@@ -19,7 +19,7 @@ Every GPOS function **MUST** follow these rules (violations cause scan hangs or 
 | 3 | Function naming | `Get-V-203591` | `Get-V203591` |
 | 4 | No bash/sh wrapper | `$(bash -c "cmd")` | `$(cmd 2>&1)` |
 | 5 | Array to string before regex | `$arr -match "pat"` | `($arr -join $nl) -match "pat"` |
-| 6 | GetCorpParams always 18 params | (fewer params) | See template below |
+| 6 | GetCorpParams always 17 params | (fewer params) | See template below |
 | 7 | find/grep always have timeout+maxdepth | `find /` | `timeout 10 find /etc -maxdepth 5` |
 | 8 | FINDING_DETAILS = output only | Guidance in FindingDetails | All guidance goes to answer file COMMENTS |
 
@@ -198,7 +198,7 @@ Function Get-V######() {
     $FindingDetails = $output.TrimEnd()
 
     # -----------------------------------------------------------------------
-    # ANSWER FILE LOOKUP (copy exactly - all 18 params required)
+    # ANSWER FILE LOOKUP (copy exactly - all 17 params required)
     # -----------------------------------------------------------------------
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -227,7 +227,6 @@ Function Get-V######() {
             LogPath       = $LogPath
             LogComponent  = $LogComponent
             OSPlatform    = $OSPlatform
-            StigType      = $StigType
         }
         $AnswerData = (Get-CorporateComment @GetCorpParams)
         If ($Status -eq $AnswerData.ExpectedStatus) {
