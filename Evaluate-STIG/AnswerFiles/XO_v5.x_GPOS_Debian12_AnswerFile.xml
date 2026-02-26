@@ -206,7 +206,7 @@ Contact the system administrator to configure account lockout policies per DoD r
   <Vuln ID="V-203595">
     <!--RuleTitle: Display Standard Mandatory DoD Notice and Consent Banner-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -237,7 +237,7 @@ Remediation:
   <Vuln ID="V-203596">
     <!--RuleTitle: Display banner until user acknowledges and logs on-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -268,7 +268,7 @@ Remediation:
   <Vuln ID="V-203597">
     <!--RuleTitle: Limit concurrent sessions to ten-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -298,7 +298,7 @@ Remediation:
   <Vuln ID="V-203598">
     <!--RuleTitle: Retain session lock until re-authentication-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -329,7 +329,7 @@ Remediation:
   <Vuln ID="V-203599">
     <!--RuleTitle: Initiate session lock after 15-minute inactivity-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -360,7 +360,7 @@ Remediation:
   <Vuln ID="V-203600">
     <!--RuleTitle: User-initiated session lock capability-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -391,7 +391,7 @@ Remediation:
   <Vuln ID="V-203601">
     <!--RuleTitle: Conceal display with publicly viewable image on session lock-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -517,105 +517,257 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203604">
     <!--RuleTitle: The operating system must produce audit records containing information to establish what type of events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record event type information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing event type information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules contain syscall monitoring with event type classification (-S parameter and -a always,exit filters), and (3) audit log entries contain type= fields (e.g., type=SYSCALL, type=PATH, type=CWD, type=EXECVE) that establish what type of events occurred.
+
+This meets the GPOS SRG requirement for audit records containing event type information.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit configuration does not fully capture event type information in audit records.
+
+The automated check found one or more issues: auditd may not be active, syscall audit rules may not include event type classification, or audit log entries may lack type= fields.
+
+Remediation:
+1. Install auditd if missing: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add syscall audit rules: auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+4. Verify rules loaded: auditctl -l
+5. Check log content: ausearch -ts recent | head -50
+
+Ensure all audit records contain event type information per GPOS SRG requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203605">
     <!--RuleTitle: The operating system must produce audit records containing information to establish when (date and time) the events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record date/time information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records with date and time information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit log entries contain epoch timestamps in the msg=audit(timestamp:serial) format providing precise date/time, and (3) the system clock is synchronized via NTP ensuring timestamp accuracy.
+
+Audit timestamps use Unix epoch format with sub-second precision, which can be converted to human-readable dates using ausearch or aureport. This meets the GPOS SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not properly contain date/time information or time synchronization is not configured.
+
+The automated check found issues with: auditd not being active, audit log timestamps not in expected epoch format, or system clock not synchronized via NTP/Chrony.
+
+Remediation:
+1. Install and enable auditd: apt install auditd &amp;&amp; systemctl enable --now auditd
+2. Verify log timestamps: ausearch -ts recent | head -20
+3. Configure NTP time sync: apt install chrony &amp;&amp; systemctl enable --now chrony
+4. Verify time sync: timedatectl status
+5. Confirm timestamps are accurate: date &amp;&amp; ausearch -ts recent -i | head -5
+
+Ensure system clock is synchronized and audit records contain valid timestamps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203606">
     <!--RuleTitle: The operating system must produce audit records containing information to establish where the events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record location (where) information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing location information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) filesystem watch rules (-w) are configured to monitor specific paths, and (3) audit log entries contain PATH and CWD (Current Working Directory) records establishing where events occurred.
+
+The auditd filesystem watches track file access and modification at specific paths, while PATH/CWD records provide full filesystem location context for each audited event.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient location information to establish where events occurred.
+
+The automated check found issues: auditd may not be active, filesystem watch rules may be missing, or audit log entries may lack PATH/CWD records.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add filesystem watch rules for critical paths:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/security/ -p wa -k security_config
+3. Make rules persistent in /etc/audit/rules.d/
+4. Verify PATH/CWD entries: ausearch -ts recent | grep -E "type=(PATH|CWD)"
+
+Ensure audit rules include filesystem watches for security-relevant paths.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203607">
     <!--RuleTitle: The operating system must produce audit records containing information to establish the source of the events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record source information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing source information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) syscall audit rules with -S parameter are configured to track system call sources, and (3) audit log SYSCALL entries contain pid, ppid, and exe fields that identify the source process and executable.
+
+These fields establish which process/program generated each audited event, meeting the GPOS SRG requirement for source identification in audit records.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient source information.
+
+The automated check found issues: auditd may not be active, syscall rules may not track process sources, or audit log entries may lack pid/ppid/exe fields.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add syscall tracking rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Verify source fields in logs: ausearch -ts recent -sc execve | grep -E "pid=|ppid=|exe="
+4. Make rules persistent in /etc/audit/rules.d/audit.rules
+
+Ensure syscall audit rules capture source process identification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203608">
     <!--RuleTitle: The operating system must produce audit records containing information to establish the outcome of the events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record outcome information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing event outcome information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include exit/success filter parameters that capture event outcomes, and (3) audit log entries contain success=yes or success=no fields establishing whether each audited event succeeded or failed.
+
+The success field in SYSCALL audit records provides a clear binary outcome for each event, meeting the GPOS SRG requirement for outcome information in audit records.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient outcome information.
+
+The automated check found issues: auditd may not be active, audit rules may not include success/exit filters, or audit log entries may lack success=yes/no fields.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Ensure rules include exit filters: auditctl -a always,exit -F arch=b64 -S open -F success=0 -k access_denied
+3. Verify outcome fields: ausearch -ts recent | grep "success="
+4. Add comprehensive rules in /etc/audit/rules.d/ that capture both successful and failed operations
+
+Ensure audit rules are configured to record event outcomes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203609">
     <!--RuleTitle: The operating system must generate audit records containing the full-text recording of privileged commands.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Full-text recording of privileged commands-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) generates audit records containing full-text recording of privileged commands.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for SUID/SGID binaries and execve syscalls are configured to capture privileged command execution, and (3) EXECVE audit records are present in the audit log capturing the full command text including arguments.
+
+The EXECVE record type captures the complete command line of executed programs, providing full-text recording as required by the GPOS SRG.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not fully capture privileged command execution in audit records.
+
+The automated check found issues: auditd may not be active, SUID/SGID or execve audit rules may be missing, or EXECVE records may not be present in audit logs.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add execve auditing rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Add SUID/SGID binary rules: find /usr -perm /6000 -type f -exec auditctl -w {} -p x -k privileged \;
+4. Verify EXECVE records: ausearch -ts recent -m EXECVE | head -20
+5. Make rules persistent in /etc/audit/rules.d/
+
+Ensure privileged command execution is fully recorded in audit logs.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203610">
     <!--RuleTitle: The operating system must produce audit records containing the individual identities of group account users.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Individual identities of group account users-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing individual user identities for group account actions.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include UID/AUID (Audit User ID) tracking that preserves the original user identity even when switching to shared/group accounts via su or sudo, and (3) audit log entries contain auid= fields identifying the individual user.
+
+The auid (audit UID) field is set at login and persists across su/sudo transitions, ensuring individual accountability even when using shared group accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not properly track individual user identities for group account actions.
+
+The automated check found issues: auditd may not be active, UID/AUID tracking rules may be missing, or audit log entries may lack auid= fields for individual identification.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Ensure PAM audit module is configured: verify pam_loginuid.so in /etc/pam.d/login and /etc/pam.d/sshd
+3. Add identity tracking rules:
+   auditctl -a always,exit -F arch=b64 -S execve -F auid!=unset -k identity_tracking
+4. Verify auid tracking: ausearch -ts recent | grep "auid=" | head -10
+5. Ensure loginuid is set correctly: cat /proc/self/loginuid
+
+Individual accountability through auid tracking is required for all shared/group accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203611">
     <!--RuleTitle: The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -629,7 +781,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203613">
     <!--RuleTitle: The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -643,7 +795,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203614">
     <!--RuleTitle: The operating system must provide the capability to filter audit records for events of interest based upon all audit fields within audit records.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -657,7 +809,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203615">
     <!--RuleTitle: The operating system must use internal system clocks to generate time stamps for audit records.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -671,7 +823,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203616">
     <!--RuleTitle: The operating system must protect audit information from unauthorized read access.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -685,7 +837,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203617">
     <!--RuleTitle: The operating system must protect audit information from unauthorized modification.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -699,7 +851,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203618">
     <!--RuleTitle: The operating system must protect audit information from unauthorized deletion.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -713,21 +865,46 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203619">
     <!--RuleTitle: The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: DoD-defined auditable events coverage-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) provides audit record generation for DoD-defined auditable events.
+
+The automated check confirmed: (1) auditd is installed and active, (2) audit rules cover the four DoD-required event categories: security-relevant object access (file permission changes, file access), logon/access events (authentication, session initiation), account management events (user/group modifications), and kernel module operations (insmod/rmmod/modprobe), and (3) persistent audit rule files exist in /etc/audit/rules.d/.
+
+This comprehensive audit coverage meets the GPOS SRG requirement for DoD-defined auditable event generation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not provide complete audit coverage for DoD-defined auditable events.
+
+The automated check found gaps in one or more of the four required categories: security object access, logon/access events, account management, or kernel module operations.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add DoD-required rules to /etc/audit/rules.d/:
+   - Security objects: -w /etc/passwd -p wa -k identity
+   - Logon events: -w /var/log/faillog -p wa -k logins
+   - Account mgmt: -w /etc/group -p wa -k identity
+   - Kernel modules: -a always,exit -F arch=b64 -S init_module -k modules
+4. Load rules: augenrules --load
+5. Verify coverage: auditctl -l | grep -c "^-"
+
+All four DoD event categories must be covered by audit rules.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203620">
     <!--RuleTitle: The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -741,7 +918,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203621">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -755,7 +932,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203622">
     <!--RuleTitle: The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -769,7 +946,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203623">
     <!--RuleTitle: The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -783,7 +960,7 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203624">
     <!--RuleTitle: The operating system must map the authenticated identity to the user or group account for PKI-based authentication.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1006,7 +1183,7 @@ Remediation:
   <Vuln ID="V-203635">
     <!--RuleTitle: Obscure authentication feedback-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1188,7 +1365,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203639">
     <!--RuleTitle: The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1202,7 +1379,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203640">
     <!--RuleTitle: The operating system must use multifactor authentication for network access to privileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1216,7 +1393,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203641">
     <!--RuleTitle: The operating system must use multifactor authentication for network access to non-privileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1230,7 +1407,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203642">
     <!--RuleTitle: The operating system must use multifactor authentication for local access to privileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1244,7 +1421,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203643">
     <!--RuleTitle: The operating system must use multifactor authentication for local access to nonprivileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1258,7 +1435,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203644">
     <!--RuleTitle: The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1272,7 +1449,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203645">
     <!--RuleTitle: The operating system must implement replay-resistant authentication mechanisms for network access to privileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1286,7 +1463,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203646">
     <!--RuleTitle: The operating system must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1300,7 +1477,7 @@ The ISSO/ISSM must verify firewall configuration aligns with the PPSM CAL and or
   <Vuln ID="V-203647">
     <!--RuleTitle: The operating system must uniquely identify peripherals before establishing a connection.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1347,7 +1524,7 @@ Contact the system administrator to configure account inactivity lockout per DoD
   <Vuln ID="V-203649">
     <!--RuleTitle: The operating system must use mechanisms meeting the requirements of applicable federal laws, Executive orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1361,7 +1538,7 @@ Contact the system administrator to configure account inactivity lockout per DoD
   <Vuln ID="V-203650">
     <!--RuleTitle: The operating system must uniquely identify and must authenticate non-organizational users (or processes acting on behalf of non-organizational users).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1375,7 +1552,7 @@ Contact the system administrator to configure account inactivity lockout per DoD
   <Vuln ID="V-203651">
     <!--RuleTitle: The operating system must provide an audit reduction capability that supports on-demand reporting requirements.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1461,7 +1638,7 @@ Remediation:
   <Vuln ID="V-203655">
     <!--RuleTitle: The operating system must separate user functionality (including user interface services) from operating system management functionality.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1475,7 +1652,7 @@ Remediation:
   <Vuln ID="V-203656">
     <!--RuleTitle: The operating system must isolate security functions from nonsecurity functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1489,7 +1666,7 @@ Remediation:
   <Vuln ID="V-203657">
     <!--RuleTitle: Operating systems must prevent unauthorized and unintended information transfer via shared system resources.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1503,7 +1680,7 @@ Remediation:
   <Vuln ID="V-203658">
     <!--RuleTitle: The operating system must manage excess capacity, bandwidth, or other redundancy to limit the effects of information flooding types of Denial of Service (DoS) attacks.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1517,7 +1694,7 @@ Remediation:
   <Vuln ID="V-203659">
     <!--RuleTitle: The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1531,7 +1708,7 @@ Remediation:
   <Vuln ID="V-203660">
     <!--RuleTitle: The operating system must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1545,7 +1722,7 @@ Remediation:
   <Vuln ID="V-203661">
     <!--RuleTitle: The operating system must protect the confidentiality and integrity of all information at rest.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1559,7 +1736,7 @@ Remediation:
   <Vuln ID="V-203663">
     <!--RuleTitle: The operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1573,7 +1750,7 @@ Remediation:
   <Vuln ID="V-203664">
     <!--RuleTitle: The operating system must reveal error messages only to authorized users.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1587,7 +1764,7 @@ Remediation:
   <Vuln ID="V-203665">
     <!--RuleTitle: Public connection DoD banner-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1769,21 +1946,46 @@ Remediation:
   <Vuln ID="V-203670">
     <!--RuleTitle: The operating system must initiate session audits at system start-up.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Session audits at system startup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) initiates session audits at system start-up.
+
+The automated check confirmed: (1) auditd is enabled at boot via systemctl, (2) auditd service is currently active, (3) the kernel audit=1 boot parameter is set in /proc/cmdline ensuring audit starts before userspace, and (4) GRUB_CMDLINE_LINUX in /etc/default/grub includes audit=1 for persistent boot-time audit initialization.
+
+This ensures no events are missed between system boot and auditd service start, meeting the GPOS SRG requirement for session audits at startup.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly initiate session audits at system start-up.
+
+The automated check found issues: auditd may not be enabled at boot, the kernel audit=1 parameter may be missing from boot configuration, or GRUB is not configured for early audit initialization.
+
+Remediation:
+1. Enable auditd at boot: systemctl enable auditd
+2. Add audit=1 to kernel boot parameters:
+   Edit /etc/default/grub: GRUB_CMDLINE_LINUX="audit=1"
+3. Update GRUB: update-grub
+4. Reboot to apply kernel parameter
+5. Verify after reboot:
+   - cat /proc/cmdline | grep audit=1
+   - systemctl is-enabled auditd
+   - systemctl is-active auditd
+
+The audit=1 kernel parameter ensures audit events are captured from the earliest boot stage.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203671">
     <!--RuleTitle: The operating system must produce audit records containing information to establish the identity of any individual or process associated with the event.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1797,7 +1999,7 @@ Remediation:
   <Vuln ID="V-203672">
     <!--RuleTitle: The operating system must protect audit tools from unauthorized access.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1811,7 +2013,7 @@ Remediation:
   <Vuln ID="V-203673">
     <!--RuleTitle: The operating system must protect audit tools from unauthorized modification.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1825,7 +2027,7 @@ Remediation:
   <Vuln ID="V-203674">
     <!--RuleTitle: The operating system must protect audit tools from unauthorized deletion.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1839,7 +2041,7 @@ Remediation:
   <Vuln ID="V-203675">
     <!--RuleTitle: The operating system must limit privileges to change software resident within software libraries.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1871,7 +2073,7 @@ Remediation:
   <Vuln ID="V-203677">
     <!--RuleTitle: In the event of a system failure, the operating system must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1885,7 +2087,7 @@ Remediation:
   <Vuln ID="V-203678">
     <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are created.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1899,7 +2101,7 @@ Remediation:
   <Vuln ID="V-203679">
     <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are modified.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1913,7 +2115,7 @@ Remediation:
   <Vuln ID="V-203680">
     <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are disabled. -->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1927,7 +2129,7 @@ Remediation:
   <Vuln ID="V-203681">
     <!--RuleTitle: The operating system must notify system administrators and ISSOs when accounts are removed.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1984,7 +2186,7 @@ Remediation:
   <Vuln ID="V-203683">
     <!--RuleTitle: The operating system must automatically terminate a user session after inactivity time-outs have expired or at shutdown.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -1998,7 +2200,7 @@ Remediation:
   <Vuln ID="V-203684">
     <!--RuleTitle: The operating system must provide a logoff capability for user-initiated communications sessions when requiring user access authentication.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2012,7 +2214,7 @@ Remediation:
   <Vuln ID="V-203685">
     <!--RuleTitle: The operating system must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2278,7 +2480,7 @@ Remediation:
   <Vuln ID="V-203691">
     <!--RuleTitle: The operating system must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2292,7 +2494,7 @@ Remediation:
   <Vuln ID="V-203692">
     <!--RuleTitle: The operating system must allow operating system admins to pass information to any other operating system admin or user.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2306,7 +2508,7 @@ Remediation:
   <Vuln ID="V-203693">
     <!--RuleTitle: The operating system must allow operating system admins to grant their privileges to other operating system admins.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2320,7 +2522,7 @@ Remediation:
   <Vuln ID="V-203694">
     <!--RuleTitle: The operating system must allow operating system admins to change security attributes on users, the operating system, or the operating systems components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2376,7 +2578,7 @@ Remediation:
   <Vuln ID="V-203696">
     <!--RuleTitle: The operating system must prevent all software from executing at higher privilege levels than users executing the software.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2390,21 +2592,45 @@ Remediation:
   <Vuln ID="V-203697">
     <!--RuleTitle: The operating system must audit the execution of privileged functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit execution of privileged functions-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits the execution of privileged functions.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for execve syscalls and SUID/SGID binary execution are configured to capture privileged function calls, and (3) SUID/SGID binaries in /usr are covered by audit rules ensuring privileged execution is tracked.
+
+This comprehensive privileged execution auditing meets the GPOS SRG requirement for auditing privileged function execution.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not fully audit the execution of privileged functions.
+
+The automated check found issues: auditd may not be active, execve/SUID audit rules may be missing, or not all SUID/SGID binaries are covered by audit rules.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add privileged execution rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Generate SUID/SGID rules:
+   find /usr -perm /6000 -type f 2&gt;/dev/null | while read f; do echo "-w $f -p x -k privileged"; done &gt;&gt; /etc/audit/rules.d/privileged.rules
+4. Load rules: augenrules --load
+5. Verify: auditctl -l | grep privileged
+
+All SUID/SGID binaries must have corresponding audit rules for privileged execution tracking.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203698">
     <!--RuleTitle: The operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2418,7 +2644,7 @@ Remediation:
   <Vuln ID="V-203699">
     <!--RuleTitle: The operating system must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2432,7 +2658,7 @@ Remediation:
   <Vuln ID="V-203700">
     <!--RuleTitle: The operating system must allocate audit record storage capacity to store at least one week's worth of audit records, when audit records are not immediately sent to a central audit record storage facility.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2446,7 +2672,7 @@ Remediation:
   <Vuln ID="V-203701">
     <!--RuleTitle: The operating system must offload audit records onto a different system or media from the system being audited.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2460,7 +2686,7 @@ Remediation:
   <Vuln ID="V-203702">
     <!--RuleTitle: The operating system must immediately notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2474,7 +2700,7 @@ Remediation:
   <Vuln ID="V-203703">
     <!--RuleTitle: The operating system must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2488,7 +2714,7 @@ Remediation:
   <Vuln ID="V-203704">
     <!--RuleTitle: The operating system must provide an audit reduction capability that supports on-demand audit review and analysis.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2502,7 +2728,7 @@ Remediation:
   <Vuln ID="V-203705">
     <!--RuleTitle: The operating system must provide an audit reduction capability that supports after-the-fact investigations of security incidents.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2516,7 +2742,7 @@ Remediation:
   <Vuln ID="V-203706">
     <!--RuleTitle: The operating system must provide a report generation capability that supports on-demand audit review and analysis.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2530,7 +2756,7 @@ Remediation:
   <Vuln ID="V-203707">
     <!--RuleTitle: The operating system must provide a report generation capability that supports on-demand reporting requirements.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2544,7 +2770,7 @@ Remediation:
   <Vuln ID="V-203708">
     <!--RuleTitle: The operating system must provide a report generation capability that supports after-the-fact investigations of security incidents.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2558,7 +2784,7 @@ Remediation:
   <Vuln ID="V-203709">
     <!--RuleTitle: The operating system must not alter original content or time ordering of audit records when it provides an audit reduction capability.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2572,7 +2798,7 @@ Remediation:
   <Vuln ID="V-203710">
     <!--RuleTitle: The operating system must not alter original content or time ordering of audit records when it provides a report generation capability.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2586,7 +2812,7 @@ Remediation:
   <Vuln ID="V-203711">
     <!--RuleTitle: The operating system must, for networked systems, compare internal information system clocks at least every 24 hours with an authoritative time source.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2600,7 +2826,7 @@ Remediation:
   <Vuln ID="V-203712">
     <!--RuleTitle: The operating system must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2614,7 +2840,7 @@ Remediation:
   <Vuln ID="V-203713">
     <!--RuleTitle: The operating system must record time stamps for audit records that meet a minimum granularity of one second for a minimum degree of precision.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2628,7 +2854,7 @@ Remediation:
   <Vuln ID="V-203714">
     <!--RuleTitle: The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2642,7 +2868,7 @@ Remediation:
   <Vuln ID="V-203715">
     <!--RuleTitle: The operating system must enforce dual authorization for movement and/or deletion of all audit information, when such movement or deletion is not part of an authorized automatic process.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2656,7 +2882,7 @@ Remediation:
   <Vuln ID="V-203716">
     <!--RuleTitle: The operating system must prohibit user installation of system software without explicit privileged status.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2670,7 +2896,7 @@ Remediation:
   <Vuln ID="V-203717">
     <!--RuleTitle: The operating system must notify designated personnel if baseline configurations are changed in an unauthorized manner.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2684,7 +2910,7 @@ Remediation:
   <Vuln ID="V-203718">
     <!--RuleTitle: The operating system must enforce access restrictions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2698,7 +2924,7 @@ Remediation:
   <Vuln ID="V-203719">
     <!--RuleTitle: The operating system must audit the enforcement actions used to restrict access associated with changes to the system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2751,7 +2977,7 @@ Remediation:
   <Vuln ID="V-203721">
     <!--RuleTitle: The operating system must prevent program execution in accordance with local policies regarding software program usage and restrictions and/or rules authorizing the terms and conditions of software program usage.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2765,7 +2991,7 @@ Remediation:
   <Vuln ID="V-203722">
     <!--RuleTitle: The operating system must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2779,7 +3005,7 @@ Remediation:
   <Vuln ID="V-203723">
     <!--RuleTitle: The operating system must require users to reauthenticate for privilege escalation.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2793,7 +3019,7 @@ Remediation:
   <Vuln ID="V-203724">
     <!--RuleTitle: The operating system must require users to reauthenticate when changing roles.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2807,7 +3033,7 @@ Remediation:
   <Vuln ID="V-203725">
     <!--RuleTitle: The operating system must require users to reauthenticate when changing authenticators.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2922,7 +3148,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203729">
     <!--RuleTitle: The operating system must electronically verify Personal Identity Verification (PIV) credentials.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2936,7 +3162,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203730">
     <!--RuleTitle: The operating system must authenticate peripherals before establishing a connection.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2950,7 +3176,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203731">
     <!--RuleTitle: The operating system must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2964,7 +3190,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203733">
     <!--RuleTitle: The operating system must prohibit the use of cached authenticators after one day.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2978,7 +3204,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203734">
     <!--RuleTitle: The operating system, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -2992,7 +3218,7 @@ The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and
   <Vuln ID="V-203735">
     <!--RuleTitle: The operating system must audit all activities performed during nonlocal maintenance and diagnostic sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3072,7 +3298,7 @@ Remediation:
   <Vuln ID="V-203738">
     <!--RuleTitle: The operating system must verify remote disconnection at the termination of nonlocal maintenance and diagnostic sessions, when used for nonlocal maintenance sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3129,7 +3355,7 @@ Note: Enabling FIPS mode may require Vates/vendor support for Debian 12. See VAT
   <Vuln ID="V-203744">
     <!--RuleTitle: The operating system must only allow the use of DoD PKI-established certificate authorities for authentication in the establishment of protected sessions to the operating system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3219,7 +3445,7 @@ See V-203745 remediation for detailed steps.</ValidTrueComment>
   <Vuln ID="V-203747">
     <!--RuleTitle: The operating system must protect against or limit the effects of Denial of Service (DoS) attacks by ensuring the operating system is implementing rate-limiting measures on impacted network interfaces.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3311,7 +3537,7 @@ Remediation:
   <Vuln ID="V-203750">
     <!--RuleTitle: The operating system must maintain the confidentiality and integrity of information during preparation for transmission.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3325,7 +3551,7 @@ Remediation:
   <Vuln ID="V-203751">
     <!--RuleTitle: The operating system must maintain the confidentiality and integrity of information during reception.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3339,7 +3565,7 @@ Remediation:
   <Vuln ID="V-203752">
     <!--RuleTitle: The operating system must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3353,7 +3579,7 @@ Remediation:
   <Vuln ID="V-203753">
     <!--RuleTitle: The operating system must implement non-executable data to protect its memory from unauthorized code execution.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3367,7 +3593,7 @@ Remediation:
   <Vuln ID="V-203754">
     <!--RuleTitle: The operating system must implement address space layout randomization to protect its memory from unauthorized code execution.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3381,7 +3607,7 @@ Remediation:
   <Vuln ID="V-203755">
     <!--RuleTitle: The operating system must remove all software components after updated versions have been installed.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3395,7 +3621,7 @@ Remediation:
   <Vuln ID="V-203756">
     <!--RuleTitle: The operating system must verify correct operation of all security functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3409,7 +3635,7 @@ Remediation:
   <Vuln ID="V-203757">
     <!--RuleTitle: The operating system must perform verification of the correct operation of security functions: upon system start-up and/or restart; upon command by a user with privileged access; and/or every 30 days.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3423,7 +3649,7 @@ Remediation:
   <Vuln ID="V-203758">
     <!--RuleTitle: The operating system must shut down the information system, restart the information system, and/or notify the system administrator when anomalies in the operation of any security functions are discovered.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3437,7 +3663,7 @@ Remediation:
   <Vuln ID="V-203759">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3451,7 +3677,7 @@ Remediation:
   <Vuln ID="V-203760">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3465,7 +3691,7 @@ Remediation:
   <Vuln ID="V-203761">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify privileges occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3479,7 +3705,7 @@ Remediation:
   <Vuln ID="V-203762">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3493,7 +3719,7 @@ Remediation:
   <Vuln ID="V-203763">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3507,7 +3733,7 @@ Remediation:
   <Vuln ID="V-203764">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete privileges occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3521,7 +3747,7 @@ Remediation:
   <Vuln ID="V-203765">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security levels occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3535,7 +3761,7 @@ Remediation:
   <Vuln ID="V-203766">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3549,7 +3775,7 @@ Remediation:
   <Vuln ID="V-203767">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful logon attempts occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3563,7 +3789,7 @@ Remediation:
   <Vuln ID="V-203768">
     <!--RuleTitle: The operating system must generate audit records for privileged activities or other system-level access.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3577,7 +3803,7 @@ Remediation:
   <Vuln ID="V-203769">
     <!--RuleTitle: The audit system must be configured to audit the loading and unloading of dynamic kernel modules.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3591,7 +3817,7 @@ Remediation:
   <Vuln ID="V-203770">
     <!--RuleTitle: The operating system must generate audit records showing starting and ending time for user access to the system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3605,7 +3831,7 @@ Remediation:
   <Vuln ID="V-203771">
     <!--RuleTitle: The operating system must generate audit records when concurrent logons to the same account occur from different sources.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3619,7 +3845,7 @@ Remediation:
   <Vuln ID="V-203772">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful accesses to objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3633,7 +3859,7 @@ Remediation:
   <Vuln ID="V-203773">
     <!--RuleTitle: The operating system must generate audit records for all direct access to the information system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3647,7 +3873,7 @@ Remediation:
   <Vuln ID="V-203774">
     <!--RuleTitle: The operating system must generate audit records for all account creations, modifications, disabling, and termination events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3661,7 +3887,7 @@ Remediation:
   <Vuln ID="V-203775">
     <!--RuleTitle: The operating system must generate audit records for all kernel module load, unload, and restart actions, and also for all program initiations.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3715,7 +3941,7 @@ Note: Debian 12 FIPS enablement may require additional Vates vendor support. See
   <Vuln ID="V-203777">
     <!--RuleTitle: The operating system must, at a minimum, off-load audit data from interconnected systems in real time and off-load audit data from standalone systems weekly.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3747,7 +3973,7 @@ Note: Debian 12 FIPS enablement may require additional Vates vendor support. See
   <Vuln ID="V-203779">
     <!--RuleTitle: Enforce 4-second delay after failed logon-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -3778,7 +4004,7 @@ Remediation:
   <Vuln ID="V-203780">
     <!--RuleTitle: The operating system must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3792,7 +4018,7 @@ Remediation:
   <Vuln ID="V-203781">
     <!--RuleTitle: The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3847,7 +4073,7 @@ Remediation:
   <Vuln ID="V-203783">
     <!--RuleTitle: The operating system must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3861,7 +4087,7 @@ Remediation:
   <Vuln ID="V-203784">
     <!--RuleTitle: The operating system must enable an application firewall, if available.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3925,7 +4151,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-259333">
     <!--RuleTitle: The operating system must install security-relevant software updates within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3939,7 +4165,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263650">
     <!--RuleTitle: The operating system must disable accounts when the accounts are no longer associated to a user.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3953,7 +4179,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263651">
     <!--RuleTitle: The operating system must prohibit the use or connection of unauthorized hardware components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3967,7 +4193,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263652">
     <!--RuleTitle: The operating system must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -3999,7 +4225,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263654">
     <!--RuleTitle: The operating system must for password-based authentication, require immediate selection of a new password upon account recovery.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4013,7 +4239,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263655">
     <!--RuleTitle: The operating system must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4027,7 +4253,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263656">
     <!--RuleTitle: The operating system must, for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4041,7 +4267,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263657">
     <!--RuleTitle: The operating system must accept only external credentials that are NIST-compliant.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4055,7 +4281,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263658">
     <!--RuleTitle: The operating system must monitor the use of maintenance tools that execute with increased privilege.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4069,7 +4295,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263659">
     <!--RuleTitle: The operating system must include only approved trust anchors in trust stores or certificate stores managed by the organization.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4083,7 +4309,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263660">
     <!--RuleTitle: The operating system must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -4097,7 +4323,7 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263661">
     <!--RuleTitle: The operating system must synchronize system clocks within and between systems or system components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>

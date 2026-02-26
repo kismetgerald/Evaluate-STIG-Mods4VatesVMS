@@ -172,7 +172,7 @@ V-203625, V-203626, V-203627, V-203628, V-203631, V-203632, V-203634, V-203676, 
 V-203602, V-203636, V-203637, V-203638, V-203686, V-203687, V-203688, V-203689, V-203727, V-203728
 *Topics: SSH monitoring, access restrictions, non-essential capabilities, wireless, MFA, PIV*
 
-**Batch 5: Audit System - Rules (10 functions)**
+**Batch 5: Audit System - Rules (10 functions) — DONE (Session #57, pending test)**
 V-203604, V-203605, V-203606, V-203607, V-203608, V-203609, V-203610, V-203619, V-203670, V-203697
 *Topics: Audit record content (what/when/where/who/outcome), audit at startup, privileged functions*
 
