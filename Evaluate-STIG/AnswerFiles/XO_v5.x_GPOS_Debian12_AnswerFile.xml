@@ -517,98 +517,250 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203604">
     <!--RuleTitle: The operating system must produce audit records containing information to establish what type of events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record event type information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing event type information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules contain syscall monitoring with event type classification (-S parameter and -a always,exit filters), and (3) audit log entries contain type= fields (e.g., type=SYSCALL, type=PATH, type=CWD, type=EXECVE) that establish what type of events occurred.
+
+This meets the GPOS SRG requirement for audit records containing event type information.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit configuration does not fully capture event type information in audit records.
+
+The automated check found one or more issues: auditd may not be active, syscall audit rules may not include event type classification, or audit log entries may lack type= fields.
+
+Remediation:
+1. Install auditd if missing: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add syscall audit rules: auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+4. Verify rules loaded: auditctl -l
+5. Check log content: ausearch -ts recent | head -50
+
+Ensure all audit records contain event type information per GPOS SRG requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203605">
     <!--RuleTitle: The operating system must produce audit records containing information to establish when (date and time) the events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record date/time information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records with date and time information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit log entries contain epoch timestamps in the msg=audit(timestamp:serial) format providing precise date/time, and (3) the system clock is synchronized via NTP ensuring timestamp accuracy.
+
+Audit timestamps use Unix epoch format with sub-second precision, which can be converted to human-readable dates using ausearch or aureport. This meets the GPOS SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not properly contain date/time information or time synchronization is not configured.
+
+The automated check found issues with: auditd not being active, audit log timestamps not in expected epoch format, or system clock not synchronized via NTP/Chrony.
+
+Remediation:
+1. Install and enable auditd: apt install auditd &amp;&amp; systemctl enable --now auditd
+2. Verify log timestamps: ausearch -ts recent | head -20
+3. Configure NTP time sync: apt install chrony &amp;&amp; systemctl enable --now chrony
+4. Verify time sync: timedatectl status
+5. Confirm timestamps are accurate: date &amp;&amp; ausearch -ts recent -i | head -5
+
+Ensure system clock is synchronized and audit records contain valid timestamps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203606">
     <!--RuleTitle: The operating system must produce audit records containing information to establish where the events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record location (where) information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing location information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) filesystem watch rules (-w) are configured to monitor specific paths, and (3) audit log entries contain PATH and CWD (Current Working Directory) records establishing where events occurred.
+
+The auditd filesystem watches track file access and modification at specific paths, while PATH/CWD records provide full filesystem location context for each audited event.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient location information to establish where events occurred.
+
+The automated check found issues: auditd may not be active, filesystem watch rules may be missing, or audit log entries may lack PATH/CWD records.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add filesystem watch rules for critical paths:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/security/ -p wa -k security_config
+3. Make rules persistent in /etc/audit/rules.d/
+4. Verify PATH/CWD entries: ausearch -ts recent | grep -E "type=(PATH|CWD)"
+
+Ensure audit rules include filesystem watches for security-relevant paths.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203607">
     <!--RuleTitle: The operating system must produce audit records containing information to establish the source of the events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record source information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing source information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) syscall audit rules with -S parameter are configured to track system call sources, and (3) audit log SYSCALL entries contain pid, ppid, and exe fields that identify the source process and executable.
+
+These fields establish which process/program generated each audited event, meeting the GPOS SRG requirement for source identification in audit records.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient source information.
+
+The automated check found issues: auditd may not be active, syscall rules may not track process sources, or audit log entries may lack pid/ppid/exe fields.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add syscall tracking rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Verify source fields in logs: ausearch -ts recent -sc execve | grep -E "pid=|ppid=|exe="
+4. Make rules persistent in /etc/audit/rules.d/audit.rules
+
+Ensure syscall audit rules capture source process identification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203608">
     <!--RuleTitle: The operating system must produce audit records containing information to establish the outcome of the events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit record outcome information-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing event outcome information.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include exit/success filter parameters that capture event outcomes, and (3) audit log entries contain success=yes or success=no fields establishing whether each audited event succeeded or failed.
+
+The success field in SYSCALL audit records provides a clear binary outcome for each event, meeting the GPOS SRG requirement for outcome information in audit records.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not contain sufficient outcome information.
+
+The automated check found issues: auditd may not be active, audit rules may not include success/exit filters, or audit log entries may lack success=yes/no fields.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Ensure rules include exit filters: auditctl -a always,exit -F arch=b64 -S open -F success=0 -k access_denied
+3. Verify outcome fields: ausearch -ts recent | grep "success="
+4. Add comprehensive rules in /etc/audit/rules.d/ that capture both successful and failed operations
+
+Ensure audit rules are configured to record event outcomes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203609">
     <!--RuleTitle: The operating system must generate audit records containing the full-text recording of privileged commands.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Full-text recording of privileged commands-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) generates audit records containing full-text recording of privileged commands.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for SUID/SGID binaries and execve syscalls are configured to capture privileged command execution, and (3) EXECVE audit records are present in the audit log capturing the full command text including arguments.
+
+The EXECVE record type captures the complete command line of executed programs, providing full-text recording as required by the GPOS SRG.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not fully capture privileged command execution in audit records.
+
+The automated check found issues: auditd may not be active, SUID/SGID or execve audit rules may be missing, or EXECVE records may not be present in audit logs.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add execve auditing rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Add SUID/SGID binary rules: find /usr -perm /6000 -type f -exec auditctl -w {} -p x -k privileged \;
+4. Verify EXECVE records: ausearch -ts recent -m EXECVE | head -20
+5. Make rules persistent in /etc/audit/rules.d/
+
+Ensure privileged command execution is fully recorded in audit logs.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203610">
     <!--RuleTitle: The operating system must produce audit records containing the individual identities of group account users.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Individual identities of group account users-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) produces audit records containing individual user identities for group account actions.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include UID/AUID (Audit User ID) tracking that preserves the original user identity even when switching to shared/group accounts via su or sudo, and (3) audit log entries contain auid= fields identifying the individual user.
+
+The auid (audit UID) field is set at login and persists across su/sudo transitions, ensuring individual accountability even when using shared group accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system audit records do not properly track individual user identities for group account actions.
+
+The automated check found issues: auditd may not be active, UID/AUID tracking rules may be missing, or audit log entries may lack auid= fields for individual identification.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Ensure PAM audit module is configured: verify pam_loginuid.so in /etc/pam.d/login and /etc/pam.d/sshd
+3. Add identity tracking rules:
+   auditctl -a always,exit -F arch=b64 -S execve -F auid!=unset -k identity_tracking
+4. Verify auid tracking: ausearch -ts recent | grep "auid=" | head -10
+5. Ensure loginuid is set correctly: cat /proc/self/loginuid
+
+Individual accountability through auid tracking is required for all shared/group accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -713,14 +865,39 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
   <Vuln ID="V-203619">
     <!--RuleTitle: The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: DoD-defined auditable events coverage-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) provides audit record generation for DoD-defined auditable events.
+
+The automated check confirmed: (1) auditd is installed and active, (2) audit rules cover the four DoD-required event categories: security-relevant object access (file permission changes, file access), logon/access events (authentication, session initiation), account management events (user/group modifications), and kernel module operations (insmod/rmmod/modprobe), and (3) persistent audit rule files exist in /etc/audit/rules.d/.
+
+This comprehensive audit coverage meets the GPOS SRG requirement for DoD-defined auditable event generation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not provide complete audit coverage for DoD-defined auditable events.
+
+The automated check found gaps in one or more of the four required categories: security object access, logon/access events, account management, or kernel module operations.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable and start: systemctl enable --now auditd
+3. Add DoD-required rules to /etc/audit/rules.d/:
+   - Security objects: -w /etc/passwd -p wa -k identity
+   - Logon events: -w /var/log/faillog -p wa -k logins
+   - Account mgmt: -w /etc/group -p wa -k identity
+   - Kernel modules: -a always,exit -F arch=b64 -S init_module -k modules
+4. Load rules: augenrules --load
+5. Verify coverage: auditctl -l | grep -c "^-"
+
+All four DoD event categories must be covered by audit rules.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1769,14 +1946,39 @@ Remediation:
   <Vuln ID="V-203670">
     <!--RuleTitle: The operating system must initiate session audits at system start-up.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Session audits at system startup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) initiates session audits at system start-up.
+
+The automated check confirmed: (1) auditd is enabled at boot via systemctl, (2) auditd service is currently active, (3) the kernel audit=1 boot parameter is set in /proc/cmdline ensuring audit starts before userspace, and (4) GRUB_CMDLINE_LINUX in /etc/default/grub includes audit=1 for persistent boot-time audit initialization.
+
+This ensures no events are missed between system boot and auditd service start, meeting the GPOS SRG requirement for session audits at startup.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly initiate session audits at system start-up.
+
+The automated check found issues: auditd may not be enabled at boot, the kernel audit=1 parameter may be missing from boot configuration, or GRUB is not configured for early audit initialization.
+
+Remediation:
+1. Enable auditd at boot: systemctl enable auditd
+2. Add audit=1 to kernel boot parameters:
+   Edit /etc/default/grub: GRUB_CMDLINE_LINUX="audit=1"
+3. Update GRUB: update-grub
+4. Reboot to apply kernel parameter
+5. Verify after reboot:
+   - cat /proc/cmdline | grep audit=1
+   - systemctl is-enabled auditd
+   - systemctl is-active auditd
+
+The audit=1 kernel parameter ensures audit events are captured from the earliest boot stage.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2390,14 +2592,38 @@ Remediation:
   <Vuln ID="V-203697">
     <!--RuleTitle: The operating system must audit the execution of privileged functions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5 CAT II: Audit execution of privileged functions-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The Xen Orchestra host (Debian 12) audits the execution of privileged functions.
+
+The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for execve syscalls and SUID/SGID binary execution are configured to capture privileged function calls, and (3) SUID/SGID binaries in /usr are covered by audit rules ensuring privileged execution is tracked.
+
+This comprehensive privileged execution auditing meets the GPOS SRG requirement for auditing privileged function execution.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not fully audit the execution of privileged functions.
+
+The automated check found issues: auditd may not be active, execve/SUID audit rules may be missing, or not all SUID/SGID binaries are covered by audit rules.
+
+Remediation:
+1. Enable auditd: systemctl enable --now auditd
+2. Add privileged execution rules:
+   auditctl -a always,exit -F arch=b64 -S execve -k exec_cmds
+   auditctl -a always,exit -F arch=b32 -S execve -k exec_cmds
+3. Generate SUID/SGID rules:
+   find /usr -perm /6000 -type f 2&gt;/dev/null | while read f; do echo "-w $f -p x -k privileged"; done &gt;&gt; /etc/audit/rules.d/privileged.rules
+4. Load rules: augenrules --load
+5. Verify: auditctl -l | grep privileged
+
+All SUID/SGID binaries must have corresponding audit rules for privileged execution tracking.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

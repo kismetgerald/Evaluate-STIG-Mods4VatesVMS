@@ -12,9 +12,9 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 58 (18 CAT I + 39 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 140 |
-| **Completion** | 29.3% |
+| **Implemented** | 68 (18 CAT I + 49 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 130 |
+| **Completion** | 34.3% |
 
 **Last validated test:** Test154 (Feb 25, 2026) — Exit 0, EvalScore 8.08%, 1:42 runtime, 4 NF + 4 O + 2 NA from Batch 4 (COMMENTS 198/198)
 
@@ -147,16 +147,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203604 | SV-203604r958412 | Audit records: what type of event | NR | -- | -- | -- |
-| V-203605 | SV-203605r958414 | Audit records: when event occurred | NR | -- | -- | -- |
-| V-203606 | SV-203606r958416 | Audit records: where event occurred | NR | -- | -- | -- |
-| V-203607 | SV-203607r958418 | Audit records: source of event | NR | -- | -- | -- |
-| V-203608 | SV-203608r958420 | Audit records: outcome of event | NR | -- | -- | -- |
-| V-203609 | SV-203609r958422 | Audit records: full-text recording | NR | -- | -- | -- |
-| V-203610 | SV-203610r958422 | Audit records: individual identity | NR | -- | -- | -- |
-| V-203619 | SV-203619r958442 | Audit record generation for DoD events | NR | -- | -- | -- |
-| V-203670 | SV-203670r991555 | Session audits at startup | NR | -- | -- | -- |
-| V-203697 | SV-203697r958732 | Audit execution of privileged functions | NR | -- | -- | -- |
+| V-203604 | SV-203604r958412 | Audit records: what type of event | -- | pending | #57 | auditd + syscall rules + log type= field |
+| V-203605 | SV-203605r958414 | Audit records: when event occurred | -- | pending | #57 | auditd + epoch timestamps + NTP sync |
+| V-203606 | SV-203606r958416 | Audit records: where event occurred | -- | pending | #57 | auditd + filesystem watch rules + PATH/CWD |
+| V-203607 | SV-203607r958418 | Audit records: source of event | -- | pending | #57 | auditd + syscall -S rules + pid/ppid/exe |
+| V-203608 | SV-203608r958420 | Audit records: outcome of event | -- | pending | #57 | auditd + exit/success filters + success=yes/no |
+| V-203609 | SV-203609r958422 | Audit records: full-text recording | -- | pending | #57 | auditd + execve/SUID rules + EXECVE records |
+| V-203610 | SV-203610r958422 | Audit records: individual identity | -- | pending | #57 | auditd + UID/AUID tracking + auid= fields |
+| V-203619 | SV-203619r958442 | Audit record generation for DoD events | -- | pending | #57 | auditd + 4-category DoD coverage + rules.d/ |
+| V-203670 | SV-203670r991555 | Session audits at startup | -- | pending | #57 | auditd boot + active + audit=1 kernel + GRUB |
+| V-203697 | SV-203697r958732 | Audit execution of privileged functions | -- | pending | #57 | auditd + execve/SUID rules + SUID/SGID coverage |
 
 ### Batch 6: Audit System - Management (10 functions)
 
