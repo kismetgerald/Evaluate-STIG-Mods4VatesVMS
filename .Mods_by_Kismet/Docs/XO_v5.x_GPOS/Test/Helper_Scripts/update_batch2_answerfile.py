@@ -183,7 +183,7 @@ def main():
         new_entry = f'''  <Vuln ID="{vuln_id}">
     <!--RuleTitle: {title}-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>

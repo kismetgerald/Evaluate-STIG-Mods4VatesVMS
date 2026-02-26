@@ -137,7 +137,7 @@ Note: Default Redis maxclients is 10000, but organizational policy must define a
   <Vuln ID="V-206351">
     <!--RuleTitle: The web server must perform server-side session management.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO uses Redis for server-side session storage by default. Session tokens stored on server, not client cookies.-->
         <ValidationCode></ValidationCode>
@@ -151,7 +151,7 @@ Note: Default Redis maxclients is 10000, but organizational policy must define a
   <Vuln ID="V-206352">
     <!--RuleTitle: The web server must use cryptography to protect the integrity of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -165,7 +165,7 @@ Note: Default Redis maxclients is 10000, but organizational policy must define a
   <Vuln ID="V-206353">
     <!--RuleTitle: The web server must use cryptography to protect the confidentiality of remote access sessions.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -391,7 +391,7 @@ This check supports NIST SP 800-53r5 AC-2, AC-3, and AC-6 requirements.
   <Vuln ID="V-206357">
     <!--RuleTitle: The web server must produce log records containing sufficient information to establish the date and time the events occurred.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO logs contain ISO 8601/RFC 3339 timestamps (systemd journal + Winston logger).-->
         <ValidationCode></ValidationCode>
@@ -414,7 +414,7 @@ This check supports NIST SP 800-53r5 AC-2, AC-3, and AC-6 requirements.
   <Vuln ID="V-206359">
     <!--RuleTitle: The web server must produce log records containing sufficient information to establish the outcome of events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO logs contain outcome information via HTTP status codes, log levels, and explicit results.-->
         <ValidationCode></ValidationCode>
@@ -437,7 +437,7 @@ This check supports NIST SP 800-53r5 AC-2, AC-3, and AC-6 requirements.
   <Vuln ID="V-206360">
     <!--RuleTitle: The web server must produce log records containing sufficient information to establish the identity of any user/subject or process associated with an event.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO logs contain comprehensive user/process identity (email, session ID, PID, UID/GID).-->
         <ValidationCode></ValidationCode>
@@ -555,7 +555,7 @@ Note: Winston logger includes component identification by default. This manual v
   <Vuln ID="V-206362">
     <!--RuleTitle: The web server must produce log records containing sufficient information to establish the source of events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index 1: System compliant - logs contain event source information-->
         <ValidationCode></ValidationCode>
@@ -615,7 +615,7 @@ Note: Winston logger includes component identification by default. This manual v
   <Vuln ID="V-206363">
     <!--RuleTitle: A web server, behind a load balancer or proxy server, must produce log records containing the client IP information as the source and destination and not the load balancer or proxy IP information with each event.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index 1: System compliant - logs contain real client IP (not proxy IP)-->
         <ValidationCode></ValidationCode>
@@ -691,7 +691,7 @@ Note: Winston logger includes component identification by default. This manual v
   <Vuln ID="V-206364">
     <!--RuleTitle: The web server must produce log records that contain sufficient information to establish the outcome (success or failure) of events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index 1: System compliant - logs contain event outcome information-->
         <ValidationCode></ValidationCode>
@@ -774,7 +774,7 @@ Note: Winston logger includes component identification by default. This manual v
   <Vuln ID="V-206365">
     <!--RuleTitle: The web server must produce log records containing sufficient information regarding event details.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO logs contain all DoD minimum information requirements (what, when, where, who, outcome).-->
         <ValidationCode></ValidationCode>
@@ -926,7 +926,7 @@ Note: Integration with external monitoring platform required per NIST SP 800-53r
   <Vuln ID="V-206367">
     <!--RuleTitle: The web server must use the internal system clock to generate time stamps for log records.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)
 Session #17 (Jan 24, 2026): Updated with XO REST API integration. Removed Answer Index 2 (manual verification override). API provides real-time timestamp verification with 60-minute tolerance.-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO uses system clock for log timestamps. Automated check uses XO REST API audit logs (primary) or systemd journal (fallback).-->
@@ -1661,7 +1661,7 @@ Note: Documentation files (README, LICENSE, CHANGELOG) in source tree are accept
   <Vuln ID="V-206375">
     <!--RuleTitle: The web server must only contain services and functions necessary for operation.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: No unnecessary services detected by the check.-->
         <ValidationCode></ValidationCode>
@@ -2316,7 +2316,7 @@ No remediation required for systems where private keys are managed externally or
   <Vuln ID="V-206390">
     <!--RuleTitle: The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="O" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1
 ValidationCode removed - technical validation now in scan module Get-V206390
@@ -2737,7 +2737,7 @@ Remediation: Edit /opt/xo/xo-server/config.toml, add [http.cookies] section with
   <Vuln ID="V-206399">
     <!--RuleTitle: The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1
 Technical validation performed by scan module Get-V206399
@@ -2753,7 +2753,7 @@ Scan module validates: express-session middleware, crypto.randomBytes availabili
   <Vuln ID="V-206431">
     <!--RuleTitle: The web server must encrypt user identifiers and passwords.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="O" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO maintains local user storage in LevelDB for at least one break-glass admin account. While external auth is supported, local credential storage exists and requires manual verification of proper encryption (bcrypt/scrypt hashing meeting NIST FIPS 140-2 standards).-->
         <ValidationCode></ValidationCode>
@@ -2767,7 +2767,7 @@ Scan module validates: express-session middleware, crypto.randomBytes availabili
   <Vuln ID="V-206434">
     <!--RuleTitle: The web server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO enforces HTTPS/TLS for all web interface connections. Default configuration requires TLS 1.2+ for client-server communication.-->
         <ValidationCode></ValidationCode>
@@ -5092,7 +5092,7 @@ This finding requires ISSO/ISSM review and documentation of cryptographic contro
   <Vuln ID="V-206443">
     <!--RuleTitle: Security patches and updates must be installed and up to date.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index 1: For systems with no security updates available-->
         <ValidationCode></ValidationCode>
@@ -5402,7 +5402,7 @@ Contact Vates support for FIPS-enabled XO builds and deployment procedures.</Val
   <Vuln ID="V-264348">
     <!--RuleTitle: The web server must, for password-based authentication, verify when users create or update passwords, that the passwords are not found on the list of commonly-used, expected, or compromised passwords in IA-5 (1) (a).-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <!--Implementation: Always returns Open - organizational policy verification required-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--This check always requires manual ISSO/ISSM verification-->
@@ -5450,7 +5450,7 @@ Until organizational processes are verified, status remains Open per STIG guidan
   <Vuln ID="V-264351">
     <!--RuleTitle: The web server must, for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <!--Implementation: Technical check - returns NotAFinding if PAM minlen >= 15, Open otherwise-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--System configured to allow passwords >= 15 characters (DoD compliant)-->
@@ -5531,7 +5531,7 @@ Retest after configuration changes to verify compliance.</ValidTrueComment>
   <Vuln ID="V-264352">
     <!--RuleTitle: The web server must, for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <!--Implementation: Technical check - returns NotAFinding if automated tools detected, Open otherwise-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated password strength tools detected and configured-->
@@ -5672,7 +5672,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264355">
     <!--RuleTitle: The web server must protect nonlocal maintenance sessions by separating the maintenance session from other network sessions with the system by logically separated communications paths.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <!--Implementation: Hybrid check - technical detection + organizational policy verification-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--System has documented session separation architecture with network segmentation-->
@@ -5750,7 +5750,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264360">
     <!--RuleTitle: The web server must restrict a consistent inbound source IP for the entire management session.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -5764,7 +5764,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264361">
     <!--RuleTitle: The web server must restrict a consistent inbound source IP for the entire user session.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
@@ -5778,7 +5778,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264362">
     <!--RuleTitle: The web server must use HTTP/2 at a minimum.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: HTTP/2 enabled and functional.-->
         <ValidationCode></ValidationCode>
@@ -5801,7 +5801,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264363">
     <!--RuleTitle: The web server must not allow HTTP/1.x protocol downgrading from HTTP/2.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: HTTP/2-only mode enforced.-->
         <ValidationCode></ValidationCode>
@@ -5824,7 +5824,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264364">
     <!--RuleTitle: The web server must normalize ambiguous HTTP requests.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: Express.js normalizes requests properly.-->
         <ValidationCode></ValidationCode>
@@ -5847,7 +5847,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264365">
     <!--RuleTitle: The web server must normalize ambiguous HTTP/2 headers.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: Node.js HTTP/2 module is RFC 7540 compliant.-->
         <ValidationCode></ValidationCode>
@@ -5870,7 +5870,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-264366">
     <!--RuleTitle: Forward proxies must route HTTP/2 traffic upstream.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Automated default: Standalone deployment or reverse proxy routes HTTP/2 correctly.-->
         <ValidationCode></ValidationCode>
@@ -5894,7 +5894,7 @@ Retest after implementing automated password strength tools.</ValidTrueComment>
   <Vuln ID="V-279029">
     <!--RuleTitle: The web server must be a version supported by the vendor.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)-->
+      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--Index created by Evaluate-STIG_GUI.ps1
 Technical validation performed by scan module Get-V279029
@@ -5911,7 +5911,7 @@ Scan module validates: nginx version, Node.js version, Debian OS version, XO Ser
   <Vuln ID="V-206428">
     <!--RuleTitle: The web server must prohibit or restrict the use of nonsecure or unnecessary ports, protocols, modules, and/or services.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created for Session #26 (Feb 1, 2026) by Kismet Agbasi (KismetGerald.Agbasi@ngc.com)
+      <!--AnswerKey created for Session #26 (Feb 1, 2026) by Kismet Agbasi (KismetG17@gmail.com)
 Session #26: Implemented V-206428 with multi-method port/protocol detection (ss/netstat fallback, systemd service enumeration, process inspection). Check validates XO port whitelist (80/443), detects insecure protocols (telnet/ftp/etc), and identifies unnecessary network services.-->
       <Answer Index="1" ExpectedStatus="NF" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <!--XO is configured with minimal port exposure and no insecure protocols. Automated check validates port listeners, enabled services, and running processes.-->
