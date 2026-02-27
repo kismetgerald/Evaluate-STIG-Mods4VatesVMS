@@ -3958,12 +3958,12 @@ Function Get-V203611 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203611
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203611r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000046-GPOS-00022
+        Rule ID    : SV-203611r958424_rule
+        Rule Title : The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.
+        DiscussMD5 : d2265e6da5af70833a6754855affed42
+        CheckMD5   : 6b32054e04eb9fb7aba045ed1a7e4908
+        FixMD5     : de0d56bb6081a1b0397e9b4dc2a4082b
     #>
 
     param (
@@ -3976,7 +3976,6 @@ Function Get-V203611 {
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
 
-
         [Parameter(Mandatory = $false)]
         [String]$Username,
 
@@ -3985,6 +3984,7 @@ Function Get-V203611 {
 
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
 
@@ -3997,8 +3997,8 @@ Function Get-V203611 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203611"
-    $RuleID = "SV-203611r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203611r958424_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4007,9 +4007,58 @@ Function Get-V203611 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203611) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Auditd Failure Action Configuration" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditdConf = $(timeout 5 cat /etc/audit/auditd.conf 2>&1)
+    if ($auditdConf) {
+        $confStr = ($auditdConf -join $nl)
+        $FindingDetails += "auditd.conf found" + $nl
+        $spaceLeft = ($auditdConf | Where-Object { $_ -match "^\s*space_left_action" })
+        $adminSpace = ($auditdConf | Where-Object { $_ -match "^\s*admin_space_left_action" })
+        $diskFull = ($auditdConf | Where-Object { $_ -match "^\s*disk_full_action" })
+        $diskError = ($auditdConf | Where-Object { $_ -match "^\s*disk_error_action" })
+        if ($spaceLeft) { $FindingDetails += "  $($spaceLeft.Trim())" + $nl } else { $FindingDetails += "  space_left_action: NOT SET" + $nl; $auditIssues++ }
+        if ($adminSpace) { $FindingDetails += "  $($adminSpace.Trim())" + $nl } else { $FindingDetails += "  admin_space_left_action: NOT SET" + $nl; $auditIssues++ }
+        if ($diskFull) { $FindingDetails += "  $($diskFull.Trim())" + $nl } else { $FindingDetails += "  disk_full_action: NOT SET" + $nl }
+        if ($diskError) { $FindingDetails += "  $($diskError.Trim())" + $nl } else { $FindingDetails += "  disk_error_action: NOT SET" + $nl }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /etc/audit/auditd.conf not found (auditd not installed)" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Email/Alert Notification Configuration" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $actionMailAcct = ($auditdConf | Where-Object { $_ -match "^\s*action_mail_acct" })
+    if ($actionMailAcct) {
+        $FindingDetails += "  $($actionMailAcct.Trim())" + $nl
+        $FindingDetails += "PASS: Mail notification configured for audit failures" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "action_mail_acct: NOT SET" + $nl
+        $FindingDetails += "FAIL: No email alert configured for audit processing failures" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Mail Transfer Agent (postfix/sendmail/ssmtp)" + $nl
+    $FindingDetails += "-----------------------------------------------------" + $nl
+    $mailAgent = $(timeout 5 dpkg -l postfix sendmail ssmtp msmtp 2>/dev/null | grep -E "^ii" 2>&1)
+    if ($mailAgent) {
+        $FindingDetails += ($mailAgent -join $nl) + $nl
+        $FindingDetails += "PASS: Mail transfer agent installed" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "No MTA package found (postfix, sendmail, ssmtp, msmtp)" + $nl
+        $FindingDetails += "FAIL: No mail agent to deliver audit failure alerts" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4069,12 +4118,12 @@ Function Get-V203613 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203613
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203613r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000051-GPOS-00024
+        Rule ID    : SV-203613r958428_rule
+        Rule Title : The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system.
+        DiscussMD5 : 6904c05787b629724d6b3b5ed82095e4
+        CheckMD5   : 17f931170eca55e783ca304cf3c598c8
+        FixMD5     : add8c51325227b7f9af845c5459a3915
     #>
 
     param (
@@ -4108,8 +4157,8 @@ Function Get-V203613 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203613"
-    $RuleID = "SV-203613r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203613r958428_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4118,9 +4167,61 @@ Function Get-V203613 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203613) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Centralized Log Forwarding (rsyslog/syslog-ng)" + $nl
+    $FindingDetails += "-------------------------------------------------------" + $nl
+    $rsyslogConf = $(timeout 5 cat /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null | grep -E "^[^#]*@@?" 2>&1)
+    if ($rsyslogConf) {
+        $FindingDetails += "Remote syslog destinations found:" + $nl
+        foreach ($line in $rsyslogConf) { $FindingDetails += "  $line" + $nl }
+        $FindingDetails += "PASS: Centralized log forwarding configured" + $nl
+    }
+    else {
+        $syslogNg = $(timeout 5 cat /etc/syslog-ng/syslog-ng.conf 2>/dev/null | grep -i "destination.*tcp\|destination.*udp" 2>&1)
+        if ($syslogNg) {
+            $FindingDetails += "syslog-ng remote destinations found:" + $nl
+            foreach ($line in $syslogNg) { $FindingDetails += "  $line" + $nl }
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No remote syslog forwarding configured" + $nl
+        }
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Review Tools (aureport/ausearch)" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $aureport = $(which aureport 2>/dev/null)
+    $ausearch = $(which ausearch 2>/dev/null)
+    if ($aureport -and $ausearch) {
+        $FindingDetails += "aureport: $aureport" + $nl
+        $FindingDetails += "ausearch: $ausearch" + $nl
+        $FindingDetails += "PASS: Audit review and analysis tools available" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "aureport: $(if ($aureport) { $aureport } else { 'NOT FOUND' })" + $nl
+        $FindingDetails += "ausearch: $(if ($ausearch) { $ausearch } else { 'NOT FOUND' })" + $nl
+        $FindingDetails += "FAIL: Audit review tools not installed" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Systemd Journal Remote Forwarding" + $nl
+    $FindingDetails += "-------------------------------------------" + $nl
+    $journalUpload = $(systemctl is-active systemd-journal-upload 2>&1)
+    $journalRemote = $(systemctl is-active systemd-journal-remote 2>&1)
+    $FindingDetails += "journal-upload: $journalUpload" + $nl
+    $FindingDetails += "journal-remote: $journalRemote" + $nl
+    if ($journalUpload -eq "active" -or $journalRemote -eq "active") {
+        $FindingDetails += "PASS: Systemd journal remote forwarding active" + $nl
+    }
+    else {
+        $FindingDetails += "INFO: Systemd journal remote services not active (may use rsyslog instead)" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4180,12 +4281,12 @@ Function Get-V203614 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203614
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203614r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000054-GPOS-00025
+        Rule ID    : SV-203614r958430_rule
+        Rule Title : The operating system must provide the capability to filter audit records for events of interest based upon organization-defined criteria.
+        DiscussMD5 : 53c879702032e4380c671fc3183b6dc3
+        CheckMD5   : 47be41f6d8e749b206106fbbef1f4173
+        FixMD5     : b2a0bf614a43e874cfb3f6dd409e8c67
     #>
 
     param (
@@ -4219,8 +4320,8 @@ Function Get-V203614 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203614"
-    $RuleID = "SV-203614r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203614r958430_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4229,9 +4330,82 @@ Function Get-V203614 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203614) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Audit Record Filtering Tools (ausearch/aureport)" + $nl
+    $FindingDetails += "---------------------------------------------------------" + $nl
+    $ausearch = $(which ausearch 2>/dev/null)
+    $aureport = $(which aureport 2>/dev/null)
+    if ($ausearch) {
+        $FindingDetails += "ausearch: $ausearch" + $nl
+        $ausearchVer = $(ausearch --version 2>&1)
+        if ($ausearchVer) { $FindingDetails += "  Version: $ausearchVer" + $nl }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "ausearch: NOT FOUND" + $nl
+    }
+    if ($aureport) {
+        $FindingDetails += "aureport: $aureport" + $nl
+        $aureportVer = $(aureport --version 2>&1)
+        if ($aureportVer) { $FindingDetails += "  Version: $aureportVer" + $nl }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "aureport: NOT FOUND" + $nl
+    }
+    if ($ausearch -and $aureport) {
+        $FindingDetails += "PASS: Audit record filtering tools available" + $nl
+    }
+    else {
+        $FindingDetails += "FAIL: Required audit filtering tools not installed" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Log Format (structured/parseable)" + $nl
+    $FindingDetails += "-------------------------------------------------" + $nl
+    $auditLog = $(timeout 5 tail -5 /var/log/audit/audit.log 2>&1)
+    if ($auditLog) {
+        $logStr = ($auditLog -join $nl)
+        if ($logStr -match "type=") {
+            $FindingDetails += "Audit log uses structured format (type= field-based records)" + $nl
+            $FindingDetails += "Sample (last 5 lines):" + $nl
+            foreach ($line in $auditLog) {
+                $truncated = if ($line.Length -gt 120) { $line.Substring(0, 120) + "..." } else { $line }
+                $FindingDetails += "  $truncated" + $nl
+            }
+            $FindingDetails += "PASS: Audit log format supports field-based filtering" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "Audit log does not appear to use structured format" + $nl
+            $FindingDetails += "FAIL: Cannot confirm filterable audit record format" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: Cannot read /var/log/audit/audit.log" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Text Processing Tools for Log Analysis" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $awk = $(which awk 2>/dev/null)
+    $grep = $(which grep 2>/dev/null)
+    $sort = $(which sort 2>/dev/null)
+    $FindingDetails += "awk: $(if ($awk) { $awk } else { 'NOT FOUND' })" + $nl
+    $FindingDetails += "grep: $(if ($grep) { $grep } else { 'NOT FOUND' })" + $nl
+    $FindingDetails += "sort: $(if ($sort) { $sort } else { 'NOT FOUND' })" + $nl
+    if ($awk -and $grep -and $sort) {
+        $FindingDetails += "PASS: Text processing tools available for audit filtering" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: Missing text processing tools" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4291,12 +4465,12 @@ Function Get-V203615 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203615
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203615r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000055-GPOS-00026
+        Rule ID    : SV-203615r958432_rule
+        Rule Title : The operating system must use internal system clocks to generate time stamps for audit records.
+        DiscussMD5 : 768292b082d2729b5001c6d568bd497b
+        CheckMD5   : 149da3784910df8123b5d187965412ec
+        FixMD5     : 7e5e665a7887a13161eaedffa9855f97
     #>
 
     param (
@@ -4330,8 +4504,8 @@ Function Get-V203615 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203615"
-    $RuleID = "SV-203615r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203615r958432_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4340,9 +4514,69 @@ Function Get-V203615 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203615) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Time Synchronization Service Status" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $ntpActive = $(systemctl is-active ntp 2>&1)
+    $chronyActive = $(systemctl is-active chrony 2>&1)
+    $timesyncdActive = $(systemctl is-active systemd-timesyncd 2>&1)
+    $FindingDetails += "ntp: $ntpActive" + $nl
+    $FindingDetails += "chrony: $chronyActive" + $nl
+    $FindingDetails += "systemd-timesyncd: $timesyncdActive" + $nl
+    if ($ntpActive -eq "active" -or $chronyActive -eq "active" -or $timesyncdActive -eq "active") {
+        $FindingDetails += "PASS: Time synchronization service is active" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No time synchronization service is active" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: System Clock Sync Status (timedatectl)" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $timedatectl = $(timedatectl status 2>&1)
+    if ($timedatectl) {
+        foreach ($line in $timedatectl) { $FindingDetails += "  $line" + $nl }
+        $tdStr = ($timedatectl -join $nl)
+        if ($tdStr -match "System clock synchronized:\s*yes" -or $tdStr -match "NTP synchronized:\s*yes") {
+            $FindingDetails += "PASS: System clock is synchronized" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: System clock not confirmed synchronized" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: timedatectl not available" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Record Timestamp Verification" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditSample = $(timeout 5 tail -3 /var/log/audit/audit.log 2>&1)
+    if ($auditSample) {
+        foreach ($line in $auditSample) {
+            $truncated = if ($line.Length -gt 120) { $line.Substring(0, 120) + "..." } else { $line }
+            $FindingDetails += "  $truncated" + $nl
+        }
+        $sampleStr = ($auditSample -join $nl)
+        if ($sampleStr -match "msg=audit\(\d+\.\d+:") {
+            $FindingDetails += "PASS: Audit records contain epoch timestamps from system clock" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: Audit records do not contain expected timestamp format" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: Cannot read /var/log/audit/audit.log" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4402,12 +4636,12 @@ Function Get-V203616 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203616
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203616r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000057-GPOS-00027
+        Rule ID    : SV-203616r958434_rule
+        Rule Title : The operating system must protect audit information from unauthorized read access.
+        DiscussMD5 : 43c974692aa673a19512db7a10dec0c3
+        CheckMD5   : be14db231ac89af70fc0fcbe0c3c793a
+        FixMD5     : f7627d4ebeaf99315622c088fdb14fe2
     #>
 
     param (
@@ -4441,8 +4675,8 @@ Function Get-V203616 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203616"
-    $RuleID = "SV-203616r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203616r958434_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4451,9 +4685,79 @@ Function Get-V203616 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203616) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Audit Log Directory Permissions" + $nl
+    $FindingDetails += "----------------------------------------" + $nl
+    $auditDirPerms = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit 2>&1)
+    if ($auditDirPerms -and $auditDirPerms -notmatch "No such file") {
+        $FindingDetails += "$auditDirPerms" + $nl
+        if ($auditDirPerms -match "^(\d+)\s") {
+            $dirMode = $matches[1]
+            $dirModeInt = [int]$dirMode
+            if ($dirModeInt -le 750) {
+                $FindingDetails += "PASS: Directory permissions $dirMode restrict read access" + $nl
+            }
+            else {
+                $auditIssues++
+                $FindingDetails += "FAIL: Directory permissions $dirMode allow unauthorized read (expected 750 or less)" + $nl
+            }
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /var/log/audit directory not found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Log File Permissions" + $nl
+    $FindingDetails += "------------------------------------" + $nl
+    $auditFiles = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit/audit.log /var/log/audit/audit.log.* 2>/dev/null)
+    if ($auditFiles) {
+        foreach ($f in $auditFiles) {
+            $FindingDetails += "$f" + $nl
+            if ($f -match "^(\d+)\s") {
+                $fileMode = [int]$matches[1]
+                if ($fileMode -gt 640) {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Permissions $($matches[1]) allow unauthorized read (expected 640 or less)" + $nl
+                }
+            }
+        }
+        $allGood = $true
+        foreach ($f in $auditFiles) {
+            if ($f -match "^(\d+)\s" -and [int]$matches[1] -gt 640) { $allGood = $false }
+        }
+        if ($allGood) {
+            $FindingDetails += "PASS: All audit log files restrict read access" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit log files found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Log File Ownership" + $nl
+    $FindingDetails += "----------------------------------" + $nl
+    $auditOwner = $(timeout 5 stat -c "%U:%G" /var/log/audit/audit.log 2>&1)
+    if ($auditOwner -and $auditOwner -notmatch "No such file") {
+        $FindingDetails += "audit.log owner: $auditOwner" + $nl
+        if ($auditOwner -match "^root:") {
+            $FindingDetails += "PASS: Audit log owned by root" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: Audit log not owned by root (owner: $auditOwner)" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: Cannot determine audit log ownership" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4513,12 +4817,12 @@ Function Get-V203617 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203617
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203617r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000058-GPOS-00028
+        Rule ID    : SV-203617r958436_rule
+        Rule Title : The operating system must protect audit information from unauthorized modification.
+        DiscussMD5 : 87135d56de28e5755674201788df14c6
+        CheckMD5   : 7629e58c98d38408be21639dda054f10
+        FixMD5     : 2f3814bf7d1893bf4da3aa55d741983e
     #>
 
     param (
@@ -4552,8 +4856,8 @@ Function Get-V203617 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203617"
-    $RuleID = "SV-203617r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203617r958436_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4562,9 +4866,80 @@ Function Get-V203617 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203617) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Audit Log Directory Write Permissions" + $nl
+    $FindingDetails += "----------------------------------------------" + $nl
+    $auditDirPerms = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit 2>&1)
+    if ($auditDirPerms -and $auditDirPerms -notmatch "No such file") {
+        $FindingDetails += "$auditDirPerms" + $nl
+        if ($auditDirPerms -match "^(\d+)\s") {
+            $dirMode = $matches[1]
+            $groupWrite = [int]([string]$dirMode[1])
+            $otherWrite = [int]([string]$dirMode[2])
+            if ($groupWrite -band 2 -or $otherWrite -band 2) {
+                $auditIssues++
+                $FindingDetails += "FAIL: Directory has group or other write permission ($dirMode)" + $nl
+            }
+            else {
+                $FindingDetails += "PASS: Directory restricts write access ($dirMode)" + $nl
+            }
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /var/log/audit directory not found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Log File Write Restrictions" + $nl
+    $FindingDetails += "------------------------------------------" + $nl
+    $auditFiles = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit/audit.log /var/log/audit/audit.log.* 2>/dev/null)
+    if ($auditFiles) {
+        $writeIssue = $false
+        foreach ($f in $auditFiles) {
+            $FindingDetails += "$f" + $nl
+            if ($f -match "^(\d+)\s") {
+                $fMode = $matches[1]
+                $fGroup = [int]([string]$fMode[1])
+                $fOther = [int]([string]$fMode[2])
+                if ($fGroup -band 2 -or $fOther -band 2) {
+                    $writeIssue = $true
+                    $FindingDetails += "  FAIL: Group or other write enabled ($fMode)" + $nl
+                }
+            }
+        }
+        if (-not $writeIssue) {
+            $FindingDetails += "PASS: Audit log files restrict write access" + $nl
+        }
+        else {
+            $auditIssues++
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit log files found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Immutable Attribute on Audit Logs" + $nl
+    $FindingDetails += "------------------------------------------" + $nl
+    $lsattr = $(timeout 5 lsattr /var/log/audit/audit.log 2>&1)
+    if ($lsattr -and $lsattr -notmatch "Operation not supported" -and $lsattr -notmatch "No such file") {
+        $FindingDetails += "$lsattr" + $nl
+        if (($lsattr -join $nl) -match "----i") {
+            $FindingDetails += "INFO: Immutable attribute set on audit.log" + $nl
+        }
+        else {
+            $FindingDetails += "INFO: Immutable attribute not set (optional hardening)" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "INFO: lsattr not available or not supported on this filesystem" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4624,12 +4999,12 @@ Function Get-V203618 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203618
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203618r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000059-GPOS-00029
+        Rule ID    : SV-203618r958438_rule
+        Rule Title : The operating system must protect audit information from unauthorized deletion.
+        DiscussMD5 : 7768cca50360c34537f5b230e2bddaf1
+        CheckMD5   : 8054e920ac47c7d1f0a91318e0010efe
+        FixMD5     : e10ca84858b3f1e2db2475afc158741f
     #>
 
     param (
@@ -4663,8 +5038,8 @@ Function Get-V203618 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203618"
-    $RuleID = "SV-203618r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203618r958438_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4673,9 +5048,82 @@ Function Get-V203618 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203618) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Audit Directory Deletion Protection" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditDirPerms = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit 2>&1)
+    if ($auditDirPerms -and $auditDirPerms -notmatch "No such file") {
+        $FindingDetails += "$auditDirPerms" + $nl
+        if ($auditDirPerms -match "^(\d+)\s") {
+            $dirMode = $matches[1]
+            $otherPerms = [int]([string]$dirMode[2])
+            if ($otherPerms -band 2) {
+                $auditIssues++
+                $FindingDetails += "FAIL: Others have write/delete permission on audit directory ($dirMode)" + $nl
+            }
+            else {
+                $FindingDetails += "PASS: Audit directory restricts deletion access ($dirMode)" + $nl
+            }
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /var/log/audit directory not found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Log File Deletion Protection" + $nl
+    $FindingDetails += "--------------------------------------------" + $nl
+    $auditFiles = $(timeout 5 stat -c "%a %U:%G %n" /var/log/audit/audit.log /var/log/audit/audit.log.* 2>/dev/null)
+    if ($auditFiles) {
+        $deleteIssue = $false
+        foreach ($f in $auditFiles) {
+            $FindingDetails += "$f" + $nl
+            if ($f -match "^(\d+)\s") {
+                $fOther = [int]([string]$matches[1][2])
+                if ($fOther -band 2) {
+                    $deleteIssue = $true
+                    $FindingDetails += "  FAIL: Others have write permission ($($matches[1]))" + $nl
+                }
+            }
+        }
+        if (-not $deleteIssue) {
+            $FindingDetails += "PASS: Audit log files protected from unauthorized deletion" + $nl
+        }
+        else {
+            $auditIssues++
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit log files found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Log Retention Configuration" + $nl
+    $FindingDetails += "------------------------------------------" + $nl
+    $auditdConf = $(timeout 5 cat /etc/audit/auditd.conf 2>&1)
+    if ($auditdConf) {
+        $maxLogFile = ($auditdConf | Where-Object { $_ -match "^\s*max_log_file_action" })
+        $numLogs = ($auditdConf | Where-Object { $_ -match "^\s*num_logs" })
+        if ($maxLogFile) { $FindingDetails += "  $($maxLogFile.Trim())" + $nl } else { $FindingDetails += "  max_log_file_action: NOT SET" + $nl }
+        if ($numLogs) { $FindingDetails += "  $($numLogs.Trim())" + $nl } else { $FindingDetails += "  num_logs: NOT SET" + $nl }
+        $confStr = ($auditdConf -join $nl)
+        if ($confStr -match "max_log_file_action\s*=\s*(ROTATE|keep_logs|KEEP_LOGS)") {
+            $FindingDetails += "PASS: Log rotation configured to preserve audit records" + $nl
+        }
+        else {
+            $FindingDetails += "INFO: Verify max_log_file_action preserves audit data" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /etc/audit/auditd.conf not found" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4920,12 +5368,12 @@ Function Get-V203620 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203620
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203620r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000063-GPOS-00032
+        Rule ID    : SV-203620r958444_rule
+        Rule Title : The operating system must provide the capability for the ISSM to select which auditable events are to be audited by specific components of the system.
+        DiscussMD5 : c7c8150e501b98a446f1747adad39741
+        CheckMD5   : fd26a3a451b85635b610fd70388e1dec
+        FixMD5     : 27db219d80c200843271658eca57969f
     #>
 
     param (
@@ -4959,8 +5407,8 @@ Function Get-V203620 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203620"
-    $RuleID = "SV-203620r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203620r958444_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -4969,9 +5417,94 @@ Function Get-V203620 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203620) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Audit Rules File Ownership and Permissions" + $nl
+    $FindingDetails += "---------------------------------------------------" + $nl
+    $ruleFiles = @("/etc/audit/audit.rules", "/etc/audit/rules.d")
+    foreach ($rf in $ruleFiles) {
+        $rfPerms = $(timeout 5 stat -c "%a %U:%G %n" $rf 2>&1)
+        if ($rfPerms -and $rfPerms -notmatch "No such file") {
+            $FindingDetails += "$rfPerms" + $nl
+            if ($rfPerms -match "^(\d+)\s+(\S+)") {
+                $mode = $matches[1]
+                $owner = $matches[2]
+                if ($owner -ne "root:root") {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Not owned by root:root" + $nl
+                }
+                $otherPerms = [int]([string]$mode[2])
+                if ($otherPerms -band 2) {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Others have write access ($mode)" + $nl
+                }
+            }
+        }
+        else {
+            $FindingDetails += "$rf : NOT FOUND" + $nl
+        }
+    }
+    $rulesD = $(timeout 5 stat -c "%a %U:%G %n" /etc/audit/rules.d/*.rules 2>/dev/null)
+    if ($rulesD) {
+        foreach ($rd in $rulesD) {
+            $FindingDetails += "$rd" + $nl
+            if ($rd -match "^(\d+)\s+(\S+)") {
+                if ($matches[2] -ne "root:root") {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Rule file not owned by root:root" + $nl
+                }
+            }
+        }
+    }
+    if ($auditIssues -eq 0) {
+        $FindingDetails += "PASS: Audit rules restricted to root ownership" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Auditd Configuration Access Control" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditdConfPerms = $(timeout 5 stat -c "%a %U:%G %n" /etc/audit/auditd.conf 2>&1)
+    if ($auditdConfPerms -and $auditdConfPerms -notmatch "No such file") {
+        $FindingDetails += "$auditdConfPerms" + $nl
+        if ($auditdConfPerms -match "^(\d+)\s+(\S+)") {
+            if ($matches[2] -eq "root:root" -and [int]$matches[1] -le 640) {
+                $FindingDetails += "PASS: auditd.conf restricted to root access" + $nl
+            }
+            else {
+                $auditIssues++
+                $FindingDetails += "FAIL: auditd.conf not properly restricted" + $nl
+            }
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: /etc/audit/auditd.conf not found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Auditctl Command Restricted to Root" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditctl = $(which auditctl 2>/dev/null)
+    if ($auditctl) {
+        $auditctlPerms = $(timeout 5 stat -c "%a %U:%G %n" $auditctl 2>&1)
+        $FindingDetails += "$auditctlPerms" + $nl
+        if ($auditctlPerms -match "^(\d+)\s+(\S+)") {
+            if ($matches[2] -match "^root:") {
+                $FindingDetails += "PASS: auditctl owned by root" + $nl
+            }
+            else {
+                $auditIssues++
+                $FindingDetails += "FAIL: auditctl not owned by root" + $nl
+            }
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditctl not found" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12063,12 +12596,12 @@ Function Get-V203672 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203672
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203672r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000256-GPOS-00097
+        Rule ID    : SV-203672r991557_rule
+        Rule Title : The operating system must protect audit tools from unauthorized access.
+        DiscussMD5 : fde4179bb09554f807700ad6d05cf831
+        CheckMD5   : e1605000002a14808a05d9c038350543
+        FixMD5     : 0078e534ea1e0a19682b43928f72eedf
     #>
 
     param (
@@ -12102,8 +12635,8 @@ Function Get-V203672 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203672"
-    $RuleID = "SV-203672r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203672r991557_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -12112,9 +12645,81 @@ Function Get-V203672 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203672) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $auditTools = @(
+        "/usr/sbin/auditctl",
+        "/usr/sbin/auditd",
+        "/usr/sbin/aureport",
+        "/usr/sbin/ausearch",
+        "/usr/sbin/autrace",
+        "/usr/sbin/augenrules"
+    )
+
+    $FindingDetails += "CHECK 1: Audit Tool Binary Permissions" + $nl
+    $FindingDetails += "--------------------------------------" + $nl
+    $toolsChecked = 0
+    foreach ($tool in $auditTools) {
+        $toolPerms = $(timeout 5 stat -c "%a %U:%G %n" $tool 2>&1)
+        if ($toolPerms -and $toolPerms -notmatch "No such file") {
+            $toolsChecked++
+            $FindingDetails += "$toolPerms" + $nl
+            if ($toolPerms -match "^(\d+)\s") {
+                $mode = [int]$matches[1]
+                if ($mode -gt 755) {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Permissions $($matches[1]) too permissive (expected 755 or less)" + $nl
+                }
+            }
+        }
+    }
+    if ($toolsChecked -eq 0) {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit tool binaries found" + $nl
+    }
+    elseif ($auditIssues -eq 0) {
+        $FindingDetails += "PASS: All audit tools have appropriate access permissions" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Tool Ownership" + $nl
+    $FindingDetails += "-----------------------------" + $nl
+    $ownerIssue = $false
+    foreach ($tool in $auditTools) {
+        $toolOwner = $(timeout 5 stat -c "%U:%G %n" $tool 2>&1)
+        if ($toolOwner -and $toolOwner -notmatch "No such file") {
+            if ($toolOwner -notmatch "^root:") {
+                $ownerIssue = $true
+                $auditIssues++
+                $FindingDetails += "FAIL: $tool not owned by root ($toolOwner)" + $nl
+            }
+        }
+    }
+    if (-not $ownerIssue -and $toolsChecked -gt 0) {
+        $FindingDetails += "PASS: All audit tools owned by root" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Tool Package Integrity" + $nl
+    $FindingDetails += "--------------------------------------" + $nl
+    $dpkgVerify = $(timeout 10 dpkg --verify auditd 2>&1)
+    if ($dpkgVerify) {
+        $FindingDetails += ($dpkgVerify -join $nl) + $nl
+        $verifyStr = ($dpkgVerify -join $nl)
+        if ($verifyStr -match "missing|5") {
+            $auditIssues++
+            $FindingDetails += "FAIL: Package integrity issues detected" + $nl
+        }
+        else {
+            $FindingDetails += "INFO: Package verification returned output (review above)" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "PASS: dpkg --verify auditd returned no issues" + $nl
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12174,12 +12779,12 @@ Function Get-V203673 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203673
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203673r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000257-GPOS-00098
+        Rule ID    : SV-203673r991558_rule
+        Rule Title : The operating system must protect audit tools from unauthorized modification.
+        DiscussMD5 : 2441ecf4de96f42d539e797af9d30edc
+        CheckMD5   : 401b551a53bb667254087d83102078f1
+        FixMD5     : 1597bc3cfbcc617888040c3fe73d2f23
     #>
 
     param (
@@ -12213,8 +12818,8 @@ Function Get-V203673 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203673"
-    $RuleID = "SV-203673r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203673r991558_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -12223,9 +12828,93 @@ Function Get-V203673 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203673) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $auditTools = @(
+        "/usr/sbin/auditctl",
+        "/usr/sbin/auditd",
+        "/usr/sbin/aureport",
+        "/usr/sbin/ausearch",
+        "/usr/sbin/autrace",
+        "/usr/sbin/augenrules"
+    )
+
+    $FindingDetails += "CHECK 1: Audit Tool Write Permissions" + $nl
+    $FindingDetails += "-------------------------------------" + $nl
+    $toolsChecked = 0
+    foreach ($tool in $auditTools) {
+        $toolPerms = $(timeout 5 stat -c "%a %U:%G %n" $tool 2>&1)
+        if ($toolPerms -and $toolPerms -notmatch "No such file") {
+            $toolsChecked++
+            $FindingDetails += "$toolPerms" + $nl
+            if ($toolPerms -match "^(\d+)\s") {
+                $mode = $matches[1]
+                $groupWrite = [int]([string]$mode[1])
+                $otherWrite = [int]([string]$mode[2])
+                if ($groupWrite -band 2 -or $otherWrite -band 2) {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Group or other write permission enabled ($mode)" + $nl
+                }
+            }
+        }
+    }
+    if ($toolsChecked -eq 0) {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit tool binaries found" + $nl
+    }
+    elseif ($auditIssues -eq 0) {
+        $FindingDetails += "PASS: No audit tools have group/other write permissions" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Tool SUID/SGID Bits" + $nl
+    $FindingDetails += "-----------------------------------" + $nl
+    $suidIssue = $false
+    foreach ($tool in $auditTools) {
+        $toolPerms = $(timeout 5 stat -c "%a %n" $tool 2>&1)
+        if ($toolPerms -and $toolPerms -notmatch "No such file") {
+            if ($toolPerms -match "^(\d+)\s") {
+                $modeStr = $matches[1]
+                if ($modeStr.Length -gt 3) {
+                    $specialBits = [int]([string]$modeStr[0])
+                    if ($specialBits -band 4 -or $specialBits -band 2) {
+                        $suidIssue = $true
+                        $auditIssues++
+                        $FindingDetails += "FAIL: SUID/SGID set on $tool ($modeStr)" + $nl
+                    }
+                }
+            }
+        }
+    }
+    if (-not $suidIssue) {
+        $FindingDetails += "PASS: No SUID/SGID bits set on audit tools" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Configuration File Protection" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $confFiles = @("/etc/audit/auditd.conf", "/etc/audit/audit.rules")
+    foreach ($cf in $confFiles) {
+        $cfPerms = $(timeout 5 stat -c "%a %U:%G %n" $cf 2>&1)
+        if ($cfPerms -and $cfPerms -notmatch "No such file") {
+            $FindingDetails += "$cfPerms" + $nl
+            if ($cfPerms -match "^(\d+)\s") {
+                $cfMode = $matches[1]
+                $cfGroup = [int]([string]$cfMode[1])
+                $cfOther = [int]([string]$cfMode[2])
+                if ($cfGroup -band 2 -or $cfOther -band 2) {
+                    $auditIssues++
+                    $FindingDetails += "  FAIL: Config file writable by group/other ($cfMode)" + $nl
+                }
+            }
+        }
+        else {
+            $FindingDetails += "$cf : NOT FOUND" + $nl
+        }
+    }
+    if ($auditIssues -eq 0) {
+        $FindingDetails += "PASS: Audit configuration files protected from modification" + $nl
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

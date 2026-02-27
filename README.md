@@ -24,7 +24,7 @@ an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD u
 |---|---|---|---|---|
 | `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | :white_check_mark: **Complete** — all 126 checks automated (121 CAT II + 5 CAT I) |
 | `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | :white_check_mark: **Complete** — all 286 checks automated (34 CAT I + 252 CAT II); EvalScore 43.36% |
-| `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | :construction: **In Progress** — 68 checks automated (18 CAT I + 49 CAT II + 1 CAT III); 121 CAT II + 9 CAT III remaining |
+| `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | :construction: **In Progress** — 78 checks automated (18 CAT I + 59 CAT II + 1 CAT III); 111 CAT II + 9 CAT III remaining |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 204 | :hammer_and_wrench: **Partial** — 3 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
 | `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 368 | :hammer_and_wrench: **Partial** — 12 CAT I checks automated; remainder return `Not_Reviewed` with manual guidance |
 
