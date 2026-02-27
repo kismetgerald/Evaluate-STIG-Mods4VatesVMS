@@ -2237,13 +2237,25 @@ Unauthorized modification of audit tools could compromise audit integrity.</Vali
   <Vuln ID="V-203674">
     <!--RuleTitle: The operating system must protect audit tools from unauthorized deletion.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit tools are protected from unauthorized deletion. The /usr/sbin directory does not allow other-write access, preventing non-root users from deleting audit binaries (auditctl, auditd, aureport, ausearch, autrace, augenrules). Directory ownership is root:root.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Audit tools are not adequately protected from unauthorized deletion.
+
+Remediation:
+1. Verify /usr/sbin permissions: chmod 755 /usr/sbin
+2. Set ownership: chown root:root /usr/sbin
+3. Set immutable on audit tools: chattr +i /usr/sbin/auditctl /usr/sbin/auditd /usr/sbin/aureport /usr/sbin/ausearch /usr/sbin/autrace /usr/sbin/augenrules
+4. Verify: lsattr /usr/sbin/audit*
+5. If auditd package missing: apt install auditd</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3873,27 +3885,50 @@ Remediation:
   <Vuln ID="V-203759">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules are configured to monitor security object access attempts. The auditd service is active and rules capture open/openat/creat/truncate syscalls. Audit log confirms access events are being recorded.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not generate audit records for security object access attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Enable: systemctl enable --now auditd
+3. Add rules: auditctl -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -k access
+4. Add rules: auditctl -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -k access
+5. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203760">
-    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.-->
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to access categories of information occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor extended attribute access (classification labels). The auditd service is active with rules for getxattr/lgetxattr/fgetxattr/listxattr syscalls. AppArmor provides category/label enforcement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit access to categories of information (classification labels).
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add xattr access rules: auditctl -a always,exit -F arch=b64 -S getxattr,lgetxattr,fgetxattr,listxattr,llistxattr,flistxattr -F auid&gt;=1000 -k perm_access
+3. Enable AppArmor: systemctl enable --now apparmor
+4. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3901,13 +3936,26 @@ Remediation:
   <Vuln ID="V-203761">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify privileges occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor privilege modification attempts. The auditd service is active with rules for chmod/chown/fchmod/fchmodat/fchown/fchownat/setxattr syscalls. Audit log confirms privilege modification events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit privilege modification attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add privilege modification rules:
+   auditctl -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -k perm_mod
+   auditctl -a always,exit -F arch=b64 -S chown,fchown,fchownat,lchown -F auid&gt;=1000 -k perm_mod
+   auditctl -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr -F auid&gt;=1000 -k perm_mod
+3. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3915,27 +3963,54 @@ Remediation:
   <Vuln ID="V-203762">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor security object modifications. Watch rules are configured for /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, /etc/security/, and /etc/sudoers. Audit log confirms security file modification events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit security object modifications.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add security file watches:
+   auditctl -w /etc/passwd -p wa -k identity
+   auditctl -w /etc/shadow -p wa -k identity
+   auditctl -w /etc/group -p wa -k identity
+   auditctl -w /etc/gshadow -p wa -k identity
+   auditctl -w /etc/sudoers -p wa -k actions
+   auditctl -w /etc/security/ -p wa -k security
+3. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-203763">
-    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur.-->
+    <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor extended attribute modifications (classification labels). Rules for setxattr/lsetxattr/fsetxattr/removexattr syscalls are configured. Audit log confirms category modification events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit category/classification label modifications.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add xattr modification rules:
+   auditctl -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid&gt;=1000 -k perm_mod
+3. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3943,13 +4018,24 @@ Remediation:
   <Vuln ID="V-203764">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete privileges occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor privilege deletion attempts. Rules for fremovexattr/lremovexattr/removexattr syscalls are configured. Audit log confirms privilege deletion events are recorded.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit privilege deletion attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add privilege deletion rules:
+   auditctl -a always,exit -F arch=b64 -S fremovexattr,lremovexattr,removexattr -F auid&gt;=1000 -k perm_mod
+3. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3957,13 +4043,25 @@ Remediation:
   <Vuln ID="V-203765">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security levels occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor security level deletion. Rules for removexattr syscalls are configured and AppArmor is active, logging profile changes that affect security levels.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit security level deletion attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add xattr removal rules:
+   auditctl -a always,exit -F arch=b64 -S fremovexattr,lremovexattr,removexattr -F auid&gt;=1000 -k perm_mod
+3. Enable AppArmor: systemctl enable --now apparmor
+4. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3971,13 +4069,24 @@ Remediation:
   <Vuln ID="V-203766">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful attempts to delete security objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit rules monitor security object deletion. Rules for unlink/unlinkat/rename/renameat syscalls are configured. Audit log confirms object deletion events are recorded.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not audit security object deletion attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Add file deletion rules:
+   auditctl -a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid&gt;=1000 -k delete
+3. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3985,13 +4094,27 @@ Remediation:
   <Vuln ID="V-203767">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful logon attempts occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Logon attempts are audited. PAM authentication modules are configured for login tracking. Audit log contains USER_LOGIN/USER_AUTH/USER_ACCT events. The auth.log also records authentication attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not properly audit logon attempts.
+
+Remediation:
+1. Install auditd: apt install auditd
+2. Ensure PAM audit module: verify pam_loginuid.so in /etc/pam.d/login and /etc/pam.d/sshd
+3. Add logon watch rules:
+   auditctl -w /var/log/faillog -p wa -k logins
+   auditctl -w /var/log/lastlog -p wa -k logins
+   auditctl -w /var/log/tallylog -p wa -k logins
+4. Make persistent: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
