@@ -24700,12 +24700,12 @@ Function Get-V203768 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203768
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203768r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000471-GPOS-00215
+        Rule ID    : SV-203768r991579_rule
+        Rule Title : The operating system must generate audit records for privileged activities or other system-level access.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 12cae798c6b979fb44746de12c6e8da5
+        FixMD5     : 16893a29892f0da81a497680db4173d4
     #>
 
     param (
@@ -24739,8 +24739,8 @@ Function Get-V203768 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203768"
-    $RuleID = "SV-203768r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203768r991579_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -24749,9 +24749,59 @@ Function Get-V203768 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203768) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Privileged Commands" + $nl
+    $FindingDetails += "---------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $privRules = (($auditRules -split $nl) | Where-Object { $_ -match "execve" -or $_ -match "-F perm=x" -or $_ -match "privileged" -or $_ -match "sudo|su |passwd|chsh|chfn|newgrp" })
+        $pCount = ($privRules | Measure-Object).Count
+        $FindingDetails += "Privileged activity rules found: $pCount" + $nl
+        if ($pCount -gt 0) {
+            $FindingDetails += "PASS: Audit rules monitor privileged activities" + $nl
+            foreach ($r in ($privRules | Select-Object -First 5)) {
+                $FindingDetails += "  $r" + $nl
+            }
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No audit rules for privileged activities" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules loaded" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Privileged Activity Audit Events" + $nl
+    $FindingDetails += "-----------------------------------------" + $nl
+    $privEvents = $(timeout 5 grep -c -E "type=SYSCALL.*execve|type=USER_CMD|sudo:" /var/log/audit/audit.log 2>&1)
+    if ($privEvents -match "^\d+$" -and [int]$privEvents -gt 0) {
+        $FindingDetails += "Privileged activity events: $privEvents" + $nl
+        $FindingDetails += "PASS: Audit log contains privileged activity records" + $nl
+    }
+    else {
+        $FindingDetails += "Privileged events: 0 or log not accessible" + $nl
+        $auditIssues++
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24811,12 +24861,12 @@ Function Get-V203769 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203769
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203769r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000471-GPOS-00216
+        Rule ID    : SV-203769r991580_rule
+        Rule Title : The audit system must be configured to audit the loading and unloading of dynamic kernel modules.
+        DiscussMD5 : 69989f08fb25d41af34e9424aa845d19
+        CheckMD5   : b53d30a74dc98bfbf92fa1dccff2ec3b
+        FixMD5     : cb82a5f2d4b69e701781a6e6e98dc168
     #>
 
     param (
@@ -24850,8 +24900,8 @@ Function Get-V203769 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203769"
-    $RuleID = "SV-203769r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203769r991580_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -24860,9 +24910,59 @@ Function Get-V203769 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203769) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Kernel Module Operations" + $nl
+    $FindingDetails += "--------------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $kmodRules = (($auditRules -split $nl) | Where-Object { $_ -match "init_module|finit_module|delete_module" -or $_ -match "insmod|rmmod|modprobe" })
+        $kCount = ($kmodRules | Measure-Object).Count
+        $FindingDetails += "Kernel module audit rules found: $kCount" + $nl
+        if ($kCount -gt 0) {
+            $FindingDetails += "PASS: Audit rules monitor kernel module operations" + $nl
+            foreach ($r in ($kmodRules | Select-Object -First 5)) {
+                $FindingDetails += "  $r" + $nl
+            }
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No audit rules for kernel module load/unload" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules loaded" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Kernel Module Audit Events" + $nl
+    $FindingDetails += "------------------------------------" + $nl
+    $kmodEvents = $(timeout 5 grep -c -E "type=SYSCALL.*(init_module|finit_module|delete_module)" /var/log/audit/audit.log 2>&1)
+    if ($kmodEvents -match "^\d+$" -and [int]$kmodEvents -gt 0) {
+        $FindingDetails += "Kernel module events: $kmodEvents" + $nl
+        $FindingDetails += "PASS: Audit log contains kernel module events" + $nl
+    }
+    else {
+        $FindingDetails += "Kernel module events: 0 or log not accessible" + $nl
+        $auditIssues++
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24922,12 +25022,12 @@ Function Get-V203770 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203770
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203770r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000472-GPOS-00217
+        Rule ID    : SV-203770r991581_rule
+        Rule Title : The operating system must generate audit records showing starting and ending time for user access to the system.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 206e978848f1a09bb9c0e8a918e96008
+        FixMD5     : ef160cd484169bfd8b4550f4342f74e6
     #>
 
     param (
@@ -24961,8 +25061,8 @@ Function Get-V203770 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203770"
-    $RuleID = "SV-203770r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203770r991581_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -24971,9 +25071,58 @@ Function Get-V203770 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203770) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Login/Logout Session Tracking" + $nl
+    $FindingDetails += "--------------------------------------" + $nl
+    $wtmpCheck = $(timeout 5 last -F -n 5 2>&1)
+    if ($wtmpCheck -and $wtmpCheck -notmatch "no such file") {
+        $FindingDetails += "wtmp records (last 5):" + $nl
+        foreach ($line in (($wtmpCheck -split $nl) | Select-Object -First 5)) {
+            $FindingDetails += "  $line" + $nl
+        }
+        $FindingDetails += "PASS: Login/logout records with timestamps available" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: wtmp/btmp not accessible for login tracking" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: User Session Audit Events" + $nl
+    $FindingDetails += "-----------------------------------" + $nl
+    $sessionEvents = $(timeout 5 grep -c -E "type=USER_LOGIN|type=USER_LOGOUT|type=USER_START|type=USER_END" /var/log/audit/audit.log 2>&1)
+    if ($sessionEvents -match "^\d+$" -and [int]$sessionEvents -gt 0) {
+        $FindingDetails += "Session start/end events: $sessionEvents" + $nl
+        $FindingDetails += "PASS: Audit log records user session timing" + $nl
+    }
+    else {
+        $authLogCheck = $(timeout 5 grep -c -E "session opened|session closed" /var/log/auth.log 2>&1)
+        if ($authLogCheck -match "^\d+$" -and [int]$authLogCheck -gt 0) {
+            $FindingDetails += "auth.log session events: $authLogCheck" + $nl
+            $FindingDetails += "PASS: auth.log records session start/end" + $nl
+        }
+        else {
+            $FindingDetails += "Session events: 0 or log not accessible" + $nl
+            $auditIssues++
+        }
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25033,12 +25182,12 @@ Function Get-V203771 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203771
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203771r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000473-GPOS-00218
+        Rule ID    : SV-203771r991582_rule
+        Rule Title : The operating system must generate audit records when concurrent logons to the same account occur from different sources.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 568ef6293ba7cf77d65f64c4aa89d178
+        FixMD5     : a186a1b4b3dfd33f61aeaabe225b6256
     #>
 
     param (
@@ -25072,8 +25221,8 @@ Function Get-V203771 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203771"
-    $RuleID = "SV-203771r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203771r991582_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25082,9 +25231,60 @@ Function Get-V203771 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203771) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Concurrent Login Tracking" + $nl
+    $FindingDetails += "-----------------------------------" + $nl
+    $currentUsers = $(timeout 5 who 2>&1)
+    if ($currentUsers) {
+        $userLines = ($currentUsers -split $nl) | Where-Object { $_.Trim() -ne "" }
+        $userCount = ($userLines | Measure-Object).Count
+        $FindingDetails += "Current active sessions: $userCount" + $nl
+        foreach ($u in ($userLines | Select-Object -First 10)) {
+            $FindingDetails += "  $u" + $nl
+        }
+        $FindingDetails += "PASS: Login session tracking available via utmp/wtmp" + $nl
+    }
+    else {
+        $FindingDetails += "No active sessions or who command unavailable" + $nl
+        $auditIssues++
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Login Audit Events with Source" + $nl
+    $FindingDetails += "---------------------------------------" + $nl
+    $loginEvents = $(timeout 5 grep -c -E "type=USER_LOGIN|type=USER_AUTH" /var/log/audit/audit.log 2>&1)
+    if ($loginEvents -match "^\d+$" -and [int]$loginEvents -gt 0) {
+        $FindingDetails += "Login audit events: $loginEvents" + $nl
+        $FindingDetails += "PASS: Audit log records login events with source info" + $nl
+    }
+    else {
+        $authLogins = $(timeout 5 grep -c -E "Accepted|session opened" /var/log/auth.log 2>&1)
+        if ($authLogins -match "^\d+$" -and [int]$authLogins -gt 0) {
+            $FindingDetails += "auth.log login events: $authLogins" + $nl
+            $FindingDetails += "PASS: auth.log records login events with source" + $nl
+        }
+        else {
+            $FindingDetails += "Login events: 0 or log not accessible" + $nl
+            $auditIssues++
+        }
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25144,12 +25344,12 @@ Function Get-V203772 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203772
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203772r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000474-GPOS-00219
+        Rule ID    : SV-203772r991583_rule
+        Rule Title : The operating system must generate audit records when successful/unsuccessful accesses to objects occur.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 590cfe5d2f7d1007eebdba6219d0f730
+        FixMD5     : e8b4d5ff9c53009a71abb19d28586a33
     #>
 
     param (
@@ -25183,8 +25383,8 @@ Function Get-V203772 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203772"
-    $RuleID = "SV-203772r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203772r991583_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25193,9 +25393,59 @@ Function Get-V203772 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203772) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Object Access (Success/Failure)" + $nl
+    $FindingDetails += "--------------------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $objRules = (($auditRules -split $nl) | Where-Object { $_ -match "open|openat|creat|truncate|ftruncate" -or $_ -match "-F exit=-EACCES|-F exit=-EPERM" -or $_ -match "-F perm=" })
+        $oCount = ($objRules | Measure-Object).Count
+        $FindingDetails += "Object access audit rules found: $oCount" + $nl
+        if ($oCount -gt 0) {
+            $FindingDetails += "PASS: Audit rules monitor object access" + $nl
+            foreach ($r in ($objRules | Select-Object -First 5)) {
+                $FindingDetails += "  $r" + $nl
+            }
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No audit rules for object access" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules loaded" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Object Access Audit Events" + $nl
+    $FindingDetails += "------------------------------------" + $nl
+    $objEvents = $(timeout 5 grep -c -E "type=SYSCALL.*(open|creat|truncate)" /var/log/audit/audit.log 2>&1)
+    if ($objEvents -match "^\d+$" -and [int]$objEvents -gt 0) {
+        $FindingDetails += "Object access events: $objEvents" + $nl
+        $FindingDetails += "PASS: Audit log contains object access records" + $nl
+    }
+    else {
+        $FindingDetails += "Object access events: 0 or log not accessible" + $nl
+        $auditIssues++
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25255,12 +25505,12 @@ Function Get-V203773 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203773
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203773r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000475-GPOS-00220
+        Rule ID    : SV-203773r991584_rule
+        Rule Title : The operating system must generate audit records for all direct access to the information system.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : ad41db83734dd0007a0fe7eb55da096b
+        FixMD5     : bdc4458163e38c96cd25ecaf3edb68b2
     #>
 
     param (
@@ -25294,8 +25544,8 @@ Function Get-V203773 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203773"
-    $RuleID = "SV-203773r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203773r991584_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25304,9 +25554,60 @@ Function Get-V203773 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203773) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Direct Access Logging (Console/TTY/SSH)" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $pamLogin = $(timeout 5 grep -E "pam_loginuid|pam_lastlog|pam_tty_audit" /etc/pam.d/common-session 2>&1)
+    if ($pamLogin) {
+        $pamLines = ($pamLogin -split $nl) | Where-Object { $_.Trim() -ne "" -and $_ -notmatch "^#" }
+        $pamCount = ($pamLines | Measure-Object).Count
+        $FindingDetails += "PAM session modules: $pamCount" + $nl
+        foreach ($p in ($pamLines | Select-Object -First 5)) {
+            $FindingDetails += "  $p" + $nl
+        }
+        $FindingDetails += "PASS: PAM configured for direct access logging" + $nl
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No PAM session audit modules configured" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Direct Access Audit Events" + $nl
+    $FindingDetails += "------------------------------------" + $nl
+    $directEvents = $(timeout 5 grep -c -E "type=USER_LOGIN|type=LOGIN|type=USER_START" /var/log/audit/audit.log 2>&1)
+    if ($directEvents -match "^\d+$" -and [int]$directEvents -gt 0) {
+        $FindingDetails += "Direct access events: $directEvents" + $nl
+        $FindingDetails += "PASS: Audit log records direct access events" + $nl
+    }
+    else {
+        $authDirect = $(timeout 5 grep -c -E "sshd.*Accepted|login.*LOGIN" /var/log/auth.log 2>&1)
+        if ($authDirect -match "^\d+$" -and [int]$authDirect -gt 0) {
+            $FindingDetails += "auth.log direct access events: $authDirect" + $nl
+            $FindingDetails += "PASS: auth.log records direct access" + $nl
+        }
+        else {
+            $FindingDetails += "Direct access events: 0 or log not accessible" + $nl
+            $auditIssues++
+        }
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25366,12 +25667,12 @@ Function Get-V203774 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203774
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203774r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000476-GPOS-00221
+        Rule ID    : SV-203774r991585_rule
+        Rule Title : The operating system must generate audit records for all account creations, modifications, disabling, and termination events.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 4ec9ae0f492d50abba81cbe4a070f060
+        FixMD5     : 9f048fc81ed680444b623bc990c4cd19
     #>
 
     param (
@@ -25405,8 +25706,8 @@ Function Get-V203774 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203774"
-    $RuleID = "SV-203774r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203774r991585_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25415,9 +25716,73 @@ Function Get-V203774 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203774) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Account Management Files" + $nl
+    $FindingDetails += "--------------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $acctFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow", "/etc/security/opasswd")
+        $acctRulesFound = 0
+        foreach ($af in $acctFiles) {
+            $escaped = [regex]::Escape($af)
+            $matched = (($auditRules -split $nl) | Where-Object { $_ -match $escaped })
+            if ($matched) {
+                $acctRulesFound++
+                $FindingDetails += "  Watch rule for $af : FOUND" + $nl
+            }
+            else {
+                $FindingDetails += "  Watch rule for $af : MISSING" + $nl
+            }
+        }
+        if ($acctRulesFound -ge 3) {
+            $FindingDetails += "PASS: Account management file watches configured ($acctRulesFound/$($acctFiles.Count))" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: Insufficient account file watches ($acctRulesFound/$($acctFiles.Count))" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules loaded" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Account Management Audit Events" + $nl
+    $FindingDetails += "-----------------------------------------" + $nl
+    $acctEvents = $(timeout 5 grep -c -E "type=ADD_USER|type=DEL_USER|type=ADD_GROUP|type=DEL_GROUP|type=USER_MGMT|type=ACCT_LOCK|type=ACCT_UNLOCK" /var/log/audit/audit.log 2>&1)
+    if ($acctEvents -match "^\d+$" -and [int]$acctEvents -gt 0) {
+        $FindingDetails += "Account management events: $acctEvents" + $nl
+        $FindingDetails += "PASS: Audit log contains account lifecycle events" + $nl
+    }
+    else {
+        $authAcct = $(timeout 5 grep -c -E "useradd|userdel|usermod|groupadd|groupdel|passwd" /var/log/auth.log 2>&1)
+        if ($authAcct -match "^\d+$" -and [int]$authAcct -gt 0) {
+            $FindingDetails += "auth.log account events: $authAcct" + $nl
+            $FindingDetails += "PASS: auth.log records account management" + $nl
+        }
+        else {
+            $FindingDetails += "Account events: 0 or log not accessible" + $nl
+            $auditIssues++
+        }
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25477,12 +25842,12 @@ Function Get-V203775 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203775
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203775r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000477-GPOS-00222
+        Rule ID    : SV-203775r991586_rule
+        Rule Title : The operating system must generate audit records for all kernel module load, unload, and restart actions, and also for all program initiations.
+        DiscussMD5 : 54b117448d2d37375c1440c2f61bb02a
+        CheckMD5   : 78be4790d2a517243e0b8dbad51e6377
+        FixMD5     : 3602efe449b46c743c78f6425574fb99
     #>
 
     param (
@@ -25516,8 +25881,8 @@ Function Get-V203775 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203775"
-    $RuleID = "SV-203775r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203775r991586_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25526,9 +25891,63 @@ Function Get-V203775 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203775) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Kernel Modules and Program Execution" + $nl
+    $FindingDetails += "--------------------------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $kmodRules = (($auditRules -split $nl) | Where-Object { $_ -match "init_module|finit_module|delete_module" -or $_ -match "insmod|rmmod|modprobe" })
+        $execRules = (($auditRules -split $nl) | Where-Object { $_ -match "execve" -or $_ -match "-F perm=x" })
+        $kCount = ($kmodRules | Measure-Object).Count
+        $eCount = ($execRules | Measure-Object).Count
+        $FindingDetails += "Kernel module rules: $kCount" + $nl
+        $FindingDetails += "Program execution rules: $eCount" + $nl
+        if ($kCount -gt 0 -and $eCount -gt 0) {
+            $FindingDetails += "PASS: Both kernel module and program execution rules configured" + $nl
+        }
+        elseif ($kCount -gt 0 -or $eCount -gt 0) {
+            $FindingDetails += "PARTIAL: Some rules configured but coverage incomplete" + $nl
+            $auditIssues++
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No kernel module or program execution rules" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules loaded" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Kernel Module and Execution Events" + $nl
+    $FindingDetails += "--------------------------------------------" + $nl
+    $kmodEvents = $(timeout 5 grep -c -E "type=SYSCALL.*(init_module|finit_module|delete_module|execve)" /var/log/audit/audit.log 2>&1)
+    if ($kmodEvents -match "^\d+$" -and [int]$kmodEvents -gt 0) {
+        $FindingDetails += "Kernel/execution events: $kmodEvents" + $nl
+        $FindingDetails += "PASS: Audit log contains module and execution records" + $nl
+    }
+    else {
+        $FindingDetails += "Kernel/execution events: 0 or log not accessible" + $nl
+        $auditIssues++
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -25766,12 +26185,12 @@ Function Get-V203777 {
     <#
     .DESCRIPTION
         Vuln ID    : V-203777
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-203777r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000479-GPOS-00224
+        Rule ID    : SV-203777r959008_rule
+        Rule Title : The operating system must, at a minimum, off-load audit data from interconnected systems in real time and off-load audit data from standalone systems weekly.
+        DiscussMD5 : 70944557094cf5c2cbca167073bdd4b1
+        CheckMD5   : 368dd6afeee1747b5beb817f85e27f87
+        FixMD5     : 99d86c5c8ab9d7f491bce61bdf7fbfd3
     #>
 
     param (
@@ -25805,8 +26224,8 @@ Function Get-V203777 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-203777"
-    $RuleID = "SV-203777r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-203777r959008_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -25815,9 +26234,63 @@ Function Get-V203777 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-203777) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: Remote Syslog Configuration" + $nl
+    $FindingDetails += "------------------------------------" + $nl
+    $rsyslogConf = $(timeout 5 grep -r "@@\|action.*type=" /etc/rsyslog.conf /etc/rsyslog.d/ 2>&1)
+    if ($rsyslogConf -and $rsyslogConf -notmatch "No such file") {
+        $remoteLines = ($rsyslogConf -split $nl) | Where-Object { $_.Trim() -ne "" -and $_ -notmatch "^#" -and ($_ -match "@@" -or $_ -match "action.*type=") }
+        $rCount = ($remoteLines | Measure-Object).Count
+        $FindingDetails += "Remote forwarding rules: $rCount" + $nl
+        foreach ($r in ($remoteLines | Select-Object -First 5)) {
+            $FindingDetails += "  $r" + $nl
+        }
+        if ($rCount -gt 0) {
+            $FindingDetails += "PASS: rsyslog configured to forward audit data" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: No remote forwarding in rsyslog" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: rsyslog configuration not found" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: systemd-journal-upload or audisp-remote" + $nl
+    $FindingDetails += "------------------------------------------------" + $nl
+    $journalUpload = $(timeout 5 systemctl is-active systemd-journal-upload 2>&1)
+    $audispRemote = $(timeout 5 systemctl is-active audisp-remote 2>&1)
+    $FindingDetails += "systemd-journal-upload: $journalUpload" + $nl
+    $FindingDetails += "audisp-remote: $audispRemote" + $nl
+    if ($journalUpload -eq "active" -or $audispRemote -eq "active") {
+        $FindingDetails += "PASS: Centralized log forwarding service active" + $nl
+    }
+    else {
+        $FindingDetails += "INFO: No dedicated log forwarding service active" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Audit Log Rotation and Off-loading" + $nl
+    $FindingDetails += "--------------------------------------------" + $nl
+    $logrotateAudit = $(timeout 5 grep -l "audit" /etc/logrotate.d/* 2>&1)
+    if ($logrotateAudit -and $logrotateAudit -notmatch "No such file") {
+        $FindingDetails += "Audit logrotate config: FOUND" + $nl
+        foreach ($lf in (($logrotateAudit -split $nl) | Select-Object -First 3)) {
+            $FindingDetails += "  $lf" + $nl
+        }
+        $FindingDetails += "PASS: Audit log rotation configured" + $nl
+    }
+    else {
+        $FindingDetails += "Audit logrotate config: not found" + $nl
+        $auditIssues++
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -28210,12 +28683,12 @@ Function Get-V263658 {
     <#
     .DESCRIPTION
         Vuln ID    : V-263658
-        STIG ID    : SRG-OS-000001-GPOS-00001
-        Rule ID    : SV-263658r877420_rule
-        Rule Title : [STUB] General Purpose Operating System SRG check
-        DiscussMD5 : 00000000000000000000000000000000000
-        CheckMD5   : 00000000000000000000000000000000
-        FixMD5     : 00000000000000000000000000000000
+        STIG ID    : SRG-OS-000755-GPOS-00220
+        Rule ID    : SV-263658r982561_rule
+        Rule Title : The operating system must monitor the use of maintenance tools that execute with increased privilege.
+        DiscussMD5 : 01af889ff92a2e2d0fb297005442e57d
+        CheckMD5   : c6dd4b132084bc300dc955e32750e1d5
+        FixMD5     : e39678d284b536d5e8d6e71f3fab2011
     #>
 
     param (
@@ -28249,8 +28722,8 @@ Function Get-V263658 {
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
     $VulnID = "V-263658"
-    $RuleID = "SV-263658r877420_rule"
-    $Status = "Not_Reviewed"
+    $RuleID = "SV-263658r982561_rule"
+    $Status = "Open"
     $FindingDetails = ""
     $Comments = ""
     $AFKey = ""
@@ -28259,9 +28732,90 @@ Function Get-V263658 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of Debian 12 system configuration. " +
-                      "Refer to the General Purpose Operating System SRG (V-263658) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+    $auditIssues = 0
+
+    $FindingDetails += "CHECK 1: auditd Service Status" + $nl
+    $FindingDetails += "------------------------------" + $nl
+    $auditdStatus = $(timeout 5 systemctl is-active auditd 2>&1)
+    $FindingDetails += "Service active: $auditdStatus" + $nl
+    if ($auditdStatus -ne "active") {
+        $auditIssues++
+        $FindingDetails += "FAIL: auditd is not active" + $nl
+    }
+    else {
+        $FindingDetails += "PASS: auditd is running" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 2: Audit Rules for Maintenance Tool Execution" + $nl
+    $FindingDetails += "----------------------------------------------------" + $nl
+    $auditRules = $(timeout 5 auditctl -l 2>&1)
+    if ($auditRules -and ($auditRules -notmatch "No rules")) {
+        $maintTools = @("/usr/sbin/fdisk", "/usr/sbin/parted", "/usr/sbin/mkfs", "/usr/sbin/fsck",
+                        "/usr/sbin/debugfs", "/usr/sbin/tune2fs", "/usr/sbin/resize2fs",
+                        "/usr/bin/mount", "/usr/bin/umount", "/usr/sbin/lvm",
+                        "/usr/sbin/mdadm", "/usr/sbin/iptables", "/usr/sbin/nftables",
+                        "/usr/sbin/tcpdump", "/usr/sbin/ip", "/usr/bin/strace",
+                        "/usr/bin/ltrace", "/usr/bin/gdb")
+        $toolsFound = 0
+        $ruleLines = ($auditRules -split $nl)
+        foreach ($tool in $maintTools) {
+            $escaped = [regex]::Escape($tool)
+            $match = $ruleLines | Where-Object { $_ -match $escaped }
+            if ($match) {
+                $toolsFound++
+            }
+        }
+        $FindingDetails += "Maintenance tools with audit rules: $toolsFound of $($maintTools.Count)" + $nl
+        $privRules = $ruleLines | Where-Object { $_ -match "execve" -or $_ -match "-F perm=x" -or $_ -match "-F auid>=1000" -or $_ -match "privileged" }
+        $privCount = ($privRules | Measure-Object).Count
+        $FindingDetails += "Privileged execution rules: $privCount" + $nl
+        foreach ($r in ($privRules | Select-Object -First 5)) {
+            $FindingDetails += "  $($r.Trim())" + $nl
+        }
+        if ($toolsFound -ge 3 -or $privCount -ge 2) {
+            $FindingDetails += "PASS: Maintenance tool audit rules detected" + $nl
+        }
+        else {
+            $auditIssues++
+            $FindingDetails += "FAIL: Insufficient audit rules for maintenance tools" + $nl
+        }
+    }
+    else {
+        $auditIssues++
+        $FindingDetails += "FAIL: No audit rules configured" + $nl
+    }
+
+    $FindingDetails += $nl + "CHECK 3: Maintenance Tool Execution Events" + $nl
+    $FindingDetails += "-------------------------------------------" + $nl
+    $auditLog = $(timeout 5 grep -c -E "type=SYSCALL.*(fdisk|parted|mkfs|fsck|debugfs|mount|umount|iptables|tcpdump|strace|gdb)|type=USER_CMD.*(fdisk|parted|mkfs|fsck)" /var/log/audit/audit.log 2>&1)
+    if ($LASTEXITCODE -eq 0 -and $auditLog -match "^\d+$") {
+        $eventCount = [int]$auditLog
+        $FindingDetails += "Maintenance tool events in audit log: $eventCount" + $nl
+        if ($eventCount -gt 0) {
+            $recentEvents = $(timeout 5 grep -E "type=SYSCALL.*(fdisk|parted|mkfs|fsck|debugfs|mount|umount|iptables|tcpdump|strace|gdb)|type=USER_CMD.*(fdisk|parted|mkfs|fsck)" /var/log/audit/audit.log 2>&1 | tail -3)
+            foreach ($evt in ($recentEvents -split $nl | Select-Object -First 3)) {
+                $FindingDetails += "  $($evt.Trim())" + $nl
+            }
+            $FindingDetails += "PASS: Maintenance tool events recorded" + $nl
+        }
+        else {
+            $FindingDetails += "INFO: No recent maintenance tool events (tools may not have been used)" + $nl
+        }
+    }
+    else {
+        $authEvents = $(timeout 5 grep -c -E "sudo:.*(fdisk|parted|mkfs|fsck|debugfs|mount|umount|iptables|tcpdump|strace|gdb)" /var/log/auth.log 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $authEvents -match "^\d+$") {
+            $FindingDetails += "Maintenance tool sudo events in auth.log: $authEvents" + $nl
+        }
+        else {
+            $FindingDetails += "INFO: Unable to query audit/auth logs for maintenance tool events" + $nl
+        }
+    }
+
+    if ($auditIssues -eq 0) {
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

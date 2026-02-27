@@ -4122,13 +4122,32 @@ Remediation:
   <Vuln ID="V-203768">
     <!--RuleTitle: The operating system must generate audit records for privileged activities or other system-level access.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for privileged activities. The auditd service is active and audit rules are configured to capture privileged command execution including execve syscalls, setuid/setgid programs (sudo, su, passwd, chsh, chfn, newgrp), and other privileged operations. Audit log contains recent privileged activity events confirming the audit subsystem is functioning correctly.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit privileged activities.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add privileged command rules to /etc/audit/rules.d/privileged.rules:
+   -a always,exit -F arch=b64 -S execve -F auid&gt;=1000 -F auid!=4294967295 -k privileged
+   -w /usr/bin/sudo -p x -k privileged-sudo
+   -w /usr/bin/su -p x -k privileged-su
+   -w /usr/bin/passwd -p x -k privileged-passwd
+   -w /usr/bin/chsh -p x -k privileged-chsh
+   -w /usr/bin/chfn -p x -k privileged-chfn
+   -w /usr/bin/newgrp -p x -k privileged-newgrp
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l | grep privileged</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4136,13 +4155,29 @@ Remediation:
   <Vuln ID="V-203769">
     <!--RuleTitle: The audit system must be configured to audit the loading and unloading of dynamic kernel modules.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The audit system is configured to audit kernel module loading and unloading. The auditd service is active and audit rules monitor init_module, finit_module, and delete_module syscalls. Rules also track execution of module management tools (insmod, rmmod, modprobe). Audit log contains kernel module events confirming proper monitoring.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The audit system does not adequately audit kernel module operations.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add kernel module rules to /etc/audit/rules.d/modules.rules:
+   -a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules
+   -w /usr/sbin/insmod -p x -k modules
+   -w /usr/sbin/rmmod -p x -k modules
+   -w /usr/sbin/modprobe -p x -k modules
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l | grep modules</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4150,13 +4185,31 @@ Remediation:
   <Vuln ID="V-203770">
     <!--RuleTitle: The operating system must generate audit records showing starting and ending time for user access to the system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records showing user access start and end times. The wtmp/utmp subsystem tracks login/logout sessions via the last command, recording timestamps for each session. The audit system captures USER_LOGIN, USER_LOGOUT, USER_START, and USER_END events with full timestamps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately record user access start/end times.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Verify wtmp logging: last -F -n 5
+4. Ensure PAM session tracking in /etc/pam.d/common-session:
+   session required pam_loginuid.so
+   session required pam_lastlog.so showfailed
+5. Add session rules to /etc/audit/rules.d/logins.rules:
+   -w /var/log/wtmp -p wa -k logins
+   -w /var/log/btmp -p wa -k logins
+   -w /var/run/utmp -p wa -k logins
+6. Reload: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4164,13 +4217,29 @@ Remediation:
   <Vuln ID="V-203771">
     <!--RuleTitle: The operating system must generate audit records when concurrent logons to the same account occur from different sources.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for concurrent logons from different sources. The utmp/wtmp subsystem tracks active sessions via the who command, showing concurrent logins with source addresses. The audit system captures USER_LOGIN and USER_AUTH events with source IP information for each authentication attempt.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit concurrent logons from different sources.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Verify utmp tracking: who (shows active sessions with source)
+4. Add login audit rules to /etc/audit/rules.d/logins.rules:
+   -w /var/log/wtmp -p wa -k logins
+   -w /var/run/utmp -p wa -k logins
+   -w /var/log/lastlog -p wa -k logins
+5. Reload: augenrules --load
+6. Verify: ausearch -m USER_LOGIN -ts recent</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4178,13 +4247,29 @@ Remediation:
   <Vuln ID="V-203772">
     <!--RuleTitle: The operating system must generate audit records when successful/unsuccessful accesses to objects occur.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for successful and unsuccessful object access. Audit rules are configured to monitor open, openat, creat, truncate, and ftruncate syscalls with exit filters for EACCES and EPERM (permission denied). The audit log contains object access events confirming the monitoring is functional.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit object access events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add object access rules to /etc/audit/rules.d/access.rules:
+   -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+   -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access
+   -a always,exit -F arch=b32 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -F auid!=4294967295 -k access
+   -a always,exit -F arch=b32 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -F auid!=4294967295 -k access
+4. Reload: augenrules --load
+5. Verify: auditctl -l | grep access</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4192,13 +4277,31 @@ Remediation:
   <Vuln ID="V-203773">
     <!--RuleTitle: The operating system must generate audit records for all direct access to the information system.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for all direct access. PAM session modules (pam_loginuid, pam_lastlog, pam_tty_audit) are configured in common-session to track console, TTY, and SSH sessions. The audit system captures USER_LOGIN, LOGIN, and USER_START events with source information for each direct access attempt.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit direct access to the information system.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Configure PAM session modules in /etc/pam.d/common-session:
+   session required pam_loginuid.so
+   session optional pam_lastlog.so showfailed
+4. Add login tracking rules to /etc/audit/rules.d/logins.rules:
+   -w /var/log/wtmp -p wa -k logins
+   -w /var/log/btmp -p wa -k logins
+   -w /var/run/utmp -p wa -k logins
+5. Reload: augenrules --load
+6. Verify: ausearch -m USER_LOGIN,LOGIN,USER_START -ts recent</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4206,13 +4309,31 @@ Remediation:
   <Vuln ID="V-203774">
     <!--RuleTitle: The operating system must generate audit records for all account creations, modifications, disabling, and termination events.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for account lifecycle events. Watch rules are configured on critical account files (/etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, /etc/security/opasswd) to detect creations, modifications, disabling, and terminations. The audit log contains account management events (ADD_USER, DEL_USER, ADD_GROUP, DEL_GROUP, USER_MGMT, ACCT_LOCK, ACCT_UNLOCK).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit account lifecycle events.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add account watch rules to /etc/audit/rules.d/identity.rules:
+   -w /etc/passwd -p wa -k identity
+   -w /etc/shadow -p wa -k identity
+   -w /etc/group -p wa -k identity
+   -w /etc/gshadow -p wa -k identity
+   -w /etc/security/opasswd -p wa -k identity
+4. Reload: augenrules --load
+5. Verify: auditctl -l | grep identity
+6. Test: ausearch -m ADD_USER,DEL_USER,USER_MGMT -ts recent</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4220,13 +4341,32 @@ Remediation:
   <Vuln ID="V-203775">
     <!--RuleTitle: The operating system must generate audit records for all kernel module load, unload, and restart actions, and also for all program initiations.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system generates audit records for kernel module operations and program initiations. Audit rules monitor init_module, finit_module, and delete_module syscalls for kernel module tracking, and execve syscalls with setuid/setgid filters for program initiation tracking. Both types of events are present in the audit log.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately audit kernel module operations and/or program initiations.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add kernel module rules to /etc/audit/rules.d/modules.rules:
+   -a always,exit -F arch=b64 -S init_module,finit_module,delete_module -k modules
+   -w /usr/sbin/insmod -p x -k modules
+   -w /usr/sbin/rmmod -p x -k modules
+   -w /usr/sbin/modprobe -p x -k modules
+4. Add program initiation rules to /etc/audit/rules.d/privileged.rules:
+   -a always,exit -F arch=b64 -S execve -F auid&gt;=1000 -F auid!=4294967295 -k execpriv
+   -a always,exit -F arch=b64 -S execve -F euid=0 -F auid&gt;=1000 -F auid!=4294967295 -k execpriv
+5. Reload: augenrules --load
+6. Verify: auditctl -l | grep -E "modules|execpriv"</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4274,13 +4414,33 @@ Note: Debian 12 FIPS enablement may require additional Vates vendor support. See
   <Vuln ID="V-203777">
     <!--RuleTitle: The operating system must, at a minimum, off-load audit data from interconnected systems in real time and off-load audit data from standalone systems weekly.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system is configured to off-load audit data. Remote syslog forwarding is configured in rsyslog (rsyslog.conf or rsyslog.d/ includes @@ or action type= directives for remote log forwarding). Additionally, audit log rotation is configured via logrotate to manage local audit data retention. For interconnected systems, real-time forwarding is active; for standalone systems, weekly rotation meets the minimum requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately off-load audit data.
+
+Remediation:
+1. For real-time off-loading (interconnected systems), configure rsyslog:
+   Edit /etc/rsyslog.conf or create /etc/rsyslog.d/remote.conf:
+   *.* @@syslog-server.example.com:514
+2. Restart rsyslog: systemctl restart rsyslog
+3. Alternatively, configure systemd-journal-upload:
+   apt install systemd-journal-remote
+   Edit /etc/systemd/journal-upload.conf with remote URL
+   systemctl enable --now systemd-journal-upload
+4. For standalone systems, ensure weekly logrotate:
+   Verify /etc/logrotate.d/auditd exists with weekly rotation
+5. Configure audisp-remote for audit-specific forwarding:
+   Edit /etc/audit/audisp-remote.conf with remote server
+6. Verify: logger -p auth.info "test" then check remote server</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -4614,13 +4774,38 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
   <Vuln ID="V-263658">
     <!--RuleTitle: The operating system must monitor the use of maintenance tools that execute with increased privilege.-->
     <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The system monitors maintenance tools that execute with increased privilege. The auditd service is active and audit rules are configured to track execution of maintenance and diagnostic tools (fdisk, parted, mkfs, fsck, debugfs, mount, umount, iptables, tcpdump, strace, gdb, etc.) when run with elevated privileges. Privileged execution rules using execve syscall monitoring and auid filters capture all maintenance tool usage by non-system accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The system does not adequately monitor maintenance tool execution with increased privilege.
+
+Remediation:
+1. Install auditd: apt install auditd audispd-plugins
+2. Enable service: systemctl enable --now auditd
+3. Add maintenance tool rules to /etc/audit/rules.d/maintenance.rules:
+   -w /usr/sbin/fdisk -p x -k maintenance
+   -w /usr/sbin/parted -p x -k maintenance
+   -w /usr/sbin/mkfs -p x -k maintenance
+   -w /usr/sbin/fsck -p x -k maintenance
+   -w /usr/sbin/debugfs -p x -k maintenance
+   -w /usr/bin/mount -p x -k maintenance
+   -w /usr/bin/umount -p x -k maintenance
+   -w /usr/sbin/iptables -p x -k maintenance
+   -w /usr/sbin/tcpdump -p x -k maintenance
+   -w /usr/bin/strace -p x -k maintenance
+   -w /usr/bin/gdb -p x -k maintenance
+4. Add privileged execution monitoring:
+   -a always,exit -F arch=b64 -S execve -F euid=0 -F auid&gt;=1000 -F auid!=4294967295 -k maintenance-elevated
+5. Reload: augenrules --load
+6. Verify: auditctl -l | grep maintenance</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
