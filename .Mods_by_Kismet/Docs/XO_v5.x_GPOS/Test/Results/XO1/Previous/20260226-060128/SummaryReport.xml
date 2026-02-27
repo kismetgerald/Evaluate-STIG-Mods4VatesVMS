@@ -138,7 +138,7 @@ Index                          '//xvda3/'
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-26T19:14:22.6725618-05:00" EvalScore="8.08">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-26T05:51:40.1644505-05:00" EvalScore="8.08">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -159,7 +159,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The operating system must not allow an unattended or automatic logon to the system." Status="NotAFinding" ID="V-203782" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Applicable" ID="V-252688" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="170" Not_Applicable="2" Open="52" NotAFinding="5" Not_Reviewed="111">
+      <CAT_II Total="170" Not_Applicable="2" Open="42" NotAFinding="5" Not_Reviewed="121">
         <Vuln RuleTitle="The operating system must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-203591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically remove or disable temporary user accounts after 72 hours." Status="Open" ID="V-203592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit all account creations." Status="Open" ID="V-203593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -178,15 +178,15 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The operating system must produce audit records containing information to establish the outcome of the events." Status="Open" ID="V-203608" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records containing the full-text recording of privileged commands." Status="Open" ID="V-203609" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must produce audit records containing the individual identities of group account users." Status="Open" ID="V-203610" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Open" ID="V-203611" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system." Status="Open" ID="V-203613" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide the capability to filter audit records for events of interest based upon all audit fields within audit records." Status="Open" ID="V-203614" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use internal system clocks to generate time stamps for audit records." Status="Open" ID="V-203615" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit information from unauthorized read access." Status="Open" ID="V-203616" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit information from unauthorized modification." Status="Open" ID="V-203617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit information from unauthorized deletion." Status="Open" ID="V-203618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Not_Reviewed" ID="V-203611" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system." Status="Not_Reviewed" ID="V-203613" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide the capability to filter audit records for events of interest based upon all audit fields within audit records." Status="Not_Reviewed" ID="V-203614" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use internal system clocks to generate time stamps for audit records." Status="Not_Reviewed" ID="V-203615" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit information from unauthorized read access." Status="Not_Reviewed" ID="V-203616" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit information from unauthorized modification." Status="Not_Reviewed" ID="V-203617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit information from unauthorized deletion." Status="Not_Reviewed" ID="V-203618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components." Status="Open" ID="V-203619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Open" ID="V-203620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Not_Reviewed" ID="V-203620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="Not_Reviewed" ID="V-203621" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Not_Reviewed" ID="V-203622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="Not_Reviewed" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -231,8 +231,8 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The operating system must audit all account removal actions." Status="Open" ID="V-203668" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must initiate session audits at system start-up." Status="Open" ID="V-203670" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must produce audit records containing information to establish the identity of any individual or process associated with the event." Status="Not_Reviewed" ID="V-203671" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit tools from unauthorized access." Status="Open" ID="V-203672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit tools from unauthorized modification." Status="Open" ID="V-203673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit tools from unauthorized access." Status="Not_Reviewed" ID="V-203672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit tools from unauthorized modification." Status="Not_Reviewed" ID="V-203673" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect audit tools from unauthorized deletion." Status="Not_Reviewed" ID="V-203674" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must limit privileges to change software resident within software libraries." Status="Not_Reviewed" ID="V-203675" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one special character be used." Status="Open" ID="V-203676" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
