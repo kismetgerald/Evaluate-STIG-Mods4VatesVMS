@@ -3194,15 +3194,18 @@ Remediation:
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>The automated check verified that multifactor authentication is implemented for remote privileged access on this Debian 12 system.
 
-Evidence found:
+Evidence may include one or more of:
 (1) SSH AuthenticationMethods configured to require multiple factors
 (2) PAM MFA module(s) configured (pam_google_authenticator, pam_u2f, pam_pkcs11, or pam_yubico)
 (3) Smartcard/PIV packages installed (opensc, libpam-pkcs11, pcscd)
-(4) SSSD certificate authentication may be enabled
+(4) SSSD certificate authentication enabled
+(5) XO auth-ldap plugin active — authentication delegated to Active Directory
+
+COMPENSATING CONTROL (AD/LDAP): When the XO auth-ldap plugin is active, all user authentication for network access to Xen Orchestra is delegated to the organization's Active Directory infrastructure. AD enforces MFA policies (CAC/PIV, smart card logon, or conditional access MFA) at the domain level, satisfying this requirement for the primary access path (XO web UI). The separate device factor is provided by the AD/enterprise MFA solution.
 
 Finding: Not a Finding
 
-Justification: The system implements multifactor authentication for remote privileged access using a combination of SSH key/password and a separate device factor (smartcard, hardware token, or TOTP app). This meets the GPOS SRG requirement for MFA with a separate device factor.</ValidTrueComment>
+Justification: The system implements multifactor authentication for remote privileged access either through local PAM/SSH MFA configuration or through delegation to Active Directory via the XO auth-ldap plugin. This meets the GPOS SRG requirement for MFA with a separate device factor.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -3216,14 +3219,19 @@ Findings:
 - SSH AuthenticationMethods not configured for multiple factors
 - No PAM MFA modules detected
 - Smartcard/PIV packages not installed
+- XO auth-ldap plugin not detected (no AD authentication delegation)
 
-Remediation Steps:
+Remediation Options:
+Option A — Enable AD/LDAP authentication delegation (Recommended):
+(1) Install and configure the XO auth-ldap plugin in Xen Orchestra
+(2) Configure LDAP URI and Base DN pointing to your AD domain controllers
+(3) Ensure AD enforces MFA (CAC/PIV, conditional access, or smart card logon)
+(4) Verify users authenticate through AD when accessing XO web UI
+
+Option B — Deploy local MFA on the OS:
 (1) Install MFA packages: apt install libpam-google-authenticator
-(2) Configure PAM for MFA in /etc/pam.d/sshd:
-    auth required pam_google_authenticator.so
-(3) Configure SSH for MFA in /etc/ssh/sshd_config:
-    AuthenticationMethods publickey,keyboard-interactive
-    ChallengeResponseAuthentication yes
+(2) Configure PAM for MFA in /etc/pam.d/sshd
+(3) Configure SSH: AuthenticationMethods publickey,keyboard-interactive
 (4) For CAC/PIV: apt install opensc libpam-pkcs11 pcscd
 (5) Restart SSH: systemctl restart ssh
 
@@ -3243,15 +3251,18 @@ The ISSO/ISSM must verify MFA implementation uses a separate device factor (CAC,
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>The automated check verified that PIV credential acceptance is configured on this Debian 12 system.
 
-Evidence found:
+Evidence may include one or more of:
 (1) PIV/smartcard packages installed (opensc, libpam-pkcs11, pcscd, libccid)
 (2) PC/SC Smart Card Daemon (pcscd) running
 (3) PAM PKCS#11 configuration present
 (4) SSH certificate-based authentication enabled
+(5) XO auth-ldap plugin active — PIV/CAC authentication delegated to Active Directory
+
+COMPENSATING CONTROL (AD/LDAP): When the XO auth-ldap plugin is active, PIV credential acceptance is delegated to the organization's Active Directory infrastructure. AD/ADFS natively supports PIV/CAC authentication through smart card logon policies and certificate-to-account mapping. Users authenticating to XO via the web UI are authenticated against AD, which accepts PIV credentials. This satisfies the requirement for the primary access path.
 
 Finding: Not a Finding
 
-Justification: The system accepts PIV credentials through PKCS#11 smart card integration with PAM and SSH. The required middleware (opensc, pcscd) and authentication module (libpam-pkcs11) are installed and configured. This meets the GPOS SRG requirement for PIV credential acceptance.</ValidTrueComment>
+Justification: The system accepts PIV credentials either through local PKCS#11 smart card integration or through delegation to Active Directory via the XO auth-ldap plugin. AD environments with smart card logon policies accept DoD CAC/PIV credentials natively. This meets the GPOS SRG requirement for PIV credential acceptance.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -3265,18 +3276,21 @@ Findings:
 - PIV/smartcard packages not installed (opensc, libpam-pkcs11, pcscd)
 - Smart card daemon not running
 - PAM PKCS#11 not configured
+- XO auth-ldap plugin not detected (no AD authentication delegation)
 
-Remediation Steps:
-(1) Install PIV packages:
-    apt install opensc libpam-pkcs11 pcscd libccid libnss3-tools
-(2) Enable smart card daemon:
-    systemctl enable pcscd
-    systemctl start pcscd
+Remediation Options:
+Option A — Enable AD/LDAP authentication delegation (Recommended):
+(1) Install and configure the XO auth-ldap plugin in Xen Orchestra
+(2) Configure LDAP URI and Base DN pointing to your AD domain controllers
+(3) Ensure AD has smart card logon policies configured for PIV/CAC acceptance
+(4) Verify users can authenticate to XO using their AD credentials backed by PIV
+
+Option B — Deploy local PIV support:
+(1) Install PIV packages: apt install opensc libpam-pkcs11 pcscd libccid libnss3-tools
+(2) Enable smart card daemon: systemctl enable --now pcscd
 (3) Configure PAM PKCS#11 in /etc/pam_pkcs11/pam_pkcs11.conf
-(4) Add pam_pkcs11 to /etc/pam.d/common-auth:
-    auth sufficient pam_pkcs11.so
-(5) Configure SSH for certificate auth in /etc/ssh/sshd_config:
-    PubkeyAuthentication yes
+(4) Add pam_pkcs11 to /etc/pam.d/common-auth
+(5) Configure SSH for certificate auth: PubkeyAuthentication yes
 (6) Import DoD root CA certificates for PIV validation
 
 The ISSO/ISSM must verify PIV credential acceptance works with DoD CAC cards and organizational PKI infrastructure.</ValidTrueComment>
@@ -4861,14 +4875,38 @@ Remediation:
       <Answer Index="1" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="NotAFinding">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>MFA is configured for network access to privileged accounts. Smartcard/PKI authentication or TOTP is deployed through PAM modules. SSH is configured with AuthenticationMethods requiring multiple factors for privileged users. The ISSO/ISSM should verify that MFA enrollment is complete for all privileged account holders and that MFA bypass procedures are documented and controlled.</ValidTrueComment>
+        <ValidTrueComment>MFA is configured for network access to privileged accounts on this Xen Orchestra system.
+
+Evidence may include one or more of:
+(1) Smartcard/PKI authentication or TOTP deployed through PAM modules
+(2) SSH configured with AuthenticationMethods requiring multiple factors
+(3) XO auth-ldap plugin active — authentication delegated to Active Directory
+
+COMPENSATING CONTROL (AD/LDAP): When the XO auth-ldap plugin is active, all privileged user authentication for network access to Xen Orchestra is delegated to Active Directory. AD enforces MFA policies (CAC/PIV, conditional access, or smart card logon) at the enterprise level. This satisfies MFA for the primary network access path (XO web UI).
+
+The ISSO/ISSM should verify that MFA enrollment is complete for all privileged account holders and that the AD MFA policy covers XO-authenticated users.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="Open">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>MFA for network access to privileged accounts is not deployed. To remediate: (1) Deploy smartcard infrastructure: apt install opensc pcscd libpam-pkcs11. (2) Configure PAM for MFA: add pam_pkcs11.so or pam_google_authenticator.so to /etc/pam.d/common-auth. (3) Configure SSH MFA: set AuthenticationMethods publickey,keyboard-interactive in sshd_config. (4) Enroll all privileged users in MFA. (5) For DoD environments, CAC/PIV with PIN satisfies the two-factor requirement (something you have + something you know).</ValidTrueComment>
+        <ValidTrueComment>MFA for network access to privileged accounts is not deployed. No local PAM MFA modules detected and the XO auth-ldap plugin is not active.
+
+Remediation Options:
+Option A — Enable AD/LDAP authentication delegation (Recommended):
+(1) Install and configure the XO auth-ldap plugin
+(2) Point LDAP configuration to AD domain controllers
+(3) Ensure AD enforces MFA for privileged accounts
+(4) Verify privileged users authenticate through AD when accessing XO
+
+Option B — Deploy local MFA:
+(1) Deploy smartcard infrastructure: apt install opensc pcscd libpam-pkcs11
+(2) Configure PAM for MFA in /etc/pam.d/common-auth
+(3) Configure SSH: AuthenticationMethods publickey,keyboard-interactive
+(4) Enroll all privileged users in MFA
+
+For DoD environments, CAC/PIV with PIN satisfies the two-factor requirement (something you have + something you know).</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4879,14 +4917,38 @@ Remediation:
       <Answer Index="1" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="NotAFinding">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>MFA is configured for network access to non-privileged accounts. Authentication requires multiple factors through PAM module configuration. The ISSO/ISSM should verify that MFA enrollment is complete for all non-privileged network users and that the authentication policy is enforced consistently.</ValidTrueComment>
+        <ValidTrueComment>MFA is configured for network access to non-privileged accounts on this Xen Orchestra system.
+
+Evidence may include one or more of:
+(1) PAM MFA modules configured for non-privileged users
+(2) SSH AuthenticationMethods requiring multiple factors
+(3) XO auth-ldap plugin active — authentication delegated to Active Directory
+
+COMPENSATING CONTROL (AD/LDAP): When the XO auth-ldap plugin is active, all non-privileged user authentication for network access to Xen Orchestra is delegated to Active Directory. AD enforces MFA policies at the enterprise level, covering both privileged and non-privileged accounts. This satisfies MFA for the primary network access path (XO web UI).
+
+The ISSO/ISSM should verify that MFA enrollment is complete for all non-privileged network users and that the AD MFA policy applies to all XO-authenticated user accounts.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="Open">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>MFA for network access to non-privileged accounts is not deployed. To remediate: (1) Deploy MFA infrastructure (smartcard or TOTP). (2) Configure PAM for MFA in /etc/pam.d/common-auth. (3) Configure SSH AuthenticationMethods for non-privileged users. (4) Enroll all non-privileged users in MFA. (5) For DoD environments, CAC/PIV authentication satisfies this requirement. Consider LDAP/AD integration to delegate MFA to enterprise identity provider.</ValidTrueComment>
+        <ValidTrueComment>MFA for network access to non-privileged accounts is not deployed. No local PAM MFA modules detected and the XO auth-ldap plugin is not active.
+
+Remediation Options:
+Option A — Enable AD/LDAP authentication delegation (Recommended):
+(1) Install and configure the XO auth-ldap plugin
+(2) Point LDAP configuration to AD domain controllers
+(3) Ensure AD enforces MFA for all user accounts (not just privileged)
+(4) Verify non-privileged users authenticate through AD when accessing XO
+
+Option B — Deploy local MFA:
+(1) Deploy MFA infrastructure (smartcard or TOTP)
+(2) Configure PAM for MFA in /etc/pam.d/common-auth
+(3) Configure SSH AuthenticationMethods for non-privileged users
+(4) Enroll all non-privileged users in MFA
+
+For DoD environments, CAC/PIV authentication satisfies this requirement for network access.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4933,14 +4995,39 @@ Remediation:
       <Answer Index="1" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="NotAFinding">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Individual authentication is required before group account access. Users must authenticate with personal credentials before using sudo, su, or any shared/service accounts. PAM is configured to enforce individual authentication. No direct group account login is permitted. The ISSO/ISSM should verify that shared account access procedures require individual authentication and that access is logged for accountability.</ValidTrueComment>
+        <ValidTrueComment>Individual authentication is required before group account access on this Xen Orchestra system.
+
+Evidence may include one or more of:
+(1) PAM configured to enforce individual authentication before sudo/su
+(2) No direct group account login permitted (service accounts use /usr/sbin/nologin)
+(3) sudo configured with individual user entries for accountability
+(4) XO auth-ldap plugin active — individual AD credentials required before any XO access
+
+COMPENSATING CONTROL (AD/LDAP): When the XO auth-ldap plugin is active, all users must authenticate with their individual Active Directory credentials before accessing Xen Orchestra. AD inherently enforces individual authentication — there are no shared AD credentials. Users are mapped to XO roles/groups based on their individual AD identity, ensuring accountability. Group-based permissions in XO (admin, operator, viewer) still require individual AD authentication first.
+
+The ISSO/ISSM should verify that shared account access procedures require individual authentication and that all access is logged for accountability.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
       <Answer Index="2" Hostname="" Instance="" Database="" Site="" ResultHash="" ExpectedStatus="Open">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>Individual authentication before group/shared account access requires verification. To remediate: (1) Disable direct login to shared accounts: set shell to /usr/sbin/nologin for service accounts. (2) Require sudo for privileged operations: configure /etc/sudoers with individual user entries. (3) Ensure su requires authentication: verify pam_rootok is not set for non-root users. (4) Log all shared account access through sudo logging. (5) Document procedures requiring individual authentication before any shared account usage.</ValidTrueComment>
+        <ValidTrueComment>Individual authentication before group/shared account access requires verification. No local enforcement detected and the XO auth-ldap plugin is not active.
+
+Remediation Options:
+Option A — Enable AD/LDAP authentication delegation (Recommended):
+(1) Install and configure the XO auth-ldap plugin
+(2) Configure individual AD user authentication for XO access
+(3) Map AD users/groups to XO roles (admin, operator, viewer)
+(4) Disable local XO account creation to enforce AD-only authentication
+(5) Verify all XO access requires individual AD credentials
+
+Option B — Enforce local individual authentication:
+(1) Disable direct login to shared accounts: set shell to /usr/sbin/nologin
+(2) Require sudo for privileged operations with individual user entries
+(3) Ensure su requires authentication (no pam_rootok for non-root)
+(4) Log all shared account access through sudo logging
+(5) Document procedures requiring individual authentication before shared account usage</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>

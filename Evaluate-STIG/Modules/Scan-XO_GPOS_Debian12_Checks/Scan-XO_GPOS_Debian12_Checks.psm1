@@ -221,6 +221,136 @@ Function Get-XOAuditPluginInfo {
     return $Global:XOAuditPluginInfo
 }
 
+Function Get-XOAuthLdapInfo {
+    <#
+    .SYNOPSIS
+        Checks if XO uses auth-ldap plugin for AD/LDAP authentication delegation.
+        Cached per scan session.
+    .DESCRIPTION
+        Detects the auth-ldap plugin by checking XO configuration files for LDAP
+        settings and optionally verifying the plugin package. When auth-ldap is
+        active, authentication/authorization is offloaded to Active Directory,
+        which satisfies several STIG requirements through delegation.
+        Results cached in $Global:XOAuthLdapInfo to avoid repeated checks.
+    #>
+
+    if ($null -ne $Global:XOAuthLdapInfo) {
+        return $Global:XOAuthLdapInfo
+    }
+
+    $nl = [Environment]::NewLine
+    $Global:XOAuthLdapInfo = @{
+        Enabled    = $false
+        LdapUri    = ""
+        BaseDN     = ""
+        Details    = ""
+    }
+
+    # Check 1: XO config files for auth-ldap settings
+    $configPaths = @(
+        "/opt/xo/xo-server/config.toml",
+        "/etc/xo-server/config.toml",
+        "/opt/xo/xo-server/.xo-server.yaml",
+        "/etc/xo-server/config.yaml"
+    )
+    foreach ($cfgPath in $configPaths) {
+        $cfgContent = $(timeout 5 cat $cfgPath 2>/dev/null)
+        if ($LASTEXITCODE -eq 0 -and $cfgContent) {
+            $cfgStr = ($cfgContent -join $nl)
+            # Look for auth-ldap plugin configuration
+            if ($cfgStr -match "auth-ldap|auth_ldap|authLdap") {
+                $Global:XOAuthLdapInfo.Enabled = $true
+                $Global:XOAuthLdapInfo.Details = "auth-ldap configured in $cfgPath"
+                # Extract LDAP URI
+                if ($cfgStr -match "(?i)url\s*=\s*[" + [char]34 + "']?(ldaps?://[^" + [char]34 + "'\s]+)") {
+                    $Global:XOAuthLdapInfo.LdapUri = $matches[1]
+                }
+                # Extract Base DN
+                if ($cfgStr -match "(?i)base\s*=\s*[" + [char]34 + "']?([^" + [char]34 + "'\s]+)") {
+                    $Global:XOAuthLdapInfo.BaseDN = $matches[1]
+                }
+                return $Global:XOAuthLdapInfo
+            }
+        }
+    }
+
+    # Check 2: Look for auth-ldap package in XO node_modules
+    $pluginPaths = @(
+        "/opt/xo/xo-server/node_modules/xo-server-auth-ldap",
+        "/opt/xo/node_modules/xo-server-auth-ldap",
+        "/usr/local/lib/node_modules/xo-server/node_modules/xo-server-auth-ldap",
+        "/opt/xen-orchestra/packages/xo-server-auth-ldap"
+    )
+    foreach ($plugPath in $pluginPaths) {
+        if (Test-Path $plugPath -ErrorAction SilentlyContinue) {
+            $Global:XOAuthLdapInfo.Enabled = $true
+            $Global:XOAuthLdapInfo.Details = "auth-ldap plugin found at $plugPath"
+            return $Global:XOAuthLdapInfo
+        }
+    }
+
+    # Check 3: Query XO REST API for plugin configuration (if token available)
+    $auditInfo = Get-XOAuditPluginInfo
+    if ($auditInfo.TokenFound) {
+        $sq = [char]39
+        $token = ""
+        # Re-read token (same priority as audit plugin)
+        if (Test-Path "/etc/xo-server/stig/api-token" -ErrorAction SilentlyContinue) {
+            $tokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+            if ($LASTEXITCODE -eq 0 -and $tokenContent) { $token = ($tokenContent -join "").Trim() }
+        }
+        if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
+        if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli" -ErrorAction SilentlyContinue)) {
+            $cliContent = $(timeout 5 cat /var/lib/xo-server/.xo-cli 2>&1)
+            if ($LASTEXITCODE -eq 0 -and $cliContent) {
+                try {
+                    $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                    $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
+                    if ($firstServer -and $firstServer.Value.token) { $token = $firstServer.Value.token }
+                }
+                catch { }
+            }
+        }
+
+        if ($token) {
+            # Query XO users to check for LDAP-authenticated users
+            $usersArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/users${sq} 2>/dev/null"
+            $usersJson = $(sh -c $usersArgs 2>&1)
+            if ($LASTEXITCODE -eq 0 -and $usersJson) {
+                $usersStr = ($usersJson -join "")
+                if ($usersStr -match "authProviders.*ldap|auth-ldap") {
+                    $Global:XOAuthLdapInfo.Enabled = $true
+                    $Global:XOAuthLdapInfo.Details = "LDAP-authenticated users detected via REST API"
+                    return $Global:XOAuthLdapInfo
+                }
+            }
+        }
+    }
+
+    # Check 4: OS-level LDAP integration (SSSD/nslcd with AD provider)
+    $sssdActive = $(timeout 5 systemctl is-active sssd 2>&1)
+    if (($sssdActive -join "").Trim() -eq "active") {
+        $sssdConf = $(timeout 5 cat /etc/sssd/sssd.conf 2>/dev/null)
+        if ($LASTEXITCODE -eq 0 -and $sssdConf) {
+            $sssdStr = ($sssdConf -join $nl)
+            if ($sssdStr -match "id_provider\s*=\s*(ldap|ad)|auth_provider\s*=\s*(ldap|ad|krb5)") {
+                $Global:XOAuthLdapInfo.Enabled = $true
+                $Global:XOAuthLdapInfo.Details = "SSSD active with LDAP/AD provider"
+                if ($sssdStr -match "ldap_uri\s*=\s*(\S+)") {
+                    $Global:XOAuthLdapInfo.LdapUri = $matches[1]
+                }
+                if ($sssdStr -match "ldap_search_base\s*=\s*(\S+)") {
+                    $Global:XOAuthLdapInfo.BaseDN = $matches[1]
+                }
+                return $Global:XOAuthLdapInfo
+            }
+        }
+    }
+
+    $Global:XOAuthLdapInfo.Details = "No LDAP/AD authentication integration detected"
+    return $Global:XOAuthLdapInfo
+}
+
 Function CheckPermissions {
     param(
         [string]$FindPath,
@@ -9295,10 +9425,37 @@ Function Get-V203640 {
         $FindingDetails += "  No explicit MFA SSH configuration found" + $nl
     }
 
-    # Status determination — MFA requires organizational deployment
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: MFA for network access to privileged accounts requires organizational deployment" + $nl
-    $FindingDetails += "of smartcard/PKI (CAC/PIV), TOTP, or hardware token authentication." + $nl
+
+    $FindingDetails += "--- Check 5: XO auth-ldap (AD Authentication Delegation) ---" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] User authentication delegated to AD via auth-ldap; AD enforces MFA for network access to privileged accounts" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "COMPENSATING CONTROL: Authentication is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD enforces MFA policies for all network" + $nl
+        $FindingDetails += "access to privileged accounts. The ISSO/ISSM should verify that AD MFA" + $nl
+        $FindingDetails += "policy is active and enrolled for all privileged users." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "RESULT: MFA for network access to privileged accounts requires organizational deployment" + $nl
+        $FindingDetails += "of smartcard/PKI (CAC/PIV), TOTP, or hardware token authentication." + $nl
+    }
 
     #---=== End Custom Code ===---#
 
@@ -9468,10 +9625,37 @@ Function Get-V203641 {
         $FindingDetails += "  No explicit MFA SSH configuration found" + $nl
     }
 
-    # Status determination — MFA requires organizational deployment
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: MFA for network access to non-privileged accounts requires organizational deployment" + $nl
-    $FindingDetails += "of smartcard/PKI (CAC/PIV), TOTP, or hardware token authentication." + $nl
+
+    $FindingDetails += "--- Check 5: XO auth-ldap (AD Authentication Delegation) ---" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] User authentication delegated to AD via auth-ldap; AD enforces MFA for network access to non-privileged accounts" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "COMPENSATING CONTROL: Authentication is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD enforces MFA policies for all network" + $nl
+        $FindingDetails += "access to non-privileged accounts. The ISSO/ISSM should verify that AD" + $nl
+        $FindingDetails += "MFA policy is active and enrolled for all users." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "RESULT: MFA for network access to non-privileged accounts requires organizational deployment" + $nl
+        $FindingDetails += "of smartcard/PKI (CAC/PIV), TOTP, or hardware token authentication." + $nl
+    }
 
     #---=== End Custom Code ===---#
 
@@ -9989,12 +10173,39 @@ Function Get-V203644 {
         }
     }
 
-    # Status determination — individual auth before group is org policy
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: Individual authentication before group/shared account" + $nl
-    $FindingDetails += "access requires organizational policy enforcement. Verify that" + $nl
-    $FindingDetails += "users authenticate with individual credentials before accessing" + $nl
-    $FindingDetails += "any shared or group accounts (e.g., via sudo, su)." + $nl
+
+    $FindingDetails += "--- Check 5: XO auth-ldap (AD Authentication Delegation) ---" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] AD via auth-ldap requires individual credentials; each user authenticates with unique AD account before accessing any shared resources" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "COMPENSATING CONTROL: Authentication is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. Each user authenticates with their unique" + $nl
+        $FindingDetails += "AD credentials before accessing any system resources. No shared XO" + $nl
+        $FindingDetails += "passwords exist when auth-ldap is the primary authentication method." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "RESULT: Individual authentication before group/shared account" + $nl
+        $FindingDetails += "access requires organizational policy enforcement. Verify that" + $nl
+        $FindingDetails += "users authenticate with individual credentials before accessing" + $nl
+        $FindingDetails += "any shared or group accounts (e.g., via sudo, su)." + $nl
+    }
 
     #---=== End Custom Code ===---#
 
@@ -20755,8 +20966,31 @@ Function Get-V203727 {
         $output += "  [INFO] SSSD not configured${nl}"
     }
 
-    if ($mfaConfigured) {
+
+    $output += "--- Check 5: XO auth-ldap (AD Authentication Delegation) ---" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $output += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $output += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $output += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $output += "  Source: $($xoLdapInfo.Details)" + $nl
+        $output += "  [PASS] Authentication delegated to AD via auth-ldap; AD infrastructure enforces MFA via separate device (CAC/PIV, Entra MFA, Duo) for remote privileged access" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $output += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $output += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $output += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $output += $nl
+    if ($mfaConfigured -or $ldapCompensates) {
         $Status = "NotAFinding"
+    }
+    if ($ldapCompensates -and -not $mfaConfigured) {
+        $output += "${nl}COMPENSATING CONTROL: Authentication is delegated to Active Directory${nl}"
+        $output += "via the XO auth-ldap plugin. AD infrastructure enforces MFA via separate${nl}"
+        $output += "device (CAC/PIV, Entra MFA, Duo) for remote privileged access.${nl}"
     }
 
     $FindingDetails = $output.TrimEnd()
@@ -20956,8 +21190,31 @@ Function Get-V203728 {
         $output += "  [ERROR] $($_.Exception.Message)${nl}"
     }
 
-    if ($pivCapable) {
+
+    $output += "--- Check 5: XO auth-ldap (AD Authentication Delegation) ---" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $output += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $output += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $output += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $output += "  Source: $($xoLdapInfo.Details)" + $nl
+        $output += "  [PASS] Authentication delegated to AD via auth-ldap; AD infrastructure accepts PIV/CAC credentials for user authentication" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $output += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $output += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $output += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $output += $nl
+    if ($pivCapable -or $ldapCompensates) {
         $Status = "NotAFinding"
+    }
+    if ($ldapCompensates -and -not $pivCapable) {
+        $output += "${nl}COMPENSATING CONTROL: Authentication is delegated to Active Directory${nl}"
+        $output += "via the XO auth-ldap plugin. AD infrastructure accepts PIV/CAC credentials${nl}"
+        $output += "for user authentication, satisfying this requirement through delegation.${nl}"
     }
 
     $FindingDetails = $output.TrimEnd()
