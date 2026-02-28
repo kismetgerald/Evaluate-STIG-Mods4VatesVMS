@@ -6395,6 +6395,10 @@ Function Get-V203622 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -6561,6 +6565,10 @@ Function Get-V203623 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -6724,6 +6732,10 @@ Function Get-V203624 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -9303,6 +9315,10 @@ Function Get-V203639 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -9503,6 +9519,10 @@ Function Get-V203640 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -9703,6 +9723,10 @@ Function Get-V203641 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -9876,6 +9900,10 @@ Function Get-V203642 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -10049,6 +10077,10 @@ Function Get-V203643 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -10253,6 +10285,10 @@ Function Get-V203644 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
@@ -21436,6 +21472,10 @@ Function Get-V203729 {
         Comments         = $Comments
         SeverityOverride = $SeverityOverride
         Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
     }
     return Send-CheckResult @SendCheckParams
 }
