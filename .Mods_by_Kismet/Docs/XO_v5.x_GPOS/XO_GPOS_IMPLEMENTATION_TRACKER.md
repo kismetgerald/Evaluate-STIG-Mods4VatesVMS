@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 98 (18 CAT I + 79 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 100 |
-| **Completion** | 49.5% |
+| **Implemented** | 108 (18 CAT I + 89 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 90 |
+| **Completion** | 54.5% |
 
-**Last validated test:** Test158 (Feb 27, 2026) — Exit 0, EvalScore 8.08%, 1:50 runtime, 10 O from Batch 8 (COMMENTS 198/198)
+**Last validated test:** Test164 (Feb 28, 2026) — Exit 0, EvalScore 20.2%, Batch 9 HeadParams fix validated
 
 ---
 
@@ -203,35 +203,35 @@
 | V-203777 | SV-203777r959008 | Off-load audit data | O | O | #60 | Test158 |
 | V-263658 | SV-263658r982561 | Monitor maintenance tools | O | O | #60 | Test158 |
 
-### Batch 9: PKI and Certificates (10 functions)
+### Batch 9: PKI and Certificates (10 functions) — DONE (Session #60b, Test164 validated)
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203622 | SV-203622r958448 | PKI certificate validation | NR | -- | -- | -- |
-| V-203623 | SV-203623r958450 | PKI enforce authorized access | NR | -- | -- | -- |
-| V-203624 | SV-203624r958452 | Map auth identity to user/group | NR | -- | -- | -- |
-| V-203639 | SV-203639r958482 | Uniquely ID org-defined processes | NR | -- | -- | -- |
-| V-203640 | SV-203640r958484 | MFA for network access (privileged) | NR | -- | -- | -- |
-| V-203641 | SV-203641r958486 | MFA for network access (non-privileged) | NR | -- | -- | -- |
-| V-203642 | SV-203642r982203 | MFA for local access (privileged) | NR | -- | -- | -- |
-| V-203643 | SV-203643r982204 | MFA for local access (non-privileged) | NR | -- | -- | -- |
-| V-203644 | SV-203644r982205 | Individual auth before shared account | NR | -- | -- | -- |
-| V-203729 | SV-203729r958818 | Verify PIV credentials electronically | NR | -- | -- | -- |
+| V-203622 | SV-203622r958448 | PKI certificate validation | O | Test164 | #60b | CA trust store checks |
+| V-203623 | SV-203623r958450 | PKI enforce authorized access | O | Test164 | #60b | Private key permissions |
+| V-203624 | SV-203624r958452 | Map auth identity to user/group | O | Test164 | #60b | PAM PKCS#11 mapping |
+| V-203639 | SV-203639r958482 | Uniquely ID org-defined processes | O | Test164 | #60b | UID uniqueness |
+| V-203640 | SV-203640r958484 | MFA for network access (privileged) | NF | Test164 | #60b | auth-ldap + AD MFA |
+| V-203641 | SV-203641r958486 | MFA for network access (non-privileged) | NF | Test164 | #60b | auth-ldap + AD MFA |
+| V-203642 | SV-203642r982203 | MFA for local access (privileged) | O | Test164 | #60b | No local MFA |
+| V-203643 | SV-203643r982204 | MFA for local access (non-privileged) | O | Test164 | #60b | No local MFA |
+| V-203644 | SV-203644r982205 | Individual auth before shared account | NF | Test164 | #60b | auth-ldap individual auth |
+| V-203729 | SV-203729r958818 | Verify PIV credentials electronically | O | Test164 | #60b | PIV verification |
 
 ### Batch 10: Access Control and Privilege (10 functions)
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203645 | SV-203645r958494 | Replay-resistant auth (network, privileged) | NR | -- | -- | -- |
-| V-203646 | SV-203646r982206 | Replay-resistant auth (network, non-priv) | NR | -- | -- | -- |
-| V-203647 | SV-203647r958498 | Uniquely identify peripherals | NR | -- | -- | -- |
-| V-203650 | SV-203650r958504 | Uniquely ID non-org users | NR | -- | -- | -- |
-| V-203655 | SV-203655r958514 | Separate user/management functionality | NR | -- | -- | -- |
-| V-203656 | SV-203656r958518 | Isolate security from nonsecurity functions | NR | -- | -- | -- |
-| V-203696 | SV-203696r958730 | Prevent software execution at higher privilege | NR | -- | -- | -- |
-| V-203718 | SV-203718r958796 | Enforce access restrictions | NR | -- | -- | -- |
-| V-203719 | SV-203719r982211 | Audit enforcement actions for access restrictions | NR | -- | -- | -- |
-| V-203722 | SV-203722r958808 | Deny-all, permit-by-exception policy | NR | -- | -- | -- |
+| V-203645 | SV-203645r958494 | Replay-resistant auth (network, privileged) | NF | -- | #61 | SSHv2 replay-resistant |
+| V-203646 | SV-203646r982206 | Replay-resistant auth (network, non-priv) | NF | -- | #61 | SSHv2 replay-resistant |
+| V-203647 | SV-203647r958498 | Uniquely identify peripherals | NF | -- | #61 | Kernel device enumeration |
+| V-203650 | SV-203650r958504 | Uniquely ID non-org users | NF | -- | #61 | Unique UIDs, PAM auth |
+| V-203655 | SV-203655r958514 | Separate user/management functionality | NF | -- | #61 | sudo, nologin shells |
+| V-203656 | SV-203656r958518 | Isolate security from nonsecurity functions | NF | -- | #61 | AppArmor, ASLR, LSM |
+| V-203696 | SV-203696r958730 | Prevent software execution at higher privilege | NF | -- | #61 | SUID mgmt, sudo, DAC |
+| V-203718 | SV-203718r958796 | Enforce access restrictions | NF | -- | #61 | DAC, umask, shadow perms |
+| V-203719 | SV-203719r982211 | Audit enforcement actions for access restrictions | O | -- | #61 | auditd not active |
+| V-203722 | SV-203722r958808 | Deny-all, permit-by-exception policy | O | -- | #61 | AppArmor/firewall check |
 
 ### Batch 11: System Configuration (10 functions)
 
