@@ -177,7 +177,8 @@ Function Get-XOAuditPluginInfo {
 
     $pluginsStr = ($pluginsJson -join "")
     if ($pluginsStr -notmatch "audit") {
-        $Global:XOAuditPluginInfo.Details = "Audit plugin not found in plugin list"
+        $truncated = if ($pluginsStr.Length -gt 200) { $pluginsStr.Substring(0, 200) + "..." } else { $pluginsStr }
+        $Global:XOAuditPluginInfo.Details = "Audit plugin not found in plugin list. API response (truncated): $truncated"
         return $Global:XOAuditPluginInfo
     }
 
