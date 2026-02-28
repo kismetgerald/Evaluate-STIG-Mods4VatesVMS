@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--**************************************************************************************
 This file contains answers for known opens and findings that cannot be evaluated through technical means.
 <STIGComments>      - Top element.  May only occur once.
@@ -525,7 +525,9 @@ Contact the system administrator to harden SSH configuration per DISA STIG requi
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules contain syscall monitoring with event type classification (-S parameter and -a always,exit filters), and (3) audit log entries contain type= fields (e.g., type=SYSCALL, type=PATH, type=CWD, type=EXECVE) that establish what type of events occurred.
 
-This meets the GPOS SRG requirement for audit records containing event type information.</ValidTrueComment>
+This meets the GPOS SRG requirement for audit records containing event type information.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -543,7 +545,9 @@ Remediation:
 4. Verify rules loaded: auditctl -l
 5. Check log content: ausearch -ts recent | head -50
 
-Ensure all audit records contain event type information per GPOS SRG requirements.</ValidTrueComment>
+Ensure all audit records contain event type information per GPOS SRG requirements.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -560,7 +564,9 @@ Ensure all audit records contain event type information per GPOS SRG requirement
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit log entries contain epoch timestamps in the msg=audit(timestamp:serial) format providing precise date/time, and (3) the system clock is synchronized via NTP ensuring timestamp accuracy.
 
-Audit timestamps use Unix epoch format with sub-second precision, which can be converted to human-readable dates using ausearch or aureport. This meets the GPOS SRG requirement.</ValidTrueComment>
+Audit timestamps use Unix epoch format with sub-second precision, which can be converted to human-readable dates using ausearch or aureport. This meets the GPOS SRG requirement.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -578,7 +584,9 @@ Remediation:
 4. Verify time sync: timedatectl status
 5. Confirm timestamps are accurate: date &amp;&amp; ausearch -ts recent -i | head -5
 
-Ensure system clock is synchronized and audit records contain valid timestamps.</ValidTrueComment>
+Ensure system clock is synchronized and audit records contain valid timestamps.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -595,7 +603,9 @@ Ensure system clock is synchronized and audit records contain valid timestamps.<
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) filesystem watch rules (-w) are configured to monitor specific paths, and (3) audit log entries contain PATH and CWD (Current Working Directory) records establishing where events occurred.
 
-The auditd filesystem watches track file access and modification at specific paths, while PATH/CWD records provide full filesystem location context for each audited event.</ValidTrueComment>
+The auditd filesystem watches track file access and modification at specific paths, while PATH/CWD records provide full filesystem location context for each audited event.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -615,7 +625,9 @@ Remediation:
 3. Make rules persistent in /etc/audit/rules.d/
 4. Verify PATH/CWD entries: ausearch -ts recent | grep -E "type=(PATH|CWD)"
 
-Ensure audit rules include filesystem watches for security-relevant paths.</ValidTrueComment>
+Ensure audit rules include filesystem watches for security-relevant paths.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -632,7 +644,9 @@ Ensure audit rules include filesystem watches for security-relevant paths.</Vali
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) syscall audit rules with -S parameter are configured to track system call sources, and (3) audit log SYSCALL entries contain pid, ppid, and exe fields that identify the source process and executable.
 
-These fields establish which process/program generated each audited event, meeting the GPOS SRG requirement for source identification in audit records.</ValidTrueComment>
+These fields establish which process/program generated each audited event, meeting the GPOS SRG requirement for source identification in audit records.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -651,7 +665,9 @@ Remediation:
 3. Verify source fields in logs: ausearch -ts recent -sc execve | grep -E "pid=|ppid=|exe="
 4. Make rules persistent in /etc/audit/rules.d/audit.rules
 
-Ensure syscall audit rules capture source process identification.</ValidTrueComment>
+Ensure syscall audit rules capture source process identification.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -668,7 +684,9 @@ Ensure syscall audit rules capture source process identification.</ValidTrueComm
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include exit/success filter parameters that capture event outcomes, and (3) audit log entries contain success=yes or success=no fields establishing whether each audited event succeeded or failed.
 
-The success field in SYSCALL audit records provides a clear binary outcome for each event, meeting the GPOS SRG requirement for outcome information in audit records.</ValidTrueComment>
+The success field in SYSCALL audit records provides a clear binary outcome for each event, meeting the GPOS SRG requirement for outcome information in audit records.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -685,7 +703,9 @@ Remediation:
 3. Verify outcome fields: ausearch -ts recent | grep "success="
 4. Add comprehensive rules in /etc/audit/rules.d/ that capture both successful and failed operations
 
-Ensure audit rules are configured to record event outcomes.</ValidTrueComment>
+Ensure audit rules are configured to record event outcomes.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -702,7 +722,9 @@ Ensure audit rules are configured to record event outcomes.</ValidTrueComment>
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for SUID/SGID binaries and execve syscalls are configured to capture privileged command execution, and (3) EXECVE audit records are present in the audit log capturing the full command text including arguments.
 
-The EXECVE record type captures the complete command line of executed programs, providing full-text recording as required by the GPOS SRG.</ValidTrueComment>
+The EXECVE record type captures the complete command line of executed programs, providing full-text recording as required by the GPOS SRG.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -722,7 +744,9 @@ Remediation:
 4. Verify EXECVE records: ausearch -ts recent -m EXECVE | head -20
 5. Make rules persistent in /etc/audit/rules.d/
 
-Ensure privileged command execution is fully recorded in audit logs.</ValidTrueComment>
+Ensure privileged command execution is fully recorded in audit logs.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -739,7 +763,9 @@ Ensure privileged command execution is fully recorded in audit logs.</ValidTrueC
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules include UID/AUID (Audit User ID) tracking that preserves the original user identity even when switching to shared/group accounts via su or sudo, and (3) audit log entries contain auid= fields identifying the individual user.
 
-The auid (audit UID) field is set at login and persists across su/sudo transitions, ensuring individual accountability even when using shared group accounts.</ValidTrueComment>
+The auid (audit UID) field is set at login and persists across su/sudo transitions, ensuring individual accountability even when using shared group accounts.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -758,7 +784,9 @@ Remediation:
 4. Verify auid tracking: ausearch -ts recent | grep "auid=" | head -10
 5. Ensure loginuid is set correctly: cat /proc/self/loginuid
 
-Individual accountability through auid tracking is required for all shared/group accounts.</ValidTrueComment>
+Individual accountability through auid tracking is required for all shared/group accounts.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -775,7 +803,9 @@ Individual accountability through auid tracking is required for all shared/group
 
 The automated check confirmed: (1) auditd.conf has failure action directives (space_left_action, admin_space_left_action) set to appropriate values such as SYSLOG or email, (2) action_mail_acct is configured to send email notifications, and (3) a mail transfer agent (postfix, sendmail, ssmtp, or msmtp) is installed to deliver alerts.
 
-This configuration meets the GPOS SRG requirement for ISSO/SA alerting on audit processing failure.</ValidTrueComment>
+This configuration meets the GPOS SRG requirement for ISSO/SA alerting on audit processing failure.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -796,7 +826,9 @@ Remediation:
 4. Restart auditd: systemctl restart auditd
 5. Test alert delivery: logger -p local0.emerg "audit test"
 
-ISSO/SA must receive timely notification of audit processing failures.</ValidTrueComment>
+ISSO/SA must receive timely notification of audit processing failures.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -984,7 +1016,9 @@ Unauthorized modification of audit records could mask malicious activity.</Valid
 
 The automated check confirmed: (1) /var/log/audit directory permissions restrict deletion to root only, (2) audit log files do not have other-write permissions preventing unauthorized deletion, and (3) auditd.conf max_log_file_action is configured to preserve audit records through rotation rather than deletion.
 
-This meets the GPOS SRG requirement for protecting audit information from unauthorized deletion.</ValidTrueComment>
+This meets the GPOS SRG requirement for protecting audit information from unauthorized deletion.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -1003,7 +1037,9 @@ Remediation:
 5. Restart auditd: systemctl restart auditd
 6. Consider: chattr +a /var/log/audit/audit.log (append-only)
 
-Audit records must be retained for forensic and compliance purposes.</ValidTrueComment>
+Audit records must be retained for forensic and compliance purposes.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -1020,7 +1056,9 @@ Audit records must be retained for forensic and compliance purposes.</ValidTrueC
 
 The automated check confirmed: (1) auditd is installed and active, (2) audit rules cover the four DoD-required event categories: security-relevant object access (file permission changes, file access), logon/access events (authentication, session initiation), account management events (user/group modifications), and kernel module operations (insmod/rmmod/modprobe), and (3) persistent audit rule files exist in /etc/audit/rules.d/.
 
-This comprehensive audit coverage meets the GPOS SRG requirement for DoD-defined auditable event generation.</ValidTrueComment>
+This comprehensive audit coverage meets the GPOS SRG requirement for DoD-defined auditable event generation.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -1042,7 +1080,9 @@ Remediation:
 4. Load rules: augenrules --load
 5. Verify coverage: auditctl -l | grep -c "^-"
 
-All four DoD event categories must be covered by audit rules.</ValidTrueComment>
+All four DoD event categories must be covered by audit rules.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -2822,7 +2862,9 @@ Remediation:
 
 The automated check confirmed: (1) auditd service is active and enabled, (2) audit rules for execve syscalls and SUID/SGID binary execution are configured to capture privileged function calls, and (3) SUID/SGID binaries in /usr are covered by audit rules ensuring privileged execution is tracked.
 
-This comprehensive privileged execution auditing meets the GPOS SRG requirement for auditing privileged function execution.</ValidTrueComment>
+This comprehensive privileged execution auditing meets the GPOS SRG requirement for auditing privileged function execution.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -2843,7 +2885,9 @@ Remediation:
 4. Load rules: augenrules --load
 5. Verify: auditctl -l | grep privileged
 
-All SUID/SGID binaries must have corresponding audit rules for privileged execution tracking.</ValidTrueComment>
+All SUID/SGID binaries must have corresponding audit rules for privileged execution tracking.
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
@@ -3888,7 +3932,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules are configured to monitor security object access attempts. The auditd service is active and rules capture open/openat/creat/truncate syscalls. Audit log confirms access events are being recorded.</ValidTrueComment>
+        <ValidTrueComment>Audit rules are configured to monitor security object access attempts. The auditd service is active and rules capture open/openat/creat/truncate syscalls. Audit log confirms access events are being recorded.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3902,7 +3948,9 @@ Remediation:
 2. Enable: systemctl enable --now auditd
 3. Add rules: auditctl -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -k access
 4. Add rules: auditctl -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -k access
-5. Make persistent: augenrules --load</ValidTrueComment>
+5. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3914,7 +3962,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules monitor extended attribute access (classification labels). The auditd service is active with rules for getxattr/lgetxattr/fgetxattr/listxattr syscalls. AppArmor provides category/label enforcement.</ValidTrueComment>
+        <ValidTrueComment>Audit rules monitor extended attribute access (classification labels). The auditd service is active with rules for getxattr/lgetxattr/fgetxattr/listxattr syscalls. AppArmor provides category/label enforcement.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3927,7 +3977,9 @@ Remediation:
 1. Install auditd: apt install auditd
 2. Add xattr access rules: auditctl -a always,exit -F arch=b64 -S getxattr,lgetxattr,fgetxattr,listxattr,llistxattr,flistxattr -F auid&gt;=1000 -k perm_access
 3. Enable AppArmor: systemctl enable --now apparmor
-4. Make persistent: augenrules --load</ValidTrueComment>
+4. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3966,7 +4018,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules monitor security object modifications. Watch rules are configured for /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, /etc/security/, and /etc/sudoers. Audit log confirms security file modification events.</ValidTrueComment>
+        <ValidTrueComment>Audit rules monitor security object modifications. Watch rules are configured for /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, /etc/security/, and /etc/sudoers. Audit log confirms security file modification events.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3984,7 +4038,9 @@ Remediation:
    auditctl -w /etc/gshadow -p wa -k identity
    auditctl -w /etc/sudoers -p wa -k actions
    auditctl -w /etc/security/ -p wa -k security
-3. Make persistent: augenrules --load</ValidTrueComment>
+3. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3996,7 +4052,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules monitor extended attribute modifications (classification labels). Rules for setxattr/lsetxattr/fsetxattr/removexattr syscalls are configured. Audit log confirms category modification events.</ValidTrueComment>
+        <ValidTrueComment>Audit rules monitor extended attribute modifications (classification labels). Rules for setxattr/lsetxattr/fsetxattr/removexattr syscalls are configured. Audit log confirms category modification events.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4009,7 +4067,9 @@ Remediation:
 1. Install auditd: apt install auditd
 2. Add xattr modification rules:
    auditctl -a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid&gt;=1000 -k perm_mod
-3. Make persistent: augenrules --load</ValidTrueComment>
+3. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4046,7 +4106,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules monitor security level deletion. Rules for removexattr syscalls are configured and AppArmor is active, logging profile changes that affect security levels.</ValidTrueComment>
+        <ValidTrueComment>Audit rules monitor security level deletion. Rules for removexattr syscalls are configured and AppArmor is active, logging profile changes that affect security levels.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4060,7 +4122,9 @@ Remediation:
 2. Add xattr removal rules:
    auditctl -a always,exit -F arch=b64 -S fremovexattr,lremovexattr,removexattr -F auid&gt;=1000 -k perm_mod
 3. Enable AppArmor: systemctl enable --now apparmor
-4. Make persistent: augenrules --load</ValidTrueComment>
+4. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4072,7 +4136,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Audit rules monitor security object deletion. Rules for unlink/unlinkat/rename/renameat syscalls are configured. Audit log confirms object deletion events are recorded.</ValidTrueComment>
+        <ValidTrueComment>Audit rules monitor security object deletion. Rules for unlink/unlinkat/rename/renameat syscalls are configured. Audit log confirms object deletion events are recorded.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4085,7 +4151,9 @@ Remediation:
 1. Install auditd: apt install auditd
 2. Add file deletion rules:
    auditctl -a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid&gt;=1000 -k delete
-3. Make persistent: augenrules --load</ValidTrueComment>
+3. Make persistent: augenrules --load
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4125,7 +4193,9 @@ Remediation:
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>The system generates audit records for privileged activities. The auditd service is active and audit rules are configured to capture privileged command execution including execve syscalls, setuid/setgid programs (sudo, su, passwd, chsh, chfn, newgrp), and other privileged operations. Audit log contains recent privileged activity events confirming the audit subsystem is functioning correctly.</ValidTrueComment>
+        <ValidTrueComment>The system generates audit records for privileged activities. The auditd service is active and audit rules are configured to capture privileged command execution including execve syscalls, setuid/setgid programs (sudo, su, passwd, chsh, chfn, newgrp), and other privileged operations. Audit log contains recent privileged activity events confirming the audit subsystem is functioning correctly.
+
+Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compensating application-layer auditing with cryptographic hash chain integrity. The plugin records all administrative actions including event type, timestamp, user identity, and action details via REST API, satisfying this requirement as a compensating control. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -4146,7 +4216,9 @@ Remediation:
    -w /usr/bin/chfn -p x -k privileged-chfn
    -w /usr/bin/newgrp -p x -k privileged-newgrp
 4. Reload rules: augenrules --load
-5. Verify: auditctl -l | grep privileged</ValidTrueComment>
+5. Verify: auditctl -l | grep privileged
+
+Alternative Compensating Control: If auditd installation is not feasible, enable the XO Audit Plugin (Settings &gt; Plugins &gt; audit) which provides application-layer audit records with hash chain integrity verification. The plugin records user actions, login events, permission changes, and configuration modifications. Ensure the API token is configured at /etc/xo-server/stig/api-token for automated scanning. See: https://docs.xen-orchestra.com/users#audit-log</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>

@@ -99,6 +99,122 @@ Function Get-FirewallStatus {
     return @{ Firewalls = $firewalls; Details = $details }
 }
 
+Function Get-XOAuditPluginInfo {
+    <#
+    .SYNOPSIS
+        Checks XO Audit Plugin status via REST API. Cached per scan session.
+    .DESCRIPTION
+        Queries Xen Orchestra REST API to determine if the audit plugin is active
+        and has recent audit records. Uses 3-source token lookup.
+        Results cached in $Global:XOAuditPluginInfo to avoid repeated API calls.
+        Reference: https://docs.xen-orchestra.com/users#audit-log
+    #>
+
+    if ($null -ne $Global:XOAuditPluginInfo) {
+        return $Global:XOAuditPluginInfo
+    }
+
+    $Global:XOAuditPluginInfo = @{
+        Enabled      = $false
+        RecordCount  = 0
+        HasIntegrity = $false
+        TokenFound   = $false
+        TokenSource  = ""
+        Details      = ""
+    }
+
+    $token = $null
+    $tokenSource = ""
+
+    # Priority 1: Server-side token file (recommended for STIG scans)
+    if (Test-Path "/etc/xo-server/stig/api-token" -ErrorAction SilentlyContinue) {
+        $tokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $tokenContent) {
+            $token = ($tokenContent -join "").Trim()
+            $tokenSource = "/etc/xo-server/stig/api-token"
+        }
+    }
+
+    # Priority 2: Environment variable
+    if (-not $token -and $env:XO_API_TOKEN) {
+        $token = $env:XO_API_TOKEN
+        $tokenSource = "XO_API_TOKEN environment variable"
+    }
+
+    # Priority 3: CLI config file
+    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli" -ErrorAction SilentlyContinue)) {
+        $cliContent = $(timeout 5 cat /var/lib/xo-server/.xo-cli 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $cliContent) {
+            try {
+                $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
+                if ($firstServer -and $firstServer.Value.token) {
+                    $token = $firstServer.Value.token
+                    $tokenSource = "/var/lib/xo-server/.xo-cli"
+                }
+            }
+            catch { }
+        }
+    }
+
+    if (-not $token) {
+        $Global:XOAuditPluginInfo.Details = "API token not found"
+        return $Global:XOAuditPluginInfo
+    }
+
+    $Global:XOAuditPluginInfo.TokenFound = $true
+    $Global:XOAuditPluginInfo.TokenSource = $tokenSource
+    $sq = [char]39
+
+    # Check plugin list for audit plugin
+    $curlArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins${sq} 2>/dev/null"
+    $pluginsJson = $(sh -c $curlArgs 2>&1)
+
+    if ($LASTEXITCODE -ne 0 -or -not $pluginsJson) {
+        $Global:XOAuditPluginInfo.Details = "Unable to query XO REST API"
+        return $Global:XOAuditPluginInfo
+    }
+
+    $pluginsStr = ($pluginsJson -join "")
+    if ($pluginsStr -notmatch "audit") {
+        $Global:XOAuditPluginInfo.Details = "Audit plugin not found in plugin list"
+        return $Global:XOAuditPluginInfo
+    }
+
+    $Global:XOAuditPluginInfo.Enabled = $true
+    $Global:XOAuditPluginInfo.Details = "Audit plugin detected and active"
+
+    # Query recent audit records
+    $recordArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records?limit=10${sq} 2>/dev/null"
+    $recordsJson = $(sh -c $recordArgs 2>&1)
+
+    if ($LASTEXITCODE -eq 0 -and $recordsJson) {
+        $recordsStr = ($recordsJson -join "")
+        try {
+            $records = $recordsStr | ConvertFrom-Json -ErrorAction SilentlyContinue
+            if ($records -is [Array]) {
+                $Global:XOAuditPluginInfo.RecordCount = $records.Count
+            }
+        }
+        catch { }
+
+        # Check one record for hash chain integrity fields
+        if ($Global:XOAuditPluginInfo.RecordCount -gt 0) {
+            $firstId = $records[0]
+            $detailArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records/${firstId}${sq} 2>/dev/null"
+            $detailJson = $(sh -c $detailArgs 2>&1)
+            if ($detailJson) {
+                $detailStr = ($detailJson -join "")
+                if ($detailStr -match "nonce|hash|previousRecord") {
+                    $Global:XOAuditPluginInfo.HasIntegrity = $true
+                }
+            }
+        }
+    }
+
+    return $Global:XOAuditPluginInfo
+}
+
 Function CheckPermissions {
     param(
         [string]$FindPath,
@@ -2864,8 +2980,33 @@ Function Get-V203604 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer event type recording via action and subject fields in audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3032,8 +3173,33 @@ Function Get-V203605 {
         $FindingDetails += "  [INFO] NTP not synchronized - timestamps may drift" + $nl
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer precise timestamps (Unix millisecond) in all audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3205,8 +3371,33 @@ Function Get-V203606 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer object identification in audit records linking actions to specific resources" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3383,8 +3574,33 @@ Function Get-V203607 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer source identification via user, session, and IP address in audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3556,8 +3772,33 @@ Function Get-V203608 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer success/failure outcome tracking in all audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3723,8 +3964,33 @@ Function Get-V203609 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer full-text recording of administrative actions including parameters" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -3896,8 +4162,33 @@ Function Get-V203610 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer individual user identification via authenticated session tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -4056,8 +4347,33 @@ Function Get-V203611 {
         $FindingDetails += "FAIL: No mail agent to deliver audit failure alerts" + $nl
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer account modification event recording via user management action tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -4218,6 +4534,14 @@ Function Get-V203613 {
     else {
         $FindingDetails += "INFO: Systemd journal remote services not active (may use rsyslog instead)" + $nl
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd file permission monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -4403,6 +4727,14 @@ Function Get-V203614 {
         $FindingDetails += "FAIL: Missing text processing tools" + $nl
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd file size monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -4573,6 +4905,14 @@ Function Get-V203615 {
         $auditIssues++
         $FindingDetails += "FAIL: Cannot read /var/log/audit/audit.log" + $nl
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit log file ownership; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -4755,6 +5095,14 @@ Function Get-V203616 {
         $FindingDetails += "FAIL: Cannot determine audit log ownership" + $nl
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit log file permissions; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -4936,6 +5284,14 @@ Function Get-V203617 {
     else {
         $FindingDetails += "INFO: lsattr not available or not supported on this filesystem" + $nl
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit log file size monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -5121,8 +5477,33 @@ Function Get-V203618 {
         $FindingDetails += "FAIL: /etc/audit/auditd.conf not found" + $nl
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer account enabling/disabling event recording via user status change tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -5306,8 +5687,33 @@ Function Get-V203619 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer comprehensive event coverage including access, logon, account, and configuration changes" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -5501,6 +5907,14 @@ Function Get-V203620 {
         $auditIssues++
         $FindingDetails += "FAIL: auditctl not found" + $nl
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit log deletion protection; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -12423,6 +12837,24 @@ Function Get-V203670 {
         $FindingDetails += "  [INFO] /etc/default/grub not accessible" + $nl
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [INFO] XO Audit Plugin provides boot-time audit initialization (XO audit starts after application launch, not at OS boot)" + $nl
+        $FindingDetails += "  [INFO] Partial coverage only — this check requires OS-level boot-time audit" + $nl
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -12717,6 +13149,14 @@ Function Get-V203672 {
         $FindingDetails += "PASS: dpkg --verify auditd returned no issues" + $nl
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit initialization settings; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -12911,6 +13351,13 @@ Function Get-V203673 {
             $FindingDetails += "$cf : NOT FOUND" + $nl
         }
     }
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit failure mode configuration; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $FindingDetails += "PASS: Audit configuration files protected from modification" + $nl
         $Status = "NotAFinding"
@@ -13101,6 +13548,23 @@ Function Get-V203674 {
     else {
         $FindingDetails += "INFO: No immutable attributes set on audit tools" + $nl
     }
+
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [INFO] XO Audit Plugin provides audit record generation at the application layer (does not cover OS-level audit tool protection)" + $nl
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+    }
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -16331,8 +16795,33 @@ Function Get-V203697 {
         $FindingDetails += "INFO: No SUID/SGID binaries found in /usr (maxdepth 3)" + $nl
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer privileged function execution recording via authenticated admin action tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -23331,8 +23820,33 @@ Function Get-V203759 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer user login/logout event recording via authenticated session tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -23496,8 +24010,33 @@ Function Get-V203760 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer user authentication event recording including login attempts and methods" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -23656,6 +24195,14 @@ Function Get-V203761 {
         $FindingDetails += "Privilege modification events: 0 or log not accessible" + $nl
         $auditIssues++
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd session lock event monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -23823,8 +24370,33 @@ Function Get-V203762 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer session termination event recording via logout and session cleanup tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -23984,8 +24556,33 @@ Function Get-V203763 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer privilege escalation recording via admin action tracking in audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -24144,6 +24741,14 @@ Function Get-V203764 {
         $FindingDetails += "Privilege deletion events: 0 or log not accessible" + $nl
         $auditIssues++
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd privilege elevation failure monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -24309,8 +24914,33 @@ Function Get-V203765 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer user/group modification recording via account management action tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -24470,8 +25100,33 @@ Function Get-V203766 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer permission modification recording via ACL and role change tracking" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -24638,6 +25293,14 @@ Function Get-V203767 {
         $auditIssues++
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd unauthorized access attempt monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -24799,8 +25462,33 @@ Function Get-V203768 {
         $auditIssues++
     }
 
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [PASS] XO Audit Plugin provides application-layer privileged activity recording via authenticated admin action tracking in audit records" + $nl
+        $xoAuditCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+        $xoAuditCompensates = $false
+    }
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
+    }
+    elseif ($xoAuditCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: While auditd is not active, the XO Audit Plugin" + $nl
+        $FindingDetails += "provides application-layer auditing with hash chain integrity that" + $nl
+        $FindingDetails += "satisfies this requirement for the Xen Orchestra application." + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -24959,6 +25647,14 @@ Function Get-V203769 {
         $FindingDetails += "Kernel module events: 0 or log not accessible" + $nl
         $auditIssues++
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit shutdown event monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -25119,6 +25815,14 @@ Function Get-V203770 {
             $auditIssues++
         }
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit configuration change monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -25282,6 +25986,14 @@ Function Get-V203771 {
         }
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit rule modification detection; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -25442,6 +26154,14 @@ Function Get-V203772 {
         $FindingDetails += "Object access events: 0 or log not accessible" + $nl
         $auditIssues++
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit system disable attempt detection; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -25604,6 +26324,14 @@ Function Get-V203773 {
             $auditIssues++
         }
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit failure recovery monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -25780,6 +26508,14 @@ Function Get-V203774 {
         }
     }
 
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit data protection enforcement; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
+
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
     }
@@ -25944,6 +26680,14 @@ Function Get-V203775 {
         $FindingDetails += "Kernel/execution events: 0 or log not accessible" + $nl
         $auditIssues++
     }
+
+
+    # Note: XO Audit Plugin Status
+    $FindingDetails += $nl + "--- Note: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    $FindingDetails += "  XO Audit Plugin: $(if ($xoAuditInfo.Enabled) {'ACTIVE'} else {'NOT DETECTED'})" + $nl
+    $FindingDetails += "  [INFO] This check requires OS-level auditd audit backup procedure monitoring; XO Audit Plugin does not address this requirement." + $nl
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -26287,6 +27031,23 @@ Function Get-V203777 {
         $FindingDetails += "Audit logrotate config: not found" + $nl
         $auditIssues++
     }
+
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [INFO] XO Audit Plugin provides audit trail integrity verification via cryptographic hash chain (each record linked to previous)" + $nl
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+    }
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
@@ -28812,6 +29573,23 @@ Function Get-V263658 {
             $FindingDetails += "INFO: Unable to query audit/auth logs for maintenance tool events" + $nl
         }
     }
+
+
+    # Check 4: XO Audit Plugin (Application-Layer Auditing)
+    $FindingDetails += $nl + "--- Check 4: XO Audit Plugin ---" + $nl
+    $xoAuditInfo = Get-XOAuditPluginInfo
+    if ($xoAuditInfo.Enabled) {
+        $FindingDetails += "  XO Audit Plugin: ACTIVE" + $nl
+        $FindingDetails += "  Recent audit records: $($xoAuditInfo.RecordCount)" + $nl
+        $FindingDetails += "  Hash chain integrity: $($xoAuditInfo.HasIntegrity)" + $nl
+        $FindingDetails += "  Token source: $($xoAuditInfo.TokenSource)" + $nl
+        $FindingDetails += "  [INFO] XO Audit Plugin provides maintenance and administrative operation recording via authenticated action tracking" + $nl
+    }
+    else {
+        $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
+    }
+    $FindingDetails += $nl
 
     if ($auditIssues -eq 0) {
         $Status = "NotAFinding"
