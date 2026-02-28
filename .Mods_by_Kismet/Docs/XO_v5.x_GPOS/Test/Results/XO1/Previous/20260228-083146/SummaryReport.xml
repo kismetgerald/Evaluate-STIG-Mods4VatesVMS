@@ -22,15 +22,14 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;Size                           [1024M]&#xA;'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;sr0&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//sr0/'
 1024M
+Index                          '//sr0/'
 DeviceID                       '//'</Size>
         <Caption>
         </Caption>
@@ -41,15 +40,14 @@ DeviceID                       '//'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;Size                           [30G]&#xA;'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;xvda&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda/'
 30G
+Index                          '//xvda/'
 DeviceID                       '//'</Size>
         <Caption>
         </Caption>
@@ -60,16 +58,16 @@ DeviceID                       '//'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [512M]
+
 boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda1/'
 512M
+Index                          '//xvda1/'
 DeviceID                       '///boot/efi'</Size>
         <Caption>
         </Caption>
@@ -80,15 +78,14 @@ DeviceID                       '///boot/efi'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda2/'
 28.5G
+Index                          '//xvda2/'
 DeviceID                       '///'</Size>
         <Caption>
         </Caption>
@@ -99,15 +96,14 @@ DeviceID                       '///'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;Size                           [976M]&#xA;[SWAP]'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;xvda3&#xA;[SWAP]'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda3/'
 976M
+Index                          '//xvda3/'
 SWAP</Size>
         <Caption>
         </Caption>
@@ -124,17 +120,17 @@ SWAP</Size>
     <Score>
       <CATI_OpenNRTotal>10</CATI_OpenNRTotal>
       <CATI_PossibleTotal>18</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>139</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>163</CATII_OpenNRTotal>
       <CATII_PossibleTotal>170</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>9</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>10</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>65</WeightedAvg>
+      <WeightedAvg>69</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-28T13:18:22.0091047-05:00" EvalScore="20.2">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-28T08:30:12.1865832-05:00" EvalScore="8.08">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -155,7 +151,7 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must not allow an unattended or automatic logon to the system." Status="NotAFinding" ID="V-203782" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Applicable" ID="V-252688" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="170" Not_Applicable="2" Open="58" NotAFinding="29" Not_Reviewed="81">
+      <CAT_II Total="170" Not_Applicable="2" Open="72" NotAFinding="5" Not_Reviewed="91">
         <Vuln RuleTitle="The operating system must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-203591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically remove or disable temporary user accounts after 72 hours." Status="Open" ID="V-203592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit all account creations." Status="Open" ID="V-203593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -167,26 +163,26 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must provide the capability for users to directly initiate a session lock for all connection types." Status="Open" ID="V-203600" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Open" ID="V-203601" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must monitor remote access methods." Status="NotAFinding" ID="V-203602" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing information to establish what type of events occurred." Status="NotAFinding" ID="V-203604" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing information to establish when (date and time) the events occurred." Status="NotAFinding" ID="V-203605" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing information to establish where the events occurred." Status="NotAFinding" ID="V-203606" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing information to establish the source of the events." Status="NotAFinding" ID="V-203607" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing information to establish the outcome of the events." Status="NotAFinding" ID="V-203608" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records containing the full-text recording of privileged commands." Status="NotAFinding" ID="V-203609" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must produce audit records containing the individual identities of group account users." Status="NotAFinding" ID="V-203610" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="NotAFinding" ID="V-203611" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing information to establish what type of events occurred." Status="Open" ID="V-203604" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing information to establish when (date and time) the events occurred." Status="Open" ID="V-203605" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing information to establish where the events occurred." Status="Open" ID="V-203606" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing information to establish the source of the events." Status="Open" ID="V-203607" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing information to establish the outcome of the events." Status="Open" ID="V-203608" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records containing the full-text recording of privileged commands." Status="Open" ID="V-203609" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must produce audit records containing the individual identities of group account users." Status="Open" ID="V-203610" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Open" ID="V-203611" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide the capability to centrally review and analyze audit records from multiple components within the system." Status="Open" ID="V-203613" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide the capability to filter audit records for events of interest based upon all audit fields within audit records." Status="Open" ID="V-203614" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must use internal system clocks to generate time stamps for audit records." Status="Open" ID="V-203615" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect audit information from unauthorized read access." Status="Open" ID="V-203616" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect audit information from unauthorized modification." Status="Open" ID="V-203617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must protect audit information from unauthorized deletion." Status="NotAFinding" ID="V-203618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components." Status="NotAFinding" ID="V-203619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must protect audit information from unauthorized deletion." Status="Open" ID="V-203618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components." Status="Open" ID="V-203619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Open" ID="V-203620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="Not_Reviewed" ID="V-203621" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Open" ID="V-203622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="NotAFinding" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must map the authenticated identity to the user or group account for PKI-based authentication." Status="Open" ID="V-203624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Not_Reviewed" ID="V-203622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="Not_Reviewed" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must map the authenticated identity to the user or group account for PKI-based authentication." Status="Not_Reviewed" ID="V-203624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one uppercase character be used." Status="Open" ID="V-203625" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one lowercase character be used." Status="Open" ID="V-203626" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one numeric character be used." Status="Open" ID="V-203627" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -198,12 +194,12 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="Open" ID="V-203636" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must be configured to disable non-essential capabilities." Status="Open" ID="V-203637" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Open" ID="V-203638" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="NotAFinding" ID="V-203639" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to privileged accounts." Status="NotAFinding" ID="V-203640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to non-privileged accounts." Status="NotAFinding" ID="V-203641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for local access to privileged accounts." Status="Open" ID="V-203642" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for local access to nonprivileged accounts." Status="Open" ID="V-203643" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="NotAFinding" ID="V-203644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="Not_Reviewed" ID="V-203639" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to privileged accounts." Status="Not_Reviewed" ID="V-203640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to non-privileged accounts." Status="Not_Reviewed" ID="V-203641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for local access to privileged accounts." Status="Not_Reviewed" ID="V-203642" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for local access to nonprivileged accounts." Status="Not_Reviewed" ID="V-203643" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="Not_Reviewed" ID="V-203644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="Not_Reviewed" ID="V-203645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="Not_Reviewed" ID="V-203646" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must uniquely identify peripherals before establishing a connection." Status="Not_Reviewed" ID="V-203647" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -250,7 +246,7 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must allow operating system admins to grant their privileges to other operating system admins." Status="Not_Reviewed" ID="V-203693" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must allow operating system admins to change security attributes on users, the operating system, or the operating systems components." Status="Not_Reviewed" ID="V-203694" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must prevent all software from executing at higher privilege levels than users executing the software." Status="Not_Reviewed" ID="V-203696" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must audit the execution of privileged functions." Status="NotAFinding" ID="V-203697" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must audit the execution of privileged functions." Status="Open" ID="V-203697" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes occur." Status="Not_Reviewed" ID="V-203698" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time." Status="Not_Reviewed" ID="V-203699" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts." Status="Not_Reviewed" ID="V-203703" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -269,9 +265,9 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must require users to reauthenticate for privilege escalation." Status="Not_Reviewed" ID="V-203723" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must require users to reauthenticate when changing roles." Status="Not_Reviewed" ID="V-203724" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must require users to reauthenticate when changing authenticators." Status="Not_Reviewed" ID="V-203725" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access." Status="NotAFinding" ID="V-203727" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access." Status="Open" ID="V-203727" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must accept Personal Identity Verification (PIV) credentials." Status="NotAFinding" ID="V-203728" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must electronically verify Personal Identity Verification (PIV) credentials." Status="Open" ID="V-203729" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must electronically verify Personal Identity Verification (PIV) credentials." Status="Not_Reviewed" ID="V-203729" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must authenticate peripherals before establishing a connection." Status="Not_Reviewed" ID="V-203730" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based." Status="Not_Reviewed" ID="V-203731" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must prohibit the use of cached authenticators after one day." Status="Not_Reviewed" ID="V-203733" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -289,16 +285,16 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must verify correct operation of all security functions." Status="Not_Reviewed" ID="V-203756" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must perform verification of the correct operation of security functions: upon system start-up and/or restart; upon command by a user with privileged access; and/or every 30 days." Status="Not_Reviewed" ID="V-203757" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must shut down the information system, restart the information system, and/or notify the system administrator when anomalies in the operation of any security functions are discovered." Status="Not_Reviewed" ID="V-203758" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access security objects occur." Status="NotAFinding" ID="V-203759" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur." Status="NotAFinding" ID="V-203760" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access security objects occur." Status="Open" ID="V-203759" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur." Status="Open" ID="V-203760" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to modify privileges occur." Status="Open" ID="V-203761" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to modify security objects occur." Status="NotAFinding" ID="V-203762" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur." Status="NotAFinding" ID="V-203763" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to modify security objects occur." Status="Open" ID="V-203762" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to modify categories of information (e.g., classification levels) occur." Status="Open" ID="V-203763" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to delete privileges occur." Status="Open" ID="V-203764" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to delete security levels occur." Status="NotAFinding" ID="V-203765" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to delete security objects occur." Status="NotAFinding" ID="V-203766" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to delete security levels occur." Status="Open" ID="V-203765" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to delete security objects occur." Status="Open" ID="V-203766" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful logon attempts occur." Status="Open" ID="V-203767" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records for privileged activities or other system-level access." Status="NotAFinding" ID="V-203768" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records for privileged activities or other system-level access." Status="Open" ID="V-203768" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The audit system must be configured to audit the loading and unloading of dynamic kernel modules." Status="Open" ID="V-203769" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records showing starting and ending time for user access to the system." Status="Open" ID="V-203770" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when concurrent logons to the same account occur from different sources." Status="Open" ID="V-203771" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
