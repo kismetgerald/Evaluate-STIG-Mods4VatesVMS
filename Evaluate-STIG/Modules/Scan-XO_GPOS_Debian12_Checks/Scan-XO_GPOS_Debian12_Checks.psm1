@@ -166,49 +166,47 @@ Function Get-XOAuditPluginInfo {
     $Global:XOAuditPluginInfo.TokenSource = $tokenSource
     $sq = [char]39
 
-    # Check plugin list for audit plugin
-    $curlArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins${sq} 2>/dev/null"
-    $pluginsJson = $(sh -c $curlArgs 2>&1)
-
-    if ($LASTEXITCODE -ne 0 -or -not $pluginsJson) {
-        $Global:XOAuditPluginInfo.Details = "Unable to query XO REST API"
-        return $Global:XOAuditPluginInfo
-    }
-
-    $pluginsStr = ($pluginsJson -join "")
-    if ($pluginsStr -notmatch "audit") {
-        $truncated = if ($pluginsStr.Length -gt 200) { $pluginsStr.Substring(0, 200) + "..." } else { $pluginsStr }
-        $Global:XOAuditPluginInfo.Details = "Audit plugin not found in plugin list. API response (truncated): $truncated"
-        return $Global:XOAuditPluginInfo
-    }
-
-    $Global:XOAuditPluginInfo.Enabled = $true
-    $Global:XOAuditPluginInfo.Details = "Audit plugin detected and active"
-
-    # Query recent audit records
+    # Detect audit plugin by querying its REST endpoint directly
+    # Note: /rest/v0/plugins is NOT a valid collection endpoint — each plugin
+    # registers sub-routes under /rest/v0/plugins/<name>/. We test the audit
+    # plugin by querying its records endpoint; a valid response means it is loaded.
     $recordArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records?limit=10${sq} 2>/dev/null"
     $recordsJson = $(sh -c $recordArgs 2>&1)
 
-    if ($LASTEXITCODE -eq 0 -and $recordsJson) {
-        $recordsStr = ($recordsJson -join "")
-        try {
-            $records = $recordsStr | ConvertFrom-Json -ErrorAction SilentlyContinue
-            if ($records -is [Array]) {
-                $Global:XOAuditPluginInfo.RecordCount = $records.Count
-            }
-        }
-        catch { }
+    if ($LASTEXITCODE -ne 0 -or -not $recordsJson) {
+        $Global:XOAuditPluginInfo.Details = "Unable to query XO REST API at /rest/v0/plugins/audit/records"
+        return $Global:XOAuditPluginInfo
+    }
 
-        # Check one record for hash chain integrity fields
-        if ($Global:XOAuditPluginInfo.RecordCount -gt 0) {
-            $firstId = $records[0]
-            $detailArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records/${firstId}${sq} 2>/dev/null"
-            $detailJson = $(sh -c $detailArgs 2>&1)
-            if ($detailJson) {
-                $detailStr = ($detailJson -join "")
-                if ($detailStr -match "nonce|hash|previousRecord") {
-                    $Global:XOAuditPluginInfo.HasIntegrity = $true
-                }
+    $recordsStr = ($recordsJson -join "")
+
+    # If the response is HTML (e.g., "Cannot GET ..."), the plugin is not loaded
+    if ($recordsStr -match "<!DOCTYPE|Cannot GET|<html") {
+        $Global:XOAuditPluginInfo.Details = "Audit plugin REST endpoint not available (plugin may not be loaded)"
+        return $Global:XOAuditPluginInfo
+    }
+
+    # Plugin is loaded — the endpoint responded with data
+    $Global:XOAuditPluginInfo.Enabled = $true
+    $Global:XOAuditPluginInfo.Details = "Audit plugin detected and active"
+
+    try {
+        $records = $recordsStr | ConvertFrom-Json -ErrorAction SilentlyContinue
+        if ($records -is [Array]) {
+            $Global:XOAuditPluginInfo.RecordCount = $records.Count
+        }
+    }
+    catch { }
+
+    # Check one record for hash chain integrity fields
+    if ($Global:XOAuditPluginInfo.RecordCount -gt 0) {
+        $firstId = $records[0]
+        $detailArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records/${firstId}${sq} 2>/dev/null"
+        $detailJson = $(sh -c $detailArgs 2>&1)
+        if ($detailJson) {
+            $detailStr = ($detailJson -join "")
+            if ($detailStr -match "nonce|hash|previousRecord|previousId") {
+                $Global:XOAuditPluginInfo.HasIntegrity = $true
             }
         }
     }
