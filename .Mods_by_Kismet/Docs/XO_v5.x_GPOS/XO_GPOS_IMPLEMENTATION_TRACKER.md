@@ -16,7 +16,7 @@
 | **Stubs (Not_Reviewed)** | 100 |
 | **Completion** | 49.5% |
 
-**Last validated test:** Test157 (Feb 27, 2026) — Exit 0, EvalScore 8.08%, 1:47 runtime, 10 O from Batch 7 (COMMENTS 198/198)
+**Last validated test:** Test158 (Feb 27, 2026) — Exit 0, EvalScore 8.08%, 1:50 runtime, 10 O from Batch 8 (COMMENTS 198/198)
 
 ---
 
@@ -192,16 +192,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203768 | SV-203768r991579 | Audit privileged activities | -- | -- | #60 | pending test |
-| V-203769 | SV-203769r991580 | Audit kernel module load/unload | -- | -- | #60 | pending test |
-| V-203770 | SV-203770r991581 | Audit session start/end times | -- | -- | #60 | pending test |
-| V-203771 | SV-203771r991582 | Audit concurrent logons | -- | -- | #60 | pending test |
-| V-203772 | SV-203772r991583 | Audit access to security objects | -- | -- | #60 | pending test |
-| V-203773 | SV-203773r991584 | Audit direct access to system | -- | -- | #60 | pending test |
-| V-203774 | SV-203774r991585 | Audit account creations/modifications/deletions | -- | -- | #60 | pending test |
-| V-203775 | SV-203775r991586 | Audit kernel module operations | -- | -- | #60 | pending test |
-| V-203777 | SV-203777r959008 | Off-load audit data | -- | -- | #60 | pending test |
-| V-263658 | SV-263658r982561 | Monitor maintenance tools | -- | -- | #60 | pending test |
+| V-203768 | SV-203768r991579 | Audit privileged activities | O | O | #60 | Test158 |
+| V-203769 | SV-203769r991580 | Audit kernel module load/unload | O | O | #60 | Test158 |
+| V-203770 | SV-203770r991581 | Audit session start/end times | O | O | #60 | Test158 |
+| V-203771 | SV-203771r991582 | Audit concurrent logons | O | O | #60 | Test158 |
+| V-203772 | SV-203772r991583 | Audit access to security objects | O | O | #60 | Test158 |
+| V-203773 | SV-203773r991584 | Audit direct access to system | O | O | #60 | Test158 |
+| V-203774 | SV-203774r991585 | Audit account creations/modifications/deletions | O | O | #60 | Test158 |
+| V-203775 | SV-203775r991586 | Audit kernel module operations | O | O | #60 | Test158 |
+| V-203777 | SV-203777r959008 | Off-load audit data | O | O | #60 | Test158 |
+| V-263658 | SV-263658r982561 | Monitor maintenance tools | O | O | #60 | Test158 |
 
 ### Batch 9: PKI and Certificates (10 functions)
 
