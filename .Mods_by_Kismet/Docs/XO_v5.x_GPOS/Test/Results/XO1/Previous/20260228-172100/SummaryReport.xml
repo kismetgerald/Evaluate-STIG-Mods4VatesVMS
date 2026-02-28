@@ -22,17 +22,15 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;'&#xA;sr0">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//sr0/'
+1024M
 DeviceID                       '//'
-1024M</Size>
+Index                          '//sr0/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +40,15 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;'&#xA;xvda">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda/'
+30G
 DeviceID                       '//'
-30G</Size>
+Index                          '//xvda/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +58,16 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-
-boot
-Size                           [512M]</DeviceID>
+Size                           [512M]
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda1/'
+512M
 DeviceID                       '///boot/efi'
-512M</Size>
+Index                          '//xvda1/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +77,15 @@ DeviceID                       '///boot/efi'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda2/'
+28.5G
 DeviceID                       '///'
-28.5G</Size>
+Index                          '//xvda2/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +95,15 @@ DeviceID                       '///'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;[SWAP]'&#xA;xvda3">
         <DeviceID>Name                           Value
 ----                           -----
-
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda3/'
+976M
 SWAP
-976M</Size>
+Index                          '//xvda3/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -138,7 +129,7 @@ SWAP
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-28T17:39:00.9844509-05:00" EvalScore="24.24">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-02-28T17:19:17.0839234-05:00" EvalScore="24.24">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
