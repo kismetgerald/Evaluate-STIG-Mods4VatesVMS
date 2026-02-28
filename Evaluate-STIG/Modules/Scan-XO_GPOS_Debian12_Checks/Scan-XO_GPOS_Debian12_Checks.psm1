@@ -1,4 +1,4 @@
-##########################################################################
+﻿##########################################################################
 # Evaluate-STIG module
 # --------------------
 # STIG:     Debian 12 GPOS (General Purpose Operating System)
@@ -2994,6 +2994,7 @@ Function Get-V203604 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -3187,6 +3188,7 @@ Function Get-V203605 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -3385,6 +3387,7 @@ Function Get-V203606 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -3588,6 +3591,7 @@ Function Get-V203607 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -3786,6 +3790,7 @@ Function Get-V203608 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -3978,6 +3983,7 @@ Function Get-V203609 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -4176,6 +4182,7 @@ Function Get-V203610 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -4361,6 +4368,7 @@ Function Get-V203611 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -5491,6 +5499,7 @@ Function Get-V203618 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -5701,6 +5710,7 @@ Function Get-V203619 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -12851,6 +12861,7 @@ Function Get-V203670 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
     }
     $FindingDetails += $nl
@@ -13562,6 +13573,7 @@ Function Get-V203674 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
     }
     $FindingDetails += $nl
@@ -16809,6 +16821,7 @@ Function Get-V203697 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -23834,6 +23847,7 @@ Function Get-V203759 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -24024,6 +24038,7 @@ Function Get-V203760 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -24384,6 +24399,7 @@ Function Get-V203762 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -24570,6 +24586,7 @@ Function Get-V203763 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -24928,6 +24945,7 @@ Function Get-V203765 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -25114,6 +25132,7 @@ Function Get-V203766 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -25476,6 +25495,7 @@ Function Get-V203768 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
         $xoAuditCompensates = $false
     }
@@ -27045,6 +27065,7 @@ Function Get-V203777 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
     }
     $FindingDetails += $nl
@@ -29587,6 +29608,7 @@ Function Get-V263658 {
     }
     else {
         $FindingDetails += "  XO Audit Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoAuditInfo.Details)" + $nl
         $FindingDetails += "  [INFO] No application-layer audit compensation available" + $nl
     }
     $FindingDetails += $nl
