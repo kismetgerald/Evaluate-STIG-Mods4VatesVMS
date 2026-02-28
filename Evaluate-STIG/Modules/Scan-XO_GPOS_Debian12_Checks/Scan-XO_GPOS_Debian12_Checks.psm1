@@ -99,6 +99,74 @@ Function Get-FirewallStatus {
     return @{ Firewalls = $firewalls; Details = $details }
 }
 
+Function Get-XODeploymentModel {
+    <#
+    .SYNOPSIS
+        Detects whether this is XOA (Appliance) or XOCE (Community Edition)
+    .DESCRIPTION
+        XOA: Official Vates appliance — UFW firewall enabled by default, installs to /usr/share/xo-server
+        XOCE: Built from source — no default firewall, installs to /opt/xo
+        Results cached in $Global:XODeploymentModel to avoid repeated checks.
+    #>
+
+    if ($null -ne $Global:XODeploymentModel) {
+        return $Global:XODeploymentModel
+    }
+
+    $Global:XODeploymentModel = @{
+        Model = "Unknown"
+        Details = ""
+    }
+
+    $xoaMarkers = @(
+        "/usr/share/xo-server",
+        "/usr/local/share/xo-server"
+    )
+    $xoceMarkers = @(
+        "/opt/xo/xo-server",
+        "/opt/xo/xo-src"
+    )
+
+    $isXOA = $false
+    $isXOCE = $false
+
+    foreach ($p in $xoaMarkers) {
+        $check = $(timeout 3 test -d $p 2>&1; echo $LASTEXITCODE)
+        $checkStr = ($check -join " ").Trim()
+        if ($checkStr -match "0$") { $isXOA = $true; break }
+    }
+
+    if (-not $isXOA) {
+        $xoaUpdater = $(timeout 3 which xoa-updater 2>&1)
+        $xoaUpdaterStr = ($xoaUpdater -join " ").Trim()
+        if ($xoaUpdaterStr -and $xoaUpdaterStr -notmatch "not found|no xoa-updater") {
+            $isXOA = $true
+        }
+    }
+
+    if (-not $isXOA) {
+        foreach ($p in $xoceMarkers) {
+            $check = $(timeout 3 test -d $p 2>&1; echo $LASTEXITCODE)
+            $checkStr = ($check -join " ").Trim()
+            if ($checkStr -match "0$") { $isXOCE = $true; break }
+        }
+    }
+
+    if ($isXOA) {
+        $Global:XODeploymentModel.Model = "XOA"
+        $Global:XODeploymentModel.Details = "XOA (Appliance) — UFW firewall enabled by default"
+    }
+    elseif ($isXOCE) {
+        $Global:XODeploymentModel.Model = "XOCE"
+        $Global:XODeploymentModel.Details = "XOCE (Community Edition) — no default firewall; must be configured manually"
+    }
+    else {
+        $Global:XODeploymentModel.Details = "Unable to determine XO deployment model"
+    }
+
+    return $Global:XODeploymentModel
+}
+
 Function Get-XOAuditPluginInfo {
     <#
     .SYNOPSIS
@@ -9011,6 +9079,11 @@ Function Get-V203638 {
     $output = ""
     $firewallActive = $false
 
+    # XO Deployment Model context
+    $xoModel = Get-XODeploymentModel
+    $output += "--- XO Deployment Model ---${nl}"
+    $output += "  $($xoModel.Details)${nl}${nl}"
+
     # Check 1: Firewall status
     $output += "Check 1: Firewall Status${nl}"
     try {
@@ -9062,6 +9135,9 @@ Function Get-V203638 {
                 $output += "  [FAIL] No active firewall detected${nl}"
             }
         }
+    }
+    if (-not $firewallActive -and $xoModel.Model -eq "XOCE") {
+        $output += "  [INFO] XOCE does not include a firewall by default — configure UFW or nftables${nl}"
     }
     $output += $nl
 
@@ -16416,6 +16492,11 @@ Function Get-V203687 {
     $output = ""
     $capabilities = 0
 
+    # XO Deployment Model context
+    $xoModel = Get-XODeploymentModel
+    $output += "--- XO Deployment Model ---${nl}"
+    $output += "  $($xoModel.Details)${nl}${nl}"
+
     # Check 1: SSH service can be stopped/restarted
     $output += "Check 1: SSH Service Control Capability${nl}"
     try {
@@ -16453,6 +16534,9 @@ Function Get-V203687 {
             }
             else {
                 $output += "  [FAIL] No firewall tool available for immediate blocking${nl}"
+                if ($xoModel.Model -eq "XOCE") {
+                    $output += "  [INFO] XOCE does not include a firewall by default — install UFW: apt install ufw${nl}"
+                }
             }
         }
     }
@@ -21070,6 +21154,11 @@ Function Get-V203722 {
 
     $issues = 0
 
+    # XO Deployment Model context
+    $xoModel = Get-XODeploymentModel
+    $FindingDetails += "--- XO Deployment Model ---" + $nl
+    $FindingDetails += "  $($xoModel.Details)" + $nl + $nl
+
     $FindingDetails += "--- Check 1: Package Management (APT) ---" + $nl
     $aptSources = $(timeout 5 cat /etc/apt/sources.list 2>&1)
     $aptStr = ($aptSources -join $nl).Trim()
@@ -21125,6 +21214,9 @@ Function Get-V203722 {
         else {
             $FindingDetails += "  No active firewall detected (UFW/nftables)" + $nl
             $FindingDetails += "  [FAIL] No network deny-all policy in place" + $nl
+            if ($xoModel.Model -eq "XOCE") {
+                $FindingDetails += "  [INFO] XOCE does not include a firewall by default — configure UFW or nftables" + $nl
+            }
             $issues++
         }
     }
