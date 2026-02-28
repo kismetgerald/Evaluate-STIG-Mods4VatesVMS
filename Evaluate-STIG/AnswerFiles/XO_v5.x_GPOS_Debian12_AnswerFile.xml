@@ -3281,22 +3281,6 @@ Remediation:
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>Audit enforcement actions for access restrictions are properly configured on this Debian 12 system.
-
-Evidence:
-(1) auditd service active and running
-(2) Permission change syscalls audited (chmod, chown, fchmod, setxattr, etc.)
-(3) Access denial events (EACCES, EPERM) captured in audit log
-(4) XO Audit Plugin provides application-layer access enforcement logging
-
-The ISSO/ISSM should verify audit rules cover all required access enforcement actions and that audit logs are reviewed regularly.</ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Audit enforcement of access restrictions is not fully configured.
 
 Possible findings:
@@ -3313,6 +3297,22 @@ Remediation:
 4. Add access denial rules:
    -a always,exit -F arch=b64 -S open,creat,truncate -F exit=-EACCES -k access
 5. Reload rules: augenrules --load</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Audit enforcement actions for access restrictions are properly configured on this Debian 12 system.
+
+Evidence:
+(1) auditd service active and running
+(2) Permission change syscalls audited (chmod, chown, fchmod, setxattr, etc.)
+(3) Access denial events (EACCES, EPERM) captured in audit log
+(4) XO Audit Plugin provides application-layer access enforcement logging
+
+The ISSO/ISSM should verify audit rules cover all required access enforcement actions and that audit logs are reviewed regularly.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -3379,22 +3379,6 @@ Remediation:
         <!--Index created by Evaluate-STIG_GUI.ps1-->
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>Open</ValidTrueStatus>
-        <ValidTrueComment>A deny-all, permit-by-exception policy is implemented on this Debian 12 system.
-
-Evidence:
-(1) AppArmor active with profiles in enforce mode (application whitelisting)
-(2) Firewall configured with deny-all default incoming policy
-(3) Limited APT package sources configured (authorized repositories only)
-(4) Execution restrictions on temporary directories (noexec mount options)
-
-The ISSO/ISSM should verify that AppArmor profiles cover all critical applications and that the firewall deny-all policy is maintained.</ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Deny-all, permit-by-exception policy is not fully implemented.
 
 Possible findings:
@@ -3408,6 +3392,22 @@ Remediation:
 3. Add noexec to /tmp and /var/tmp in /etc/fstab
 4. Restrict APT sources to authorized repositories only
 5. Create AppArmor profiles for critical applications: aa-genprof &lt;application&gt;</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <!--Index created by Evaluate-STIG_GUI.ps1-->
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>A deny-all, permit-by-exception policy is implemented on this Debian 12 system.
+
+Evidence:
+(1) AppArmor active with profiles in enforce mode (application whitelisting)
+(2) Firewall configured with deny-all default incoming policy
+(3) Limited APT package sources configured (authorized repositories only)
+(4) Execution restrictions on temporary directories (noexec mount options)
+
+The ISSO/ISSM should verify that AppArmor profiles cover all critical applications and that the firewall deny-all policy is maintained.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
