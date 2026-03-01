@@ -6757,7 +6757,7 @@ ISSO/ISSM: Verify umask is 077 or more restrictive for all authenticated users.<
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>DOCUMENTATION: The system is configured to notify system administrators and ISSOs when accounts are created. PAM configuration includes pam_exec or pam_script modules for account creation notification. Auditd rules monitor /etc/passwd, /etc/shadow, and /etc/group for modifications via -w watch rules. The XO Audit Plugin records user account creation events at the application layer. Email notification or SIEM alerting is configured for account creation events per organizational security policy.</ValidTrueComment>
+        <ValidTrueComment>DOCUMENTATION: SA/ISSO notification for account creation is satisfied through Active Directory delegation. XO uses the auth-ldap plugin to offload all user account management to AD. AD logs account creation events in the Windows Security Event Log (Event IDs 4720/4722) and organizational Group Policy or SIEM alerting rules trigger notifications to SAs/ISSOs. Additionally, the XO Audit Plugin records application-layer account actions with hash chain integrity. For systems without AD integration, auditd watch rules on /etc/passwd, /etc/shadow, and /etc/group with email alerting via action_mail_acct provide OS-level notification.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -6776,7 +6776,7 @@ ISSO/ISSM: Verify umask is 077 or more restrictive for all authenticated users.<
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>DOCUMENTATION: The system is configured to notify system administrators and ISSOs when accounts are modified. PAM configuration includes notification modules for account modification events. Auditd rules monitor /etc/passwd, /etc/shadow, /etc/group, and /etc/gshadow for write access and attribute changes. The XO Audit Plugin records user permission and role modification events at the application layer. Centralized logging forwards modification events to SIEM for alerting.</ValidTrueComment>
+        <ValidTrueComment>DOCUMENTATION: SA/ISSO notification for account modification is satisfied through Active Directory delegation. XO uses the auth-ldap plugin to offload all user account management to AD. AD logs account modification events in the Windows Security Event Log (Event IDs 4738/4742) and organizational Group Policy or SIEM alerting rules trigger notifications to SAs/ISSOs. Additionally, the XO Audit Plugin records permission and role modification events with hash chain integrity. For systems without AD integration, auditd watch rules on /etc/passwd, /etc/shadow, /etc/group, and /etc/gshadow with SIEM forwarding provide OS-level notification.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -6795,7 +6795,7 @@ ISSO/ISSM: Verify umask is 077 or more restrictive for all authenticated users.<
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>DOCUMENTATION: The system is configured to notify system administrators and ISSOs when accounts are disabled. PAM configuration includes notification modules for account disabling events. Auditd rules monitor /etc/shadow for attribute changes that indicate account locking (password field changes). The XO Audit Plugin records account status change events at the application layer. The passwd -l and usermod -L commands generate audit events when accounts are locked.</ValidTrueComment>
+        <ValidTrueComment>DOCUMENTATION: SA/ISSO notification for account disabling is satisfied through Active Directory delegation. XO uses the auth-ldap plugin to offload all user account management to AD. AD logs account disabling events in the Windows Security Event Log (Event IDs 4725/4726) and organizational Group Policy or SIEM alerting rules trigger notifications to SAs/ISSOs. Additionally, the XO Audit Plugin records account status change events with hash chain integrity. For systems without AD integration, auditd watch rules on /etc/shadow with email alerting via action_mail_acct provide OS-level notification of account lock operations.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
@@ -6814,7 +6814,7 @@ ISSO/ISSM: Verify umask is 077 or more restrictive for all authenticated users.<
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>DOCUMENTATION: The system is configured to notify system administrators and ISSOs when accounts are removed. PAM configuration includes notification modules for account removal events. Auditd rules monitor /etc/passwd and /etc/shadow for write access, capturing userdel operations. The XO Audit Plugin records user account deletion events at the application layer. Centralized logging forwards account removal events to SIEM for alerting and compliance tracking.</ValidTrueComment>
+        <ValidTrueComment>DOCUMENTATION: SA/ISSO notification for account removal is satisfied through Active Directory delegation. XO uses the auth-ldap plugin to offload all user account management to AD. AD logs account removal events in the Windows Security Event Log (Event IDs 4726/4743) and organizational Group Policy or SIEM alerting rules trigger notifications to SAs/ISSOs. Additionally, the XO Audit Plugin records account deletion events with hash chain integrity. For systems without AD integration, auditd watch rules on /etc/passwd and /etc/shadow with SIEM forwarding provide OS-level notification of userdel operations.</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>

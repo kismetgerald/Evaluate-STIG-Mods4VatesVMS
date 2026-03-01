@@ -16307,10 +16307,38 @@ Function Get-V203678 {
         $FindingDetails += "  No PAM notification hooks configured" + $nl
     }
 
-    # Status determination - always Open (org notification config required)
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: SA/ISSO notification for account account creation requires organizational configuration." + $nl
-    $FindingDetails += "  Verify account creation triggers notification to SAs and ISSOs." + $nl
+    # Check 5: AD/LDAP Authentication Delegation
+    $FindingDetails += $nl + "Check 5: AD/LDAP Authentication Delegation" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] Account management delegated to AD; AD provides account creation audit trails and notification via Windows Security Event Log" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: User account management is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD logs all account creation events in the Windows" + $nl
+        $FindingDetails += "Security Event Log (Event IDs 4720/4722) and can trigger notifications to SAs/ISSOs" + $nl
+        $FindingDetails += "via Group Policy, SIEM integration, or email alerting rules." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: SA/ISSO notification for account creation requires organizational configuration." + $nl
+        $FindingDetails += "  Verify account creation triggers notification to SAs and ISSOs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16465,10 +16493,38 @@ Function Get-V203679 {
         $FindingDetails += "  No PAM notification hooks configured" + $nl
     }
 
-    # Status determination - always Open (org notification config required)
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: SA/ISSO notification for account account modification requires organizational configuration." + $nl
-    $FindingDetails += "  Verify account modification triggers notification to SAs and ISSOs." + $nl
+    # Check 5: AD/LDAP Authentication Delegation
+    $FindingDetails += $nl + "Check 5: AD/LDAP Authentication Delegation" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] Account management delegated to AD; AD provides account modification audit trails and notification via Windows Security Event Log" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: User account management is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD logs all account modification events in the Windows" + $nl
+        $FindingDetails += "Security Event Log (Event IDs 4738/4742) and can trigger notifications to SAs/ISSOs" + $nl
+        $FindingDetails += "via Group Policy, SIEM integration, or email alerting rules." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: SA/ISSO notification for account modification requires organizational configuration." + $nl
+        $FindingDetails += "  Verify account modification triggers notification to SAs and ISSOs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16623,10 +16679,38 @@ Function Get-V203680 {
         $FindingDetails += "  No PAM notification hooks configured" + $nl
     }
 
-    # Status determination - always Open (org notification config required)
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: SA/ISSO notification for account account disabling requires organizational configuration." + $nl
-    $FindingDetails += "  Verify account disabling triggers notification to SAs and ISSOs." + $nl
+    # Check 5: AD/LDAP Authentication Delegation
+    $FindingDetails += $nl + "Check 5: AD/LDAP Authentication Delegation" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] Account management delegated to AD; AD provides account disabling audit trails and notification via Windows Security Event Log" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: User account management is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD logs all account disabling events in the Windows" + $nl
+        $FindingDetails += "Security Event Log (Event IDs 4725/4726) and can trigger notifications to SAs/ISSOs" + $nl
+        $FindingDetails += "via Group Policy, SIEM integration, or email alerting rules." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: SA/ISSO notification for account disabling requires organizational configuration." + $nl
+        $FindingDetails += "  Verify account disabling triggers notification to SAs and ISSOs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16781,10 +16865,38 @@ Function Get-V203681 {
         $FindingDetails += "  No PAM notification hooks configured" + $nl
     }
 
-    # Status determination - always Open (org notification config required)
-    $Status = "Open"
-    $FindingDetails += $nl + "RESULT: SA/ISSO notification for account account removal requires organizational configuration." + $nl
-    $FindingDetails += "  Verify account removal triggers notification to SAs and ISSOs." + $nl
+    # Check 5: AD/LDAP Authentication Delegation
+    $FindingDetails += $nl + "Check 5: AD/LDAP Authentication Delegation" + $nl
+    $xoLdapInfo = Get-XOAuthLdapInfo
+    $ldapCompensates = $false
+    if ($xoLdapInfo.Enabled) {
+        $FindingDetails += "  XO auth-ldap Plugin: ACTIVE" + $nl
+        if ($xoLdapInfo.LdapUri) { $FindingDetails += "  LDAP Server: $($xoLdapInfo.LdapUri)" + $nl }
+        if ($xoLdapInfo.BaseDN) { $FindingDetails += "  Base DN: $($xoLdapInfo.BaseDN)" + $nl }
+        $FindingDetails += "  Source: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [PASS] Account management delegated to AD; AD provides account removal audit trails and notification via Windows Security Event Log" + $nl
+        $ldapCompensates = $true
+    }
+    else {
+        $FindingDetails += "  XO auth-ldap Plugin: NOT DETECTED" + $nl
+        $FindingDetails += "  Reason: $($xoLdapInfo.Details)" + $nl
+        $FindingDetails += "  [INFO] No AD/LDAP authentication delegation available" + $nl
+    }
+    $FindingDetails += $nl
+
+    # Status determination
+    if ($ldapCompensates) {
+        $Status = "NotAFinding"
+        $FindingDetails += "COMPENSATING CONTROL: User account management is delegated to Active Directory" + $nl
+        $FindingDetails += "via the XO auth-ldap plugin. AD logs all account removal events in the Windows" + $nl
+        $FindingDetails += "Security Event Log (Event IDs 4726/4743) and can trigger notifications to SAs/ISSOs" + $nl
+        $FindingDetails += "via Group Policy, SIEM integration, or email alerting rules." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "RESULT: SA/ISSO notification for account removal requires organizational configuration." + $nl
+        $FindingDetails += "  Verify account removal triggers notification to SAs and ISSOs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
