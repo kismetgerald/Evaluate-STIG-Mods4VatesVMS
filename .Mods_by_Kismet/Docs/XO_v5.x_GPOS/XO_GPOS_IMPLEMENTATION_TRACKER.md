@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 128 (18 CAT I + 109 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 70 |
-| **Completion** | 64.6% |
+| **Implemented** | 148 (18 CAT I + 129 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 50 |
+| **Completion** | 74.7% |
 
-**Last validated test:** Test169 (Mar 1, 2026) — Exit 0, EvalScore 34.85%, Batch 14 validated (10/10 pass, 7 NF + 3 O)
+**Last validated test:** Test171 (Mar 1, 2026) — Exit 0, EvalScore 37.88%, Batch 16 validated (10/10 pass, 2 NF + 8 O)
 
 ---
 
@@ -297,31 +297,31 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203747 | SV-203747r958902 | DoS protection/rate limiting | NR | -- | -- | -- |
-| V-203752 | SV-203752r958926 | Predictable/documented behavior | NR | -- | -- | -- |
-| V-203753 | SV-203753r958928 | Non-executable data (NX/DEP) | NR | -- | -- | -- |
-| V-203754 | SV-203754r958928 | Address space layout randomization (ASLR) | NR | -- | -- | -- |
-| V-203755 | SV-203755r958936 | Remove old software components | NR | -- | -- | -- |
-| V-203756 | SV-203756r958944 | Verify correct security function operation | NR | -- | -- | -- |
-| V-203757 | SV-203757r958946 | Periodic security function verification | NR | -- | -- | -- |
-| V-203758 | SV-203758r958948 | Shut down on security function failure | NR | -- | -- | -- |
-| V-203780 | SV-203780r991589 | Security configuration guide compliance | NR | -- | -- | -- |
-| V-203781 | SV-203781r991590 | Default permissions for authenticated users | NR | -- | -- | -- |
+| V-203747 | SV-203747r958902 | DoS protection/rate limiting | O | Test170b | #64 | No rate limiting configured |
+| V-203752 | SV-203752r958926 | Predictable/documented behavior | NF | Test170b | #64 | Kernel panic+core dump configured |
+| V-203753 | SV-203753r958928 | Non-executable data (NX/DEP) | NF | Test170b | #64 | NX flag active |
+| V-203754 | SV-203754r958928 | Address space layout randomization (ASLR) | NF | Test170b | #64 | ASLR=2 (full) |
+| V-203755 | SV-203755r958936 | Remove old software components | O | Test170b | #64 | Old package check |
+| V-203756 | SV-203756r958944 | Verify correct security function operation | O | Test170b | #64 | AppArmor/dpkg verify |
+| V-203757 | SV-203757r958946 | Periodic security function verification | O | Test170b | #64 | No AIDE cron detected |
+| V-203758 | SV-203758r958948 | Shut down on security function failure | O | Test170b | #64 | Anomaly notification |
+| V-203780 | SV-203780r991589 | Security configuration guide compliance | O | Test170b | #64 | Config guide review |
+| V-203781 | SV-203781r991590 | Default permissions for authenticated users | O | Test170b | #64 | umask verification |
 
 ### Batch 16: Remaining and Compliance (10 functions)
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203783 | SV-203783r991592 | Limit non-privileged user privilege grants | NR | -- | -- | -- |
-| V-203784 | SV-203784r991593 | Enable application firewall | NR | -- | -- | -- |
-| V-263650 | SV-263650r982553 | Disable accounts no longer associated | NR | -- | -- | -- |
-| V-263651 | SV-263651r982555 | Prohibit unauthorized hardware | NR | -- | -- | -- |
-| V-263652 | SV-263652r982557 | MFA for local/network/remote access | NR | -- | -- | -- |
-| V-263654 | SV-263654r982232 | Require immediate password change on recovery | NR | -- | -- | -- |
-| V-263655 | SV-263655r982235 | Allow user-selected long passwords | NR | -- | -- | -- |
-| V-263656 | SV-263656r982238 | Automated password complexity tools | NR | -- | -- | -- |
-| V-263657 | SV-263657r982559 | NIST-compliant external credentials | NR | -- | -- | -- |
-| V-263659 | SV-263659r982563 | Approved trust anchors only | NR | -- | -- | -- |
+| V-203783 | SV-203783r991592 | Limit non-privileged user privilege grants | NF | Test171 | #64 | Home dirs restricted |
+| V-203784 | SV-203784r991593 | Enable application firewall | O | Test171 | #64 | No active firewall |
+| V-263650 | SV-263650r982553 | Disable accounts no longer associated | O | Test171 | #64 | Org policy required |
+| V-263651 | SV-263651r982555 | Prohibit unauthorized hardware | O | Test171 | #64 | Org policy required |
+| V-263652 | SV-263652r982557 | MFA for local/network/remote access | O | Test171 | #64 | No MFA configured |
+| V-263654 | SV-263654r982232 | Require immediate password change on recovery | O | Test171 | #64 | Org policy required |
+| V-263655 | SV-263655r982235 | Allow user-selected long passwords | NF | Test171 | #64 | SHA512 supports long passwords |
+| V-263656 | SV-263656r982238 | Automated password complexity tools | O | Test171 | #64 | pwquality not configured |
+| V-263657 | SV-263657r982559 | NIST-compliant external credentials | O | Test171 | #64 | NIST verification needed |
+| V-263659 | SV-263659r982563 | Approved trust anchors only | O | Test171 | #64 | Org approval needed |
 
 ### Batch 17: Final (10 functions)
 
@@ -369,3 +369,18 @@
 | Test152 | Feb 25 | #54 | Phase 2 Batch 2 | 198 | PASS | 5.05% | 10 Auth & Login, 2 NF + 8 Open |
 | Test153 | Feb 25 | #55 | Phase 2 Batch 3 | 198 | FAIL | 5.05% | Answer file schema error (missing ValidationCode) |
 | Test153b | Feb 25 | #55 | Phase 2 Batch 3 | 198 | PASS | 5.05% | 10 Password Policy, all Open, COMMENTS 198/198 |
+| Test154 | Feb 25 | #56 | Phase 2 Batch 4 | 198 | PASS | 8.08% | 10 SSH Config, 6 NF + 4 Open |
+| Test155 | Feb 26 | #57 | Phase 2 Batch 5 | 198 | PASS | 12.12% | 10 Audit Rules, 8 NF + 2 Open |
+| Test156 | Feb 26 | #58 | Phase 2 Batch 6 | 198 | PASS | 14.14% | 10 Audit Mgmt, 4 NF + 6 Open |
+| Test157 | Feb 26 | #59 | Phase 2 Batch 7 | 198 | PASS | 16.16% | 10 Audit Events, 4 NF + 6 Open |
+| Test158 | Feb 27 | #60 | Phase 2 Batch 8 | 198 | PASS | 17.17% | 10 Audit Advanced, 2 NF + 8 Open |
+| Test162 | Feb 27 | #60 | XO Audit Plugin | 198 | PASS | 17.17% | 18 Cat A functions flip via audit plugin |
+| Test164 | Feb 28 | #61 | Phase 2 Batch 9 | 198 | PASS | 24.24% | 10 PKI & Certs, 4 NF + 6 Open |
+| Test165b | Feb 28 | #61 | Phase 2 Batch 10 | 198 | PASS | 28.79% | 10 Access Control, 9 NF + 1 Open |
+| Test166b | Feb 28 | #62 | Phase 2 Batch 11 | 198 | PASS | 30.30% | 10 System Config, 3 NF + 7 Open |
+| Test167b | Mar 1 | #62 | Phase 2 Batch 12 | 198 | PASS | 28.28% | 10 System Security, 5 NF + 5 Open |
+| Test168c | Mar 1 | #63 | Phase 2 Batch 13 | 198 | PASS | 32.83% | 10 Network & Maintenance, 9 NF + 1 Open |
+| Test169 | Mar 1 | #63 | Phase 2 Batch 14 | 198 | PASS | 34.85% | 10 Auth & PKI, 7 NF + 3 Open |
+| Test170 | Mar 1 | #64 | Phase 2 Batch 15 | 198 | FAIL | 36.36% | V-203752 null .ToString() crash |
+| Test170b | Mar 1 | #64 | Phase 2 Batch 15 | 198 | PASS | 36.87% | 10 Hardening, 3 NF + 7 Open |
+| Test171 | Mar 1 | #64 | Phase 2 Batch 16 | 198 | PASS | 37.88% | 10 Compliance/MFA/Firewall, 2 NF + 8 Open |

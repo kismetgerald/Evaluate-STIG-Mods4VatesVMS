@@ -4750,34 +4750,6 @@ Remediation:
       </Answer>
     </AnswerKey>
   </Vuln>
-  <Vuln ID="V-203783">
-    <!--RuleTitle: The operating system must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-203784">
-    <!--RuleTitle: The operating system must enable an application firewall, if available.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
   <Vuln ID="V-252688">
     <!--RuleTitle: The operating system must protect the confidentiality and integrity of communications with wireless peripherals.-->
     <AnswerKey Name="XO">
@@ -4828,48 +4800,6 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
       </Answer>
     </AnswerKey>
   </Vuln>
-  <Vuln ID="V-263650">
-    <!--RuleTitle: The operating system must disable accounts when the accounts are no longer associated to a user.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263651">
-    <!--RuleTitle: The operating system must prohibit the use or connection of unauthorized hardware components.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263652">
-    <!--RuleTitle: The operating system must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
   <Vuln ID="V-263653">
     <AnswerKey Name="XO">
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
@@ -4885,62 +4815,6 @@ As a server VM in a data center environment, XO has no wireless peripherals. All
         <ValidTrueComment>The system does not verify passwords against compromised password lists. To remediate: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Install cracklib with compromised password dictionaries: apt install cracklib-runtime. 3) Ensure dictcheck = 1 in /etc/security/pwquality.conf. 4) Optionally configure dictpath for a custom compromised password list. 5) Ensure pam_pwquality is loaded in /etc/pam.d/common-password. 6) Verify with: grep -E 'dictcheck|dictpath' /etc/security/pwquality.conf.</ValidTrueComment>
       <ValidFalseStatus>NR</ValidFalseStatus>
       <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263654">
-    <!--RuleTitle: The operating system must for password-based authentication, require immediate selection of a new password upon account recovery.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263655">
-    <!--RuleTitle: The operating system must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263656">
-    <!--RuleTitle: The operating system must, for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263657">
-    <!--RuleTitle: The operating system must accept only external credentials that are NIST-compliant.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -4979,20 +4853,6 @@ Remediation:
 5. Reload: augenrules --load
 6. Verify: auditctl -l | grep maintenance</ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
-      </Answer>
-    </AnswerKey>
-  </Vuln>
-  <Vuln ID="V-263659">
-    <!--RuleTitle: The operating system must include only approved trust anchors in trust stores or certificate stores managed by the organization.-->
-    <AnswerKey Name="XO">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -6765,4 +6625,194 @@ ISSO/ISSM: Verify umask is 077 or more restrictive for all authenticated users.<
       </Answer>
     </AnswerKey>
   </Vuln>
-  </STIGComments>
+  
+  <Vuln ID="V-203783">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Home directory permissions have been verified to restrict non-privileged user access. Home directories use permissions of 0750 or more restrictive, HOME_MODE is configured in /etc/login.defs, and USERGROUPS_ENAB ensures private user groups. Non-privileged users cannot grant other users direct access to their home directory contents. UMASK settings enforce appropriate default permissions on new files and directories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Home directory permissions may allow excessive access by non-privileged users. REMEDIATION: 1) Set HOME_MODE to 0750 in /etc/login.defs. 2) Set UMASK to 027 or more restrictive. 3) Fix existing home directories: chmod 0750 /home/*. 4) Enable USERGROUPS_ENAB in /etc/login.defs for private user groups. 5) Verify no world-readable or world-writable home directories exist.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-203784">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Application firewall is enabled and active on this system. UFW (Uncomplicated Firewall) or iptables/nftables rules are configured to control inbound and outbound network traffic. Firewall rules restrict access to authorized services only. For XOA deployments, UFW is enabled by default. For XOCE deployments, the firewall has been manually configured per organizational security requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: No active application firewall detected on the system. REMEDIATION: 1) Install UFW: apt install ufw. 2) Enable UFW: ufw enable. 3) Configure default deny policy: ufw default deny incoming. 4) Allow required services: ufw allow ssh, ufw allow 443/tcp. 5) Verify firewall status: ufw status verbose. 6) For XOA, UFW should be enabled by default - verify it has not been disabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263650">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: System accounts are properly locked and organizational procedures exist to disable accounts no longer associated with a user. SSSD or LDAP/AD integration provides centralized account lifecycle management. The INACTIVE parameter in /etc/default/useradd ensures accounts are disabled after a period of inactivity. Regular account reviews are performed per organizational policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Account lifecycle management requires organizational verification. REMEDIATION: 1) Set INACTIVE in /etc/default/useradd (e.g., INACTIVE=35). 2) Lock system accounts: passwd -l &lt;account&gt;. 3) Implement centralized account management via SSSD/LDAP/AD. 4) Establish procedures to review accounts quarterly. 5) Implement automated account disabling for separated personnel within 72 hours. 6) Document account lifecycle procedures in System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263651">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Unauthorized hardware components are prohibited through modprobe blacklisting, USB storage restrictions, and organizational hardware authorization policies. The usb_storage kernel module is blacklisted in /etc/modprobe.d/. Only approved PCI and USB devices are connected. Hardware inventory is maintained and verified against the approved hardware list.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Hardware authorization policy requires organizational verification. REMEDIATION: 1) Blacklist USB storage: echo 'blacklist usb_storage' &gt; /etc/modprobe.d/usb-storage.conf. 2) Blacklist thunderbolt if not needed: echo 'blacklist thunderbolt' &gt; /etc/modprobe.d/thunderbolt.conf. 3) Create and maintain an approved hardware inventory list. 4) Implement USBGuard for fine-grained USB device control. 5) Document hardware authorization procedures in System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263652">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Multifactor authentication is implemented for local, network, and remote access to both privileged and non-privileged accounts. PAM is configured with MFA modules (pam_pkcs11 for smart card, pam_u2f for hardware tokens, or pam_duo for push-based MFA). SSH is configured to require multiple authentication methods. XO integrates with LDAP/AD which enforces MFA through the directory service.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Multifactor authentication is not fully implemented. REMEDIATION: 1) Install smart card packages: apt install opensc pcscd libpam-pkcs11. 2) Configure PAM for MFA in /etc/pam.d/common-auth. 3) Set SSH AuthenticationMethods to require two factors: publickey,keyboard-interactive. 4) Integrate XO with LDAP/AD that enforces MFA. 5) Deploy CAC/PIV readers for DoD smart card authentication. 6) Document MFA implementation in System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263654">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Password-based authentication is configured to require immediate selection of a new password upon account recovery. The chage utility enforces password change at next login (chage -d 0). PAM pwquality module ensures new passwords meet complexity requirements. LDAP/AD integration delegates password recovery to the directory service which enforces immediate password change.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Password recovery procedures require organizational verification. REMEDIATION: 1) After account recovery, force password change: chage -d 0 &lt;username&gt;. 2) Document password recovery procedures requiring immediate new password selection. 3) Ensure temporary passwords expire at first use. 4) Log all password recovery actions for audit trail. 5) If using LDAP/AD, verify the directory service enforces immediate password change on recovery.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263655">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: The system supports user selection of long passwords and passphrases including spaces and all printable characters. The password hashing algorithm (SHA-512 or yescrypt) supports passwords of any practical length. PAM does not impose character restrictions. Linux accepts all printable ASCII characters including spaces in passwords by default.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Long password support could not be fully verified. REMEDIATION: 1) Set ENCRYPT_METHOD to SHA512 or YESCRYPT in /etc/login.defs. 2) Ensure PAM pwquality minlen allows long passwords (minlen=15 minimum per DoD). 3) Do not set maxlen restrictions in pwquality.conf. 4) Verify PAM configuration does not restrict character sets. 5) Test that passwords with spaces and special characters are accepted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263656">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: Automated password complexity tools are installed and configured. The libpam-pwquality package provides password strength checking through PAM. Configuration in /etc/security/pwquality.conf enforces minimum length, character class requirements, and dictionary checks. PAM is configured to use pam_pwquality for password validation during password changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Automated password complexity tools are not fully configured. REMEDIATION: 1) Install libpam-pwquality: apt install libpam-pwquality. 2) Configure /etc/security/pwquality.conf: minlen=15, dcredit=-1, ucredit=-1, lcredit=-1, ocredit=-1. 3) Enable in PAM: add 'password requisite pam_pwquality.so' to /etc/pam.d/common-password. 4) Install dictionary files: apt install wamerican. 5) Set dictcheck=1 in pwquality.conf for dictionary checking.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263657">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: The system accepts only external credentials that are NIST-compliant. SSH host keys use approved algorithms (RSA 2048+, ECDSA, Ed25519). TLS certificates use NIST-approved signature algorithms. LDAP/AD integration ensures external credentials meet NIST SP 800-63 requirements. OpenSSL provides NIST-compliant cryptographic operations for credential validation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: NIST credential compliance requires organizational verification. REMEDIATION: 1) Configure SSH to use only NIST-approved key algorithms in /etc/ssh/sshd_config. 2) Ensure TLS certificates use RSA 2048+ or ECDSA P-256/P-384 keys. 3) Enable FIPS mode if required: install dracut-fips and configure kernel boot parameter fips=1. 4) Verify LDAP/AD credentials meet NIST SP 800-63 Digital Identity Guidelines. 5) Document NIST compliance in System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+
+  <Vuln ID="V-263659">
+    <AnswerKey Name="XO">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DOCUMENTATION: The system trust store contains only organization-approved trust anchors. The ca-certificates package is installed and managed through apt. Custom trust anchors in /usr/local/share/ca-certificates/ are approved by the organization. DoD root CA certificates are installed where required. Trust anchor management follows organizational change control procedures.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>FINDING: Trust anchor approval requires organizational verification. REMEDIATION: 1) Review all certificates in /etc/ssl/certs/. 2) Install DoD root CAs: download from https://militarycac.com/dodcerts.htm and place in /usr/local/share/ca-certificates/. 3) Run update-ca-certificates to rebuild trust store. 4) Remove any unauthorized or expired trust anchors. 5) Document approved trust anchors in System Security Plan. 6) Implement periodic trust anchor review process.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+    </AnswerKey>
+  </Vuln>
+</STIGComments>
