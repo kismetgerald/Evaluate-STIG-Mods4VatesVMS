@@ -267,16 +267,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203711 | SV-203711r1038944 | Compare internal clocks (networked) | NR | -- | -- | -- |
-| V-203712 | SV-203712r982209 | Sync clocks to authoritative time source | NR | -- | -- | -- |
-| V-203713 | SV-203713r958786 | Timestamp minimum granularity | NR | -- | -- | -- |
-| V-203715 | SV-203715r958790 | Dual authorization for audit deletion | NR | -- | -- | -- |
-| V-203716 | SV-203716r982210 | Prohibit user software installation | NR | -- | -- | -- |
-| V-203717 | SV-203717r958794 | Notify on baseline config changes | NR | -- | -- | -- |
-| V-203721 | SV-203721r958804 | Prevent program execution per local policy | NR | -- | -- | -- |
-| V-203750 | SV-203750r958912 | Maintain confidentiality of info at rest | NR | -- | -- | -- |
-| V-203751 | SV-203751r958914 | Maintain integrity of info at rest | NR | -- | -- | -- |
-| V-259333 | SV-259333r958940 | Install security updates within timeframe | NR | -- | -- | -- |
+| V-203711 | SV-203711r1038944 | Compare internal clocks (networked) | NF | Test168c | #62 | chrony sync active |
+| V-203712 | SV-203712r982209 | Sync clocks to authoritative time source | O | Test168c | #62 | chronyc not installed |
+| V-203713 | SV-203713r958786 | Timestamp minimum granularity | NF | Test168c | #62 | journal microsecond precision |
+| V-203715 | SV-203715r958790 | Dual authorization for audit deletion | O | Test168c | #62 | Org dual-auth procedures |
+| V-203716 | SV-203716r982210 | Prohibit user software installation | NF | Test168c | #62 | apt/dpkg root-only |
+| V-203717 | SV-203717r958794 | Notify on baseline config changes | O | Test168c | #62 | FIM/AIDE not installed |
+| V-203721 | SV-203721r958804 | Prevent program execution per local policy | NF | Test168c | #62 | AppArmor active |
+| V-203750 | SV-203750r958912 | Maintain confidentiality of info at rest | NF | Test168c | #62 | SSH + TLS encryption |
+| V-203751 | SV-203751r958914 | Maintain integrity of info at rest | NF | Test168c | #62 | SSH + TLS + firewall |
+| V-259333 | SV-259333r958940 | Install security updates within timeframe | O | Test168c | #62 | Security updates available |
 
 ### Batch 14: Kernel and Memory Protection (10 functions)
 
