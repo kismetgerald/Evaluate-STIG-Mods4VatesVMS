@@ -22,17 +22,16 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [1024M]&#xA;sr0">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//sr0/'
 DeviceID                       '//'
-1024M</Size>
+1024M
+Index                          '//sr0/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -42,17 +41,16 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [30G]&#xA;xvda">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda/'
 DeviceID                       '//'
-30G</Size>
+30G
+Index                          '//xvda/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -62,17 +60,16 @@ DeviceID                       '//'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [512M]&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-
 boot
 Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda1/'
 DeviceID                       '///boot/efi'
-512M</Size>
+512M
+Index                          '//xvda1/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -82,17 +79,16 @@ DeviceID                       '///boot/efi'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [28.5G]&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda2/'
 DeviceID                       '///'
-28.5G</Size>
+28.5G
+Index                          '//xvda2/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -102,17 +98,16 @@ DeviceID                       '///'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;Size                           [976M]&#xA;xvda3">
         <DeviceID>Name                           Value
 ----                           -----
-
 
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-Index                          '//xvda3/'
 SWAP
-976M</Size>
+976M
+Index                          '//xvda3/'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -128,17 +123,17 @@ SWAP
     <Score>
       <CATI_OpenNRTotal>10</CATI_OpenNRTotal>
       <CATI_PossibleTotal>18</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>94</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>95</CATII_OpenNRTotal>
       <CATII_PossibleTotal>170</CATII_PossibleTotal>
-      <CATIII_OpenNRTotal>2</CATIII_OpenNRTotal>
+      <CATIII_OpenNRTotal>9</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>10</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>53</WeightedAvg>
+      <WeightedAvg>58</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-01T12:59:48.4564261-05:00" EvalScore="46.46">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-01T07:53:38.7838579-05:00" EvalScore="42.42">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -159,7 +154,7 @@ SWAP
         <Vuln RuleTitle="The operating system must not allow an unattended or automatic logon to the system." Status="NotAFinding" ID="V-203782" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Applicable" ID="V-252688" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="170" Not_Applicable="2" Open="94" NotAFinding="74" Not_Reviewed="0">
+      <CAT_II Total="170" Not_Applicable="2" Open="94" NotAFinding="73" Not_Reviewed="1">
         <Vuln RuleTitle="The operating system must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-203591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically remove or disable temporary user accounts after 72 hours." Status="Open" ID="V-203592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit all account creations." Status="Open" ID="V-203593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -187,7 +182,7 @@ SWAP
         <Vuln RuleTitle="The operating system must protect audit information from unauthorized deletion." Status="NotAFinding" ID="V-203618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide audit record generation capability for DoD-defined auditable events for all operating system components." Status="NotAFinding" ID="V-203619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Open" ID="V-203620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="NotAFinding" ID="V-203621" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="Not_Reviewed" ID="V-203621" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Open" ID="V-203622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="NotAFinding" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must map the authenticated identity to the user or group account for PKI-based authentication." Status="Open" ID="V-203624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -331,17 +326,17 @@ SWAP
         <Vuln RuleTitle="The operating system must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store." Status="Open" ID="V-263660" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must synchronize system clocks within and between systems or system components." Status="NotAFinding" ID="V-263661" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
-      <CAT_III Total="10" Not_Applicable="0" Open="2" NotAFinding="8" Not_Reviewed="0">
+      <CAT_III Total="10" Not_Applicable="0" Open="0" NotAFinding="1" Not_Reviewed="9">
         <Vuln RuleTitle="The operating system must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="NotAFinding" ID="V-203597" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must allocate audit record storage capacity to store at least one week's worth of audit records, when audit records are not immediately sent to a central audit record storage facility." Status="NotAFinding" ID="V-203700" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must offload audit records onto a different system or media from the system being audited." Status="Open" ID="V-203701" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must immediately notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity." Status="Open" ID="V-203702" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide an audit reduction capability that supports on-demand audit review and analysis." Status="NotAFinding" ID="V-203704" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide an audit reduction capability that supports after-the-fact investigations of security incidents." Status="NotAFinding" ID="V-203705" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide a report generation capability that supports on-demand audit review and analysis." Status="NotAFinding" ID="V-203706" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide a report generation capability that supports on-demand reporting requirements." Status="NotAFinding" ID="V-203707" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide a report generation capability that supports after-the-fact investigations of security incidents." Status="NotAFinding" ID="V-203708" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must allocate audit record storage capacity to store at least one week's worth of audit records, when audit records are not immediately sent to a central audit record storage facility." Status="Not_Reviewed" ID="V-203700" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must offload audit records onto a different system or media from the system being audited." Status="Not_Reviewed" ID="V-203701" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must immediately notify the SA and ISSO (at a minimum) when allocated audit record storage volume reaches 75 percent of the repository maximum audit record storage capacity." Status="Not_Reviewed" ID="V-203702" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide an audit reduction capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-203704" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide an audit reduction capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-203705" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide a report generation capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-203706" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide a report generation capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-203707" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide a report generation capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-203708" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="Not_Reviewed" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
   </Results>
