@@ -21044,8 +21044,8 @@ Function Get-V203709 {
     # Check 3: Audit log file integrity (immutable attribute)
     $FindingDetails += $nl + "Check 2: Audit Log File Protection" + $nl
     $auditLogPath = "/var/log/audit/audit.log"
-    $auditLogExists = $(test -f $auditLogPath 2>&1; echo $LASTEXITCODE)
-    if ($auditLogExists.Trim() -eq "0") {
+    $(test -f $auditLogPath 2>&1) | Out-Null
+    if ($LASTEXITCODE -eq 0) {
         $auditLogPerms = $(stat -c "%a %U:%G" $auditLogPath 2>&1)
         $FindingDetails += "  $auditLogPath : $auditLogPerms" + $nl
         $auditLogAttrs = $(lsattr $auditLogPath 2>&1)
@@ -21247,8 +21247,8 @@ Function Get-V203710 {
     $FindingDetails += $nl + "Check 3: Audit Log Protection" + $nl
     $logPaths = @("/var/log/audit/audit.log", "/var/log/syslog", "/var/log/auth.log")
     foreach ($lp in $logPaths) {
-        $lpExists = $(test -f $lp 2>&1; echo $LASTEXITCODE)
-        if ($lpExists.Trim() -eq "0") {
+        $(test -f $lp 2>&1) | Out-Null
+        if ($LASTEXITCODE -eq 0) {
             $lpPerms = $(stat -c "%a %U:%G" $lp 2>&1)
             $FindingDetails += "  $lp : $lpPerms" + $nl
         }
