@@ -409,17 +409,19 @@
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [1024M]
 sr0
-'</td>
-                  <td>Name                           Value
-----                           -----
+'
 Size                           [1024M]</td>
                   <td>Name                           Value
 ----                           -----
-1024M
+
+
+Size                           [1024M]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//sr0/'
-DeviceID                       '//'</td>
+DeviceID                       '//'
+1024M</td>
                   <td>
                   </td>
                   <td>
@@ -434,43 +436,19 @@ DeviceID                       '//'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [30G]
 xvda
-'</td>
-                  <td>Name                           Value
-----                           -----
+'
 Size                           [30G]</td>
                   <td>Name                           Value
 ----                           -----
-30G
-Index                          '//xvda/'
-DeviceID                       '//'</td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody>
-                <tr>
-                  <td>Name                           Value
-----                           -----
-Size                           [512M]
-xvda1</td>
-                  <td>Name                           Value
-----                           -----
-Size                           [512M]
 
-boot</td>
+
+Size                           [30G]</td>
                   <td>Name                           Value
 ----                           -----
-512M
-Index                          '//xvda1/'
-DeviceID                       '///boot/efi'</td>
+Index                          '//xvda/'
+DeviceID                       '//'
+30G</td>
                   <td>
                   </td>
                   <td>
@@ -485,16 +463,46 @@ DeviceID                       '///boot/efi'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [28.5G]
-xvda2</td>
+xvda1
+
+Size                           [512M]</td>
                   <td>Name                           Value
 ----                           -----
+
+boot
+Size                           [512M]</td>
+                  <td>Name                           Value
+----                           -----
+Index                          '//xvda1/'
+DeviceID                       '///boot/efi'
+512M</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+xvda2
+
 Size                           [28.5G]</td>
                   <td>Name                           Value
 ----                           -----
-28.5G
+
+
+Size                           [28.5G]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//xvda2/'
-DeviceID                       '///'</td>
+DeviceID                       '///'
+28.5G</td>
                   <td>
                   </td>
                   <td>
@@ -509,17 +517,19 @@ DeviceID                       '///'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [976M]
 xvda3
-[SWAP]'</td>
-                  <td>Name                           Value
-----                           -----
+[SWAP]'
 Size                           [976M]</td>
                   <td>Name                           Value
 ----                           -----
-976M
+
+
+Size                           [976M]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//xvda3/'
-SWAP</td>
+SWAP
+976M</td>
                   <td>
                   </td>
                   <td>
@@ -547,11 +557,11 @@ SWAP</td>
               <tbody>
                 <tr class="risk-VeryHigh">
                   <td>Very High</td>
-                  <td>63%
+                  <td>64%
                                                     </td>
                   <td>10</td>
                   <td>18</td>
-                  <td>128</td>
+                  <td>131</td>
                   <td>170</td>
                   <td>9</td>
                   <td>10</td>
@@ -578,12 +588,12 @@ SWAP</td>
               <td>
                 <div class="button_cont" align="left"><a class="stig_button" id="button" onclick="change('General Purpose Operating System V3R2_filter');change('General Purpose Operating System V3R2')" title="Show/Hide ">General Purpose Operating System V3R2</a></div>
               </td>
-              <td>2026-03-01T00:50:14-05:00</td>
-              <td>77</td>
-              <td>48</td>
-              <td>3</td>
+              <td>2026-03-01T00:42:23-05:00</td>
               <td>70</td>
-              <td>25.76%</td>
+              <td>45</td>
+              <td>3</td>
+              <td>80</td>
+              <td>24.24%</td>
             </tr>
             <tr>
               <td id="General Purpose Operating System V3R2_filter" class="filterdata" style="display:none"><input type="text" id="General Purpose Operating System V3R2_input" onkeyup="filterTable(`General Purpose Operating System V3R2_input`,`General Purpose Operating System V3R2`)" placeholder="Filter..." title="Type data to filter on"></td>
@@ -1233,9 +1243,9 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203649</td>
                       <td>The operating system must use mechanisms meeting the requirements of applicable federal laws, Executive orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.</td>
                       <td></td>
@@ -1287,63 +1297,63 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NF">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>NotAFinding</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203657</td>
                       <td>Operating systems must prevent unauthorized and unintended information transfer via shared system resources.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NF">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>NotAFinding</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203658</td>
                       <td>The operating system must manage excess capacity, bandwidth, or other redundancy to limit the effects of information flooding types of Denial of Service (DoS) attacks.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203659</td>
                       <td>The operating system must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203660</td>
                       <td>The operating system must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203661</td>
                       <td>The operating system must protect the confidentiality and integrity of all information at rest.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203663</td>
                       <td>The operating system must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203664</td>
                       <td>The operating system must reveal error messages only to authorized users.</td>
                       <td></td>
@@ -1494,18 +1504,18 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-O_med">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>Open</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203683</td>
                       <td>The operating system must automatically terminate a user session after inactivity time-outs have expired or at shutdown.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NF">
+                    <tr class="status-NR">
                       <td>CAT II</td>
-                      <td>NotAFinding</td>
+                      <td>Not_Reviewed</td>
                       <td>V-203684</td>
                       <td>The operating system must provide a logoff capability for user-initiated communications sessions when requiring user access authentication.</td>
                       <td></td>
