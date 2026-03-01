@@ -22,16 +22,17 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [1024M]&#xA;sr0">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;sr0&#xA;Size                           [1024M]">
         <DeviceID>Name                           Value
 ----                           -----
+
 
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 DeviceID                       '//'
-1024M
-Index                          '//sr0/'</Size>
+Index                          '//sr0/'
+1024M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -41,16 +42,17 @@ Index                          '//sr0/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [30G]&#xA;xvda">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [30G]">
         <DeviceID>Name                           Value
 ----                           -----
+
 
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 DeviceID                       '//'
-30G
-Index                          '//xvda/'</Size>
+Index                          '//xvda/'
+30G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -60,16 +62,17 @@ Index                          '//xvda/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [512M]&#xA;xvda1">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda1&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
 boot
+
 Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 DeviceID                       '///boot/efi'
-512M
-Index                          '//xvda1/'</Size>
+Index                          '//xvda1/'
+512M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -79,16 +82,17 @@ Index                          '//xvda1/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [28.5G]&#xA;xvda2">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
+
 
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 DeviceID                       '///'
-28.5G
-Index                          '//xvda2/'</Size>
+Index                          '//xvda2/'
+28.5G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -98,16 +102,17 @@ Index                          '//xvda2/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;Size                           [976M]&#xA;xvda3">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda3&#xA;Size                           [976M]">
         <DeviceID>Name                           Value
 ----                           -----
+
 
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
 SWAP
-976M
-Index                          '//xvda3/'</Size>
+Index                          '//xvda3/'
+976M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -123,17 +128,17 @@ Index                          '//xvda3/'</Size>
     <Score>
       <CATI_OpenNRTotal>10</CATI_OpenNRTotal>
       <CATI_PossibleTotal>18</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>95</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>99</CATII_OpenNRTotal>
       <CATII_PossibleTotal>170</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>9</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>10</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>58</WeightedAvg>
+      <WeightedAvg>59</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-01T07:53:38.7838579-05:00" EvalScore="42.42">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-01T07:32:58.4667686-05:00" EvalScore="40.4">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -154,7 +159,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The operating system must not allow an unattended or automatic logon to the system." Status="NotAFinding" ID="V-203782" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Applicable" ID="V-252688" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="170" Not_Applicable="2" Open="94" NotAFinding="73" Not_Reviewed="1">
+      <CAT_II Total="170" Not_Applicable="2" Open="98" NotAFinding="69" Not_Reviewed="1">
         <Vuln RuleTitle="The operating system must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-203591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically remove or disable temporary user accounts after 72 hours." Status="Open" ID="V-203592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit all account creations." Status="Open" ID="V-203593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -232,10 +237,10 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The operating system must limit privileges to change software resident within software libraries." Status="NotAFinding" ID="V-203675" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one special character be used." Status="Open" ID="V-203676" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="In the event of a system failure, the operating system must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes." Status="NotAFinding" ID="V-203677" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are created." Status="NotAFinding" ID="V-203678" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are modified." Status="NotAFinding" ID="V-203679" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are disabled." Status="NotAFinding" ID="V-203680" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are removed." Status="NotAFinding" ID="V-203681" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are created." Status="Open" ID="V-203678" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are modified." Status="Open" ID="V-203679" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are disabled." Status="Open" ID="V-203680" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are removed." Status="Open" ID="V-203681" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically terminate a user session after inactivity time-outs have expired or at shutdown." Status="Open" ID="V-203683" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide a logoff capability for user-initiated communications sessions when requiring user access authentication." Status="NotAFinding" ID="V-203684" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-203685" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
