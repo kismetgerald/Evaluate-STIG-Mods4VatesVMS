@@ -1,5 +1,7 @@
 # Complete Implementation Guide for V-###### Functions
 
+> **SUPERSEDED (March 1, 2026):** This document is largely superseded by the `implement-stig-check` skill at `.claude/skills/implement-stig-check/SKILL.md`, which is module-agnostic and includes all 8 coding rules. This file is retained for reference if using non-Claude LLMs (Copilot, etc.) for XCP-ng module work. The patterns and templates below are still valid but WebSRG-specific.
+
 **Date:** January 26, 2026 (Updated February 11, 2026 — Session #36: GitHub workflow added)
 **Purpose:** Comprehensive prompt templates for implementing XO WebSRG CAT II checks
 **Tested With:** GitHub Copilot, Claude Sonnet 4.5, Claude Code

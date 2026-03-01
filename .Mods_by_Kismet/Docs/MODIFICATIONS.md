@@ -1,6 +1,6 @@
 # Evaluate-STIG Modifications by Kismet Agbasi
 **Created:** January 16, 2026
-**Last Updated:** January 19, 2026 (XO module export fixes)
+**Last Updated:** March 1, 2026 (all 3 XO modules 100% complete)
 **Purpose:** XCP-ng hypervisor STIG compliance scanning with Xen Orchestra application support
 **Original Source:** NAVSEA Evaluate-STIG v1.2507.6
 **Repository:** [https://github.com/NAVSEA/Evaluate-STIG](https://github.com/NAVSEA/Evaluate-STIG)
@@ -21,11 +21,12 @@ This document details all modifications made to Evaluate-STIG to enable comprehe
 
 ### Objective
 Implement complete STIG compliance checking across:
-- **XCP-ng Hypervisor** - Virtual Machine Manager (VMM) SRG (193 controls)
-- **XCP-ng Dom0** - General Purpose OS (GPOS) SRG (159 controls)
-- **XCP-ng Dom0 (optional)** - RHEL 7 STIG (reference existing patterns, ~244 controls)
-- **Xen Orchestra Application** - Application Security and Development STIG (286 controls)
-- **Xen Orchestra Web Server** - Web Server SRG (126 controls)
+- **XCP-ng Hypervisor** - Virtual Machine Manager (VMM) SRG (204 controls) — framework baseline
+- **XCP-ng Dom0** - General Purpose OS (GPOS) SRG (198 controls) — framework baseline
+- **XCP-ng Dom0** - RHEL 7 STIG (244 controls) — framework baseline, needs naming remediation
+- **Xen Orchestra Application** - Application Security and Development STIG (286 controls) — **100% COMPLETE**
+- **Xen Orchestra Web Server** - Web Server SRG (126 controls) — **100% COMPLETE**
+- **Xen Orchestra OS** - GPOS SRG for Debian 12 (198 controls) — **100% COMPLETE**
 
 ### Philosophy
 - **Minimal upstream changes** - Original Evaluate-STIG files remain ~95% untouched
@@ -58,7 +59,7 @@ Implement complete STIG compliance checking across:
 #### Line 1163: Added XCPng case detection logic
 ```powershell
 "XCPng" {
-    # MODIFIED_BY: Kismet Agbasi on 01/16/2026 - XCP-ng hypervisor detection (CentOS 8-based)
+    # MODIFIED_BY: Kismet Agbasi on 01/16/2026 - XCP-ng hypervisor detection (CentOS 7-based for 8.x)
     If (($OSRelease -like '*ID=xcp-ng*') -or ($OSRelease -like '*ID="xcp-ng"*') -or 
         ($OSRelease -like '*ID=xenenterprise*') -or ($OSRelease -like '*ID="xenenterprise"*')) {
         $STIGRequired = $true
@@ -182,7 +183,26 @@ Function Get-XCPngVersion {
 
 ---
 
-### 3. `Modules/Master_Functions/Master_Functions.psm1`
+### 3. `Modules/Master_Functions/FormatOutput/FormatOutput.psm1`
+
+**Purpose:** XCCDF/CKL/CKLB output generation
+**Changes:** Fixed null reference during XCCDF generation for XCP-ng systems
+
+#### Lines 1441-1461: Null reference fix (MODIFIED_BY: Kismet Agbasi on 01/18/2026)
+```powershell
+# Added null/empty checking before .GetType() call on TargetData fields
+# XCP-ng systems may have null IpAddress/MacAddress fields
+If ($null -eq $ItemValue -or $ItemValue -eq "") {
+    $xmlWriter.WriteAttributeString("type", "string")
+    ...
+}
+```
+**Rationale:** XCP-ng TargetData fields (IpAddress, MacAddress) can be null, causing `.GetType()` exception
+**Impact:** XCCDF generation now works for all systems including XCP-ng
+
+---
+
+### 4. `Modules/Master_Functions/Master_Functions.psm1`
 
 **Purpose:** Asset data collection functions for system inventory and network information
 **Changes:** Fixed Linux interface detection to prevent false positives from virtual interfaces
@@ -203,50 +223,18 @@ $NetAdapters = @(ip -4 addr | grep -B1 "inet " | grep "^[0-9]\+:" | awk '{print 
 **Purpose:** File manifest controlling which files are packaged for remote scanning
 **Changes:** Updated 6 existing entries + added 4 new entries (10 total changes)
 
-#### Lines 1852-1875: Updated path references for moved modules
-```xml
-<!-- MODIFIED_BY: Kismet Agbasi on 01/16/2026 - Reorganized custom modules to .Mods_by_Kismet -->
-<File Name="Scan-XCP-ng_VMM_Checks.psd1">
-  <Path>\.Mods_by_Kismet\Modules\Scan-XCP-ng_VMM_Checks</Path>  <!-- Changed from \Modules -->
-  <ScanReq>Required</ScanReq>
-  <SHA256Hash>2AD24D16CF0C55DEED72BD5ED918695A683733C4433FCA16B4CAC23F921BF151</SHA256Hash>
-</File>
-<!-- Similar for: Scan-XCP-ng_VMM_Checks.psm1, Scan-XCP-ng_Dom0_GPOS_Checks.*, Manual.* -->
-```
-**Rationale:** Reflect module reorganization to `.Mods_by_Kismet` directory  
-**Impact:** Ensures remote scanning includes modules from new location
+#### Lines 1852+: Module file entries
+All custom modules are registered in FileList.xml with paths under `\Modules\`:
+- Scan-XCP-ng_VMM_Checks (.psd1, .psm1)
+- Scan-XCP-ng_Dom0_RHEL7_Checks (.psd1, .psm1)
+- Scan-XO_GPOS_Debian12_Checks (.psd1, .psm1)
+- Scan-XO_ASD_Checks (.psd1, .psm1)
+- Scan-XO_WebSRG_Checks (.psd1, .psm1)
+- Manual (.psd1, .psm1)
 
-#### Lines 1876+: Added XO_ASD_Checks entries (NEW)
-```xml
-<File Name="Scan-XO_ASD_Checks.psd1">
-  <Path>\.Mods_by_Kismet\Modules\Scan-XO_ASD_Checks</Path>
-  <ScanReq>Required</ScanReq>
-  <SHA256Hash>70356B2CCA9A5547F80CD758C5B667A8C1518E3B3ABC8C10B39C624C32947253</SHA256Hash>
-</File>
-<File Name="Scan-XO_ASD_Checks.psm1">
-  <Path>\.Mods_by_Kismet\Modules\Scan-XO_ASD_Checks</Path>
-  <ScanReq>Required</ScanReq>
-  <SHA256Hash>9E76A07F9C484ACD1D0E30AACE0953711CFCB8FCC94882698DB4FF0AAF50404A</SHA256Hash>
-</File>
-```
-**Rationale:** Enable XO ASD STIG check deployment  
-**Impact:** Allows remote scanning to access XO_ASD_Checks module
+> **Note:** Paths were initially set to `\.Mods_by_Kismet\Modules\` (Jan 16) then corrected to `\Modules\` (Jan 17) when modules were moved for framework loading. SHA256 hashes trigger integrity warnings; use `-AllowIntegrityViolations` flag.
 
-#### Lines 1884+: Added XO_WebSRG_Checks entries (NEW)
-```xml
-<File Name="Scan-XO_WebSRG_Checks.psd1">
-  <Path>\.Mods_by_Kismet\Modules\Scan-XO_WebSRG_Checks</Path>
-  <ScanReq>Required</ScanReq>
-  <SHA256Hash>B38404108C6AA3091E522D6F3D5FDC4335CD45D043BA151C3756AC7F34069D75</SHA256Hash>
-</File>
-<File Name="Scan-XO_WebSRG_Checks.psm1">
-  <Path>\.Mods_by_Kismet\Modules\Scan-XO_WebSRG_Checks</Path>
-  <ScanReq>Required</ScanReq>
-  <SHA256Hash>0773A8DCA55C37A289D63C684B6713068768F7E49A2EFAE120338B9E68094C37</SHA256Hash>
-</File>
-```
-**Rationale:** Enable XO Web SRG STIG check deployment  
-**Impact:** Allows remote scanning to access XO_WebSRG_Checks module
+**Impact:** Ensures remote scanning includes all custom modules
 
 ---
 
@@ -256,56 +244,46 @@ $NetAdapters = @(ip -4 addr | grep -B1 "inet " | grep "^[0-9]\+:" | awk '{print 
 
 ### Module Structure: 6 Custom Check Modules (in Modules/)
 
-#### 1. `Modules/Scan-XCP-ng_VMM_Checks/`
-- **Scan-XCP-ng_VMM_Checks.psd1** - Module manifest
-- **Scan-XCP-ng_VMM_Checks.psm1** - 193 check functions
-  - Status: ✅ Complete (193/193)
-  - Scope: Virtual machine configuration, security policies, audit settings
-  - Includes: Bash_Helpers/ subdirectory with 4 validation scripts
+#### 1. `Modules/Scan-XO_WebSRG_Checks/` — **100% COMPLETE**
+- **126 functions** (5 CAT I + 121 CAT II), ~35,000 lines
+- XO REST API integration, multi-method detection, comprehensive answer file
+- Last test: Test124 — EvalScore 41.27%
 
-#### 2. `Modules/Scan-XCP-ng_Dom0_GPOS_Checks/`
-- **Scan-XCP-ng_Dom0_GPOS_Checks.psd1** - Module manifest
-- **Scan-XCP-ng_Dom0_GPOS_Checks.psm1** - 159 check functions
-  - Status: ✅ Complete (159/159)
-  - Scope: User accounts, file permissions, SSH, sudo, kernel parameters
-  - **Note**: XCP-ng 8.3 is based on RHEL 7/CentOS 7, not RHEL 8
+#### 2. `Modules/Scan-XO_ASD_Checks/` — **100% COMPLETE**
+- **286 functions** (34 CAT I + 252 CAT II/III), ~50,000 lines
+- Node.js application security, code practices, session management
+- Last test: Test148b — EvalScore 43.36%
 
-#### 3. `Modules/Scan-Debian12_GPOS_Checks/`
-- **Scan-Debian12_GPOS_Checks.psd1** - Module manifest
-- **Scan-Debian12_GPOS_Checks.psm1** - 159 check functions
-  - Status: ✅ Complete (159/159)
-  - Scope: Debian 12 OS hardening for Xen Orchestra hosts
-  - Features: AppArmor enforcement, apt package manager integration
+#### 3. `Modules/Scan-XO_GPOS_Debian12_Checks/` — **100% COMPLETE**
+- **198 functions** (18 CAT I + 170 CAT II + 10 CAT III), ~35,000 lines
+- Renamed from Scan-Debian12_GPOS_Checks (Session #50)
+- XO Audit Plugin integration, AD/LDAP compensating controls, XOA/XOCE detection
+- Last test: Test173b — EvalScore 46.46%
 
-#### 4. `Modules/Scan-XO_ASD_Checks/`
-- **Scan-XO_ASD_Checks.psd1** - Module manifest
-- **Scan-XO_ASD_Checks.psm1** - 286 check functions
-  - Status: ✅ Framework Complete (27 CAT I + templated CAT II/III)
-  - Scope: Node.js application security, package security, code practices
-  - Detection: `pgrep -fa 'node.*xo-server'`
+#### 4. `Modules/Scan-XCP-ng_VMM_Checks/` — Framework Baseline
+- **204 functions** (corrected from 193, Session #3)
+- Dynamic function generation + explicit functions, 3 CAT I enhanced
+- **Note**: XCP-ng 8.3 is based on RHEL 7/CentOS 7, not RHEL 8
 
-#### 5. `Modules/Scan-XO_WebSRG_Checks/`
-- **Scan-XO_WebSRG_Checks.psd1** - Module manifest
-- **Scan-XO_WebSRG_Checks.psm1** - 126 check functions
-  - Status: ✅ Framework Complete (6 CAT I + templated CAT II/III)
-  - Scope: TLS configuration, HTTP headers, logging, access controls
-  - Detection: `pgrep -fa 'node.*xo-server'`
+#### 5. `Modules/Scan-XCP-ng_Dom0_RHEL7_Checks/` — Framework Baseline
+- **244 functions** (26 CAT I + 205 CAT II + 13 CAT III), 12 CAT I enhanced
+- Only 171/244 exported due to naming mismatch; needs Session #50-style remediation
+- **Note**: Uses RHEL 7 STIG patterns for CentOS 7-based Dom0
 
 #### 6. `Modules/Manual/`
-- **Manual.psd1** - Module manifest (enhanced)
-- **Manual.psm1** - Fallback Not_Reviewed placeholder functions
-  - Purpose: Default module for unimplemented or non-automatable checks
+- Fallback Not_Reviewed placeholder functions for non-automatable checks
 
-### Documentation Files
+### Documentation Files (`.Mods_by_Kismet/Docs/`)
 
-#### `MODIFICATIONS.md` (this file)
-Detailed log of all upstream changes, new modules, and rationale
-
-#### `IMPLEMENTATION_STATUS.md`
-Tracking table for check implementation progress by CAT level and module
-
-#### `REORGANIZATION_PLAN.md`
-High-level overview of project reorganization goals and structure
+- **MODIFICATIONS.md** (this file) — Upstream changes and module status
+- **STATUS.md** — Quick status reference dashboard
+- **CHANGELOG.md** — Version history
+- **VATES_COMPLIANCE_BLOCKERS.md** — Compliance blockers for Vates
+- **ANSWER_FILE_DEVELOPMENT_PLAN.md** — 8 critical coding rules
+- **XCP-ng_RHEL7_Compatibility_Issue.md** — Resolved PS compatibility issue
+- **XO_v5.x_GPOS/** — GPOS implementation tracker and guide
+- **XO_v5.x_WebSRG/** — WebSRG implementation trackers
+- **XO_v5.x_ASD/** — ASD implementation plan and trackers
 
 ---
 
@@ -326,14 +304,16 @@ High-level overview of project reorganization goals and structure
 | FileList.xml | Modified | 10 file entries | ~50 | Medium - path updates |
 | Scan-XO_ASD_Checks.psm1 | Modified | 6 functions + bash helper | ~160 | High - parameter templates + shell execution |
 | Scan-XO_WebSRG_Checks.psm1 | Modified | 1 section + bash helper | ~20 | Medium - explicit exports + shell execution |
-| **Total upstream** | | **6 files** | **~355 lines** | **Medium** |
-| **Total new** | | **7 modules + 3 docs** | **~2500 lines** | **High** |
+| FormatOutput.psm1 | Modified | 1 section | ~20 | Low - null reference fix for XCCDF |
+| **Total upstream** | | **7 files** | **~375 lines** | **Medium** |
+| **Total new** | | **5 modules + answer files** | **~170,000 lines** | **High** |
 
 ### Deployment Impact
-- **Local scanning**: Uses local module paths from `.Mods_by_Kismet/`
-- **Remote scanning**: FileList.xml controls what gets transferred (now includes `.Mods_by_Kismet/` paths)
-- **Package size**: ~500KB additional files (minimal impact)
-- **Scan execution time**: Negligible (checks only run on detected STIGs)
+- **Local scanning**: Uses module paths from `Evaluate-STIG/Modules/`
+- **Remote scanning**: FileList.xml controls what gets transferred to target
+- **Package size**: ~5MB additional files (all 5 custom modules + answer files)
+- **Scan execution time**: ~4 minutes for XO (3 modules), ~1 minute for XCP-ng (2 modules)
+- **Integrity**: Use `-AllowIntegrityViolations` flag (custom modules change hashes)
 
 ---
 
@@ -363,37 +343,28 @@ High-level overview of project reorganization goals and structure
 
 ---
 
-## Future Implementation Plan
+## Implementation Status
 
-### Phase 1: VMM SRG (Hypervisor-level checks)
-Priority: **HIGH** (0 CAT I, 162 CAT II, 31 CAT III)
-- Implement Xen CLI (`xe`) based checks
-- Focus on VM resource limits, security policies, audit configuration
-- Estimated effort: 40-60 hours
+### Completed Modules (XO — All 3 Done)
 
-### Phase 2: GPOS SRG (Dom0 OS hardening)
-Priority: **HIGH** (18 CAT I, 170 CAT II, 10 CAT III)
-- Adapt RHEL 8 GPOS checks for XCP-ng Dom0 (CentOS 8-based)
-- Focus on SSH, sudo, user management, file permissions
-- Estimated effort: 30-50 hours
+| Module | Functions | Completed | Sessions |
+|--------|-----------|-----------|----------|
+| XO WebSRG | 126 | Feb 11, 2026 | #17-35 |
+| XO ASD | 286 | Feb 18, 2026 | #36-49 |
+| XO GPOS Debian12 | 198 | Mar 1, 2026 | #50-65 |
 
-### Phase 3: RHEL8 STIG (Optional Dom0 coverage)
-Priority: **MEDIUM** (~30 CAT I, ~250 CAT II, ~80 CAT III)
-- Reuse existing RHEL8 module checks on Dom0
-- Additional system-level compliance coverage
-- Estimated effort: 0 hours (reuse existing)
+### Remaining Work (XCP-ng)
 
-### Phase 4: XO ASD STIG (Application-level security)
-Priority: **MEDIUM** (scope TBD)
-- Implement Node.js application security checks
-- Use XO REST API where available
-- Estimated effort: 50-70 hours
+| Module | Functions | Status | Priority |
+|--------|-----------|--------|----------|
+| XCP-ng VMM | 204 | Framework baseline, 3 CAT I enhanced | Next |
+| XCP-ng Dom0 RHEL7 | 244 | Framework baseline, 12 CAT I enhanced, needs naming remediation | Next |
 
-### Phase 5: XO Web SRG (Web server hardening)
-Priority: **MEDIUM** (scope TBD)
-- Implement TLS/HTTP security checks
-- Validate logging and access controls
-- Estimated effort: 40-60 hours
+**Key XCP-ng Tasks:**
+1. Dom0 RHEL7 naming remediation (Session #50-style: align function names with manifest exports)
+2. VMM CAT I/II enhancement using `xe` CLI commands
+3. Dom0 GPOS CAT I/II enhancement using RHEL 7 patterns
+4. Answer file creation for both XCP-ng modules
 
 ---
 
