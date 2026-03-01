@@ -21636,23 +21636,29 @@ Function Get-V203712 {
     # Check 2: Current time offset
     $FindingDetails += $nl + "Check 2: Current Time Offset" + $nl
     $offsetOk = $false
-    $chronyTracking = $(chronyc tracking 2>&1)
+    $(which chronyc 2>&1) | Out-Null
     if ($LASTEXITCODE -eq 0) {
-        $offsetLine = ($chronyTracking -split $nl) | Where-Object { $_ -match "Last offset|System time" }
-        foreach ($ol in $offsetLine) {
-            $FindingDetails += "  $($ol.ToString().Trim())" + $nl
-        }
-        $offsetOk = $true
-    }
-    else {
-        $ntpqRv = $(ntpq -c rv 2>&1)
+        $chronyTracking = $(chronyc tracking 2>&1)
         if ($LASTEXITCODE -eq 0) {
-            $FindingDetails += "  NTP status: $($ntpqRv.ToString().Trim().Substring(0, [Math]::Min(200, $ntpqRv.ToString().Trim().Length)))" + $nl
+            $offsetLine = ($chronyTracking -split $nl) | Where-Object { $_ -match "Last offset|System time" }
+            foreach ($ol in $offsetLine) {
+                $FindingDetails += "  $($ol.ToString().Trim())" + $nl
+            }
             $offsetOk = $true
         }
-        else {
-            $FindingDetails += "  Unable to determine current time offset" + $nl
+    }
+    if (-not $offsetOk) {
+        $(which ntpq 2>&1) | Out-Null
+        if ($LASTEXITCODE -eq 0) {
+            $ntpqRv = $(ntpq -c rv 2>&1)
+            if ($LASTEXITCODE -eq 0) {
+                $FindingDetails += "  NTP status: $($ntpqRv.ToString().Trim().Substring(0, [Math]::Min(200, $ntpqRv.ToString().Trim().Length)))" + $nl
+                $offsetOk = $true
+            }
         }
+    }
+    if (-not $offsetOk) {
+        $FindingDetails += "  Unable to determine current time offset (chronyc/ntpq not found)" + $nl
     }
 
     # Check 3: timedatectl NTP sync status
@@ -23139,8 +23145,10 @@ Function Get-V203721 {
     # Check 1: AppArmor status
     $FindingDetails += $nl + "Check 1: AppArmor Mandatory Access Control" + $nl
     $apparmorActive = $false
-    $aaStatus = $(aa-status 2>&1)
-    if ($LASTEXITCODE -eq 0) {
+    $(which aa-status 2>&1) | Out-Null
+    $aaStatusAvailable = ($LASTEXITCODE -eq 0)
+    if ($aaStatusAvailable) { $aaStatus = $(aa-status 2>&1) }
+    if ($aaStatusAvailable -and $LASTEXITCODE -eq 0) {
         $profileLines = ($aaStatus -split $nl) | Where-Object { $_ -match "profiles are loaded|profiles are in" }
         foreach ($pl in $profileLines) {
             $FindingDetails += "  $($pl.ToString().Trim())" + $nl
@@ -23161,10 +23169,16 @@ Function Get-V203721 {
     # Check 2: SELinux (alternative MAC)
     $FindingDetails += $nl + "Check 2: SELinux (Alternative)" + $nl
     $selinuxActive = $false
-    $getenforce = $(getenforce 2>&1)
-    if ($LASTEXITCODE -eq 0 -and $getenforce -match "Enforcing|Permissive") {
-        $FindingDetails += "  SELinux: $($getenforce.ToString().Trim())" + $nl
-        $selinuxActive = ($getenforce -match "Enforcing")
+    $(which getenforce 2>&1) | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        $getenforce = $(getenforce 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $getenforce -match "Enforcing|Permissive") {
+            $FindingDetails += "  SELinux: $($getenforce.ToString().Trim())" + $nl
+            $selinuxActive = ($getenforce -match "Enforcing")
+        }
+        else {
+            $FindingDetails += "  SELinux: NOT INSTALLED (Debian uses AppArmor by default)" + $nl
+        }
     }
     else {
         $FindingDetails += "  SELinux: NOT INSTALLED (Debian uses AppArmor by default)" + $nl
@@ -26659,12 +26673,12 @@ Function Get-V203750 {
     $FindingDetails += $nl + "Check 2: XO TLS Configuration" + $nl
     $tlsSecure = $false
     $xoHostname = $(hostname 2>&1)
-    $tlsCheck = $(echo | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1)
+    $tlsCheck = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1")
     if ($tlsCheck -match "Protocol\s*:\s*TLSv1\.[23]") {
         $protoLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Protocol" } | Select-Object -First 1
         $cipherLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Cipher\s+:" } | Select-Object -First 1
-        $FindingDetails += "  $($protoLine.ToString().Trim())" + $nl
-        $FindingDetails += "  $($cipherLine.ToString().Trim())" + $nl
+        if ($protoLine) { $FindingDetails += "  $($protoLine.ToString().Trim())" + $nl }
+        if ($cipherLine) { $FindingDetails += "  $($cipherLine.ToString().Trim())" + $nl }
         $tlsSecure = $true
     }
     else {
@@ -26817,10 +26831,10 @@ Function Get-V203751 {
     # Check 2: TLS for incoming connections
     $FindingDetails += $nl + "Check 2: TLS for Incoming Connections" + $nl
     $tlsReceptionOk = $false
-    $tlsCheck = $(echo | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1)
+    $tlsCheck = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1")
     if ($tlsCheck -match "Protocol\s*:\s*TLSv1\.[23]") {
         $protoLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Protocol" } | Select-Object -First 1
-        $FindingDetails += "  $($protoLine.ToString().Trim())" + $nl
+        if ($protoLine) { $FindingDetails += "  $($protoLine.ToString().Trim())" + $nl }
         $FindingDetails += "  TLS protects confidentiality and integrity during data reception" + $nl
         $tlsReceptionOk = $true
     }
