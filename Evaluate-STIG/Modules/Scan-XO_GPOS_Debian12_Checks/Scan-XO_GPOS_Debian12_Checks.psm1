@@ -27599,11 +27599,14 @@ Function Get-V203752 {
     # Check 4: XO Node.js error handling
     $FindingDetails += $nl + "Check 4: XO Application Error Handling" + $nl
     $nodeEnv = $(printenv NODE_ENV 2>&1)
-    if ($nodeEnv -and $nodeEnv -match "production") {
+    if ($nodeEnv -and "$nodeEnv" -match "production") {
         $FindingDetails += "  NODE_ENV: production (minimal error exposure)" + $nl
     }
+    elseif ($null -ne $nodeEnv -and "$nodeEnv".Trim().Length -gt 0) {
+        $FindingDetails += "  NODE_ENV: $("$nodeEnv".Trim()) (non-production)" + $nl
+    }
     else {
-        $FindingDetails += "  NODE_ENV: $($nodeEnv.ToString().Trim()) (or not set)" + $nl
+        $FindingDetails += "  NODE_ENV: not set (default error handling)" + $nl
     }
 
     # Status determination
