@@ -11082,7 +11082,49 @@ Function Get-V203649 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : bb149895d772a57351acd22ac7bf0a34
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203649"
+    $RuleID = "SV-203649r971535_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -12288,7 +12330,49 @@ Function Get-V203657 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 84c677a60d23492ea6f4920fd90f260e
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203657"
+    $RuleID = "SV-203657r958524_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -12457,7 +12541,49 @@ Function Get-V203658 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : d0b1a712f58767e5bd524ea41d4178d6
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203658"
+    $RuleID = "SV-203658r958528_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -12615,7 +12741,49 @@ Function Get-V203659 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 65f1666297979185d6dfd73b793c34c6
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203659"
+    $RuleID = "SV-203659r970703_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -12780,7 +12948,49 @@ Function Get-V203660 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 273055e926fecb0033cf40a05d8b4702
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203660"
+    $RuleID = "SV-203660r958550_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -12932,7 +13142,49 @@ Function Get-V203661 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : b99c9ec4c8cde62b2a38f89d90563cd9
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203661"
+    $RuleID = "SV-203661r958552_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -13088,7 +13340,49 @@ Function Get-V203663 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : d1d2bde2aa595baeee464a17bea64e1f
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203663"
+    $RuleID = "SV-203663r958564_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -13252,7 +13546,49 @@ Function Get-V203664 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 37c113e557135af92d3d0d2ec058550e
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203664"
+    $RuleID = "SV-203664r958566_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -16330,7 +16666,49 @@ Function Get-V203683 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 2a953cc9d7d4f473066baa9c9301b42b
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203683"
+    $RuleID = "SV-203683r958636_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
@@ -16505,7 +16883,49 @@ Function Get-V203684 {
         DiscussMD5 : 00000000000000000000000000000000
         CheckMD5   : 433c99c4c34d482edfa17351840f6f57
         FixMD5     : 00000000000000000000000000000000
-    #>#---=== Begin Custom Code ===---#
+        #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-203684"
+    $RuleID = "SV-203684r958638_rule"
+    $Status = "Open"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
     $nl = [Environment]::NewLine
     $output = ""
 
