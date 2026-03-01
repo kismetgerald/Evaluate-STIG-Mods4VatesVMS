@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 108 (18 CAT I + 89 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 90 |
-| **Completion** | 54.5% |
+| **Implemented** | 128 (18 CAT I + 109 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 70 |
+| **Completion** | 64.6% |
 
-**Last validated test:** Test164 (Feb 28, 2026) — Exit 0, EvalScore 20.2%, Batch 9 HeadParams fix validated
+**Last validated test:** Test169 (Mar 1, 2026) — Exit 0, EvalScore 34.85%, Batch 14 validated (10/10 pass, 7 NF + 3 O)
 
 ---
 
@@ -282,16 +282,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203723 | SV-203723r1050789 | Re-auth for privilege escalation | NR | -- | -- | -- |
-| V-203724 | SV-203724r1050790 | Re-auth when changing roles | NR | -- | -- | -- |
-| V-203725 | SV-203725r1050791 | Re-auth when changing authenticators | NR | -- | -- | -- |
-| V-203730 | SV-203730r958820 | Auth peripherals before connection | NR | -- | -- | -- |
-| V-203731 | SV-203731r971545 | Auth endpoint devices | NR | -- | -- | -- |
-| V-203733 | SV-203733r958828 | Prohibit cached auth after 1 day | NR | -- | -- | -- |
-| V-203734 | SV-203734r982217 | PKI local cache of revocation data | NR | -- | -- | -- |
-| V-203735 | SV-203735r958846 | Audit all nonlocal maintenance | NR | -- | -- | -- |
-| V-203738 | SV-203738r958852 | Verify remote disconnect at termination | NR | -- | -- | -- |
-| V-203744 | SV-203744r958868 | Only DoD PKI-established certificates | NR | -- | -- | -- |
+| V-203723 | SV-203723r1050789 | Re-auth for privilege escalation | NF | Test169 | #63 | No NOPASSWD entries |
+| V-203724 | SV-203724r1050790 | Re-auth when changing roles | NF | Test169 | #63 | sudo timeout enforced |
+| V-203725 | SV-203725r1050791 | Re-auth when changing authenticators | NF | Test169 | #63 | PAM password enforced |
+| V-203730 | SV-203730r958820 | Auth peripherals before connection | O | Test169 | #63 | USBGuard not installed |
+| V-203731 | SV-203731r971545 | Auth endpoint devices | NF | Test169 | #63 | SSH+TLS bidirectional |
+| V-203733 | SV-203733r958828 | Prohibit cached auth after 1 day | NF | Test169 | #63 | sudo 5min cache |
+| V-203734 | SV-203734r982217 | PKI local cache of revocation data | O | Test169 | #63 | No local CRL files |
+| V-203735 | SV-203735r958846 | Audit all nonlocal maintenance | NF | Test169 | #63 | SSH+journal+XO Audit |
+| V-203738 | SV-203738r958852 | Verify remote disconnect at termination | NF | Test169 | #63 | SSH keepalive active |
+| V-203744 | SV-203744r958868 | Only DoD PKI-established certificates | O | Test169 | #63 | DoD CA verification needed |
 
 ### Batch 15: Hardening, Permissions and Firewall (10 functions)
 
