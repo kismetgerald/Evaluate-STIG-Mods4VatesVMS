@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 148 (18 CAT I + 129 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 50 |
-| **Completion** | 74.7% |
+| **Implemented** | 158 (18 CAT I + 139 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 40 |
+| **Completion** | 79.8% |
 
-**Last validated test:** Test171 (Mar 1, 2026) — Exit 0, EvalScore 37.88%, Batch 16 validated (10/10 pass, 2 NF + 8 O)
+**Last validated test:** Test172 (Mar 1, 2026) — Exit 0, EvalScore 40.4%, Batch 17 validated (10/10 pass, 5 NF + 5 O)
 
 ---
 
@@ -327,16 +327,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203651 | SV-203651r958506 | Audit reduction capability | NR | -- | -- | -- |
-| V-203671 | SV-203671r991556 | Audit records: event source identity | NR | -- | -- | -- |
-| V-203675 | SV-203675r991560 | Limit privilege to change software | NR | -- | -- | -- |
-| V-203677 | SV-203677r991562 | Preserve info on system failure | NR | -- | -- | -- |
-| V-203678 | SV-203678r991563 | Notify SAs/ISSOs on account actions (1) | NR | -- | -- | -- |
-| V-203679 | SV-203679r991564 | Notify SAs/ISSOs on account actions (2) | NR | -- | -- | -- |
-| V-203680 | SV-203680r991565 | Notify SAs/ISSOs on account actions (3) | NR | -- | -- | -- |
-| V-203681 | SV-203681r991566 | Notify SAs/ISSOs on account actions (4) | NR | -- | -- | -- |
-| V-263660 | SV-263660r982565 | Protected storage for crypto keys | NR | -- | -- | -- |
-| V-263661 | SV-263661r982567 | Synchronize system clocks | NR | -- | -- | -- |
+| V-203651 | SV-203651r958506 | Audit reduction capability | NF | Test172 | #65 | aureport/ausearch available |
+| V-203671 | SV-203671r991556 | Audit records: event source identity | NF | Test172 | #65 | auditd + journal source fields |
+| V-203675 | SV-203675r991560 | Limit privilege to change software | NF | Test172 | #65 | root-owned /usr/lib,bin,sbin |
+| V-203677 | SV-203677r991562 | Preserve info on system failure | NF | Test172 | #65 | journal persistent + coredump |
+| V-203678 | SV-203678r991563 | Notify SAs/ISSOs on account creation | O | Test172 | #65 | notification config required |
+| V-203679 | SV-203679r991564 | Notify SAs/ISSOs on account modification | O | Test172 | #65 | notification config required |
+| V-203680 | SV-203680r991565 | Notify SAs/ISSOs on account disabling | O | Test172 | #65 | notification config required |
+| V-203681 | SV-203681r991566 | Notify SAs/ISSOs on account removal | O | Test172 | #65 | notification config required |
+| V-263660 | SV-263660r982565 | Protected storage for crypto keys | O | Test172 | #65 | key perms verification needed |
+| V-263661 | SV-263661r982567 | Synchronize system clocks | NF | Test172 | #65 | timesyncd active + synced |
 
 ---
 
@@ -384,3 +384,4 @@
 | Test170 | Mar 1 | #64 | Phase 2 Batch 15 | 198 | FAIL | 36.36% | V-203752 null .ToString() crash |
 | Test170b | Mar 1 | #64 | Phase 2 Batch 15 | 198 | PASS | 36.87% | 10 Hardening, 3 NF + 7 Open |
 | Test171 | Mar 1 | #64 | Phase 2 Batch 16 | 198 | PASS | 37.88% | 10 Compliance/MFA/Firewall, 2 NF + 8 Open |
+| Test172 | Mar 1 | #65 | Phase 2 Batch 17 | 198 | PASS | 40.4% | 10 Audit/Notify/Crypto/Time, 5 NF + 5 Open |
