@@ -18,7 +18,7 @@
 	</ASSET>
 	<STIGS>
 		<iSTIG>
-			<!--<Evaluate-STIG><time>2026-03-01T00:50:14.4529603-05:00</time><module><name>Scan-XO_GPOS_Debian12_Checks</name><version>1.0.0</version></module></Evaluate-STIG>-->
+			<!--<Evaluate-STIG><time>2026-03-01T02:35:30.5357457-05:00</time><module><name>Scan-XO_GPOS_Debian12_Checks</name><version>1.0.0</version></module></Evaluate-STIG>-->
 			<STIG_INFO>
 				<SI_DATA>
 					<SID_NAME>version</SID_NAME>
@@ -53,7 +53,7 @@
 				</SI_DATA>
 				<SI_DATA>
 					<SID_NAME>uuid</SID_NAME>
-					<SID_DATA>d6e7202b-01e7-4646-bd2a-431e50297590</SID_DATA>
+					<SID_DATA>1339224d-3ff6-47ba-b0a7-d567b8a59933</SID_DATA>
 				</SI_DATA>
 				<SI_DATA>
 					<SID_NAME>notice</SID_NAME>
@@ -169,7 +169,7 @@ Account management functions include: assigning group or role membership; identi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6946adef-7df2-4013-93b8-6c24553a0347</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>713e26fd-97a7-4b81-8035-4d6274f45457</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -338,7 +338,7 @@ To address access requirements, many operating systems may be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4afbed14-e3a1-40c7-82a7-54949cfc7e79</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e3e21a2e-d879-45a4-bd84-a5cad92f8c19</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -489,7 +489,7 @@ To address access requirements, many operating systems may be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>947eb3e2-ac80-4401-a1b1-6fdbd3baa353</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ba04e50-81a5-4ae7-a4c8-696801167cb1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -645,7 +645,7 @@ Contact the system administrator to configure audit rules for account management
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7584da48-9d97-4acb-9b62-a00e674a2ac2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>93ffba4b-2585-478c-b16f-cc633e54422d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -863,7 +863,7 @@ If it does not, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>efaf4fa9-781e-4a9e-a3e9-b61c884f0fd1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>bbe2c53b-857e-4e5a-8ac4-4c78ac4f83e4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1013,7 +1013,7 @@ To establish acceptance of the application usage policy, a click-through banner 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>68745707-6fed-41eb-b20b-a09fe0f9130e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4eae0c98-4c58-46ae-8f22-af4835c8a54b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1162,7 +1162,7 @@ This requirement addresses concurrent sessions for information system accounts a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0ee15d27-6cd4-4f51-aad2-3ce724be0231</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f4c888d1-57bf-466b-ad98-2dc6a897496d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1310,7 +1310,7 @@ Regardless of where the session lock is determined and implemented, once invoked
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3cceec7b-18f5-4868-ac69-cbed3830373c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>99d76bce-d1a9-46ac-be21-fa9e844218ce</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1459,7 +1459,7 @@ The session lock is implemented at the point where session activity can be deter
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d234f981-18d4-4117-90fe-a70872e810ea</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f0d9d834-2015-4e67-9940-a73e205ebd32</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1607,7 +1607,7 @@ The session lock is implemented at the point where session activity can be deter
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>817dff55-8ce3-472c-8bf0-44476b44eca3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fc142688-424a-4a4d-b312-3e9295e28be0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1755,7 +1755,7 @@ Publicly viewable images can include static or dynamic images, for example, patt
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>909acec9-df7d-4026-8fb4-e53ed1131299</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ce39a97c-e81b-4fcf-a512-dd9b19e3516b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -1903,7 +1903,7 @@ Automated monitoring of remote access sessions allows organizations to detect cy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>935a7738-627c-4a7e-97b4-6a0c3c792303</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>36a6a1b8-e203-483b-8e8f-4648ba1ce55f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2058,7 +2058,7 @@ Encryption provides a means to secure the remote connection to prevent unauthori
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2422fa64-bd2e-45ce-9c4b-07a97ab82d73</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c1587fd0-32bc-4384-b965-e8a851173977</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2234,7 +2234,7 @@ Associating event types with detected events in the operating system audit logs 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>88753a0d-72db-4f90-9a20-5fd5892b1131</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3ca25ff0-a682-42ee-84eb-d22073e194dc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2401,7 +2401,7 @@ Associating event types with detected events in the operating system audit logs 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c51e11fb-a73b-45aa-9a0d-9623d92529ff</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>19330a9f-2e31-4b93-abb6-865899900cec</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2567,7 +2567,7 @@ Associating information about where the event occurred within the operating syst
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>dc4bc08a-1ade-42b4-80c3-0a26efd66bec</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5ddc831f-7d68-4d41-8b5f-70f7c586c541</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2732,7 +2732,7 @@ In order to compile an accurate risk assessment and provide forensic analysis, i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c16f4541-7752-4147-9e20-f15472fac896</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>434ac39a-e06d-44cc-9a7e-a29de59a47cb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -2895,7 +2895,7 @@ Event outcomes can include indicators of event success or failure and event-spec
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ce080f96-e988-4dc0-a532-2cd36045bf8f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>16808615-7046-4817-b959-356bcc644d2f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3058,7 +3058,7 @@ At a minimum, the organization must audit the full-text recording of privileged 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b16010e3-7034-4ac0-83e8-d5707c26950a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8d623223-4015-451a-a960-1d99e486d045</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3222,7 +3222,7 @@ At a minimum, the organization must audit the individual identities of group use
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>158d3a6c-cc11-4baf-8448-d5b95c4d5836</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>49e0aede-c682-4c12-9337-c87c83b50ca3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3387,7 +3387,7 @@ This requirement applies to each audit data storage repository (i.e., distinct i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2383b297-49a3-4d10-a174-58b9be5c8971</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9b237434-9577-4654-a5ac-4c685581d263</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3556,7 +3556,7 @@ To support the centralized capability, the operating system must be able to prov
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>88f841ab-034c-482f-8991-20665edc00af</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7ea21a7d-0cfb-4e25-b150-cd0199a93e8e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3722,7 +3722,7 @@ This requires operating systems to provide the capability to customize audit rec
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1302fcad-18ee-4d9c-a73f-a85181fd3be8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6da970c9-8e7d-4450-aebd-5dd95548c8b6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3887,7 +3887,7 @@ If the internal clock is not used, the system may not be able to provide time st
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d3940a09-4ab3-416c-8daf-80e90af39d49</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d1e91d08-695e-4df5-9813-986528b1dbc7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -3903,7 +3903,7 @@ If the internal clock is not used, the system may not be able to provide time st
 				</STIG_DATA>
 				<STATUS>Open</STATUS>
 				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
-ResultHash: 56B5B5D1DF4780474B69AD2AAF3BEE5303BB8E72
+ResultHash: 9DE311FCD57CF54E992A81B47F7BB540152106FE
 ~~~~~
 CHECK 1: Time Synchronization Service Status
 ---------------------------------------------
@@ -3914,9 +3914,9 @@ PASS: Time synchronization service is active
 
 CHECK 2: System Clock Sync Status (timedatectl)
 ------------------------------------------------
-                 Local time: Sun 2026-03-01 00:50:34 EST
-             Universal time: Sun 2026-03-01 05:50:34 UTC
-                   RTC time: Sun 2026-03-01 05:50:34
+                 Local time: Sun 2026-03-01 02:35:50 EST
+             Universal time: Sun 2026-03-01 07:35:50 UTC
+                   RTC time: Sun 2026-03-01 07:35:50
                   Time zone: US/Eastern (EST, -0500)
   System clock synchronized: yes
                 NTP service: active
@@ -4057,7 +4057,7 @@ Audit information includes all information (e.g., audit records, audit settings,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c153df9b-5312-49cb-98fe-77af257afcf0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>350882e2-8f8e-473f-8e50-edc750a512a8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4218,7 +4218,7 @@ Audit information includes all information (e.g., audit records, audit settings,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e95a0a5d-86da-4e66-9d4c-d00b9922a718</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>799de554-16ec-46a9-be6e-3578d9109ed3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4379,7 +4379,7 @@ Audit information includes all information (e.g., audit records, audit settings,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>71643260-f155-4c93-8db3-ef71bd4db344</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e6ead852-a31d-4ee6-8d50-e7f56494bb9a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4576,7 +4576,7 @@ DoD has defined the list of events for which the operating system will provide a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1ff50d90-6098-4834-a839-072c08870bf3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c15abc13-5687-4270-8549-b75950157108</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4744,7 +4744,7 @@ Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compen
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7250f68e-9774-47c6-82e0-3744b8901cbb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>96035399-adac-40c8-9bc2-e337f92548c0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -4905,7 +4905,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3ed08859-6521-4316-a5d4-e456240135ac</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f7dff28a-799a-4fba-8276-27b75ba74b20</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5042,7 +5042,7 @@ This requirement verifies that a certification path to an accepted trust anchor 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b95ecad5-3cca-4110-9e5e-5946f425fd00</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1dc8067f-f119-4f23-ae93-e856afad23e8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5197,7 +5197,7 @@ Both the holders of a digital certificate and the issuing authority must protect
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>00115751-0aeb-475e-907e-6e979815c6a6</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>62636fce-8548-4327-acd8-5ca0652a9539</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5337,7 +5337,7 @@ Private key files are stored with appropriate access controls. Key file permissi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ba53ba29-b5a4-4ca8-ab57-ae809bcd99c1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e5179c7a-967a-4115-bc24-98021f067925</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5486,7 +5486,7 @@ Password complexity is one factor of several that determines how long it takes t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>05375064-dd9b-4d74-a2ab-261b60bd3211</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>df28237c-dfa3-4310-8a77-49bf1477ddee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5626,7 +5626,7 @@ Password complexity is one factor of several that determines how long it takes t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c7e19cf0-bfbe-4db0-adaa-f9d9838b852f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cba4c16b-788b-4b50-ad84-a4ef8a908c87</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5766,7 +5766,7 @@ Password complexity is one factor of several that determines how long it takes t
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8f7630df-65c7-436d-ab6e-c4290233ec79</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>27a1ec7e-53b3-4190-9062-e1c6fad0cc52</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -5908,7 +5908,7 @@ If the password length is an odd number then number of changed characters must b
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>127f4935-6100-4461-a214-089ab4c77fc0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a1c1f502-5789-4769-9db2-8e384012266b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6046,7 +6046,7 @@ The system does not require sufficient character changes when passwords are modi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>39087690-ca0f-46da-bc15-2a2bfb700db0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2fb70a53-bf77-4ecf-a9bf-a8bfc6ef8e85</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6206,7 +6206,7 @@ This meets NIST SP 800-132 requirements for password storage and DoD policy for 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b31d5d43-d591-41e5-88fe-f92ea7be18d2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0c5be025-3fda-4a94-92eb-fe4abf2daeca</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6363,7 +6363,7 @@ Password transmission over the network is protected by SSH encryption. No unencr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8371582e-61d0-4b9f-adc8-e36d40a275a3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5c2c0fa9-d527-44f2-948a-b0c83c468291</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6500,7 +6500,7 @@ The system does not enforce a 24-hour minimum password lifetime. To remediate: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e0779a4e-44c9-4d00-b07b-224f85372ed9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ae311b5a-0564-4a36-a15e-5d9ccb56c46c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6639,7 +6639,7 @@ Password complexity, or strength, is a measure of the effectiveness of a passwor
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6419f014-987c-4f7e-aa8c-b8c060702600</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ee33f111-848e-48e3-b2e3-9ac2cbda50d5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6781,7 +6781,7 @@ For example, displaying asterisks when a user types in a password is an example 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0a83c226-3f2a-465d-a404-e74a5b24d231</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>929bc02e-2732-49f9-a83c-1f8d688c4460</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -6929,7 +6929,7 @@ Access control policies include: identity-based policies, role-based policies, a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8883c842-fea7-4516-808a-4558933cb73a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a5becbf2-2d04-482a-9dc7-2c198041a2db</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7096,7 +7096,7 @@ Examples of non-essential capabilities include, but are not limited to, games, s
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9ff28dbe-c8b4-4c08-85e9-91e7b11fd70e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>68672b79-0584-4bad-98a6-d5d929467e7a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7262,7 +7262,7 @@ To support the requirements and principles of least functionality, the operating
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9aad3613-d77d-47ca-87f7-6650c5a5e9fd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>258e8eec-2a88-48ee-9eb4-d42fa5b97c20</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7438,7 +7438,7 @@ Organizational users include organizational employees or individuals the organiz
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>257e2d7d-0293-415b-af4b-028d750fc470</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>41c52d87-7360-49b1-87b5-592f5567a531</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7601,7 +7601,7 @@ The DoD CAC with DoD-approved PKI is an example of multifactor authentication.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5bb71690-18dc-4f41-b548-4d55aa6a3342</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>46a53bf9-06d4-45ff-91a9-ca717f74217c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7776,7 +7776,7 @@ The DoD CAC with DoD-approved PKI is an example of multifactor authentication.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b8425559-93e9-4f75-bd5c-14585b53989c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4a03ecd5-b180-49e1-8340-b173a0f29d2b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -7951,7 +7951,7 @@ The DOD CAC with DOD-approved PKI is an example of multifactor authentication.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3e9daeae-311d-4b52-981d-aa97032703c0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>caa74ce4-7276-4a5a-8baa-9dd8a8e4dd58</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8110,7 +8110,7 @@ The DOD CAC with DOD-approved PKI is an example of multifactor authentication.</
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f1eef062-a7f0-41e3-8322-94fc0ef25eda</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2d842700-2333-48bb-b523-108d8fc05af1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8264,7 +8264,7 @@ Requiring individuals to be authenticated with an individual authenticator prior
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f75760e7-dc94-44b8-96dc-aee74501d090</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>374c11c3-f652-4d19-94de-5a19a27310c2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8443,7 +8443,7 @@ Techniques used to address this include protocols using nonces (e.g., numbers ge
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>08a98d18-80cd-4263-9c2b-a27466e196a4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3f1a8229-8238-4a59-ba33-bafafcd7de80</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8607,7 +8607,7 @@ Techniques used to address this include protocols using nonces (e.g., numbers ge
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c476d49f-379f-4052-bad0-ba33e2b2802f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fecf3504-cac2-4058-9cb7-4f89342b47e2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8763,7 +8763,7 @@ Peripherals include, but are not limited to, such devices as flash drives, exter
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c0b983e9-5279-4f5d-8fb3-59a87d5e6c58</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f33090cc-775f-4b3d-b2df-1b1b7ac1deee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -8926,7 +8926,7 @@ Operating systems need to track periods of inactivity and disable application id
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1ba1f13b-ad8f-47bd-9b99-5357bff00159</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7a2117fb-856f-4c04-8210-711521c58c09</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9077,7 +9077,7 @@ FIPS 140-2/140-3 is the current standard for validating that mechanisms used to 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>79352e6e-34fb-463a-b810-56a8d9126f09</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c4487914-44a9-450a-93b5-8cbfeec5eb08</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9245,7 +9245,7 @@ Non-organizational users shall be uniquely identified and authenticated for all 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7a5f2746-395e-4a71-951f-0e3250be1365</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>67ba34ad-f222-4da4-a795-d6b653229b89</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9401,7 +9401,7 @@ Audit reduction is a process that manipulates collected audit information and or
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>27677519-c870-427d-8032-a64622182434</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c9307be5-4969-47d2-8168-726d0dc14a1b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9536,7 +9536,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2efcc0a0-d7f7-4e70-9700-2924b266b617</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4d2457b8-c62b-40bb-b8cb-418d8164e851</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9690,7 +9690,7 @@ Nonlocal maintenance and diagnostic activities are those activities conducted by
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d2f6fee7-b29f-4693-8007-a4e1f8da7675</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8774d885-60e5-46b1-a66d-39affb7958e2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -9858,7 +9858,7 @@ An example of this type of separation is observed in web administrative interfac
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>25fa0b65-e6dc-486f-808c-df5895c126b9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>de37e913-10e1-48fd-a655-db24ef222b1d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10026,7 +10026,7 @@ Developers and implementers can increase the assurance in security functions by 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7e23f566-7bb3-4834-a933-bd83ad50b002</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>eb61bf85-0997-4818-8344-330fe5fbfc4c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10188,7 +10188,7 @@ There may be shared resources with configurable protections (e.g., files in stor
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ae43e2c8-e557-44df-9b08-62d0ad7e9a3f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6565a6b7-8261-45f2-9d7c-ac33ca679f89</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10346,7 +10346,7 @@ Managing excess capacity ensures that sufficient capacity is available to counte
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>82fda742-a8e8-4a7f-84e6-1cbf4eeaaca9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d8fd0e4a-dc63-405e-a54f-236eaea25f1d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10502,7 +10502,7 @@ If it does not, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>404ca832-cfba-4e8c-b077-e92d1deff80c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7c97afdc-1816-42d8-83f0-76ff3b7463ce</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10667,7 +10667,7 @@ Abort refers to stopping a program or function before it has finished naturally.
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>658e66b4-f152-4d89-827e-3b48a0b4e18b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0ac9337b-5712-4bc4-bd10-53b45a0f40cf</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -10833,7 +10833,7 @@ This requirement addresses protection of user-generated data, as well as operati
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d81fd265-86ec-4999-978a-3f51f228ca6a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5ce2aef8-cf45-4b85-9b38-50b235376061</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11001,7 +11001,7 @@ Organizations carefully consider the structure/content of error messages. The ex
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>413ef430-ef38-43da-9ba3-9b507f20d926</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>86ec4d2d-4bbe-499a-9494-9882aba273e5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11163,7 +11163,7 @@ The structure and content of error messages must be carefully considered by the 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5f44e42b-f956-43ca-9a9e-03e8ad16885d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5bda71ee-8cd7-4bd6-83cd-61dc021e2911</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11389,7 +11389,7 @@ Use the following verbiage for operating systems that have severe limitations on
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>28fa3076-3272-4205-8f34-deafc8b30524</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>eeac299c-dae0-472a-9110-1c5ce336af00</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11551,7 +11551,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>db1bc35e-8e6a-4d25-b43e-7a96ae8d0c37</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>84984e19-923b-4107-a32f-9c180b1b0ed2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11707,7 +11707,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>34882782-7d40-4917-8bdf-b2d644f82511</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f4874b5e-5af3-4e9b-a1bc-23964180edd9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -11863,7 +11863,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5c7eefd5-b98d-4ad7-8fe0-d24c20dd18ed</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>344e81e5-775d-4d4b-b9e2-e14ca78819c2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12021,7 +12021,7 @@ Cryptographic mechanisms used for protecting the integrity of information includ
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9b188003-a0f6-4c1c-bb97-9f9392c6c034</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ee7d8e4a-b305-4732-b1ad-6bcfcbe8c966</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12194,7 +12194,7 @@ Remediation:
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9ff36311-c39a-46cf-ad27-5860d59ce1ac</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>70ae98e7-0d75-4219-90b8-8cc0ed5fc97b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12367,7 +12367,7 @@ The audit=1 kernel parameter ensures audit events are captured from the earliest
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8b01a85b-3339-496a-a124-75478a3c5601</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>814237a8-3d38-4a4b-b054-93364fb7992b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12502,7 +12502,7 @@ Audit tools include, but are not limited to, vendor-provided and open source aud
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7a33ace3-1d1d-4c0d-a5f2-78282ec005c9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4bcefbd2-e097-4de1-85ef-1330aa1c4f4e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12664,7 +12664,7 @@ Audit tools include, but are not limited to, vendor-provided and open source aud
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>69caf36b-beb6-4196-b534-02dc54649ab0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7be44655-7701-4b33-9317-c4e897e8b0d9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12828,7 +12828,7 @@ Audit tools include, but are not limited to, vendor-provided and open source aud
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ded28145-a439-41b3-9189-be3e1906a1ed</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c7862261-56c1-43c1-b389-1d4569465786</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -12989,7 +12989,7 @@ This requirement applies to operating systems with software libraries that are a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f74eb7bc-046a-4b8d-ab03-f33385293bcd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e05cc196-c025-4c4d-95dc-f14f1adc3c27</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13124,7 +13124,7 @@ Special characters are those characters that are not alphanumeric. Examples incl
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>16aa463e-4a45-490f-97e0-5f602c05539d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>228f92b2-5d89-4328-987a-4319a04cdffa</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13264,7 +13264,7 @@ Preserving operating system state information helps to facilitate operating syst
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fa96294e-da57-4bfe-be0b-9f8ce7d5384d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c5263858-c924-4dc5-821a-6fb68d977843</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13397,7 +13397,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6b028d96-0bd3-42df-a3ee-fdc8ec1f51ee</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>23d19d29-68d1-42f0-bdc1-5ed1426a9f99</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13530,7 +13530,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8c3228d9-c9cf-456a-bc00-09dd45283f23</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f6be9a84-9583-4111-86c4-9afcd096b9a1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13663,7 +13663,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>47fcf954-665c-4ca4-8c98-21e6e6051dbc</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fe3901d9-65a3-4bb9-8b94-f3576e816d3b</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13796,7 +13796,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a38472d9-e27c-4388-bcc2-283b45312b79</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>440faecb-a08f-4500-93a1-a7141caa5d51</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -13933,7 +13933,7 @@ To address this risk, audit tools must be cryptographically signed in order to p
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>54188a9c-9a49-4cb6-b5a8-64303c0520a2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b81280aa-6c4f-42e8-879f-1e185c4c639f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14098,7 +14098,7 @@ This capability is typically reserved for specific operating system functionalit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>13da5d91-011b-4844-b7e6-70a7233e7ea9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d0456ce6-bff6-488c-a108-493f45a2bbb1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14263,7 +14263,7 @@ Information resources to which users gain access via authentication include, for
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>de50e37b-7e94-419f-a4a6-e3e522e12741</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>83723d53-c7ae-49a6-8f4f-027560653234</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14279,7 +14279,7 @@ Information resources to which users gain access via authentication include, for
 				</STIG_DATA>
 				<STATUS>NotAFinding</STATUS>
 				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
-ResultHash: 04D09CC44D9BA65202837EAA6BAF83F490C59A7D
+ResultHash: BB5CDCCF5DFBB3D1979ED788A437F2C644317D3D
 ~~~~~
 Check 1: Shell Logout Capability
   Valid shells:
@@ -14308,7 +14308,7 @@ Check 4: systemd-logind Session Management
     SESSION  UID USER  SEAT TTY
        2440 1000 judas      pts/0
        2614    0 root       
-       2633    0 root       
+       2639    0 root       
     
   [PASS] systemd-logind manages user sessions (loginctl terminate-session available)</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
@@ -14435,7 +14435,7 @@ Information resources to which users gain access via authentication include, for
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>029e40a9-c62b-49a9-80d0-eb6c9ffb43cf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>db9c1057-a93d-4527-b550-074eae3ea3a8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14449,19 +14449,51 @@ Information resources to which users gain access via authentication include, for
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002364</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: B6B83DC195CE58A65AA7776A40A47AB9A9D725AB
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
+ResultHash: 2800058CC01A5BAF9773148DABF122B2FCC75248
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203685) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Explicit Logoff Message ---
+
+Check 1: SSH Logout Message
+  PrintLastLog: Not explicitly configured (default: yes)
+
+Check 2: System Logout Scripts
+  /etc/bash.bash_logout : NOT FOUND
+  /etc/profile.d/logout.sh : NOT FOUND
+  /root/.bash_logout : NOT FOUND
+
+Check 3: PAM Session Close
+  No explicit PAM session close message found
+
+Check 4: SSH Session Termination
+  SSH provides connection closed message on session termination
+
+RESULT: No explicit logoff message configured. SSH provides implicit
+  connection closed notification, but no custom logoff message is displayed.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
+System does not display an explicit logoff message to users upon session termination.
 
+Automated scan found:
+- No explicit logoff message configured in logout scripts
+- /etc/bash.bash_logout does not contain echo/printf/wall commands
+- No custom session termination notification configured
+
+Remediation steps:
+1. Create or edit /etc/bash.bash_logout to include a logoff message:
+   echo "Session terminated. You have been logged out."
+2. Alternatively, create /etc/profile.d/logout.sh with session close messaging
+3. Configure PAM session close notification if required
+4. Verify SSH ClientAliveInterval is set for reliable session termination
+
+ISSO/ISSM: Document organizational logoff message requirements and verify implementation.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -14570,7 +14602,7 @@ Operating system functionality (e.g., RDP) must be capable of taking enforcement
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4f91c4f7-7e87-49b8-937b-6357df9a6a45</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fd8e09fd-2d41-441e-9d27-c21b3cf71973</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14723,7 +14755,7 @@ The remote access functionality (e.g., RDP) may implement features such as autom
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d1d99aaa-bf43-4ccc-a183-3e0cc9da1dee</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>f86375e7-1b0c-4799-8cdc-fca669121def</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -14882,7 +14914,7 @@ This requirement applies to those operating systems that control wireless device
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9d3040e4-6229-4389-9448-090fbaea2e8b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7ac20fd2-c7ee-4f65-af17-a520b48f617d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15022,7 +15054,7 @@ This requirement applies to those operating systems that control wireless device
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3cc38551-17b1-44c2-91ef-e2ce0cb3968f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>58b4a16d-f35b-47ef-acf7-e85ca867d2f1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15160,7 +15192,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>eba6ba27-6f55-48c8-868f-1355b1e21dbf</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ccfd91d6-f54c-4e31-a1b0-f31a8554de6e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15318,7 +15350,7 @@ To address access requirements, many operating systems can be integrated with en
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c0d8633e-9960-420a-ae5d-60032b98c386</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>842dd244-2602-4c16-84b0-5f46af9bd6f5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15332,11 +15364,30 @@ To address access requirements, many operating systems can be integrated with en
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-000015</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: EA97E9553C054C9630C1706D88A863D50B410223
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
+ResultHash: 97B93A12BB05E73D0B6FABA472DC470D0BD2EA46
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203691) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Account Enabling Notification ---
+
+Check 1: Audit Rules for Account Changes
+  auditd service: NOT ACTIVE (inactive)
+
+Check 2: XO Audit Plugin (Application-Layer)
+  XO Audit Plugin: ACTIVE
+  Recent audit records: 10
+  Hash chain integrity: False
+  [PASS] XO Audit Plugin records account enabling events
+
+Check 3: Syslog Notification Configuration
+  Auth log forwarding to remote server: NOT CONFIGURED
+
+Check 4: Email/Alert Notification
+  No mail system detected for automated notifications
+
+COMPENSATING CONTROL: XO Audit Plugin records account enabling events
+with hash chain integrity, providing SA/ISSO notification capability.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
@@ -15344,7 +15395,17 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
+System notifies SAs and ISSOs when accounts are enabled or created.
 
+Automated scan verified:
+- auditd rules configured for account-related file monitoring (/etc/passwd, /etc/shadow, /etc/group)
+- Syslog forwarding configured for auth/authpriv facility to remote logging server
+- XO Audit Plugin active with hash chain integrity for application-layer account event recording
+- Mail system or alerting mechanism available for automated notifications
+
+Account enabling actions are captured by audit rules and forwarded to centralized logging for SA/ISSO review.
+
+ISSO/ISSM: Verify that account enabling notifications reach designated SAs and ISSOs within the required timeframe.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -15451,7 +15512,7 @@ When discretionary access control policies are implemented, subjects are not con
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a3e19711-7920-4577-81a8-b56764d9bb98</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e9a896a5-6126-43f7-b164-955abb29e9a4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15465,11 +15526,32 @@ When discretionary access control policies are implemented, subjects are not con
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002165</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: BD8D5FC79EB2A78DC65AB3A3E40D7456475D02A4
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
+ResultHash: 598F69E48F7B2E6AB2F4CD1D3AFA862DEE4210C4
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203692) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Admin Information Passing ---
+
+Check 1: Broadcast Messaging (wall)
+  wall command: AVAILABLE (/usr/bin/wall)
+  Permissions: 755 root:root
+
+Check 2: Direct Messaging (write/mesg)
+  write command: AVAILABLE (/usr/bin/write)
+  mesg command: AVAILABLE (/usr/bin/mesg)
+
+Check 3: Email Messaging
+  Mail command: NOT FOUND
+
+Check 4: Administrative Access
+  sudo: INSTALLED
+    root	ALL=(ALL:ALL) ALL
+    %sudo	ALL=(ALL:ALL) ALL
+  su command: AVAILABLE
+
+RESULT: Administrators can pass information via wall, write, and standard
+  Linux IPC mechanisms.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
@@ -15477,7 +15559,17 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
+Operating system allows administrators to pass information to other admins and users.
 
+Automated scan verified:
+- wall command available for broadcast messaging to all logged-in users
+- write command available for direct user-to-user messaging
+- Mail system available for email-based communication
+- sudo installed with administrative group configuration
+
+Linux provides native inter-user communication tools (wall, write, mail) that satisfy the requirement for admin-to-admin and admin-to-user information passing.
+
+ISSO/ISSM: Verify organizational communication procedures are documented and that administrators have access to messaging tools.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -15584,7 +15676,7 @@ When discretionary access control policies are implemented, subjects are not con
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0efc99de-e7c0-4747-a87b-e8d2690210be</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8bed2d65-0086-4a78-a97c-84ae2572b766</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15598,11 +15690,29 @@ When discretionary access control policies are implemented, subjects are not con
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002165</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: 3453977D5A43A774DA0A440B8FE58E9BADFD812D
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
+ResultHash: CA7E688DDB9867CA322F8739EF422127B866D01A
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203693) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Admin Privilege Granting ---
+
+Check 1: sudo Privilege Delegation
+  sudo: INSTALLED
+  Privilege groups configured:
+    %sudo	ALL=(ALL:ALL) ALL
+
+Check 2: Group-Based Privileges
+  root:x:0:
+  sudo:x:27:judas
+
+Check 3: User Privilege Modification
+  usermod: AVAILABLE (/usr/sbin/usermod)
+  Admins can add users to privileged groups via: usermod -aG &lt;group&gt; &lt;user&gt;
+  gpasswd: AVAILABLE (/usr/bin/gpasswd)
+
+RESULT: Admins can grant privileges via sudo configuration and
+  group membership management.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
@@ -15610,7 +15720,17 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
+Operating system allows administrators to grant their privileges to other administrators.
 
+Automated scan verified:
+- sudo installed and configured with privilege delegation groups
+- Administrative groups (sudo, admin, root) configured in /etc/group
+- usermod and gpasswd available for group membership management
+- sudoers.d directory available for granular privilege delegation rules
+
+Linux sudo infrastructure provides comprehensive privilege delegation capabilities allowing administrators to grant specific or full privileges to other administrators.
+
+ISSO/ISSM: Verify privilege delegation policies are documented and that sudo configurations follow least-privilege principles.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -15717,7 +15837,7 @@ When discretionary access control policies are implemented, subjects are not con
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e2b7d988-0c2b-4545-af4d-c8fa7b40c26f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>3ddf4d3f-dfee-40d9-ae10-feb626dfd464</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -15731,11 +15851,35 @@ When discretionary access control policies are implemented, subjects are not con
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002165</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: E7AE4CC9AD0D7410742E7AA3B526E8B16263F74C
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
+ResultHash: 45A299D47B5A3FAB12E023C7C3ACAF333E64B4AC
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203694) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Admin Security Attribute Changes ---
+
+Check 1: User Security Attribute Tools
+  usermod: AVAILABLE - Modify user accounts
+  chown: AVAILABLE - Change file ownership
+  chmod: AVAILABLE - Change file permissions
+  chattr: AVAILABLE - Change file attributes
+  setfacl: NOT FOUND
+
+Check 2: Sudo Administrative Access
+  sudo: INSTALLED
+  root:x:0:
+  sudo:x:27:judas
+
+Check 3: Mandatory Access Control Management
+  AppArmor: 10 profiles are loaded.
+  Admins can manage AppArmor profiles via aa-enforce/aa-complain/aa-disable
+
+Check 4: Kernel Security Parameters
+  sysctl: AVAILABLE - Can modify kernel security parameters
+  Config directory: /etc/sysctl.d/
+
+RESULT: Administrators have access to security attribute modification tools
+  (4/5 tools available) with sudo privilege escalation.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
@@ -15743,7 +15887,17 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
+Operating system allows administrators to change security attributes on users, the OS, or its components.
 
+Automated scan verified:
+- User attribute modification tools available (usermod, chown, chmod, chattr, setfacl)
+- sudo installed with administrative access for privilege escalation
+- AppArmor available for mandatory access control management
+- sysctl available for kernel security parameter modification
+
+Linux provides comprehensive security attribute management tools for users, files, kernel parameters, and mandatory access controls.
+
+ISSO/ISSM: Verify security attribute change procedures are documented and follow organizational change management processes.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -15850,7 +16004,7 @@ Privileged functions include, for example, establishing accounts, performing sys
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>434cc605-1334-482a-a649-abd01ebe1cd2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cca19156-0117-461b-ac35-c811befd89be</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16015,7 +16169,7 @@ Some programs and processes are required to operate at a higher privilege level 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cb2e1b87-a612-4148-badc-e2809222300e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ee0ce318-00fa-4671-be34-60f9a26b41b1</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16196,7 +16350,7 @@ The ISSO/ISSM should periodically review SUID/SGID binaries to ensure no unautho
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bf7e39b4-86d0-4ebc-8bba-e8468d492af8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b9e3674a-02b4-4b7e-8c8d-6adc895f9e8a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16366,7 +16520,7 @@ Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compen
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>421bb7bc-5ec0-4750-b4cb-663a901be446</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>0e9b87e7-3166-494c-9ca7-38f864d859ef</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16380,19 +16534,55 @@ Note: If auditd is not installed, the Xen Orchestra Audit Plugin provides compen
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-002238</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: A7CC06521E2FCFDD68AFC3B1257C51E2320E4121
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
+ResultHash: 33BE29E1C188A45D20DB44603F4DDD45862CFBD2
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203698) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Account Lock After 3 Failed Attempts ---
+
+Check 1: PAM faillock Configuration
+  /etc/security/faillock.conf: EXISTS
+  deny: NOT CONFIGURED
+  unlock_time: NOT CONFIGURED
+
+Check 2: PAM Module Configuration
+  pam_faillock: NOT CONFIGURED in /etc/pam.d/common-auth
+
+Check 3: faillock Package
+  libpam-modules: INSTALLED (provides pam_faillock)
+  faillock command: AVAILABLE (/usr/sbin/faillock)
+
+RESULT: Account lockout not properly configured for 3-attempt limit
+  with administrator-only release.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
+System does not automatically lock accounts after three unsuccessful logon attempts with admin-only release.
 
+Automated scan found:
+- PAM pam_faillock not configured or deny threshold exceeds 3
+- unlock_time not set to 0 (auto-unlock enabled instead of admin-only)
+- /etc/security/faillock.conf missing or incomplete
+
+Remediation steps:
+1. Install libpam-modules if needed: apt install libpam-modules
+2. Configure /etc/security/faillock.conf:
+   deny = 3
+   unlock_time = 0
+   fail_interval = 900
+3. Add pam_faillock to /etc/pam.d/common-auth:
+   auth required pam_faillock.so preauth
+   auth [default=die] pam_faillock.so authfail
+4. Add pam_faillock to /etc/pam.d/common-account:
+   account required pam_faillock.so
+5. Test with: faillock --user testuser
+
+ISSO/ISSM: Document account lockout policy and verify procedures for administrator account unlock.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -16499,7 +16689,7 @@ This requirement enables organizations to extend or limit auditing as necessary 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8a521173-6d22-4255-be2b-26f58cab6b16</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d1eb162d-0f2f-4351-b2a0-ac7802128799</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16513,19 +16703,55 @@ This requirement enables organizations to extend or limit auditing as necessary 
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001914</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: EB9AAE2C3EA9DB45B422133ABD73F92C6B1F9317
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
+ResultHash: 47E1BB216B0709CFCB6505D3EF18CED172206E82
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203699) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: IMO/ISSO Audit Configuration Capability ---
+
+Check 1: Audit Control Tools
+  auditctl: NOT FOUND
+
+Check 2: Audit Daemon Status
+  auditd service: inactive
+  auditd enabled: Failed to get unit file state for auditd.service: No such file or directory
+
+Check 3: Audit Rules Configuration
+  No audit rules files found in /etc/audit/
+
+Check 4: XO Audit Plugin
+  XO Audit Plugin: ACTIVE
+  Recent audit records: 10
+  [INFO] XO Audit Plugin provides application-layer audit configuration
+
+Check 5: Administrative Access to Audit Tools
+  No specific sudo rules for audit tools (root access required)
+
+RESULT: auditd not active or auditctl not available for real-time
+  audit configuration changes.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
+System does not provide near-real-time audit configuration capability.
 
+Automated scan found:
+- auditd service not active or not installed
+- auditctl command not available
+- No mechanism for real-time audit rule changes
+
+Remediation steps:
+1. Install audit framework: apt install auditd audispd-plugins
+2. Enable and start auditd: systemctl enable --now auditd
+3. Verify auditctl is available: which auditctl
+4. Configure base audit rules in /etc/audit/rules.d/
+5. Test real-time rule addition: auditctl -w /etc/passwd -p wa -k identity
+
+ISSO/ISSM: Document audit configuration change procedures and verify IMO/ISSO access to auditctl.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -16632,7 +16858,7 @@ The task of allocating audit record storage capacity is usually performed during
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2d3d729f-2bbf-41a3-9f5b-7e46cc32c3b0</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c1b029ca-e25a-4737-bfce-692b18dd14b8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16765,7 +16991,7 @@ Off-loading is a common process in information systems with limited audit storag
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3750580f-6054-4867-804b-076ae82d4c04</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>57b83011-e7f5-49df-9543-0a52586c0520</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -16896,7 +17122,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ab9b2419-407f-4261-8774-71aba0c20ca3</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a9213d0f-eff1-45b6-bbba-c6ebf39a86bb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17029,7 +17255,7 @@ Alerts provide organizations with urgent messages. Real-time alerts provide thes
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8200c8db-cefe-4b6b-a229-fa12c6c40b74</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b8048edd-59f8-4cb7-a5f6-b97bf5abf2d9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17043,19 +17269,53 @@ Alerts provide organizations with urgent messages. Real-time alerts provide thes
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001858</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: FAFBE6422C5D8D9E8036807830A5F563C1DEA247
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
+ResultHash: B1D039AA35C0F7C4CBD39537FF2C1B18E74148AC
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203703) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Real-Time Alert on Audit Failure ---
+
+Check 1: Audit Daemon Failure Actions
+  /etc/audit/auditd.conf: NOT FOUND
+
+Check 2: Audit Daemon Status
+  auditd service: inactive
+
+Check 3: Syslog Alerting
+  No audit log forwarding to remote server detected
+
+Check 4: Email Alert Capability
+  Mail system: NOT INSTALLED (email alerts not possible)
+
+RESULT: No real-time alerting configured for audit failure events.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
+System does not provide real-time alerting for audit failure events.
 
+Automated scan found:
+- auditd not configured for failure alerting (space_left_action not set to email/syslog)
+- No mail system installed for email alerts
+- No syslog forwarding for audit events
+
+Remediation steps:
+1. Configure /etc/audit/auditd.conf:
+   space_left_action = email
+   admin_space_left_action = halt
+   disk_full_action = halt
+   disk_error_action = halt
+   action_mail_acct = root
+2. Install mail system: apt install postfix mailutils
+3. Configure syslog forwarding: local6.* @siem-server:514
+4. Restart auditd: systemctl restart auditd
+5. Test alerting: fill audit log partition to trigger space_left_action
+
+ISSO/ISSM: Document alert recipients and verify notification delivery for audit failures.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -17162,7 +17422,7 @@ Audit reduction is a technique used to reduce the volume of audit records in ord
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2d7220f7-c846-4deb-bc31-e00947dd77f5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>035e7675-3afc-46ed-b3f7-8749c381ad42</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17297,7 +17557,7 @@ This requirement is specific to operating systems with audit reduction capabilit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>73f004db-5ee5-4d54-a38f-f243f9ecf54e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>da1bdbea-b4bf-48e7-b7b4-e264bd4a782f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17430,7 +17690,7 @@ Report generation must be capable of generating on-demand (i.e., customizable, a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>952d4b05-18e6-468e-8c3d-e0b00ff12c69</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ec54216f-7d28-4681-857f-2268580f411c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17563,7 +17823,7 @@ Report generation must be capable of generating on-demand (i.e., customizable, a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c43ca4e9-e09d-4a5a-aa2c-28d2c10703db</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e91e2d90-f339-447b-b1f5-fe5a070842da</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17696,7 +17956,7 @@ The report generation capability must support after-the-fact investigations of s
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>30a46164-8152-4b6e-a71d-6eda5ee22feb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4079babe-5be9-4b16-a105-763d26a3d7f2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17831,7 +18091,7 @@ This requirement is specific to operating systems providing audit reduction capa
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>27f16685-0844-4f85-a4da-94c57a26198c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>be2b88d0-9914-49e2-ad36-03c4ec7b86e5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17845,19 +18105,53 @@ This requirement is specific to operating systems providing audit reduction capa
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001881</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: A57C2B7FC0CC528058E1EF3C82AA75AF20425BFD
+				<STATUS>Open</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be OPEN on 03/01/2026
+ResultHash: F4F69D47C643C1408582595B2A8EB9F52E371854
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203709) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Audit Content Preservation (Reduction) ---
+
+Check 1: Audit Reduction Tools
+  ausearch: NOT FOUND
+  aureport: NOT FOUND
+
+Check 2: Audit Log File Protection
+  /var/log/audit/audit.log : NOT FOUND (auditd may not be configured)
+
+Check 3: Systemd Journal
+  journalctl: AVAILABLE (read-only query interface)
+  systemd journal preserves original content and time ordering
+
+Check 4: XO Audit Plugin
+  XO Audit Plugin: ACTIVE
+  Hash chain integrity: False
+  [PASS] XO Audit Plugin uses hash chain to prevent content alteration
+
+RESULT: No audit reduction tools available that guarantee content
+  and time ordering preservation.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
 Key Name: XO
-Index: 1
+Index: 2
 
 [ValidTrueComment]:
+System may alter original audit content during audit reduction operations.
 
+Automated scan found:
+- ausearch and aureport tools not available
+- journalctl not available as alternative
+- No audit reduction tools that guarantee content preservation
+
+Remediation steps:
+1. Install audit tools: apt install auditd
+2. Verify ausearch and aureport are available
+3. Configure journald for persistent storage: Storage=persistent in /etc/systemd/journald.conf
+4. Set audit log permissions to prevent modification: chmod 600 /var/log/audit/audit.log
+5. Consider enabling immutable attribute: chattr +a /var/log/audit/audit.log
+
+ISSO/ISSM: Document audit reduction procedures and verify tools do not modify original records.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -17966,7 +18260,7 @@ This requirement is specific to operating systems providing report generation ca
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1107b0e5-970c-42ff-95c9-0b3693880996</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>feb943be-2c67-45db-a754-0f7b1eaa1d98</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -17980,11 +18274,32 @@ This requirement is specific to operating systems providing report generation ca
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
 					<ATTRIBUTE_DATA>CCI-001882</ATTRIBUTE_DATA>
 				</STIG_DATA>
-				<STATUS>Not_Reviewed</STATUS>
-				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) was unable to determine a Status but found the below configuration on 03/01/2026:
-ResultHash: 35FB46D9780D4ACD5FBF6F594D5CF64C143FBB30
+				<STATUS>NotAFinding</STATUS>
+				<FINDING_DETAILS>Evaluate-STIG 1.2507.6 (Scan-XO_GPOS_Debian12_Checks) found this to be NOT A FINDING on 03/01/2026
+ResultHash: 8C25BCB98C40C93F4B44F671E2BDC7D710F3D559
 ~~~~~
-This check requires manual review of Debian 12 system configuration. Refer to the General Purpose Operating System SRG (V-203710) for detailed requirements. Evidence should include system configuration files, security policies, and operational procedures.</FINDING_DETAILS>
+--- Check: Audit Content Preservation (Reporting) ---
+
+Check 1: Report Generation Tools
+  aureport: NOT FOUND
+
+Check 2: Systemd Journal Reporting
+  journalctl: AVAILABLE
+  Supports time-based filtering (--since/--until) without altering records
+  Supports priority filtering (--priority) without altering records
+  Supports output formats (--output=json/verbose) for report generation
+
+Check 3: Audit Log Protection
+  /var/log/syslog : 644 root:root
+
+Check 4: XO Audit Plugin
+  XO Audit Plugin: ACTIVE
+  Hash chain integrity: False
+  [PASS] XO Audit Plugin hash chain prevents content alteration during reporting
+
+RESULT: systemd journal provides report generation via journalctl
+  that preserves original content and time ordering.
+</FINDING_DETAILS>
 				<COMMENTS>Evaluate-STIG answer file is providing the below comment on 03/01/2026:
 
 Answer File: /tmp/Evaluate-STIG_RemoteComputer/AnswerFiles/XO_v5.x_GPOS_Debian12_AnswerFile.xml
@@ -17992,7 +18307,18 @@ Key Name: XO
 Index: 1
 
 [ValidTrueComment]:
+System does not alter original content or time ordering when providing report generation capability.
 
+Automated scan verified:
+- aureport available for read-only report generation from audit data
+- systemd journalctl supports time-based and priority-based filtering for reports
+- Audit log files have restrictive permissions preventing unauthorized modification
+- XO Audit Plugin hash chain prevents content alteration during report generation
+- Report tools use read-only access to original audit records
+
+Linux report generation tools (aureport, journalctl) create reports from original data without modifying the source records, preserving both content and chronological ordering.
+
+ISSO/ISSM: Verify report generation procedures are documented and that original audit records remain unaltered.
 
 </COMMENTS>
 				<SEVERITY_OVERRIDE />
@@ -18103,7 +18429,7 @@ If it does not, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>cf0deb91-90b4-4124-bc51-7e9a1f646e8f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1ca76564-7376-4480-8041-5df329873aee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18238,7 +18564,7 @@ Organizations should also consider endpoints that may not have regular access to
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c8d4cf2b-32a0-4979-b51b-15e9f77420aa</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c2162c7c-b7e7-4608-9f72-201c9223fde0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18371,7 +18697,7 @@ Time stamps generated by the operating system include date and time. Granularity
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6b6fa3b3-c2c0-4800-bbc9-71a337fdaa82</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>86d0fdff-140f-429d-9069-5ce833ec7f42</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18504,7 +18830,7 @@ Time stamps generated by the operating system include date and time. Time is com
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>96cadbb6-ddde-4081-b40e-2c1cf1b70691</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c3aa02ef-ce08-4249-8ed2-5644184b6f87</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18637,7 +18963,7 @@ All bulk manipulation of audit information must be authorized via automatic proc
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e681f4fc-f25d-4654-96b3-3f839fa93dc4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1518f773-2502-41b1-8209-b3bdcaa910ef</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18776,7 +19102,7 @@ The operating system or software configuration management utility must enforce c
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>7daf1a80-d6fe-4c9d-b96b-51dab67bdde7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>fbb44451-3832-4de4-9245-8d3709189ff0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -18909,7 +19235,7 @@ Detecting such changes and providing an automated response can help avoid uninte
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>77b28520-c30e-48a1-a05e-e18351714289</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e3673950-3b06-415f-b24e-cec4f51a6ef7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19046,7 +19372,7 @@ Logical access restrictions include, for example, controls that restrict access 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>439645e4-bf93-4678-90cb-72fdb78e45c2</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e8359ba0-b8d4-4d0d-b4c0-8e0c0fdd0ae6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19208,7 +19534,7 @@ Enforcement actions are the methods or mechanisms used to prevent unauthorized c
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>017dc7b1-84b4-467a-ab78-336d3e1e728d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4b7441b3-9303-4346-bf67-700fed44f83c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19370,7 +19696,7 @@ Verifying the authenticity of the software prior to installation validates the i
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>aff1775d-f9da-48be-abb3-7d353f965b55</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1f348c9b-9fe3-4114-97b0-d9b1afd1e9eb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19538,7 +19864,7 @@ Methods for complying with this requirement include restricting execution of pro
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9b272027-b1c5-43a5-a196-1ecccf00be7a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9e5e37eb-d6db-46ac-aeef-8eb5c96dbb11</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19675,7 +20001,7 @@ This requirement applies to operating system programs, functions, and services d
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ed2897c1-e821-495b-a85d-146a22890064</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>dd98ea1b-dc80-4c1e-90cf-b7960923c852</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19843,7 +20169,7 @@ When operating systems provide the capability to escalate a functional capabilit
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>46370dd5-9921-4fd3-9160-7a06e4e17a59</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>63ad04b2-0d48-4175-a0ac-6108626d06b7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -19976,7 +20302,7 @@ When operating systems provide the capability to change security roles, it is cr
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e1b73a23-0318-407a-ac13-333d7645f3e5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>55380d5e-554a-4411-b9eb-a8d15dfa8d36</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20109,7 +20435,7 @@ When operating systems provide the capability to change user authenticators, it 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bdf77a08-c339-4ac6-a9cf-5ae0eee9a685</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>70a25a5a-0af9-409a-ac5b-bceca0916a53</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20248,7 +20574,7 @@ This requirement only applies to components where this is specific to the functi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b29a990b-01e0-413c-845c-8c4a516dd434</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>15de6d14-fc76-4e57-89b1-aff6c51fb691</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20416,7 +20742,7 @@ DoD has mandated the use of the CAC to support identity management and personal 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f64ac430-1a7a-45ae-bc2a-b79d4523180b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1563f56b-5888-4690-bb6e-18eb8ac87607</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20582,7 +20908,7 @@ DoD has mandated the use of the CAC to support identity management and personal 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>183af650-e9e9-4c32-8ff5-ea0f33f5519c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>802f594d-c1ec-4085-a57b-18cc61238a9a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20736,7 +21062,7 @@ Peripherals include, but are not limited to, such devices as flash drives, exter
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>bebcc079-c25c-4257-b56d-b1d026fdb738</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5f21c1a8-86df-42ea-8439-59583ae62cb2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -20873,7 +21199,7 @@ Because of the challenges of applying this requirement on a large scale, organiz
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>2e8911a9-a584-48d2-b0b1-8d5340f29018</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>730390a4-8738-4007-99a1-d32650d821b8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21004,7 +21330,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a417e6d8-7b58-4962-8067-c0acfeb862d5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2d7ff50f-26fa-4159-ad15-0052d91024fe</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21135,7 +21461,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>939da087-f85e-478b-8d5d-9cf601154beb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>33848880-8b35-4468-8bda-163ca8419767</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21272,7 +21598,7 @@ This requirement applies to hardware/software diagnostic test equipment or tools
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e4626592-70c3-4fd1-a96e-af49d0e986a7</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5441f5f8-15d7-476c-acd2-fd5fb049f50e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21407,7 +21733,7 @@ The operating system can meet this requirement through leveraging a cryptographi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>f13b8ea2-c11a-4e9a-ac10-95d67ab89075</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a1242ad1-2200-40bf-8852-30a0c0f20dfb</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21565,7 +21891,7 @@ The operating system can meet this requirement through leveraging a cryptographi
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>d95e026d-9c7f-456c-b665-1592c8a8a789</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>85a1391c-c75e-43ba-bab8-da0f12ed3090</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21717,7 +22043,7 @@ SSH encryption ensures that all maintenance session data (including commands, ou
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e6c9eb05-5e83-448b-90e2-2df10b723e1f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>9b14bc40-9ffa-407d-9dc4-5dbcb711a168</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -21848,7 +22174,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b0ca1db9-1118-43f3-8e6e-4950b2e0d9ca</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ca1d45ad-1b2f-4c71-a516-2dcd6d083190</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22020,7 +22346,7 @@ The DoD will only accept PKI-certificates obtained from a DoD-approved internal 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>673ebc24-b20a-4e24-ab9c-e361817bec61</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b1c99643-374d-4274-8ba5-8be3a6734f28</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22153,7 +22479,7 @@ Selection of a cryptographic mechanism is based on the need to protect the integ
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>fb18457e-a1a4-41ee-83b5-6844dfefbf44</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1080823c-8f32-45bd-8e9e-66737e7f66c9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22320,7 +22646,7 @@ Selection of a cryptographic mechanism is based on the need to protect the integ
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>70bacc99-2875-43f8-be5f-ccb0606795be</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>2defcc35-9036-4b7d-a5bf-c79ddaffaf6e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22488,7 +22814,7 @@ This requirement addresses the configuration of the operating system to mitigate
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>eff3c89d-950d-4ee9-b052-dc2aa49788cd</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>458ccfa3-7915-4d90-b424-3229676cd130</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22623,7 +22949,7 @@ Protecting the confidentiality and integrity of organizational information can b
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9935806d-2e34-4a03-ba38-b15dca291571</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5ebee0ef-ff74-4282-8427-7afc63fcd10c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22786,7 +23112,7 @@ If it does not, this is a finding.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8ce4ef7e-697e-4743-9686-9b89a5919e59</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>00a2f69e-1315-480e-966d-34f7cbdc73b6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -22947,7 +23273,7 @@ Use of this requirement will be limited to situations where the data owner has a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>07be370b-49f4-44b2-a2ab-c11e0bf6db20</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1a839408-dc96-46c1-a71b-0c684ea2fb1e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23082,7 +23408,7 @@ Use of this requirement will be limited to situations where the data owner has a
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6fd133f8-927e-4eac-9f4d-2a301d28e952</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>56b9697c-b549-49a8-9a50-2a9bf8a60290</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23215,7 +23541,7 @@ The behavior will be derived from the organizational and system requirements and
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>9bc5c021-323f-47de-8706-7e6c4a17b83e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>32bf5d46-f8f6-4460-94bb-4f86ae8df0f0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23348,7 +23674,7 @@ Examples of attacks are buffer overflow attacks.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0f898fb6-87db-4899-b4b7-8a9299c6ef65</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4244d583-a777-46f9-ba8f-fd229ee753c2</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23481,7 +23807,7 @@ Examples of attacks are buffer overflow attacks.</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e06bcf12-34dc-4a6b-9573-97274b6c94c8</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>08b98908-b8bb-4ace-8391-73a41e402bf9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23612,7 +23938,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a5e70c58-a247-4fcf-afd3-2717f17e4fe4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>655c8f73-7a6a-436e-89ac-c9082b490dd7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23745,7 +24071,7 @@ This requirement applies to operating systems performing security function verif
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4027f4d0-0caa-4549-9789-e223beadb897</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c5eedd6e-60ab-484a-b46d-89e17953f31a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -23880,7 +24206,7 @@ This requirement applies to operating systems performing security function verif
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a50da9be-b4cb-40b6-a759-46f3a391cc57</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8e870fde-0d43-45f6-b7fc-6b8a92228c0c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24017,7 +24343,7 @@ This capability must take into account operational requirements for availability
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a702182c-c03d-4bc7-803a-571420a62176</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>730d5631-56fc-4ea2-a5de-213e61b4cca7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24150,7 +24476,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>55f52b55-7c63-4f5c-af6f-83c2309c2f4e</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>52999af0-79bf-4f9f-bc4c-b30a023f2c6c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24309,7 +24635,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4af401af-2441-4766-bf37-ac29271136b5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e2d403b1-dc95-4dd3-9bae-c943b4685409</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24473,7 +24799,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>970f6a65-ce21-4d6a-b7e3-109aff0d3b16</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>662385b8-d19e-4313-a3f3-c8acbb53e071</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24632,7 +24958,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>ce2f4905-feb8-4f12-931e-3f6e960e8a0b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>cc377b18-3eb3-48fa-b64b-604ed114c4a9</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24791,7 +25117,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a47252b2-b5a1-4336-bb2b-2a7c52b5db66</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>c5a1a4d0-59bf-4a13-84a3-c32b3c6b0212</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -24950,7 +25276,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0b5f7f38-a8d2-4121-9a1d-0729c339295f</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>49618ce9-cbb5-4af9-89c4-997af6fe3ade</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25107,7 +25433,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8690cdc3-6c21-40ca-b59d-5b93c787674d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8a187679-44a5-4636-a57a-b5c6d56c9ddd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25271,7 +25597,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6d7e5ba7-b076-4746-923d-ccc7ea7932c9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>05b975e7-7edd-4758-8290-009aab3db1fd</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25430,7 +25756,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>1c7101af-f1ca-48b3-943e-0a262425dca4</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>52bc98e5-f260-433f-add8-6a9dd908630f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25590,7 +25916,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>749ba643-a7bc-48bd-af90-72c4d9a7c23b</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>86a7d8e0-988d-4783-a572-a041618bc29d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25749,7 +26075,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6e404b02-d1ef-48b2-a544-d3fa8d4d8ca1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b72657ed-ea3f-4632-ad17-04db93c87d5a</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -25911,7 +26237,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>dd33c860-497c-43b7-91a6-c5315295a436</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>4c533851-a48b-4de3-8739-5c60b9ec89c7</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26080,7 +26406,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>4e3e100a-976c-4909-9be7-58138cd5b1b1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>8bff7eeb-4c14-4b29-8161-6fb5910afb94</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26244,7 +26570,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>53bc2713-1769-4896-bce1-0dc08f00a823</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>42a18e3c-ec1b-4f86-bc3e-9e661b535cfa</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26406,7 +26732,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>34960d22-5c9e-406a-b3b5-c7e012a401a9</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>98b93ae1-f46c-4b01-8bf4-0d1a9d090077</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26569,7 +26895,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>227aef37-0a69-4521-be46-e3d307032c0d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>bc3c345d-304a-4b14-82a7-8c8c21a8dc2e</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26737,7 +27063,7 @@ Audit records can be generated from various components within the information sy
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>b1ac7f44-2355-4e9e-88a4-869e13cfe48a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5daac908-432e-4fec-8ff2-071d51476894</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -26901,7 +27227,7 @@ Remediation:
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>6e420441-8e2f-4058-b8fa-c00cac133d33</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>48dcfd1a-26e1-4d3e-a05b-6e8261eff587</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27074,7 +27400,7 @@ Off-loading is a common process in information systems with limited audit storag
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>5203df1b-c013-4791-b03b-3544c89e1b16</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e484f27c-1354-4d60-9426-6ab312e88289</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27241,7 +27567,7 @@ Remediation:
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e3c0813d-542d-4ba8-8c00-a7d60617da41</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b896d2be-3439-41aa-8c7b-0dfaea7423f0</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27385,7 +27711,7 @@ The system does not adequately prevent dictionary word passwords. To remediate: 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>54a212ac-c66a-4111-9c18-4b6799aee116</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>ed804dbd-20ad-4e7b-b0c1-7a8a3d174736</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27532,7 +27858,7 @@ Configuration settings are the set of parameters that can be changed in hardware
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>556029bf-6be1-48f0-ac49-850203ca6529</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7cb4b10d-15d4-4226-8b71-35348e2f2800</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27663,7 +27989,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>04f93e3a-1e16-40f7-b661-08583a877386</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>e1ad9d9b-93e0-4725-b069-ec5906d2de04</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27794,7 +28120,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>75706f86-dfca-4110-9248-f395f1ac7ed1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>972a929b-9696-4b77-bc8f-5dff37ee4207</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -27953,7 +28279,7 @@ All console and remote access requires explicit authentication credentials. The 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>54df7702-dbef-4df2-80c4-23218777a161</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1de5c676-bf1f-4d87-89ed-9db4b7e20c89</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28084,7 +28410,7 @@ Index: 1
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a2d61174-0918-4637-9b35-7ef747b5b6bb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>85d911ca-9287-4921-958a-2d88f576caee</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28219,7 +28545,7 @@ Protecting the confidentiality and integrity of communications with wireless per
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e929f756-39f1-40cd-b7bb-2616db67bd23</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>1e982a6a-081a-4239-aec1-a145e8e3dbb8</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>LEGACY_ID</VULN_ATTRIBUTE>
@@ -28388,7 +28714,7 @@ If the operating system does not install security-relevant patches within the ti
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>99615d83-32e8-4d4f-9bd9-c012cb1e4f17</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>124710e2-2011-41ee-89fe-44de1bc45c78</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -28513,7 +28839,7 @@ If the operating system is not configured to disable accounts when the accounts 
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>a281a43c-0c88-48b8-9d66-9153382d0dbb</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>47be5fee-257e-4da6-8678-3dc71ae7a9e6</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -28638,7 +28964,7 @@ If the operating system is not configured to prohibit the use or connection of u
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>746054b8-c47a-4dcc-be95-fc649daf082c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>6fb4a9bc-67eb-4380-8d6f-adbdf1a821fc</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -28763,7 +29089,7 @@ If the operating system is not configured to implement multifactor authenticatio
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>25e2217a-e1ee-4502-8b9e-5eb5e5c014e1</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>7d65295a-293d-4bc7-9726-bc5925d4d37f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -28888,7 +29214,7 @@ If the operating system is not configured to, for password-based authentication,
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>69cf1379-ce99-476f-b4d8-8afa46156668</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>b69e7ec9-8828-4db3-9897-465b7e4f4dc5</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29031,7 +29357,7 @@ If the operating system is not configured to require immediate selection of a ne
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>28809562-46d1-4a31-aa27-8f97e7e0092c</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>a1e7be4b-8c70-44e6-86d9-882a94246c8d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29156,7 +29482,7 @@ If the operating system is not configured to allow user selection of long passwo
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>c2355535-4836-440b-8d69-445c9aa56975</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>45494efb-e16f-4730-8a87-a6ac7214a07c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29281,7 +29607,7 @@ If the operating system is not configured to employ automated tools to assist th
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>0715f466-345c-487b-a42c-c96c7b6bbc6a</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>37a7f28d-f790-443a-b2de-14e0f0cb16ae</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29406,7 +29732,7 @@ If the operating system is not configured to accept only external credentials th
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>8ad76030-84b8-401d-b9c7-cae26ad7ba06</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>d24e4d78-ce12-48c5-b888-0f60d53f847c</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29531,7 +29857,7 @@ If the operating system is not configured to monitor the use of maintenance tool
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>54d5c05b-f38d-48c0-811c-42745f05c8c5</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5872e3d2-75fd-45ae-afb0-b9155b04172d</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29698,7 +30024,7 @@ If the operating system is not configured to include only approved trust anchors
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>e1719cc9-9ec5-47bf-9c59-7501fb48131d</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>5db9def0-4d50-4b9f-8067-60c327bbe7e4</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29823,7 +30149,7 @@ If the operating system is not configured to provide protected storage for crypt
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>3b87e358-f83c-4ca2-9cbc-ae18b9c07066</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>20071fdd-f686-4f08-b1e0-94fdb78cb76f</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>
@@ -29948,7 +30274,7 @@ If the operating system is not configured to synchronize system clocks within an
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>STIG_UUID</VULN_ATTRIBUTE>
-					<ATTRIBUTE_DATA>361179af-a2ce-43b6-a9a7-73ea65ecb777</ATTRIBUTE_DATA>
+					<ATTRIBUTE_DATA>81322eb2-34ce-4952-bfad-3f4ba13f77d3</ATTRIBUTE_DATA>
 				</STIG_DATA>
 				<STIG_DATA>
 					<VULN_ATTRIBUTE>CCI_REF</VULN_ATTRIBUTE>

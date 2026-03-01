@@ -409,17 +409,19 @@
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [1024M]
 sr0
-'</td>
-                  <td>Name                           Value
-----                           -----
+'
 Size                           [1024M]</td>
                   <td>Name                           Value
 ----                           -----
-1024M
+
+
+Size                           [1024M]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//sr0/'
-DeviceID                       '//'</td>
+DeviceID                       '//'
+1024M</td>
                   <td>
                   </td>
                   <td>
@@ -434,43 +436,19 @@ DeviceID                       '//'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [30G]
 xvda
-'</td>
-                  <td>Name                           Value
-----                           -----
+'
 Size                           [30G]</td>
                   <td>Name                           Value
 ----                           -----
-30G
-Index                          '//xvda/'
-DeviceID                       '//'</td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                  <td>
-                  </td>
-                </tr>
-              </tbody>
-              <tbody>
-                <tr>
-                  <td>Name                           Value
-----                           -----
-Size                           [512M]
-xvda1</td>
-                  <td>Name                           Value
-----                           -----
-Size                           [512M]
 
-boot</td>
+
+Size                           [30G]</td>
                   <td>Name                           Value
 ----                           -----
-512M
-Index                          '//xvda1/'
-DeviceID                       '///boot/efi'</td>
+Index                          '//xvda/'
+DeviceID                       '//'
+30G</td>
                   <td>
                   </td>
                   <td>
@@ -485,16 +463,46 @@ DeviceID                       '///boot/efi'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [28.5G]
-xvda2</td>
+xvda1
+
+Size                           [512M]</td>
                   <td>Name                           Value
 ----                           -----
+
+boot
+Size                           [512M]</td>
+                  <td>Name                           Value
+----                           -----
+Index                          '//xvda1/'
+DeviceID                       '///boot/efi'
+512M</td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                  <td>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody>
+                <tr>
+                  <td>Name                           Value
+----                           -----
+xvda2
+
 Size                           [28.5G]</td>
                   <td>Name                           Value
 ----                           -----
-28.5G
+
+
+Size                           [28.5G]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//xvda2/'
-DeviceID                       '///'</td>
+DeviceID                       '///'
+28.5G</td>
                   <td>
                   </td>
                   <td>
@@ -509,17 +517,19 @@ DeviceID                       '///'</td>
                 <tr>
                   <td>Name                           Value
 ----                           -----
-Size                           [976M]
 xvda3
-[SWAP]'</td>
-                  <td>Name                           Value
-----                           -----
+[SWAP]'
 Size                           [976M]</td>
                   <td>Name                           Value
 ----                           -----
-976M
+
+
+Size                           [976M]</td>
+                  <td>Name                           Value
+----                           -----
 Index                          '//xvda3/'
-SWAP</td>
+SWAP
+976M</td>
                   <td>
                   </td>
                   <td>
@@ -551,7 +561,7 @@ SWAP</td>
                                                     </td>
                   <td>10</td>
                   <td>18</td>
-                  <td>128</td>
+                  <td>123</td>
                   <td>170</td>
                   <td>9</td>
                   <td>10</td>
@@ -578,12 +588,12 @@ SWAP</td>
               <td>
                 <div class="button_cont" align="left"><a class="stig_button" id="button" onclick="change('General Purpose Operating System V3R2_filter');change('General Purpose Operating System V3R2')" title="Show/Hide ">General Purpose Operating System V3R2</a></div>
               </td>
-              <td>2026-03-01T00:50:14-05:00</td>
-              <td>77</td>
-              <td>48</td>
+              <td>2026-03-01T02:35:30-05:00</td>
+              <td>82</td>
+              <td>53</td>
               <td>3</td>
-              <td>70</td>
-              <td>25.76%</td>
+              <td>60</td>
+              <td>28.28%</td>
             </tr>
             <tr>
               <td id="General Purpose Operating System V3R2_filter" class="filterdata" style="display:none"><input type="text" id="General Purpose Operating System V3R2_input" onkeyup="filterTable(`General Purpose Operating System V3R2_input`,`General Purpose Operating System V3R2`)" placeholder="Filter..." title="Type data to filter on"></td>
@@ -1512,9 +1522,9 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-O_med">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>Open</td>
                       <td>V-203685</td>
                       <td>The operating system must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions.</td>
                       <td></td>
@@ -1566,36 +1576,36 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-NF">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>NotAFinding</td>
                       <td>V-203691</td>
                       <td>The operating system must notify system administrators (SAs) and information system security officers (ISSOs) of account enabling actions.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-NF">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>NotAFinding</td>
                       <td>V-203692</td>
                       <td>The operating system must allow operating system admins to pass information to any other operating system admin or user.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-NF">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>NotAFinding</td>
                       <td>V-203693</td>
                       <td>The operating system must allow operating system admins to grant their privileges to other operating system admins.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-NF">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>NotAFinding</td>
                       <td>V-203694</td>
                       <td>The operating system must allow operating system admins to change security attributes on users, the operating system, or the operating systems components.</td>
                       <td></td>
@@ -1620,45 +1630,45 @@ SWAP</td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-O_med">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>Open</td>
                       <td>V-203698</td>
                       <td>The operating system must automatically lock an account until the locked account is released by an administrator when three unsuccessful logon attempts in 15 minutes occur.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-O_med">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>Open</td>
                       <td>V-203699</td>
                       <td>The operating system must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all operating system components, based on all selectable event criteria in near real time.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-O_med">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>Open</td>
                       <td>V-203703</td>
                       <td>The operating system must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-O_med">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>Open</td>
                       <td>V-203709</td>
                       <td>The operating system must not alter original content or time ordering of audit records when it provides an audit reduction capability.</td>
                       <td></td>
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr class="status-NR">
+                    <tr class="status-NF">
                       <td>CAT II</td>
-                      <td>Not_Reviewed</td>
+                      <td>NotAFinding</td>
                       <td>V-203710</td>
                       <td>The operating system must not alter original content or time ordering of audit records when it provides a report generation capability.</td>
                       <td></td>
