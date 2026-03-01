@@ -26844,22 +26844,34 @@ Function Get-V203751 {
 
     # Check 3: Firewall filtering incoming traffic
     $FindingDetails += $nl + "Check 3: Firewall Input Filtering" + $nl
-    $fwStatus = $(ufw status 2>&1)
-    if ($LASTEXITCODE -eq 0 -and $fwStatus -match "Status: active") {
-        $FindingDetails += "  UFW: ACTIVE" + $nl
-        $fwRules = ($fwStatus -split $nl) | Where-Object { $_ -match "ALLOW\|DENY\|REJECT" } | Select-Object -First 5
-        foreach ($rule in $fwRules) {
-            $FindingDetails += "    $($rule.ToString().Trim())" + $nl
+    $fwDetected = $false
+    $(which ufw 2>&1) | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+        $fwStatus = $(ufw status 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $fwStatus -match "Status: active") {
+            $FindingDetails += "  UFW: ACTIVE" + $nl
+            $fwRules = ($fwStatus -split $nl) | Where-Object { $_ -match "ALLOW|DENY|REJECT" } | Select-Object -First 5
+            foreach ($rule in $fwRules) {
+                $FindingDetails += "    $($rule.ToString().Trim())" + $nl
+            }
+            $fwDetected = $true
         }
     }
-    else {
-        $iptRules = $(iptables -L INPUT -n 2>&1 | head -10)
+    if (-not $fwDetected) {
+        $(which iptables 2>&1) | Out-Null
         if ($LASTEXITCODE -eq 0) {
-            $FindingDetails += "  iptables INPUT chain:" + $nl
-            foreach ($line in ($iptRules -split $nl | Select-Object -First 5)) {
-                $FindingDetails += "    $($line.ToString().Trim())" + $nl
+            $iptRules = $(iptables -L INPUT -n 2>&1 | head -10)
+            if ($LASTEXITCODE -eq 0) {
+                $FindingDetails += "  iptables INPUT chain:" + $nl
+                foreach ($line in ($iptRules -split $nl | Select-Object -First 5)) {
+                    $FindingDetails += "    $($line.ToString().Trim())" + $nl
+                }
+                $fwDetected = $true
             }
         }
+    }
+    if (-not $fwDetected) {
+        $FindingDetails += "  No firewall detected (ufw/iptables not found)" + $nl
     }
 
     # Status determination
