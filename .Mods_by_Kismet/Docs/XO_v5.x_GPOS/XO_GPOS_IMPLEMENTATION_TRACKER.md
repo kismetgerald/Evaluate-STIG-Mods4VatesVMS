@@ -12,11 +12,11 @@
 | Metric | Value |
 |--------|-------|
 | **Total Functions** | 198 |
-| **Implemented** | 138 (18 CAT I + 119 CAT II + 1 CAT III) |
-| **Stubs (Not_Reviewed)** | 60 |
-| **Completion** | 69.7% |
+| **Implemented** | 148 (18 CAT I + 129 CAT II + 1 CAT III) |
+| **Stubs (Not_Reviewed)** | 50 |
+| **Completion** | 74.7% |
 
-**Last validated test:** Test170b (Mar 1, 2026) — Exit 0, EvalScore 36.87%, Batch 15 validated (10/10 pass, 3 NF + 7 O)
+**Last validated test:** Test171 (Mar 1, 2026) — Exit 0, EvalScore 37.88%, Batch 16 validated (10/10 pass, 2 NF + 8 O)
 
 ---
 
@@ -312,16 +312,16 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-203783 | SV-203783r991592 | Limit non-privileged user privilege grants | NR | -- | -- | -- |
-| V-203784 | SV-203784r991593 | Enable application firewall | NR | -- | -- | -- |
-| V-263650 | SV-263650r982553 | Disable accounts no longer associated | NR | -- | -- | -- |
-| V-263651 | SV-263651r982555 | Prohibit unauthorized hardware | NR | -- | -- | -- |
-| V-263652 | SV-263652r982557 | MFA for local/network/remote access | NR | -- | -- | -- |
-| V-263654 | SV-263654r982232 | Require immediate password change on recovery | NR | -- | -- | -- |
-| V-263655 | SV-263655r982235 | Allow user-selected long passwords | NR | -- | -- | -- |
-| V-263656 | SV-263656r982238 | Automated password complexity tools | NR | -- | -- | -- |
-| V-263657 | SV-263657r982559 | NIST-compliant external credentials | NR | -- | -- | -- |
-| V-263659 | SV-263659r982563 | Approved trust anchors only | NR | -- | -- | -- |
+| V-203783 | SV-203783r991592 | Limit non-privileged user privilege grants | NF | Test171 | #64 | Home dirs restricted |
+| V-203784 | SV-203784r991593 | Enable application firewall | O | Test171 | #64 | No active firewall |
+| V-263650 | SV-263650r982553 | Disable accounts no longer associated | O | Test171 | #64 | Org policy required |
+| V-263651 | SV-263651r982555 | Prohibit unauthorized hardware | O | Test171 | #64 | Org policy required |
+| V-263652 | SV-263652r982557 | MFA for local/network/remote access | O | Test171 | #64 | No MFA configured |
+| V-263654 | SV-263654r982232 | Require immediate password change on recovery | O | Test171 | #64 | Org policy required |
+| V-263655 | SV-263655r982235 | Allow user-selected long passwords | NF | Test171 | #64 | SHA512 supports long passwords |
+| V-263656 | SV-263656r982238 | Automated password complexity tools | O | Test171 | #64 | pwquality not configured |
+| V-263657 | SV-263657r982559 | NIST-compliant external credentials | O | Test171 | #64 | NIST verification needed |
+| V-263659 | SV-263659r982563 | Approved trust anchors only | O | Test171 | #64 | Org approval needed |
 
 ### Batch 17: Final (10 functions)
 
@@ -383,3 +383,4 @@
 | Test169 | Mar 1 | #63 | Phase 2 Batch 14 | 198 | PASS | 34.85% | 10 Auth & PKI, 7 NF + 3 Open |
 | Test170 | Mar 1 | #64 | Phase 2 Batch 15 | 198 | FAIL | 36.36% | V-203752 null .ToString() crash |
 | Test170b | Mar 1 | #64 | Phase 2 Batch 15 | 198 | PASS | 36.87% | 10 Hardening, 3 NF + 7 Open |
+| Test171 | Mar 1 | #64 | Phase 2 Batch 16 | 198 | PASS | 37.88% | 10 Compliance/MFA/Firewall, 2 NF + 8 Open |
