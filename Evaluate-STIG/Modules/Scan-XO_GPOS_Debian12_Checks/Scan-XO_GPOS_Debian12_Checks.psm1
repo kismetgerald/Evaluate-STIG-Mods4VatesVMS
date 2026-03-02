@@ -235,27 +235,23 @@ Function Get-XOAuditPluginInfo {
 
     # Priority 4: xo-cli registered token (XOA stores config under root home)
     if (-not $token) {
-        $xoCliToken = $(timeout 5 sh -c "xo-cli --listCommands 2>/dev/null | head -1" 2>&1)
-        if ($LASTEXITCODE -eq 0 -and $xoCliToken -and ($xoCliToken -join "") -notmatch "not found|error|command not found") {
-            # xo-cli is available; try to find its config
-            $xoCliConfigPaths = @(
-                "/root/.config/xo-cli",
-                "/root/.xo-cli"
-            )
-            foreach ($xccPath in $xoCliConfigPaths) {
-                if ($token) { break }
-                $xccContent = $(timeout 5 cat $xccPath 2>/dev/null)
-                if ($LASTEXITCODE -eq 0 -and $xccContent) {
-                    try {
-                        $xccObj = ($xccContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
-                        $firstSrv = $xccObj.PSObject.Properties | Select-Object -First 1
-                        if ($firstSrv -and $firstSrv.Value.token) {
-                            $token = $firstSrv.Value.token
-                            $tokenSource = $xccPath
-                        }
+        $xoCliConfigPaths = @(
+            "/root/.config/xo-cli",
+            "/root/.xo-cli"
+        )
+        foreach ($xccPath in $xoCliConfigPaths) {
+            if ($token) { break }
+            $xccContent = $(timeout 5 cat $xccPath 2>/dev/null)
+            if ($LASTEXITCODE -eq 0 -and $xccContent) {
+                try {
+                    $xccObj = ($xccContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                    $firstSrv = $xccObj.PSObject.Properties | Select-Object -First 1
+                    if ($firstSrv -and $firstSrv.Value.token) {
+                        $token = $firstSrv.Value.token
+                        $tokenSource = $xccPath
                     }
-                    catch { }
                 }
+                catch { }
             }
         }
     }
@@ -413,7 +409,8 @@ Function Get-XOAuthLdapInfo {
         }
     }
 
-    # Check 3: Query XO REST API for plugin configuration (if token available)
+    # Check 3: Query XO API for plugin configuration (if token available)
+    # XOA configures plugins via web UI/database, not config files — API is most reliable
     $auditInfo = Get-XOAuditPluginInfo
     if ($auditInfo.TokenFound) {
         $sq = [char]39
@@ -441,12 +438,29 @@ Function Get-XOAuthLdapInfo {
         }
 
         if ($token) {
-            # Query XO users to check for LDAP-authenticated users
-            $usersArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/users${sq} 2>/dev/null"
-            $usersJson = $(sh -c $usersArgs 2>&1)
+            $dq = [char]34
+
+            # Check 3a: JSON-RPC plugin.get — lists all loaded plugins (most reliable for XOA)
+            $rpcBody = "{${dq}jsonrpc${dq}:${dq}2.0${dq},${dq}method${dq}:${dq}plugin.get${dq},${dq}id${dq}:1}"
+            $pluginJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d $rpcBody "https://localhost/api/" 2>/dev/null)
+            if ($LASTEXITCODE -eq 0 -and $pluginJson) {
+                $pluginStr = ($pluginJson -join "")
+                if ($pluginStr -match "auth-ldap|auth_ldap|authLdap") {
+                    $Global:XOAuthLdapInfo.Enabled = $true
+                    $Global:XOAuthLdapInfo.Details = "auth-ldap plugin detected via XO JSON-RPC API"
+                    # Try to extract LDAP URI from plugin config
+                    if ($pluginStr -match "ldaps?://[^${dq}\s,}]+") {
+                        $Global:XOAuthLdapInfo.LdapUri = $matches[0]
+                    }
+                    return $Global:XOAuthLdapInfo
+                }
+            }
+
+            # Check 3b: REST API users — look for LDAP-authenticated users
+            $usersJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" "https://localhost/rest/v0/users" 2>/dev/null)
             if ($LASTEXITCODE -eq 0 -and $usersJson) {
                 $usersStr = ($usersJson -join "")
-                if ($usersStr -match "authProviders.*ldap|auth-ldap") {
+                if ($usersStr -match "authProviders.*ldap|auth-ldap|provider.*ldap|ldap.*provider") {
                     $Global:XOAuthLdapInfo.Enabled = $true
                     $Global:XOAuthLdapInfo.Details = "LDAP-authenticated users detected via REST API"
                     return $Global:XOAuthLdapInfo
