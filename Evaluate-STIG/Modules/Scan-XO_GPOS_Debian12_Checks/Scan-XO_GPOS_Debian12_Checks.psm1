@@ -209,19 +209,54 @@ Function Get-XOAuditPluginInfo {
         $tokenSource = "XO_API_TOKEN environment variable"
     }
 
-    # Priority 3: CLI config file
-    if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli" -ErrorAction SilentlyContinue)) {
-        $cliContent = $(timeout 5 cat /var/lib/xo-server/.xo-cli 2>&1)
-        if ($LASTEXITCODE -eq 0 -and $cliContent) {
-            try {
-                $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
-                $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
-                if ($firstServer -and $firstServer.Value.token) {
-                    $token = $firstServer.Value.token
-                    $tokenSource = "/var/lib/xo-server/.xo-cli"
+    # Priority 3: CLI config file (check multiple possible locations for XOCE and XOA)
+    $cliPaths = @(
+        "/var/lib/xo-server/.xo-cli",
+        "/root/.xo-cli",
+        "/home/xo/.xo-cli"
+    )
+    foreach ($cliPath in $cliPaths) {
+        if ($token) { break }
+        if (Test-Path $cliPath -ErrorAction SilentlyContinue) {
+            $cliContent = $(timeout 5 cat $cliPath 2>/dev/null)
+            if ($LASTEXITCODE -eq 0 -and $cliContent) {
+                try {
+                    $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                    $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
+                    if ($firstServer -and $firstServer.Value.token) {
+                        $token = $firstServer.Value.token
+                        $tokenSource = $cliPath
+                    }
+                }
+                catch { }
+            }
+        }
+    }
+
+    # Priority 4: xo-cli registered token (XOA stores config under root home)
+    if (-not $token) {
+        $xoCliToken = $(timeout 5 sh -c "xo-cli --listCommands 2>/dev/null | head -1" 2>&1)
+        if ($LASTEXITCODE -eq 0 -and $xoCliToken -and ($xoCliToken -join "") -notmatch "not found|error|command not found") {
+            # xo-cli is available; try to find its config
+            $xoCliConfigPaths = @(
+                "/root/.config/xo-cli",
+                "/root/.xo-cli"
+            )
+            foreach ($xccPath in $xoCliConfigPaths) {
+                if ($token) { break }
+                $xccContent = $(timeout 5 cat $xccPath 2>/dev/null)
+                if ($LASTEXITCODE -eq 0 -and $xccContent) {
+                    try {
+                        $xccObj = ($xccContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                        $firstSrv = $xccObj.PSObject.Properties | Select-Object -First 1
+                        if ($firstSrv -and $firstSrv.Value.token) {
+                            $token = $firstSrv.Value.token
+                            $tokenSource = $xccPath
+                        }
+                    }
+                    catch { }
                 }
             }
-            catch { }
         }
     }
 
@@ -342,12 +377,14 @@ Function Get-XOAuthLdapInfo {
         }
     }
 
-    # Check 2: Look for auth-ldap package in XO node_modules
+    # Check 2: Look for auth-ldap package in XO node_modules (XOCE + XOA paths)
     $pluginPaths = @(
         "/opt/xo/xo-server/node_modules/xo-server-auth-ldap",
         "/opt/xo/node_modules/xo-server-auth-ldap",
         "/usr/local/lib/node_modules/xo-server/node_modules/xo-server-auth-ldap",
-        "/opt/xen-orchestra/packages/xo-server-auth-ldap"
+        "/opt/xen-orchestra/packages/xo-server-auth-ldap",
+        "/usr/share/xo-server/node_modules/xo-server-auth-ldap",
+        "/usr/local/share/xo-server/node_modules/xo-server-auth-ldap"
     )
     foreach ($plugPath in $pluginPaths) {
         if (Test-Path $plugPath -ErrorAction SilentlyContinue) {
@@ -357,26 +394,49 @@ Function Get-XOAuthLdapInfo {
         }
     }
 
+    # Check 2b: dpkg/apt-based detection (XOA installs plugins via packages)
+    $dpkgCheck = $(timeout 5 dpkg -l 2>/dev/null | grep -i "auth-ldap" 2>/dev/null)
+    if ($LASTEXITCODE -eq 0 -and $dpkgCheck) {
+        $Global:XOAuthLdapInfo.Enabled = $true
+        $Global:XOAuthLdapInfo.Details = "auth-ldap plugin installed via package manager"
+        return $Global:XOAuthLdapInfo
+    }
+
+    # Check 2c: Search for auth-ldap in XO plugin directories (broader search)
+    $pluginSearch = $(timeout 10 find /usr/share/xo-server /usr/local/share/xo-server /opt/xo -maxdepth 4 -name "xo-server-auth-ldap" -type d 2>/dev/null | head -1)
+    if ($LASTEXITCODE -eq 0 -and $pluginSearch) {
+        $pluginSearchStr = ($pluginSearch -join "").Trim()
+        if ($pluginSearchStr) {
+            $Global:XOAuthLdapInfo.Enabled = $true
+            $Global:XOAuthLdapInfo.Details = "auth-ldap plugin found at $pluginSearchStr"
+            return $Global:XOAuthLdapInfo
+        }
+    }
+
     # Check 3: Query XO REST API for plugin configuration (if token available)
     $auditInfo = Get-XOAuditPluginInfo
     if ($auditInfo.TokenFound) {
         $sq = [char]39
         $token = ""
-        # Re-read token (same priority as audit plugin)
+        # Re-read token using same expanded paths as Get-XOAuditPluginInfo
         if (Test-Path "/etc/xo-server/stig/api-token" -ErrorAction SilentlyContinue) {
-            $tokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+            $tokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>/dev/null)
             if ($LASTEXITCODE -eq 0 -and $tokenContent) { $token = ($tokenContent -join "").Trim() }
         }
         if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
-        if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli" -ErrorAction SilentlyContinue)) {
-            $cliContent = $(timeout 5 cat /var/lib/xo-server/.xo-cli 2>&1)
-            if ($LASTEXITCODE -eq 0 -and $cliContent) {
-                try {
-                    $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
-                    $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
-                    if ($firstServer -and $firstServer.Value.token) { $token = $firstServer.Value.token }
+        $ldapCliPaths = @("/var/lib/xo-server/.xo-cli", "/root/.xo-cli", "/home/xo/.xo-cli", "/root/.config/xo-cli")
+        foreach ($lcPath in $ldapCliPaths) {
+            if ($token) { break }
+            if (Test-Path $lcPath -ErrorAction SilentlyContinue) {
+                $cliContent = $(timeout 5 cat $lcPath 2>/dev/null)
+                if ($LASTEXITCODE -eq 0 -and $cliContent) {
+                    try {
+                        $cliObj = ($cliContent -join "") | ConvertFrom-Json -ErrorAction SilentlyContinue
+                        $firstServer = $cliObj.PSObject.Properties | Select-Object -First 1
+                        if ($firstServer -and $firstServer.Value.token) { $token = $firstServer.Value.token }
+                    }
+                    catch { }
                 }
-                catch { }
             }
         }
 
