@@ -419,8 +419,10 @@ Function Get-XOAuthLdapInfo {
 
     # Check 3: Query XO API for plugin configuration (if token available)
     # XOA configures plugins via web UI/database, not config files — API is most reliable
+    $ldapDiag = @()
     $auditInfo = Get-XOAuditPluginInfo
     if ($auditInfo.TokenFound) {
+        $ldapDiag += "Token: found (source: $($auditInfo.TokenSource))"
         $sq = [char]39
         $token = ""
         # Re-read token using same expanded paths as Get-XOAuditPluginInfo
@@ -454,9 +456,11 @@ Function Get-XOAuthLdapInfo {
             $rpcTmpFile = "/tmp/.xo-stig-rpc-$PID.json"
             $(echo '{"jsonrpc":"2.0","method":"plugin.get","id":1}' > $rpcTmpFile 2>/dev/null)
             $pluginJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d @${rpcTmpFile} "https://localhost/api/" 2>/dev/null)
+            $rpcExitCode = $LASTEXITCODE
             $(rm -f $rpcTmpFile 2>/dev/null)
-            if ($LASTEXITCODE -eq 0 -and $pluginJson) {
+            if ($rpcExitCode -eq 0 -and $pluginJson) {
                 $pluginStr = ($pluginJson -join "")
+                $ldapDiag += "JSON-RPC: got response (${pluginStr.Length} chars)"
                 if ($pluginStr -match "auth-ldap|auth_ldap|authLdap") {
                     $Global:XOAuthLdapInfo.Enabled = $true
                     $Global:XOAuthLdapInfo.Details = "auth-ldap plugin detected via XO JSON-RPC API"
@@ -466,6 +470,14 @@ Function Get-XOAuthLdapInfo {
                     }
                     return $Global:XOAuthLdapInfo
                 }
+                else {
+                    # Log first 200 chars of response for debugging
+                    $preview = $pluginStr.Substring(0, [Math]::Min(200, $pluginStr.Length))
+                    $ldapDiag += "JSON-RPC: no ldap match in response. Preview: $preview"
+                }
+            }
+            else {
+                $ldapDiag += "JSON-RPC: failed (exit=$rpcExitCode, hasData=$($null -ne $pluginJson))"
             }
 
             # Check 3b: REST API users — look for LDAP-authenticated users
@@ -477,8 +489,21 @@ Function Get-XOAuthLdapInfo {
                     $Global:XOAuthLdapInfo.Details = "LDAP-authenticated users detected via REST API"
                     return $Global:XOAuthLdapInfo
                 }
+                else {
+                    $uPreview = $usersStr.Substring(0, [Math]::Min(200, $usersStr.Length))
+                    $ldapDiag += "REST users: no ldap match. Preview: $uPreview"
+                }
+            }
+            else {
+                $ldapDiag += "REST users: failed (exit=$LASTEXITCODE)"
             }
         }
+        else {
+            $ldapDiag += "Token re-read: failed (no token found)"
+        }
+    }
+    else {
+        $ldapDiag += "Token: not found"
     }
 
     # Check 4: OS-level LDAP integration (SSSD/nslcd with AD provider)
@@ -501,7 +526,8 @@ Function Get-XOAuthLdapInfo {
         }
     }
 
-    $Global:XOAuthLdapInfo.Details = "No LDAP/AD authentication integration detected"
+    $diagStr = if ($ldapDiag.Count -gt 0) { " [Diag: " + ($ldapDiag -join "; ") + "]" } else { "" }
+    $Global:XOAuthLdapInfo.Details = "No LDAP/AD authentication integration detected$diagStr"
     return $Global:XOAuthLdapInfo
 }
 

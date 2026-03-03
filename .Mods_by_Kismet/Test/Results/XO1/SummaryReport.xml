@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>03/02/2026</ScanDate>
+    <ScanDate>03/03/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -22,15 +22,17 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;sr0&#xA;'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-1024M
 Index                          '//sr0/'
-DeviceID                       '//'</Size>
+DeviceID                       '//'
+1024M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -40,15 +42,17 @@ DeviceID                       '//'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;xvda&#xA;'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-30G
 Index                          '//xvda/'
-DeviceID                       '//'</Size>
+DeviceID                       '//'
+30G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -58,17 +62,17 @@ DeviceID                       '//'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;xvda1">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
-Size                           [512M]
 
-boot</DeviceID>
+boot
+Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-512M
 Index                          '//xvda1/'
-DeviceID                       '///boot/efi'</Size>
+DeviceID                       '///boot/efi'
+512M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -78,15 +82,17 @@ DeviceID                       '///boot/efi'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;xvda2">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-28.5G
 Index                          '//xvda2/'
-DeviceID                       '///'</Size>
+DeviceID                       '///'
+28.5G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -96,15 +102,17 @@ DeviceID                       '///'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;xvda3&#xA;[SWAP]'">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
         <DeviceID>Name                           Value
 ----                           -----
+
+
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-976M
 Index                          '//xvda3/'
-SWAP</Size>
+SWAP
+976M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -130,7 +138,7 @@ SWAP</Size>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-02T22:01:42.1213222-05:00" EvalScore="46.46">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-03T03:09:59.9938525-05:00" EvalScore="46.46">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -336,7 +344,7 @@ SWAP</Size>
         <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-02T22:03:51.0782556-05:00" EvalScore="42.66">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-03T03:12:12.8176169-05:00" EvalScore="42.31">
       <CAT_I Total="34" Not_Applicable="4" Open="19" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -373,7 +381,7 @@ SWAP</Size>
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="38" Open="129" NotAFinding="63" Not_Reviewed="0">
+      <CAT_II Total="230" Not_Applicable="38" Open="130" NotAFinding="62" Not_Reviewed="0">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Open" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Open" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -439,7 +447,7 @@ SWAP</Size>
         <Vuln RuleTitle="The application must log application shutdown events." Status="NotAFinding" ID="V-222469" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must log destination IP addresses." Status="Open" ID="V-222470" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must log user actions involving access to data." Status="Open" ID="V-222471" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must log user actions involving changes to data." Status="NotAFinding" ID="V-222472" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must log user actions involving changes to data." Status="Open" ID="V-222472" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must produce audit records containing information to establish when (date and time) the events occurred." Status="NotAFinding" ID="V-222473" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must produce audit records containing enough information to establish which component, feature or function of the application triggered the audit event." Status="Open" ID="V-222474" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs." Status="Open" ID="V-222475" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -630,7 +638,7 @@ SWAP</Size>
         <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-02T22:06:45.8238079-05:00" EvalScore="41.27">
+    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-03T03:15:00.5161828-05:00" EvalScore="41.27">
       <CAT_I Total="5" Not_Applicable="0" Open="2" NotAFinding="3" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data." Status="Open" ID="V-206390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator." Status="NotAFinding" ID="V-206399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
