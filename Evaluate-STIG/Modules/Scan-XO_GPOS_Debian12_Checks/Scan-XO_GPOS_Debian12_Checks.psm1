@@ -451,10 +451,13 @@ Function Get-XOAuthLdapInfo {
             $sq = [char]39
             $dq = [char]34
 
-            # Check 3a: JSON-RPC plugin.get — lists all loaded plugins (most reliable for XOA)
-            # Use printf to pipe JSON body to curl stdin to avoid shell quoting issues
-            $rpcBody = '{"jsonrpc":"2.0","method":"plugin.get","id":1}'
-            $pluginJson = $(printf '%s' "$rpcBody" | timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d '@-' "https://localhost/api/" 2>/dev/null)
+            # Check 3a: JSON-RPC session.signInWithToken + plugin.get
+            # XO JSON-RPC requires session auth first, then plugin queries
+            # Write a two-call script: signIn -> plugin.get, pipe via sh -c to keep session cookie
+            $rpcSignIn = "{${dq}jsonrpc${dq}:${dq}2.0${dq},${dq}method${dq}:${dq}session.signInWithToken${dq},${dq}params${dq}:{${dq}token${dq}:${dq}${token}${dq}},${dq}id${dq}:0}"
+            $rpcQuery = "{${dq}jsonrpc${dq}:${dq}2.0${dq},${dq}method${dq}:${dq}plugin.get${dq},${dq}id${dq}:1}"
+            $cookieFile = "/tmp/.xo-ldap-check-$PID"
+            $pluginJson = $(timeout 15 curl -s -k -c "$cookieFile" -b "$cookieFile" -H "Content-Type: application/json" -d "$rpcSignIn" "https://localhost/api/" 2>/dev/null; timeout 10 curl -s -k -b "$cookieFile" -H "Content-Type: application/json" -d "$rpcQuery" "https://localhost/api/" 2>/dev/null; rm -f "$cookieFile" 2>/dev/null)
             $rpcExitCode = $LASTEXITCODE
             if ($pluginJson) {
                 $pluginStr = ($pluginJson -join "")
@@ -462,14 +465,12 @@ Function Get-XOAuthLdapInfo {
                 if ($pluginStr -match "auth-ldap|auth_ldap|authLdap") {
                     $Global:XOAuthLdapInfo.Enabled = $true
                     $Global:XOAuthLdapInfo.Details = "auth-ldap plugin detected via XO JSON-RPC API"
-                    # Try to extract LDAP URI from plugin config
                     if ($pluginStr -match "ldaps?://[^\s,}${dq}${sq}]+") {
                         $Global:XOAuthLdapInfo.LdapUri = $matches[0]
                     }
                     return $Global:XOAuthLdapInfo
                 }
                 else {
-                    # Log first 200 chars of response for debugging
                     $preview = $pluginStr.Substring(0, [Math]::Min(200, $pluginStr.Length))
                     $ldapDiag += "JSON-RPC: no ldap match in response. Preview: $preview"
                 }
@@ -478,18 +479,31 @@ Function Get-XOAuthLdapInfo {
                 $ldapDiag += "JSON-RPC: no response (exit=$rpcExitCode)"
             }
 
-            # Check 3b: REST API users — look for LDAP-authenticated users
+            # Check 3b: REST API — fetch individual user details for authProviders field
+            # /rest/v0/users returns URL list; must fetch each user object to see auth provider
             $usersJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" "https://localhost/rest/v0/users" 2>/dev/null)
             if ($LASTEXITCODE -eq 0 -and $usersJson) {
                 $usersStr = ($usersJson -join "")
-                if ($usersStr -match "authProviders.*ldap|auth-ldap|provider.*ldap|ldap.*provider") {
-                    $Global:XOAuthLdapInfo.Enabled = $true
-                    $Global:XOAuthLdapInfo.Details = "LDAP-authenticated users detected via REST API"
-                    return $Global:XOAuthLdapInfo
+                # Extract first user URL from the JSON array
+                if ($usersStr -match "/rest/v0/users/[a-f0-9-]+") {
+                    $userUrl = $matches[0]
+                    $userDetail = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" "https://localhost${userUrl}" 2>/dev/null)
+                    if ($LASTEXITCODE -eq 0 -and $userDetail) {
+                        $userDetailStr = ($userDetail -join "")
+                        if ($userDetailStr -match "authProviders.*ldap|auth-ldap|provider.*ldap|ldap.*provider") {
+                            $Global:XOAuthLdapInfo.Enabled = $true
+                            $Global:XOAuthLdapInfo.Details = "LDAP-authenticated users detected via REST API"
+                            return $Global:XOAuthLdapInfo
+                        }
+                        else {
+                            $udPreview = $userDetailStr.Substring(0, [Math]::Min(200, $userDetailStr.Length))
+                            $ldapDiag += "REST user detail: no ldap match. Preview: $udPreview"
+                        }
+                    }
                 }
                 else {
                     $uPreview = $usersStr.Substring(0, [Math]::Min(200, $usersStr.Length))
-                    $ldapDiag += "REST users: no ldap match. Preview: $uPreview"
+                    $ldapDiag += "REST users: no user URLs found. Preview: $uPreview"
                 }
             }
             else {
