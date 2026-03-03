@@ -452,15 +452,13 @@ Function Get-XOAuthLdapInfo {
             $dq = [char]34
 
             # Check 3a: JSON-RPC plugin.get — lists all loaded plugins (most reliable for XOA)
-            # Write JSON body to temp file to avoid shell quoting issues with PowerShell-to-Linux
-            $rpcTmpFile = "/tmp/.xo-stig-rpc-$PID.json"
-            $(echo '{"jsonrpc":"2.0","method":"plugin.get","id":1}' > $rpcTmpFile 2>/dev/null)
-            $pluginJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d @${rpcTmpFile} "https://localhost/api/" 2>/dev/null)
+            # Use printf to pipe JSON body to curl stdin to avoid shell quoting issues
+            $rpcBody = '{"jsonrpc":"2.0","method":"plugin.get","id":1}'
+            $pluginJson = $(printf '%s' $rpcBody | timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d @- "https://localhost/api/" 2>/dev/null)
             $rpcExitCode = $LASTEXITCODE
-            $(rm -f $rpcTmpFile 2>/dev/null)
-            if ($rpcExitCode -eq 0 -and $pluginJson) {
+            if ($pluginJson) {
                 $pluginStr = ($pluginJson -join "")
-                $ldapDiag += "JSON-RPC: got response (${pluginStr.Length} chars)"
+                $ldapDiag += "JSON-RPC: got response ($($pluginStr.Length) chars, exit=$rpcExitCode)"
                 if ($pluginStr -match "auth-ldap|auth_ldap|authLdap") {
                     $Global:XOAuthLdapInfo.Enabled = $true
                     $Global:XOAuthLdapInfo.Details = "auth-ldap plugin detected via XO JSON-RPC API"
@@ -477,7 +475,7 @@ Function Get-XOAuthLdapInfo {
                 }
             }
             else {
-                $ldapDiag += "JSON-RPC: failed (exit=$rpcExitCode, hasData=$($null -ne $pluginJson))"
+                $ldapDiag += "JSON-RPC: no response (exit=$rpcExitCode)"
             }
 
             # Check 3b: REST API users — look for LDAP-authenticated users

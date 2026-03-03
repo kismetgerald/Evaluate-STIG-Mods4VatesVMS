@@ -4,10 +4,10 @@
     <ScanDate>03/03/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
-    <Name>XOA</Name>
+    <Name>XO1</Name>
     <Manufacturer>Xen</Manufacturer>
     <Model>HVM domU</Model>
-    <SerialNumber>8853c982-de7f-27b0-1576-9153a9656794</SerialNumber>
+    <SerialNumber>b549354c-356e-6c5a-450b-adcce1198e7b</SerialNumber>
     <BIOSVersion>4.17</BIOSVersion>
     <OSName>Debian GNU/Linux 12 (bookworm)</OSName>
     <OSVersion>12</OSVersion>
@@ -16,29 +16,43 @@
     <NetworkAdapters>
       <Adapter InterfaceIndex="2">
         <Caption>Ethernet interface</Caption>
-        <MACAddress>8e:68:21:96:e4:a9</MACAddress>
-        <IPv4Addresses>10.0.10.40</IPv4Addresses>
-        <IPv6Addresses>fe80::8c68:21ff:fe96:e4a9</IPv6Addresses>
-      </Adapter>
-      <Adapter InterfaceIndex="3">
-        <Caption>Ethernet interface</Caption>
-        <MACAddress>6a:b3:21:f0:a6:9c</MACAddress>
-        <IPv4Addresses>172.23.0.15</IPv4Addresses>
-        <IPv6Addresses>fe80::68b3:21ff:fef0:a69c</IPv6Addresses>
+        <MACAddress>9a:23:ce:79:07:da</MACAddress>
+        <IPv4Addresses>10.0.10.27</IPv4Addresses>
+        <IPv6Addresses>fe80::9823:ceff:fe79:7da</IPv6Addresses>
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [20G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
         <DeviceID>Name                           Value
 ----                           -----
 
 
-Size                           [20G]</DeviceID>
+Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
+Index                          '//sr0/'
 DeviceID                       '//'
+1024M</Size>
+        <Caption>
+        </Caption>
+        <SerialNumber>
+        </SerialNumber>
+        <MediaType>
+        </MediaType>
+        <InterfaceType>
+        </InterfaceType>
+      </Disk>
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
+        <DeviceID>Name                           Value
+----                           -----
+
+
+Size                           [30G]</DeviceID>
+        <Size>Name                           Value
+----                           -----
 Index                          '//xvda/'
-20G</Size>
+DeviceID                       '//'
+30G</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -48,17 +62,17 @@ Index                          '//xvda/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda1&#xA;Size                           [953M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
 
-
-Size                           [953M]</DeviceID>
+boot
+Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-SWAP
 Index                          '//xvda1/'
-953M</Size>
+DeviceID                       '///boot/efi'
+512M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -68,17 +82,37 @@ Index                          '//xvda1/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [19.1G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
 
 
-Size                           [19.1G]</DeviceID>
+Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///'
 Index                          '//xvda2/'
-19.1G</Size>
+DeviceID                       '///'
+28.5G</Size>
+        <Caption>
+        </Caption>
+        <SerialNumber>
+        </SerialNumber>
+        <MediaType>
+        </MediaType>
+        <InterfaceType>
+        </InterfaceType>
+      </Disk>
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
+        <DeviceID>Name                           Value
+----                           -----
+
+
+Size                           [976M]</DeviceID>
+        <Size>Name                           Value
+----                           -----
+Index                          '//xvda3/'
+SWAP
+976M</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -104,7 +138,7 @@ Index                          '//xvda2/'
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-03T04:28:07.1740285-05:00" EvalScore="44.44">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-03T03:09:59.9938525-05:00" EvalScore="46.46">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -125,16 +159,16 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must not allow an unattended or automatic logon to the system." Status="NotAFinding" ID="V-203782" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Applicable" ID="V-252688" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="170" Not_Applicable="2" Open="98" NotAFinding="70" Not_Reviewed="0">
+      <CAT_II Total="170" Not_Applicable="2" Open="94" NotAFinding="74" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-203591" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically remove or disable temporary user accounts after 72 hours." Status="Open" ID="V-203592" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit all account creations." Status="Open" ID="V-203593" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period." Status="Open" ID="V-203594" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system." Status="Open" ID="V-203595" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must display the Standard Mandatory DoD Notice and Consent Banner until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Open" ID="V-203596" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must retain a users session lock until that user reestablishes access using established identification and authentication procedures." Status="NotAFinding" ID="V-203598" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must retain a users session lock until that user reestablishes access using established identification and authentication procedures." Status="Open" ID="V-203598" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must initiate a session lock after a 15-minute period of inactivity for all connection types." Status="Open" ID="V-203599" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must provide the capability for users to directly initiate a session lock for all connection types." Status="NotAFinding" ID="V-203600" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must provide the capability for users to directly initiate a session lock for all connection types." Status="Open" ID="V-203600" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Open" ID="V-203601" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must monitor remote access methods." Status="NotAFinding" ID="V-203602" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must produce audit records containing information to establish what type of events occurred." Status="NotAFinding" ID="V-203604" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -155,7 +189,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Open" ID="V-203620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="NotAFinding" ID="V-203621" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Open" ID="V-203622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="Open" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="NotAFinding" ID="V-203623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must map the authenticated identity to the user or group account for PKI-based authentication." Status="Open" ID="V-203624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one uppercase character be used." Status="Open" ID="V-203625" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one lowercase character be used." Status="Open" ID="V-203626" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -167,13 +201,13 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals." Status="NotAFinding" ID="V-203635" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="Open" ID="V-203636" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must be configured to disable non-essential capabilities." Status="Open" ID="V-203637" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="NotAFinding" ID="V-203638" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Open" ID="V-203638" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="NotAFinding" ID="V-203639" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to privileged accounts." Status="Open" ID="V-203640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to non-privileged accounts." Status="Open" ID="V-203641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to privileged accounts." Status="NotAFinding" ID="V-203640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must use multifactor authentication for network access to non-privileged accounts." Status="NotAFinding" ID="V-203641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must use multifactor authentication for local access to privileged accounts." Status="Open" ID="V-203642" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must use multifactor authentication for local access to nonprivileged accounts." Status="Open" ID="V-203643" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="Open" ID="V-203644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="NotAFinding" ID="V-203644" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="NotAFinding" ID="V-203645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="NotAFinding" ID="V-203646" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must uniquely identify peripherals before establishing a connection." Status="NotAFinding" ID="V-203647" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -203,10 +237,10 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must limit privileges to change software resident within software libraries." Status="NotAFinding" ID="V-203675" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must enforce password complexity by requiring that at least one special character be used." Status="Open" ID="V-203676" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="In the event of a system failure, the operating system must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes." Status="NotAFinding" ID="V-203677" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are created." Status="Open" ID="V-203678" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are modified." Status="Open" ID="V-203679" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are disabled." Status="Open" ID="V-203680" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are removed." Status="Open" ID="V-203681" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are created." Status="NotAFinding" ID="V-203678" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are modified." Status="NotAFinding" ID="V-203679" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are disabled." Status="NotAFinding" ID="V-203680" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must notify system administrators and ISSOs when accounts are removed." Status="NotAFinding" ID="V-203681" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must automatically terminate a user session after inactivity time-outs have expired or at shutdown." Status="Open" ID="V-203683" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must provide a logoff capability for user-initiated communications sessions when requiring user access authentication." Status="NotAFinding" ID="V-203684" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must display an explicit logoff message to users indicating the reliable termination of authenticated communications sessions." Status="Open" ID="V-203685" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -235,11 +269,11 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must enforce access restrictions." Status="NotAFinding" ID="V-203718" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must audit the enforcement actions used to restrict access associated with changes to the system." Status="NotAFinding" ID="V-203719" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must prevent program execution in accordance with local policies regarding software program usage and restrictions and/or rules authorizing the terms and conditions of software program usage." Status="NotAFinding" ID="V-203721" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs." Status="NotAFinding" ID="V-203722" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must require users to reauthenticate for privilege escalation." Status="Open" ID="V-203723" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs." Status="Open" ID="V-203722" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must require users to reauthenticate for privilege escalation." Status="NotAFinding" ID="V-203723" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must require users to reauthenticate when changing roles." Status="NotAFinding" ID="V-203724" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must require users to reauthenticate when changing authenticators." Status="NotAFinding" ID="V-203725" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access." Status="Open" ID="V-203727" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must implement multifactor authentication for remote access to privileged accounts in such a way that one of the factors is provided by a device separate from the system gaining access." Status="NotAFinding" ID="V-203727" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must accept Personal Identity Verification (PIV) credentials." Status="NotAFinding" ID="V-203728" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must electronically verify Personal Identity Verification (PIV) credentials." Status="Open" ID="V-203729" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must authenticate peripherals before establishing a connection." Status="Open" ID="V-203730" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -282,8 +316,8 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs." Status="Open" ID="V-203780" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files." Status="Open" ID="V-203781" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must limit the ability of non-privileged users to grant other users direct access to the contents of their home directories/folders." Status="NotAFinding" ID="V-203783" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must enable an application firewall, if available." Status="NotAFinding" ID="V-203784" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The operating system must install security-relevant software updates within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)." Status="NotAFinding" ID="V-259333" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must enable an application firewall, if available." Status="Open" ID="V-203784" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The operating system must install security-relevant software updates within the time period directed by an authoritative source (e.g., IAVM, CTOs, DTMs, and STIGs)." Status="Open" ID="V-259333" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must disable accounts when the accounts are no longer associated to a user." Status="Open" ID="V-263650" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must prohibit the use or connection of unauthorized hardware components." Status="Open" ID="V-263651" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements." Status="Open" ID="V-263652" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -310,8 +344,8 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-03T04:31:23.4447620-05:00" EvalScore="40.21">
-      <CAT_I Total="34" Not_Applicable="5" Open="20" NotAFinding="9" Not_Reviewed="0">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-03T03:12:12.8176169-05:00" EvalScore="42.31">
+      <CAT_I Total="34" Not_Applicable="4" Open="19" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must use the NotOnOrAfter condition when using the SubjectConfirmation element in a SAML assertion." Status="Not_Applicable" ID="V-222403" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -323,31 +357,31 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The application must enforce a minimum 15-character password length." Status="Open" ID="V-222536" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must only store cryptographic representations of passwords." Status="Open" ID="V-222542" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must transmit only cryptographically-protected passwords." Status="Open" ID="V-222543" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="NotAFinding" ID="V-222550" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key." Status="Not_Applicable" ID="V-222551" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application, when utilizing PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Open" ID="V-222550" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application, when using PKI-based authentication, must enforce authorized access to the corresponding private key." Status="NotAFinding" ID="V-222551" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not display passwords/PINs as clear text." Status="Open" ID="V-222554" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module." Status="Open" ID="V-222555" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not expose session IDs." Status="NotAFinding" ID="V-222577" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must destroy the session ID value and/or cookie on logoff or browser close." Status="Open" ID="V-222578" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not expose session IDs." Status="Open" ID="V-222577" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must destroy the session ID value and/or cookie on logoff or browser close." Status="NotAFinding" ID="V-222578" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must fail to a secure state if system initialization fails, shutdown fails, or aborts fail." Status="NotAFinding" ID="V-222585" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement approved cryptographic mechanisms to prevent unauthorized modification of organization-defined information at rest on organization-defined information system components." Status="Open" ID="V-222588" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must use appropriate cryptography in order to protect stored DOD information when required by the information owner or DOD policy." Status="Open" ID="V-222589" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must protect the confidentiality and integrity of transmitted information." Status="Open" ID="V-222596" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not store sensitive information in hidden fields." Status="Open" ID="V-222601" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must protect from Cross-Site Scripting (XSS) vulnerabilities." Status="Open" ID="V-222602" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must protect the confidentiality and integrity of transmitted information." Status="NotAFinding" ID="V-222596" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not store sensitive information in hidden fields." Status="NotAFinding" ID="V-222601" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must protect from Cross-Site Scripting (XSS) vulnerabilities." Status="NotAFinding" ID="V-222602" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must protect from command injection." Status="NotAFinding" ID="V-222604" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not be vulnerable to SQL Injection." Status="Open" ID="V-222607" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not be vulnerable to XML-oriented attacks." Status="NotAFinding" ID="V-222608" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not be subject to input handling vulnerabilities." Status="Open" ID="V-222609" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must not be vulnerable to overflow attacks." Status="NotAFinding" ID="V-222612" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Application web servers must be on a separate network segment from the application and database servers if it is a tiered application operating in the DoD DMZ." Status="Open" ID="V-222620" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must not contain embedded authentication data." Status="NotAFinding" ID="V-222642" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must not contain embedded authentication data." Status="Open" ID="V-222642" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must have the capability to mark sensitive/classified output when required." Status="Open" ID="V-222643" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="All products must be supported by the vendor or the development team." Status="Open" ID="V-222658" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must be decommissioned when maintenance or support is no longer available." Status="Open" ID="V-222659" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Default passwords must be changed." Status="NotAFinding" ID="V-222662" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="230" Not_Applicable="34" Open="135" NotAFinding="61" Not_Reviewed="0">
+      <CAT_II Total="230" Not_Applicable="38" Open="130" NotAFinding="62" Not_Reviewed="0">
         <Vuln RuleTitle="The application must provide a capability to limit the number of logon sessions per user." Status="Open" ID="V-222387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must clear temporary storage and cookies when the session is terminated." Status="Open" ID="V-222388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically terminate the non-privileged user session and log off non-privileged users after a 15 minute idle time period has elapsed." Status="Open" ID="V-222389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -367,10 +401,10 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="Shared/group account credentials must be terminated when members leave the group." Status="Open" ID="V-222408" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically remove or disable temporary user accounts 72 hours after account creation." Status="Open" ID="V-222409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Unnecessary application accounts must be disabled, or deleted." Status="Open" ID="V-222412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account creation." Status="Open" ID="V-222413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account modification." Status="Open" ID="V-222414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account disabling actions." Status="Open" ID="V-222415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must automatically audit account removal actions." Status="Open" ID="V-222416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account creation." Status="Not_Applicable" ID="V-222413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account modification." Status="Not_Applicable" ID="V-222414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account disabling actions." Status="Not_Applicable" ID="V-222415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must automatically audit account removal actions." Status="Not_Applicable" ID="V-222416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must automatically audit account enabling actions." Status="Open" ID="V-222421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Application data protection requirements must be identified and documented." Status="Open" ID="V-222423" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must utilize organization-defined data mining detection techniques for organization-defined data storage objects to adequately detect data mining attempts." Status="Open" ID="V-222424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -418,7 +452,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The application must produce audit records containing enough information to establish which component, feature or function of the application triggered the audit event." Status="Open" ID="V-222474" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="When using centralized logging; the application must include a unique identifier in order to distinguish itself from other application logs." Status="Open" ID="V-222475" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must produce audit records that contain information to establish the outcome of the events." Status="NotAFinding" ID="V-222476" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must generate audit records containing information that establishes the identity of any individual or process associated with the event." Status="Open" ID="V-222477" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must generate audit records containing information that establishes the identity of any individual or process associated with the event." Status="NotAFinding" ID="V-222477" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users." Status="Open" ID="V-222478" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must implement transaction recovery logs when transaction based." Status="Not_Applicable" ID="V-222479" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must provide centralized management and configuration of the content to be captured in audit records generated by all application components." Status="Not_Applicable" ID="V-222480" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -448,7 +482,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The application must protect audit tools from unauthorized modification." Status="NotAFinding" ID="V-222504" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must protect audit tools from unauthorized deletion." Status="NotAFinding" ID="V-222505" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must back up audit records at least every seven days onto a different system or system component than the system or component being audited." Status="Open" ID="V-222506" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The application must use cryptographic mechanisms to protect the integrity of audit information." Status="NotAFinding" ID="V-222507" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The application must use cryptographic mechanisms to protect the integrity of audit information." Status="Open" ID="V-222507" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Application audit tools must be cryptographically hashed." Status="NotAFinding" ID="V-222508" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The integrity of the audit tools must be validated by checking the files for changes in the cryptographic hash value." Status="Open" ID="V-222509" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must prohibit user installation of software without explicit privileged status." Status="NotAFinding" ID="V-222510" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -559,7 +593,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="Back-up copies of the application software or source code must be stored in a fire-rated container or stored separately (offsite)." Status="Open" ID="V-222639" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Procedures must be in place to assure the appropriate physical and technical protection of the backup and restoration of the application." Status="Open" ID="V-222640" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The application must use encryption to implement key exchange and authenticate endpoints prior to establishing a communication channel for key exchange." Status="NotAFinding" ID="V-222641" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Application files must be cryptographically hashed prior to deploying to DoD operational networks." Status="Open" ID="V-222645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Application files must be cryptographically hashed prior to deploying to DoD operational networks." Status="NotAFinding" ID="V-222645" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="At least one tester must be designated to test for security flaws in addition to functional testing." Status="Not_Applicable" ID="V-222646" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="An application code review must be performed on the application." Status="Not_Applicable" ID="V-222648" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Flaws found during a code review must be tracked in a defect tracking system." Status="Not_Applicable" ID="V-222650" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -604,7 +638,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-03T04:35:37.9818005-05:00" EvalScore="42.86">
+    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-03T03:15:00.5161828-05:00" EvalScore="41.27">
       <CAT_I Total="5" Not_Applicable="0" Open="2" NotAFinding="3" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data." Status="Open" ID="V-206390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator." Status="NotAFinding" ID="V-206399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -612,7 +646,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The web server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission." Status="NotAFinding" ID="V-206434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must be a version supported by the vendor." Status="NotAFinding" ID="V-279029" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="121" Not_Applicable="0" Open="70" NotAFinding="51" Not_Reviewed="0">
+      <CAT_II Total="121" Not_Applicable="0" Open="72" NotAFinding="49" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must limit the number of allowed simultaneous session requests." Status="Open" ID="V-206350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must perform server-side session management." Status="NotAFinding" ID="V-206351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use encryption strength in accordance with the categorization of data hosted by the web server when remote connections are provided." Status="NotAFinding" ID="V-206352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -629,7 +663,7 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The web server must produce log records that contain sufficient information to establish the outcome (success or failure) of events." Status="NotAFinding" ID="V-206364" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must produce log records containing sufficient information to establish the identity of any user/subject or process associated with an event." Status="NotAFinding" ID="V-206365" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use a logging mechanism that is configured to alert the ISSO and SA in the event of a processing failure." Status="Open" ID="V-206366" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must use the internal system clock to generate time stamps for log records." Status="NotAFinding" ID="V-206367" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must use the internal system clock to generate time stamps for log records." Status="Open" ID="V-206367" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Web server log files must only be accessible by privileged users." Status="NotAFinding" ID="V-206368" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The log information from the web server must be protected from unauthorized modification." Status="Open" ID="V-206369" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The log information from the web server must be protected from unauthorized deletion." Status="Open" ID="V-206370" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -641,14 +675,14 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="The web server must not be a proxy server." Status="NotAFinding" ID="V-206376" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must provide install options to exclude the installation of documentation, sample code, example applications, and tutorials." Status="NotAFinding" ID="V-206377" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Web server accounts not utilized by installed features (i.e., tools, utilities, specific services, etc.) must not be created and must be deleted when the web server feature is uninstalled." Status="Open" ID="V-206378" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must provide install options to exclude installation of utility programs, services, plug-ins, and modules not necessary for operation." Status="Open" ID="V-206379" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must provide install options to exclude installation of utility programs, services, plug-ins, and modules not necessary for operation." Status="NotAFinding" ID="V-206379" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must have Multipurpose Internet Mail Extensions (MIME) that invoke OS shell programs disabled." Status="NotAFinding" ID="V-206380" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must allow the mappings to unused and vulnerable scripts to be removed." Status="NotAFinding" ID="V-206381" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must have resource mappings set to disable the serving of certain file types." Status="NotAFinding" ID="V-206382" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must have Web Distributed Authoring (WebDAV) disabled." Status="NotAFinding" ID="V-206383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must protect system resources and privileged operations from hosted applications." Status="Open" ID="V-206384" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Users and scripts running on behalf of users must be contained to the document root or home directory tree of the web server." Status="Open" ID="V-206385" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must be configured to use a specified IP address and port." Status="NotAFinding" ID="V-206386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must be configured to use a specified IP address and port." Status="Open" ID="V-206386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must encrypt passwords during transmission." Status="NotAFinding" ID="V-206387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must perform RFC 5280-compliant certification path validation." Status="Open" ID="V-206388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Only authenticated system administrators or the designated PKI Sponsor for the web server must have access to the web servers private key." Status="NotAFinding" ID="V-206389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -661,23 +695,23 @@ Index                          '//xvda2/'
         <Vuln RuleTitle="Cookies exchanged between the web server and client, such as session cookies, must have security settings that disallow cookie access outside the originating web server and hosted application." Status="Open" ID="V-206397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must accept only system-generated session identifiers." Status="NotAFinding" ID="V-206398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate unique session identifiers that cannot be reliably reproduced." Status="NotAFinding" ID="V-206400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must generate a session ID long enough that it cannot be guessed through brute force." Status="Open" ID="V-206401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must generate a session ID using as much of the character set as possible to reduce the risk of brute force." Status="Open" ID="V-206402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must generate a session ID long enough that it cannot be guessed through brute force." Status="NotAFinding" ID="V-206401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must generate a session ID using as much of the character set as possible to reduce the risk of brute force." Status="NotAFinding" ID="V-206402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate unique session identifiers with definable entropy." Status="NotAFinding" ID="V-206403" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must augment re-creation to a stable and known baseline." Status="Open" ID="V-206404" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must be built to fail to a known safe state if system initialization fails, shutdown fails, or aborts fail." Status="NotAFinding" ID="V-206405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must provide a clustering capability." Status="Open" ID="V-206406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Information at rest must be encrypted using a DOD-accepted algorithm to protect the confidentiality and integrity of the information." Status="Open" ID="V-206407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server document directory must be in a separate partition from the web servers system files." Status="Open" ID="V-206408" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must restrict the ability of users to launch Denial of Service (DoS) attacks against other information systems or networks." Status="NotAFinding" ID="V-206409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must restrict the ability of users to launch Denial of Service (DoS) attacks against other information systems or networks." Status="Open" ID="V-206409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must limit the character set used for data entry." Status="Open" ID="V-206410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must display a default hosted application web page, not a directory listing, when a requested web page cannot be found." Status="Open" ID="V-206411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Warning and error messages displayed to clients must be modified to minimize the identity of the web server, patches, loaded modules, and directory paths." Status="Open" ID="V-206412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Debugging and trace information used to diagnose the web server must be disabled." Status="NotAFinding" ID="V-206413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Debugging and trace information used to diagnose the web server must be disabled." Status="Open" ID="V-206413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must set an absolute session timeout value of eight hours or less." Status="Open" ID="V-206414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must set an inactive timeout for sessions." Status="Open" ID="V-206415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Remote access to the web server must follow access policy or work in conjunction with enterprise tools designed to enforce policy requirements." Status="NotAFinding" ID="V-206416" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
-        <Vuln RuleTitle="The web server must restrict inbound connections from nonsecure zones." Status="NotAFinding" ID="V-206417" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
+        <Vuln RuleTitle="The web server must restrict inbound connections from nonsecure zones." Status="Open" ID="V-206417" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
         <Vuln RuleTitle="The web server must provide the capability to immediately disconnect or disable remote access to the hosted applications." Status="Open" ID="V-206418" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
         <Vuln RuleTitle="Non-privileged accounts on the hosting system must only access web server security-relevant information and functions through a distinct administrative account." Status="Open" ID="V-206419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server." Status="Open" ID="V-206421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
