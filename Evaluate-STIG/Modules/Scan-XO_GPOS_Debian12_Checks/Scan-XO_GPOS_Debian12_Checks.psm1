@@ -446,18 +446,22 @@ Function Get-XOAuthLdapInfo {
         }
 
         if ($token) {
+            $sq = [char]39
             $dq = [char]34
 
             # Check 3a: JSON-RPC plugin.get — lists all loaded plugins (most reliable for XOA)
-            $rpcBody = "{${dq}jsonrpc${dq}:${dq}2.0${dq},${dq}method${dq}:${dq}plugin.get${dq},${dq}id${dq}:1}"
-            $pluginJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d $rpcBody "https://localhost/api/" 2>/dev/null)
+            # Write JSON body to temp file to avoid shell quoting issues with PowerShell-to-Linux
+            $rpcTmpFile = "/tmp/.xo-stig-rpc-$PID.json"
+            $(echo '{"jsonrpc":"2.0","method":"plugin.get","id":1}' > $rpcTmpFile 2>/dev/null)
+            $pluginJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d @${rpcTmpFile} "https://localhost/api/" 2>/dev/null)
+            $(rm -f $rpcTmpFile 2>/dev/null)
             if ($LASTEXITCODE -eq 0 -and $pluginJson) {
                 $pluginStr = ($pluginJson -join "")
                 if ($pluginStr -match "auth-ldap|auth_ldap|authLdap") {
                     $Global:XOAuthLdapInfo.Enabled = $true
                     $Global:XOAuthLdapInfo.Details = "auth-ldap plugin detected via XO JSON-RPC API"
                     # Try to extract LDAP URI from plugin config
-                    if ($pluginStr -match "ldaps?://[^${dq}\s,}]+") {
+                    if ($pluginStr -match "ldaps?://[^\s,}${dq}${sq}]+") {
                         $Global:XOAuthLdapInfo.LdapUri = $matches[0]
                     }
                     return $Global:XOAuthLdapInfo
