@@ -454,7 +454,7 @@ Function Get-XOAuthLdapInfo {
             # Check 3a: JSON-RPC plugin.get — lists all loaded plugins (most reliable for XOA)
             # Use printf to pipe JSON body to curl stdin to avoid shell quoting issues
             $rpcBody = '{"jsonrpc":"2.0","method":"plugin.get","id":1}'
-            $pluginJson = $(printf '%s' $rpcBody | timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d @- "https://localhost/api/" 2>/dev/null)
+            $pluginJson = $(printf '%s' "$rpcBody" | timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" -H "Content-Type: application/json" -d '@-' "https://localhost/api/" 2>/dev/null)
             $rpcExitCode = $LASTEXITCODE
             if ($pluginJson) {
                 $pluginStr = ($pluginJson -join "")
