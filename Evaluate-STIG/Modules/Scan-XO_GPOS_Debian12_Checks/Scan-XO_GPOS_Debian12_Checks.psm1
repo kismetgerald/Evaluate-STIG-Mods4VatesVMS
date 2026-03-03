@@ -374,13 +374,20 @@ Function Get-XOAuthLdapInfo {
     }
 
     # Check 2: Look for auth-ldap package in XO node_modules (XOCE + XOA paths)
+    # Note: XOA uses "-premium" suffix (e.g., xo-server-auth-ldap-premium)
     $pluginPaths = @(
         "/opt/xo/xo-server/node_modules/xo-server-auth-ldap",
+        "/opt/xo/xo-server/node_modules/xo-server-auth-ldap-premium",
         "/opt/xo/node_modules/xo-server-auth-ldap",
+        "/opt/xo/node_modules/xo-server-auth-ldap-premium",
         "/usr/local/lib/node_modules/xo-server/node_modules/xo-server-auth-ldap",
+        "/usr/local/lib/node_modules/xo-server/node_modules/xo-server-auth-ldap-premium",
         "/opt/xen-orchestra/packages/xo-server-auth-ldap",
+        "/opt/xen-orchestra/packages/xo-server-auth-ldap-premium",
         "/usr/share/xo-server/node_modules/xo-server-auth-ldap",
-        "/usr/local/share/xo-server/node_modules/xo-server-auth-ldap"
+        "/usr/share/xo-server/node_modules/xo-server-auth-ldap-premium",
+        "/usr/local/share/xo-server/node_modules/xo-server-auth-ldap",
+        "/usr/local/share/xo-server/node_modules/xo-server-auth-ldap-premium"
     )
     foreach ($plugPath in $pluginPaths) {
         if (Test-Path $plugPath -ErrorAction SilentlyContinue) {
@@ -399,7 +406,8 @@ Function Get-XOAuthLdapInfo {
     }
 
     # Check 2c: Search for auth-ldap in XO plugin directories (broader search)
-    $pluginSearch = $(timeout 10 find /usr/share/xo-server /usr/local/share/xo-server /opt/xo -maxdepth 4 -name "xo-server-auth-ldap" -type d 2>/dev/null | head -1)
+    # Matches both xo-server-auth-ldap (XOCE) and xo-server-auth-ldap-premium (XOA)
+    $pluginSearch = $(timeout 10 find /usr/share/xo-server /usr/local/share/xo-server /opt/xo -maxdepth 4 -name "xo-server-auth-ldap*" -type d 2>/dev/null | head -1)
     if ($LASTEXITCODE -eq 0 -and $pluginSearch) {
         $pluginSearchStr = ($pluginSearch -join "").Trim()
         if ($pluginSearchStr) {
