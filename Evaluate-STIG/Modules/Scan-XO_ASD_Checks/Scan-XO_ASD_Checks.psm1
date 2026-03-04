@@ -156,6 +156,7 @@ Function Get-V222387 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
+    $Status = "Open"
     $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
                       "Refer to the Application Security and Development STIG (V-222387) for detailed requirements. " +
                       "Evidence should include configuration files, policies, and operational procedures."
@@ -267,6 +268,7 @@ Function Get-V222388 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
+    $Status = "Open"
     $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
                       "Refer to the Application Security and Development STIG (V-222388) for detailed requirements. " +
                       "Evidence should include configuration files, policies, and operational procedures."
@@ -2566,6 +2568,7 @@ Function Get-V222408 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
+    $Status = "Open"
     $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
                       "Refer to the Application Security and Development STIG (V-222408) for detailed requirements. " +
                       "Evidence should include configuration files, policies, and operational procedures."
@@ -32267,8 +32270,8 @@ Function Get-V222607 {
             $FindingDetails += "No unsafe query patterns or string concatenation found.`n"
         }
         else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
+            $Status = "Open"
+            $FindingDetails += "Result: OPEN - Manual verification required`n"
             $FindingDetails += "Potential issues detected:`n"
             foreach ($vuln in $vulnerabilities) {
                 $FindingDetails += "  • $vuln`n"
@@ -32282,7 +32285,7 @@ Function Get-V222607 {
     }
     else {
         $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+        $Status = "Open"
     }
     #---=== End Custom Code ===---#
 
@@ -34360,7 +34363,7 @@ Function Get-V222620 {
         $FindingDetails += "[FINDING] No active firewall detected. Network segregation cannot be verified." + $nl
         $FindingDetails += "Implement UFW or iptables rules to restrict management network access." + $nl
     } else {
-        $Status = "Not_Reviewed"
+        $Status = "Open"
         $FindingDetails += "Manual verification required." + $nl
         $FindingDetails += "Verify: (1) Redis bound to localhost only, (2) management VLAN separate from storage/VM networks," + $nl
         $FindingDetails += "(3) firewall rules enforce segment boundaries." + $nl
@@ -43652,8 +43655,8 @@ Function Get-V222522 {
             $FindingDetails += "  • Authentication events logged`n"
         }
         else {
-            $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
+            $Status = "Open"
+            $FindingDetails += "Result: OPEN - Manual verification required`n"
             $FindingDetails += "Potential concerns:`n"
             foreach ($issue in $issues) {
                 $FindingDetails += "  • $issue`n"
@@ -43668,7 +43671,7 @@ Function Get-V222522 {
     }
     else {
         $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+        $Status = "Open"
     }
     #---=== End Custom Code ===---#
 
@@ -45821,7 +45824,7 @@ Function Get-V222588 {
             $FindingDetails += "Filesystem encryption and secure data storage implemented.`n"
         }
         elseif ($hasFIM -or $hasMAC) {
-            $Status = "Not_Reviewed"
+            $Status = "Open"
             $FindingDetails += "`n⚠ Partial protection detected - manual review recommended.`n"
             $FindingDetails += "File integrity monitoring or MAC present but encryption not verified.`n"
         }
@@ -45833,7 +45836,7 @@ Function Get-V222588 {
     }
     else {
         $FindingDetails = "This check must be run on a Linux system with Xen Orchestra installed."
-        $Status = "Not_Reviewed"
+        $Status = "Open"
     }
     #---=== End Custom Code ===---#
 
@@ -46138,6 +46141,7 @@ Function Get-V222590 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
+    $Status = "Open"
     $FindingDetails = "This check requires manual review of Xen Orchestra application security configuration. " +
                       "Refer to the Application Security and Development STIG (V-222590) for detailed requirements. " +
                       "Evidence should include configuration files, policies, and operational procedures."
