@@ -22,16 +22,15 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [1024M]&#xA;sr0">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [1024M]&#xA;sr0&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
 1024M
-Index                          '//sr0/'</Size>
+Index                          '//sr0/'
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -41,16 +40,15 @@ Index                          '//sr0/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;Size                           [30G]&#xA;xvda">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [30G]&#xA;xvda&#xA;'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
 30G
-Index                          '//xvda/'</Size>
+Index                          '//xvda/'
+DeviceID                       '//'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -60,16 +58,17 @@ Index                          '//xvda/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [512M]&#xA;xvda1">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [512M]&#xA;xvda1">
         <DeviceID>Name                           Value
 ----                           -----
-boot
-Size                           [512M]</DeviceID>
+Size                           [512M]
+
+boot</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///boot/efi'
 512M
-Index                          '//xvda1/'</Size>
+Index                          '//xvda1/'
+DeviceID                       '///boot/efi'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -79,16 +78,15 @@ Index                          '//xvda1/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;Size                           [28.5G]&#xA;xvda2">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [28.5G]&#xA;xvda2">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///'
 28.5G
-Index                          '//xvda2/'</Size>
+Index                          '//xvda2/'
+DeviceID                       '///'</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -98,16 +96,15 @@ Index                          '//xvda2/'</Size>
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;Size                           [976M]&#xA;xvda3">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;Size                           [976M]&#xA;xvda3&#xA;[SWAP]'">
         <DeviceID>Name                           Value
 ----                           -----
-
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-SWAP
 976M
-Index                          '//xvda3/'</Size>
+Index                          '//xvda3/'
+SWAP</Size>
         <Caption>
         </Caption>
         <SerialNumber>
@@ -133,7 +130,7 @@ Index                          '//xvda3/'</Size>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-03T18:58:06.1548639-05:00" EvalScore="46.46">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-03T16:39:07.5745779-05:00" EvalScore="46.46">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -339,7 +336,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-03T19:00:26.0196205-05:00" EvalScore="43.01">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-03T16:41:28.9080428-05:00" EvalScore="43.01">
       <CAT_I Total="34" Not_Applicable="4" Open="19" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -633,7 +630,7 @@ Index                          '//xvda3/'</Size>
         <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-03T19:03:23.9828786-05:00" EvalScore="41.27">
+    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-03T16:44:28.4162950-05:00" EvalScore="41.27">
       <CAT_I Total="5" Not_Applicable="0" Open="2" NotAFinding="3" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data." Status="Open" ID="V-206390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator." Status="NotAFinding" ID="V-206399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
