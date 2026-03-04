@@ -27866,232 +27866,177 @@ Function Get-V264343 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $output = @()
-    $output += "=" * 80
-    $output += "V-264343: Multifactor Authentication (MFA) Implementation"
-    $output += "=" * 80
-    $output += ""
+    $nl = [Environment]::NewLine
+    $sq = [char]39
+    $dq = [char]34
 
-    # This is a hybrid check: automated plugin detection + organizational policy verification
-    $mfaConfigured = $false
-    $pluginsFound = @()
+    # --- Token Lookup (multi-source) ---
+    $token = ""
+    $tokenSource = ""
 
-    $output += "REQUIREMENT:"
-    $output += "The web server must implement multifactor authentication for local, network, and"
-    $output += "remote access to privileged and nonprivileged accounts per organizational requirements."
-    $output += ""
-
-    $output += "AUTOMATED MFA DETECTION:"
-    $output += "-" * 50
-
-    # Check 1: XO authentication plugins
-    $output += ""
-    $output += "Check 1: XO Authentication Plugins"
-    $output += ""
-
-    $xoPlugins = $(bash -c "find /opt/xo /etc/xo-server -name 'xo-server-auth-*' -type d 2>/dev/null" 2>&1)
-    if ($xoPlugins -and $xoPlugins -notmatch "No such file") {
-        $output += "   [FOUND] XO authentication plugins:"
-        $pluginsFound += $xoPlugins
-        $output += "   $xoPlugins"
-
-        # Check for specific MFA plugins
-        if ($xoPlugins -match "ldap|saml|oidc|oauth") {
-            $output += "   [INFO] External authentication provider detected (may support MFA)"
-            $mfaConfigured = $true
+    if (Test-Path "/etc/xo-server/stig/api-token" -ErrorAction SilentlyContinue) {
+        $tokenContent = $(timeout 5 cat /etc/xo-server/stig/api-token 2>&1)
+        if ($tokenContent -and $tokenContent.ToString().Trim().Length -gt 10) {
+            $token = $tokenContent.ToString().Trim()
+            $tokenSource = "/etc/xo-server/stig/api-token"
         }
-    } else {
-        $output += "   [NOT FOUND] No XO authentication plugins detected"
-        $output += "   [INFO] Using default XO authentication (local accounts only)"
     }
 
-    # Check 2: LDAP/AD integration (supports MFA passthrough)
-    $output += ""
-    $output += "Check 2: LDAP/Active Directory Integration"
-    $output += ""
+    if (-not $token -and (Test-Path env:XO_API_TOKEN)) {
+        $token = $env:XO_API_TOKEN
+        $tokenSource = "XO_API_TOKEN env var"
+    }
 
-    $configPaths = @("/opt/xo/xo-server/config.toml", "/etc/xo-server/config.toml")
-    foreach ($configPath in $configPaths) {
-        if (Test-Path $configPath) {
-            $ldapConfig = $(bash -c "grep -i 'ldap\|activedirectory' '$configPath' 2>&1" 2>&1)
-            if ($ldapConfig -and $LASTEXITCODE -eq 0) {
-                $output += "   [FOUND] LDAP/AD configuration in $configPath"
-                $output += "   $ldapConfig"
-                $mfaConfigured = $true
+    if (-not $token) {
+        $cliConfigRaw = $(timeout 5 cat /var/lib/xo-server/.xo-cli 2>/dev/null)
+        $cliConfig = if ($cliConfigRaw) { ($cliConfigRaw -join $nl) } else { "" }
+        if ($cliConfig -match "${dq}token${dq}:${dq}([^${dq}]+)${dq}") {
+            $token = $Matches[1]
+            $tokenSource = "/var/lib/xo-server/.xo-cli"
+        }
+    }
+
+    $FindingDetails += "MFA/2FA Detection for Xen Orchestra" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # --- Check 1: Native TOTP 2FA via REST API ---
+    $FindingDetails += "Check 1: XO Native TOTP 2FA (per-user via REST API)" + $nl
+    $FindingDetails += ("-" * 50) + $nl
+
+    $totpEnabled = @()
+    $totpDisabled = @()
+    $apiSuccess = $false
+
+    if ($token) {
+        $FindingDetails += "API Token Source: ${tokenSource}" + $nl
+
+        $usersJsonRaw = $(timeout 10 curl -s -k -L -H "Cookie: authenticationToken=${token}" "https://localhost/rest/v0/users" 2>/dev/null)
+        $usersJson = if ($usersJsonRaw) { ($usersJsonRaw -join $nl) } else { "" }
+
+        if ($usersJson.Length -gt 0 -and $usersJson -match "/rest/v0/users/") {
+            $apiSuccess = $true
+            $userUrls = [regex]::Matches($usersJson, "/rest/v0/users/[a-f0-9-]+") | ForEach-Object { $_.Value }
+            $FindingDetails += "Users found: $($userUrls.Count)" + $nl + $nl
+
+            foreach ($userUrl in $userUrls) {
+                $userJsonRaw = $(timeout 5 curl -s -k -L -H "Cookie: authenticationToken=${token}" "https://localhost${userUrl}" 2>/dev/null)
+                $userJson = if ($userJsonRaw) { ($userJsonRaw -join $nl) } else { "" }
+
+                if ($userJson.Length -gt 0) {
+                    $userName = ""
+                    if ($userJson -match "${dq}name${dq}\s*:\s*${dq}([^${dq}]*)${dq}") {
+                        $userName = $Matches[1]
+                    }
+                    elseif ($userJson -match "${dq}email${dq}\s*:\s*${dq}([^${dq}]*)${dq}") {
+                        $userName = $Matches[1]
+                    }
+
+                    $permission = "user"
+                    if ($userJson -match "${dq}permission${dq}\s*:\s*${dq}([^${dq}]*)${dq}") {
+                        $permission = $Matches[1]
+                    }
+
+                    $hasOtp = $userJson -match "${dq}otp${dq}\s*:\s*${dq}"
+
+                    if ($hasOtp) {
+                        $totpEnabled += "${userName} (${permission})"
+                        $FindingDetails += "  [2FA ENABLED]  ${userName} (${permission})" + $nl
+                    }
+                    else {
+                        $totpDisabled += "${userName} (${permission})"
+                        $FindingDetails += "  [2FA DISABLED] ${userName} (${permission})" + $nl
+                    }
+                }
+            }
+        }
+        else {
+            $FindingDetails += "REST API query failed" + $nl
+            if ($usersJson) {
+                $FindingDetails += "Response: ${usersJson}" + $nl
             }
         }
     }
-
-    if (-not $mfaConfigured) {
-        $output += "   [NOT FOUND] No LDAP/AD configuration detected"
+    else {
+        $FindingDetails += "No API token found. Checked:" + $nl
+        $FindingDetails += "  - /etc/xo-server/stig/api-token" + $nl
+        $FindingDetails += "  - XO_API_TOKEN environment variable" + $nl
+        $FindingDetails += "  - /var/lib/xo-server/.xo-cli" + $nl
     }
 
-    # Check 3: SAML/OAuth configuration
-    $output += ""
-    $output += "Check 3: SAML/OAuth/OIDC Configuration"
-    $output += ""
+    $FindingDetails += $nl
 
-    foreach ($configPath in $configPaths) {
-        if (Test-Path $configPath) {
-            $samlConfig = $(bash -c "grep -Ei 'saml|oauth|oidc' '$configPath' 2>&1" 2>&1)
-            if ($samlConfig -and $LASTEXITCODE -eq 0) {
-                $output += "   [FOUND] SAML/OAuth/OIDC configuration in $configPath"
-                $output += "   $samlConfig"
-                $mfaConfigured = $true
+    # --- Check 2: LDAP/AD auth-ldap plugin ---
+    $FindingDetails += "Check 2: LDAP/Active Directory Integration" + $nl
+    $FindingDetails += ("-" * 50) + $nl
+
+    $ldapFound = $false
+    $ldapPkg = $(timeout 10 find /opt/xo /usr/local/lib -maxdepth 5 -name "xo-server-auth-ldap" -type d 2>/dev/null)
+    if ($ldapPkg) {
+        $FindingDetails += "  [FOUND] auth-ldap plugin: ${ldapPkg}" + $nl
+        $ldapFound = $true
+    }
+    else {
+        $FindingDetails += "  [NOT FOUND] No auth-ldap plugin detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # --- Check 3: SAML/OIDC plugins ---
+    $FindingDetails += "Check 3: SAML/OIDC Authentication Plugins" + $nl
+    $FindingDetails += ("-" * 50) + $nl
+
+    $samlFound = $false
+    $samlPkg = $(timeout 10 find /opt/xo /usr/local/lib -maxdepth 5 -name "xo-server-auth-saml" -type d 2>/dev/null)
+    $oidcPkg = $(timeout 10 find /opt/xo /usr/local/lib -maxdepth 5 -name "xo-server-auth-oidc" -type d 2>/dev/null)
+    if ($samlPkg) {
+        $FindingDetails += "  [FOUND] SAML plugin: ${samlPkg}" + $nl
+        $samlFound = $true
+    }
+    if ($oidcPkg) {
+        $FindingDetails += "  [FOUND] OIDC plugin: ${oidcPkg}" + $nl
+        $samlFound = $true
+    }
+    else {
+        $FindingDetails += "  [NOT FOUND] No SAML/OIDC plugins detected" + $nl
+    }
+
+    $FindingDetails += $nl
+
+    # --- Summary and Status ---
+    $FindingDetails += ("=" * 60) + $nl
+    $FindingDetails += "SUMMARY" + $nl
+    $FindingDetails += ("=" * 60) + $nl
+
+    $totalUsers = $totpEnabled.Count + $totpDisabled.Count
+
+    if ($apiSuccess -and $totalUsers -gt 0) {
+        $FindingDetails += "TOTP 2FA: $($totpEnabled.Count)/${totalUsers} users enabled" + $nl
+        if ($ldapFound) {
+            $FindingDetails += "LDAP/AD: Configured (may provide additional MFA via directory)" + $nl
+        }
+        if ($samlFound) {
+            $FindingDetails += "SAML/OIDC: Configured (may provide additional MFA via IdP)" + $nl
+        }
+
+        if ($totpDisabled.Count -eq 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "Result: All ${totalUsers} users have TOTP 2FA enabled" + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "Result: $($totpDisabled.Count) user(s) without 2FA:" + $nl
+            foreach ($user in $totpDisabled) {
+                $FindingDetails += "  - ${user}" + $nl
             }
         }
     }
-
-    if (-not $mfaConfigured) {
-        $output += "   [NOT FOUND] No SAML/OAuth/OIDC configuration detected"
+    else {
+        $Status = "Open"
+        if (-not $apiSuccess) {
+            $FindingDetails += "Unable to verify per-user 2FA status via REST API" + $nl
+        }
+        $FindingDetails += "Manual verification required" + $nl
     }
-
-    # Check 4: Two-factor authentication plugins
-    $output += ""
-    $output += "Check 4: Two-Factor Authentication (2FA) Plugins"
-    $output += ""
-
-    $twoFactorPlugins = $(bash -c "npm list 2fa totp speakeasy authenticator 2>&1 | grep -v 'empty\|extraneous'" 2>&1)
-    if ($twoFactorPlugins -and $LASTEXITCODE -eq 0) {
-        $output += "   [FOUND] 2FA npm packages installed:"
-        $output += "   $twoFactorPlugins"
-        $mfaConfigured = $true
-    } else {
-        $output += "   [NOT FOUND] No 2FA npm packages detected"
-    }
-
-    # Check 5: PAM configuration for SSH access (system-level MFA)
-    $output += ""
-    $output += "Check 5: System-Level MFA (PAM Configuration)"
-    $output += ""
-
-    $pamMFA = $(bash -c "grep -r 'pam_google_authenticator\|pam_oath\|pam_duo' /etc/pam.d/ 2>&1 | grep -v '^#'" 2>&1)
-    if ($pamMFA -and $pamMFA -notmatch "No such file") {
-        $output += "   [FOUND] PAM MFA modules configured:"
-        $output += "   $pamMFA"
-        $output += "   [INFO] System-level MFA enforced for SSH/console access"
-    } else {
-        $output += "   [NOT FOUND] No PAM-based MFA modules detected"
-    }
-
-    # Check 6: Reverse proxy MFA (nginx/Apache)
-    $output += ""
-    $output += "Check 6: Reverse Proxy MFA Enforcement"
-    $output += ""
-
-    $nginxMFA = $(bash -c "grep -r 'auth_request\|oauth2_proxy' /etc/nginx 2>/dev/null | grep -v '^#'" 2>&1)
-    if ($nginxMFA -and $nginxMFA -notmatch "No such file") {
-        $output += "   [FOUND] Nginx MFA configuration:"
-        $output += "   $nginxMFA"
-        $mfaConfigured = $true
-    } else {
-        $output += "   [NOT FOUND] No reverse proxy MFA enforcement detected"
-    }
-
-    $output += ""
-    $output += "=" * 80
-    $output += "MULTIFACTOR AUTHENTICATION ASSESSMENT"
-    $output += "=" * 80
-    $output += ""
-
-    if ($mfaConfigured) {
-        $output += "AUTOMATED DETECTION - MFA INDICATORS FOUND:"
-        $output += "- Authentication plugins or external providers detected"
-        $output += "- Configuration suggests MFA capability exists"
-        $output += ""
-        $output += "MANUAL VERIFICATION STILL REQUIRED:"
-        $output += "Automated checks detected MFA-capable configurations but cannot verify:"
-        $output += "- Whether MFA is actually enforced for all users"
-        $output += "- Compliance with organization-defined strength requirements"
-        $output += "- User enrollment and policy enforcement status"
-    } else {
-        $output += "AUTOMATED DETECTION - NO MFA INDICATORS FOUND:"
-        $output += "- No authentication plugins detected"
-        $output += "- No external authentication provider configuration"
-        $output += "- Default XO authentication likely in use (local accounts only)"
-        $output += ""
-        $output += "LIKELY NON-COMPLIANT - MANUAL VERIFICATION REQUIRED:"
-    }
-
-    $output += ""
-    $output += "MANDATORY MANUAL VERIFICATION:"
-    $output += ""
-    $output += "1. MFA IMPLEMENTATION VERIFICATION:"
-    $output += "   - Verify MFA is enabled for ALL privileged accounts (administrators)"
-    $output += "   - Verify MFA is enabled for nonprivileged accounts per org policy"
-    $output += "   - Confirm MFA enforcement for local, network, AND remote access"
-    $output += "   - Test MFA login process with representative user accounts"
-    $output += ""
-
-    $output += "2. AUTHENTICATION STRENGTH REQUIREMENTS:"
-    $output += "   - Verify MFA mechanism meets organization-defined strength requirements"
-    $output += "   - Acceptable factors: CAC/PIV, OTP (TOTP/HOTP), hardware tokens, biometrics"
-    $output += "   - Unacceptable single factors: SMS, email, knowledge-based authentication"
-    $output += "   - Confirm compliance with NIST SP 800-63B Authenticator Assurance Levels"
-    $output += ""
-
-    $output += "3. MFA ENROLLMENT AND MANAGEMENT:"
-    $output += "   - Verify all users are enrolled in MFA program"
-    $output += "   - Review MFA enrollment procedures and documentation"
-    $output += "   - Confirm backup authentication methods are secure"
-    $output += "   - Validate MFA recovery/reset procedures prevent unauthorized access"
-    $output += ""
-
-    $output += "4. ORGANIZATIONAL POLICY COMPLIANCE:"
-    $output += "   - Review organization's MFA policy document"
-    $output += "   - Verify web server MFA aligns with org requirements"
-    $output += "   - Document any approved exceptions or waivers"
-    $output += "   - Confirm periodic MFA compliance audits are conducted"
-    $output += ""
-
-    $output += "REQUIRED EVIDENCE FOR AUDITOR:"
-    $output += ""
-    $output += "System Owner/ISSO must provide:"
-    $output += "- Organizational MFA policy and implementation guide"
-    $output += "- Screenshots of MFA login process for privileged and nonprivileged accounts"
-    $output += "- Authentication plugin/provider configuration documentation"
-    $output += "- User enrollment reports showing MFA coverage"
-    $output += "- MFA strength verification (FIPS 140-2 validation certificates, etc.)"
-    $output += "- External authentication provider SLA/MOA (if LDAP/SAML/OAuth used)"
-    $output += "- MFA audit logs and compliance reports"
-    $output += ""
-
-    $output += "IMPLEMENTATION GUIDANCE:"
-    $output += ""
-    $output += "For XO MFA implementation options:"
-    $output += "1. LDAP/Active Directory Integration:"
-    $output += "   - Install xo-server-auth-ldap plugin"
-    $output += "   - Configure LDAP server with MFA support (AD + Azure MFA, FreeIPA + OTP)"
-    $output += "   - XO delegates authentication to LDAP, MFA enforced at directory level"
-    $output += ""
-
-    $output += "2. SAML/OAuth/OIDC Integration:"
-    $output += "   - Install xo-server-auth-saml or xo-server-auth-oidc plugin"
-    $output += "   - Integrate with DoD-approved identity provider (Okta, Azure AD, etc.)"
-    $output += "   - IdP enforces MFA before issuing SAML assertion/OAuth token"
-    $output += ""
-
-    $output += "3. Reverse Proxy MFA:"
-    $output += "   - Deploy oauth2-proxy or similar in front of XO"
-    $output += "   - Proxy authenticates users with MFA before forwarding to XO"
-    $output += "   - XO trusts proxy authentication headers"
-    $output += ""
-
-    $output += "4. Custom Plugin Development:"
-    $output += "   - Develop custom xo-server-auth-* plugin for organization-specific MFA"
-    $output += "   - Integrate with existing DoD authentication infrastructure"
-    $output += ""
-
-    $output += "NON-COMPLIANCE RISK:"
-    $output += "Failure to implement MFA allows attackers to gain unauthorized access using only"
-    $output += "compromised passwords. MFA significantly reduces the risk of credential-based"
-    $output += "attacks, phishing, and unauthorized privileged access to the virtualization"
-    $output += "management platform."
-
-    $FindingDetails = $output -join "`n"
-
-    # Always Open - organizational MFA verification required
-    $Status = "Open"
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
