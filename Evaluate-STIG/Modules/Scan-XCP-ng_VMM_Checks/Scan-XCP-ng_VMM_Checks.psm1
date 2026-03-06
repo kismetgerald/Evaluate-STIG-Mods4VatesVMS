@@ -99,10 +99,10 @@ Function Invoke-XeCommand {
     <#
     .SYNOPSIS
         Helper to safely invoke xe CLI commands on XCP-ng hypervisor.
-    
+
     .PARAMETER Command
         The xe command to execute (without 'xe ' prefix).
-    
+
     .OUTPUTS
         Command output or error string.
     #>
@@ -110,9 +110,10 @@ Function Invoke-XeCommand {
         [Parameter(Mandatory = $true)]
         [string]$Command
     )
-    
+
     try {
-        $result = Invoke-Expression "xe $Command </dev/null 2>/dev/null" -ErrorAction SilentlyContinue
+        $cmdParts = $Command -split '\s+'
+        $result = $(xe @cmdParts 2>/dev/null)
         return $result
     }
     catch {
@@ -123,7 +124,7 @@ Function Invoke-XeCommand {
 # ============================================================================
 # VMM SRG CHECK FUNCTIONS
 # ============================================================================
-# This module implements 204 VMM SRG checks (V-207338 through V-264326).
+# This module implements 193 VMM SRG checks (V-207338 through V-264326).
 # 
 # IMPLEMENTATION NOTES:
 # - Each check returns 4 possible statuses:
@@ -224,7 +225,7 @@ Function Get-V207338 {
         # ----------------------------------------------------------------
         $FindingMessage += "--- RBAC Roles Available ---`n"
         try {
-            $RoleListOutput = bash -c "xe role-list </dev/null 2>/dev/null"
+            $RoleListOutput = $(xe role-list 2>/dev/null)
             if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($RoleListOutput)) {
                 $FindingMessage += "ERROR: Unable to retrieve role list. xe command failed or returned empty.`n"
                 $CommandsFailed = $true
@@ -250,7 +251,7 @@ Function Get-V207338 {
         # ----------------------------------------------------------------
         $FindingMessage += "--- RBAC Subjects (Users/Groups) ---`n"
         try {
-            $SubjectListOutput = bash -c "xe subject-list </dev/null 2>/dev/null"
+            $SubjectListOutput = $(xe subject-list 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
                 $FindingMessage += "ERROR: Unable to retrieve subject list. xe command failed.`n"
                 $CommandsFailed = $true
@@ -295,7 +296,7 @@ Function Get-V207338 {
         $FindingMessage += "--- External Authentication (LDAP/AD) ---`n"
         try {
             # Check pool authentication configuration
-            $PoolAuthOutput = bash -c "xe pool-list params=name-label,external-auth-type,external-auth-service-name </dev/null 2>/dev/null"
+            $PoolAuthOutput = $(xe pool-list params=name-label,external-auth-type,external-auth-service-name 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
                 $FindingMessage += "ERROR: Unable to retrieve pool authentication settings.`n"
                 $CommandsFailed = $true
@@ -339,7 +340,7 @@ Function Get-V207338 {
         $FindingMessage += "--- Dom0 Local User Accounts ---`n"
         try {
             # List users with UID >= 1000 (non-system accounts) plus root
-            $LocalUsersOutput = bash -c "awk -F: '(\$3 >= 1000 || \$1 == \"root\") {print \$1\":UID=\"\$3\":GID=\"\$4}' /etc/passwd </dev/null 2>/dev/null"
+            $LocalUsersOutput = $(awk -F: '{if ($3 >= 1000 || $1 == "root") print $1":UID="$3":GID="$4}' /etc/passwd 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
                 $FindingMessage += "ERROR: Unable to query local user accounts.`n"
                 $CommandsFailed = $true
@@ -902,15 +903,15 @@ Function Get-V207342 {
     try {
         # Check each PAM file for pam_faillock or pam_tally2 configuration
         foreach ($PamFile in $PamFiles) {
-            $FileExists = bash -c "test -f '$PamFile' && echo 'exists' || echo 'missing' </dev/null" 2>$null
+            $FileExists = $(sh -c "test -f '$PamFile' && echo 'exists' || echo 'missing'")
 
             if ($FileExists -eq "exists") {
                 $PamFilesChecked += $PamFile
-                $PamContent = bash -c "cat '$PamFile' </dev/null 2>/dev/null" 2>$null
+                $PamContent = Get-Content -Path $PamFile -ErrorAction SilentlyContinue
 
                 if ($null -ne $PamContent -and $PamContent -ne "") {
                     # Check for pam_faillock module
-                    $FailLockLines = bash -c "grep -E 'pam_faillock' '$PamFile' </dev/null 2>/dev/null" 2>$null
+                    $FailLockLines = $(grep -E 'pam_faillock' $PamFile 2>/dev/null)
                     if ($null -ne $FailLockLines -and $FailLockLines -ne "") {
                         $FailLockFound = $true
                         $ConfigDetails += "File: $PamFile"
@@ -936,7 +937,7 @@ Function Get-V207342 {
                     }
 
                     # Check for pam_tally2 module (legacy RHEL7)
-                    $Tally2Lines = bash -c "grep -E 'pam_tally2' '$PamFile' </dev/null 2>/dev/null" 2>$null
+                    $Tally2Lines = $(grep -E 'pam_tally2' $PamFile 2>/dev/null)
                     if ($null -ne $Tally2Lines -and $Tally2Lines -ne "") {
                         $Tally2Found = $true
                         $ConfigDetails += "File: $PamFile"
@@ -962,9 +963,9 @@ Function Get-V207342 {
 
         # Check faillock.conf if pam_faillock was found but deny value not in PAM files
         if ($FailLockFound -and $null -eq $DenyValue) {
-            $FailLockConfExists = bash -c "test -f '$FailLockConf' && echo 'exists' || echo 'missing' </dev/null" 2>$null
+            $FailLockConfExists = $(sh -c "test -f '$FailLockConf' && echo 'exists' || echo 'missing'")
             if ($FailLockConfExists -eq "exists") {
-                $FailLockConfContent = bash -c "grep -v '^#' '$FailLockConf' </dev/null 2>/dev/null | grep -v '^$' </dev/null" 2>$null
+                $FailLockConfContent = $(sh -c "grep -v '^#' '$FailLockConf' 2>/dev/null | grep -v '^$'")
                 if ($null -ne $FailLockConfContent -and $FailLockConfContent -ne "") {
                     $ConfigDetails += "File: $FailLockConf"
                     foreach ($Line in ($FailLockConfContent -split "`n")) {
@@ -2101,7 +2102,7 @@ Function Get-V207351 {
         $FindingDetails += "===== SSH Configuration Analysis =====" + "`n`n"
 
         # Check if sshd_config exists
-        $SSHConfigExists = bash -c "test -f /etc/ssh/sshd_config && echo 'exists' || echo 'missing' </dev/null" 2>$null
+        $SSHConfigExists = $(sh -c "test -f /etc/ssh/sshd_config && echo 'exists' || echo 'missing'")
 
         if ($SSHConfigExists -eq "missing") {
             $FindingDetails += "ERROR: /etc/ssh/sshd_config not found" + "`n"
@@ -2110,12 +2111,12 @@ Function Get-V207351 {
         else {
             # Check SSH Protocol version
             $FindingDetails += "--- SSH Protocol Version ---" + "`n"
-            $ProtocolLine = bash -c "grep -i '^Protocol' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET' </dev/null" 2>$null
+            $ProtocolLine = $(sh -c "grep -i '^Protocol' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
 
             if ($ProtocolLine -eq "NOT_SET" -or $ProtocolLine -match "^\s*$") {
                 $FindingDetails += "Protocol: Not explicitly set (defaults to 2 in modern OpenSSH)" + "`n"
                 # Check OpenSSH version to confirm default
-                $SSHVersion = bash -c "ssh -V </dev/null 2>&1" 2>$null
+                $SSHVersion = $(ssh -V 2>&1)
                 $FindingDetails += "SSH Version: $SSHVersion" + "`n"
             }
             elseif ($ProtocolLine -match "Protocol\s+2") {
@@ -2132,12 +2133,12 @@ Function Get-V207351 {
 
             # Check Ciphers
             $FindingDetails += "--- SSH Ciphers ---" + "`n"
-            $CiphersLine = bash -c "grep -i '^Ciphers' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET' </dev/null" 2>$null
+            $CiphersLine = $(sh -c "grep -i '^Ciphers' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
 
             if ($CiphersLine -eq "NOT_SET" -or $CiphersLine -match "^\s*$") {
                 $FindingDetails += "Ciphers: Using system defaults" + "`n"
                 # Get actual ciphers in use
-                $ActualCiphers = bash -c "sshd -T 2>/dev/null | grep '^ciphers' | cut -d' ' -f2 </dev/null" 2>$null
+                $ActualCiphers = $(sh -c "sshd -T 2>/dev/null | grep '^ciphers' | cut -d' ' -f2")
                 if ($ActualCiphers) {
                     $FindingDetails += "Active ciphers: $ActualCiphers" + "`n"
                     $CipherList = $ActualCiphers -split ","
@@ -2170,11 +2171,11 @@ Function Get-V207351 {
 
             # Check MACs
             $FindingDetails += "--- SSH MACs (Message Authentication Codes) ---" + "`n"
-            $MACsLine = bash -c "grep -i '^MACs' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET' </dev/null" 2>$null
+            $MACsLine = $(sh -c "grep -i '^MACs' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
 
             if ($MACsLine -eq "NOT_SET" -or $MACsLine -match "^\s*$") {
                 $FindingDetails += "MACs: Using system defaults" + "`n"
-                $ActualMACs = bash -c "sshd -T 2>/dev/null | grep '^macs' | cut -d' ' -f2 </dev/null" 2>$null
+                $ActualMACs = $(sh -c "sshd -T 2>/dev/null | grep '^macs' | cut -d' ' -f2")
                 if ($ActualMACs) {
                     $FindingDetails += "Active MACs: $ActualMACs" + "`n"
                     $MACList = $ActualMACs -split ","
@@ -2207,11 +2208,11 @@ Function Get-V207351 {
 
             # Check Key Exchange Algorithms
             $FindingDetails += "--- SSH Key Exchange Algorithms ---" + "`n"
-            $KexLine = bash -c "grep -i '^KexAlgorithms' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET' </dev/null" 2>$null
+            $KexLine = $(sh -c "grep -i '^KexAlgorithms' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
 
             if ($KexLine -eq "NOT_SET" -or $KexLine -match "^\s*$") {
                 $FindingDetails += "KexAlgorithms: Using system defaults" + "`n"
-                $ActualKex = bash -c "sshd -T 2>/dev/null | grep '^kexalgorithms' | cut -d' ' -f2 </dev/null" 2>$null
+                $ActualKex = $(sh -c "sshd -T 2>/dev/null | grep '^kexalgorithms' | cut -d' ' -f2")
                 if ($ActualKex) {
                     $FindingDetails += "Active algorithms: $ActualKex" + "`n"
                     $KexList = $ActualKex -split ","
@@ -2247,7 +2248,7 @@ Function Get-V207351 {
         $FindingDetails += "===== XAPI TLS Configuration Analysis =====" + "`n`n"
 
         # Check if openssl is available
-        $OpenSSLExists = bash -c "command -v openssl >/dev/null 2>&1 && echo 'exists' || echo 'missing' </dev/null" 2>$null
+        $OpenSSLExists = $(sh -c "command -v openssl >/dev/null 2>&1 && echo 'exists' || echo 'missing'")
 
         if ($OpenSSLExists -eq "missing") {
             $FindingDetails += "WARNING: openssl command not available for TLS verification" + "`n"
@@ -2258,7 +2259,7 @@ Function Get-V207351 {
             $FindingDetails += "--- XAPI HTTPS/TLS Certificate Check ---" + "`n"
 
             # Get TLS protocol and cipher information
-            $TLSInfo = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null" 2>$null
+            $TLSInfo = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null')
 
             if ([string]::IsNullOrWhiteSpace($TLSInfo)) {
                 $FindingDetails += "WARNING: Could not connect to localhost:443 for TLS verification" + "`n"
@@ -2267,7 +2268,7 @@ Function Get-V207351 {
             }
             else {
                 # Extract TLS version
-                $TLSVersion = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null2>/dev/null | grep 'Protocol' | head -1" 2>$null
+                $TLSVersion = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | grep "Protocol" | head -1')
                 if ($TLSVersion) {
                     $FindingDetails += "TLS Protocol: $TLSVersion" + "`n"
 
@@ -2281,15 +2282,15 @@ Function Get-V207351 {
                 }
 
                 # Extract cipher suite
-                $CipherSuite = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null2>/dev/null | grep 'Cipher' | head -1" 2>$null
+                $CipherSuite = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | grep "Cipher" | head -1')
                 if ($CipherSuite) {
                     $FindingDetails += "Cipher Suite: $CipherSuite" + "`n"
                 }
 
                 # Check certificate details
-                $CertSubject = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null2>/dev/null | openssl x509 -noout -subject </dev/null 2>/dev/null" 2>$null
-                $CertIssuer = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null2>/dev/null | openssl x509 -noout -issuer </dev/null 2>/dev/null" 2>$null
-                $CertDates = bash -c "timeout 5 openssl s_client -connect localhost:443 </dev/null2>/dev/null | openssl x509 -noout -dates </dev/null 2>/dev/null" 2>$null
+                $CertSubject = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -subject 2>/dev/null')
+                $CertIssuer = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -issuer 2>/dev/null')
+                $CertDates = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -dates 2>/dev/null')
 
                 if ($CertSubject) {
                     $FindingDetails += "Certificate Subject: $CertSubject" + "`n"
@@ -2307,17 +2308,17 @@ Function Get-V207351 {
             $FindingDetails += "--- TLS Version Support Check ---" + "`n"
 
             # Test TLS 1.2
-            $TLS12Test = bash -c "timeout 5 openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep -q 'Cipher is' && echo 'supported' || echo 'not_supported' </dev/null" 2>$null
+            $TLS12Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_2 </dev/null 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported')
             $FindingDetails += "TLS 1.2: $TLS12Test" + "`n"
 
             # Test TLS 1.3 (may not be available on older OpenSSL)
-            $TLS13Test = bash -c "timeout 5 openssl s_client -connect localhost:443 -tls1_3 2>&1 | grep -q 'Cipher is' && echo 'supported' || echo 'not_supported' </dev/null" 2>$null
+            $TLS13Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_3 </dev/null 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported')
             $FindingDetails += "TLS 1.3: $TLS13Test" + "`n"
 
             # Test weak TLS versions (should NOT be supported)
-            $TLS11Test = bash -c "timeout 5 openssl s_client -connect localhost:443 -tls1_1 2>&1 | grep -q 'Cipher is' && echo 'ENABLED-WEAK' </dev/null || echo 'disabled' </dev/null" 2>$null
-            $TLS10Test = bash -c "timeout 5 openssl s_client -connect localhost:443 -tls1 2>&1 | grep -q 'Cipher is' && echo 'ENABLED-WEAK' </dev/null || echo 'disabled' </dev/null" 2>$null
-            $SSL3Test = bash -c "timeout 5 openssl s_client -connect localhost:443 -ssl3 2>&1 | grep -q 'Cipher is' && echo 'ENABLED-WEAK' </dev/null || echo 'disabled' </dev/null" 2>$null
+            $TLS11Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_1 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
+            $TLS10Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
+            $SSL3Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -ssl3 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
 
             $FindingDetails += "TLS 1.1: $TLS11Test" + "`n"
             $FindingDetails += "TLS 1.0: $TLS10Test" + "`n"
@@ -2432,24 +2433,23 @@ Function Get-V207351 {
     return Send-CheckResult @SendCheckParams
 }
 
-# Generate remaining functions (V-207352 through V-264326 with 11 gaps)
-# Each function returns NotReviewed status with appropriate manual verification instructions
+# Generate remaining functions (V-207352 through V-264326)
+# 179 stub functions for rules not yet explicitly implemented
+# Note: 11 VulnIDs in sequential gaps do NOT exist in VMM SRG V2R2 XCCDF and are excluded:
+#   V-207359, V-207380, V-207400, V-207408, V-207450, V-207451,
+#   V-207476, V-207477, V-207478, V-207479, V-207485
 
 $RemainingRules = @(
     "V-207352", "V-207353", "V-207354", "V-207355", "V-207356", "V-207357", "V-207358",
-    "V-207359",  # Gap fill
     "V-207360", "V-207361", "V-207362", "V-207363", "V-207364", "V-207365", "V-207366",
     "V-207367", "V-207368", "V-207369", "V-207370", "V-207371", "V-207372", "V-207373",
     "V-207374", "V-207375", "V-207376", "V-207377", "V-207378", "V-207379",
-    "V-207380",  # Gap fill
     "V-207381",
     "V-207382", "V-207383", "V-207384", "V-207385", "V-207386", "V-207387", "V-207388",
     "V-207389", "V-207390", "V-207391", "V-207392", "V-207393", "V-207394", "V-207395",
     "V-207396", "V-207397", "V-207398", "V-207399",
-    "V-207400",  # Gap fill
     "V-207401", "V-207402", "V-207403",
     "V-207404", "V-207405", "V-207406", "V-207407",
-    "V-207408",  # Gap fill
     "V-207409", "V-207410", "V-207411",
     "V-207412", "V-207413", "V-207414", "V-207415", "V-207416", "V-207417", "V-207418",
     "V-207419", "V-207420", "V-207421", "V-207422", "V-207423", "V-207424", "V-207425",
@@ -2457,15 +2457,12 @@ $RemainingRules = @(
     "V-207433", "V-207434", "V-207435", "V-207436", "V-207437", "V-207438", "V-207439",
     "V-207440", "V-207441", "V-207442", "V-207443", "V-207444", "V-207445", "V-207446",
     "V-207447", "V-207448", "V-207449",
-    "V-207450", "V-207451",  # Gap fill
     "V-207452", "V-207453", "V-207454", "V-207455",
     "V-207456", "V-207457", "V-207458", "V-207459", "V-207460", "V-207461", "V-207462",
     "V-207463", "V-207464", "V-207465", "V-207466", "V-207467", "V-207468", "V-207469",
     "V-207470", "V-207471", "V-207472", "V-207473", "V-207474", "V-207475",
-    "V-207476", "V-207477", "V-207478", "V-207479",  # Gap fill
     "V-207480",
     "V-207481", "V-207482", "V-207483", "V-207484",
-    "V-207485",  # Gap fill
     "V-207486", "V-207487", "V-207488",
     "V-207489", "V-207490", "V-207491", "V-207492", "V-207493", "V-207494", "V-207495",
     "V-207496", "V-207497", "V-207498", "V-207499", "V-207500", "V-207501", "V-207502",
@@ -2517,15 +2514,16 @@ Function $FunctionName {
     `$Justification = ""
 
     #---=== Begin Custom Code ===---#
+    `$nl = [Environment]::NewLine
     if (`$null -eq `$XCPngVersionInfo) { Initialize-XCPngVersionInfo }
     if (-not `$XCPngVersionInfo.IsSupported) {
         `$Status = "Not_Applicable"
         `$FindingDetails = "XCP-ng version `$(`$XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
     }
     else {
-        `$FindingDetails = "Manual Check Required: Verify $CategoryHint configuration for XCP-ng.`n"
-        `$FindingDetails += "Review relevant xapi, Dom0, and guest VM settings.`n"
-        `$FindingDetails += "`nXCP-ng Version: `$(`$XCPngVersionInfo.VersionString)"
+        `$FindingDetails = "Manual Check Required: Verify $CategoryHint configuration for XCP-ng." + `$nl
+        `$FindingDetails += "Review relevant xapi, Dom0, and guest VM settings." + `$nl
+        `$FindingDetails += `$nl + "XCP-ng Version: `$(`$XCPngVersionInfo.VersionString)"
     }
     #---=== End Custom Code ===---#
 

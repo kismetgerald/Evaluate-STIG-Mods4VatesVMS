@@ -12,8 +12,8 @@ VERSION SUPPORT MATRIX
 
 XCP-ng Version    | Support Status    | Notes
 ------------------+-------------------+----------------------------------------
-8.0 - 8.9         | SUPPORTED         | CentOS 8-based, actively maintained
-9.0 - 9.x         | SUPPORTED         | Debian 11-based, production ready
+8.0 - 8.9         | SUPPORTED         | CentOS 7-based (RHEL 7), actively maintained
+9.0 - 9.x         | FUTURE            | Debian 12-based, not yet released
 7.x and earlier   | UNSUPPORTED       | End-of-life, requires upgrade
 10.x and later    | UNKNOWN           | Not yet released, rules TBD
 
@@ -115,21 +115,18 @@ VERSION-SPECIFIC ADAPTATIONS
 ================================================================================
 
 XCP-ng 8.x SPECIFIC NOTES:
-- Based on CentOS 8 (RHEL 8 equivalent)
-- Uses yum/dnf package manager (use yum for compatibility)
+- Based on CentOS 7 (RHEL 7 equivalent)
+- Uses yum package manager
 - Xen 4.14.x hypervisor
 - xapi version 2.x
 - Supports up to 192 vCPUs per VM
 - IOMMU/VT-d support available
 
-XCP-ng 9.x SPECIFIC NOTES:
-- Based on Debian 11
-- Uses apt package manager (not yum)
-- Xen 4.16.x hypervisor
-- xapi version 2.x
-- Supports up to 512 vCPUs per VM (increased scalability)
-- Enhanced NUMA support
-- Some package names differ from 8.x (document in Debian12 GPOS module)
+XCP-ng 9.x SPECIFIC NOTES (FUTURE - NOT YET RELEASED):
+- Expected to be based on Debian 12
+- Will use apt package manager (not yum)
+- Expected Xen 4.17+ hypervisor
+- Rules and adaptations TBD when released
 
 ADAPTATION HANDLING:
 - Version detection happens at module initialization
