@@ -6617,7 +6617,7 @@ Function Get-V207383 {
         $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
 
         # Check RBAC roles via xe
-        $RbacRoles = Invoke-XeCommand -Command "role-list" -Parameters @("--minimal")
+        $RbacRoles = Invoke-XeCommand -Command "role-list --minimal"
         $RbacStr = ("$RbacRoles").Trim()
         if ($RbacStr -ne "") {
             $FindingDetails += "RBAC roles configured: yes" + $nl
