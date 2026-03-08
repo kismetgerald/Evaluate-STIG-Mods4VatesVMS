@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>03/04/2026</ScanDate>
+    <ScanDate>03/07/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -22,7 +22,7 @@
       </Adapter>
     </NetworkAdapters>
     <DiskDrives>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;sr0&#xA;Size                           [1024M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;sr0&#xA;'&#xA;Size                           [1024M]">
         <DeviceID>Name                           Value
 ----                           -----
 
@@ -30,8 +30,8 @@
 Size                           [1024M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
 Index                          '//sr0/'
+DeviceID                       '//'
 1024M</Size>
         <Caption>
         </Caption>
@@ -42,7 +42,7 @@ Index                          '//sr0/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;'&#xA;xvda&#xA;Size                           [30G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda&#xA;'&#xA;Size                           [30G]">
         <DeviceID>Name                           Value
 ----                           -----
 
@@ -50,8 +50,8 @@ Index                          '//sr0/'
 Size                           [30G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '//'
 Index                          '//xvda/'
+DeviceID                       '//'
 30G</Size>
         <Caption>
         </Caption>
@@ -62,16 +62,16 @@ Index                          '//xvda/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda1&#xA;Size                           [512M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda1&#xA;&#xA;Size                           [512M]">
         <DeviceID>Name                           Value
 ----                           -----
-boot
 
+boot
 Size                           [512M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///boot/efi'
 Index                          '//xvda1/'
+DeviceID                       '///boot/efi'
 512M</Size>
         <Caption>
         </Caption>
@@ -82,7 +82,7 @@ Index                          '//xvda1/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;&#xA;xvda2&#xA;Size                           [28.5G]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda2&#xA;&#xA;Size                           [28.5G]">
         <DeviceID>Name                           Value
 ----                           -----
 
@@ -90,8 +90,8 @@ Index                          '//xvda1/'
 Size                           [28.5G]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-DeviceID                       '///'
 Index                          '//xvda2/'
+DeviceID                       '///'
 28.5G</Size>
         <Caption>
         </Caption>
@@ -102,7 +102,7 @@ Index                          '//xvda2/'
         <InterfaceType>
         </InterfaceType>
       </Disk>
-      <Disk Index="Name                           Value&#xA;----                           -----&#xA;[SWAP]'&#xA;xvda3&#xA;Size                           [976M]">
+      <Disk Index="Name                           Value&#xA;----                           -----&#xA;xvda3&#xA;[SWAP]'&#xA;Size                           [976M]">
         <DeviceID>Name                           Value
 ----                           -----
 
@@ -110,8 +110,8 @@ Index                          '//xvda2/'
 Size                           [976M]</DeviceID>
         <Size>Name                           Value
 ----                           -----
-SWAP
 Index                          '//xvda3/'
+SWAP
 976M</Size>
         <Caption>
         </Caption>
@@ -138,7 +138,7 @@ Index                          '//xvda3/'
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-04T15:08:53.4739348-05:00" EvalScore="46.46">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-07T02:09:36.9910702-05:00" EvalScore="46.46">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -344,7 +344,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-04T15:11:08.2500001-05:00" EvalScore="43.01">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-07T02:11:39.0716392-05:00" EvalScore="43.01">
       <CAT_I Total="34" Not_Applicable="4" Open="19" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -638,7 +638,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-04T15:13:59.7957575-05:00" EvalScore="41.27">
+    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-07T02:14:06.3294961-05:00" EvalScore="40.48">
       <CAT_I Total="5" Not_Applicable="0" Open="2" NotAFinding="3" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data." Status="Open" ID="V-206390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator." Status="NotAFinding" ID="V-206399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -646,7 +646,7 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="The web server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission." Status="NotAFinding" ID="V-206434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must be a version supported by the vendor." Status="NotAFinding" ID="V-279029" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="121" Not_Applicable="0" Open="72" NotAFinding="49" Not_Reviewed="0">
+      <CAT_II Total="121" Not_Applicable="0" Open="70" NotAFinding="48" Not_Reviewed="3">
         <Vuln RuleTitle="The web server must limit the number of allowed simultaneous session requests." Status="Open" ID="V-206350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must perform server-side session management." Status="NotAFinding" ID="V-206351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use encryption strength in accordance with the categorization of data hosted by the web server when remote connections are provided." Status="NotAFinding" ID="V-206352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -710,9 +710,9 @@ Index                          '//xvda3/'
         <Vuln RuleTitle="Debugging and trace information used to diagnose the web server must be disabled." Status="Open" ID="V-206413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must set an absolute session timeout value of eight hours or less." Status="Open" ID="V-206414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must set an inactive timeout for sessions." Status="Open" ID="V-206415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Remote access to the web server must follow access policy or work in conjunction with enterprise tools designed to enforce policy requirements." Status="NotAFinding" ID="V-206416" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
-        <Vuln RuleTitle="The web server must restrict inbound connections from nonsecure zones." Status="Open" ID="V-206417" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
-        <Vuln RuleTitle="The web server must provide the capability to immediately disconnect or disable remote access to the hosted applications." Status="Open" ID="V-206418" Override="" Justification="" AFStatusChange="True" PreAFStatus="Not_Reviewed" />
+        <Vuln RuleTitle="Remote access to the web server must follow access policy or work in conjunction with enterprise tools designed to enforce policy requirements." Status="Not_Reviewed" ID="V-206416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must restrict inbound connections from nonsecure zones." Status="Not_Reviewed" ID="V-206417" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must provide the capability to immediately disconnect or disable remote access to the hosted applications." Status="Not_Reviewed" ID="V-206418" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Non-privileged accounts on the hosting system must only access web server security-relevant information and functions through a distinct administrative account." Status="Open" ID="V-206419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use a logging mechanism that is configured to allocate log record storage capacity large enough to accommodate the logging requirements of the web server." Status="Open" ID="V-206421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must not impede the ability to write specified log record content to an audit log server." Status="Open" ID="V-206422" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
