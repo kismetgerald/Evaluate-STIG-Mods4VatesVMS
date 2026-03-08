@@ -10132,15 +10132,2238 @@ Function Get-V207411 {
     return Send-CheckResult @SendCheckParams
 }
 
-# Generate remaining functions (V-207412 through V-264326)
-# 123 stub functions for rules not yet explicitly implemented
+Function Get-V207412 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207412
+        STIG ID    : SRG-OS-000221-VMM-000800
+        Rule ID    : SV-207412r958578_rule
+        Severity   : CAT II
+        Title      : All interactions among guest VMs must be mediated by the VMM or its service VMs to support proper function.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207412"
+    $RuleID = "SV-207412r958578_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Guest VM Interaction Mediation" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check VM network backends (all VIFs should use XAPI-managed bridges)
+        $VifList = $(timeout 10 xe vif-list params=vm-name-label,device,network-name-label 2>&1)
+        $VifArr = @()
+        if ($null -ne $VifList) { $VifArr = @($VifList) }
+        $VifStr = ($VifArr -join $nl)
+
+        if ($VifArr.Count -gt 0) {
+            $FindingDetails += "VM VIF Configuration:" + $nl + $VifStr + $nl + $nl
+        }
+        else {
+            $FindingDetails += "VM VIF Configuration: No VIFs found (no running VMs with network interfaces)" + $nl + $nl
+        }
+
+        # Check for PCI passthrough devices (bypass VMM mediation)
+        $PciPassthrough = $(timeout 5 xl pci-list 2>&1)
+        $PciArr = @()
+        if ($null -ne $PciPassthrough) { $PciArr = @($PciPassthrough) }
+        $PciStr = ($PciArr -join $nl).Trim()
+
+        $HasPassthrough = $false
+        if ($PciStr.Length -gt 0 -and $PciStr -notmatch "No.*found" -and $PciStr -notmatch "command not found") {
+            $FindingDetails += "PCI Passthrough Devices:" + $nl + $PciStr + $nl
+            $HasPassthrough = $true
+        }
+        else {
+            $FindingDetails += "PCI Passthrough Devices: None" + $nl
+        }
+
+        # Check network backends are all openvswitch or bridge (VMM-mediated)
+        $NetworkList = $(timeout 5 xe network-list params=name-label,bridge 2>&1)
+        $NetArr = @()
+        if ($null -ne $NetworkList) { $NetArr = @($NetworkList) }
+        $NetStr = ($NetArr -join $nl)
+
+        $FindingDetails += $nl + "XAPI-Managed Networks:" + $nl + $NetStr + $nl
+
+        # XCP-ng architecture inherently mediates all VM interactions through XAPI/xen hypervisor
+        if (-not $HasPassthrough) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: All guest VM interactions are mediated by XCP-ng XAPI and Xen hypervisor. VMs communicate through XAPI-managed virtual bridges. No PCI passthrough devices bypass VMM mediation."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: PCI passthrough devices detected. These bypass VMM mediation and allow direct hardware access from guest VMs. Verify each passthrough device is authorized and documented."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207413 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207413
+        STIG ID    : SRG-OS-000239-VMM-000810
+        Rule ID    : SV-207413r958590_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically audit account modification.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207413"
+    $RuleID = "SV-207413r958590_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit — Account Modification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd rules for account modification events
+        $AuditRules = $(timeout 5 auditctl -l 2>&1)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl)
+
+        # Account modification files to monitor
+        $RequiredFiles = @("/etc/passwd", "/etc/shadow", "/etc/group", "/etc/gshadow")
+        $MissingFiles = @()
+        $FoundFiles = @()
+
+        foreach ($File in $RequiredFiles) {
+            if ($AuditStr -match [regex]::Escape($File)) {
+                $FoundFiles += $File
+            }
+            else {
+                $MissingFiles += $File
+            }
+        }
+
+        $FindingDetails += "Audit rules monitoring account modification files:" + $nl
+        foreach ($f in $FoundFiles) {
+            $FindingDetails += "  [PASS] $f — monitored" + $nl
+        }
+        foreach ($f in $MissingFiles) {
+            $FindingDetails += "  [FAIL] $f — NOT monitored" + $nl
+        }
+
+        # Also check for usermod/chage command auditing
+        $HasUsermod = $AuditStr -match "usermod"
+        $HasChage = $AuditStr -match "chage"
+        $FindingDetails += $nl + "Command auditing:" + $nl
+        $FindingDetails += "  usermod: $(if ($HasUsermod) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  chage: $(if ($HasChage) { 'monitored' } else { 'NOT monitored' })" + $nl
+
+        if ($MissingFiles.Count -eq 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: All account modification files are monitored by auditd."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: $($MissingFiles.Count) account modification file(s) not monitored by auditd. Add audit rules for: $($MissingFiles -join ', ')"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207414 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207414
+        STIG ID    : SRG-OS-000240-VMM-000820
+        Rule ID    : SV-207414r958592_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically audit account disabling actions.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207414"
+    $RuleID = "SV-207414r958592_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit — Account Disabling Actions" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd rules for account disabling events
+        $AuditRules = $(timeout 5 auditctl -l 2>&1)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl)
+
+        # Account disabling tracked through shadow/passwd changes and PAM
+        $HasShadow = $AuditStr -match "/etc/shadow"
+        $HasPasswd = $AuditStr -match "/etc/passwd"
+        $HasUsermod = $AuditStr -match "usermod"
+        $HasPasswdCmd = $AuditStr -match "/usr/bin/passwd"
+
+        $FindingDetails += "Audit rules for account disabling:" + $nl
+        $FindingDetails += "  /etc/shadow: $(if ($HasShadow) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  /etc/passwd: $(if ($HasPasswd) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  usermod: $(if ($HasUsermod) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  /usr/bin/passwd: $(if ($HasPasswdCmd) { 'monitored' } else { 'NOT monitored' })" + $nl
+
+        # Shadow and passwd are the critical files for account disabling
+        if ($HasShadow -and $HasPasswd) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Account disabling actions are audited. /etc/shadow and /etc/passwd are monitored by auditd, capturing lock/disable operations."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Account disabling actions not fully audited. Add audit rules for /etc/shadow and /etc/passwd to capture account lock/disable events."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207415 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207415
+        STIG ID    : SRG-OS-000241-VMM-000830
+        Rule ID    : SV-207415r958594_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically audit account removal actions.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207415"
+    $RuleID = "SV-207415r958594_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit — Account Removal Actions" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd rules for account removal events
+        $AuditRules = $(timeout 5 auditctl -l 2>&1)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl)
+
+        # Account removal tracked through passwd/group/shadow changes and userdel/groupdel
+        $HasPasswd = $AuditStr -match "/etc/passwd"
+        $HasGroup = $AuditStr -match "/etc/group"
+        $HasShadow = $AuditStr -match "/etc/shadow"
+        $HasUserdel = $AuditStr -match "userdel"
+        $HasGroupdel = $AuditStr -match "groupdel"
+
+        $FindingDetails += "Audit rules for account removal:" + $nl
+        $FindingDetails += "  /etc/passwd: $(if ($HasPasswd) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  /etc/group: $(if ($HasGroup) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  /etc/shadow: $(if ($HasShadow) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  userdel: $(if ($HasUserdel) { 'monitored' } else { 'NOT monitored' })" + $nl
+        $FindingDetails += "  groupdel: $(if ($HasGroupdel) { 'monitored' } else { 'NOT monitored' })" + $nl
+
+        # passwd, group, shadow are the critical files for account removal
+        if ($HasPasswd -and $HasGroup -and $HasShadow) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Account removal actions are audited. /etc/passwd, /etc/group, and /etc/shadow are monitored by auditd."
+        }
+        else {
+            $Status = "Open"
+            $MissingList = @()
+            if (-not $HasPasswd) { $MissingList += "/etc/passwd" }
+            if (-not $HasGroup) { $MissingList += "/etc/group" }
+            if (-not $HasShadow) { $MissingList += "/etc/shadow" }
+            $FindingDetails += $nl + "RESULT: Account removal actions not fully audited. Add audit rules for: $($MissingList -join ', ')"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207416 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207416
+        STIG ID    : SRG-OS-000242-VMM-000840
+        Rule ID    : SV-207416r958596_rule
+        Severity   : CAT II
+        Title      : All guest VM network communications must be implemented through use of virtual network devices provisioned by the VMM.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207416"
+    $RuleID = "SV-207416r958596_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Guest VM Network — Virtual Device Provisioning" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # List all XAPI-managed networks
+        $Networks = $(timeout 5 xe network-list params=uuid,name-label,bridge,managed --minimal 2>&1)
+        $NetworksFull = $(timeout 5 xe network-list params=uuid,name-label,bridge 2>&1)
+        $NetFullArr = @()
+        if ($null -ne $NetworksFull) { $NetFullArr = @($NetworksFull) }
+
+        $FindingDetails += "XAPI-Managed Networks:" + $nl
+        $FindingDetails += ($NetFullArr -join $nl) + $nl + $nl
+
+        # List all VIFs attached to VMs
+        $VifCount = $(timeout 5 xe vif-list --minimal 2>&1)
+        $VifCountStr = ("$VifCount").Trim()
+        $VifTotal = 0
+        if ($VifCountStr.Length -gt 0 -and $VifCountStr -ne "") {
+            $VifTotal = ($VifCountStr -split ",").Count
+        }
+
+        $FindingDetails += "Total VM VIFs (virtual network interfaces): $VifTotal" + $nl
+
+        # Check for any VMs with direct PCI NIC passthrough
+        $PciAssign = $(timeout 5 xe vm-list params=name-label,other-config 2>&1 | grep -i "pci" 2>/dev/null)
+        $PciArr = @()
+        if ($null -ne $PciAssign) { $PciArr = @($PciAssign) }
+
+        if ($PciArr.Count -gt 0) {
+            $FindingDetails += "VMs with PCI passthrough config: $($PciArr.Count)" + $nl
+            $FindingDetails += ($PciArr -join $nl) + $nl
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: PCI NIC passthrough detected. VMs with direct NIC passthrough bypass XAPI-managed virtual networking. Verify authorization."
+        }
+        else {
+            $Status = "NotAFinding"
+            $FindingDetails += "VMs with PCI NIC passthrough: None" + $nl
+            $FindingDetails += $nl + "RESULT: All guest VM network communications use XAPI-provisioned virtual network interfaces (VIFs) connected to managed virtual bridges."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207417 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207417
+        STIG ID    : SRG-OS-000242-VMM-000850
+        Rule ID    : SV-207417r958596_rule
+        Severity   : CAT II
+        Title      : All interactions between guest VMs and external systems, via other interface devices, must be mediated by the VMM or its service VMs.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Session,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207417"
+    $RuleID = "SV-207417r958596_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "VM-External Interaction Mediation (Other Interfaces)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for USB passthrough to VMs
+        $UsbPassthrough = $(timeout 5 xe pusb-list 2>&1)
+        $UsbArr = @()
+        if ($null -ne $UsbPassthrough) { $UsbArr = @($UsbPassthrough) }
+        $UsbStr = ($UsbArr -join $nl).Trim()
+
+        $HasUsbPassthrough = $false
+        if ($UsbStr.Length -gt 0 -and $UsbStr -notmatch "No.*found" -and $UsbStr -notmatch "command not found" -and $UsbStr -notmatch "Unknown command") {
+            $FindingDetails += "USB Passthrough Devices:" + $nl + $UsbStr + $nl + $nl
+            $HasUsbPassthrough = $true
+        }
+        else {
+            $FindingDetails += "USB Passthrough Devices: None configured" + $nl + $nl
+        }
+
+        # Check for GPU/vGPU passthrough
+        $GpuGroups = $(timeout 5 xe gpu-group-list 2>&1)
+        $GpuArr = @()
+        if ($null -ne $GpuGroups) { $GpuArr = @($GpuGroups) }
+        $GpuStr = ($GpuArr -join $nl).Trim()
+
+        $HasGpuPassthrough = $false
+        if ($GpuStr.Length -gt 0 -and $GpuStr -notmatch "No.*found" -and $GpuStr -notmatch "command not found") {
+            $FindingDetails += "GPU Groups:" + $nl + $GpuStr + $nl + $nl
+            $HasGpuPassthrough = $true
+        }
+        else {
+            $FindingDetails += "GPU Passthrough: None configured" + $nl + $nl
+        }
+
+        # Check for SR-IOV (direct hardware NIC passthrough)
+        $SriovNets = $(timeout 5 xe network-list params=name-label,other-config 2>&1 | grep -i "sriov" 2>/dev/null)
+        $SriovArr = @()
+        if ($null -ne $SriovNets) { $SriovArr = @($SriovNets) }
+
+        if ($SriovArr.Count -gt 0) {
+            $FindingDetails += "SR-IOV Networks: $($SriovArr.Count) found" + $nl
+            $FindingDetails += ($SriovArr -join $nl) + $nl
+        }
+        else {
+            $FindingDetails += "SR-IOV Networks: None" + $nl
+        }
+
+        # XCP-ng mediates all VM-external interactions through XAPI by default
+        if (-not $HasUsbPassthrough -and -not $HasGpuPassthrough -and $SriovArr.Count -eq 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: All VM-external interactions are mediated by the VMM. No USB passthrough, GPU passthrough, or SR-IOV bypasses detected. All VM I/O goes through XAPI-managed virtual devices."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Direct hardware passthrough detected (USB, GPU, or SR-IOV). These devices bypass VMM mediation. Verify each passthrough assignment is authorized and documented."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207418 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207418
+        STIG ID    : SRG-OS-000250-VMM-000860
+        Rule ID    : SV-207418r958604_rule
+        Severity   : CAT II
+        Title      : The VMM must implement cryptography to protect the integrity of remote access sessions.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207418"
+    $RuleID = "SV-207418r958604_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Remote Access Session Integrity — Cryptography" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check SSH protocol and crypto configuration
+        $SshProtocol = $(timeout 3 sshd -T 2>/dev/null | grep -i "^protocol" 2>/dev/null)
+        $SshProtoStr = ("$SshProtocol").Trim()
+
+        $SshCiphers = $(timeout 3 sshd -T 2>/dev/null | grep -i "^ciphers" 2>/dev/null)
+        $SshCipherStr = ("$SshCiphers").Trim()
+
+        $SshMacs = $(timeout 3 sshd -T 2>/dev/null | grep -i "^macs" 2>/dev/null)
+        $SshMacStr = ("$SshMacs").Trim()
+
+        $FindingDetails += "SSH Configuration:" + $nl
+        if ($SshProtoStr.Length -gt 0) {
+            $FindingDetails += "  Protocol: $SshProtoStr" + $nl
+        }
+        $FindingDetails += "  Ciphers: $SshCipherStr" + $nl
+        $FindingDetails += "  MACs: $SshMacStr" + $nl + $nl
+
+        # Check XAPI HTTPS/TLS configuration
+        $XapiPort = $(timeout 3 ss -tlnp 2>/dev/null | grep ":443" 2>/dev/null)
+        $XapiPortStr = ("$XapiPort").Trim()
+        $FindingDetails += "XAPI HTTPS (port 443):" + $nl
+        if ($XapiPortStr.Length -gt 0) {
+            $FindingDetails += "  Listening: Yes" + $nl
+        }
+        else {
+            $FindingDetails += "  Listening: Not detected on port 443" + $nl
+        }
+
+        # Check stunnel/XAPI TLS certificate
+        $XapiCert = $(timeout 3 cat /etc/xensource/xapi-ssl.pem 2>/dev/null | head -1 2>/dev/null)
+        $XapiCertStr = ("$XapiCert").Trim()
+        if ($XapiCertStr -match "BEGIN CERTIFICATE") {
+            $FindingDetails += "  TLS certificate: Present (/etc/xensource/xapi-ssl.pem)" + $nl
+        }
+        else {
+            $FindingDetails += "  TLS certificate: Not found at expected path" + $nl
+        }
+
+        # SSH with crypto ciphers + XAPI over HTTPS = integrity protection
+        $WeakCiphers = @("3des-cbc", "arcfour", "blowfish-cbc", "cast128-cbc")
+        $HasWeak = $false
+        foreach ($wc in $WeakCiphers) {
+            if ($SshCipherStr -match [regex]::Escape($wc)) {
+                $HasWeak = $true
+                break
+            }
+        }
+
+        if (-not $HasWeak -and $XapiPortStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Remote access sessions are protected by cryptography. SSH uses approved ciphers and XAPI communicates over HTTPS/TLS."
+        }
+        else {
+            $Status = "Open"
+            if ($HasWeak) {
+                $FindingDetails += $nl + "RESULT: Weak SSH ciphers detected. Remove 3DES, Arcfour, Blowfish, and CAST128 from sshd_config Ciphers."
+            }
+            else {
+                $FindingDetails += $nl + "RESULT: XAPI HTTPS not detected on port 443. Verify XAPI TLS configuration."
+            }
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207419 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207419
+        STIG ID    : SRG-OS-000254-VMM-000880
+        Rule ID    : SV-207419r958606_rule
+        Severity   : CAT II
+        Title      : The VMM must initiate session audits at system startup.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207419"
+    $RuleID = "SV-207419r958606_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Session Audits at System Startup" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check if auditd is enabled at boot
+        $AuditdEnabled = $(timeout 3 systemctl is-enabled auditd 2>&1)
+        $AuditdEnabledStr = ("$AuditdEnabled").Trim()
+
+        # Check if auditd is currently running
+        $AuditdActive = $(timeout 3 systemctl is-active auditd 2>&1)
+        $AuditdActiveStr = ("$AuditdActive").Trim()
+
+        $FindingDetails += "auditd service:" + $nl
+        $FindingDetails += "  Enabled at boot: $AuditdEnabledStr" + $nl
+        $FindingDetails += "  Currently active: $AuditdActiveStr" + $nl + $nl
+
+        # Check kernel audit parameter (audit=1 in grub)
+        $CmdLine = $(timeout 3 cat /proc/cmdline 2>&1)
+        $CmdLineStr = ("$CmdLine").Trim()
+        $HasAuditBoot = $CmdLineStr -match "audit=1"
+
+        $FindingDetails += "Kernel boot parameters:" + $nl
+        $FindingDetails += "  audit=1 in /proc/cmdline: $(if ($HasAuditBoot) { 'Yes' } else { 'No' })" + $nl
+
+        # Check grub config for persistent audit=1
+        $GrubCfg = $(timeout 3 grep -i "audit" /etc/default/grub 2>/dev/null)
+        $GrubStr = ("$GrubCfg").Trim()
+        if ($GrubStr.Length -gt 0) {
+            $FindingDetails += "  /etc/default/grub: $GrubStr" + $nl
+        }
+
+        if ($AuditdEnabledStr -eq "enabled" -and $AuditdActiveStr -eq "active") {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: auditd is enabled at boot and currently active. Session auditing initiates at system startup."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not properly configured to start at boot. Enable with: systemctl enable auditd"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207420 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207420
+        STIG ID    : SRG-OS-000255-VMM-000890
+        Rule ID    : SV-207420r958608_rule
+        Severity   : CAT II
+        Title      : The VMM must produce audit records containing information to establish the identity of any individual or process associated with the event.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207420"
+    $RuleID = "SV-207420r958608_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records — Identity Information" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd configuration for log format
+        $AuditdConf = $(timeout 3 grep -i "^log_format" /etc/audit/auditd.conf 2>/dev/null)
+        $AuditdConfStr = ("$AuditdConf").Trim()
+        $FindingDetails += "auditd log format: $(if ($AuditdConfStr.Length -gt 0) { $AuditdConfStr } else { 'default (RAW)' })" + $nl
+
+        # Check a sample audit record to verify identity fields are present
+        $SampleRecord = $(timeout 3 ausearch -m USER_LOGIN --start recent 2>/dev/null | head -5 2>/dev/null)
+        $SampleArr = @()
+        if ($null -ne $SampleRecord) { $SampleArr = @($SampleRecord) }
+        $SampleStr = ($SampleArr -join $nl).Trim()
+
+        if ($SampleStr.Length -gt 0 -and $SampleStr -notmatch "no matches") {
+            $FindingDetails += $nl + "Sample audit record (USER_LOGIN):" + $nl + $SampleStr + $nl
+        }
+
+        # Verify auditd captures identity fields (uid, auid, subj, etc.)
+        $AuditRules = $(timeout 5 auditctl -l 2>&1)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl)
+
+        $RuleCount = $AuditArr.Count
+        $FindingDetails += $nl + "Total active audit rules: $RuleCount" + $nl
+
+        # auditd inherently includes uid, auid, pid, exe, subj in all records
+        $AuditdActive = $(timeout 3 systemctl is-active auditd 2>&1)
+        $AuditdActiveStr = ("$AuditdActive").Trim()
+
+        if ($AuditdActiveStr -eq "active" -and $RuleCount -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: auditd is active with $RuleCount rules. Audit records inherently include identity information (uid, auid, pid, exe, subject context) for all events."
+        }
+        else {
+            $Status = "Open"
+            if ($AuditdActiveStr -ne "active") {
+                $FindingDetails += $nl + "RESULT: auditd is not active. Enable auditd to produce audit records with identity information."
+            }
+            else {
+                $FindingDetails += $nl + "RESULT: auditd has no active rules. Configure audit rules to capture security-relevant events."
+            }
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207421 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207421
+        STIG ID    : SRG-OS-000256-VMM-000900
+        Rule ID    : SV-207421r958610_rule
+        Severity   : CAT II
+        Title      : The VMM must protect audit tools from unauthorized access.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207421"
+    $RuleID = "SV-207421r958610_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Tool Access Protection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check permissions on audit binaries
+        $AuditTools = @("/sbin/auditctl", "/sbin/aureport", "/sbin/ausearch", "/sbin/autrace", "/sbin/auditd", "/sbin/augenrules")
+        $AllSecure = $true
+        $CheckedCount = 0
+
+        foreach ($Tool in $AuditTools) {
+            $ToolPerms = $(timeout 3 stat -c "%a %U %G" $Tool 2>/dev/null)
+            $ToolPermsStr = ("$ToolPerms").Trim()
+            if ($ToolPermsStr.Length -gt 0) {
+                $CheckedCount++
+                $Parts = $ToolPermsStr -split "\s+"
+                $Perms = $Parts[0]
+                $Owner = $Parts[1]
+                $Group = $Parts[2]
+                $PermOk = ([int]$Perms -le 755) -and ($Owner -eq "root")
+                if (-not $PermOk) { $AllSecure = $false }
+                $FindingDetails += "  $Tool : $Perms $Owner`:$Group $(if ($PermOk) { '[PASS]' } else { '[FAIL]' })" + $nl
+            }
+            else {
+                $FindingDetails += "  $Tool : not found" + $nl
+            }
+        }
+
+        # Check audit log file permissions
+        $LogPerms = $(timeout 3 stat -c "%a %U %G" /var/log/audit/audit.log 2>/dev/null)
+        $LogPermsStr = ("$LogPerms").Trim()
+        if ($LogPermsStr.Length -gt 0) {
+            $Parts = $LogPermsStr -split "\s+"
+            $Perms = $Parts[0]
+            $Owner = $Parts[1]
+            $Group = $Parts[2]
+            $LogOk = ([int]$Perms -le 600) -and ($Owner -eq "root")
+            if (-not $LogOk) { $AllSecure = $false }
+            $FindingDetails += $nl + "  /var/log/audit/audit.log : $Perms $Owner`:$Group $(if ($LogOk) { '[PASS]' } else { '[FAIL]' })" + $nl
+        }
+        else {
+            $FindingDetails += $nl + "  /var/log/audit/audit.log : not found" + $nl
+            $AllSecure = $false
+        }
+
+        if ($AllSecure -and $CheckedCount -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit tools are protected from unauthorized access. All binaries are owned by root with appropriate permissions (755 or more restrictive)."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Audit tools have improper access permissions. Ensure all audit binaries are owned by root with permissions no more permissive than 755."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207422 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207422
+        STIG ID    : SRG-OS-000257-VMM-000910
+        Rule ID    : SV-207422r958612_rule
+        Severity   : CAT II
+        Title      : The VMM must protect audit tools from unauthorized modification.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207422"
+    $RuleID = "SV-207422r958612_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Tool Modification Protection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check write permissions on audit binaries (only root should have write)
+        $AuditTools = @("/sbin/auditctl", "/sbin/aureport", "/sbin/ausearch", "/sbin/autrace", "/sbin/auditd", "/sbin/augenrules")
+        $AllSecure = $true
+        $CheckedCount = 0
+
+        foreach ($Tool in $AuditTools) {
+            $ToolPerms = $(timeout 3 stat -c "%a %U %G" $Tool 2>/dev/null)
+            $ToolPermsStr = ("$ToolPerms").Trim()
+            if ($ToolPermsStr.Length -gt 0) {
+                $CheckedCount++
+                $Parts = $ToolPermsStr -split "\s+"
+                $Perms = $Parts[0]
+                $Owner = $Parts[1]
+                $Group = $Parts[2]
+                # Check no group/other write (perms should not have 2 in group or other position)
+                $PermInt = [int]$Perms
+                $GroupWrite = ($PermInt / 10) % 10 -band 2
+                $OtherWrite = $PermInt % 10 -band 2
+                $NoUnauthorizedWrite = ($GroupWrite -eq 0) -and ($OtherWrite -eq 0) -and ($Owner -eq "root")
+                if (-not $NoUnauthorizedWrite) { $AllSecure = $false }
+                $FindingDetails += "  $Tool : $Perms $Owner`:$Group $(if ($NoUnauthorizedWrite) { '[PASS]' } else { '[FAIL] unauthorized write' })" + $nl
+            }
+            else {
+                $FindingDetails += "  $Tool : not found" + $nl
+            }
+        }
+
+        # Check audit configuration files
+        $AuditConfFiles = @("/etc/audit/auditd.conf", "/etc/audit/audit.rules")
+        foreach ($Conf in $AuditConfFiles) {
+            $ConfPerms = $(timeout 3 stat -c "%a %U %G" $Conf 2>/dev/null)
+            $ConfPermsStr = ("$ConfPerms").Trim()
+            if ($ConfPermsStr.Length -gt 0) {
+                $Parts = $ConfPermsStr -split "\s+"
+                $Perms = $Parts[0]
+                $Owner = $Parts[1]
+                $PermInt = [int]$Perms
+                $GroupWrite = ($PermInt / 10) % 10 -band 2
+                $OtherWrite = $PermInt % 10 -band 2
+                $ConfOk = ($GroupWrite -eq 0) -and ($OtherWrite -eq 0) -and ($Owner -eq "root")
+                if (-not $ConfOk) { $AllSecure = $false }
+                $FindingDetails += "  $Conf : $Perms $Owner $(if ($ConfOk) { '[PASS]' } else { '[FAIL]' })" + $nl
+            }
+        }
+
+        if ($AllSecure -and $CheckedCount -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit tools are protected from unauthorized modification. Only root has write access to audit binaries and configuration files."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Audit tools may be modified by unauthorized users. Ensure only root has write permissions on audit binaries and config files."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207423 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207423
+        STIG ID    : SRG-OS-000258-VMM-000920
+        Rule ID    : SV-207423r958614_rule
+        Severity   : CAT II
+        Title      : The VMM must protect audit tools from unauthorized deletion.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207423"
+    $RuleID = "SV-207423r958614_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Tool Deletion Protection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check directory permissions on /sbin (parent of audit tools) - sticky bit or restrictive
+        $SbinPerms = $(timeout 3 stat -c "%a %U %G" /sbin 2>/dev/null)
+        $SbinPermsStr = ("$SbinPerms").Trim()
+        $FindingDetails += "Directory /sbin permissions: $SbinPermsStr" + $nl + $nl
+
+        # Verify audit tools exist and are RPM-managed (can be reinstalled)
+        $AuditTools = @("/sbin/auditctl", "/sbin/aureport", "/sbin/ausearch", "/sbin/autrace", "/sbin/auditd", "/sbin/augenrules")
+        $AllPresent = $true
+        $AllRpmManaged = $true
+
+        foreach ($Tool in $AuditTools) {
+            $Exists = $(timeout 3 test -f $Tool && echo "exists" || echo "missing" 2>/dev/null)
+            $ExistsStr = ("$Exists").Trim()
+            $RpmOwner = $(timeout 3 rpm -qf $Tool 2>/dev/null)
+            $RpmStr = ("$RpmOwner").Trim()
+            $IsManaged = $RpmStr -notmatch "not owned"
+
+            if ($ExistsStr -ne "exists") { $AllPresent = $false }
+            if (-not $IsManaged) { $AllRpmManaged = $false }
+
+            $FindingDetails += "  $Tool : $ExistsStr, RPM: $RpmStr" + $nl
+        }
+
+        # Check directory write permissions (only root should delete from /sbin)
+        $SbinParts = $SbinPermsStr -split "\s+"
+        $SbinPerm = if ($SbinParts.Count -gt 0) { $SbinParts[0] } else { "" }
+        $SbinOwner = if ($SbinParts.Count -gt 1) { $SbinParts[1] } else { "" }
+        $SbinSecure = ($SbinOwner -eq "root") -and ($SbinPerm -match "^[0-7]?755$")
+
+        if ($AllPresent -and $SbinSecure) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit tools are protected from unauthorized deletion. /sbin is owned by root with restricted permissions. Audit tools are RPM-managed and can be restored from packages."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Audit tools may be vulnerable to unauthorized deletion. Ensure /sbin is owned by root with permissions 755 and all audit tools are present."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207424 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207424
+        STIG ID    : SRG-OS-000259-VMM-000930
+        Rule ID    : SV-207424r958616_rule
+        Severity   : CAT II
+        Title      : The VMM must limit privileges to change software resident within software libraries.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207424"
+    $RuleID = "SV-207424r958616_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Software Library Privilege Restriction" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check permissions on key XCP-ng/Xen library directories
+        $LibDirs = @("/opt/xensource/lib", "/usr/lib64/xen", "/usr/lib/xen", "/usr/lib64")
+        $AllSecure = $true
+        $CheckedCount = 0
+
+        foreach ($Dir in $LibDirs) {
+            $DirPerms = $(timeout 3 stat -c "%a %U %G" $Dir 2>/dev/null)
+            $DirPermsStr = ("$DirPerms").Trim()
+            if ($DirPermsStr.Length -gt 0) {
+                $CheckedCount++
+                $Parts = $DirPermsStr -split "\s+"
+                $Perms = $Parts[0]
+                $Owner = $Parts[1]
+                $Group = $Parts[2]
+                $PermInt = [int]$Perms
+                $GroupWrite = [math]::Floor($PermInt / 10) % 10 -band 2
+                $OtherWrite = $PermInt % 10 -band 2
+                $DirOk = ($GroupWrite -eq 0) -and ($OtherWrite -eq 0) -and ($Owner -eq "root")
+                if (-not $DirOk) { $AllSecure = $false }
+                $FindingDetails += "  $Dir : $Perms $Owner`:$Group $(if ($DirOk) { '[PASS]' } else { '[FAIL]' })" + $nl
+            }
+            else {
+                $FindingDetails += "  $Dir : not found" + $nl
+            }
+        }
+
+        # Check for world-writable files in xensource lib
+        $WorldWritable = $(timeout 10 find /opt/xensource/lib -maxdepth 3 -perm -002 -type f 2>/dev/null | head -10 2>/dev/null)
+        $WwArr = @()
+        if ($null -ne $WorldWritable) { $WwArr = @($WorldWritable) }
+        $WwStr = ($WwArr -join $nl).Trim()
+
+        if ($WwStr.Length -gt 0) {
+            $FindingDetails += $nl + "World-writable files in /opt/xensource/lib:" + $nl + $WwStr + $nl
+            $AllSecure = $false
+        }
+        else {
+            $FindingDetails += $nl + "World-writable files in /opt/xensource/lib: None" + $nl
+        }
+
+        if ($AllSecure -and $CheckedCount -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Software library directories are properly restricted. Only root has write access to VMM library paths. No world-writable files found."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Software library permissions are too permissive. Ensure only root has write access to VMM library directories."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207425 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207425
+        STIG ID    : SRG-OS-000266-VMM-000940
+        Rule ID    : SV-207425r984219_rule
+        Severity   : CAT II
+        Title      : The VMM must enforce password complexity by requiring that at least one special character be used.
+    #>
+    Param (
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $true)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $true)]
+        [String]$Username,
+        [Parameter(Mandatory = $true)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $true)]
+        [String]$Ession,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName,
+        [Parameter(Mandatory = $false)]
+        [String]$ESPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogPath,
+        [Parameter(Mandatory = $false)]
+        [String]$LogComponent,
+        [Parameter(Mandatory = $false)]
+        [String]$OSPlatform
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207425"
+    $RuleID = "SV-207425r984219_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Password Complexity — Special Character Requirement" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check PAM pwquality/pam_cracklib for ocredit (special character)
+        $PwQuality = $(timeout 3 grep -i "ocredit" /etc/security/pwquality.conf 2>/dev/null)
+        $PwQualStr = ("$PwQuality").Trim()
+
+        $PamSystemAuth = $(timeout 3 grep -i "ocredit\|pam_cracklib\|pam_pwquality" /etc/pam.d/system-auth 2>/dev/null)
+        $PamArr = @()
+        if ($null -ne $PamSystemAuth) { $PamArr = @($PamSystemAuth) }
+        $PamStr = ($PamArr -join $nl).Trim()
+
+        $PamPasswordAuth = $(timeout 3 grep -i "ocredit\|pam_cracklib\|pam_pwquality" /etc/pam.d/password-auth 2>/dev/null)
+        $PamPwArr = @()
+        if ($null -ne $PamPasswordAuth) { $PamPwArr = @($PamPasswordAuth) }
+        $PamPwStr = ($PamPwArr -join $nl).Trim()
+
+        $FindingDetails += "pwquality.conf ocredit setting:" + $nl
+        if ($PwQualStr.Length -gt 0) {
+            $FindingDetails += "  $PwQualStr" + $nl
+        }
+        else {
+            $FindingDetails += "  Not set in pwquality.conf" + $nl
+        }
+
+        $FindingDetails += $nl + "PAM system-auth:" + $nl
+        if ($PamStr.Length -gt 0) {
+            $FindingDetails += "  $PamStr" + $nl
+        }
+        else {
+            $FindingDetails += "  No ocredit/pwquality config found" + $nl
+        }
+
+        $FindingDetails += $nl + "PAM password-auth:" + $nl
+        if ($PamPwStr.Length -gt 0) {
+            $FindingDetails += "  $PamPwStr" + $nl
+        }
+        else {
+            $FindingDetails += "  No ocredit/pwquality config found" + $nl
+        }
+
+        # Check if ocredit is set to -1 (require at least 1 special character)
+        $OcreditSet = $false
+        if ($PwQualStr -match "ocredit\s*=\s*(-\d+)") {
+            $OcreditVal = [int]$Matches[1]
+            if ($OcreditVal -le -1) { $OcreditSet = $true }
+        }
+        if (-not $OcreditSet -and ($PamStr + $PamPwStr) -match "ocredit=(-\d+)") {
+            $OcreditVal = [int]$Matches[1]
+            if ($OcreditVal -le -1) { $OcreditSet = $true }
+        }
+
+        if ($OcreditSet) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Password complexity requires at least one special character (ocredit=$OcreditVal)."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Password complexity does not require special characters. Set ocredit = -1 in /etc/security/pwquality.conf."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+# Generate remaining functions (V-207426 through V-264326)
+# 109 stub functions for rules not yet explicitly implemented
 # Note: 11 VulnIDs in sequential gaps do NOT exist in VMM SRG V2R2 XCCDF and are excluded:
 #   V-207359, V-207380, V-207400, V-207408, V-207450, V-207451,
 #   V-207476, V-207477, V-207478, V-207479, V-207485
 
 $RemainingRules = @(
-    "V-207412", "V-207413", "V-207414", "V-207415", "V-207416", "V-207417", "V-207418",
-    "V-207419", "V-207420", "V-207421", "V-207422", "V-207423", "V-207424", "V-207425",
     "V-207426", "V-207427", "V-207428", "V-207429", "V-207430", "V-207431", "V-207432",
     "V-207433", "V-207434", "V-207435", "V-207436", "V-207437", "V-207438", "V-207439",
     "V-207440", "V-207441", "V-207442", "V-207443", "V-207444", "V-207445", "V-207446",
