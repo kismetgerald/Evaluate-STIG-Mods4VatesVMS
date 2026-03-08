@@ -48,19 +48,19 @@
     <Score>
       <CATI_OpenNRTotal>26</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>343</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>353</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>44</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>98</WeightedAvg>
+      <WeightedAvg>99</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T12:46:42.3433079-04:00" EvalScore="12.44">
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T11:36:16.7215204-04:00" EvalScore="7.25">
       <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
-      <CAT_II Total="193" Not_Applicable="0" Open="35" NotAFinding="24" Not_Reviewed="134">
+      <CAT_II Total="193" Not_Applicable="0" Open="31" NotAFinding="14" Not_Reviewed="148">
         <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -117,20 +117,20 @@
         <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="NotAFinding" ID="V-207393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must uniquely identify peripherals before establishing a connection." Status="NotAFinding" ID="V-207394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must disable local account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity." Status="Open" ID="V-207395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module." Status="Open" ID="V-207396" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must support an audit reduction capability that supports on-demand reporting requirements." Status="NotAFinding" ID="V-207397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must  automatically remove or disable emergency accounts after the crisis is resolved or 72 hours." Status="Open" ID="V-207398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions." Status="NotAFinding" ID="V-207399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must separate user functionality (including user interface services) from VMM management functionality." Status="NotAFinding" ID="V-207401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must isolate security functions from non-security functions." Status="NotAFinding" ID="V-207402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must prevent unauthorized and unintended information transfer via shared system resources." Status="NotAFinding" ID="V-207403" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must manage excess capacity, bandwidth, or other redundancy to limit the effects of information-flooding types of Denial of Service (DoS) attacks." Status="NotAFinding" ID="V-207404" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements." Status="Open" ID="V-207405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must fail to a secure state if system initialization fails, shutdown fails, or aborts fail." Status="NotAFinding" ID="V-207406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of all information at rest." Status="Open" ID="V-207407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must check the validity of all data inputs except those specifically identified by the organization." Status="NotAFinding" ID="V-207409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries." Status="NotAFinding" ID="V-207410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must reveal system error messages only to authorized users." Status="NotAFinding" ID="V-207411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module." Status="Not_Reviewed" ID="V-207396" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must support an audit reduction capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-207397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must  automatically remove or disable emergency accounts after the crisis is resolved or 72 hours." Status="Not_Reviewed" ID="V-207398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions." Status="Not_Reviewed" ID="V-207399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must separate user functionality (including user interface services) from VMM management functionality." Status="Not_Reviewed" ID="V-207401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must isolate security functions from non-security functions." Status="Not_Reviewed" ID="V-207402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent unauthorized and unintended information transfer via shared system resources." Status="Not_Reviewed" ID="V-207403" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must manage excess capacity, bandwidth, or other redundancy to limit the effects of information-flooding types of Denial of Service (DoS) attacks." Status="Not_Reviewed" ID="V-207404" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements." Status="Not_Reviewed" ID="V-207405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must fail to a secure state if system initialization fails, shutdown fails, or aborts fail." Status="Not_Reviewed" ID="V-207406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of all information at rest." Status="Not_Reviewed" ID="V-207407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must check the validity of all data inputs except those specifically identified by the organization." Status="Not_Reviewed" ID="V-207409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries." Status="Not_Reviewed" ID="V-207410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must reveal system error messages only to authorized users." Status="Not_Reviewed" ID="V-207411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="All interactions among guest VMs must be mediated by the VMM or its service VMs to support proper function." Status="Not_Reviewed" ID="V-207412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically audit account modification." Status="Not_Reviewed" ID="V-207413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically audit account disabling actions." Status="Not_Reviewed" ID="V-207414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
