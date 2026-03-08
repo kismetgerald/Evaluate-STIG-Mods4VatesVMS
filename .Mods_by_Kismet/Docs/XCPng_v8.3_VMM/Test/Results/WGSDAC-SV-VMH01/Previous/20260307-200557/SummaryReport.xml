@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>03/08/2026</ScanDate>
+    <ScanDate>03/07/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>WGSDAC-SV-VMH01</Name>
@@ -48,19 +48,19 @@
     <Score>
       <CATI_OpenNRTotal>26</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>353</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>364</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>44</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>99</WeightedAvg>
+      <WeightedAvg>100</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T11:36:16.7215204-04:00" EvalScore="7.25">
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-07T19:33:52.4054084-05:00" EvalScore="1.55">
       <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
-      <CAT_II Total="193" Not_Applicable="0" Open="31" NotAFinding="14" Not_Reviewed="148">
+      <CAT_II Total="193" Not_Applicable="0" Open="28" NotAFinding="3" Not_Reviewed="162">
         <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -103,20 +103,20 @@
         <Vuln RuleTitle="The VMM must enforce 24 hours/one day as the minimum password lifetime." Status="Open" ID="V-207378" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must enforce a 60-day maximum password lifetime restriction." Status="Open" ID="V-207379" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must enforce a minimum 15-character password length." Status="Open" ID="V-207381" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals." Status="NotAFinding" ID="V-207382" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="NotAFinding" ID="V-207383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must be configured to disable non-essential capabilities." Status="NotAFinding" ID="V-207384" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Open" ID="V-207385" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="NotAFinding" ID="V-207386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to privileged accounts." Status="NotAFinding" ID="V-207387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to non-privileged accounts." Status="NotAFinding" ID="V-207388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to privileged accounts." Status="NotAFinding" ID="V-207389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to nonprivileged accounts." Status="NotAFinding" ID="V-207390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="Open" ID="V-207391" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="NotAFinding" ID="V-207392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="NotAFinding" ID="V-207393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must uniquely identify peripherals before establishing a connection." Status="NotAFinding" ID="V-207394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must disable local account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity." Status="Open" ID="V-207395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals." Status="Not_Reviewed" ID="V-207382" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="Not_Reviewed" ID="V-207383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured to disable non-essential capabilities." Status="Not_Reviewed" ID="V-207384" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Not_Reviewed" ID="V-207385" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="Not_Reviewed" ID="V-207386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to privileged accounts." Status="Not_Reviewed" ID="V-207387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to non-privileged accounts." Status="Not_Reviewed" ID="V-207388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to privileged accounts." Status="Not_Reviewed" ID="V-207389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to nonprivileged accounts." Status="Not_Reviewed" ID="V-207390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="Not_Reviewed" ID="V-207391" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="Not_Reviewed" ID="V-207392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="Not_Reviewed" ID="V-207393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must uniquely identify peripherals before establishing a connection." Status="Not_Reviewed" ID="V-207394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must disable local account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity." Status="Not_Reviewed" ID="V-207395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module." Status="Not_Reviewed" ID="V-207396" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must support an audit reduction capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-207397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must  automatically remove or disable emergency accounts after the crisis is resolved or 72 hours." Status="Not_Reviewed" ID="V-207398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />

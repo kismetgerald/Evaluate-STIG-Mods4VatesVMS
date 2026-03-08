@@ -48,7 +48,7 @@
     <Score>
       <CATI_OpenNRTotal>26</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>353</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>354</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>44</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
@@ -58,9 +58,9 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T11:36:16.7215204-04:00" EvalScore="7.25">
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T11:29:38.4219732-04:00" EvalScore="6.74">
       <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
-      <CAT_II Total="193" Not_Applicable="0" Open="31" NotAFinding="14" Not_Reviewed="148">
+      <CAT_II Total="193" Not_Applicable="0" Open="31" NotAFinding="13" Not_Reviewed="149">
         <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -104,7 +104,7 @@
         <Vuln RuleTitle="The VMM must enforce a 60-day maximum password lifetime restriction." Status="Open" ID="V-207379" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must enforce a minimum 15-character password length." Status="Open" ID="V-207381" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals." Status="NotAFinding" ID="V-207382" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="NotAFinding" ID="V-207383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="Not_Reviewed" ID="V-207383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must be configured to disable non-essential capabilities." Status="NotAFinding" ID="V-207384" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Open" ID="V-207385" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="NotAFinding" ID="V-207386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
