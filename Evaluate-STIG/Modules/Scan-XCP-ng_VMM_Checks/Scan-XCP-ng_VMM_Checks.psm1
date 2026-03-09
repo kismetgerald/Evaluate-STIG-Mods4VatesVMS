@@ -177,6 +177,15 @@ Function Get-V207338 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -515,6 +524,15 @@ Function Get-V207339 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -625,6 +643,15 @@ Function Get-V207340 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -733,6 +760,15 @@ Function Get-V207341 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -850,6 +886,15 @@ Function Get-V207342 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -1146,6 +1191,15 @@ Function Get-V207343 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -1254,6 +1308,15 @@ Function Get-V207344 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -1366,6 +1429,15 @@ Function Get-V207345 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -1474,6 +1546,15 @@ Function Get-V207346 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -1586,6 +1667,15 @@ Function Get-V207347 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -1694,6 +1784,15 @@ Function Get-V207348 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -1806,6 +1905,15 @@ Function Get-V207349 {
         [String]$AnswerKey,
 
         [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
         [String]$Instance,
 
         [Parameter(Mandatory = $false)]
@@ -1914,6 +2022,15 @@ Function Get-V207350 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -2029,6 +2146,15 @@ Function Get-V207351 {
 
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
 
         [Parameter(Mandatory = $false)]
         [String]$Instance,
@@ -12405,6 +12531,12 @@ Function $FunctionName {
         [String]`$AnswerFile,
         [Parameter(Mandatory = `$false)]
         [String]`$AnswerKey,
+        [Parameter(Mandatory = `$false)]
+        [String]`$Username,
+        [Parameter(Mandatory = `$false)]
+        [String]`$UserSID,
+        [Parameter(Mandatory = `$false)]
+        [String]`$Hostname,
         [Parameter(Mandatory = `$false)]
         [String]`$Instance,
         [Parameter(Mandatory = `$false)]
