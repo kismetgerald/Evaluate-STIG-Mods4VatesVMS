@@ -2580,14 +2580,28 @@ Function Get-V207352 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -2730,14 +2744,28 @@ Function Get-V207353 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -2871,14 +2899,28 @@ Function Get-V207354 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3020,14 +3062,28 @@ Function Get-V207355 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3156,14 +3212,28 @@ Function Get-V207356 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3289,14 +3359,28 @@ Function Get-V207357 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3433,14 +3517,28 @@ Function Get-V207358 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3585,14 +3683,28 @@ Function Get-V207360 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3726,14 +3838,28 @@ Function Get-V207361 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3854,14 +3980,28 @@ Function Get-V207362 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -3998,14 +4138,28 @@ Function Get-V207363 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4146,14 +4300,28 @@ Function Get-V207364 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4296,14 +4464,28 @@ Function Get-V207365 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4441,14 +4623,28 @@ Function Get-V207366 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4592,14 +4788,28 @@ Function Get-V207367 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4739,14 +4949,28 @@ Function Get-V207368 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -4885,14 +5109,28 @@ Function Get-V207369 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5037,14 +5275,28 @@ Function Get-V207370 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5205,14 +5457,28 @@ Function Get-V207371 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5341,14 +5607,28 @@ Function Get-V207372 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5476,14 +5756,28 @@ Function Get-V207373 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5602,14 +5896,28 @@ Function Get-V207374 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5728,14 +6036,28 @@ Function Get-V207375 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -5855,14 +6177,28 @@ Function Get-V207376 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6012,14 +6348,28 @@ Function Get-V207377 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6160,14 +6510,28 @@ Function Get-V207378 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6304,14 +6668,28 @@ Function Get-V207379 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6448,14 +6826,28 @@ Function Get-V207381 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6583,14 +6975,28 @@ Function Get-V207382 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6708,14 +7114,28 @@ Function Get-V207383 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6847,14 +7267,28 @@ Function Get-V207384 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -6993,14 +7427,28 @@ Function Get-V207385 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7123,14 +7571,28 @@ Function Get-V207386 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7261,14 +7723,28 @@ Function Get-V207387 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7390,14 +7866,28 @@ Function Get-V207388 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7516,14 +8006,28 @@ Function Get-V207389 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7632,14 +8136,28 @@ Function Get-V207390 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7748,14 +8266,28 @@ Function Get-V207391 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -7892,14 +8424,28 @@ Function Get-V207392 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -8019,14 +8565,28 @@ Function Get-V207393 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -8142,14 +8702,28 @@ Function Get-V207394 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -8269,14 +8843,28 @@ Function Get-V207395 {
     param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerFile,
+
         [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
         [String]$SiteName
     )
@@ -8408,12 +8996,32 @@ Function Get-V207396 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -8544,12 +9152,32 @@ Function Get-V207397 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -8677,12 +9305,32 @@ Function Get-V207398 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -8803,12 +9451,32 @@ Function Get-V207399 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -8946,12 +9614,32 @@ Function Get-V207401 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9067,12 +9755,32 @@ Function Get-V207402 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9194,12 +9902,32 @@ Function Get-V207403 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9315,12 +10043,32 @@ Function Get-V207404 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9452,12 +10200,32 @@ Function Get-V207405 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9610,12 +10378,32 @@ Function Get-V207406 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9741,12 +10529,32 @@ Function Get-V207407 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9878,12 +10686,32 @@ Function Get-V207409 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -9999,12 +10827,32 @@ Function Get-V207410 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10129,12 +10977,32 @@ Function Get-V207411 {
     #>
 
     param (
-        [Parameter(Mandatory = $true)][String]$ScanType,
-        [Parameter(Mandatory = $false)][String]$AnswerFile,
-        [Parameter(Mandatory = $false)][String]$AnswerKey,
-        [Parameter(Mandatory = $false)][String]$Instance,
-        [Parameter(Mandatory = $false)][String]$Database,
-        [Parameter(Mandatory = $false)][String]$SiteName
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10267,35 +11135,33 @@ Function Get-V207412 {
         Severity   : CAT II
         Title      : All interactions among guest VMs must be mediated by the VMM or its service VMs to support proper function.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10427,35 +11293,33 @@ Function Get-V207413 {
         Severity   : CAT II
         Title      : The VMM must automatically audit account modification.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10585,35 +11449,33 @@ Function Get-V207414 {
         Severity   : CAT II
         Title      : The VMM must automatically audit account disabling actions.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10727,35 +11589,33 @@ Function Get-V207415 {
         Severity   : CAT II
         Title      : The VMM must automatically audit account removal actions.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -10875,35 +11735,33 @@ Function Get-V207416 {
         Severity   : CAT II
         Title      : All guest VM network communications must be implemented through use of virtual network devices provisioned by the VMM.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11025,35 +11883,33 @@ Function Get-V207417 {
         Severity   : CAT II
         Title      : All interactions between guest VMs and external systems, via other interface devices, must be mediated by the VMM or its service VMs.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Session,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11192,35 +12048,33 @@ Function Get-V207418 {
         Severity   : CAT II
         Title      : The VMM must implement cryptography to protect the integrity of remote access sessions.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11368,35 +12222,33 @@ Function Get-V207419 {
         Severity   : CAT II
         Title      : The VMM must initiate session audits at system startup.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11518,35 +12370,33 @@ Function Get-V207420 {
         Severity   : CAT II
         Title      : The VMM must produce audit records containing information to establish the identity of any individual or process associated with the event.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11674,35 +12524,33 @@ Function Get-V207421 {
         Severity   : CAT II
         Title      : The VMM must protect audit tools from unauthorized access.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -11837,35 +12685,33 @@ Function Get-V207422 {
         Severity   : CAT II
         Title      : The VMM must protect audit tools from unauthorized modification.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -12005,35 +12851,33 @@ Function Get-V207423 {
         Severity   : CAT II
         Title      : The VMM must protect audit tools from unauthorized deletion.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -12157,35 +13001,33 @@ Function Get-V207424 {
         Severity   : CAT II
         Title      : The VMM must limit privileges to change software resident within software libraries.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
@@ -12320,35 +13162,33 @@ Function Get-V207425 {
         Severity   : CAT II
         Title      : The VMM must enforce password complexity by requiring that at least one special character be used.
     #>
-    Param (
-        [Parameter(Mandatory = $false)]
-        [String]$AnswerFile,
+    param (
         [Parameter(Mandatory = $true)]
         [String]$ScanType,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
         [String]$AnswerKey,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$Username,
-        [Parameter(Mandatory = $true)]
+
+        [Parameter(Mandatory = $false)]
         [String]$UserSID,
-        [Parameter(Mandatory = $true)]
-        [String]$Ession,
+
         [Parameter(Mandatory = $false)]
         [String]$Hostname,
+
         [Parameter(Mandatory = $false)]
         [String]$Instance,
+
         [Parameter(Mandatory = $false)]
         [String]$Database,
+
         [Parameter(Mandatory = $false)]
-        [String]$SiteName,
-        [Parameter(Mandatory = $false)]
-        [String]$ESPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogPath,
-        [Parameter(Mandatory = $false)]
-        [String]$LogComponent,
-        [Parameter(Mandatory = $false)]
-        [String]$OSPlatform
+        [String]$SiteName
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
