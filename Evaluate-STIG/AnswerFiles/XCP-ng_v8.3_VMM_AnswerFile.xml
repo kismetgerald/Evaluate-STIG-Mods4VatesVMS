@@ -59,14 +59,33 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-207338">
     <!--RuleTitle: The VMM must provide automated mechanisms for supporting account management functions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-existing: RBAC account management via xe role-list/subject-list-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng provides automated account management through XAPI Role-Based Access Control (RBAC).
+
+The automated check verified: (1) RBAC roles are available via xe role-list (pool-admin, pool-operator, vm-power-admin, vm-admin, vm-operator, read-only), (2) RBAC subjects (users/groups) can be listed via xe subject-list showing external authentication integration, (3) Non-admin roles can be assigned to segregate privileges.
+
+XAPI RBAC provides automated mechanisms for creating, modifying, and managing user accounts and access permissions on the hypervisor. This meets the VMM SRG requirement for automated account management functions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng RBAC is not properly configured to support automated account management. The automated check found issues with RBAC role availability or subject configuration. Without properly configured RBAC, account management relies on manual root SSH access without role segregation.
+
+Remediation:
+1. Enable external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.com
+2. Add RBAC subjects: xe subject-add subject-name=user role-name=vm-operator
+3. Verify RBAC roles: xe role-list
+4. Verify subjects: xe subject-list
+5. Assign least-privilege roles per DoD policy
+
+Contact the system administrator and ISSO to configure XAPI RBAC.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -115,14 +134,33 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-207342">
     <!--RuleTitle: The VMM must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-existing: PAM faillock for login attempt limiting-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces login attempt limits through PAM faillock configuration.
+
+The automated check verified: (1) pam_faillock.so is configured in /etc/pam.d/system-auth and/or /etc/pam.d/password-auth, (2) deny parameter is set to 3 or fewer attempts, (3) fail_interval is set to 900 seconds (15 minutes) or more, (4) unlock_time is configured per organizational policy.
+
+PAM faillock automatically locks accounts after the specified number of failed authentication attempts within the configured time window. This meets the VMM SRG requirement for limiting consecutive invalid logon attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly enforce login attempt limits. The automated check found that pam_faillock.so is not configured or parameters do not meet requirements.
+
+Remediation:
+1. Edit /etc/pam.d/system-auth and /etc/pam.d/password-auth to include:
+   auth required pam_faillock.so preauth deny=3 fail_interval=900 unlock_time=never
+   auth required pam_faillock.so authfail deny=3 fail_interval=900 unlock_time=never
+2. Verify: faillock --user testuser
+3. Test by attempting 4 failed logins and confirming lockout
+
+Contact the system administrator to configure PAM faillock.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -241,994 +279,2329 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-207351">
     <!--RuleTitle: The VMM must use DoD-approved encryption to protect the confidentiality of remote access sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-existing: SSH encryption and XAPI TLS for remote access-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 uses DoD-approved encryption for remote access session confidentiality.
+
+The automated check verified: (1) SSH is configured with FIPS-approved encryption algorithms (AES-256, AES-128 in CTR or GCM modes), (2) XAPI communicates over HTTPS/TLS providing encrypted API sessions, (3) No weak or deprecated ciphers (DES, 3DES, RC4) are enabled for SSH.
+
+All remote management of XCP-ng occurs via encrypted SSH sessions or XAPI HTTPS connections, ensuring confidentiality of management data in transit. This meets the VMM SRG requirement for DoD-approved encryption of remote access sessions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not use DoD-approved encryption for all remote access sessions. The automated check found weak or non-FIPS-approved ciphers in SSH configuration, or XAPI HTTPS is not properly configured.
+
+Remediation:
+1. Edit /etc/ssh/sshd_config to set approved ciphers:
+   Ciphers aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+2. Restart SSH: systemctl restart sshd
+3. Verify XAPI TLS: openssl s_client -connect localhost:443
+4. Remove any non-encrypted remote access methods
+
+Contact the system administrator to harden SSH encryption.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207352">
     <!--RuleTitle: The VMM must produce audit records containing information to establish what type of events occurred.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd event type fields in audit records-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records containing event type information.
+
+The automated check verified that auditd is active and audit records contain type= fields (SYSCALL, PATH, CWD, EXECVE, USER_LOGIN, etc.) establishing what type of events occurred. The Linux audit subsystem automatically classifies each event by type. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not produce audit records with event type information.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207353">
     <!--RuleTitle: The VMM must produce audit records containing information to establish when (date and time) the events occurred.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd timestamp fields in audit records-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records with date/time timestamps.
+
+The automated check verified that auditd is active and records contain msg=audit(EPOCH:SERIAL) timestamps providing precise date and time for each event. The kernel audit subsystem generates timestamps from the system clock. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not produce properly timestamped audit records.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207354">
     <!--RuleTitle: The VMM must produce audit records containing information to establish where the events occurred.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd location fields in audit records-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records establishing where events occurred.
+
+The automated check verified that auditd is active and records contain hostname/node information and file path details (name= field) establishing the location of each event on the system. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not produce audit records with location information.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207355">
     <!--RuleTitle: The VMM must produce audit records containing information to establish the source of the events.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd source fields (exe, pid) in audit records-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records establishing the source of events.
+
+The automated check verified that auditd is active and records contain exe= (executable path) and pid= (process ID) fields identifying the source process for each event. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not produce audit records with source information.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207356">
     <!--RuleTitle: The VMM must produce audit records containing information to establish the outcome of the events.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd outcome fields (success/exit) in audit records-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records establishing event outcomes.
+
+The automated check verified that auditd is active and records contain success= and exit= fields establishing whether each event succeeded or failed. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not produce audit records with outcome information.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207357">
     <!--RuleTitle: The VMM must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Privileged command audit logging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 generates audit records for privileged commands.
+
+The automated check verified that auditd rules exist for setuid/setgid binaries (sudo, su, passwd, etc.) capturing the full command text and individual user identity. This meets the VMM SRG requirement for privileged command recording.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not fully audit privileged commands.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207358">
     <!--RuleTitle: The VMM must alert the ISSO and SA (at a minimum) in the event of an audit processing failure.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: auditd failure alerting via action_mail_acct-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 alerts administrators on audit processing failures.
+
+The automated check verified that /etc/audit/auditd.conf contains action_mail_acct, space_left_action, and admin_space_left_action settings to alert the SA and ISSO when audit processing fails (disk full, daemon crash). This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly alert on audit processing failures.
+
+The automated check found that auditd.conf does not configure failure alerting.
+
+Remediation:
+1. Edit /etc/audit/auditd.conf:
+   action_mail_acct = root
+   space_left_action = email
+   admin_space_left_action = halt
+2. Restart auditd: service auditd restart
+3. Configure mail forwarding to ISSO/SA
+
+Contact the system administrator to configure audit failure alerting.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207360">
     <!--RuleTitle: The VMM must support the capability to centrally review and analyze audit records from multiple components within the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Centralized audit review via aureport/ausearch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 supports centralized audit record review and analysis.
+
+The automated check verified that aureport and ausearch tools are available, providing capability to review, correlate, and analyze audit records from all system components. These tools support multiple output formats and cross-component analysis. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not support centralized audit review capability.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207361">
     <!--RuleTitle: The VMM must support the capability to filter audit records for events of interest based upon all audit fields within audit records.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: ausearch filtering by all audit fields-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 supports filtering audit records by all fields.
+
+The automated check verified that ausearch supports filtering by user (-ua), type (-m), syscall (-sc), key (-k), time range (-ts/-te), and all other audit fields within records. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not support audit record filtering.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207362">
     <!--RuleTitle: The VMM must use internal system clocks to generate time stamps for audit records.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: System clock for audit timestamps (chronyd/ntpd)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 uses internal system clocks for audit record timestamps.
+
+The automated check verified that auditd timestamps are generated from the system clock, and time synchronization is configured via chronyd or ntpd to maintain accurate time. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly use system clocks for audit timestamps.
+
+The automated check found that time synchronization (chronyd/ntpd) is not configured or not active.
+
+Remediation:
+1. Install chronyd: yum install chrony
+2. Configure NTP servers in /etc/chrony.conf
+3. Enable: systemctl enable chronyd; systemctl start chronyd
+4. Verify: chronyc sources
+
+Contact the system administrator to configure time synchronization.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207363">
     <!--RuleTitle: The VMM must protect audit information from unauthorized read access.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Audit log read permissions (600 root:root)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 protects audit information from unauthorized read access.
+
+The automated check verified that /var/log/audit/ files have permissions 600 or more restrictive, owned by root. Only the root account can read audit log files. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not protect audit information from unauthorized read access.
+
+The automated check found audit log files with overly permissive read access.
+
+Remediation:
+1. Set audit log permissions: chmod 600 /var/log/audit/audit.log
+2. Set ownership: chown root:root /var/log/audit/audit.log
+3. Configure auditd.conf: log_group = root
+4. Verify: stat -c "%a %U %G" /var/log/audit/*
+
+Contact the system administrator to restrict audit log permissions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207364">
     <!--RuleTitle: The VMM must protect audit information from unauthorized modification.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Audit log write permissions (root-only)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 protects audit information from unauthorized modification.
+
+The automated check verified that /var/log/audit/ files have no group or world write permissions, and are owned by root. Only the auditd process (running as root) can write to audit logs. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not protect audit information from unauthorized modification.
+
+The automated check found audit log files with group or world write permissions.
+
+Remediation:
+1. Remove unauthorized write: chmod go-w /var/log/audit/audit.log
+2. Set ownership: chown root:root /var/log/audit/audit.log
+3. Verify: stat -c "%a %U %G" /var/log/audit/*
+
+Contact the system administrator to restrict audit log write permissions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207365">
     <!--RuleTitle: The VMM must protect audit information from unauthorized deletion.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Audit log deletion protection-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 protects audit information from unauthorized deletion.
+
+The automated check verified that the /var/log/audit/ directory is owned by root with restricted permissions, preventing non-root users from deleting audit log files. auditd manages log rotation (max_log_file_action) to ensure controlled log lifecycle. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not protect audit information from unauthorized deletion.
+
+The automated check found /var/log/audit/ directory permissions allow unauthorized deletion.
+
+Remediation:
+1. Set directory permissions: chmod 700 /var/log/audit
+2. Set ownership: chown root:root /var/log/audit
+3. Configure log retention in auditd.conf: max_log_file_action = keep_logs
+4. Verify: stat -c "%a %U %G" /var/log/audit
+
+Contact the system administrator to protect audit logs from deletion.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207366">
     <!--RuleTitle: The VMM must provide audit record generation capability for DoD-defined auditable events for all VMM components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: auditd generation for all VMM component events-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 provides audit record generation for all VMM components.
+
+The automated check verified that auditd is configured with rules covering system calls, file access, user authentication, privilege escalation, and administrative commands across all VMM components (XAPI, Xen, Dom0 services). This meets the VMM SRG requirement for comprehensive audit generation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not generate audit records for all VMM component events.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207367">
     <!--RuleTitle: The VMM must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 1: Audit rule management restricted to root/ISSM-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 restricts audit event selection to the ISSM (or authorized individuals).
+
+The automated check verified that audit rule configuration files in /etc/audit/rules.d/ are owned by root with permissions restricting write access to root only. Only root (the ISSM-appointed administrator) can select which events are audited. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly restrict audit event configuration to authorized administrators.
+
+The automated check found audit rule files with overly permissive access.
+
+Remediation:
+1. Set permissions: chmod 640 /etc/audit/rules.d/*.rules
+2. Set ownership: chown root:root /etc/audit/rules.d/*.rules
+3. Verify: ls -la /etc/audit/rules.d/
+
+Contact the ISSO to review audit rule management access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207368">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to access privileges occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Audit privilege access attempts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 generates audit records for privilege access attempts.
+
+The automated check verified that auditd rules monitor privilege escalation events (sudo, su, setuid binaries) capturing both successful and unsuccessful attempts. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not audit privilege access attempts.
+
+The automated check found that auditd is not active, not properly configured, or required audit rules are missing.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Configure required audit rules in /etc/audit/rules.d/
+4. Reload rules: augenrules --load
+5. Verify: auditctl -l
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207369">
     <!--RuleTitle: The VMM, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: PKI certificate path validation to trust anchor-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng validates PKI certificates by constructing certification paths to accepted trust anchors.
+
+The automated check verified that the system CA certificate bundle (/etc/pki/tls/certs/ca-bundle.crt) is present and contains DoD Root CA certificates. OpenSSL and XAPI use this bundle for certificate validation. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly validate PKI certificates to an accepted trust anchor.
+
+The automated check found the CA certificate bundle is missing or does not contain required DoD Root CA certificates.
+
+Remediation:
+1. Install DoD Root CA certificates: cp DoD_Root_CA.pem /etc/pki/ca-trust/source/anchors/
+2. Update CA trust: update-ca-trust
+3. Verify: openssl verify -CAfile /etc/pki/tls/certs/ca-bundle.crt /path/to/cert.pem
+
+Contact the PKI administrator to install DoD Root CA certificates.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207370">
     <!--RuleTitle: The VMM, for PKI-based authentication, must enforce authorized access to the corresponding private key.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: PKI private key access control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng enforces authorized access to PKI private keys.
+
+The automated check verified that XAPI private key (/etc/xensource/xapi-ssl.pem) and SSH host keys (/etc/ssh/ssh_host_*_key) are owned by root with permissions 600 or more restrictive, preventing unauthorized access. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly protect PKI private keys.
+
+The automated check found private key files with overly permissive access.
+
+Remediation:
+1. Set XAPI key permissions: chmod 600 /etc/xensource/xapi-ssl.pem; chown root:root /etc/xensource/xapi-ssl.pem
+2. Set SSH key permissions: chmod 600 /etc/ssh/ssh_host_*_key; chown root:root /etc/ssh/ssh_host_*_key
+3. Verify: stat -c "%a %U" /etc/xensource/xapi-ssl.pem /etc/ssh/ssh_host_*_key
+
+Contact the system administrator to restrict private key access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207371">
     <!--RuleTitle: The VMM must map the authenticated identity to the user or group account for PKI-based authentication.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: PKI-to-account identity mapping-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng maps PKI-authenticated identities to user/group accounts.
+
+The automated check verified that SSH is configured to use PKI certificates for authentication (AuthorizedKeysFile configured, PubkeyAuthentication enabled) and that certificate-based identities map to local or LDAP/AD user accounts. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly map PKI-authenticated identities to accounts.
+
+The automated check found that PKI-based authentication mapping is not configured.
+
+Remediation:
+1. Enable public key authentication in /etc/ssh/sshd_config: PubkeyAuthentication yes
+2. Configure authorized keys: AuthorizedKeysFile .ssh/authorized_keys
+3. For AD integration, configure SSSD with certificate mapping
+4. Restart sshd: systemctl restart sshd
+
+Contact the system administrator and PKI administrator to configure identity mapping.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207372">
     <!--RuleTitle: The VMM must enforce password complexity by requiring that at least one uppercase character be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Password complexity - uppercase character-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces password complexity requiring at least one uppercase character.
+
+The automated check verified that PAM pwquality/pam_cracklib is configured with ucredit=-1 (or lower) in /etc/security/pwquality.conf or /etc/pam.d/system-auth. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not require uppercase characters in passwords.
+
+The automated check found ucredit is not set to -1 or lower.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf: ucredit = -1
+2. Verify: grep ucredit /etc/security/pwquality.conf
+
+Contact the system administrator to configure password complexity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207373">
     <!--RuleTitle: The VMM must enforce password complexity by requiring that at least one lowercase character be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Password complexity - lowercase character-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces password complexity requiring at least one lowercase character.
+
+The automated check verified that PAM pwquality/pam_cracklib is configured with lcredit=-1 (or lower) in /etc/security/pwquality.conf or /etc/pam.d/system-auth. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not require lowercase characters in passwords.
+
+The automated check found lcredit is not set to -1 or lower.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf: lcredit = -1
+2. Verify: grep lcredit /etc/security/pwquality.conf
+
+Contact the system administrator to configure password complexity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207374">
     <!--RuleTitle: The VMM must enforce password complexity by requiring that at least one numeric character be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Password complexity - numeric character-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces password complexity requiring at least one numeric character.
+
+The automated check verified that PAM pwquality/pam_cracklib is configured with dcredit=-1 (or lower) in /etc/security/pwquality.conf or /etc/pam.d/system-auth. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not require numeric characters in passwords.
+
+The automated check found dcredit is not set to -1 or lower.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf: dcredit = -1
+2. Verify: grep dcredit /etc/security/pwquality.conf
+
+Contact the system administrator to configure password complexity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207375">
     <!--RuleTitle: The VMM must require the change of at least eight of the total number of characters when passwords are changed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Password change - minimum 8 characters changed-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 requires at least 8 characters to change when passwords are modified.
+
+The automated check verified that PAM pwquality is configured with difok=8 (or higher) in /etc/security/pwquality.conf. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not require sufficient character changes in new passwords.
+
+The automated check found difok is not set to 8 or higher.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf: difok = 8
+2. Verify: grep difok /etc/security/pwquality.conf
+
+Contact the system administrator to configure password change requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207376">
     <!--RuleTitle: The VMM must store only encrypted representations of passwords.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Encrypted password storage (shadow file)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 stores only encrypted representations of passwords.
+
+The automated check verified that /etc/shadow contains hashed passwords (SHA-512 $6$ prefix or similar), no plaintext passwords exist, and /etc/passwd does not contain password hashes (x placeholder used). This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly encrypt stored passwords.
+
+The automated check found plaintext or weakly hashed passwords.
+
+Remediation:
+1. Ensure SHA-512 hashing: authconfig --passalgo=sha512 --update
+2. Verify shadow entries use $6$ prefix: grep "^root" /etc/shadow
+3. Force password changes for affected accounts: chage -d 0 username
+
+Contact the system administrator to configure password hashing.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207377">
     <!--RuleTitle: The VMM must transmit only encrypted representations of passwords.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Encrypted password transmission (SSH/TLS)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 transmits only encrypted representations of passwords.
+
+The automated check verified that SSH encrypts all authentication traffic, XAPI uses HTTPS/TLS for API authentication, and no unencrypted authentication protocols (telnet, FTP, HTTP) are enabled. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 may transmit passwords in unencrypted form.
+
+The automated check found unencrypted services or protocols that could transmit passwords in cleartext.
+
+Remediation:
+1. Disable telnet: systemctl disable telnet.socket; systemctl stop telnet.socket
+2. Disable FTP: systemctl disable vsftpd; systemctl stop vsftpd
+3. Ensure SSH is the only remote access method
+4. Verify XAPI uses HTTPS only
+
+Contact the system administrator to disable unencrypted authentication protocols.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207378">
     <!--RuleTitle: The VMM must enforce 24 hours/one day as the minimum password lifetime.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Minimum 24-hour password lifetime-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces a 24-hour minimum password lifetime.
+
+The automated check verified that /etc/login.defs contains PASS_MIN_DAYS set to 1 or greater, preventing users from changing passwords more than once per day. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not enforce a minimum password lifetime.
+
+The automated check found PASS_MIN_DAYS is not set to 1 or greater in /etc/login.defs.
+
+Remediation:
+1. Edit /etc/login.defs: PASS_MIN_DAYS 1
+2. Apply to existing accounts: chage --mindays 1 username
+3. Verify: grep PASS_MIN_DAYS /etc/login.defs
+
+Contact the system administrator to configure password lifetime.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207379">
     <!--RuleTitle: The VMM must enforce a 60-day maximum password lifetime restriction.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Maximum 60-day password lifetime-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces a 60-day maximum password lifetime.
+
+The automated check verified that /etc/login.defs contains PASS_MAX_DAYS set to 60 or less. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not enforce a maximum password lifetime.
+
+The automated check found PASS_MAX_DAYS is not set to 60 or less in /etc/login.defs.
+
+Remediation:
+1. Edit /etc/login.defs: PASS_MAX_DAYS 60
+2. Apply to existing accounts: chage --maxdays 60 username
+3. Verify: grep PASS_MAX_DAYS /etc/login.defs
+
+Contact the system administrator to configure password expiration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207381">
     <!--RuleTitle: The VMM must enforce a minimum 15-character password length.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 2: Minimum 15-character password length-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces a minimum 15-character password length.
+
+The automated check verified that PAM pwquality is configured with minlen=15 (or higher) in /etc/security/pwquality.conf or /etc/pam.d/system-auth. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not enforce a 15-character minimum password length.
+
+The automated check found minlen is not set to 15 or higher.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf: minlen = 15
+2. Verify: grep minlen /etc/security/pwquality.conf
+
+Contact the system administrator to configure password length requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207382">
     <!--RuleTitle: The VMM must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Authentication feedback obscuring-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 obscures authentication feedback during the authentication process.
+
+The automated check verified that SSH is configured to not display password characters during entry, and PAM does not echo credentials. The terminal does not display typed password characters, preventing shoulder-surfing attacks. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not properly obscure authentication feedback.
+
+The automated check found configuration issues that may expose authentication information during the login process.
+
+Remediation:
+1. Verify SSH does not echo passwords (default behavior)
+2. Check PAM configuration does not include pam_echo modules
+3. Verify console login obscures password entry
+
+Contact the system administrator to verify authentication feedback handling.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207383">
     <!--RuleTitle: The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: RBAC-enforced logical access control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng enforces approved authorizations for logical access via XAPI RBAC.
+
+The automated check verified: (1) RBAC roles are defined and available via xe role-list, (2) Access to XAPI functions is controlled by role assignment, (3) Non-admin roles (vm-operator, read-only) provide least-privilege access. XAPI RBAC enforces authorization policies for all management operations. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly enforce logical access authorizations.
+
+The automated check found RBAC is not configured or all users have pool-admin access.
+
+Remediation:
+1. Configure RBAC roles: xe role-list
+2. Assign least-privilege roles: xe subject-add subject-name=user role-name=vm-operator
+3. Remove unnecessary pool-admin access
+4. Verify: xe subject-list
+
+Contact the ISSO to review and approve RBAC role assignments.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207384">
     <!--RuleTitle: The VMM must be configured to disable non-essential capabilities.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Non-essential capabilities disabled-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng is configured to disable non-essential capabilities.
+
+The automated check verified that unnecessary services are disabled on Dom0, non-essential network ports are not listening, and only required XAPI/SSH services are active. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng has non-essential capabilities enabled.
+
+The automated check found unnecessary services running or non-essential ports listening on Dom0.
+
+Remediation:
+1. List active services: systemctl list-units --type=service --state=running
+2. Disable non-essential services: systemctl disable SERVICE; systemctl stop SERVICE
+3. Review listening ports: ss -tlnp
+4. Document required services in the System Security Plan
+
+Contact the system administrator to disable non-essential services.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207385">
     <!--RuleTitle: The VMM must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Prohibited ports/protocols/services restricted-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng is configured to restrict functions, ports, protocols, and services per PPSM CAL.
+
+The automated check verified that Dom0 listening ports are limited to essential services (SSH/22, XAPI/443, XAPI/80-redirect), and iptables/firewall rules restrict unauthorized access. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly restrict ports, protocols, and services.
+
+The automated check found unauthorized ports listening or insufficient firewall rules.
+
+Remediation:
+1. Review listening ports: ss -tlnp
+2. Configure iptables to restrict access to authorized ports only
+3. Disable unnecessary services
+4. Document authorized ports in POA&amp;M per PPSM CAL
+
+Contact the ISSO to review authorized ports and protocols.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207386">
     <!--RuleTitle: The VMM must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Unique user identification and authentication-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uniquely identifies and authenticates organizational users.
+
+The automated check verified that each user has a unique account (no shared accounts detected), UID 0 is limited to root only, and PAM enforces authentication for all user sessions. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly enforce unique user identification.
+
+The automated check found shared accounts, duplicate UIDs, or authentication bypass.
+
+Remediation:
+1. Review accounts: cat /etc/passwd | awk -F: "{print $3}" | sort | uniq -d
+2. Remove shared accounts and create individual accounts
+3. Ensure only root has UID 0
+4. Configure PAM to require authentication
+
+Contact the system administrator to implement unique user accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207387">
     <!--RuleTitle: The VMM must use multifactor authentication for network access to privileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: MFA for network access to privileged accounts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uses multifactor authentication for network access to privileged accounts.
+
+The automated check verified the configuration of SSH key-based authentication combined with password/token authentication, or external AD/LDAP integration providing MFA. This meets the VMM SRG requirement when properly configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement multifactor authentication for network privileged access.
+
+The automated check found that MFA is not configured for privileged network access. XCP-ng Dom0 relies on single-factor SSH password authentication by default.
+
+Remediation:
+1. Configure SSH key-based authentication as the first factor
+2. Integrate with AD/LDAP for centralized MFA: xe pool-enable-external-auth
+3. Consider RADIUS/TACACS+ integration for MFA
+4. Document MFA implementation in the System Security Plan
+
+Contact the ISSO and system administrator to implement MFA for privileged access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207388">
     <!--RuleTitle: The VMM must use multifactor authentication for network access to non-privileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: MFA for network access to non-privileged accounts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uses multifactor authentication for network access to non-privileged accounts.
+
+The automated check verified MFA configuration for non-privileged network access via SSH key-based authentication or external AD/LDAP integration. This meets the VMM SRG requirement when properly configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement MFA for network non-privileged access.
+
+The automated check found that MFA is not configured for non-privileged network access.
+
+Remediation:
+1. Configure SSH key + password for all accounts
+2. Integrate with AD/LDAP: xe pool-enable-external-auth
+3. Ensure non-privileged RBAC subjects use MFA
+
+Contact the ISSO to implement MFA for non-privileged access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207389">
     <!--RuleTitle: The VMM must use multifactor authentication for local access to privileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: MFA for local access to privileged accounts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uses multifactor authentication for local access to privileged accounts.
+
+The automated check verified MFA configuration for local console access to privileged accounts. This meets the VMM SRG requirement when properly configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement MFA for local privileged access.
+
+The automated check found that MFA is not configured for local console access to privileged accounts. Physical console access typically uses single-factor password authentication.
+
+Remediation:
+1. Configure PAM for local MFA (smart card or token)
+2. Restrict physical console access
+3. Implement compensating controls (physical security, CCTV)
+4. Document in POA&amp;M if MFA is not feasible for local console
+
+Contact the ISSO to implement or document MFA for local access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207390">
     <!--RuleTitle: The VMM must use multifactor authentication for local access to nonprivileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: MFA for local access to non-privileged accounts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uses multifactor authentication for local access to non-privileged accounts.
+
+The automated check verified MFA configuration for local access to non-privileged accounts. This meets the VMM SRG requirement when properly configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement MFA for local non-privileged access.
+
+The automated check found MFA is not configured for local non-privileged access.
+
+Remediation:
+1. Configure PAM for local MFA
+2. Integrate with organizational MFA solution
+3. Document in POA&amp;M if not feasible
+
+Contact the ISSO to implement MFA for local non-privileged access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207391">
     <!--RuleTitle: The VMM must require individuals to be authenticated with an individual authenticator prior to using a group authenticator.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Individual auth before group authenticator-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng requires individual authentication before group authenticator use.
+
+The automated check verified that PAM configuration requires individual user authentication (password or key) before any group-based access is granted. Users must authenticate individually before accessing shared or group resources. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not require individual authentication before group authenticator use.
+
+The automated check found that group access may be granted without prior individual authentication.
+
+Remediation:
+1. Ensure PAM requires individual authentication first
+2. Remove any group-only authentication paths
+3. Verify sudo requires password: grep NOPASSWD /etc/sudoers (should be empty or justified)
+
+Contact the system administrator to enforce individual authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207392">
     <!--RuleTitle: The VMM must implement replay-resistant authentication mechanisms for network access to privileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Replay-resistant auth for network privileged access-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng implements replay-resistant authentication for network privileged access.
+
+The automated check verified that SSH uses protocol 2 with challenge-response or public key authentication, both of which are inherently replay-resistant. XAPI sessions use unique tokens that cannot be replayed. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement replay-resistant authentication for network privileged access.
+
+The automated check found authentication mechanisms that may be vulnerable to replay attacks.
+
+Remediation:
+1. Ensure SSH Protocol 2 only: Protocol 2 in sshd_config
+2. Use SSH key-based authentication
+3. Disable legacy protocols vulnerable to replay
+4. Verify XAPI uses session tokens with timeout
+
+Contact the system administrator to configure replay-resistant authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207393">
     <!--RuleTitle: The VMM must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Replay-resistant auth for network non-privileged access-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng implements replay-resistant authentication for network non-privileged access.
+
+The automated check verified that SSH protocol 2 is used for all network authentication, providing inherent replay resistance through cryptographic nonces and session keys. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not implement replay-resistant authentication for network non-privileged access.
+
+The automated check found authentication mechanisms vulnerable to replay.
+
+Remediation:
+1. Ensure SSH Protocol 2: Protocol 2 in sshd_config
+2. Disable password-only authentication where possible
+3. Use key-based authentication
+
+Contact the system administrator to configure replay-resistant authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207394">
     <!--RuleTitle: The VMM must uniquely identify peripherals before establishing a connection.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Peripheral identification before connection-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uniquely identifies peripherals before establishing connections.
+
+The automated check verified that XAPI manages all device assignments and Dom0 identifies devices by PCI bus address, USB vendor/product ID, or similar unique identifiers before allowing VM connections. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly identify peripherals before establishing connections.
+
+The automated check found that device identification is not properly enforced before VM assignment.
+
+Remediation:
+1. Review device assignments: xe pusb-list; xe pci-list
+2. Ensure all device passthrough is explicitly authorized
+3. Document authorized devices in the System Security Plan
+
+Contact the system administrator to review peripheral identification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207395">
     <!--RuleTitle: The VMM must disable local account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 3: Disable inactive accounts after 35 days-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng disables local account identifiers after 35 days of inactivity.
+
+The automated check verified that /etc/default/useradd INACTIVE is set to 35 or less, and existing accounts have appropriate inactivity limits configured via chage. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not disable inactive accounts after 35 days.
+
+The automated check found INACTIVE is not set to 35 or less in /etc/default/useradd, or existing accounts lack inactivity limits.
+
+Remediation:
+1. Set default: useradd -D -f 35
+2. Apply to existing accounts: chage -I 35 username
+3. Verify: useradd -D | grep INACTIVE; chage -l username
+
+Contact the system administrator to configure account inactivity limits.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207396">
     <!--RuleTitle: The VMM must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: FIPS cryptographic module authentication-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng uses mechanisms meeting federal requirements for authentication to a cryptographic module.
+
+The automated check verified the status of FIPS mode on the system (crypto-policies or /proc/sys/crypto/fips_enabled). This meets the VMM SRG requirement when FIPS mode is enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not meet federal cryptographic module authentication requirements.
+
+The automated check found FIPS mode is not enabled. XCP-ng (CentOS 7-based) may not fully support FIPS 140-2 validated cryptographic modules.
+
+Remediation:
+1. Enable FIPS mode: fips-mode-setup --enable (if supported)
+2. Verify: cat /proc/sys/crypto/fips_enabled (should be 1)
+3. If FIPS mode is not supported, document as a compliance gap in POA&amp;M
+4. Use FIPS-validated crypto libraries where available
+
+Contact the ISSO to document FIPS compliance status.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207397">
     <!--RuleTitle: The VMM must support an audit reduction capability that supports on-demand reporting requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Audit reduction and on-demand reporting-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng supports audit reduction and on-demand reporting.
+
+The automated check verified that aureport provides summary reports (--summary, --auth, --login, --event) and ausearch provides on-demand queries with flexible filtering. These tools meet the VMM SRG requirement for audit reduction and reporting capability.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not support audit reduction and on-demand reporting.
+
+The automated check found that audit reporting tools are not available or functional.
+
+Remediation:
+1. Install audit tools: yum install audit
+2. Verify aureport: aureport --summary
+3. Verify ausearch: ausearch -m USER_LOGIN
+4. Configure scheduled reports if required
+
+Contact the system administrator to install audit reporting tools.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207398">
     <!--RuleTitle: The VMM must  automatically remove or disable emergency accounts after the crisis is resolved or 72 hours.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Emergency account auto-removal after 72 hours-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng automatically removes or disables emergency accounts after the crisis is resolved or within 72 hours.
+
+The automated check verified that emergency/temporary accounts have expiration dates set via chage, and /etc/default/useradd EXPIRE is configured for automatic account expiration. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not automatically remove or disable emergency accounts within 72 hours.
+
+The automated check found accounts without expiration dates or emergency account policies not enforced.
+
+Remediation:
+1. Set expiration on emergency accounts: chage -E $(date -d "+3 days" +%Y-%m-%d) emergency_user
+2. Configure default expiration: useradd -D -e DATE
+3. Create procedures for emergency account lifecycle
+4. Review accounts regularly: chage -l username
+
+Contact the ISSO to establish emergency account procedures.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207399">
     <!--RuleTitle: The VMM must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Strong authenticators for nonlocal maintenance-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng employs strong authenticators for nonlocal maintenance and diagnostic sessions.
+
+The automated check verified that SSH uses strong authentication (key-based or password with complexity requirements) for all remote maintenance sessions, and XAPI requires authenticated HTTPS sessions. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not employ strong authenticators for nonlocal maintenance.
+
+The automated check found weak authentication for remote maintenance sessions.
+
+Remediation:
+1. Configure SSH key-based authentication: PubkeyAuthentication yes
+2. Disable password-only auth for maintenance: PasswordAuthentication no
+3. Ensure strong password policy via PAM
+4. Verify XAPI uses HTTPS with authentication
+
+Contact the system administrator to strengthen remote maintenance authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207401">
     <!--RuleTitle: The VMM must separate user functionality (including user interface services) from VMM management functionality.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Dom0/DomU user-management separation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng separates user functionality from VMM management functionality.
+
+The automated check verified that Dom0 (management domain) is isolated from DomU (guest VMs) by the Xen hypervisor. User workloads run in DomU while VMM management occurs exclusively in Dom0. The Xen architecture inherently provides this separation through hardware-enforced privilege rings. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly separate user and management functionality.
+
+The automated check found potential issues with Dom0/DomU isolation.
+
+Remediation:
+1. Verify no user workloads run in Dom0
+2. Ensure all user applications run in DomU guest VMs
+3. Restrict Dom0 access to authorized administrators only
+4. Review Dom0 services: systemctl list-units --type=service
+
+Contact the system administrator to verify Dom0/DomU separation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207402">
     <!--RuleTitle: The VMM must isolate security functions from non-security functions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Security function isolation from non-security-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng isolates security functions from non-security functions.
+
+The automated check verified that the Xen hypervisor provides hardware-enforced isolation between security functions (Dom0, XAPI, authentication) and non-security functions (DomU guest workloads). Security-critical processes run in the privileged Dom0 domain. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly isolate security functions.
+
+The automated check found security functions may not be adequately isolated from non-security functions.
+
+Remediation:
+1. Ensure security services run only in Dom0
+2. Do not install non-essential software in Dom0
+3. Restrict Dom0 to management functions only
+4. Document security function isolation in the System Security Plan
+
+Contact the ISSO to review security function isolation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207403">
     <!--RuleTitle: The VMM must prevent unauthorized and unintended information transfer via shared system resources.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Shared resource information transfer prevention-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng prevents unauthorized information transfer via shared system resources.
+
+The automated check verified that the Xen hypervisor enforces memory isolation between VMs, CPU cache flushing mitigations are applied, and shared storage is access-controlled via XAPI. Dom0 mediates all shared resource access. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not prevent unauthorized information transfer via shared resources.
+
+The automated check found potential shared resource isolation issues.
+
+Remediation:
+1. Verify Xen security patches are current: yum update xen
+2. Enable CPU side-channel mitigations in GRUB: spec-ctrl=yes
+3. Review shared storage access: xe sr-list; xe vdi-list
+4. Ensure VMs do not share memory pages unintentionally
+
+Contact the system administrator to verify shared resource isolation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207404">
     <!--RuleTitle: The VMM must manage excess capacity, bandwidth, or other redundancy to limit the effects of information-flooding types of Denial of Service (DoS) attacks.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: DoS protection - capacity and bandwidth management-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng manages excess capacity to limit DoS attack effects.
+
+The automated check verified that TCP SYN cookies are enabled (net.ipv4.tcp_syncookies=1), connection tracking limits are configured, and XCP-ng resource management (memory/CPU limits per VM) prevents individual VMs from consuming all host resources. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly manage capacity for DoS protection.
+
+The automated check found TCP SYN cookies are not enabled, reducing flood protection.
+
+Remediation:
+1. Enable SYN cookies: sysctl -w net.ipv4.tcp_syncookies=1
+2. Make persistent: echo "net.ipv4.tcp_syncookies = 1" &gt;&gt; /etc/sysctl.d/99-dos.conf
+3. Configure connection tracking: sysctl -w net.netfilter.nf_conntrack_max=65536
+4. Set VM resource limits via XO or xe CLI
+
+Contact the system administrator to configure DoS protection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207405">
     <!--RuleTitle: The VMM must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Session termination (10min privileged, 15min user)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng terminates network sessions after specified inactivity periods.
+
+The automated check verified SSH session timeout configuration (ClientAliveInterval and ClientAliveCountMax in sshd_config) and XAPI session timeout settings. Privileged sessions terminate after 10 minutes and user sessions after 15 minutes of inactivity. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not terminate sessions after the required inactivity periods.
+
+The automated check found SSH or XAPI session timeouts are not properly configured.
+
+Remediation:
+1. Edit /etc/ssh/sshd_config:
+   ClientAliveInterval 600
+   ClientAliveCountMax 0
+2. Restart sshd: systemctl restart sshd
+3. Configure XAPI session timeout in XO settings
+
+Contact the system administrator to configure session timeouts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207406">
     <!--RuleTitle: The VMM must fail to a secure state if system initialization fails, shutdown fails, or aborts fail.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Fail-secure on initialization/shutdown/abort failure-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng fails to a secure state on system initialization, shutdown, or abort failures.
+
+The automated check verified that kernel panic behavior is configured (kernel.panic sysctl), Dom0 crash dump settings capture failure state, and Xen watchdog is configured to handle hypervisor failures. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly fail to a secure state.
+
+The automated check found that fail-secure behavior is not fully configured.
+
+Remediation:
+1. Configure panic behavior: sysctl -w kernel.panic=10
+2. Enable kdump for crash analysis: systemctl enable kdump
+3. Configure Xen watchdog timeout
+4. Verify: sysctl kernel.panic; systemctl is-enabled kdump
+
+Contact the system administrator to configure fail-secure behavior.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207407">
     <!--RuleTitle: The VMM must protect the confidentiality and integrity of all information at rest.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Data-at-rest confidentiality and integrity-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng protects the confidentiality and integrity of information at rest.
+
+The automated check verified LUKS/dm-crypt disk encryption status, file system permissions on sensitive directories, and XCP-ng storage repository access controls. This meets the VMM SRG requirement when encryption is properly configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not fully protect data at rest.
+
+The automated check found that disk encryption is not enabled or file system permissions are insufficient.
+
+Remediation:
+1. Enable LUKS encryption for storage repositories
+2. Verify file permissions on /etc/xensource/, /var/xapi/
+3. Configure encrypted storage for VM disk images
+4. Document encryption status in the System Security Plan
+
+Contact the system administrator and ISSO to implement data-at-rest encryption.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207409">
     <!--RuleTitle: The VMM must check the validity of all data inputs except those specifically identified by the organization.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Input validation for data inputs-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng checks the validity of data inputs.
+
+The automated check verified that XAPI validates API inputs through its type system and parameter validation, SSH enforces protocol-level input validation, and web-facing services sanitize inputs. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng does not properly validate data inputs.
+
+The automated check found potential input validation gaps.
+
+Remediation:
+1. Ensure XAPI is current with security patches: yum update xapi
+2. Configure SSH to reject invalid inputs
+3. Review any custom scripts for input validation
+4. Apply vendor security updates
+
+Contact the system administrator to verify input validation controls.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207410">
     <!--RuleTitle: The VMM must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Error messages with corrective info, no exploitation data-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng generates error messages with corrective action information without revealing exploitable data.
+
+The automated check verified that system error messages provide sufficient information for corrective action (log files, error codes) without exposing internal system details, stack traces, or configuration paths to unauthorized users. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng error messages may reveal exploitable information.
+
+The automated check found error messages that expose internal system details.
+
+Remediation:
+1. Configure sshd LogLevel to INFO (not DEBUG): LogLevel INFO in sshd_config
+2. Review XAPI error handling configuration
+3. Ensure error pages do not expose stack traces or paths
+4. Restart affected services after changes
+
+Contact the system administrator to review error message configuration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207411">
     <!--RuleTitle: The VMM must reveal system error messages only to authorized users.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: Error messages restricted to authorized users-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng reveals system error messages only to authorized users.
+
+The automated check verified that system logs are readable only by root (permissions 600 on /var/log/messages, /var/log/secure), XAPI error details require authenticated sessions, and console error output is restricted to logged-in administrators. This meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng may reveal system error messages to unauthorized users.
+
+The automated check found log files or error outputs accessible to non-authorized users.
+
+Remediation:
+1. Set log permissions: chmod 600 /var/log/messages /var/log/secure
+2. Ensure XAPI requires authentication for error details
+3. Review console access restrictions
+4. Verify: stat -c "%a %U" /var/log/messages /var/log/secure
+
+Contact the system administrator to restrict error message access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207412">
     <!--RuleTitle: All interactions among guest VMs must be mediated by the VMM or its service VMs to support proper function.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Guest VM interaction mediation via XAPI/Xen hypervisor-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng guest VM interactions are mediated by the VMM (Xen hypervisor and XAPI toolstack).
+
+The automated check verified: (1) All VM virtual network interfaces (VIFs) are connected to XAPI-managed virtual bridges, (2) No PCI passthrough devices bypass VMM mediation, (3) All XAPI-managed networks use standard virtual bridge backends (openvswitch or linux bridge), (4) The Xen hypervisor architecture inherently mediates all inter-VM communication through Dom0 network bridges.
+
+XCP-ng enforces hardware-level VM isolation through Xen ring-based privilege separation. Guest VMs (DomU) operate in Ring 3 and cannot directly access hardware or communicate with other VMs without passing through the Dom0 network stack managed by XAPI. This meets the VMM SRG requirement for mediated guest VM interactions.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>PCI passthrough devices were detected that bypass VMM mediation for guest VM interactions.
+
+The automated check found one or more VMs with direct PCI device passthrough, which allows guest VMs to access physical hardware directly without XAPI/Xen mediation. This violates the VMM SRG requirement that all VM interactions be mediated by the VMM.
+
+Remediation:
+1. Review all PCI passthrough assignments: xe vm-list params=name-label,other-config
+2. Remove unauthorized PCI passthrough: xe vm-param-remove param-name=other-config param-key=pci uuid=VM_UUID
+3. Document any authorized passthrough devices in the System Security Plan with ISSO/ISSM approval
+4. Use XAPI-managed virtual devices (VIFs, VBDs) instead of direct hardware passthrough where possible
+
+Contact the ISSO/ISSM to review and approve any remaining PCI passthrough requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207413">
     <!--RuleTitle: The VMM must automatically audit account modification.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit account modification via auditd rules-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 automatically audits account modification events through auditd.
+
+The automated check verified: (1) auditd rules monitor /etc/passwd for account attribute changes, (2) auditd rules monitor /etc/shadow for password and account expiry changes, (3) auditd rules monitor /etc/group for group membership modifications, (4) auditd rules monitor /etc/gshadow for group password changes. These four files capture all account modification events on CentOS 7-based XCP-ng Dom0.
+
+Account modifications via usermod, chage, or direct file editing are recorded in the audit log with user identity, timestamp, and change details. This meets the VMM SRG requirement for automatic auditing of account modifications.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>One or more critical account files are not monitored by auditd for modification events.
+
+The automated check found that auditd rules do not fully cover account modification files (/etc/passwd, /etc/shadow, /etc/group, /etc/gshadow). Without complete audit coverage, account modifications may not be recorded, violating the VMM SRG requirement.
+
+Remediation:
+1. Add audit rules to /etc/audit/rules.d/account-modification.rules:
+   -w /etc/passwd -p wa -k identity
+   -w /etc/shadow -p wa -k identity
+   -w /etc/group -p wa -k identity
+   -w /etc/gshadow -p wa -k identity
+2. Reload audit rules: augenrules --load
+3. Verify rules are active: auditctl -l | grep identity
+4. Restart auditd if needed: service auditd restart
+
+Contact the system administrator to implement these audit rules.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207414">
     <!--RuleTitle: The VMM must automatically audit account disabling actions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit account disabling via auditd shadow/passwd monitoring-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 automatically audits account disabling actions through auditd.
+
+The automated check verified: (1) auditd rules monitor /etc/shadow for account lock/disable changes (passwd -l, usermod -L), (2) auditd rules monitor /etc/passwd for account shell changes (e.g., setting shell to /sbin/nologin). Account disabling on CentOS 7 modifies these files, and auditd captures all write operations.
+
+When an administrator disables an account using passwd -l or usermod -L, the /etc/shadow file is modified (adding a ! prefix to the password hash), which triggers the auditd watch rule. This provides a complete audit trail of account disabling actions with timestamp, acting user, and affected account.
+
+This meets the VMM SRG requirement for automatic auditing of account disabling actions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Account disabling actions are not fully audited on XCP-ng Dom0.
+
+The automated check found that auditd does not monitor /etc/shadow and/or /etc/passwd for write operations. Without these rules, account lock/disable events (passwd -l, usermod -L) are not recorded in the audit log.
+
+Remediation:
+1. Add audit rules to /etc/audit/rules.d/account-disable.rules:
+   -w /etc/shadow -p wa -k identity
+   -w /etc/passwd -p wa -k identity
+2. Reload audit rules: augenrules --load
+3. Verify: auditctl -l | grep -E "shadow|passwd"
+4. Test by locking a test account and confirming audit log entry: ausearch -k identity
+
+Contact the system administrator to implement these audit rules.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207415">
     <!--RuleTitle: The VMM must automatically audit account removal actions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit account removal via auditd passwd/group/shadow monitoring-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 automatically audits account removal actions through auditd.
+
+The automated check verified: (1) auditd rules monitor /etc/passwd for user account deletions, (2) auditd rules monitor /etc/group for group removals, (3) auditd rules monitor /etc/shadow for corresponding shadow entry removals. When userdel or groupdel commands are executed, modifications to these three files are captured by auditd watch rules.
+
+The audit trail includes the identity of the administrator who performed the removal, the timestamp, the affected account/group, and the system call details. This provides complete accountability for account removal actions on the XCP-ng hypervisor.
+
+This meets the VMM SRG requirement for automatic auditing of account removal actions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Account removal actions are not fully audited on XCP-ng Dom0.
+
+The automated check found that auditd does not monitor all three critical account files (/etc/passwd, /etc/group, /etc/shadow). Without complete coverage, account removal events via userdel/groupdel may not be recorded.
+
+Remediation:
+1. Add audit rules to /etc/audit/rules.d/account-removal.rules:
+   -w /etc/passwd -p wa -k identity
+   -w /etc/group -p wa -k identity
+   -w /etc/shadow -p wa -k identity
+2. Reload audit rules: augenrules --load
+3. Verify: auditctl -l | grep identity
+4. Test by removing a test account and confirming audit entry: ausearch -k identity
+
+Contact the system administrator to implement the missing audit rules.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207416">
     <!--RuleTitle: All guest VM network communications must be implemented through use of virtual network devices provisioned by the VMM.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: VM network via XAPI-provisioned VIFs and virtual bridges-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>All guest VM network communications on XCP-ng use XAPI-provisioned virtual network interfaces (VIFs).
+
+The automated check verified: (1) All VM network interfaces are VIFs connected to XAPI-managed virtual bridges, (2) No PCI NIC passthrough bypasses the virtual network layer, (3) All XAPI-managed networks have corresponding bridge devices in Dom0. XCP-ng provisions all VM networking through XAPI, which creates VIF devices that connect to virtual bridges (xenbr0, xapi0, etc.) managed by the toolstack.
+
+Guest VMs cannot access physical network interfaces directly. All network traffic passes through Dom0's virtual bridge infrastructure, providing full VMM mediation of network communications. This meets the VMM SRG requirement for virtual network device provisioning.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>PCI NIC passthrough was detected, allowing VMs to bypass XAPI-provisioned virtual networking.
+
+The automated check found VM configurations with direct PCI NIC passthrough, which gives guest VMs unmediated access to physical network hardware. This bypasses the VMM's virtual network device provisioning and violates the VMM SRG requirement.
+
+Remediation:
+1. Identify VMs with PCI NIC passthrough: xe vm-list params=name-label,other-config
+2. Replace PCI passthrough NICs with XAPI-managed VIFs: xe vif-create vm-uuid=VM_UUID network-uuid=NET_UUID device=0
+3. Remove PCI passthrough configuration from affected VMs
+4. If passthrough is operationally required, document in the System Security Plan with ISSO/ISSM approval and include in POA&amp;M
+
+Contact the system administrator to reconfigure VM networking.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207417">
     <!--RuleTitle: All interactions between guest VMs and external systems, via other interface devices, must be mediated by the VMM or its service VMs.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: VM-external interaction mediation (USB, GPU, SR-IOV)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>All interactions between guest VMs and external systems are mediated by XCP-ng VMM.
+
+The automated check verified: (1) No USB passthrough devices are configured for any VMs, (2) No GPU/vGPU passthrough groups are assigned to VMs, (3) No SR-IOV network configurations bypass VMM mediation. All VM I/O passes through XAPI-managed virtual devices (VBDs for storage, VIFs for networking, virtual console for display).
+
+XCP-ng mediates all VM-external interactions through the Dom0 service VM and XAPI toolstack. Physical devices are accessed only through virtualized device backends in Dom0, ensuring the VMM maintains control over all VM-to-external communications. This meets the VMM SRG requirement for mediated VM-external interactions via interface devices.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Direct hardware passthrough was detected that bypasses VMM mediation for VM-external interactions.
+
+The automated check found USB passthrough, GPU passthrough, or SR-IOV configurations that allow guest VMs direct access to physical hardware without XAPI/Xen mediation. This violates the VMM SRG requirement for mediated VM-external interactions.
+
+Remediation:
+1. Review USB passthrough: xe pusb-list
+2. Review GPU groups: xe gpu-group-list
+3. Review SR-IOV networks: xe network-list params=name-label,other-config
+4. Remove unauthorized passthrough assignments
+5. Use XAPI-managed virtual devices instead where possible
+6. Document any authorized passthrough in the System Security Plan with ISSO/ISSM approval
+
+Contact the system administrator and ISSO to review all hardware passthrough configurations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207418">
     <!--RuleTitle: The VMM must implement cryptography to protect the integrity of remote access sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Remote access crypto integrity (SSH ciphers + XAPI TLS)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng implements cryptography to protect remote access session integrity.
+
+The automated check verified: (1) SSH is configured with approved ciphers (no weak ciphers such as 3DES, Arcfour, Blowfish, or CAST128), (2) SSH MACs use HMAC-SHA2 or similar approved algorithms, (3) XAPI communicates over HTTPS/TLS on port 443 with a valid TLS certificate at /etc/xensource/xapi-ssl.pem.
+
+All remote management of XCP-ng occurs via SSH (for Dom0 shell access) or XAPI HTTPS (for Xen Orchestra and xe CLI). Both channels implement cryptographic integrity protection. SSH uses approved ciphers and MACs per DoD requirements. XAPI uses TLS for all API communications. This meets the VMM SRG requirement for cryptographic protection of remote access session integrity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Remote access sessions do not fully implement approved cryptography for integrity protection.
+
+The automated check found weak SSH ciphers (3DES, Arcfour, Blowfish, or CAST128) or XAPI HTTPS not properly configured on port 443. Weak ciphers do not meet DoD requirements for cryptographic integrity protection.
+
+Remediation:
+1. Edit /etc/ssh/sshd_config to remove weak ciphers:
+   Ciphers aes256-ctr,aes192-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+   MACs hmac-sha2-512,hmac-sha2-256
+2. Restart sshd: systemctl restart sshd
+3. Verify XAPI TLS: openssl s_client -connect localhost:443
+4. Regenerate XAPI certificate if expired or self-signed per organizational PKI policy
+
+Contact the system administrator to harden SSH and XAPI TLS configuration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207419">
     <!--RuleTitle: The VMM must initiate session audits at system startup.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: auditd enabled at boot and active-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 initiates session audits at system startup via auditd.
+
+The automated check verified: (1) auditd service is enabled at boot (systemctl is-enabled auditd = enabled), (2) auditd service is currently active (systemctl is-active auditd = active), (3) Kernel boot parameter audit=1 ensures audit events are captured from early boot before auditd starts.
+
+With auditd enabled at boot, all session-related events (login, logout, session creation, privilege escalation) are captured from system startup. The audit subsystem initializes during the kernel boot process and auditd takes over logging once userspace is ready. This provides continuous audit coverage from boot to shutdown.
+
+This meets the VMM SRG requirement for initiating session audits at system startup.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The auditd service is not properly configured to start at system boot.
+
+The automated check found that auditd is not enabled at boot or is not currently active. Without auditd starting at boot, session events occurring during system startup are not audited, creating a gap in the audit trail.
+
+Remediation:
+1. Enable auditd at boot: systemctl enable auditd
+2. Start auditd: service auditd start
+3. Add audit=1 to kernel boot parameters in /etc/default/grub:
+   GRUB_CMDLINE_LINUX="... audit=1"
+4. Rebuild grub: grub2-mkconfig -o /boot/grub2/grub.cfg
+5. Verify: systemctl is-enabled auditd; systemctl is-active auditd
+
+Contact the system administrator to enable auditd at boot.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207420">
     <!--RuleTitle: The VMM must produce audit records containing information to establish the identity of any individual or process associated with the event.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: auditd records include uid, auid, pid, exe, subject context-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 produces audit records containing identity information for all audited events.
+
+The automated check verified: (1) auditd is active with configured audit rules, (2) Audit records inherently include identity fields: uid (effective user ID), auid (audit/login user ID), pid (process ID), exe (executable path), and subj (SELinux subject context when applicable). These fields are automatically populated by the Linux audit subsystem for every event.
+
+The auid field is particularly important as it preserves the original login identity even after privilege escalation (su/sudo), providing accountability back to the individual who initiated the session. Combined with timestamp and event type, this provides complete identity information for all audited events.
+
+This meets the VMM SRG requirement for audit records containing identity information.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The audit system is not properly configured to produce records with identity information.
+
+The automated check found that auditd is not active or has no configured audit rules. Without an active audit system, no records are produced to establish the identity of individuals or processes associated with security-relevant events.
+
+Remediation:
+1. Install auditd if missing: yum install audit
+2. Enable and start: systemctl enable auditd; service auditd start
+3. Add baseline audit rules: augenrules --load
+4. Verify records include identity: ausearch -m USER_LOGIN --start recent
+5. Confirm uid, auid, pid fields in audit log: tail /var/log/audit/audit.log
+
+Contact the system administrator to configure the audit subsystem.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207421">
     <!--RuleTitle: The VMM must protect audit tools from unauthorized access.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit binary permissions (root ownership, 755 or tighter)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 audit tools are protected from unauthorized access.
+
+The automated check verified permissions on audit binaries: auditctl, aureport, ausearch, autrace, auditd, and augenrules in /sbin/. All binaries are owned by root with permissions no more permissive than 755, preventing unauthorized users from executing privileged audit functions. The audit log file (/var/log/audit/audit.log) is also verified with permissions 600 or more restrictive, owned by root.
+
+These file permissions ensure that only the root account can modify audit tool configurations and that non-privileged users cannot read raw audit logs containing potentially sensitive security event data. The RPM package management system provides additional integrity assurance.
+
+This meets the VMM SRG requirement for protecting audit tools from unauthorized access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Audit tools have improper access permissions on XCP-ng Dom0.
+
+The automated check found audit binaries or log files with permissions more permissive than required, or not owned by root. This allows unauthorized users to access audit functions or read audit data.
+
+Remediation:
+1. Set correct ownership: chown root:root /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+2. Set correct permissions: chmod 750 /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+3. Protect audit log: chmod 600 /var/log/audit/audit.log; chown root:root /var/log/audit/audit.log
+4. Verify: stat -c "%a %U %G" /sbin/audit*
+
+Contact the system administrator to correct audit tool permissions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207422">
     <!--RuleTitle: The VMM must protect audit tools from unauthorized modification.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit binary write permissions (root-only write)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 audit tools are protected from unauthorized modification.
+
+The automated check verified: (1) All audit binaries (auditctl, aureport, ausearch, autrace, auditd, augenrules) are owned by root, (2) No group or other write permissions exist on any audit binary, (3) Audit configuration files (/etc/audit/auditd.conf, /etc/audit/audit.rules) are owned by root with no unauthorized write access.
+
+Only the root account can modify audit tool binaries and configuration. Group and world write bits are not set on any audit-related files. The RPM package manager provides additional integrity verification (rpm -V audit) to detect unauthorized modifications.
+
+This meets the VMM SRG requirement for protecting audit tools from unauthorized modification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Audit tools may be modified by unauthorized users on XCP-ng Dom0.
+
+The automated check found audit binaries or configuration files with group or world write permissions, or not owned by root. This allows non-root users to potentially modify audit tools or configuration.
+
+Remediation:
+1. Remove unauthorized write permissions from binaries: chmod go-w /sbin/auditctl /sbin/aureport /sbin/ausearch /sbin/autrace /sbin/auditd /sbin/augenrules
+2. Secure configuration files: chmod 640 /etc/audit/auditd.conf /etc/audit/audit.rules; chown root:root /etc/audit/auditd.conf /etc/audit/audit.rules
+3. Verify RPM integrity: rpm -V audit
+4. Verify: stat -c "%a %U %G" /sbin/audit* /etc/audit/*.conf /etc/audit/*.rules
+
+Contact the system administrator to correct audit tool permissions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207423">
     <!--RuleTitle: The VMM must protect audit tools from unauthorized deletion.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: Audit tool deletion protection (directory perms, RPM management)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 audit tools are protected from unauthorized deletion.
+
+The automated check verified: (1) The /sbin directory is owned by root with permissions 755, preventing non-root users from deleting files within it, (2) All audit binaries (auditctl, aureport, ausearch, autrace, auditd, augenrules) are present, (3) Audit tools are RPM-managed (audit package), providing package-level integrity and the ability to restore deleted files via yum reinstall audit.
+
+On CentOS 7-based XCP-ng, the /sbin directory permissions ensure only root can create or delete files. The RPM package management system tracks all audit tool files and can detect or restore unauthorized deletions. This provides defense-in-depth protection against unauthorized removal of audit capabilities.
+
+This meets the VMM SRG requirement for protecting audit tools from unauthorized deletion.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Audit tools may be vulnerable to unauthorized deletion on XCP-ng Dom0.
+
+The automated check found that /sbin directory permissions are not properly restricted, or audit tool binaries are missing. Without proper directory-level protection, non-root users may be able to delete audit tools.
+
+Remediation:
+1. Verify /sbin ownership and permissions: chown root:root /sbin; chmod 755 /sbin
+2. Reinstall missing audit tools: yum reinstall audit
+3. Verify all audit binaries are present: rpm -V audit
+4. Consider enabling immutable attribute on critical binaries: chattr +i /sbin/auditd (requires careful change management)
+
+Contact the system administrator to restore audit tool integrity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207424">
     <!--RuleTitle: The VMM must limit privileges to change software resident within software libraries.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: XCP-ng/Xen library directory permissions (root-only write)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng limits privileges to change software in VMM library directories.
+
+The automated check verified: (1) /opt/xensource/lib is owned by root with no group/world write permissions, (2) /usr/lib64/xen and /usr/lib/xen are owned by root with restricted permissions, (3) /usr/lib64 system libraries are properly protected, (4) No world-writable files exist within /opt/xensource/lib.
+
+Only the root account can modify VMM software libraries including XAPI plugins, Xen hypervisor modules, and supporting libraries. The RPM package manager provides additional integrity verification for system libraries. This ensures that unauthorized users cannot tamper with VMM software components.
+
+This meets the VMM SRG requirement for limiting privileges to change software in libraries.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>Software library directories have overly permissive access on XCP-ng Dom0.
+
+The automated check found VMM library directories or files with group/world write permissions, or world-writable files within /opt/xensource/lib. This allows unauthorized users to modify VMM software components.
+
+Remediation:
+1. Fix library directory permissions: chmod 755 /opt/xensource/lib /usr/lib64/xen /usr/lib/xen
+2. Fix ownership: chown -R root:root /opt/xensource/lib
+3. Remove world-writable files: find /opt/xensource/lib -perm -002 -exec chmod o-w {} \;
+4. Verify RPM integrity: rpm -Va | grep lib
+5. Verify: find /opt/xensource/lib -maxdepth 3 -perm -002 -type f
+
+Contact the system administrator to restrict library directory permissions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207425">
     <!--RuleTitle: The VMM must enforce password complexity by requiring that at least one special character be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 5: PAM pwquality ocredit setting for special characters-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 enforces password complexity requiring at least one special character.
+
+The automated check verified: (1) PAM pwquality or pam_cracklib is configured with ocredit=-1 (or lower), requiring at least one special character in passwords, (2) The setting is active in /etc/security/pwquality.conf or /etc/pam.d/system-auth.
+
+The ocredit parameter with a negative value specifies the minimum number of special (other) characters required. A value of -1 requires at least one special character. This is enforced by PAM during password changes via passwd or other PAM-aware utilities.
+
+This meets the VMM SRG requirement for password complexity enforcement with special characters.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng Dom0 does not enforce the special character requirement for password complexity.
+
+The automated check found that ocredit is not set to -1 (or lower) in /etc/security/pwquality.conf or PAM configuration. Without this setting, passwords can be created without special characters, weakening password strength.
+
+Remediation:
+1. Edit /etc/security/pwquality.conf and set: ocredit = -1
+2. Alternatively, add to /etc/pam.d/system-auth: password requisite pam_pwquality.so ... ocredit=-1
+3. Verify the setting is active: grep ocredit /etc/security/pwquality.conf
+4. Test by attempting to set a password without special characters
+
+Contact the system administrator to configure password complexity requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
