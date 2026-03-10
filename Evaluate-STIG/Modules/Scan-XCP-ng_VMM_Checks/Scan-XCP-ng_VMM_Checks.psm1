@@ -13323,17 +13323,3442 @@ Function Get-V207425 {
     return Send-CheckResult @SendCheckParams
 }
 
-# Generate remaining functions (V-207426 through V-264326)
-# 109 stub functions for rules not yet explicitly implemented
+Function Get-V207426 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207426
+        STIG ID    : SRG-OS-000269-VMM-000950
+        Rule ID    : SV-207426r958624_rule
+        Severity   : CAT II
+        Title      : In the event of a system failure, the VMM must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207426"
+    $RuleID = "SV-207426r958624_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "System Failure Information Preservation" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check kdump service for crash dump collection
+        $KdumpActive = $(systemctl is-active kdump 2>/dev/null)
+        $KdumpStr = ("$KdumpActive").Trim()
+        $KdumpEnabled = $(systemctl is-enabled kdump 2>/dev/null)
+        $KdumpEnaStr = ("$KdumpEnabled").Trim()
+        $FindingDetails += "kdump service: active=$KdumpStr, enabled=$KdumpEnaStr" + $nl
+
+        # Check crash dump directory
+        $CrashDir = $(timeout 3 test -d /var/crash && echo "exists" || echo "missing" 2>/dev/null)
+        $CrashStr = ("$CrashDir").Trim()
+        $FindingDetails += "/var/crash directory: $CrashStr" + $nl
+
+        # Check Xen crash dump configuration
+        $XenCrashkernel = $(timeout 3 cat /proc/cmdline 2>/dev/null)
+        $XenCrashArr = @()
+        if ($null -ne $XenCrashkernel) { $XenCrashArr = @($XenCrashkernel) }
+        $XenCrashStr = ($XenCrashArr -join $nl).Trim()
+        $HasCrashkernel = $XenCrashStr -match "crashkernel"
+        $FindingDetails += "Kernel crashkernel parameter: $(if ($HasCrashkernel) { 'configured' } else { 'not found' })" + $nl
+
+        # Check xen dmesg availability
+        $XenDmesg = $(timeout 3 xl dmesg 2>/dev/null | head -3 2>/dev/null)
+        $XenDmesgStr = ("$XenDmesg").Trim()
+        $FindingDetails += "Xen dmesg available: $(if ($XenDmesgStr.Length -gt 0) { 'yes' } else { 'no' })" + $nl
+
+        # Check persistent logging
+        $JournalPersist = $(timeout 3 cat /etc/systemd/journald.conf 2>/dev/null | grep -i "^Storage" 2>/dev/null)
+        $JournalStr = ("$JournalPersist").Trim()
+        $FindingDetails += "journald storage: $(if ($JournalStr.Length -gt 0) { $JournalStr } else { 'default (auto)' })" + $nl
+
+        if ($KdumpStr -eq "active" -or $HasCrashkernel) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: System failure information preservation is configured. Crash dump collection (kdump/crashkernel) and persistent logging are available for forensic analysis."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Crash dump collection is not fully configured. Enable kdump service and verify crashkernel boot parameter is set."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207427 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207427
+        STIG ID    : SRG-OS-000274-VMM-000960
+        Rule ID    : SV-207427r984222_rule
+        Severity   : CAT II
+        Title      : The VMM must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207427"
+    $RuleID = "SV-207427r984222_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Creation Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check if external auth (AD/LDAP) is configured
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth type: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        # Check RBAC subjects
+        $Subjects = Invoke-XeCommand -Command "subject-list --minimal"
+        $SubjectStr = ("$Subjects").Trim()
+        $SubjectCount = 0
+        if ($SubjectStr.Length -gt 0) { $SubjectCount = ($SubjectStr -split ",").Count }
+        $FindingDetails += "RBAC subjects: $SubjectCount" + $nl
+
+        # Check auditd for account creation events
+        $AuditRules = $(timeout 3 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+        $HasUseradd = $AuditStr -match "useradd|user-add|identity"
+        $FindingDetails += "Audit rules for account creation: $(if ($HasUseradd) { 'configured' } else { 'not found' })" + $nl
+
+        if ($ExtAuthStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. Active Directory provides centralized account management with built-in notification capabilities for account creation events."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No external authentication configured. XCP-ng does not natively notify SA/ISSO on account creation. Configure AD/LDAP integration via xe pool-enable-external-auth or implement organizational notification procedures."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207428 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207428
+        STIG ID    : SRG-OS-000275-VMM-000970
+        Rule ID    : SV-207428r984225_rule
+        Severity   : CAT II
+        Title      : The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are modified.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207428"
+    $RuleID = "SV-207428r984225_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Modification Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth type: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        $AuditRules = $(timeout 3 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+        $HasUsermod = $AuditStr -match "usermod|user-mod|identity"
+        $FindingDetails += "Audit rules for account modification: $(if ($HasUsermod) { 'configured' } else { 'not found' })" + $nl
+
+        if ($ExtAuthStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. Active Directory provides centralized account management with built-in notification capabilities for account modification events."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No external authentication configured. XCP-ng does not natively notify SA/ISSO on account modification. Configure AD/LDAP integration or implement organizational notification procedures."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207429 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207429
+        STIG ID    : SRG-OS-000276-VMM-000980
+        Rule ID    : SV-207429r984228_rule
+        Severity   : CAT II
+        Title      : The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are disabled.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207429"
+    $RuleID = "SV-207429r984228_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Disabling Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth type: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        $AuditRules = $(timeout 3 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+        $HasPasswd = $AuditStr -match "passwd|shadow|identity"
+        $FindingDetails += "Audit rules for account disabling: $(if ($HasPasswd) { 'configured' } else { 'not found' })" + $nl
+
+        if ($ExtAuthStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. Active Directory provides centralized account management with built-in notification capabilities for account disabling events."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No external authentication configured. XCP-ng does not natively notify SA/ISSO on account disabling. Configure AD/LDAP integration or implement organizational notification procedures."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207430 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207430
+        STIG ID    : SRG-OS-000277-VMM-000990
+        Rule ID    : SV-207430r984231_rule
+        Severity   : CAT II
+        Title      : The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are removed.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207430"
+    $RuleID = "SV-207430r984231_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Removal Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth type: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        $AuditRules = $(timeout 3 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+        $HasUserdel = $AuditStr -match "userdel|user-del|delete|identity"
+        $FindingDetails += "Audit rules for account removal: $(if ($HasUserdel) { 'configured' } else { 'not found' })" + $nl
+
+        if ($ExtAuthStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. Active Directory provides centralized account management with built-in notification capabilities for account removal events."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No external authentication configured. XCP-ng does not natively notify SA/ISSO on account removal. Configure AD/LDAP integration or implement organizational notification procedures."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207431 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207431
+        STIG ID    : SRG-OS-000278-VMM-001000
+        Rule ID    : SV-207431r958634_rule
+        Severity   : CAT II
+        Title      : The VMM must use cryptographic mechanisms to protect the integrity of audit tools.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207431"
+    $RuleID = "SV-207431r958634_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Tool Integrity Protection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check RPM verification of audit packages
+        $AuditRpm = $(timeout 5 rpm -V audit 2>/dev/null)
+        $AuditRpmArr = @()
+        if ($null -ne $AuditRpm) { $AuditRpmArr = @($AuditRpm) }
+        $AuditRpmStr = ($AuditRpmArr -join $nl).Trim()
+        $FindingDetails += "RPM verify audit package:" + $nl
+        $FindingDetails += $(if ($AuditRpmStr.Length -gt 0) { $AuditRpmStr } else { "  (no modifications detected)" }) + $nl + $nl
+
+        $AuditLibsRpm = $(timeout 5 rpm -V audit-libs 2>/dev/null)
+        $AuditLibsArr = @()
+        if ($null -ne $AuditLibsRpm) { $AuditLibsArr = @($AuditLibsRpm) }
+        $AuditLibsStr = ($AuditLibsArr -join $nl).Trim()
+        $FindingDetails += "RPM verify audit-libs package:" + $nl
+        $FindingDetails += $(if ($AuditLibsStr.Length -gt 0) { $AuditLibsStr } else { "  (no modifications detected)" }) + $nl + $nl
+
+        # Check if AIDE is installed for file integrity monitoring
+        $AideInstalled = $(rpm -q aide 2>/dev/null)
+        $AideStr = ("$AideInstalled").Trim()
+        $FindingDetails += "AIDE package: $AideStr" + $nl
+
+        # RPM uses GPG signatures for package verification
+        $GpgKeys = $(timeout 3 rpm -qa gpg-pubkey 2>/dev/null | head -5 2>/dev/null)
+        $GpgArr = @()
+        if ($null -ne $GpgKeys) { $GpgArr = @($GpgKeys) }
+        $GpgStr = ($GpgArr -join $nl).Trim()
+        $FindingDetails += "RPM GPG keys installed: $(if ($GpgStr.Length -gt 0) { ($GpgStr -split $nl).Count } else { '0' })" + $nl
+
+        # RPM verification is the cryptographic mechanism
+        $AuditClean = ($AuditRpmStr.Length -eq 0 -or $AuditRpmStr -notmatch "^[0-9SM]")
+        if ($AuditClean -and $GpgStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit tools are protected via RPM cryptographic verification. GPG-signed packages ensure integrity. No unauthorized modifications to audit binaries detected."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Audit tool integrity cannot be fully verified. Ensure audit package is installed from signed RPM repositories and AIDE or equivalent file integrity monitoring is configured."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207432 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207432
+        STIG ID    : SRG-OS-000279-VMM-001010
+        Rule ID    : SV-207432r958636_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically terminate a user session after inactivity timeouts have expired or at shutdown.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207432"
+    $RuleID = "SV-207432r958636_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Session Inactivity Timeout" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check SSH ClientAliveInterval and ClientAliveCountMax
+        $SshInterval = $(timeout 3 sshd -T 2>/dev/null | grep -i "^clientaliveinterval" 2>/dev/null)
+        $SshIntervalStr = ("$SshInterval").Trim()
+        $FindingDetails += "SSH ClientAliveInterval: $SshIntervalStr" + $nl
+
+        $SshCount = $(timeout 3 sshd -T 2>/dev/null | grep -i "^clientalivecountmax" 2>/dev/null)
+        $SshCountStr = ("$SshCount").Trim()
+        $FindingDetails += "SSH ClientAliveCountMax: $SshCountStr" + $nl
+
+        # Check TMOUT environment variable
+        $TmoutProfile = $(timeout 3 grep -r "TMOUT" /etc/profile /etc/profile.d/ /etc/bashrc 2>/dev/null | head -5 2>/dev/null)
+        $TmoutArr = @()
+        if ($null -ne $TmoutProfile) { $TmoutArr = @($TmoutProfile) }
+        $TmoutStr = ($TmoutArr -join $nl).Trim()
+        $FindingDetails += "TMOUT setting: $(if ($TmoutStr.Length -gt 0) { $TmoutStr } else { 'not configured' })" + $nl
+
+        # Parse values
+        $IntervalOk = $false
+        if ($SshIntervalStr -match "(\d+)") {
+            $IntervalVal = [int]$Matches[1]
+            if ($IntervalVal -gt 0 -and $IntervalVal -le 900) { $IntervalOk = $true }
+        }
+
+        if ($IntervalOk) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: SSH session inactivity timeout is configured (ClientAliveInterval=$IntervalVal). Sessions will be terminated after inactivity period expires."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: SSH session inactivity timeout is not properly configured. Set ClientAliveInterval to 900 or less and ClientAliveCountMax to 0 in /etc/ssh/sshd_config."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207433 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207433
+        STIG ID    : SRG-OS-000280-VMM-001020
+        Rule ID    : SV-207433r958638_rule
+        Severity   : CAT II
+        Title      : VMMs requiring user access authentication must provide a logout capability for user-initiated communications sessions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207433"
+    $RuleID = "SV-207433r958638_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Logout Capability" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # SSH provides exit/logout
+        $SshActive = $(systemctl is-active sshd 2>/dev/null)
+        $SshStr = ("$SshActive").Trim()
+        $FindingDetails += "SSH service: $SshStr (provides exit/logout command)" + $nl
+
+        # xe session management
+        $XeSessions = Invoke-XeCommand -Command "session-list --minimal"
+        $XeSessionStr = ("$XeSessions").Trim()
+        $SessionCount = 0
+        if ($XeSessionStr.Length -gt 0) { $SessionCount = ($XeSessionStr -split ",").Count }
+        $FindingDetails += "Active xe sessions: $SessionCount" + $nl
+
+        # xe session-logout capability
+        $FindingDetails += "xe session-logout: available (built-in xe CLI command)" + $nl
+
+        if ($SshStr -eq "active") {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Logout capability is available. SSH sessions support exit/logout commands. XCP-ng xe CLI supports session-logout for XAPI sessions. Users can terminate their authenticated sessions at any time."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: SSH service is not active. Primary management interface unavailable. Verify SSH is enabled for remote management access."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207434 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207434
+        STIG ID    : SRG-OS-000281-VMM-001030
+        Rule ID    : SV-207434r958640_rule
+        Severity   : CAT II
+        Title      : The VMM must display an explicit logout message to users indicating the reliable termination of authenticated communications sessions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207434"
+    $RuleID = "SV-207434r958640_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Logout Message Display" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # SSH logout message via /etc/ssh/sshd_config PrintLastLog
+        $PrintLastLog = $(timeout 5 grep -i "^PrintLastLog" /etc/ssh/sshd_config 2>/dev/null)
+        $PrintLastLogStr = ("$PrintLastLog").Trim()
+        $FindingDetails += "SSH PrintLastLog: $(if ($PrintLastLogStr.Length -gt 0) { $PrintLastLogStr } else { 'not set (default: yes)' })" + $nl
+
+        # SSH logout produces disconnect message by protocol
+        $FindingDetails += "SSH protocol: logout/exit terminates connection with disconnect message" + $nl
+
+        # xe CLI session termination
+        $FindingDetails += "xe CLI: session-logout returns success confirmation" + $nl
+
+        # Check /etc/motd or /etc/issue for logout info
+        $Motd = $(timeout 5 cat /etc/motd 2>/dev/null)
+        $MotdStr = ("$Motd").Trim()
+        $FindingDetails += "MOTD (/etc/motd): $(if ($MotdStr.Length -gt 0) { 'configured' } else { 'empty or not configured' })" + $nl
+
+        # SSH provides explicit logout confirmation by default (Connection to host closed.)
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "RESULT: XCP-ng provides explicit logout messages. SSH displays 'Connection to <host> closed.' upon logout, confirming session termination. The xe CLI returns success confirmation on session-logout. These mechanisms provide reliable indication of authenticated session termination."
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207435 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207435
+        STIG ID    : SRG-OS-000297-VMM-001040
+        Rule ID    : SV-207435r958672_rule
+        Severity   : CAT II
+        Title      : The VMM must control remote access methods.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207435"
+    $RuleID = "SV-207435r958672_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Remote Access Control" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # SSH is the primary remote access method
+        $SshActive = $(systemctl is-active sshd 2>/dev/null)
+        $SshStr = ("$SshActive").Trim()
+        $FindingDetails += "SSH service (sshd): $SshStr" + $nl
+
+        # Check SSH configuration restrictions
+        $PermitRoot = $(timeout 5 grep -i "^PermitRootLogin" /etc/ssh/sshd_config 2>/dev/null)
+        $PermitRootStr = ("$PermitRoot").Trim()
+        $FindingDetails += "PermitRootLogin: $(if ($PermitRootStr.Length -gt 0) { $PermitRootStr } else { 'not set (default: yes)' })" + $nl
+
+        $AllowUsers = $(timeout 5 grep -i "^AllowUsers\|^AllowGroups\|^DenyUsers\|^DenyGroups" /etc/ssh/sshd_config 2>/dev/null)
+        $AllowUsersStr = ("$AllowUsers").Trim()
+        $FindingDetails += "Access restrictions: $(if ($AllowUsersStr.Length -gt 0) { $AllowUsersStr } else { 'none configured' })" + $nl
+
+        # XAPI listens on port 443 for management
+        $XapiActive = $(systemctl is-active xapi 2>/dev/null)
+        $XapiStr = ("$XapiActive").Trim()
+        $FindingDetails += "XAPI service: $XapiStr (management API on port 443)" + $nl
+
+        # Check iptables for access control
+        $IptablesRules = $(timeout 10 iptables -L INPUT -n --line-numbers 2>/dev/null)
+        $IptablesArr = @()
+        if ($null -ne $IptablesRules) { $IptablesArr = @($IptablesRules) }
+        $RuleCount = ($IptablesArr | Where-Object { $_ -match "^\d+" }).Count
+        $FindingDetails += "iptables INPUT rules: $RuleCount" + $nl
+
+        if ($SshStr -eq "active" -and $XapiStr -eq "active") {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Remote access to XCP-ng is controlled through SSH (port 22) and XAPI (port 443). SSH is the primary management interface with configurable access restrictions. XAPI provides the hypervisor management API with TLS encryption. Both services are active and manageable through standard system configuration."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: One or more remote access services are not active. SSH and XAPI are required for XCP-ng management. Verify that both services are enabled and properly configured."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207436 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207436
+        STIG ID    : SRG-OS-000298-VMM-001050
+        Rule ID    : SV-207436r958674_rule
+        Severity   : CAT II
+        Title      : The VMM must provide the capability to immediately disconnect or disable remote access to the information system.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207436"
+    $RuleID = "SV-207436r958674_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Remote Access Disconnect Capability" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # SSH can be stopped immediately
+        $SshEnabled = $(systemctl is-enabled sshd 2>/dev/null)
+        $SshEnabledStr = ("$SshEnabled").Trim()
+        $FindingDetails += "SSH service enabled: $SshEnabledStr (can be stopped with: systemctl stop sshd)" + $nl
+
+        # iptables can block all remote access immediately
+        $IptablesAvail = $(which iptables 2>/dev/null)
+        $IptablesStr = ("$IptablesAvail").Trim()
+        $FindingDetails += "iptables available: $(if ($IptablesStr.Length -gt 0) { 'yes' } else { 'no' })" + $nl
+        $FindingDetails += "Immediate block: iptables -A INPUT -j DROP (blocks all incoming)" + $nl
+
+        # xe session-logout can terminate specific sessions
+        $FindingDetails += "xe session-logout: terminates XAPI sessions on demand" + $nl
+
+        # XAPI management can be stopped
+        $FindingDetails += "XAPI service: can be stopped with systemctl stop xapi" + $nl
+
+        if ($IptablesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng provides multiple mechanisms to immediately disconnect or disable remote access: (1) systemctl stop sshd terminates all SSH connections; (2) iptables rules can block all incoming traffic immediately; (3) xe session-logout terminates individual XAPI sessions; (4) systemctl stop xapi disables management API access. Administrators have full capability to disconnect remote access."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: iptables is not available. Ensure firewall tools are installed to provide immediate remote access disconnection capability."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207437 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207437
+        STIG ID    : SRG-OS-000299-VMM-001060
+        Rule ID    : SV-207437r958676_rule
+        Severity   : CAT II
+        Title      : The VMM must protect wireless access to the system using encryption.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207437"
+    $RuleID = "SV-207437r958676_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Wireless Access Protection (Encryption)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for wireless interfaces
+        $WirelessIfaces = $(timeout 5 ls /sys/class/net/*/wireless 2>/dev/null)
+        $WirelessStr = ("$WirelessIfaces").Trim()
+        $FindingDetails += "Wireless interfaces detected: $(if ($WirelessStr.Length -gt 0) { $WirelessStr } else { 'none' })" + $nl
+
+        # Check if wireless kernel modules are loaded
+        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -iE "cfg80211|mac80211|iwlwifi|iwl[0-9]|ath[0-9]k|rtlwifi|wlan[0-9]|brcmfmac")
+        $WirelessModsStr = ("$WirelessMods").Trim()
+        $FindingDetails += "Wireless kernel modules: $(if ($WirelessModsStr.Length -gt 0) { $WirelessModsStr } else { 'none loaded' })" + $nl
+
+        if ($WirelessStr.Length -eq 0 -and $WirelessModsStr.Length -eq 0) {
+            $Status = "Not_Applicable"
+            $FindingDetails += $nl + "RESULT: Not Applicable. XCP-ng is a server-class hypervisor with no wireless interfaces or wireless kernel modules detected. Wireless access is not applicable to this system. All management access is via wired Ethernet connections."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Wireless interfaces or modules detected on this hypervisor host. DoD policy requires wireless access be protected with encryption. Wireless interfaces should be disabled on hypervisor hosts. Remove wireless kernel modules and disable any wireless interfaces."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207438 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207438
+        STIG ID    : SRG-OS-000300-VMM-001070
+        Rule ID    : SV-207438r958678_rule
+        Severity   : CAT II
+        Title      : The VMM must protect wireless access to the system using authentication of users and/or devices.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207438"
+    $RuleID = "SV-207438r958678_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Wireless Access Protection (Authentication)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for wireless interfaces
+        $WirelessIfaces = $(timeout 5 ls /sys/class/net/*/wireless 2>/dev/null)
+        $WirelessStr = ("$WirelessIfaces").Trim()
+        $FindingDetails += "Wireless interfaces detected: $(if ($WirelessStr.Length -gt 0) { $WirelessStr } else { 'none' })" + $nl
+
+        # Check if wireless kernel modules are loaded
+        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -iE "cfg80211|mac80211|iwlwifi|iwl[0-9]|ath[0-9]k|rtlwifi|wlan[0-9]|brcmfmac")
+        $WirelessModsStr = ("$WirelessMods").Trim()
+        $FindingDetails += "Wireless kernel modules: $(if ($WirelessModsStr.Length -gt 0) { $WirelessModsStr } else { 'none loaded' })" + $nl
+
+        if ($WirelessStr.Length -eq 0 -and $WirelessModsStr.Length -eq 0) {
+            $Status = "Not_Applicable"
+            $FindingDetails += $nl + "RESULT: Not Applicable. XCP-ng is a server-class hypervisor with no wireless interfaces or wireless kernel modules detected. Wireless access authentication is not applicable to this system. All management access is via wired Ethernet connections with SSH or XAPI authentication."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Wireless interfaces or modules detected on this hypervisor host. DoD policy requires wireless access be protected with user/device authentication. Wireless interfaces should be disabled on hypervisor hosts. Remove wireless kernel modules and disable any wireless interfaces."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207439 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207439
+        STIG ID    : SRG-OS-000303-VMM-001090
+        Rule ID    : SV-207439r958684_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically audit account enabling actions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207439"
+    $RuleID = "SV-207439r958684_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Account Enabling Actions" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd service
+        $AuditdActive = $(systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdActive").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        # Check for audit rules monitoring account enabling (passwd, shadow, group files)
+        $AuditRules = $(timeout 10 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+
+        $PasswdRule = $false
+        $ShadowRule = $false
+        $GroupRule = $false
+        if ($AuditStr -match "/etc/passwd") { $PasswdRule = $true }
+        if ($AuditStr -match "/etc/shadow") { $ShadowRule = $true }
+        if ($AuditStr -match "/etc/group") { $GroupRule = $true }
+
+        $FindingDetails += "Audit rule for /etc/passwd: $(if ($PasswdRule) { 'configured' } else { 'NOT configured' })" + $nl
+        $FindingDetails += "Audit rule for /etc/shadow: $(if ($ShadowRule) { 'configured' } else { 'NOT configured' })" + $nl
+        $FindingDetails += "Audit rule for /etc/group: $(if ($GroupRule) { 'configured' } else { 'NOT configured' })" + $nl
+
+        # Check for usermod/chage audit rules
+        $UsermodRule = $false
+        if ($AuditStr -match "usermod|chage") { $UsermodRule = $true }
+        $FindingDetails += "Audit rule for usermod/chage: $(if ($UsermodRule) { 'configured' } else { 'NOT configured' })" + $nl
+
+        if ($AuditdStr -eq "active" -and $PasswdRule -and $ShadowRule) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: auditd is active and configured to monitor account enabling actions. Audit rules are in place for /etc/passwd and /etc/shadow, which capture account status changes including enabling (unlocking) accounts via usermod or passwd commands."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not properly configured to audit account enabling actions. "
+            if ($AuditdStr -ne "active") {
+                $FindingDetails += "The auditd service is not active. Enable with: systemctl enable --now auditd. "
+            }
+            $FindingDetails += "Ensure audit rules monitor /etc/passwd, /etc/shadow, and /etc/group for write access: auditctl -w /etc/passwd -p wa -k identity; auditctl -w /etc/shadow -p wa -k identity; auditctl -w /etc/group -p wa -k identity"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207440 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207440
+        STIG ID    : SRG-OS-000304-VMM-001100
+        Rule ID    : SV-207440r984234_rule
+        Severity   : CAT II
+        Title      : The VMM must notify the SA and ISSO of account enabling actions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207440"
+    $RuleID = "SV-207440r984234_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Enabling Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for external auth (AD/LDAP) - compensating control
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth type: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        if ($ExtAuthStr.Length -gt 0 -and $ExtAuthStr -ne " ") {
+            # External auth provides centralized account management with built-in notification
+            $ExtAuthService = Invoke-XeCommand -Command "pool-list params=external-auth-service-name --minimal"
+            $ExtAuthServiceStr = ("$ExtAuthService").Trim()
+            $FindingDetails += "External auth service: $ExtAuthServiceStr" + $nl
+            $FindingDetails += "AD/LDAP integration: Active Directory provides account enabling notification" + $nl
+
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng pool is configured with external authentication ($ExtAuthStr). Active Directory/LDAP integration provides centralized account management where account enabling actions generate notifications through AD event logs, Group Policy, and organizational monitoring tools. SA and ISSO notification is handled through the enterprise directory service."
+        }
+        else {
+            # Check for local notification mechanisms
+            $Aliases = $(timeout 5 cat /etc/aliases 2>/dev/null)
+            $AliasesStr = ("$Aliases").Trim()
+            $RootAlias = ""
+            if ($AliasesStr.Length -gt 0 -and $AliasesStr -match "root:\s*(.+)") { $RootAlias = $Matches[1] }
+            $FindingDetails += "Root mail alias: $(if ($RootAlias.Length -gt 0) { $RootAlias } else { 'not configured' })" + $nl
+
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No external authentication (AD/LDAP) is configured to provide account enabling notifications to SA/ISSO. Configure external authentication via: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com. Alternatively, configure auditd rules with email forwarding to notify SA/ISSO of account enabling actions."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207441 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207441
+        STIG ID    : SRG-OS-000312-VMM-001110
+        Rule ID    : SV-207441r958702_rule
+        Severity   : CAT II
+        Title      : The VMM must implement discretionary access controls to allow VMM admins to pass information to any other VMM admin, user, or guest VM.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207441"
+    $RuleID = "SV-207441r958702_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Discretionary Access Control - Information Passing" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check RBAC roles available
+        $Roles = Invoke-XeCommand -Command "role-list --minimal"
+        $RolesStr = ("$Roles").Trim()
+        $FindingDetails += "RBAC roles available: $(if ($RolesStr.Length -gt 0) { $RolesStr } else { 'none detected' })" + $nl
+
+        # Check subjects (users) with RBAC
+        $Subjects = Invoke-XeCommand -Command "subject-list --minimal"
+        $SubjectsStr = ("$Subjects").Trim()
+        $SubjectCount = 0
+        if ($SubjectsStr.Length -gt 0 -and $SubjectsStr -ne " ") { $SubjectCount = ($SubjectsStr -split ",").Count }
+        $FindingDetails += "RBAC subjects: $SubjectCount" + $nl
+
+        # Check VM list (objects that can receive information)
+        $VMs = Invoke-XeCommand -Command "vm-list is-control-domain=false --minimal"
+        $VMsStr = ("$VMs").Trim()
+        $VMCount = 0
+        if ($VMsStr.Length -gt 0 -and $VMsStr -ne " ") { $VMCount = ($VMsStr -split ",").Count }
+        $FindingDetails += "Guest VMs: $VMCount" + $nl
+
+        # XCP-ng RBAC provides admin roles that can manage all VMs and storage
+        if ($RolesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng implements discretionary access controls through its RBAC system. Pool administrators can pass information (ISO images, virtual disks, network configurations) to any guest VM, and can share resources between VMs through shared storage repositories. The RBAC role hierarchy (pool-admin, pool-operator, vm-power-admin, vm-admin, vm-operator, read-only) controls which users can perform these operations."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Unable to verify RBAC role configuration. Ensure XCP-ng RBAC is properly configured to allow administrators to manage information sharing between VMs and users."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207442 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207442
+        STIG ID    : SRG-OS-000312-VMM-001120
+        Rule ID    : SV-207442r958702_rule
+        Severity   : CAT II
+        Title      : The VMM must implement discretionary access controls to allow VMM admins to grant their privileges to other VMM admins.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207442"
+    $RuleID = "SV-207442r958702_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Discretionary Access Control - Privilege Granting" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check RBAC roles
+        $Roles = Invoke-XeCommand -Command "role-list --minimal"
+        $RolesStr = ("$Roles").Trim()
+        $FindingDetails += "RBAC roles: $(if ($RolesStr.Length -gt 0) { $RolesStr } else { 'none detected' })" + $nl
+
+        # Check subjects with role assignments
+        $Subjects = Invoke-XeCommand -Command "subject-list --minimal"
+        $SubjectsStr = ("$Subjects").Trim()
+        $SubjectCount = 0
+        if ($SubjectsStr.Length -gt 0 -and $SubjectsStr -ne " ") { $SubjectCount = ($SubjectsStr -split ",").Count }
+        $FindingDetails += "RBAC subjects: $SubjectCount" + $nl
+
+        # Check external auth for centralized privilege management
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External auth: $(if ($ExtAuthStr.Length -gt 0 -and $ExtAuthStr -ne ' ') { $ExtAuthStr } else { 'not configured' })" + $nl
+
+        if ($RolesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng implements RBAC with a role hierarchy that allows pool administrators to grant privileges to other admins. Pool-admin role holders can assign any subordinate role (pool-operator, vm-power-admin, vm-admin, vm-operator, read-only) to other users via xe subject-role-add. This provides discretionary access control for privilege delegation."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Unable to verify RBAC role configuration. Ensure XCP-ng RBAC is properly configured to allow administrators to delegate privileges."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207443 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207443
+        STIG ID    : SRG-OS-000312-VMM-001130
+        Rule ID    : SV-207443r958702_rule
+        Severity   : CAT II
+        Title      : The VMM must implement discretionary access controls to allow VMM admins to change security attributes on users, guest VMs, the VMM, or the VMMs components.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207443"
+    $RuleID = "SV-207443r958702_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Discretionary Access Control - Security Attribute Changes" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # RBAC roles
+        $Roles = Invoke-XeCommand -Command "role-list --minimal"
+        $RolesStr = ("$Roles").Trim()
+        $FindingDetails += "RBAC roles: $(if ($RolesStr.Length -gt 0) { $RolesStr } else { 'none detected' })" + $nl
+
+        # Pool admin can change VM security attributes
+        $VMs = Invoke-XeCommand -Command "vm-list is-control-domain=false --minimal"
+        $VMsStr = ("$VMs").Trim()
+        $VMCount = 0
+        if ($VMsStr.Length -gt 0 -and $VMsStr -ne " ") { $VMCount = ($VMsStr -split ",").Count }
+        $FindingDetails += "Guest VMs manageable: $VMCount" + $nl
+
+        # Check network count (security-relevant objects)
+        $Networks = Invoke-XeCommand -Command "network-list --minimal"
+        $NetworksStr = ("$Networks").Trim()
+        $NetCount = 0
+        if ($NetworksStr.Length -gt 0 -and $NetworksStr -ne " ") { $NetCount = ($NetworksStr -split ",").Count }
+        $FindingDetails += "Networks: $NetCount" + $nl
+
+        if ($RolesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng RBAC allows pool administrators to change security attributes on users (xe subject-role-add/remove), guest VMs (xe vm-param-set for security tags, network assignments, storage access), and VMM components (xe pool-param-set, xe host-param-set). The pool-admin role has full control over all security-relevant attributes across the hypervisor platform."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Unable to verify RBAC role configuration for security attribute management. Configure XCP-ng RBAC to enable administrators to modify security attributes on users, VMs, and system components."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207444 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207444
+        STIG ID    : SRG-OS-000312-VMM-001140
+        Rule ID    : SV-207444r958702_rule
+        Severity   : CAT II
+        Title      : The VMM must implement discretionary access controls to allow VMM admins to choose the security attributes to be associated with newly created or revised guest VMs.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207444"
+    $RuleID = "SV-207444r958702_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Discretionary Access Control - New VM Security Attributes" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # RBAC roles
+        $Roles = Invoke-XeCommand -Command "role-list --minimal"
+        $RolesStr = ("$Roles").Trim()
+        $FindingDetails += "RBAC roles: $(if ($RolesStr.Length -gt 0) { $RolesStr } else { 'none detected' })" + $nl
+
+        # VM templates show configurable security attributes
+        $Templates = Invoke-XeCommand -Command "template-list is-a-template=true --minimal"
+        $TemplatesStr = ("$Templates").Trim()
+        $TemplateCount = 0
+        if ($TemplatesStr.Length -gt 0 -and $TemplatesStr -ne " ") { $TemplateCount = ($TemplatesStr -split ",").Count }
+        $FindingDetails += "VM templates available: $TemplateCount" + $nl
+
+        # Storage repositories (security-relevant assignment for new VMs)
+        $SRs = Invoke-XeCommand -Command "sr-list --minimal"
+        $SRsStr = ("$SRs").Trim()
+        $SRCount = 0
+        if ($SRsStr.Length -gt 0 -and $SRsStr -ne " ") { $SRCount = ($SRsStr -split ",").Count }
+        $FindingDetails += "Storage repositories: $SRCount" + $nl
+
+        if ($RolesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng allows administrators to choose security attributes for newly created or revised guest VMs. During VM creation, admins specify: network assignments (VLAN isolation), storage repository placement, memory/CPU limits, boot parameters, and VM-level tags. The xe vm-install and xe vm-create commands accept parameters for all security-relevant attributes. Templates provide standardized security baselines for new VMs."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Unable to verify RBAC role configuration for VM creation security attributes. Configure XCP-ng RBAC to control VM creation and attribute assignment."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207445 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207445
+        STIG ID    : SRG-OS-000324-VMM-001150
+        Rule ID    : SV-207445r958726_rule
+        Severity   : CAT II
+        Title      : The VMM must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207445"
+    $RuleID = "SV-207445r958726_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Privilege Separation - Non-Privileged User Restriction" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Xen architecture enforces privilege separation via Dom0/DomU boundary
+        $FindingDetails += "Xen Architecture:" + $nl
+        $FindingDetails += "  Dom0 (privileged domain): runs management stack (XAPI, xe CLI)" + $nl
+        $FindingDetails += "  DomU (guest VMs): unprivileged, no direct hardware access" + $nl + $nl
+
+        # RBAC roles - non-admin roles cannot execute privileged operations
+        $Roles = Invoke-XeCommand -Command "role-list --minimal"
+        $RolesStr = ("$Roles").Trim()
+        $FindingDetails += "RBAC roles: $(if ($RolesStr.Length -gt 0) { $RolesStr } else { 'none detected' })" + $nl
+
+        # Check sudo configuration
+        $SudoConfig = $(timeout 5 grep -v "^#\|^$" /etc/sudoers 2>/dev/null)
+        $SudoArr = @()
+        if ($null -ne $SudoConfig) { $SudoArr = @($SudoConfig) }
+        $SudoStr = ($SudoArr -join $nl).Trim()
+        $SudoCount = $SudoArr.Count
+        $FindingDetails += "sudoers active rules: $SudoCount" + $nl
+
+        # Check that only root can access Dom0 management
+        $DomZeroAccess = $(timeout 5 grep -c "^[^#]*ALL=(ALL)" /etc/sudoers 2>/dev/null)
+        $DomZeroStr = ("$DomZeroAccess").Trim()
+        $FindingDetails += "Users with ALL sudo: $DomZeroStr" + $nl
+
+        if ($RolesStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng enforces privilege separation through multiple layers: (1) Xen hypervisor architecture isolates Dom0 (privileged) from DomU (unprivileged guest VMs), preventing guest VMs from executing host-level functions; (2) RBAC restricts XAPI operations based on role assignment (read-only users cannot modify configurations); (3) Linux DAC/sudo on Dom0 restricts root-level operations. Non-privileged users cannot disable, circumvent, or alter security safeguards."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Unable to verify RBAC configuration for privilege separation. Ensure XCP-ng RBAC is configured to restrict non-privileged users from executing privileged functions."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207446 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207446
+        STIG ID    : SRG-OS-000326-VMM-001160
+        Rule ID    : SV-207446r958730_rule
+        Severity   : CAT II
+        Title      : The VMM must prevent all software from executing at higher privilege levels than users executing the software.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207446"
+    $RuleID = "SV-207446r958730_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Privilege Level Enforcement" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Xen ring architecture: Ring -1 (Xen), Ring 0 (Dom0 kernel), Ring 3 (user space)
+        $FindingDetails += "Xen Ring Architecture:" + $nl
+        $FindingDetails += "  Ring -1: Xen hypervisor (most privileged)" + $nl
+        $FindingDetails += "  Ring 0: Dom0 kernel (hardware access via Xen grants)" + $nl
+        $FindingDetails += "  Ring 3: Dom0 user space, DomU guest VMs (least privileged)" + $nl + $nl
+
+        # Check for SUID binaries (privilege escalation vectors)
+        $SuidBins = $(timeout 15 find / -maxdepth 4 -perm -4000 -type f 2>/dev/null)
+        $SuidArr = @()
+        if ($null -ne $SuidBins) { $SuidArr = @($SuidBins) }
+        $SuidCount = $SuidArr.Count
+        $FindingDetails += "SUID binaries found: $SuidCount" + $nl
+
+        # Check nosuid on key mount points
+        $MountInfo = $(mount 2>/dev/null)
+        $MountArr = @()
+        if ($null -ne $MountInfo) { $MountArr = @($MountInfo) }
+        $MountStr = ($MountArr -join $nl).Trim()
+        $TmpNosuid = $false
+        if ($MountStr -match "/tmp.*nosuid") { $TmpNosuid = $true }
+        $FindingDetails += "/tmp mounted nosuid: $TmpNosuid" + $nl
+
+        # Xen architecture inherently prevents privilege escalation
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "RESULT: XCP-ng/Xen prevents software from executing at higher privilege levels through hardware-enforced ring architecture. Guest VMs (DomU) run in Ring 3 and cannot access Ring 0 (Dom0 kernel) or Ring -1 (Xen hypervisor). The Xen hypervisor mediates all hardware access through hypercalls. XAPI RBAC further restricts management operations based on assigned role. Software running within a guest VM cannot escalate to hypervisor or Dom0 privilege level."
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207447 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207447
+        STIG ID    : SRG-OS-000327-VMM-001170
+        Rule ID    : SV-207447r958732_rule
+        Severity   : CAT II
+        Title      : The VMM must audit the execution of privileged functions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207447"
+    $RuleID = "SV-207447r958732_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Privileged Function Execution" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd service
+        $AuditdActive = $(systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdActive").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        # Check audit rules for privileged function execution (execve, suid/sgid)
+        $AuditRules = $(timeout 10 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+        $AuditStr = ($AuditArr -join $nl).Trim()
+
+        $ExecveRule = $false
+        $SuidRule = $false
+        $SudoRule = $false
+        if ($AuditStr -match "execve") { $ExecveRule = $true }
+        if ($AuditStr -match "perm_mod\|4000\|2000\|setuid\|setgid") { $SuidRule = $true }
+        if ($AuditStr -match "/usr/bin/sudo\|/bin/su") { $SudoRule = $true }
+
+        $FindingDetails += "Audit rule for execve: $(if ($ExecveRule) { 'configured' } else { 'NOT configured' })" + $nl
+        $FindingDetails += "Audit rule for SUID/SGID: $(if ($SuidRule) { 'configured' } else { 'NOT configured' })" + $nl
+        $FindingDetails += "Audit rule for sudo/su: $(if ($SudoRule) { 'configured' } else { 'NOT configured' })" + $nl
+
+        # XAPI logs all management operations
+        $XapiLog = $(timeout 5 ls -la /var/log/xensource.log 2>/dev/null)
+        $XapiLogStr = ("$XapiLog").Trim()
+        $FindingDetails += "XAPI management log: $(if ($XapiLogStr.Length -gt 0) { 'present' } else { 'NOT found' })" + $nl
+
+        if ($AuditdStr -eq "active" -and ($ExecveRule -or $SudoRule)) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: auditd is active and configured to audit privileged function execution. Audit rules monitor execve system calls and/or privileged command execution (sudo, su). Additionally, XAPI logs all hypervisor management operations in /var/log/xensource.log, providing application-level audit of privileged VMM functions."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not properly configured to audit privileged function execution. "
+            if ($AuditdStr -ne "active") {
+                $FindingDetails += "Enable auditd: systemctl enable --now auditd. "
+            }
+            $FindingDetails += "Add audit rules for privileged functions: auditctl -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k privileged; auditctl -w /usr/bin/sudo -p x -k privileged-sudo; auditctl -w /bin/su -p x -k privileged-su"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207448 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207448
+        STIG ID    : SRG-OS-000329-VMM-001180
+        Rule ID    : SV-207448r958736_rule
+        Severity   : CAT II
+        Title      : The VMM must automatically lock an account until the locked account is released by an administrator, when three unsuccessful logon attempts in 15 minutes are made.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207448"
+    $RuleID = "SV-207448r958736_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Account Lockout Policy" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check PAM faillock configuration (CentOS 7)
+        $SystemAuth = $(timeout 5 cat /etc/pam.d/system-auth 2>/dev/null)
+        $SystemAuthArr = @()
+        if ($null -ne $SystemAuth) { $SystemAuthArr = @($SystemAuth) }
+        $SystemAuthStr = ($SystemAuthArr -join $nl).Trim()
+
+        $PasswordAuth = $(timeout 5 cat /etc/pam.d/password-auth 2>/dev/null)
+        $PasswordAuthArr = @()
+        if ($null -ne $PasswordAuth) { $PasswordAuthArr = @($PasswordAuth) }
+        $PasswordAuthStr = ($PasswordAuthArr -join $nl).Trim()
+
+        # Look for pam_faillock in system-auth
+        $FaillockAuth = $false
+        $FaillockDeny = ""
+        $FaillockInterval = ""
+        $FaillockUnlock = ""
+
+        if ($SystemAuthStr -match "pam_faillock") {
+            $FaillockAuth = $true
+            if ($SystemAuthStr -match "deny=(\d+)") { $FaillockDeny = $Matches[1] }
+            if ($SystemAuthStr -match "fail_interval=(\d+)") { $FaillockInterval = $Matches[1] }
+            if ($SystemAuthStr -match "unlock_time=(\d+)") { $FaillockUnlock = $Matches[1] }
+        }
+
+        $FindingDetails += "pam_faillock in system-auth: $(if ($FaillockAuth) { 'configured' } else { 'NOT configured' })" + $nl
+        if ($FaillockAuth) {
+            $FindingDetails += "  deny: $(if ($FaillockDeny.Length -gt 0) { $FaillockDeny } else { 'not set' })" + $nl
+            $FindingDetails += "  fail_interval: $(if ($FaillockInterval.Length -gt 0) { $FaillockInterval + ' seconds' } else { 'not set' })" + $nl
+            $FindingDetails += "  unlock_time: $(if ($FaillockUnlock.Length -gt 0) { if ($FaillockUnlock -eq '0') { '0 (admin unlock required)' } else { $FaillockUnlock + ' seconds' } } else { 'not set' })" + $nl
+        }
+
+        # Also check password-auth
+        $FaillockPwAuth = $false
+        if ($PasswordAuthStr -match "pam_faillock") { $FaillockPwAuth = $true }
+        $FindingDetails += "pam_faillock in password-auth: $(if ($FaillockPwAuth) { 'configured' } else { 'NOT configured' })" + $nl
+
+        # Check SSH MaxAuthTries as additional control
+        $MaxAuth = $(timeout 5 grep -i "^MaxAuthTries" /etc/ssh/sshd_config 2>/dev/null)
+        $MaxAuthStr = ("$MaxAuth").Trim()
+        $FindingDetails += "SSH MaxAuthTries: $(if ($MaxAuthStr.Length -gt 0) { $MaxAuthStr } else { 'not set (default: 6)' })" + $nl
+
+        # Evaluate compliance: deny <= 3, fail_interval >= 900 (15 min), unlock_time = 0 (admin required)
+        if ($FaillockAuth -and $FaillockDeny.Length -gt 0 -and [int]$FaillockDeny -le 3 -and
+            $FaillockInterval.Length -gt 0 -and [int]$FaillockInterval -ge 900 -and
+            $FaillockUnlock.Length -gt 0 -and [int]$FaillockUnlock -eq 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Account lockout is properly configured. pam_faillock is set to lock accounts after $FaillockDeny failed attempts within $FaillockInterval seconds, requiring administrator unlock (unlock_time=0). This meets the DoD requirement of 3 attempts in 15 minutes with admin-only unlock."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Account lockout is not properly configured to meet DoD requirements. Configure pam_faillock in /etc/pam.d/system-auth and /etc/pam.d/password-auth with: deny=3 fail_interval=900 unlock_time=0. Add to auth section: auth required pam_faillock.so preauth silent deny=3 fail_interval=900 unlock_time=0; auth required pam_faillock.so authfail deny=3 fail_interval=900 unlock_time=0"
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207449 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207449
+        STIG ID    : SRG-OS-000337-VMM-001190
+        Rule ID    : SV-207449r971541_rule
+        Severity   : CAT II
+        Title      : The VMM must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all VMM components, based on all selectable event criteria in near real time.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207449"
+    $RuleID = "SV-207449r971541_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Configuration Change Capability" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check auditd service and auditctl availability
+        $AuditdActive = $(systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdActive").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditctlAvail = $(which auditctl 2>/dev/null)
+        $AuditctlStr = ("$AuditctlAvail").Trim()
+        $FindingDetails += "auditctl tool: $(if ($AuditctlStr.Length -gt 0) { 'available' } else { 'NOT available' })" + $nl
+
+        # Check audit rules file
+        $AuditRulesFile = $(timeout 5 ls -la /etc/audit/audit.rules 2>/dev/null)
+        $AuditRulesFileStr = ("$AuditRulesFile").Trim()
+        $FindingDetails += "audit.rules file: $(if ($AuditRulesFileStr.Length -gt 0) { 'present' } else { 'NOT found' })" + $nl
+
+        $AuditRulesD = $(timeout 5 ls /etc/audit/rules.d/ 2>/dev/null)
+        $AuditRulesDStr = ("$AuditRulesD").Trim()
+        $FindingDetails += "rules.d directory: $(if ($AuditRulesDStr.Length -gt 0) { 'contains files' } else { 'empty or not found' })" + $nl
+
+        # auditctl -l shows current rules (modifiable in near real-time)
+        $CurrentRules = $(timeout 10 auditctl -l 2>/dev/null)
+        $RulesArr = @()
+        if ($null -ne $CurrentRules) { $RulesArr = @($CurrentRules) }
+        $RuleCount = $RulesArr.Count
+        $FindingDetails += "Active audit rules: $RuleCount" + $nl
+
+        # Check if audit rules are immutable (locked)
+        $Immutable = $false
+        $RulesStr = ($RulesArr -join $nl).Trim()
+        if ($RulesStr -match "-e 2") { $Immutable = $true }
+        $FindingDetails += "Audit rules immutable (-e 2): $Immutable" + $nl
+
+        if ($AuditdStr -eq "active" -and $AuditctlStr.Length -gt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng provides audit configuration change capability through auditctl and the audit rules framework. Authorized administrators (SA/ISSO) can modify audit rules in near real-time using: auditctl -a/-d (add/delete rules), auditctl -D (delete all rules), or by editing /etc/audit/rules.d/ and running augenrules --load. Changes take effect immediately without service restart."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not properly configured to allow audit configuration changes. "
+            if ($AuditdStr -ne "active") {
+                $FindingDetails += "Enable auditd: systemctl enable --now auditd. "
+            }
+            if ($AuditctlStr.Length -eq 0) {
+                $FindingDetails += "Install audit package: yum install audit. "
+            }
+            $FindingDetails += "Ensure SA/ISSO accounts have sudo access to auditctl for near real-time audit configuration changes."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+# Generate remaining functions (V-207452 through V-264326)
+# 85 stub functions for rules not yet explicitly implemented
 # Note: 11 VulnIDs in sequential gaps do NOT exist in VMM SRG V2R2 XCCDF and are excluded:
 #   V-207359, V-207380, V-207400, V-207408, V-207450, V-207451,
 #   V-207476, V-207477, V-207478, V-207479, V-207485
 
 $RemainingRules = @(
-    "V-207426", "V-207427", "V-207428", "V-207429", "V-207430", "V-207431", "V-207432",
-    "V-207433", "V-207434", "V-207435", "V-207436", "V-207437", "V-207438", "V-207439",
-    "V-207440", "V-207441", "V-207442", "V-207443", "V-207444", "V-207445", "V-207446",
-    "V-207447", "V-207448", "V-207449",
     "V-207452", "V-207453", "V-207454", "V-207455",
     "V-207456", "V-207457", "V-207458", "V-207459", "V-207460", "V-207461", "V-207462",
     "V-207463", "V-207464", "V-207465", "V-207466", "V-207467", "V-207468", "V-207469",

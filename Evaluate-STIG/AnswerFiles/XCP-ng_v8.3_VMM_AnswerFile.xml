@@ -2608,336 +2608,480 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207426">
     <!--RuleTitle: In the event of a system failure, the VMM must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: System failure preservation (kdump, crashkernel, xen dmesg)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng preserves system failure information through multiple mechanisms. The kdump service is active and configured with crashkernel boot parameter, which reserves memory for kernel crash dump generation. When a system failure occurs, kdump captures the kernel memory state to /var/crash/ for post-mortem analysis. Additionally, the Xen hypervisor maintains its own crash dump capability through xen-crashdump-analyser and preserves hypervisor console output via dmesg. The /var/log/xensource.log captures XAPI management events leading up to failures. These mechanisms collectively preserve information necessary to determine the cause of system failure and support rapid return to operations. The combination of kernel crash dumps, Xen hypervisor logs, and XAPI event logs provides comprehensive failure analysis capability meeting the VMM SRG requirement for failure information preservation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng is not properly configured to preserve system failure information. The kdump service is either not active or not enabled, or the crashkernel boot parameter is not configured. Without kdump, kernel crash dumps will not be generated during system failures, preventing root cause analysis. To remediate: (1) Install kdump: yum install kexec-tools; (2) Configure crashkernel in GRUB: add crashkernel=auto to kernel parameters in /boot/grub/grub.cfg; (3) Enable and start kdump: systemctl enable --now kdump; (4) Verify kdump is operational: kdumpctl status. The system administrator must ensure crash dump storage has sufficient space and that dumps are reviewed after failures to determine root cause and minimize mission disruption.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207427">
     <!--RuleTitle: The VMM must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account creation notification - AD/LDAP compensating control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng pool is configured with external authentication (AD/LDAP). Active Directory integration provides centralized account management where account creation actions generate notifications through AD event logs (Event ID 4720), Group Policy, and organizational monitoring tools such as SIEM. The SA and ISSO are notified of account creation through the enterprise directory service notification mechanisms. The xe pool-list params=external-auth-type command confirmed external authentication is active. This compensating control meets the VMM SRG requirement for account creation notification by delegating to the enterprise identity management infrastructure which provides built-in notification, audit logging, and approval workflows for account lifecycle events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng pool does not have external authentication (AD/LDAP) configured to provide account creation notifications to SA/ISSO. Without external authentication integration, XCP-ng relies on local account management which does not natively generate notifications when accounts are created. To remediate: (1) Configure external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Configure AD Group Policy to notify SA/ISSO when new accounts are created (Event ID 4720); (3) Alternatively, configure auditd rules with email forwarding: auditctl -w /etc/passwd -p wa -k identity, combined with a mail alias for root to forward to SA/ISSO. The ISSO must ensure organizational notification procedures are documented in the SSP.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207428">
     <!--RuleTitle: The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are modified.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account modification notification - AD/LDAP compensating control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng pool is configured with external authentication (AD/LDAP). Active Directory integration provides centralized account management where account modification actions generate notifications through AD event logs (Event IDs 4738, 4742), Group Policy, and organizational SIEM monitoring. The SA and ISSO receive notification of account modifications through the enterprise directory service. The xe pool-list params=external-auth-type command confirmed external authentication is active. This compensating control meets the VMM SRG requirement for account modification notification by delegating to the enterprise identity management infrastructure which provides comprehensive audit logging and notification workflows for all account lifecycle changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng pool does not have external authentication (AD/LDAP) configured to provide account modification notifications. Without AD integration, account modifications on local accounts do not generate notifications to SA/ISSO. To remediate: (1) Configure external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Configure AD monitoring for account modification events (Event IDs 4738, 4742); (3) Alternatively, configure auditd with mail forwarding for /etc/passwd and /etc/shadow changes. The ISSO must establish notification procedures for account modification events and document them in the System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207429">
     <!--RuleTitle: The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are disabled.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account disabling notification - AD/LDAP compensating control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng pool is configured with external authentication (AD/LDAP). Active Directory integration provides centralized account management where account disabling actions generate notifications through AD event logs (Event IDs 4725, 4726), Group Policy, and organizational SIEM monitoring. The SA and ISSO receive notification when accounts are disabled through the enterprise directory service. The xe pool-list params=external-auth-type command confirmed external authentication is active. This compensating control meets the VMM SRG requirement for account disabling notification by leveraging the enterprise identity management infrastructure notification capabilities.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng pool does not have external authentication (AD/LDAP) configured to provide account disabling notifications. Without AD integration, local account disabling does not generate SA/ISSO notifications. To remediate: (1) Configure external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Configure AD monitoring for account disable events (Event IDs 4725, 4726); (3) Alternatively, configure auditd rules monitoring /etc/shadow with email forwarding to SA/ISSO. The ISSO must document account disabling notification procedures in the System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207430">
     <!--RuleTitle: The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are removed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account removal notification - AD/LDAP compensating control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng pool is configured with external authentication (AD/LDAP). Active Directory integration provides centralized account management where account removal actions generate notifications through AD event logs (Event ID 4726), Group Policy, and organizational SIEM monitoring. The SA and ISSO receive notification when accounts are removed through the enterprise directory service. The xe pool-list params=external-auth-type command confirmed external authentication is active. This compensating control meets the VMM SRG requirement for account removal notification by leveraging the enterprise identity management infrastructure notification capabilities.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng pool does not have external authentication (AD/LDAP) configured to provide account removal notifications. Without AD integration, local account removal does not generate SA/ISSO notifications. To remediate: (1) Configure external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Configure AD monitoring for account removal events (Event ID 4726); (3) Alternatively, configure auditd rules monitoring /etc/passwd and /etc/shadow with email forwarding to SA/ISSO. The ISSO must document account removal notification procedures in the System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207431">
     <!--RuleTitle: The VMM must use cryptographic mechanisms to protect the integrity of audit tools.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Audit tool integrity via RPM verification and GPG signatures-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng audit tools are protected by RPM package management with GPG signature verification. The audit package (containing auditctl, auditd, ausearch, aureport) is installed via RPM with cryptographic signatures verified against the XCP-ng GPG key. Running rpm -V audit confirms file integrity by comparing installed file checksums (MD5/SHA256) against the RPM database. GPG keys are installed in /etc/pki/rpm-gpg/ for verifying package authenticity. This RPM-based integrity protection ensures that audit tool binaries have not been tampered with, meeting the VMM SRG requirement for cryptographic protection of audit tool integrity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that audit tool integrity protection is not properly configured. Either the audit package is not installed, RPM verification shows file modifications (rpm -V audit returns failures), or GPG keys are not configured for signature verification. To remediate: (1) Install the audit package: yum install audit; (2) Verify package integrity: rpm -V audit (should return no output if all files are intact); (3) Ensure GPG keys are installed: rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-xcpng; (4) If files have been modified, reinstall: yum reinstall audit. The system administrator must investigate any audit tool integrity failures before restoring from trusted sources.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207432">
     <!--RuleTitle: The VMM must automatically terminate a user session after inactivity timeouts have expired or at shutdown.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Session inactivity timeout (SSH ClientAliveInterval, TMOUT)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng is configured to automatically terminate user sessions after inactivity timeouts. SSH ClientAliveInterval is configured in /etc/ssh/sshd_config to detect and terminate inactive SSH sessions. The ClientAliveCountMax setting limits the number of keepalive probes before disconnection. Additionally, the TMOUT shell variable is set in /etc/profile or /etc/profile.d/ to enforce interactive shell session timeouts. These combined mechanisms ensure that both SSH connections and interactive console sessions are terminated after the DoD-defined inactivity period, meeting the VMM SRG requirement for automatic session termination on inactivity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that session inactivity timeouts are not properly configured. SSH ClientAliveInterval is either not set or exceeds the DoD-required maximum (typically 600 seconds/10 minutes). To remediate: (1) Set SSH timeout in /etc/ssh/sshd_config: ClientAliveInterval 600 and ClientAliveCountMax 0; (2) Restart sshd: systemctl restart sshd; (3) Set shell timeout: echo "TMOUT=600; export TMOUT; readonly TMOUT" &gt; /etc/profile.d/tmout.sh; (4) Verify: source /etc/profile.d/tmout.sh. The system administrator must ensure all management interfaces enforce session inactivity timeouts per the organization-defined time period (typically 10-15 minutes for privileged sessions).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207433">
     <!--RuleTitle: VMMs requiring user access authentication must provide a logout capability for user-initiated communications sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Logout capability (SSH exit, xe session-logout)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng provides logout capability for user-initiated communications sessions. SSH sessions support exit and logout commands for immediate session termination. The xe CLI provides session-logout command for terminating XAPI management sessions. The sshd service is active, confirming the primary management interface is available with built-in logout functionality. Users can terminate their authenticated sessions at any time through these mechanisms, meeting the VMM SRG requirement for user-initiated session logout capability.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the SSH service is not active on XCP-ng. SSH is the primary management interface providing logout capability through exit/logout commands. Without SSH, users cannot reliably terminate their authenticated sessions. To remediate: (1) Enable SSH: systemctl enable --now sshd; (2) Verify SSH is running: systemctl status sshd; (3) Ensure firewall allows SSH (port 22): iptables -L INPUT -n | grep 22. The system administrator must ensure at least one remote management interface (SSH) is active and provides users the ability to terminate their sessions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207434">
     <!--RuleTitle: The VMM must display an explicit logout message to users indicating the reliable termination of authenticated communications sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Logout message display (SSH disconnect message)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng displays explicit logout messages indicating reliable termination of authenticated sessions. SSH protocol displays "Connection to [host] closed." upon logout, providing explicit confirmation of session termination. The SSH PrintLastLog feature shows login history upon connection. The xe CLI returns success confirmation on session-logout. These mechanisms provide users with reliable indication that their authenticated communication sessions have been properly terminated, meeting the VMM SRG requirement for explicit logout message display.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not confirm explicit logout message display on XCP-ng. SSH should be configured to display connection termination messages. To remediate: (1) Ensure SSH is active: systemctl enable --now sshd; (2) Verify PrintLastLog is enabled in /etc/ssh/sshd_config (default: yes); (3) Optionally configure /etc/motd with logout instructions. The SSH protocol inherently displays "Connection to [host] closed." on logout, which satisfies this requirement when SSH is properly configured and active.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207435">
     <!--RuleTitle: The VMM must control remote access methods.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Remote access control (SSH, XAPI, iptables)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng controls remote access methods through SSH (port 22) and XAPI (port 443). SSH is the primary management interface with configurable access restrictions including AllowUsers, AllowGroups, DenyUsers, DenyGroups, and PermitRootLogin directives. XAPI provides the hypervisor management API with TLS encryption on port 443. Both services are active and their access can be restricted through iptables firewall rules. The combination of SSH access controls, XAPI authentication, and iptables filtering provides comprehensive remote access control meeting the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that one or more remote access services are not properly configured on XCP-ng. Both SSH and XAPI must be active for proper hypervisor management. To remediate: (1) Enable SSH: systemctl enable --now sshd; (2) Enable XAPI: systemctl enable --now xapi; (3) Configure SSH access restrictions in /etc/ssh/sshd_config (AllowUsers, AllowGroups); (4) Configure iptables to restrict access by source IP: iptables -A INPUT -s [trusted_network] -p tcp --dport 22 -j ACCEPT; iptables -A INPUT -s [trusted_network] -p tcp --dport 443 -j ACCEPT. The system administrator must ensure only authorized networks can access management interfaces.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207436">
     <!--RuleTitle: The VMM must provide the capability to immediately disconnect or disable remote access to the information system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Remote access disconnect capability (iptables, systemctl, xe session-logout)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng provides multiple mechanisms to immediately disconnect or disable remote access: (1) systemctl stop sshd terminates all SSH connections immediately; (2) iptables rules can block all incoming traffic (iptables -A INPUT -j DROP); (3) xe session-logout terminates individual XAPI sessions on demand; (4) systemctl stop xapi disables management API access. These mechanisms allow administrators to immediately disconnect remote access in response to security incidents. The iptables utility is available on the system, confirming firewall-based disconnection capability. This meets the VMM SRG requirement for immediate remote access disconnection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that iptables or other firewall tools are not available on XCP-ng for immediate remote access disconnection. Without firewall tools, administrators cannot immediately block all remote access during security incidents. To remediate: (1) Install iptables: yum install iptables-services; (2) Enable iptables service: systemctl enable iptables; (3) Verify iptables is functional: iptables -L. Administrators should prepare emergency disconnection procedures: iptables -A INPUT -j DROP (blocks all traffic) or systemctl stop sshd &amp;&amp; systemctl stop xapi (stops management services). Document these procedures in the incident response plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207437">
     <!--RuleTitle: The VMM must protect wireless access to the system using encryption.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Wireless protection - N/A for server-class hypervisor-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check determined that this requirement is Not Applicable. XCP-ng is a server-class Type 1 hypervisor that runs on rack-mounted or tower server hardware without wireless networking interfaces. The check confirmed no wireless interfaces exist in /sys/class/net/*/wireless and no wireless kernel modules (wifi, iwl, ath, rtl, wlan, 80211) are loaded. All management access to XCP-ng occurs via wired Ethernet connections using SSH (port 22) and XAPI (port 443). Since wireless access is not applicable to this server-class hypervisor platform, the wireless encryption requirement does not apply.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected wireless interfaces or wireless kernel modules on this XCP-ng hypervisor host. Wireless interfaces should not be present on server-class hypervisor systems per DoD security requirements. If wireless access must be used, it must be protected with WPA3 or equivalent FIPS-validated encryption. To remediate: (1) Remove wireless kernel modules: modprobe -r [module_name]; (2) Blacklist wireless modules: echo "blacklist [module_name]" &gt; /etc/modprobe.d/blacklist-wireless.conf; (3) Disable any wireless interfaces: ip link set [interface] down; (4) Remove wireless packages if installed: yum remove iw wireless-tools. Wireless interfaces on hypervisor hosts represent an unnecessary attack surface.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207438">
     <!--RuleTitle: The VMM must protect wireless access to the system using authentication of users and/or devices.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Wireless authentication - N/A for server-class hypervisor-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check determined that this requirement is Not Applicable. XCP-ng is a server-class Type 1 hypervisor that runs on rack-mounted or tower server hardware without wireless networking interfaces. The check confirmed no wireless interfaces exist in /sys/class/net/*/wireless and no wireless kernel modules are loaded. All management access occurs via wired Ethernet connections using SSH and XAPI with authentication. Since wireless access is not applicable to this server-class hypervisor platform, the wireless authentication requirement does not apply.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected wireless interfaces or wireless kernel modules on this XCP-ng hypervisor host. Wireless interfaces should not be present on server-class hypervisor systems. If wireless must be used, it must employ WPA3-Enterprise with 802.1X authentication using DoD-approved certificates. To remediate: (1) Remove wireless kernel modules: modprobe -r [module_name]; (2) Blacklist wireless modules: echo "blacklist [module_name]" &gt; /etc/modprobe.d/blacklist-wireless.conf; (3) Disable wireless interfaces: ip link set [interface] down. Wireless interfaces on hypervisor hosts represent an unnecessary attack surface and should be removed.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207439">
     <!--RuleTitle: The VMM must automatically audit account enabling actions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Audit account enabling via auditd rules on /etc/passwd, /etc/shadow-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that auditd is active and configured to audit account enabling actions on XCP-ng. Audit rules are in place monitoring /etc/passwd and /etc/shadow for write access, which captures account status changes including enabling (unlocking) accounts via usermod -U or passwd commands. When an account is enabled, the file modification is recorded in the audit log with the user, timestamp, and action details. This meets the VMM SRG requirement for automatically auditing account enabling actions through the Linux audit framework.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is not properly configured to audit account enabling actions on XCP-ng. Either the auditd service is not active or audit rules do not monitor the identity files (/etc/passwd, /etc/shadow, /etc/group). To remediate: (1) Enable auditd: systemctl enable --now auditd; (2) Add audit rules: auditctl -w /etc/passwd -p wa -k identity; auditctl -w /etc/shadow -p wa -k identity; auditctl -w /etc/group -p wa -k identity; (3) Make rules persistent in /etc/audit/rules.d/identity.rules; (4) Reload rules: augenrules --load. These rules will capture all account enabling, disabling, creation, and removal events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207440">
     <!--RuleTitle: The VMM must notify the system administrator (SA) and information system security officer (ISSO) of account enabling actions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account enabling notification - AD/LDAP compensating control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng pool is configured with external authentication (AD/LDAP). Active Directory integration provides centralized account management where account enabling actions generate notifications through AD event logs (Event ID 4722 - user account enabled), Group Policy, and organizational SIEM monitoring. The SA and ISSO receive notification of account enabling through the enterprise directory service notification mechanisms. This compensating control meets the VMM SRG requirement for account enabling notification by delegating to the enterprise identity management infrastructure.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that XCP-ng pool does not have external authentication (AD/LDAP) configured to provide account enabling notifications to SA/ISSO. Without AD integration, local account enabling does not generate notifications. To remediate: (1) Configure external authentication: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Configure AD monitoring for account enable events (Event ID 4722); (3) Alternatively, configure auditd with mail forwarding for /etc/shadow changes combined with root mail alias to SA/ISSO. The ISSO must document notification procedures in the System Security Plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207441">
     <!--RuleTitle: The VMM must implement discretionary access controls to allow VMM admins to pass information to any other VMM admin, user, or guest VM.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: DAC - information passing via RBAC and shared storage-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng implements discretionary access controls through its RBAC system. Pool administrators can pass information (ISO images, virtual disks, network configurations) to any guest VM through shared storage repositories, and can share resources between VMs. The RBAC role hierarchy (pool-admin, pool-operator, vm-power-admin, vm-admin, vm-operator, read-only) controls which users can perform these operations. The xe CLI provides commands for managing VM resources, storage, and network assignments. This meets the VMM SRG requirement for discretionary access controls enabling information sharing.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not verify RBAC role configuration on XCP-ng. RBAC roles must be properly configured to allow administrators to pass information between VMs, users, and system components. To remediate: (1) Verify RBAC roles exist: xe role-list; (2) Configure external auth for centralized role management: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (3) Assign appropriate roles to subjects: xe subject-role-add uuid=[subject-uuid] role-uuid=[role-uuid]; (4) Verify shared storage repositories are accessible to authorized administrators. The system administrator must ensure RBAC is properly configured for information sharing controls.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207442">
     <!--RuleTitle: The VMM must implement discretionary access controls to allow VMM admins to grant their privileges to other VMM admins.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: DAC - privilege granting via RBAC role assignment-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng implements RBAC with a role hierarchy that allows pool administrators to grant privileges to other admins. Pool-admin role holders can assign any subordinate role (pool-operator, vm-power-admin, vm-admin, vm-operator, read-only) to other users via xe subject-role-add. This provides discretionary access control for privilege delegation, allowing administrators to grant their privileges to other VMM administrators as needed. The RBAC system ensures that privilege delegation is controlled and auditable.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not verify RBAC role configuration for privilege delegation. RBAC must be configured to allow administrators to grant their privileges to other administrators. To remediate: (1) Verify RBAC roles: xe role-list; (2) Enable external auth: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (3) Assign roles: xe subject-role-add uuid=[subject-uuid] role-uuid=[role-uuid]. The pool-admin role provides full privilege delegation capability through the xe CLI.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207443">
     <!--RuleTitle: The VMM must implement discretionary access controls to allow VMM admins to change security attributes on users, guest VMs, the VMM, or the VMMs components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: DAC - security attribute management via RBAC and xe CLI-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng RBAC allows pool administrators to change security attributes on users (xe subject-role-add/remove), guest VMs (xe vm-param-set for security tags, network assignments, storage access), and VMM components (xe pool-param-set, xe host-param-set). The pool-admin role has full control over all security-relevant attributes. Networks and storage repositories are manageable through the xe CLI, providing granular control over VM isolation and resource access. This meets the VMM SRG requirement for discretionary access control over security attributes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not verify RBAC configuration for security attribute management. Configure XCP-ng RBAC to enable administrators to modify security attributes: (1) Verify roles: xe role-list; (2) Enable external auth for centralized management; (3) Assign pool-admin role to authorized security administrators. The pool-admin role provides full control over user roles, VM parameters, network assignments, and system configuration.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207444">
     <!--RuleTitle: The VMM must implement discretionary access controls to allow VMM admins to choose the security attributes to be associated with newly created or revised guest VMs.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: DAC - new VM security attribute selection via templates and xe CLI-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng allows administrators to choose security attributes for newly created or revised guest VMs. During VM creation via xe vm-install or xe vm-create, administrators specify network assignments (VLAN isolation), storage repository placement, memory/CPU limits, boot parameters, and VM-level tags. VM templates provide standardized security baselines for new VMs. The RBAC system controls which users can create and modify VMs. This meets the VMM SRG requirement for discretionary access control over new VM security attribute selection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not verify RBAC configuration for VM creation security attributes. Configure XCP-ng RBAC to control VM creation and attribute assignment: (1) Verify roles: xe role-list; (2) Create hardened VM templates with approved security configurations; (3) Assign vm-admin or higher role to administrators who need to create VMs. The xe vm-install and xe vm-create commands accept parameters for network, storage, and security-relevant attributes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207445">
     <!--RuleTitle: The VMM must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Privilege separation via Xen architecture, RBAC, and Linux DAC-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng enforces privilege separation through multiple layers: (1) Xen hypervisor architecture isolates Dom0 (privileged) from DomU (unprivileged guest VMs), preventing guest VMs from executing host-level functions; (2) RBAC restricts XAPI operations based on role assignment, with read-only users unable to modify configurations; (3) Linux DAC and sudo on Dom0 restrict root-level operations to authorized administrators. Non-privileged users cannot disable, circumvent, or alter security safeguards. This multi-layered approach meets the VMM SRG requirement for preventing non-privileged privileged function execution.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not verify RBAC configuration for privilege separation. XCP-ng must be configured to prevent non-privileged users from executing privileged functions. To remediate: (1) Enable RBAC via external auth: xe pool-enable-external-auth auth-type=AD service-name=domain.example.com; (2) Assign restrictive roles (read-only, vm-operator) to non-privileged users; (3) Restrict Dom0 SSH access to authorized administrators only via /etc/ssh/sshd_config AllowUsers directive; (4) Configure sudo to limit root access. Verify RBAC roles are properly assigned with: xe subject-list.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207446">
     <!--RuleTitle: The VMM must prevent all software from executing at higher privilege levels than users executing the software.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Privilege level enforcement via Xen ring architecture-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng/Xen prevents software from executing at higher privilege levels through hardware-enforced ring architecture. The Xen hypervisor runs at Ring -1 (most privileged), the Dom0 kernel at Ring 0 (hardware access mediated by Xen), and user space/guest VMs at Ring 3 (least privileged). Guest VMs cannot access Ring 0 or Ring -1 — all hardware access is mediated through Xen hypercalls. XAPI RBAC further restricts management operations based on assigned role. SUID binary analysis and mount point nosuid checks confirm Dom0 privilege escalation controls. This hardware-enforced privilege separation meets the VMM SRG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>This finding should not normally occur for XCP-ng, as the Xen hypervisor architecture inherently enforces privilege level separation through hardware virtualization extensions (VT-x/AMD-V). If this finding is Open, investigate whether the Xen hypervisor is properly loaded and hardware virtualization is enabled in BIOS/UEFI. Verify with: xl info | grep virt_caps. Ensure Dom0 SUID binaries are minimized and /tmp is mounted with nosuid. The Xen ring architecture (-1/0/3) provides the fundamental privilege separation that prevents software from escalating privileges.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207447">
     <!--RuleTitle: The VMM must audit the execution of privileged functions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Audit privileged function execution via auditd and XAPI logs-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that auditd is active and configured to audit privileged function execution on XCP-ng. Audit rules monitor execve system calls for privilege escalation and/or specifically track privileged commands (sudo, su). Additionally, XAPI logs all hypervisor management operations in /var/log/xensource.log, providing application-level audit of privileged VMM functions including VM lifecycle, storage operations, and configuration changes. This dual-layer approach (Linux auditd + XAPI management logging) meets the VMM SRG requirement for auditing privileged function execution.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is not properly configured to audit privileged function execution. To remediate: (1) Enable auditd: systemctl enable --now auditd; (2) Add privileged function audit rules: auditctl -a always,exit -F arch=b64 -S execve -C uid!=euid -F euid=0 -k privileged; auditctl -w /usr/bin/sudo -p x -k privileged-sudo; auditctl -w /bin/su -p x -k privileged-su; (3) Make persistent in /etc/audit/rules.d/privileged.rules; (4) Reload: augenrules --load. These rules capture all privilege escalation events for security audit review.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207448">
     <!--RuleTitle: The VMM must automatically lock an account until the locked account is released by an administrator, when three unsuccessful logon attempts in 15 minutes are made.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Account lockout via pam_faillock (CentOS 7)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng is configured with pam_faillock for account lockout policy. The PAM configuration in /etc/pam.d/system-auth includes pam_faillock with deny=3 (lock after 3 failures), fail_interval=900 (15-minute window), and unlock_time=0 (administrator-only unlock). This configuration locks accounts after three unsuccessful logon attempts within 15 minutes and requires an administrator to release the locked account using faillock --user [username] --reset. This meets the DoD requirement for account lockout per the VMM SRG.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that account lockout is not properly configured on XCP-ng to meet DoD requirements. The pam_faillock module must be configured with deny &lt;= 3, fail_interval &gt;= 900, and unlock_time = 0. To remediate, add to /etc/pam.d/system-auth and /etc/pam.d/password-auth: (1) In auth section, before pam_unix: auth required pam_faillock.so preauth silent deny=3 fail_interval=900 unlock_time=0; (2) After pam_unix: auth required pam_faillock.so authfail deny=3 fail_interval=900 unlock_time=0; (3) In account section: account required pam_faillock.so. Verify with: faillock --user root. SSH MaxAuthTries should also be set to 3 or fewer in /etc/ssh/sshd_config.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207449">
     <!--RuleTitle: The VMM must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all VMM components, based on all selectable event criteria in near real time.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 6: Audit configuration change capability via auditctl-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng provides audit configuration change capability through auditctl and the audit rules framework. Authorized administrators (SA/ISSO) can modify audit rules in near real-time using auditctl -a/-d (add/delete rules), auditctl -D (delete all rules), or by editing /etc/audit/rules.d/ and running augenrules --load. Changes take effect immediately without service restart. The auditd service is active and the auditctl tool is available, providing full capability to adjust auditing based on selectable event criteria. This meets the VMM SRG requirement for near real-time audit configuration changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is not properly configured to allow near real-time audit configuration changes. To remediate: (1) Install audit package: yum install audit; (2) Enable auditd: systemctl enable --now auditd; (3) Verify auditctl is available: which auditctl; (4) Ensure SA/ISSO accounts have sudo access to auditctl for adding, removing, and modifying audit rules; (5) Create audit rules directory: mkdir -p /etc/audit/rules.d; (6) Test rule changes: auditctl -w /tmp -p wa -k test-rule, then verify with auditctl -l. Audit configuration must be changeable in near real-time to respond to security events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
