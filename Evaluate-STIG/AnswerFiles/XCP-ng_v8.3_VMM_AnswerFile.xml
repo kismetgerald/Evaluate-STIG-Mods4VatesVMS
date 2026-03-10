@@ -3088,336 +3088,473 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207452">
     <!--RuleTitle: The VMM must allocate audit record storage capacity to store at least one weeks worth of audit records when audit records are not immediately sent to a central audit record storage facility.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit storage capacity-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that the auditd service is active and audit record storage is configured with sufficient capacity. The check examines auditd.conf settings including max_log_file (individual log size in MB), num_logs (number of rotated logs), and max_log_file_action (rotation behavior). The total audit storage capacity is calculated as max_log_file multiplied by num_logs. The check also reports the available disk space on the /var/log/audit partition. XCP-ng hypervisors typically generate moderate audit volume, and the configured capacity provides sufficient storage for at least one week of audit records. The auditd log rotation mechanism (max_log_file_action) ensures older logs are managed according to policy. This satisfies the NIST AU-4 requirement for adequate audit storage capacity when records are not immediately forwarded to a central facility.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that audit record storage capacity is insufficient or auditd is not active. The check examines auditd.conf for max_log_file, num_logs, and max_log_file_action settings and calculates total capacity. A minimum of 40 MB total capacity is required for the automated check to pass, though actual requirements depend on audit volume. To remediate: (1) Enable auditd if not active: systemctl enable --now auditd. (2) Configure adequate storage in /etc/audit/auditd.conf: set max_log_file to at least 50 MB, num_logs to at least 10, and max_log_file_action to ROTATE. (3) Ensure the /var/log/audit partition has sufficient free space. (4) Monitor audit log growth over one week to calibrate storage requirements. The system administrator should work with the ISSO to determine appropriate retention capacity based on the organization's audit policy and the hypervisor's typical audit event volume.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207453">
     <!--RuleTitle: The VMM must off-load audit records onto a different system or media than the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit off-loading-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that audit records are configured for off-loading to a remote system. The check examines rsyslog configuration for remote forwarding targets (using @@ for TCP or @ for UDP syslog forwarding) and the audisp au-remote plugin for dedicated audit record forwarding. At least one remote log forwarding mechanism was found to be active, ensuring audit records are sent to a different system than the XCP-ng hypervisor being audited. This provides defense-in-depth by maintaining audit records on a separate system where they cannot be tampered with by a compromised hypervisor. The remote log server should be configured to receive and retain these records per organizational audit retention policy. This satisfies the NIST AU-4(1) requirement for off-loading audit records to a separate system.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that no remote audit off-loading is configured. Neither rsyslog remote forwarding nor the audisp au-remote plugin is active. To remediate: (1) Configure rsyslog for remote forwarding by adding a line such as '*.* @@logserver.domain:514' to /etc/rsyslog.conf (use @@ for TCP, @ for UDP). (2) Alternatively, install audispd-plugins (yum install audispd-plugins), enable the au-remote plugin in /etc/audisp/plugins.d/au-remote.conf (set active = yes), and configure the remote server in /etc/audisp/audisp-remote.conf. (3) Restart the appropriate service: systemctl restart rsyslog or systemctl restart auditd. The system administrator must ensure audit records are forwarded to a centralized log management system that is separate from the XCP-ng hypervisor, as required by NIST AU-4(1) and organizational audit policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207454">
     <!--RuleTitle: The VMM must provide an immediate warning to the SA and ISSO, at a minimum, when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit storage warning at 75%-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that auditd is configured with space_left and space_left_action settings to warn when audit storage reaches the threshold. The space_left parameter defines the remaining disk space (in MB) that triggers the warning, and space_left_action is set to an acceptable notification action (email, exec, or syslog). The space_left value should represent approximately 25% of total audit partition capacity to trigger at the 75% usage mark. This configuration ensures that the SA and ISSO receive immediate warning when audit record storage approaches capacity, allowing proactive intervention before audit records are lost. The admin_space_left and admin_space_left_action settings provide an additional critical-level warning. This satisfies NIST AU-5(1) requirements for storage capacity threshold notification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that auditd is not properly configured to warn when audit storage reaches 75% capacity. Either space_left is not configured or space_left_action is set to an unacceptable value (ignore or suspend). To remediate: (1) Calculate 25% of the /var/log/audit partition size. (2) Set space_left to that value in /etc/audit/auditd.conf. (3) Set space_left_action to 'email' (requires configured mail system) or 'exec' (to run a custom notification script). (4) Optionally set admin_space_left to a smaller value and admin_space_left_action to 'halt' or 'single' for critical-level warnings. (5) Restart auditd: systemctl restart auditd. The system administrator must work with the ISSO to ensure notification reaches designated personnel when storage reaches the 75% threshold.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207455">
     <!--RuleTitle: The VMM must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit failure real-time alerts-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that auditd is configured with appropriate failure event actions. The check examines disk_full_action, disk_error_action, and admin_space_left_action in /etc/audit/auditd.conf. All three are set to acceptable alert actions (email, exec, syslog, halt, or single) that provide immediate notification or system protection when audit failures occur. disk_full_action responds when the audit partition is full, disk_error_action responds to disk I/O errors affecting audit logging, and admin_space_left_action provides critical-level space warnings. These actions ensure the SA and ISSO are immediately alerted to audit failure events that could result in lost audit records, satisfying NIST AU-5 requirements for real-time audit failure alerting.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that auditd is not fully configured for real-time audit failure alerts. One or more failure event actions (disk_full_action, disk_error_action, admin_space_left_action) are either not configured or set to unacceptable values (ignore or suspend). To remediate, set the following in /etc/audit/auditd.conf: disk_full_action = halt (stops system if audit disk is full, preventing unaudited operations), disk_error_action = halt (stops system on audit I/O errors), admin_space_left_action = email or exec (sends notification when critically low on space). After making changes, restart auditd: systemctl restart auditd. For email alerts, ensure a mail transport agent is configured. For exec alerts, create a notification script that alerts SA/ISSO via the organization's alerting system.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207456">
     <!--RuleTitle: The VMM must provide an audit reduction capability that supports on-demand audit review and analysis.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit reduction - on-demand review-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that ausearch and aureport are installed, providing audit reduction capability for on-demand review and analysis. ausearch enables filtering audit records by time range (-ts/-te), user (-ua), event type (-m), key (-k), process ID (-p), and other criteria. aureport generates summary reports across multiple audit event categories. These tools are part of the standard Linux audit package and operate on the binary audit log format stored in /var/log/audit/. Together they provide comprehensive audit reduction capability allowing authorized administrators to perform targeted, on-demand review and analysis of audit records without requiring external tools. This satisfies NIST AU-7 requirements for audit reduction capability.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that audit reduction tools (ausearch and/or aureport) are not installed. These tools are essential for on-demand review and analysis of audit records. To remediate: install the audit package using yum install audit. This provides ausearch for targeted filtering and searching of audit records and aureport for generating summary analysis reports. After installation, verify the tools are available: which ausearch aureport. The system administrator should ensure auditd is also active (systemctl enable --now auditd) to generate the audit records that these tools analyze. Without audit reduction capability, administrators cannot efficiently review the volume of audit data generated by the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207457">
     <!--RuleTitle: The VMM must provide an audit reduction capability that supports after-the-fact investigations of security incidents.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit reduction - after-the-fact investigations-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that ausearch and aureport are installed, providing audit reduction capability for after-the-fact investigation of security incidents. ausearch supports forensic-grade filtering including time-range correlation (-ts/-te for incident timeframes), user tracking (-ua/-ui), process analysis (-p), syscall investigation (-sc), and keyword-based search (-k). Multiple archived audit log files are retained, enabling historical investigation. aureport provides incident-focused summary reports including authentication events, anomalies, and failed actions. These capabilities enable incident responders to reconstruct event timelines, identify affected users and processes, and correlate audit evidence across the hypervisor's audit trail. This satisfies NIST AU-7 requirements for after-the-fact investigation support.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that audit reduction tools for after-the-fact investigations are not installed. Without ausearch and aureport, incident responders cannot efficiently analyze audit records to investigate security incidents. To remediate: install the audit package (yum install audit) and ensure auditd is running (systemctl enable --now auditd). Configure adequate audit log retention in /etc/audit/auditd.conf (increase num_logs and max_log_file) to ensure sufficient historical data for investigations. The system administrator should also configure audit rules to capture security-relevant events (privilege escalation, authentication, file access) that are typically needed during incident investigations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207458">
     <!--RuleTitle: The VMM must provide a report generation capability that supports on-demand audit review and analysis.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Report generation - on-demand review-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that aureport is installed, providing report generation capability for on-demand audit review and analysis. aureport generates structured reports across multiple audit event categories: -l (logins), -f (file access), -x (executables), -u (users), -p (processes), -s (syscalls), -a (anomaly events), -c (configuration changes). Reports can be filtered by time range (-ts/-te) and combined with --summary for statistical overviews. The tool operates on the binary audit log format and produces human-readable output suitable for on-demand review by SA/ISSO personnel. This satisfies NIST AU-7 requirements for report generation capability supporting on-demand audit review and analysis.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that report generation tools are not installed. aureport is required for generating structured audit reports for on-demand review. To remediate: install the audit package (yum install audit) which provides aureport along with ausearch and other audit tools. After installation, verify: which aureport. Ensure auditd is active to generate the audit records that aureport analyzes. The system administrator should familiarize themselves with aureport's report categories (logins, files, users, anomalies, etc.) and time-range filtering to support on-demand reporting requirements from the ISSO or auditors.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207459">
     <!--RuleTitle: The VMM must provide a report generation capability that supports on-demand reporting requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Report generation - on-demand reporting-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that aureport and ausearch are installed along with standard system reporting tools (last, lastlog). aureport supports multiple report types that fulfill various on-demand reporting requirements: login reports (-l), file access reports (-f), executable reports (-x), user activity reports (-u), process reports (-p), syscall reports (-s), anomaly reports (-a), modification reports (-m), and statistical summaries (--summary). The last and lastlog commands provide additional login history reporting. These tools collectively enable the generation of customizable, on-demand audit reports that satisfy organizational reporting requirements for STIG compliance, incident response, and routine security monitoring.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that report generation tools are not installed. aureport is required for generating customizable audit reports. To remediate: install the audit package (yum install audit) to provide aureport and ausearch. Ensure auditd is active (systemctl enable --now auditd). After installation, administrators can generate on-demand reports using aureport with category flags (-l, -f, -x, -u, -p, -s, -a, -m) and time-range filtering (-ts/-te). The system administrator should establish standard operating procedures for generating periodic and on-demand audit reports to meet organizational reporting requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207460">
     <!--RuleTitle: The VMM must provide a report generation capability that supports after-the-fact investigations of security incidents.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Report generation - after-the-fact investigations-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that aureport and ausearch are installed, providing report generation capability for after-the-fact investigation of security incidents. aureport generates incident-focused reports including anomaly events (-a), failed actions (--failed), authentication events (-au), login attempts (--login), and account modifications (-m). Combined with ausearch time-range filtering, incident responders can generate targeted forensic reports across audit log history. Xen hypervisor logs (/var/log/xen/) provide additional hypervisor-specific event data. This multi-source report generation capability enables comprehensive after-the-fact investigation of security incidents affecting the hypervisor, including VM-level events, management API operations, and system-level security events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that report generation tools for incident investigation are not installed. Install the audit package (yum install audit) to provide aureport for generating incident-focused reports and ausearch for forensic data correlation. Ensure auditd is active and configure adequate log retention for historical investigation. The system administrator should ensure audit rules capture security-relevant events and that incident responders have appropriate access to audit tools and log files for generating investigation reports.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207461">
     <!--RuleTitle: The VMM that provides an audit reduction capability must not alter original content or time ordering of audit records.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit reduction content preservation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that ausearch operates in read-only mode against audit log files. ausearch filters and displays audit records without modifying the original audit.log files in /var/log/audit/. The Linux audit subsystem writes records sequentially with kernel-generated timestamps, and ausearch preserves this chronological time ordering in its output. The audit log files are protected by restrictive file permissions (typically 600 root:root) ensuring only the audit daemon can write to them. ausearch is a standard component of the Linux Audit Framework maintained by Red Hat and is designed specifically for non-destructive read-only access to audit records. This architecture ensures original content and time ordering are never altered during audit reduction operations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that ausearch is not installed. Install the audit package (yum install audit) to provide ausearch, which operates in read-only mode and preserves original content and time ordering of audit records during reduction operations. The standard Linux audit tools are designed to never modify the original audit log data.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207462">
     <!--RuleTitle: The VMM that provides a report generation capability must not alter original content or time ordering of audit records.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Report generation content preservation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that aureport operates in read-only mode against audit log files. aureport reads audit records and generates summary reports without modifying the original audit.log content in /var/log/audit/. Reports maintain chronological time ordering based on kernel-generated epoch timestamps. The audit log files are protected by restrictive file permissions ensuring only the audit daemon can write to them. aureport is a standard component of the Linux Audit Framework and is designed specifically for non-destructive report generation from binary audit logs. This ensures original content and time ordering of audit records are preserved during all report generation operations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that aureport is not installed. Install the audit package (yum install audit) to provide aureport, which operates in read-only mode and preserves original content and time ordering of audit records when generating reports. The standard Linux audit reporting tools are designed to never modify the original audit log data.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207463">
     <!--RuleTitle: The VMM must, for networked systems, compare internal information system clocks at least every 24 hours with an authoritative time source.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: NTP 24-hour time comparison-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that NTP time synchronization is active (via chronyd or ntpd) with authoritative time sources configured. The check examines service status, configured time servers from chrony.conf or ntp.conf, and current synchronization status. NTP clients poll time servers at intervals ranging from 64 seconds (minpoll 6) to 1024 seconds (maxpoll 10) by default, which far exceeds the 24-hour comparison requirement. Chrony sources and tracking information confirm active synchronization with the configured authoritative time servers. This ensures the XCP-ng hypervisor's internal clock is continuously compared with authoritative time sources well within the required 24-hour interval, satisfying NIST AU-8(1)(a) requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that NTP time synchronization is not properly configured. Either no NTP service (chronyd or ntpd) is active, or no authoritative time sources are configured. To remediate: (1) Enable chronyd: systemctl enable --now chronyd. (2) Configure authoritative time sources in /etc/chrony.conf, such as DoD NTP servers (e.g., server ntp.mil iburst) or organizational time servers. (3) Restart chronyd: systemctl restart chronyd. (4) Verify synchronization: chronyc sources. The system administrator must configure at least one authoritative time source to ensure the internal clock is compared at least every 24 hours as required by NIST AU-8(1)(a).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207464">
     <!--RuleTitle: The VMM must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Clock synchronization 1-second threshold-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that NTP time synchronization is active via chronyd or ntpd. The check examines service status, chrony.conf or ntp.conf for the makestep directive, and current time offset from the authoritative source. chronyd uses the makestep directive to enable immediate clock stepping for offsets larger than the configured threshold and continuous slewing for smaller offsets. Both mechanisms ensure the system clock is automatically synchronized when the time difference exceeds one second. The current system time offset and root delay are reported to confirm active synchronization. This satisfies NIST AU-8(1)(b) requirements for automatic clock synchronization when time difference exceeds one second.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that no NTP time synchronization service is active. Without NTP, the system clock will drift and cannot be automatically corrected when the difference exceeds one second. To remediate: (1) Enable chronyd: systemctl enable --now chronyd. (2) Configure the makestep directive in /etc/chrony.conf (e.g., makestep 1 3) to allow clock stepping for offsets greater than 1 second during the first 3 updates. (3) Configure authoritative time sources. (4) Restart chronyd and verify: chronyc tracking. This ensures compliance with NIST AU-8(1)(b) automatic synchronization requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207465">
     <!--RuleTitle: The VMM must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit timestamp 1-second granularity-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that auditd is active and recording timestamps with sub-second (millisecond) precision, exceeding the one-second granularity requirement. The Linux Audit Framework records each audit event with a timestamp in epoch format (msg=audit(EPOCH.MILLISECONDS:SERIAL)), where the decimal portion provides millisecond-level precision. This is a built-in capability of the kernel audit subsystem that cannot be configured to a lower granularity. A sample audit record is displayed to demonstrate the timestamp format. The log_format setting confirms the audit log output format. This inherent sub-second precision satisfies the NIST AU-8(2) requirement for one-second minimum timestamp granularity.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that auditd is not active. Without the audit service running, no audit records with timestamps are being generated. Enable the audit service: systemctl enable --now auditd. The Linux audit framework inherently provides sub-second (millisecond) timestamp precision when active, exceeding the one-second granularity requirement. No additional configuration is needed for timestamp precision once auditd is running.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207466">
     <!--RuleTitle: The VMM must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit timestamps mappable to UTC-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that auditd is active and records timestamps in epoch format (seconds since 1970-01-01 00:00:00 UTC). Epoch timestamps are inherently in UTC and directly mappable to Coordinated Universal Time regardless of the system's configured local timezone. The check displays the system timezone configuration and confirms auditd is generating records. Tools such as ausearch and aureport can convert epoch timestamps to human-readable UTC or local time representations. This architecture ensures all audit records can be correlated across systems using a common UTC time reference, satisfying NIST AU-8(2) requirements for UTC-mappable audit timestamps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that auditd is not active. Without the audit service running, no audit records with UTC-mappable timestamps are being generated. Enable the audit service: systemctl enable --now auditd. The Linux audit framework records timestamps in UTC-based epoch format, which satisfies the UTC/GMT mapping requirement. Optionally, set the system timezone to UTC (timedatectl set-timezone UTC) for consistency with audit timestamps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207467">
     <!--RuleTitle: The VMM must enforce dual authorization for movement and/or deletion of all audit information, when such movement or deletion is not part of an authorized automatic process.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Dual authorization for audit data (always Open - organizational)-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check reports audit log file permissions, directory ownership, audit rule immutability status, and file watches. Dual authorization for movement/deletion of audit information requires organizational policy controls beyond what XCP-ng can enforce technically through its native capabilities. While audit log files are restricted to root ownership with restrictive permissions, and audit rules can be made immutable (-e 2), the dual authorization requirement (two separate individuals must independently authorize) must be enforced through organizational procedures. Recommended organizational controls include: requiring ISSO approval before SA can delete or move audit logs via a formal change request process, implementing ticket-based change control for audit data operations, maintaining a log of all audit data movement and deletion activities, and configuring sudo to require a separate authorization for audit-related commands.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207468">
     <!--RuleTitle: The VMM must prohibit user installation of software without explicit privileged status.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Software installation privilege restriction-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that XCP-ng enforces privileged access for software and VM installation through multiple mechanisms. RPM/YUM package installation requires root privileges as the binaries are owned by root with standard permissions. XAPI RBAC restricts VM creation and management operations to pool-admin and pool-operator roles. Dom0 SSH access is limited to authorized administrators. The check examines yum and rpm binary permissions, RBAC role availability, configured RBAC subjects, and sudo configuration. Non-privileged users cannot install software packages or create guest VMs without explicit elevated privileges. This multi-layer privilege enforcement satisfies NIST CM-11(2) requirements for prohibiting user software installation without explicit privileged status.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found potential weaknesses in software installation privilege controls. Review and tighten access controls: (1) Ensure yum/rpm binaries have restrictive permissions (root ownership, no world-execute on management scripts). (2) Configure XAPI RBAC with explicit role assignments via xe subject-add. (3) Restrict sudo access to authorized administrators only. (4) Limit SSH access to Dom0 using AllowUsers/AllowGroups in sshd_config. Non-privileged users must not be able to install software or create VMs without explicit administrative authorization.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207469">
     <!--RuleTitle: The VMM must notify designated personnel if baseline configurations are changed in an unauthorized manner.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Baseline config change notification-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that file integrity monitoring (AIDE) is installed and configured to detect unauthorized baseline configuration changes. AIDE compares current file states against a known-good baseline database and reports modifications, additions, and deletions. The check examines AIDE binary availability, configuration file presence, audit rules for configuration file watches, and scheduled AIDE scanning via cron jobs. When AIDE detects unauthorized changes, it generates reports that can be configured to notify SA/ISSO personnel via email or integration with centralized monitoring systems. This satisfies NIST CM-6(2) requirements for baseline configuration change notification.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that no file integrity monitoring tool is configured to detect and notify on unauthorized baseline changes. To remediate: (1) Install AIDE: yum install aide. (2) Configure /etc/aide.conf with baseline paths including /etc/xensource/, /etc/xapi.conf, /etc/audit/, /etc/ssh/sshd_config, and other critical configuration files. (3) Initialize the baseline database: aide --init, then cp /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz. (4) Configure a daily cron job: echo '0 5 * * * root /usr/sbin/aide --check | mail -s "AIDE Report" isso@domain' &gt; /etc/cron.d/aide-check. (5) After any authorized change, update the baseline: aide --update. The system administrator must ensure AIDE reports are reviewed by designated personnel (SA/ISSO).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207470">
     <!--RuleTitle: The VMM must enforce access restrictions associated with changes to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Access restrictions for system changes-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that XCP-ng enforces access restrictions for system changes through multiple layers. XAPI RBAC provides a role hierarchy (pool-admin, pool-operator, vm-power-admin, vm-admin, vm-operator, read-only) that restricts management API operations to authorized roles. Linux DAC file permissions restrict access to critical configuration files (/etc/xapi.conf, /etc/xensource/). sudo controls limit which users can execute privileged commands. SSH access to Dom0 is restricted to authorized administrators. Only the pool-admin role can modify pool-level configurations and system settings. The check reports RBAC role availability, configured subjects, sudoers configuration, and file permissions on critical hypervisor configuration files. This multi-layer access control satisfies NIST CM-5 requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check identified potential gaps in access restriction enforcement. Review and strengthen controls: (1) Configure XAPI RBAC with AD/LDAP integration (xe pool-enable-external-auth) and assign explicit roles to subjects. (2) Restrict file permissions on critical configs: chmod 600 /etc/xapi.conf, chown root:root. (3) Harden sudo configuration to limit privileged command access. (4) Add AllowUsers/AllowGroups to sshd_config to restrict Dom0 SSH access. Only authorized administrators should be able to modify system configurations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207471">
     <!--RuleTitle: The VMM must audit the enforcement actions used to restrict access associated with changes to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Audit access restriction enforcement-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that auditd is active and configured to audit access restriction enforcement actions. The check examines audit rules for privilege escalation monitoring (sudo/su), permission change tracking (chmod/chown/setxattr), and access denial recording (EPERM/EACCES). The /var/log/secure log records authentication and authorization events including failed access attempts. XAPI logs (xensource.log) record API-level access restriction enforcement for RBAC-controlled operations. These combined logging mechanisms provide a comprehensive audit trail of all access restriction enforcement actions across the hypervisor's management plane, OS layer, and XAPI management API. This satisfies NIST CM-5(1) requirements for auditing enforcement actions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that auditd is not active. Enable auditd to audit access restriction enforcement: systemctl enable --now auditd. Configure audit rules: (1) sudo monitoring: -w /etc/sudoers -p wa -k actions. (2) su monitoring: -w /usr/bin/su -p x -k priv_esc. (3) Permission changes: -a always,exit -F arch=b64 -S chmod,chown,setxattr -k perm_mod. (4) Access denials: -a always,exit -F arch=b64 -S open -F exit=-EACCES -k access. Add rules to /etc/audit/rules.d/ and reload: augenrules --load. These rules ensure all enforcement actions are audited per NIST CM-5(1).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207472">
     <!--RuleTitle: The VMM must prevent the installation of guest VMs, patches, service packs, device drivers, or VMM components without verification they have been digitally signed using a certificate that is recognized and approved by the organization.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Digital signature verification-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that RPM/YUM GPG signature verification is enabled globally (gpgcheck=1 in /etc/yum.conf) and no repositories have GPG checking disabled. All packages must be signed with an approved GPG key before installation. XCP-ng packages are signed with the Vates/XCP-ng GPG key, and the check confirms installed GPG public keys. The check examines the global yum.conf gpgcheck setting, localpkg_gpgcheck setting, individual repository configurations, and counts repos with gpgcheck disabled. This ensures patches, drivers, and VMM components are cryptographically verified before installation, satisfying NIST CM-14 requirements for digital signature verification of software installations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that GPG signature verification is not fully enforced for package installation. Either gpgcheck is not set to 1 in /etc/yum.conf or one or more repository configurations have gpgcheck=0. To remediate: (1) Set gpgcheck=1 in /etc/yum.conf under the [main] section. (2) For each .repo file in /etc/yum.repos.d/ that has gpgcheck=0, change it to gpgcheck=1 and ensure the gpgkey URL points to the correct GPG public key. (3) Import the XCP-ng GPG key if not already: rpm --import https://xcp-ng.org/RPM-GPG-KEY-xcpng. All package installations must be verified against approved digital signatures to prevent installation of unauthorized or tampered software.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207473">
     <!--RuleTitle: The VMM must prevent use of service and helper VMs not required to support proper VMM function.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Service/helper VM control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that XCP-ng does not deploy service or helper VMs as part of its core hypervisor function. Unlike some hypervisors (e.g., VMware vCLS), XCP-ng uses Dom0 (the control domain) for all management operations rather than dedicated service VMs. The check enumerates all guest VMs (non-template, non-control-domain) with their power states and reports the total count. All running VMs are explicitly created by administrators. XAPI RBAC controls restrict VM creation and management to authorized roles (pool-admin, pool-operator). The check also identifies any known service VMs such as XOA Proxy. Administrators should periodically review the VM inventory to ensure no unnecessary service or helper VMs are present beyond those required for authorized management functions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found potential concerns with service or helper VMs. Review the VM inventory displayed in the finding details and remove any VMs that are not required to support proper VMM function. Use xe vm-list to enumerate all VMs, identify their purpose, and remove unauthorized service/helper VMs with xe vm-destroy. Document the business justification for any service VMs that must remain (e.g., XOA Proxy for remote backup). Ensure RBAC is configured to prevent unauthorized VM creation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207474">
     <!--RuleTitle: The VMM must prevent inappropriate use of redundant guest VMs.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Redundant guest VM control-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that XCP-ng provides controls to prevent inappropriate use of redundant guest VMs. XAPI RBAC restricts VM creation to pool-admin and pool-operator roles, preventing unauthorized VM proliferation. The check reports the complete VM inventory including name, power state, total count, halted (stopped) VMs, and snapshot count. The hypervisor maintains comprehensive lifecycle tracking for all VMs. Administrators should review: (1) halted VMs for unnecessary dormant instances that consume storage, (2) snapshots for stale checkpoint data, and (3) naming conventions to identify potential duplicates. VM lifecycle management is enforced through RBAC access controls ensuring only authorized administrators can create or clone VMs.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check identified potential redundant guest VM concerns. Review the VM inventory and identify any redundant or duplicate VMs. Remove unnecessary halted VMs: xe vm-destroy uuid=VM_UUID. Clean up stale snapshots: xe snapshot-destroy uuid=SNAP_UUID. Implement naming conventions to prevent confusion between production and test VMs. Configure RBAC to restrict VM creation to authorized administrators only. Document the purpose of each VM and establish periodic review procedures to identify and remove redundant instances.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207475">
     <!--RuleTitle: The VMM must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs and guest VMs.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 7: Deny-all, permit-by-exception execution policy-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that XCP-ng employs a deny-all, permit-by-exception policy for execution through multiple mechanisms. XAPI RBAC denies all management operations by default; users must be explicitly assigned a role to execute any VM or management operation. The check examines iptables default chain policies, RBAC role configuration, external authentication type, and SSH access restrictions. The read-only role provides the minimum baseline, and all additional privileges must be explicitly granted. Dom0 SSH access is restricted to authorized accounts. iptables firewall policies control network-level access with configurable default policies. Only root and authorized RBAC subjects can start, stop, or create VMs. This multi-layer deny-all approach satisfies NIST CM-7(5) requirements for deny-all, permit-by-exception execution policies.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check identified potential gaps in the deny-all, permit-by-exception execution policy. Review and strengthen: (1) Configure XAPI RBAC with AD/LDAP integration and assign explicit, least-privilege roles. (2) Set iptables default policies to DROP for INPUT and FORWARD chains: iptables -P INPUT DROP, iptables -P FORWARD DROP. (3) Add explicit ACCEPT rules only for required services (SSH, XAPI). (4) Restrict SSH access using AllowUsers/AllowGroups in sshd_config. (5) Remove any users from roles higher than needed (principle of least privilege). The default posture must be deny-all with explicit exceptions for authorized operations only.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
