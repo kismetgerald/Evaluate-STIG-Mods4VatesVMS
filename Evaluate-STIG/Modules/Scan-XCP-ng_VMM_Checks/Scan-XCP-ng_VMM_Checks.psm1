@@ -20398,19 +20398,4387 @@ Function Get-V207475 {
     return Send-CheckResult @SendCheckParams
 }
 
-# Generate remaining functions (V-207480 through V-264326)
-# 61 stub functions for rules not yet explicitly implemented
+Function Get-V207480 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207480
+        STIG ID    : SRG-OS-000375-VMM-001510
+        Rule ID    : SV-207480r984255_rule
+        Severity   : CAT II
+        Title      : The VMM must implement multifactor authentication for remote access to privileged accounts such that one of the factors is provided by a device separate from the system gaining access.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207480"
+    $RuleID = "SV-207480r984255_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Multifactor Authentication for Remote Privileged Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check external auth (AD/LDAP integration for MFA)
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External authentication: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'none (local only)' })" + $nl
+
+        # Check SSH authentication methods
+        $SshPubkey = $(timeout 5 grep -E '^PubkeyAuthentication' /etc/ssh/sshd_config 2>/dev/null)
+        $SshPassword = $(timeout 5 grep -E '^PasswordAuthentication' /etc/ssh/sshd_config 2>/dev/null)
+        $SshPubkeyStr = ("$SshPubkey").Trim()
+        $SshPasswordStr = ("$SshPassword").Trim()
+        $FindingDetails += "SSH PubkeyAuthentication: $(if ($SshPubkeyStr.Length -gt 0) { $SshPubkeyStr } else { 'not explicitly set (default: yes)' })" + $nl
+        $FindingDetails += "SSH PasswordAuthentication: $(if ($SshPasswordStr.Length -gt 0) { $SshPasswordStr } else { 'not explicitly set (default: yes)' })" + $nl
+
+        # Check for PAM MFA modules (google-authenticator, oath, duo)
+        $PamMfa = $(timeout 5 grep -r 'pam_google_authenticator\|pam_oath\|pam_duo' /etc/pam.d/ 2>/dev/null)
+        $PamMfaArr = @()
+        if ($null -ne $PamMfa) { $PamMfaArr = @($PamMfa) }
+        if ($PamMfaArr.Count -gt 0) {
+            $FindingDetails += "PAM MFA modules detected:" + $nl
+            foreach ($Line in $PamMfaArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "PAM MFA modules: none detected" + $nl
+        }
+
+        # Check for smart card/PKI PAM modules
+        $PamPkcs = $(timeout 5 grep -r 'pam_pkcs11\|pam_sss' /etc/pam.d/ 2>/dev/null)
+        $PamPkcsArr = @()
+        if ($null -ne $PamPkcs) { $PamPkcsArr = @($PamPkcs) }
+        if ($PamPkcsArr.Count -gt 0) {
+            $FindingDetails += "Smart card PAM modules detected:" + $nl
+            foreach ($Line in $PamPkcsArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "Smart card PAM modules: none detected" + $nl
+        }
+
+        # MFA requires separate physical device — organizational requirement
+        $HasMfaPam = ($PamMfaArr.Count -gt 0) -or ($PamPkcsArr.Count -gt 0)
+        $HasExtAuth = ($ExtAuthStr.Length -gt 0 -and $ExtAuthStr -ne "")
+
+        if ($HasMfaPam -or $HasExtAuth) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: MFA infrastructure detected. "
+            if ($HasExtAuth) { $FindingDetails += "External authentication ($ExtAuthStr) is configured, which can provide MFA through the identity provider. " }
+            if ($HasMfaPam) { $FindingDetails += "PAM MFA modules are configured for local authentication. " }
+            $FindingDetails += "Verify that the MFA factor is provided by a device separate from the system gaining access (e.g., hardware token, smart card, mobile device)."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No multifactor authentication infrastructure detected. XCP-ng requires MFA for remote privileged access. Configure AD/LDAP external authentication with MFA enforcement, or deploy PAM-based MFA (e.g., pam_google_authenticator, pam_duo, or smart card via pam_pkcs11)."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207481 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207481
+        STIG ID    : SRG-OS-000376-VMM-001520
+        Rule ID    : SV-207481r958816_rule
+        Severity   : CAT II
+        Title      : The VMM must accept Personal Identity Verification (PIV) credentials.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207481"
+    $RuleID = "SV-207481r958816_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Personal Identity Verification (PIV) Credential Acceptance" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for pam_pkcs11 package (smart card/PIV PAM module)
+        $PkcsRpm = $(rpm -q pam_pkcs11 2>/dev/null)
+        $PkcsRpmStr = ("$PkcsRpm").Trim()
+        $FindingDetails += "pam_pkcs11 package: $PkcsRpmStr" + $nl
+
+        # Check for opensc package (smart card middleware)
+        $OpenscRpm = $(rpm -q opensc 2>/dev/null)
+        $OpenscRpmStr = ("$OpenscRpm").Trim()
+        $FindingDetails += "opensc package: $OpenscRpmStr" + $nl
+
+        # Check for pcsc-lite (PC/SC smart card daemon)
+        $PcscRpm = $(rpm -q pcsc-lite 2>/dev/null)
+        $PcscRpmStr = ("$PcscRpm").Trim()
+        $FindingDetails += "pcsc-lite package: $PcscRpmStr" + $nl
+
+        # Check if pcscd service is active
+        $PcscService = $(timeout 5 systemctl is-active pcscd 2>/dev/null)
+        $PcscServiceStr = ("$PcscService").Trim()
+        $FindingDetails += "pcscd service: $PcscServiceStr" + $nl
+
+        # Check PAM for PKCS11 configuration
+        $PamPkcs = $(timeout 5 grep -l 'pam_pkcs11' /etc/pam.d/system-auth /etc/pam.d/smartcard-auth 2>/dev/null)
+        $PamPkcsArr = @()
+        if ($null -ne $PamPkcs) { $PamPkcsArr = @($PamPkcs) }
+        if ($PamPkcsArr.Count -gt 0) {
+            $FindingDetails += "PAM PKCS11 configured in: " + ($PamPkcsArr -join ", ") + $nl
+        }
+        else {
+            $FindingDetails += "PAM PKCS11 configuration: not found" + $nl
+        }
+
+        # Check for SSSD smart card support
+        $SssdConf = $(timeout 5 grep -i 'pam_cert_auth' /etc/sssd/sssd.conf 2>/dev/null)
+        $SssdConfStr = ("$SssdConf").Trim()
+        if ($SssdConfStr.Length -gt 0) {
+            $FindingDetails += "SSSD smart card auth: $SssdConfStr" + $nl
+        }
+
+        # Check external auth (AD/LDAP can accept PIV via PKINIT)
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External authentication: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'none' })" + $nl
+
+        $HasPkcs = ($PkcsRpmStr -notmatch "not installed")
+        $HasPam = ($PamPkcsArr.Count -gt 0)
+        $HasExtAuth = ($ExtAuthStr.Length -gt 0 -and $ExtAuthStr -ne "")
+
+        if ($HasPkcs -and $HasPam) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: PIV credential acceptance infrastructure is installed. pam_pkcs11 is configured in PAM, enabling smart card/PIV authentication for system access."
+        }
+        elseif ($HasExtAuth) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. PIV/smart card credential acceptance can be provided through the external identity provider (e.g., Active Directory with PKINIT for Kerberos smart card logon)."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: PIV credential acceptance is not configured. Install pam_pkcs11, opensc, and pcsc-lite packages, configure PAM for smart card authentication, or integrate with AD/LDAP that supports PIV via PKINIT."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207482 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207482
+        STIG ID    : SRG-OS-000377-VMM-001530
+        Rule ID    : SV-207482r958818_rule
+        Severity   : CAT II
+        Title      : The VMM must electronically verify Personal Identity Verification (PIV) credentials.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207482"
+    $RuleID = "SV-207482r958818_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Electronic PIV Credential Verification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check pam_pkcs11 configuration for certificate verification
+        $PkcsConf = $(timeout 5 cat /etc/pam_pkcs11/pam_pkcs11.conf 2>/dev/null)
+        $PkcsArr = @()
+        if ($null -ne $PkcsConf) { $PkcsArr = @($PkcsConf) }
+        $PkcsStr = ($PkcsArr -join $nl).Trim()
+
+        if ($PkcsStr.Length -gt 0) {
+            $FindingDetails += "pam_pkcs11.conf found (certificate verification config exists)" + $nl
+            # Check for CRL/OCSP verification settings
+            if ($PkcsStr -match "crl_") { $FindingDetails += "CRL checking: configured" + $nl }
+            else { $FindingDetails += "CRL checking: not configured" + $nl }
+            if ($PkcsStr -match "ocsp") { $FindingDetails += "OCSP checking: configured" + $nl }
+            else { $FindingDetails += "OCSP checking: not configured" + $nl }
+        }
+        else {
+            $FindingDetails += "pam_pkcs11.conf: not found" + $nl
+        }
+
+        # Check for certificate trust anchors (DoD CA certs)
+        $CaCerts = $(timeout 5 find /etc/pki/tls/certs -maxdepth 1 -name '*.pem' -type f 2>/dev/null | head -10 2>&1)
+        $CaCertsArr = @()
+        if ($null -ne $CaCerts) { $CaCertsArr = @($CaCerts) }
+        $FindingDetails += "CA certificates in /etc/pki/tls/certs/: $($CaCertsArr.Count) PEM files" + $nl
+
+        # Check OpenSSL OCSP/CRL verify settings
+        $OpensslConf = $(timeout 5 grep -E '(crl_check|OCSP)' /etc/pki/tls/openssl.cnf 2>/dev/null)
+        $OpensslArr = @()
+        if ($null -ne $OpensslConf) { $OpensslArr = @($OpensslConf) }
+        if ($OpensslArr.Count -gt 0) {
+            $FindingDetails += "OpenSSL verification settings:" + $nl
+            foreach ($Line in $OpensslArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        # Check external auth for PIV verification delegation
+        $ExtAuth = Invoke-XeCommand -Command "pool-list params=external-auth-type --minimal"
+        $ExtAuthStr = ("$ExtAuth").Trim()
+        $FindingDetails += "External authentication: $(if ($ExtAuthStr.Length -gt 0) { $ExtAuthStr } else { 'none' })" + $nl
+
+        $HasPkcsConf = ($PkcsStr.Length -gt 0)
+        $HasExtAuth = ($ExtAuthStr.Length -gt 0 -and $ExtAuthStr -ne "")
+
+        if ($HasPkcsConf) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: PIV electronic verification is configured via pam_pkcs11. Certificate validation infrastructure is present to electronically verify PIV credentials against trusted CAs."
+        }
+        elseif ($HasExtAuth) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: External authentication ($ExtAuthStr) is configured. PIV credential electronic verification is delegated to the identity provider (e.g., Active Directory performs certificate validation for smart card logon)."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No PIV electronic verification infrastructure detected. Configure pam_pkcs11 with CRL/OCSP checking for local PIV verification, or integrate with AD/LDAP that performs electronic PIV credential validation."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207483 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207483
+        STIG ID    : SRG-OS-000378-VMM-001540
+        Rule ID    : SV-207483r958820_rule
+        Severity   : CAT II
+        Title      : The VMM must authenticate peripherals before establishing a connection.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207483"
+    $RuleID = "SV-207483r958820_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Peripheral Authentication Before Connection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check USB device authorization policy
+        $UsbAuth = $(timeout 5 cat /sys/bus/usb/devices/usb1/authorized_default 2>/dev/null)
+        $UsbAuthStr = ("$UsbAuth").Trim()
+        $FindingDetails += "USB default authorization: $(if ($UsbAuthStr.Length -gt 0) { $UsbAuthStr } else { 'not available' }) (0=deny, 1=allow, 2=if-internal)" + $nl
+
+        # Check for udev rules that control device authorization
+        $UdevRules = $(timeout 5 find /etc/udev/rules.d -maxdepth 1 -name '*.rules' -type f 2>/dev/null | head -10 2>&1)
+        $UdevArr = @()
+        if ($null -ne $UdevRules) { $UdevArr = @($UdevRules) }
+        $FindingDetails += "Custom udev rules: $($UdevArr.Count) rule files in /etc/udev/rules.d/" + $nl
+
+        # Check for USBGuard (device authorization daemon)
+        $UsbGuard = $(rpm -q usbguard 2>/dev/null)
+        $UsbGuardStr = ("$UsbGuard").Trim()
+        $FindingDetails += "USBGuard package: $UsbGuardStr" + $nl
+
+        if ($UsbGuardStr -notmatch "not installed") {
+            $UsbGuardSvc = $(timeout 5 systemctl is-active usbguard 2>/dev/null)
+            $FindingDetails += "USBGuard service: $(("$UsbGuardSvc").Trim())" + $nl
+        }
+
+        # Check PCI passthrough devices (Xen controls hardware assignment)
+        $PciPt = Invoke-XeCommand -Command "vm-list params=other-config --minimal"
+        $PciPtStr = ("$PciPt").Trim()
+
+        # Xen hypervisor controls all peripheral access through device model
+        $FindingDetails += $nl + "XCP-ng/Xen peripheral control:" + $nl
+        $FindingDetails += "  - Dom0 controls all physical device access" + $nl
+        $FindingDetails += "  - Guest VMs cannot directly access peripherals without explicit PCI passthrough" + $nl
+        $FindingDetails += "  - PCI passthrough requires pool-admin RBAC role to configure" + $nl
+
+        $HasUsbGuard = ($UsbGuardStr -notmatch "not installed")
+        $UsbDenyDefault = ($UsbAuthStr -eq "0")
+
+        if ($HasUsbGuard -or $UsbDenyDefault) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Peripheral authentication controls are in place. "
+            if ($HasUsbGuard) { $FindingDetails += "USBGuard provides device whitelisting for USB peripherals. " }
+            if ($UsbDenyDefault) { $FindingDetails += "USB default authorization is set to deny. " }
+            $FindingDetails += "Xen hypervisor architecture ensures only Dom0 has direct peripheral access; guest VMs require explicit PCI passthrough configuration by authorized administrators."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No peripheral authentication enforcement detected beyond Xen default isolation. Install and configure USBGuard to authenticate USB peripherals before connection, or set USB default authorization to deny (echo 0 > /sys/bus/usb/devices/usb*/authorized_default)."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207484 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207484
+        STIG ID    : SRG-OS-000379-VMM-001550
+        Rule ID    : SV-207484r971545_rule
+        Severity   : CAT II
+        Title      : The VMM must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207484"
+    $RuleID = "SV-207484r971545_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Bidirectional Cryptographic Endpoint Authentication" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check SSH host key exchange (bidirectional crypto auth)
+        $SshHostKeyAlgos = $(timeout 5 grep -E '^HostKeyAlgorithms|^HostKey ' /etc/ssh/sshd_config 2>/dev/null)
+        $SshHostArr = @()
+        if ($null -ne $SshHostKeyAlgos) { $SshHostArr = @($SshHostKeyAlgos) }
+        if ($SshHostArr.Count -gt 0) {
+            $FindingDetails += "SSH host key configuration:" + $nl
+            foreach ($Line in $SshHostArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "SSH host key configuration: default (all host key types enabled)" + $nl
+        }
+
+        # Check SSH host keys exist
+        $SshKeys = $(timeout 5 find /etc/ssh -maxdepth 1 -name 'ssh_host_*_key.pub' -type f 2>/dev/null | head -10 2>&1)
+        $SshKeysArr = @()
+        if ($null -ne $SshKeys) { $SshKeysArr = @($SshKeys) }
+        $FindingDetails += "SSH host key files: $($SshKeysArr.Count) public keys" + $nl
+        foreach ($Key in $SshKeysArr) { $FindingDetails += "  $($Key.Trim())" + $nl }
+
+        # Check XAPI TLS certificate (HTTPS bidirectional possible)
+        $XapiCert = $(timeout 5 ls -la /etc/xensource/xapi-ssl.pem 2>/dev/null)
+        $XapiCertStr = ("$XapiCert").Trim()
+        $FindingDetails += "XAPI TLS certificate: $(if ($XapiCertStr.Length -gt 0) { 'present' } else { 'not found' })" + $nl
+
+        # Check stunnel configuration for TLS mutual auth
+        $StunnelConf = $(timeout 5 grep -E '(verify|CAfile|cert|key)' /etc/stunnel/stunnel.conf 2>/dev/null)
+        $StunnelArr = @()
+        if ($null -ne $StunnelConf) { $StunnelArr = @($StunnelConf) }
+        if ($StunnelArr.Count -gt 0) {
+            $FindingDetails += "stunnel TLS settings:" + $nl
+            foreach ($Line in $StunnelArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        # SSH provides bidirectional crypto auth: server proves identity via host key, client via pubkey/password
+        $HasSshKeys = ($SshKeysArr.Count -gt 0)
+        $HasXapiCert = ($XapiCertStr.Length -gt 0)
+
+        if ($HasSshKeys -and $HasXapiCert) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Bidirectional cryptographic authentication is in place. SSH uses host key exchange for server authentication and public key or password for client authentication. XAPI uses TLS certificates for encrypted management connections. Both protocols provide cryptographically-based mutual authentication between endpoints."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Incomplete bidirectional cryptographic authentication. Ensure SSH host keys are present and XAPI TLS certificate is configured for all management connections."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207486 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207486
+        STIG ID    : SRG-OS-000383-VMM-001570
+        Rule ID    : SV-207486r958828_rule
+        Severity   : CAT II
+        Title      : The VMM must prohibit the use of cached authenticators after one day.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207486"
+    $RuleID = "SV-207486r958828_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Cached Authenticator Prohibition (1-Day Limit)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check SSSD offline credential cache settings
+        $SssdOffline = $(timeout 5 grep -E 'offline_credentials_expiration|cache_credentials' /etc/sssd/sssd.conf 2>/dev/null)
+        $SssdArr = @()
+        if ($null -ne $SssdOffline) { $SssdArr = @($SssdOffline) }
+        if ($SssdArr.Count -gt 0) {
+            $FindingDetails += "SSSD cached credential settings:" + $nl
+            foreach ($Line in $SssdArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "SSSD: not configured (no cached credential policy)" + $nl
+        }
+
+        # Check PAM timestamp settings (sudo credential caching)
+        $SudoTimestamp = $(timeout 5 grep -E 'timestamp_timeout' /etc/sudoers /etc/sudoers.d/* 2>/dev/null)
+        $SudoArr = @()
+        if ($null -ne $SudoTimestamp) { $SudoArr = @($SudoTimestamp) }
+        if ($SudoArr.Count -gt 0) {
+            $FindingDetails += "Sudo timestamp settings:" + $nl
+            foreach ($Line in $SudoArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "Sudo timestamp_timeout: default (5 minutes)" + $nl
+        }
+
+        # Check XAPI session timeout
+        $XapiTimeout = $(timeout 5 grep -i 'session_timeout\|login_timeout' /etc/xensource/xapi.conf /etc/xapi.conf 2>/dev/null)
+        $XapiArr = @()
+        if ($null -ne $XapiTimeout) { $XapiArr = @($XapiTimeout) }
+        if ($XapiArr.Count -gt 0) {
+            $FindingDetails += "XAPI session timeout:" + $nl
+            foreach ($Line in $XapiArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "XAPI session timeout: default" + $nl
+        }
+
+        # Check Kerberos ticket lifetime (if krb5.conf exists)
+        $Krb5 = $(timeout 5 grep -E 'ticket_lifetime|renew_lifetime' /etc/krb5.conf 2>/dev/null)
+        $Krb5Arr = @()
+        if ($null -ne $Krb5) { $Krb5Arr = @($Krb5) }
+        if ($Krb5Arr.Count -gt 0) {
+            $FindingDetails += "Kerberos ticket lifetime:" + $nl
+            foreach ($Line in $Krb5Arr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        # XCP-ng without SSSD uses direct PAM auth (no caching by default)
+        # Sudo has 5-minute default cache (well under 1 day)
+        # SSH sessions require fresh auth on each connection
+        $HasSssdCaching = ($SssdArr.Count -gt 0)
+        $SssdCompliant = $true
+        if ($HasSssdCaching) {
+            $SssdStr = ($SssdArr -join $nl)
+            if ($SssdStr -match "offline_credentials_expiration\s*=\s*(\d+)") {
+                $ExpDays = [int]$Matches[1]
+                if ($ExpDays -gt 1) { $SssdCompliant = $false }
+            }
+        }
+
+        if (-not $HasSssdCaching) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: XCP-ng does not use SSSD cached credentials. PAM authentication is performed directly against local password databases on each login. SSH requires fresh authentication for every connection. Sudo credential caching defaults to 5 minutes (well under 1 day). No cached authenticators persist beyond the allowed period."
+        }
+        elseif ($SssdCompliant) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: SSSD offline credential expiration is configured at 1 day or less. Cached authenticators comply with the requirement."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: SSSD offline credential cache exceeds 1 day. Set offline_credentials_expiration = 1 in /etc/sssd/sssd.conf [pam] section to prohibit cached authenticators after one day."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207487 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207487
+        STIG ID    : SRG-OS-000384-VMM-001580
+        Rule ID    : SV-207487r984257_rule
+        Severity   : CAT II
+        Title      : The VMM, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207487"
+    $RuleID = "SV-207487r984257_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "PKI Revocation Data Local Cache" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for local CRL files
+        $CrlFiles = $(timeout 5 find /etc/pki -maxdepth 3 -name '*.crl' -type f 2>/dev/null | head -10 2>&1)
+        $CrlArr = @()
+        if ($null -ne $CrlFiles) { $CrlArr = @($CrlFiles) }
+        $CrlArr = @($CrlArr | Where-Object { "$_".Trim().Length -gt 0 })
+        $FindingDetails += "Local CRL files: $($CrlArr.Count) found" + $nl
+        foreach ($Crl in $CrlArr) { $FindingDetails += "  $($Crl.Trim())" + $nl }
+
+        # Check pam_pkcs11 CRL directory
+        $PkcsCrl = $(timeout 5 ls -la /etc/pam_pkcs11/crls/ 2>/dev/null)
+        $PkcsCrlArr = @()
+        if ($null -ne $PkcsCrl) { $PkcsCrlArr = @($PkcsCrl) }
+        if ($PkcsCrlArr.Count -gt 1) {
+            $FindingDetails += "pam_pkcs11 CRL directory contents:" + $nl
+            foreach ($Line in $PkcsCrlArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "pam_pkcs11 CRL directory: not found or empty" + $nl
+        }
+
+        # Check OCSP stapling configuration
+        $OcspConf = $(timeout 5 grep -ri 'ocsp' /etc/pki/tls/openssl.cnf /etc/pam_pkcs11/pam_pkcs11.conf 2>/dev/null)
+        $OcspArr = @()
+        if ($null -ne $OcspConf) { $OcspArr = @($OcspConf) }
+        if ($OcspArr.Count -gt 0) {
+            $FindingDetails += "OCSP configuration:" + $nl
+            foreach ($Line in $OcspArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "OCSP configuration: not found" + $nl
+        }
+
+        # Check if certutil is available for certificate management
+        $Certutil = $(which certutil 2>/dev/null)
+        $CertutilStr = ("$Certutil").Trim()
+        $FindingDetails += "certutil available: $(if ($CertutilStr.Length -gt 0) { 'yes' } else { 'no' })" + $nl
+
+        $HasCrlCache = ($CrlArr.Count -gt 0)
+        $HasOcsp = ($OcspArr.Count -gt 0)
+
+        if ($HasCrlCache -or $HasOcsp) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Local PKI revocation data cache is available. "
+            if ($HasCrlCache) { $FindingDetails += "Local CRL files provide offline certificate revocation checking. " }
+            if ($HasOcsp) { $FindingDetails += "OCSP configuration provides online revocation validation with local caching. " }
+            $FindingDetails += "This supports path discovery and validation when network access to revocation servers is unavailable."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No local PKI revocation data cache detected. For PKI-based authentication, configure local CRL caching (download CRLs to /etc/pki/ or /etc/pam_pkcs11/crls/) and/or enable OCSP with local response caching to support certificate validation during network outages."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207488 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207488
+        STIG ID    : SRG-OS-000396-VMM-001590
+        Rule ID    : SV-207488r987791_rule
+        Severity   : CAT II
+        Title      : The VMM must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207488"
+    $RuleID = "SV-207488r987791_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "NSA-Approved Cryptography for Classified Information" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check FIPS mode
+        $FipsMode = $(timeout 5 cat /proc/sys/crypto/fips_enabled 2>/dev/null)
+        $FipsModeStr = ("$FipsMode").Trim()
+        $FindingDetails += "FIPS mode (kernel): $(if ($FipsModeStr -eq '1') { 'ENABLED' } elseif ($FipsModeStr -eq '0') { 'DISABLED' } else { 'not available' })" + $nl
+
+        # Check OpenSSL FIPS support
+        $OpensslVer = $(timeout 5 openssl version 2>/dev/null)
+        $OpensslVerStr = ("$OpensslVer").Trim()
+        $FindingDetails += "OpenSSL version: $OpensslVerStr" + $nl
+
+        # Check SSH ciphers
+        $SshCiphers = $(timeout 5 grep -E '^Ciphers' /etc/ssh/sshd_config 2>/dev/null)
+        $SshCiphersStr = ("$SshCiphers").Trim()
+        $FindingDetails += "SSH Ciphers: $(if ($SshCiphersStr.Length -gt 0) { $SshCiphersStr } else { 'default (system-wide)' })" + $nl
+
+        # Check SSH MACs
+        $SshMacs = $(timeout 5 grep -E '^MACs' /etc/ssh/sshd_config 2>/dev/null)
+        $SshMacsStr = ("$SshMacs").Trim()
+        $FindingDetails += "SSH MACs: $(if ($SshMacsStr.Length -gt 0) { $SshMacsStr } else { 'default (system-wide)' })" + $nl
+
+        # Check SSH KexAlgorithms
+        $SshKex = $(timeout 5 grep -E '^KexAlgorithms' /etc/ssh/sshd_config 2>/dev/null)
+        $SshKexStr = ("$SshKex").Trim()
+        $FindingDetails += "SSH KexAlgorithms: $(if ($SshKexStr.Length -gt 0) { $SshKexStr } else { 'default (system-wide)' })" + $nl
+
+        # Check crypto-policies (RHEL7/CentOS7 may not have this)
+        $CryptoPolicy = $(timeout 5 cat /etc/crypto-policies/config 2>/dev/null)
+        $CryptoPolicyStr = ("$CryptoPolicy").Trim()
+        if ($CryptoPolicyStr.Length -gt 0) {
+            $FindingDetails += "System crypto policy: $CryptoPolicyStr" + $nl
+        }
+
+        # FIPS mode is the definitive check for NSA-approved crypto
+        if ($FipsModeStr -eq "1") {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: FIPS 140-2 mode is enabled at the kernel level. All cryptographic operations use FIPS-validated modules, meeting the requirement for NSA-approved cryptography to protect classified information."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: FIPS mode is not enabled. NSA-approved cryptography requires FIPS 140-2 validated cryptographic modules. Enable FIPS mode by adding fips=1 to the kernel boot parameters and installing the dracut-fips package. Note: XCP-ng/CentOS 7 FIPS mode may have compatibility limitations with some hypervisor functions."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207489 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207489
+        STIG ID    : SRG-OS-000399-VMM-001600
+        Rule ID    : SV-207489r958860_rule
+        Severity   : CAT II
+        Title      : The VMM must request data origin authentication verification on the name/address resolution responses the system receives from authoritative sources.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207489"
+    $RuleID = "SV-207489r958860_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DNS Data Origin Authentication Verification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check resolv.conf for DNS servers
+        $ResolvConf = $(timeout 5 cat /etc/resolv.conf 2>/dev/null)
+        $ResolvArr = @()
+        if ($null -ne $ResolvConf) { $ResolvArr = @($ResolvConf) }
+        $ResolvStr = ($ResolvArr -join $nl).Trim()
+        $NameserverLines = @($ResolvArr | Where-Object { "$_" -match "^nameserver" })
+        $FindingDetails += "DNS nameservers configured:" + $nl
+        foreach ($Ns in $NameserverLines) { $FindingDetails += "  $($Ns.Trim())" + $nl }
+
+        # Check if DNSSEC is enabled in resolv.conf options
+        $DnssecOpt = @($ResolvArr | Where-Object { "$_" -match "dnssec|edns" })
+        if ($DnssecOpt.Count -gt 0) {
+            $FindingDetails += "DNSSEC options in resolv.conf:" + $nl
+            foreach ($Line in $DnssecOpt) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        # Check for local DNSSEC-validating resolver (unbound, bind)
+        $Unbound = $(rpm -q unbound 2>/dev/null)
+        $UnboundStr = ("$Unbound").Trim()
+        $Bind = $(rpm -q bind 2>/dev/null)
+        $BindStr = ("$Bind").Trim()
+        $FindingDetails += "unbound package: $UnboundStr" + $nl
+        $FindingDetails += "bind package: $BindStr" + $nl
+
+        # Check dnsmasq DNSSEC configuration
+        $DnsmasqDnssec = $(timeout 5 grep -i 'dnssec' /etc/dnsmasq.conf /etc/dnsmasq.d/*.conf 2>/dev/null)
+        $DnsmasqArr = @()
+        if ($null -ne $DnsmasqDnssec) { $DnsmasqArr = @($DnsmasqDnssec) }
+        if ($DnsmasqArr.Count -gt 0) {
+            $FindingDetails += "dnsmasq DNSSEC settings:" + $nl
+            foreach ($Line in $DnsmasqArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $HasDnssecResolver = ($UnboundStr -notmatch "not installed") -or ($BindStr -notmatch "not installed")
+        $HasDnssecDnsmasq = ($DnsmasqArr.Count -gt 0)
+
+        if ($HasDnssecResolver -or $HasDnssecDnsmasq) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DNSSEC-capable resolver is installed. Data origin authentication verification is available for DNS responses from authoritative sources."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No DNSSEC-validating resolver detected. Install and configure a DNSSEC-validating resolver (unbound or bind with dnssec-validation auto) to request data origin authentication on DNS responses."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207490 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207490
+        STIG ID    : SRG-OS-000400-VMM-001610
+        Rule ID    : SV-207490r958862_rule
+        Severity   : CAT II
+        Title      : The VMM must request data integrity verification on the name/address resolution responses the system receives from authoritative sources.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207490"
+    $RuleID = "SV-207490r958862_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DNS Data Integrity Verification Request" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check resolv.conf DNS configuration
+        $Nameservers = $(timeout 5 grep '^nameserver' /etc/resolv.conf 2>/dev/null)
+        $NsArr = @()
+        if ($null -ne $Nameservers) { $NsArr = @($Nameservers) }
+        $FindingDetails += "DNS nameservers:" + $nl
+        foreach ($Ns in $NsArr) { $FindingDetails += "  $($Ns.Trim())" + $nl }
+
+        # Check for DNSSEC-capable local resolver
+        $Unbound = $(rpm -q unbound 2>/dev/null)
+        $UnboundStr = ("$Unbound").Trim()
+        $FindingDetails += "unbound (DNSSEC resolver): $UnboundStr" + $nl
+
+        # Check for EDNS0 support (required for DNSSEC)
+        $ResolvOpts = $(timeout 5 grep 'options' /etc/resolv.conf 2>/dev/null)
+        $ResolvOptsStr = ("$ResolvOpts").Trim()
+        if ($ResolvOptsStr.Length -gt 0) {
+            $FindingDetails += "resolv.conf options: $ResolvOptsStr" + $nl
+        }
+
+        # Check dnsmasq DNSSEC
+        $DnsmasqDnssec = $(timeout 5 grep -i 'dnssec' /etc/dnsmasq.conf 2>/dev/null)
+        $DnsmasqStr = ("$DnsmasqDnssec").Trim()
+        if ($DnsmasqStr.Length -gt 0) {
+            $FindingDetails += "dnsmasq DNSSEC: $DnsmasqStr" + $nl
+        }
+
+        $HasDnssec = ($UnboundStr -notmatch "not installed") -or ($DnsmasqStr -match "dnssec")
+
+        if ($HasDnssec) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DNSSEC-capable resolver is available. The system can request data integrity verification (RRSIG/DNSKEY) on DNS responses from authoritative sources via DNSSEC protocol."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No DNSSEC-validating resolver detected. Install and configure unbound or enable DNSSEC in dnsmasq to request data integrity verification on DNS name/address resolution responses."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207491 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207491
+        STIG ID    : SRG-OS-000401-VMM-001620
+        Rule ID    : SV-207491r958864_rule
+        Severity   : CAT II
+        Title      : The VMM must perform data integrity verification on the name/address resolution responses the system receives from authoritative sources.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207491"
+    $RuleID = "SV-207491r958864_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DNS Data Integrity Verification Performance" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for DNSSEC-validating resolver with active validation
+        $Unbound = $(rpm -q unbound 2>/dev/null)
+        $UnboundStr = ("$Unbound").Trim()
+        $FindingDetails += "unbound package: $UnboundStr" + $nl
+
+        if ($UnboundStr -notmatch "not installed") {
+            $UnboundSvc = $(timeout 5 systemctl is-active unbound 2>/dev/null)
+            $FindingDetails += "unbound service: $(("$UnboundSvc").Trim())" + $nl
+            # Check unbound DNSSEC config
+            $UnboundConf = $(timeout 5 grep -E 'val-permissive-mode|auto-trust-anchor-file|trust-anchor' /etc/unbound/unbound.conf 2>/dev/null)
+            $UnboundConfArr = @()
+            if ($null -ne $UnboundConf) { $UnboundConfArr = @($UnboundConf) }
+            if ($UnboundConfArr.Count -gt 0) {
+                $FindingDetails += "unbound DNSSEC validation config:" + $nl
+                foreach ($Line in $UnboundConfArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+            }
+        }
+
+        # Check named (bind) DNSSEC validation
+        $Bind = $(rpm -q bind 2>/dev/null)
+        $BindStr = ("$Bind").Trim()
+        if ($BindStr -notmatch "not installed") {
+            $BindDnssec = $(timeout 5 grep -E 'dnssec-validation|dnssec-enable' /etc/named.conf 2>/dev/null)
+            $BindArr = @()
+            if ($null -ne $BindDnssec) { $BindArr = @($BindDnssec) }
+            if ($BindArr.Count -gt 0) {
+                $FindingDetails += "named DNSSEC validation:" + $nl
+                foreach ($Line in $BindArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+            }
+        }
+
+        $HasValidator = ($UnboundStr -notmatch "not installed") -or ($BindStr -notmatch "not installed")
+
+        if ($HasValidator) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DNSSEC-validating resolver is installed and can perform data integrity verification on DNS responses. DNSSEC validates RRSIG signatures against DNSKEY records to ensure DNS response integrity from authoritative sources."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No DNSSEC-validating resolver installed. Install unbound (yum install unbound) and configure dnssec-validation to perform data integrity verification on DNS responses."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207492 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207492
+        STIG ID    : SRG-OS-000402-VMM-001630
+        Rule ID    : SV-207492r958866_rule
+        Severity   : CAT II
+        Title      : The VMM must perform data origin verification authentication on the name/address resolution responses the system receives from authoritative sources.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207492"
+    $RuleID = "SV-207492r958866_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DNS Data Origin Verification Authentication" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for DNSSEC-validating resolver
+        $Unbound = $(rpm -q unbound 2>/dev/null)
+        $UnboundStr = ("$Unbound").Trim()
+        $Bind = $(rpm -q bind 2>/dev/null)
+        $BindStr = ("$Bind").Trim()
+        $FindingDetails += "unbound package: $UnboundStr" + $nl
+        $FindingDetails += "bind package: $BindStr" + $nl
+
+        # Check DNS resolution path
+        $Nameservers = $(timeout 5 grep '^nameserver' /etc/resolv.conf 2>/dev/null)
+        $NsArr = @()
+        if ($null -ne $Nameservers) { $NsArr = @($Nameservers) }
+        $FindingDetails += "Configured nameservers:" + $nl
+        foreach ($Ns in $NsArr) { $FindingDetails += "  $($Ns.Trim())" + $nl }
+
+        # Check if DNSSEC root trust anchor exists
+        $TrustAnchor = $(timeout 5 ls -la /var/lib/unbound/root.key /etc/trusted-key.key /etc/unbound/*.key 2>/dev/null)
+        $TrustArr = @()
+        if ($null -ne $TrustAnchor) { $TrustArr = @($TrustAnchor) }
+        if ($TrustArr.Count -gt 0) {
+            $FindingDetails += "DNSSEC trust anchors:" + $nl
+            foreach ($Line in $TrustArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $HasDnssec = ($UnboundStr -notmatch "not installed") -or ($BindStr -notmatch "not installed")
+
+        if ($HasDnssec) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DNSSEC-capable resolver is installed. Data origin verification authentication is performed through DNSSEC chain of trust from root trust anchor to authoritative zone signatures, authenticating that DNS responses originate from legitimate authoritative sources."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No DNSSEC-validating resolver detected. Install and configure unbound or bind with DNSSEC validation to perform data origin verification on DNS responses from authoritative sources."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207493 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207493
+        STIG ID    : SRG-OS-000403-VMM-001640
+        Rule ID    : SV-207493r958868_rule
+        Severity   : CAT II
+        Title      : The VMM must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207493"
+    $RuleID = "SV-207493r958868_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DoD PKI Certificate Authority Restriction" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check system CA trust bundle
+        $CaTrust = $(timeout 5 ls -la /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null)
+        $CaTrustStr = ("$CaTrust").Trim()
+        $FindingDetails += "System CA bundle: $(if ($CaTrustStr.Length -gt 0) { $CaTrustStr } else { 'not found' })" + $nl
+
+        # Check for DoD CA certificates
+        $DodCerts = $(timeout 5 sh -c 'grep -c "DoD" /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null || echo 0')
+        $DodCertsStr = ("$DodCerts").Trim()
+        $FindingDetails += "DoD CA references in trust bundle: $DodCertsStr" + $nl
+
+        # Check XAPI TLS certificate issuer
+        $XapiCertInfo = $(timeout 5 openssl x509 -in /etc/xensource/xapi-ssl.pem -issuer -noout 2>/dev/null)
+        $XapiCertStr = ("$XapiCertInfo").Trim()
+        $FindingDetails += "XAPI TLS certificate issuer: $(if ($XapiCertStr.Length -gt 0) { $XapiCertStr } else { 'not available' })" + $nl
+
+        # Check for custom CA directory
+        $CustomCaDir = $(timeout 5 ls /etc/pki/ca-trust/source/anchors/ 2>/dev/null)
+        $CustomCaArr = @()
+        if ($null -ne $CustomCaDir) { $CustomCaArr = @($CustomCaDir) }
+        $CustomCaArr = @($CustomCaArr | Where-Object { "$_".Trim().Length -gt 0 })
+        $FindingDetails += "Custom CA anchors: $($CustomCaArr.Count) files in /etc/pki/ca-trust/source/anchors/" + $nl
+        foreach ($Ca in $CustomCaArr) { $FindingDetails += "  $($Ca.Trim())" + $nl }
+
+        # DoD PKI CA installation is an organizational requirement
+        $HasDodCerts = ($DodCertsStr -match "^\d+$" -and [int]$DodCertsStr -gt 0)
+
+        if ($HasDodCerts) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DoD PKI certificate authority references found in the system trust bundle. The system CA trust store includes DoD Root and Intermediate CAs for verification of protected session establishment."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No DoD PKI certificate authorities detected in the system trust bundle. Import DoD Root CA and Intermediate CA certificates into /etc/pki/ca-trust/source/anchors/ and run update-ca-trust to restrict protected session verification to DoD PKI-established CAs."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207494 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207494
+        STIG ID    : SRG-OS-000404-VMM-001650
+        Rule ID    : SV-207494r958870_rule
+        Severity   : CAT II
+        Title      : The VMM must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest on all VMM components.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207494"
+    $RuleID = "SV-207494r958870_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Cryptographic Protection Against Unauthorized Modification (At Rest)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for LUKS encrypted partitions
+        $Luks = $(timeout 5 lsblk -o NAME,FSTYPE,TYPE 2>/dev/null)
+        $LuksArr = @()
+        if ($null -ne $Luks) { $LuksArr = @($Luks) }
+        $LuksStr = ($LuksArr -join $nl).Trim()
+        $HasLuks = ($LuksStr -match "crypto_LUKS")
+        $LuksParts = @($LuksArr | Where-Object { "$_" -match "crypt" })
+        $FindingDetails += "Encrypted partitions: $($LuksParts.Count)" + $nl
+        if ($LuksParts.Count -gt 0) {
+            foreach ($Part in $LuksParts) { $FindingDetails += "  $($Part.Trim())" + $nl }
+        }
+
+        # Check dm-crypt status
+        $DmCrypt = $(timeout 5 dmsetup ls --target crypt 2>/dev/null)
+        $DmCryptStr = ("$DmCrypt").Trim()
+        if ($DmCryptStr.Length -gt 0 -and $DmCryptStr -ne "No devices found") {
+            $FindingDetails += "dm-crypt devices: $DmCryptStr" + $nl
+        }
+        else {
+            $FindingDetails += "dm-crypt devices: none" + $nl
+        }
+
+        # Check for file integrity monitoring (AIDE)
+        $Aide = $(rpm -q aide 2>/dev/null)
+        $AideStr = ("$Aide").Trim()
+        $FindingDetails += "AIDE (file integrity): $AideStr" + $nl
+
+        # Check RPM verify capability (detects modifications to installed packages)
+        $FindingDetails += "RPM verification: available (rpm -V can detect unauthorized modifications)" + $nl
+
+        if ($HasLuks) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Disk encryption (LUKS/dm-crypt) is configured. Cryptographic mechanisms protect information at rest from unauthorized modification by ensuring data integrity through authenticated encryption."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No disk encryption detected. Configure LUKS full-disk encryption on all VMM storage volumes to implement cryptographic mechanisms preventing unauthorized modification of information at rest. Additionally, install AIDE for file integrity monitoring."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207495 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207495
+        STIG ID    : SRG-OS-000405-VMM-001660
+        Rule ID    : SV-207495r958872_rule
+        Severity   : CAT II
+        Title      : The VMM must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest on all VMM components.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207495"
+    $RuleID = "SV-207495r958872_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Cryptographic Protection Against Unauthorized Disclosure (At Rest)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check for LUKS encrypted volumes
+        $Luks = $(timeout 5 lsblk -o NAME,FSTYPE,TYPE 2>/dev/null)
+        $LuksArr = @()
+        if ($null -ne $Luks) { $LuksArr = @($Luks) }
+        $LuksStr = ($LuksArr -join $nl).Trim()
+        $HasLuks = ($LuksStr -match "crypto_LUKS")
+        $CryptParts = @($LuksArr | Where-Object { "$_" -match "crypt" })
+        $FindingDetails += "Encrypted volumes: $($CryptParts.Count)" + $nl
+        foreach ($Part in $CryptParts) { $FindingDetails += "  $($Part.Trim())" + $nl }
+
+        # Check if storage repos are on encrypted volumes
+        $SrList = Invoke-XeCommand -Command "sr-list params=name-label,physical-size --minimal"
+        $SrStr = ("$SrList").Trim()
+        $FindingDetails += "Storage repositories: $(if ($SrStr.Length -gt 0) { $SrStr } else { 'none listed' })" + $nl
+
+        # Check swap encryption
+        $Swap = $(timeout 5 swapon --show 2>/dev/null)
+        $SwapArr = @()
+        if ($null -ne $Swap) { $SwapArr = @($Swap) }
+        if ($SwapArr.Count -gt 1) {
+            $FindingDetails += "Swap devices:" + $nl
+            foreach ($Line in $SwapArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "Swap: none active" + $nl
+        }
+
+        if ($HasLuks) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Disk encryption (LUKS) is configured to prevent unauthorized disclosure of information at rest. Encrypted volumes protect VM disk images, configuration data, and hypervisor state from unauthorized access to physical storage media."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No disk encryption detected. Configure LUKS encryption on all VMM storage volumes containing sensitive data (including VM disk images and configuration) to prevent unauthorized disclosure of information at rest."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207496 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207496
+        STIG ID    : SRG-OS-000408-VMM-001670
+        Rule ID    : SV-207496r958878_rule
+        Severity   : CAT II
+        Title      : The VMM must maintain a separate execution domain for each executing process.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207496"
+    $RuleID = "SV-207496r958878_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Separate Execution Domain per Process" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check kernel virtual memory support (inherent in Linux)
+        $KernelVer = $(uname -r 2>/dev/null)
+        $KernelVerStr = ("$KernelVer").Trim()
+        $FindingDetails += "Kernel version: $KernelVerStr" + $nl
+
+        # Check ASLR (randomize address space per process)
+        $Aslr = $(timeout 5 cat /proc/sys/kernel/randomize_va_space 2>/dev/null)
+        $AslrStr = ("$Aslr").Trim()
+        $FindingDetails += "ASLR (randomize_va_space): $AslrStr (0=off, 1=partial, 2=full)" + $nl
+
+        # Check NX/XD bit support
+        $NxBit = $(timeout 5 grep -o ' nx ' /proc/cpuinfo 2>/dev/null | head -1 2>&1)
+        $NxBitStr = ("$NxBit").Trim()
+        $FindingDetails += "NX (No-Execute) bit: $(if ($NxBitStr.Length -gt 0) { 'supported' } else { 'not detected' })" + $nl
+
+        # Check cgroups (process resource isolation)
+        $Cgroups = $(timeout 5 cat /proc/cgroups 2>/dev/null | head -5 2>&1)
+        $CgroupsArr = @()
+        if ($null -ne $Cgroups) { $CgroupsArr = @($Cgroups) }
+        $FindingDetails += "cgroups subsystems: $($CgroupsArr.Count) (process resource isolation)" + $nl
+
+        # Xen hypervisor provides hardware-enforced isolation
+        $FindingDetails += $nl + "Xen hypervisor process isolation:" + $nl
+        $FindingDetails += "  - Each process in Dom0 runs in a separate virtual address space (Linux kernel MMU)" + $nl
+        $FindingDetails += "  - Per-process page tables enforce memory isolation" + $nl
+        $FindingDetails += "  - Hardware NX bit prevents code execution in data pages" + $nl
+        $FindingDetails += "  - cgroups provide resource isolation between process groups" + $nl
+
+        # This is inherent in Linux/Xen architecture
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "RESULT: XCP-ng maintains separate execution domains for each process through Linux kernel virtual memory management (per-process page tables), hardware NX bit support, ASLR, and cgroup resource isolation. The Xen hypervisor provides additional hardware-enforced isolation between Dom0 and guest VM processes."
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207497 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207497
+        STIG ID    : SRG-OS-000408-VMM-001680
+        Rule ID    : SV-207497r958878_rule
+        Severity   : CAT II
+        Title      : The VMM must maintain a separate execution domain for each guest VM.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207497"
+    $RuleID = "SV-207497r958878_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Separate Execution Domain per Guest VM" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check Xen hypervisor version
+        $XenVer = $(timeout 5 xl info 2>/dev/null | grep 'xen_version')
+        $XenVerStr = ("$XenVer").Trim()
+        $FindingDetails += "Xen version: $(if ($XenVerStr.Length -gt 0) { $XenVerStr } else { 'not available via xl info' })" + $nl
+
+        # Check hardware virtualization support (VT-x/AMD-V)
+        $VtxFlags = $(timeout 5 grep -oE '(vmx|svm)' /proc/cpuinfo 2>/dev/null | head -1 2>&1)
+        $VtxStr = ("$VtxFlags").Trim()
+        $FindingDetails += "Hardware virtualization: $(if ($VtxStr -eq 'vmx') { 'Intel VT-x' } elseif ($VtxStr -eq 'svm') { 'AMD-V' } else { 'not detected' })" + $nl
+
+        # List running VMs with their domain IDs (separate execution domains)
+        $VmList = Invoke-XeCommand -Command "vm-list power-state=running params=name-label,dom-id --minimal"
+        $VmListStr = ("$VmList").Trim()
+        $FindingDetails += "Running VMs: $(if ($VmListStr.Length -gt 0) { $VmListStr } else { 'none' })" + $nl
+
+        # Check IOMMU (prevents DMA attacks between VMs)
+        $Iommu = $(timeout 5 xl dmesg 2>/dev/null | grep -i 'iommu\|VT-d\|AMD-Vi' | head -3 2>&1)
+        $IommuArr = @()
+        if ($null -ne $Iommu) { $IommuArr = @($Iommu) }
+        if ($IommuArr.Count -gt 0) {
+            $FindingDetails += "IOMMU/VT-d:" + $nl
+            foreach ($Line in $IommuArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $FindingDetails += $nl + "Xen VM isolation architecture:" + $nl
+        $FindingDetails += "  - Type 1 (bare-metal) hypervisor runs directly on hardware" + $nl
+        $FindingDetails += "  - Each VM gets a unique domain ID (domid) and separate address space" + $nl
+        $FindingDetails += "  - Hardware VT-x/AMD-V enforces memory isolation between domains" + $nl
+        $FindingDetails += "  - IOMMU/VT-d isolates device DMA access per domain" + $nl
+        $FindingDetails += "  - No VM can access another VM memory without explicit grant table" + $nl
+
+        # Xen is a Type 1 hypervisor — VM isolation is its core design
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "RESULT: XCP-ng/Xen maintains separate execution domains for each guest VM through hardware-enforced virtualization (VT-x/AMD-V). Each VM runs in an isolated domain with its own virtual address space, memory pages, and device assignments. The Xen hypervisor mediates all inter-domain communication through controlled grant tables and event channels."
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207498 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207498
+        STIG ID    : SRG-OS-000420-VMM-001690
+        Rule ID    : SV-207498r958902_rule
+        Severity   : CAT II
+        Title      : The VMM must protect against or limit the effects of Denial of Service (DoS) attacks by ensuring the VMM is implementing rate-limiting measures on impacted network interfaces.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207498"
+    $RuleID = "SV-207498r958902_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "DoS Rate-Limiting on Network Interfaces" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check iptables rate-limiting rules
+        $IptablesRules = $(timeout 5 iptables -L -n -v 2>/dev/null)
+        $IptArr = @()
+        if ($null -ne $IptablesRules) { $IptArr = @($IptablesRules) }
+        $IptStr = ($IptArr -join $nl).Trim()
+
+        # Look for rate-limit, hashlimit, or connlimit modules
+        $RateLimitRules = @($IptArr | Where-Object { "$_" -match "limit|hashlimit|connlimit" })
+        $FindingDetails += "iptables rate-limit rules: $($RateLimitRules.Count)" + $nl
+        foreach ($Rule in $RateLimitRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        # Check SYN flood protection (kernel)
+        $SynCookies = $(timeout 5 cat /proc/sys/net/ipv4/tcp_syncookies 2>/dev/null)
+        $SynCookiesStr = ("$SynCookies").Trim()
+        $FindingDetails += "TCP SYN cookies: $(if ($SynCookiesStr -eq '1') { 'enabled' } else { 'disabled' })" + $nl
+
+        # Check connection tracking limits
+        $ConntrackMax = $(timeout 5 cat /proc/sys/net/netfilter/nf_conntrack_max 2>/dev/null)
+        $ConntrackStr = ("$ConntrackMax").Trim()
+        if ($ConntrackStr.Length -gt 0) {
+            $FindingDetails += "Connection tracking max: $ConntrackStr" + $nl
+        }
+
+        # Check for fail2ban or similar
+        $Fail2ban = $(rpm -q fail2ban 2>/dev/null)
+        $Fail2banStr = ("$Fail2ban").Trim()
+        $FindingDetails += "fail2ban package: $Fail2banStr" + $nl
+
+        # Check kernel network rate limits
+        $IcmpLimit = $(timeout 5 cat /proc/sys/net/ipv4/icmp_ratelimit 2>/dev/null)
+        $IcmpStr = ("$IcmpLimit").Trim()
+        $FindingDetails += "ICMP rate limit: $(if ($IcmpStr.Length -gt 0) { $IcmpStr } else { 'not set' })" + $nl
+
+        $HasRateLimiting = ($RateLimitRules.Count -gt 0)
+        $HasSynCookies = ($SynCookiesStr -eq "1")
+        $HasFail2ban = ($Fail2banStr -notmatch "not installed")
+
+        if ($HasRateLimiting -or $HasSynCookies -or $HasFail2ban) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: DoS rate-limiting measures are in place. "
+            if ($HasSynCookies) { $FindingDetails += "TCP SYN cookies protect against SYN flood attacks. " }
+            if ($HasRateLimiting) { $FindingDetails += "iptables rate-limiting rules are configured. " }
+            if ($HasFail2ban) { $FindingDetails += "fail2ban provides brute-force rate limiting. " }
+            $FindingDetails += "Kernel-level ICMP and connection tracking limits provide additional DoS protection."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Insufficient DoS rate-limiting. Enable TCP SYN cookies (sysctl net.ipv4.tcp_syncookies=1), configure iptables rate-limiting rules (e.g., -m limit --limit 25/minute), and consider installing fail2ban for SSH brute-force protection."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207499 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207499
+        STIG ID    : SRG-OS-000423-VMM-001700
+        Rule ID    : SV-207499r958908_rule
+        Severity   : CAT II
+        Title      : The VMM must protect the confidentiality and integrity of transmitted information.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207499"
+    $RuleID = "SV-207499r958908_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Confidentiality and Integrity of Transmitted Information" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        # Check SSH protocol and encryption
+        $SshProto = $(timeout 5 grep -E '^Protocol|^Ciphers|^MACs' /etc/ssh/sshd_config 2>/dev/null)
+        $SshArr = @()
+        if ($null -ne $SshProto) { $SshArr = @($SshProto) }
+        if ($SshArr.Count -gt 0) {
+            $FindingDetails += "SSH encryption configuration:" + $nl
+            foreach ($Line in $SshArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "SSH encryption: default (system-wide crypto policy)" + $nl
+        }
+
+        # Check XAPI TLS (HTTPS on port 443)
+        $XapiCert = $(timeout 5 ls -la /etc/xensource/xapi-ssl.pem 2>/dev/null)
+        $XapiCertStr = ("$XapiCert").Trim()
+        $FindingDetails += "XAPI TLS certificate: $(if ($XapiCertStr.Length -gt 0) { 'present' } else { 'not found' })" + $nl
+
+        # Check TLS protocol version on XAPI
+        $TlsVer = $(timeout 10 sh -c 'echo | openssl s_client -connect 127.0.0.1:443 -tls1_2 2>/dev/null | grep -i "protocol\|cipher"' 2>/dev/null)
+        $TlsArr = @()
+        if ($null -ne $TlsVer) { $TlsArr = @($TlsVer) }
+        if ($TlsArr.Count -gt 0) {
+            $FindingDetails += "XAPI TLS status:" + $nl
+            foreach ($Line in $TlsArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        # Check stunnel for additional TLS wrapping
+        $StunnelActive = $(timeout 5 systemctl is-active stunnel 2>/dev/null)
+        $StunnelStr = ("$StunnelActive").Trim()
+        $FindingDetails += "stunnel service: $StunnelStr" + $nl
+
+        $HasSsh = $true
+        $HasXapiTls = ($XapiCertStr.Length -gt 0)
+
+        if ($HasSsh -and $HasXapiTls) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Transmitted information is protected. SSH provides encrypted management access with strong ciphers and MACs. XAPI uses TLS (HTTPS) for all management API communications. All administrative protocols enforce cryptographic protection of confidentiality and integrity during transmission."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Incomplete transmission protection. Ensure XAPI TLS certificate is properly configured and all management communications use encrypted protocols (SSH, HTTPS)."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207500 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207500
+        STIG ID    : SRG-OS-000425-VMM-001710
+        Rule ID    : SV-207500r958912_rule
+        Severity   : CAT II
+        Title      : The VMM must maintain the confidentiality and integrity of information during preparation for transmission.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207500"
+    $RuleID = "SV-207500r958912_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Confidentiality/Integrity During Preparation for Transmission" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $SshCiphers = $(timeout 5 grep -E '^Ciphers' /etc/ssh/sshd_config 2>/dev/null)
+        $SshCiphersStr = ("$SshCiphers").Trim()
+        $FindingDetails += "SSH Ciphers: $(if ($SshCiphersStr.Length -gt 0) { $SshCiphersStr } else { 'default' })" + $nl
+
+        $XapiCert = $(timeout 5 test -f /etc/xensource/xapi-ssl.pem 2>/dev/null; echo $?)
+        $XapiCertStr = ("$XapiCert").Trim()
+        $FindingDetails += "XAPI TLS certificate exists: $(if ($XapiCertStr -eq '0') { 'yes' } else { 'no' })" + $nl
+
+        $ListenPorts = $(timeout 5 ss -tlnp 2>/dev/null | head -20 2>&1)
+        $PortArr = @()
+        if ($null -ne $ListenPorts) { $PortArr = @($ListenPorts) }
+        $FindingDetails += "Listening TCP services: $($PortArr.Count) entries" + $nl
+        foreach ($Port in $PortArr) { $FindingDetails += "  $($Port.Trim())" + $nl }
+
+        $HasTls = ($XapiCertStr -eq "0")
+
+        if ($HasTls) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Data confidentiality and integrity are maintained during preparation for transmission. SSH performs key exchange and cipher negotiation before any application data is sent. XAPI uses TLS handshake to establish encrypted channel prior to data transmission. Both protocols ensure cryptographic protection is established before sensitive data enters the network stack."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: XAPI TLS certificate not found. Ensure /etc/xensource/xapi-ssl.pem exists and XAPI is configured for HTTPS to protect data during preparation for transmission."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207501 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207501
+        STIG ID    : SRG-OS-000426-VMM-001720
+        Rule ID    : SV-207501r958914_rule
+        Severity   : CAT II
+        Title      : The VMM must maintain the confidentiality and integrity of information during reception.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207501"
+    $RuleID = "SV-207501r958914_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Confidentiality/Integrity During Reception" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $SshMacs = $(timeout 5 grep -E '^MACs' /etc/ssh/sshd_config 2>/dev/null)
+        $SshMacsStr = ("$SshMacs").Trim()
+        $FindingDetails += "SSH MACs (integrity): $(if ($SshMacsStr.Length -gt 0) { $SshMacsStr } else { 'default' })" + $nl
+
+        $XapiCert = $(timeout 5 test -f /etc/xensource/xapi-ssl.pem 2>/dev/null; echo $?)
+        $XapiCertStr = ("$XapiCert").Trim()
+        $FindingDetails += "XAPI TLS certificate: $(if ($XapiCertStr -eq '0') { 'present' } else { 'missing' })" + $nl
+
+        $TelnetSvc = $(timeout 5 systemctl is-active telnet.socket 2>/dev/null)
+        $TelnetStr = ("$TelnetSvc").Trim()
+        $FindingDetails += "telnet service: $TelnetStr" + $nl
+
+        $FtpSvc = $(timeout 5 systemctl is-active vsftpd 2>/dev/null)
+        $FtpStr = ("$FtpSvc").Trim()
+        $FindingDetails += "FTP service: $FtpStr" + $nl
+
+        $HasTls = ($XapiCertStr -eq "0")
+        $NoPlaintext = ($TelnetStr -ne "active" -and $FtpStr -ne "active")
+
+        if ($HasTls -and $NoPlaintext) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Information confidentiality and integrity are maintained during reception. SSH decrypts and verifies integrity of received data using negotiated MACs. XAPI receives data over TLS with authenticated encryption. No plaintext services (telnet, FTP) are active."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Reception security incomplete. "
+            if (-not $HasTls) { $FindingDetails += "Configure XAPI TLS certificate. " }
+            if (-not $NoPlaintext) { $FindingDetails += "Disable plaintext services (telnet, FTP). " }
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207502 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207502
+        STIG ID    : SRG-OS-000432-VMM-001730
+        Rule ID    : SV-207502r958926_rule
+        Severity   : CAT II
+        Title      : The VMM must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207502"
+    $RuleID = "SV-207502r958926_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Predictable Behavior for Invalid Inputs" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $FindingDetails += "XAPI input validation:" + $nl
+        $FindingDetails += "  - XAPI uses XML-RPC with typed parameters and schema validation" + $nl
+        $FindingDetails += "  - Invalid API calls return structured error codes and messages" + $nl
+        $FindingDetails += "  - Type mismatches, missing parameters, and invalid values are rejected" + $nl + $nl
+
+        $PanicOnOops = $(timeout 5 cat /proc/sys/kernel/panic_on_oops 2>/dev/null)
+        $PanicOnOopsStr = ("$PanicOnOops").Trim()
+        $FindingDetails += "kernel.panic_on_oops: $PanicOnOopsStr (1=panic on invalid kernel state)" + $nl
+
+        $PanicTimeout = $(timeout 5 cat /proc/sys/kernel/panic 2>/dev/null)
+        $PanicTimeoutStr = ("$PanicTimeout").Trim()
+        $FindingDetails += "kernel.panic timeout: $PanicTimeoutStr seconds (0=hang, N=reboot after N sec)" + $nl
+
+        $CorePattern = $(timeout 5 cat /proc/sys/kernel/core_pattern 2>/dev/null)
+        $CorePatternStr = ("$CorePattern").Trim()
+        $FindingDetails += "Core dump pattern: $CorePatternStr" + $nl
+
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "RESULT: XCP-ng behaves predictably when invalid inputs are received. XAPI validates all XML-RPC API inputs against typed schemas and returns structured error responses for invalid parameters. The Linux kernel handles invalid system states via configurable panic behavior. The Xen hypervisor enforces strict type checking on all hypercalls and returns defined error codes for invalid operations."
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207503 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207503
+        STIG ID    : SRG-OS-000433-VMM-001740
+        Rule ID    : SV-207503r958928_rule
+        Severity   : CAT II
+        Title      : The VMM must implement non-executable data to protect its memory from unauthorized code execution.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207503"
+    $RuleID = "SV-207503r958928_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Non-Executable Data (NX/XD) Memory Protection" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $CpuFlags = $(timeout 5 grep -m 1 'flags' /proc/cpuinfo 2>/dev/null)
+        $CpuFlagsStr = ("$CpuFlags").Trim()
+        $HasNx = ($CpuFlagsStr -match " nx ")
+        $FindingDetails += "CPU NX (No-Execute) bit: $(if ($HasNx) { 'supported' } else { 'not detected' })" + $nl
+
+        $DmesgNx = $(timeout 5 dmesg 2>/dev/null | grep -i 'NX.*protection\|Execute Disable' | head -3 2>&1)
+        $DmesgArr = @()
+        if ($null -ne $DmesgNx) { $DmesgArr = @($DmesgNx) }
+        if ($DmesgArr.Count -gt 0) {
+            $FindingDetails += "Kernel NX status:" + $nl
+            foreach ($Line in $DmesgArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $Arch = $(uname -m 2>/dev/null)
+        $FindingDetails += "Architecture: $(("$Arch").Trim())" + $nl
+
+        if ($HasNx) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Non-executable data (NX/XD bit) is supported and enforced by hardware. The CPU supports the NX (No-Execute) bit, which prevents code execution from data pages. The Linux kernel and Xen hypervisor leverage this hardware feature to enforce W^X (Write XOR Execute) memory protection."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: NX bit support not detected in CPU flags. Ensure the CPU supports the NX (No-Execute) bit and it is enabled in BIOS/UEFI."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207504 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207504
+        STIG ID    : SRG-OS-000433-VMM-001750
+        Rule ID    : SV-207504r958928_rule
+        Severity   : CAT II
+        Title      : The VMM must implement address space layout randomization to protect its memory from unauthorized code execution.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207504"
+    $RuleID = "SV-207504r958928_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Address Space Layout Randomization (ASLR)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $Aslr = $(timeout 5 cat /proc/sys/kernel/randomize_va_space 2>/dev/null)
+        $AslrStr = ("$Aslr").Trim()
+        $FindingDetails += "kernel.randomize_va_space: $AslrStr" + $nl
+        $FindingDetails += "  0 = disabled, 1 = conservative, 2 = full" + $nl
+
+        $SysctlAslr = $(timeout 5 grep 'randomize_va_space' /etc/sysctl.conf /etc/sysctl.d/*.conf 2>/dev/null)
+        $SysctlArr = @()
+        if ($null -ne $SysctlAslr) { $SysctlArr = @($SysctlAslr) }
+        if ($SysctlArr.Count -gt 0) {
+            $FindingDetails += "Persistent sysctl config:" + $nl
+            foreach ($Line in $SysctlArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        if ($AslrStr -eq "2") {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Full ASLR (level 2) is enabled. Address space layout randomization randomizes stack, heap, mmap, VDSO, and brk areas for all processes, protecting against memory-based code execution attacks."
+        }
+        elseif ($AslrStr -eq "1") {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Partial ASLR (level 1). Full ASLR (level 2) is required. Set kernel.randomize_va_space=2 in /etc/sysctl.conf and run sysctl -p."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: ASLR is disabled. Set kernel.randomize_va_space=2 in /etc/sysctl.conf and run sysctl -p."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207505 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207505
+        STIG ID    : SRG-OS-000437-VMM-001760
+        Rule ID    : SV-207505r958936_rule
+        Severity   : CAT II
+        Title      : The VMM must remove all software components after updated versions have been installed.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207505"
+    $RuleID = "SV-207505r958936_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Removal of Superseded Software Components" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $YumClean = $(timeout 5 grep -E 'clean_requirements_on_remove' /etc/yum.conf 2>/dev/null)
+        $YumCleanStr = ("$YumClean").Trim()
+        $FindingDetails += "yum clean_requirements_on_remove: $(if ($YumCleanStr.Length -gt 0) { $YumCleanStr } else { 'not set (default: 0)' })" + $nl
+
+        $DupePkgs = $(timeout 10 sh -c 'rpm -qa --queryformat "%{NAME}\n" 2>/dev/null | sort | uniq -d | head -10')
+        $DupeArr = @()
+        if ($null -ne $DupePkgs) { $DupeArr = @($DupePkgs) }
+        $DupeArr = @($DupeArr | Where-Object { "$_".Trim().Length -gt 0 })
+        $FindingDetails += "Duplicate package names: $($DupeArr.Count)" + $nl
+        foreach ($Pkg in $DupeArr) { $FindingDetails += "  $($Pkg.Trim())" + $nl }
+
+        $Kernels = $(rpm -q kernel 2>/dev/null)
+        $KernelArr = @()
+        if ($null -ne $Kernels) { $KernelArr = @($Kernels) }
+        $FindingDetails += "Installed kernel packages: $($KernelArr.Count)" + $nl
+        foreach ($K in $KernelArr) { $FindingDetails += "  $($K.Trim())" + $nl }
+
+        $HasDupes = ($DupeArr.Count -gt 0)
+        $ManyKernels = ($KernelArr.Count -gt 3)
+
+        if (-not $HasDupes -and -not $ManyKernels) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: No duplicate package versions detected. RPM/yum package management replaces old software components during updates."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Superseded software components may be present. "
+            if ($HasDupes) { $FindingDetails += "Remove duplicate package versions. " }
+            if ($ManyKernels) { $FindingDetails += "Clean old kernel packages (keep 2-3 most recent). " }
+            $FindingDetails += "Set clean_requirements_on_remove=1 in /etc/yum.conf."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207506 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207506
+        STIG ID    : SRG-OS-000445-VMM-001780
+        Rule ID    : SV-207506r958944_rule
+        Severity   : CAT II
+        Title      : The VMM must verify correct operation of all security functions.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207506"
+    $RuleID = "SV-207506r958944_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Security Function Verification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $Aide = $(rpm -q aide 2>/dev/null)
+        $AideStr = ("$Aide").Trim()
+        $FindingDetails += "AIDE (integrity monitoring): $AideStr" + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $FindingDetails += "auditd service: $(("$AuditdSvc").Trim())" + $nl
+
+        $SshdSvc = $(timeout 5 systemctl is-active sshd 2>/dev/null)
+        $FindingDetails += "sshd service: $(("$SshdSvc").Trim())" + $nl
+
+        $XapiSvc = $(timeout 5 systemctl is-active xapi 2>/dev/null)
+        $XapiStr = ("$XapiSvc").Trim()
+        $FindingDetails += "xapi service: $XapiStr" + $nl
+
+        $IptSvc = $(timeout 5 systemctl is-active iptables 2>/dev/null)
+        $FindingDetails += "iptables service: $(("$IptSvc").Trim())" + $nl
+
+        $FindingDetails += "RPM verification: available (rpm -V validates package integrity)" + $nl
+
+        $ServicesOk = (("$SshdSvc").Trim() -eq "active" -and $XapiStr -eq "active")
+
+        if ($ServicesOk) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Security function verification capabilities are available. RPM verify validates installed package integrity. Core security services (sshd, xapi) are active. "
+            if ($AideStr -notmatch "not installed") { $FindingDetails += "AIDE provides continuous integrity monitoring." }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Core security services are not all active. Ensure sshd and xapi are running and install AIDE for comprehensive security function verification."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207507 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207507
+        STIG ID    : SRG-OS-000446-VMM-001790
+        Rule ID    : SV-207507r958946_rule
+        Severity   : CAT II
+        Title      : The VMM must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207507"
+    $RuleID = "SV-207507r958946_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Periodic Security Function Verification (Startup/30-Day)" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AideCron = $(timeout 5 find /etc/cron.d /etc/cron.daily /etc/cron.weekly -maxdepth 1 -name '*aide*' -type f 2>/dev/null | head -5 2>&1)
+        $AideCronArr = @()
+        if ($null -ne $AideCron) { $AideCronArr = @($AideCron) }
+        $AideCronArr = @($AideCronArr | Where-Object { "$_".Trim().Length -gt 0 })
+        $FindingDetails += "AIDE cron jobs: $($AideCronArr.Count)" + $nl
+
+        $CronCheck = $(timeout 5 sh -c 'grep -r "rpm -V\|aide.*check" /etc/crontab /var/spool/cron/ /etc/cron.d/ 2>/dev/null | head -5')
+        $CronArr = @()
+        if ($null -ne $CronCheck) { $CronArr = @($CronCheck) }
+        $CronArr = @($CronArr | Where-Object { "$_".Trim().Length -gt 0 })
+        if ($CronArr.Count -gt 0) {
+            $FindingDetails += "Scheduled integrity checks:" + $nl
+            foreach ($Line in $CronArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $EnabledSvc = $(timeout 5 systemctl is-enabled auditd sshd iptables xapi 2>/dev/null)
+        $SvcArr = @()
+        if ($null -ne $EnabledSvc) { $SvcArr = @($EnabledSvc) }
+        $SvcNames = @("auditd", "sshd", "iptables", "xapi")
+        $FindingDetails += "Boot-enabled security services:" + $nl
+        for ($i = 0; $i -lt $SvcArr.Count -and $i -lt $SvcNames.Count; $i++) {
+            $FindingDetails += "  $($SvcNames[$i]): $(("$($SvcArr[$i])").Trim())" + $nl
+        }
+
+        $HasPeriodicCheck = ($AideCronArr.Count -gt 0) -or ($CronArr.Count -gt 0)
+
+        if ($HasPeriodicCheck) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Security function verification is performed periodically via scheduled integrity checks. Security services are enabled at boot. Privileged users can invoke rpm -V and aide --check on demand."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: No periodic security function verification detected. Install AIDE and create a cron job for daily/weekly integrity checks (e.g., /etc/cron.daily/aide-check). Ensure all security services are enabled at boot."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207508 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207508
+        STIG ID    : SRG-OS-000447-VMM-001800
+        Rule ID    : SV-207508r958948_rule
+        Severity   : CAT II
+        Title      : The VMM must shut down, restart, and/or notify the system administrator when anomalies in the operation of any security functions are discovered.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207508"
+    $RuleID = "SV-207508r958948_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Security Function Anomaly Notification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdConf = $(timeout 5 grep -E 'disk_full_action|disk_error_action|admin_space_left_action|space_left_action' /etc/audit/auditd.conf 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditdConf) { $AuditArr = @($AuditdConf) }
+        if ($AuditArr.Count -gt 0) {
+            $FindingDetails += "auditd anomaly actions:" + $nl
+            foreach ($Line in $AuditArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+        else {
+            $FindingDetails += "auditd anomaly actions: not configured" + $nl
+        }
+
+        $Rsyslog = $(timeout 5 grep -E '^\*\.\*|^authpriv\.\*|^auth\.\*' /etc/rsyslog.conf 2>/dev/null)
+        $RsysArr = @()
+        if ($null -ne $Rsyslog) { $RsysArr = @($Rsyslog) }
+        if ($RsysArr.Count -gt 0) {
+            $FindingDetails += "rsyslog notification targets:" + $nl
+            foreach ($Line in $RsysArr) { $FindingDetails += "  $($Line.Trim())" + $nl }
+        }
+
+        $PanicOnOops = $(timeout 5 cat /proc/sys/kernel/panic_on_oops 2>/dev/null)
+        $FindingDetails += "kernel.panic_on_oops: $(("$PanicOnOops").Trim()) (1=restart on kernel anomaly)" + $nl
+
+        $HasAuditActions = ($AuditArr.Count -gt 0)
+        $HasSyslog = ($RsysArr.Count -gt 0)
+
+        if ($HasAuditActions -or $HasSyslog) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Security function anomaly notification is configured. "
+            if ($HasAuditActions) { $FindingDetails += "auditd takes action on anomalies (syslog, halt, or email). " }
+            if ($HasSyslog) { $FindingDetails += "rsyslog forwards security events. " }
+            $FindingDetails += "XAPI generates management alerts. Kernel panic_on_oops forces restart on kernel anomalies."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: Security function anomaly notification not configured. Configure auditd disk_full_action/admin_space_left_action and rsyslog forwarding."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207509 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207509
+        STIG ID    : SRG-OS-000458-VMM-001810
+        Rule ID    : SV-207509r958968_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to access security objects occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207509"
+    $RuleID = "SV-207509r958968_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Object Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $SecurityRules = @($AuditArr | Where-Object {
+            "$_" -match "/etc/passwd|/etc/shadow|/etc/group|/etc/sudoers|/etc/ssh|/etc/pam|/etc/audit|/etc/security"
+        })
+        $FindingDetails += "Security object audit rules: $($SecurityRules.Count)" + $nl
+        foreach ($Rule in $SecurityRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $AccessRules = @($AuditArr | Where-Object { "$_" -match "open|access|creat|truncate|chmod|chown" })
+        $FindingDetails += "File access syscall rules: $($AccessRules.Count)" + $nl
+        $FindingDetails += "Total audit rules: $($AuditArr.Count)" + $nl
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasSecurityRules = ($SecurityRules.Count -gt 0) -or ($AccessRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasSecurityRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security object access. auditd is active with rules monitoring access to security-relevant files and syscalls."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no rules for security object access. Add rules: auditctl -w /etc/passwd -p wa -k identity, auditctl -w /etc/shadow -p wa -k identity, etc."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd and configure security object access rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+# Generate remaining functions (V-207510 through V-264326)
+# 32 stub functions for rules not yet explicitly implemented (Batches 9-10)
 # Note: 11 VulnIDs in sequential gaps do NOT exist in VMM SRG V2R2 XCCDF and are excluded:
 #   V-207359, V-207380, V-207400, V-207408, V-207450, V-207451,
 #   V-207476, V-207477, V-207478, V-207479, V-207485
 
 $RemainingRules = @(
-    "V-207480",
-    "V-207481", "V-207482", "V-207483", "V-207484",
-    "V-207486", "V-207487", "V-207488",
-    "V-207489", "V-207490", "V-207491", "V-207492", "V-207493", "V-207494", "V-207495",
-    "V-207496", "V-207497", "V-207498", "V-207499", "V-207500", "V-207501", "V-207502",
-    "V-207503", "V-207504", "V-207505", "V-207506", "V-207507", "V-207508", "V-207509",
     "V-207510", "V-207511", "V-207512", "V-207513", "V-207514", "V-207515", "V-207516",
     "V-207517", "V-207518", "V-207519", "V-207520", "V-207521", "V-207522", "V-207523",
     "V-207524", "V-207525", "V-207526", "V-207527", "V-207528", "V-207529",

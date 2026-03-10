@@ -3561,223 +3561,347 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207480">
     <!--RuleTitle: The VMM must implement multifactor authentication for remote access to privileged accounts such that one of the factors is provided by a device separate from the system gaining access.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: MFA for remote privileged access-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that multifactor authentication infrastructure is configured for remote access to privileged accounts on XCP-ng. The check examines external authentication integration (AD/LDAP), SSH authentication methods (public key authentication), and PAM MFA modules (pam_google_authenticator, pam_oath, pam_duo, pam_pkcs11). When external authentication or PAM MFA modules are detected, the system provides MFA capability where one factor (knowledge/password) is supplemented by a separate device factor (hardware token, smart card, or mobile authenticator). The ISSO/ISSM should verify that the MFA factor is provided by a device physically separate from the system being accessed, per NIST SP 800-63B requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no multifactor authentication infrastructure for remote access to privileged accounts on XCP-ng. No external authentication (AD/LDAP), no PAM MFA modules (pam_google_authenticator, pam_oath, pam_duo), and no smart card modules (pam_pkcs11) were detected. DoD requires MFA for all remote privileged access per NIST SP 800-53 IA-2(1). To remediate: (1) Configure AD/LDAP external authentication with MFA enforcement via xe pool-join-external-auth, or (2) Install and configure PAM-based MFA such as Google Authenticator (yum install google-authenticator-libpam) or Duo Security, or (3) Deploy smart card authentication via pam_pkcs11 with DoD CAC/PIV cards. The system administrator must ensure the second authentication factor is provided by a device separate from the system gaining access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207481">
     <!--RuleTitle: The VMM must accept Personal Identity Verification (PIV) credentials.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: PIV credential acceptance-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that PIV credential acceptance infrastructure is configured on XCP-ng. The check examines pam_pkcs11 package installation, opensc smart card middleware, pcsc-lite daemon, PAM PKCS11 configuration, SSSD smart card support, and external authentication integration. PIV credential acceptance is confirmed when pam_pkcs11 is configured in PAM or when external authentication (AD/LDAP with PKINIT) provides PIV acceptance through the identity provider. Active Directory with PKINIT enables Kerberos smart card logon, satisfying the PIV acceptance requirement at the enterprise level.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no PIV credential acceptance infrastructure on XCP-ng. The pam_pkcs11 package is not installed, no smart card PAM configuration exists, and no external authentication is configured. DoD requires PIV credential acceptance per HSPD-12 and FIPS 201. To remediate: Install pam_pkcs11 (yum install pam_pkcs11), opensc (yum install opensc), and pcsc-lite (yum install pcsc-lite). Configure PAM for smart card authentication in /etc/pam.d/system-auth. Alternatively, integrate with Active Directory that supports PIV via PKINIT for Kerberos smart card logon. The ISSO/ISSM should coordinate with the organization PKI team for DoD CA certificate installation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207482">
     <!--RuleTitle: The VMM must electronically verify Personal Identity Verification (PIV) credentials.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Electronic PIV verification-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that electronic PIV credential verification is configured on XCP-ng. The check examines pam_pkcs11 configuration for certificate verification, CRL/OCSP checking settings, CA trust anchors, OpenSSL verification configuration, and external authentication integration. Electronic verification confirms PIV certificate validity through certificate chain validation, revocation checking (CRL or OCSP), and trust anchor verification against DoD Root CAs. When external authentication is configured, PIV electronic verification is delegated to the identity provider which performs certificate validation during smart card logon.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no PIV electronic verification infrastructure on XCP-ng. No pam_pkcs11 configuration exists for certificate verification and no external authentication is configured. To remediate: Configure pam_pkcs11 with CRL and OCSP checking in /etc/pam_pkcs11/pam_pkcs11.conf. Install DoD Root CA certificates in /etc/pki/ca-trust/source/anchors/ and run update-ca-trust. Configure CRL download schedules and OCSP responder URLs for real-time certificate validation. Alternatively, integrate with AD/LDAP that performs electronic PIV credential validation during authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207483">
     <!--RuleTitle: The VMM must authenticate peripherals before establishing a connection.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Peripheral authentication-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that peripheral authentication controls are in place on XCP-ng. The check examines USB device authorization policy, udev rules, USBGuard package and service status, and Xen PCI passthrough controls. USBGuard provides device whitelisting for USB peripherals, or USB default authorization is set to deny. The Xen hypervisor architecture ensures only Dom0 has direct peripheral access; guest VMs cannot directly access peripherals without explicit PCI passthrough configuration by authorized pool-admin RBAC role holders.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no peripheral authentication enforcement beyond Xen default isolation on XCP-ng. USBGuard is not installed and USB default authorization allows all devices. To remediate: Install USBGuard (yum install usbguard) and configure device whitelisting in /etc/usbguard/rules.conf. Alternatively, set USB default authorization to deny: echo 0 &gt; /sys/bus/usb/devices/usb*/authorized_default and persist via udev rules. Configure udev rules in /etc/udev/rules.d/ for specific device authentication requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207484">
     <!--RuleTitle: The VMM must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Bidirectional cryptographic endpoint authentication-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified bidirectional cryptographic authentication on XCP-ng. SSH host keys are present for server authentication and public key or password authentication verifies the client. XAPI uses TLS certificates for encrypted management connections. Both protocols provide cryptographically-based mutual authentication between endpoints: SSH uses Diffie-Hellman key exchange for server identity verification and the client authenticates via public key or password; XAPI HTTPS uses X.509 certificates for server authentication and session tokens for client authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found incomplete bidirectional cryptographic authentication on XCP-ng. SSH host keys or XAPI TLS certificate may be missing. To remediate: Ensure SSH host keys exist in /etc/ssh/ (ssh-keygen -A if missing). Verify XAPI TLS certificate at /etc/xensource/xapi-ssl.pem is valid. Configure SSH for public key authentication (PubkeyAuthentication yes). For enhanced mutual TLS, configure stunnel with client certificate verification (verify = 2 in stunnel.conf).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207486">
     <!--RuleTitle: The VMM must prohibit the use of cached authenticators after one day.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Cached authenticator prohibition (1-day limit)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that cached authenticators are properly controlled on XCP-ng. The check examines SSSD offline credential cache settings, sudo timestamp timeout, XAPI session timeout, and Kerberos ticket lifetime. XCP-ng without SSSD uses direct PAM authentication with no credential caching. SSH requires fresh authentication for every connection. Sudo credential caching defaults to 5 minutes (well under 1 day). When SSSD is configured, offline_credentials_expiration is set to 1 day or less, complying with the requirement to prohibit cached authenticators after one day.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that SSSD offline credential cache exceeds 1 day on XCP-ng. To remediate: Set offline_credentials_expiration = 1 in /etc/sssd/sssd.conf under the [pam] section to limit cached credentials to 1 day. Restart SSSD service after changes: systemctl restart sssd. Additionally verify sudo timestamp_timeout is not set excessively high in /etc/sudoers.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207487">
     <!--RuleTitle: The VMM, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: PKI revocation data local cache-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that local PKI revocation data cache is available on XCP-ng. Local CRL files and/or OCSP configuration provide offline certificate revocation checking. This supports path discovery and validation when network access to revocation servers is unavailable, ensuring PKI-based authentication can still verify certificate validity against locally cached revocation data per NIST SP 800-53 IA-5(2).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no local PKI revocation data cache on XCP-ng. No CRL files exist and no OCSP configuration was found. To remediate: Download DoD CRL files to /etc/pki/ or /etc/pam_pkcs11/crls/. Configure automated CRL refresh via cron. Enable OCSP with local response caching in OpenSSL configuration. Install certutil for certificate management. This ensures certificate validation continues during network outages.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207488">
     <!--RuleTitle: The VMM must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: NSA-approved cryptography for classified info-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that FIPS 140-2 mode is enabled at the kernel level on XCP-ng. All cryptographic operations use FIPS-validated modules, meeting the requirement for NSA-approved cryptography to protect classified information. SSH ciphers, MACs, and key exchange algorithms are restricted to FIPS-approved algorithms. OpenSSL operates in FIPS mode for all TLS operations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that FIPS mode is not enabled on XCP-ng. NSA-approved cryptography requires FIPS 140-2 validated cryptographic modules per NIST SP 800-53 SC-13. To remediate: Install dracut-fips (yum install dracut-fips), add fips=1 to kernel boot parameters in /boot/grub2/grub.cfg, and regenerate initramfs (dracut -f). Reboot and verify FIPS mode with cat /proc/sys/crypto/fips_enabled. Note: XCP-ng/CentOS 7 FIPS mode may have compatibility limitations with some hypervisor functions. Test thoroughly before production deployment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207489">
     <!--RuleTitle: The VMM must request data origin authentication verification on the name/address resolution responses the system receives from authoritative sources.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: DNS data origin authentication (DNSSEC)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that a DNSSEC-capable resolver is installed on XCP-ng. A DNSSEC-validating resolver (unbound or bind) provides data origin authentication verification for DNS responses from authoritative sources through DNSSEC chain of trust validation, RRSIG signature verification, and DNSKEY authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no DNSSEC-validating resolver on XCP-ng. To remediate: Install unbound (yum install unbound), configure dnssec-validation in /etc/unbound/unbound.conf with auto-trust-anchor-file for root trust anchor, and point /etc/resolv.conf to the local resolver (nameserver 127.0.0.1). Enable and start the service: systemctl enable --now unbound.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207490">
     <!--RuleTitle: The VMM must request data integrity verification on the name/address resolution responses the system receives from authoritative sources.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: DNS data integrity verification request-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that a DNSSEC-capable resolver is available on XCP-ng. The system can request data integrity verification (RRSIG/DNSKEY) on DNS responses from authoritative sources via DNSSEC protocol, ensuring DNS response integrity through cryptographic signature validation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No DNSSEC-validating resolver detected on XCP-ng. Install and configure unbound or enable DNSSEC in dnsmasq to request data integrity verification on DNS name/address resolution responses. See V-207489 remediation for detailed steps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207491">
     <!--RuleTitle: The VMM must perform data integrity verification on the name/address resolution responses the system receives from authoritative sources.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: DNS data integrity verification performance-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DNSSEC-validating resolver is installed on XCP-ng and can perform data integrity verification on DNS responses. DNSSEC validates RRSIG signatures against DNSKEY records to ensure DNS response integrity from authoritative sources, preventing DNS spoofing and cache poisoning attacks.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No DNSSEC-validating resolver installed on XCP-ng. Install unbound (yum install unbound) and configure dnssec-validation to perform data integrity verification on DNS responses. See V-207489 remediation for detailed steps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207492">
     <!--RuleTitle: The VMM must perform data origin verification authentication on the name/address resolution responses the system receives from authoritative sources.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: DNS data origin verification authentication-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>DNSSEC-capable resolver is installed on XCP-ng. Data origin verification authentication is performed through DNSSEC chain of trust from root trust anchor to authoritative zone signatures, authenticating that DNS responses originate from legitimate authoritative sources.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No DNSSEC-validating resolver detected on XCP-ng. Install and configure unbound or bind with DNSSEC validation to perform data origin verification on DNS responses. See V-207489 remediation for detailed steps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207493">
     <!--RuleTitle: The VMM must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: DoD PKI CA restriction for protected sessions-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that DoD PKI certificate authorities are present in the system trust bundle on XCP-ng. The system CA trust store includes DoD Root and Intermediate CAs for verification of protected session establishment, ensuring only DoD PKI-established CAs are used for TLS/SSL certificate validation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No DoD PKI certificate authorities detected in the system trust bundle on XCP-ng. To remediate: Download DoD Root CA and Intermediate CA certificates from https://militarycac.com/dodcerts.htm or DISA PKI. Import certificates into /etc/pki/ca-trust/source/anchors/ and run update-ca-trust to update the system trust store. Remove non-DoD CA certificates if operating in a classified environment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207494">
     <!--RuleTitle: The VMM must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest on all VMM components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Encryption at rest (modification prevention)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Disk encryption (LUKS/dm-crypt) is configured on XCP-ng. Cryptographic mechanisms protect information at rest from unauthorized modification by ensuring data integrity through authenticated encryption. LUKS provides sector-level encryption preventing unauthorized modification of stored data including VM disk images, configuration, and hypervisor state.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No disk encryption detected on XCP-ng. To remediate: Configure LUKS full-disk encryption on all VMM storage volumes. For new installations, enable encryption during install. For existing systems, back up data, create LUKS volumes (cryptsetup luksFormat), restore data. Additionally install AIDE (yum install aide) for file integrity monitoring to detect unauthorized modifications.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207495">
     <!--RuleTitle: The VMM must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest on all VMM components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 8: Encryption at rest (disclosure prevention)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>Disk encryption (LUKS) is configured on XCP-ng to prevent unauthorized disclosure of information at rest. Encrypted volumes protect VM disk images, configuration data, and hypervisor state from unauthorized access to physical storage media. LUKS provides AES-256 encryption meeting DoD requirements for data-at-rest protection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>No disk encryption detected on XCP-ng. Configure LUKS encryption on all VMM storage volumes containing sensitive data including VM disk images and configuration to prevent unauthorized disclosure of information at rest. See V-207494 remediation for detailed LUKS setup steps.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207496">
     <!--RuleTitle: The VMM must maintain a separate execution domain for each executing process.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies ASLR, NX bit, cgroups, and namespaces for process isolation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor maintains separate execution domains for each executing process through multiple kernel-enforced isolation mechanisms.
+
+The automated check verified:
+(1) Address Space Layout Randomization (ASLR) is enabled via kernel.randomize_va_space sysctl, providing memory layout randomization for each process
+(2) NX (No-eXecute) bit support is confirmed via CPU flags and dmesg, preventing code execution in data memory regions
+(3) Linux cgroups are active, providing resource isolation between process groups
+(4) Linux namespaces (PID, network, mount, user) provide further process-level isolation
+
+Finding: Not a Finding
+
+Justification: The Xen hypervisor architecture provides hardware-enforced separation between Dom0 and guest VMs at the CPU ring level. Within Dom0, the Linux kernel provides standard process isolation through virtual memory, ASLR, NX bit enforcement, cgroups, and namespaces. Each process operates in its own virtual address space with hardware MMU protection. This meets the VMM SRG requirement for separate execution domains per process.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor process isolation mechanisms are not fully configured.
+
+The automated check found one or more of the following deficiencies:
+(1) ASLR is not set to full randomization (kernel.randomize_va_space should be 2)
+(2) NX bit support is not detected in CPU flags or dmesg output
+(3) cgroups are not active on the system
+(4) Process namespace isolation is not available
+
+The VMM SRG requires that the hypervisor maintain a separate execution domain for each executing process to prevent unauthorized information flows and process interference.
+
+Remediation:
+1. Enable full ASLR: sysctl -w kernel.randomize_va_space=2 and add to /etc/sysctl.conf
+2. Verify NX bit support in BIOS/UEFI settings (should be enabled by default on modern hardware)
+3. Verify cgroups are mounted: mount | grep cgroup
+4. If cgroups are missing, verify kernel configuration supports CONFIG_CGROUPS
+
+Contact the system administrator to ensure all process isolation mechanisms are properly configured per DoD security requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3785,13 +3909,48 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207497">
     <!--RuleTitle: The VMM must maintain a separate execution domain for each guest VM.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies Xen Type 1 hypervisor VM isolation (VT-x/AMD-V, IOMMU, per-VM domains)-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor maintains separate execution domains for each guest VM through hardware-assisted virtualization.
+
+The automated check verified:
+(1) Xen hypervisor is running as a Type 1 (bare-metal) hypervisor with hardware-enforced VM isolation
+(2) Hardware virtualization extensions (Intel VT-x or AMD-V) are active, providing CPU-level isolation between VMs
+(3) IOMMU (Intel VT-d or AMD-Vi) is available for DMA protection and device isolation
+(4) Each guest VM runs in its own Xen domain (domU) with dedicated virtual CPU, memory, and device assignments
+(5) The Xen hypervisor enforces memory page isolation between domains using hardware MMU and EPT/NPT
+
+Finding: Not a Finding
+
+Justification: XCP-ng uses the Xen hypervisor which provides hardware-enforced separation between guest VMs. Each VM runs in its own domain with isolated virtual address space, CPU scheduling, and I/O channels. The hypervisor mediates all inter-domain communication through explicit grant tables and event channels. This architecture inherently meets the VMM SRG requirement for separate execution domains per guest VM.
+
+No additional configuration required - this is an inherent property of the Xen Type 1 hypervisor architecture.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor VM isolation could not be fully verified.
+
+The automated check found one or more of the following issues:
+(1) Xen hypervisor version could not be determined or is below minimum supported version
+(2) Hardware virtualization extensions (VT-x/AMD-V) are not detected or not enabled
+(3) IOMMU (VT-d/AMD-Vi) is not available for DMA protection
+
+The VMM SRG requires that the hypervisor maintain a separate execution domain for each guest VM to prevent unauthorized access between virtual machines.
+
+Remediation:
+1. Verify hardware virtualization is enabled in BIOS/UEFI (Intel VT-x or AMD-V)
+2. Enable IOMMU in BIOS/UEFI (Intel VT-d or AMD-Vi)
+3. Verify Xen boot parameters include iommu=on: cat /proc/cmdline
+4. Update XCP-ng to a supported version if hypervisor version is outdated
+5. Verify VMs are properly isolated: xl list should show each VM in its own domain
+
+Contact the system administrator and ISSO to ensure hardware virtualization features are properly enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3799,13 +3958,50 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207498">
     <!--RuleTitle: The VMM must protect against or limit the effects of Denial of Service (DoS) attacks by ensuring the VMM is implementing rate-limiting measures on impacted network interfaces.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies iptables rate-limit rules, SYN cookies, fail2ban, ICMP limits-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor has rate-limiting measures configured to protect against Denial of Service attacks.
+
+The automated check verified one or more of the following protections are in place:
+(1) iptables rate-limiting rules are configured (e.g., -m limit --limit or -m hashlimit) to throttle incoming connections
+(2) TCP SYN cookies are enabled (net.ipv4.tcp_syncookies = 1) to protect against SYN flood attacks
+(3) fail2ban service is installed and active, providing automated IP blocking for brute-force attempts
+(4) ICMP rate limiting is configured to prevent ICMP flood attacks
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host has network rate-limiting protections configured to mitigate DoS attacks. SYN cookies provide stateless SYN flood protection at the kernel level. Additional iptables rules or fail2ban provide application-layer rate limiting. These measures collectively satisfy the VMM SRG requirement for DoS protection on network interfaces.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not have sufficient rate-limiting measures to protect against Denial of Service attacks.
+
+The automated check found:
+(1) No iptables rate-limiting rules detected (no -m limit or -m hashlimit rules)
+(2) TCP SYN cookies may not be enabled (net.ipv4.tcp_syncookies should be 1)
+(3) fail2ban is not installed or not active
+(4) No ICMP rate limiting configured
+
+The VMM SRG requires the hypervisor to implement rate-limiting measures on impacted network interfaces to protect against DoS attacks.
+
+Remediation:
+1. Enable SYN cookies: sysctl -w net.ipv4.tcp_syncookies=1 and add to /etc/sysctl.conf
+2. Install and configure fail2ban: yum install fail2ban; systemctl enable fail2ban
+3. Add iptables rate-limit rules for management interfaces:
+   iptables -A INPUT -p tcp --dport 22 -m limit --limit 10/min -j ACCEPT
+   iptables -A INPUT -p tcp --dport 443 -m limit --limit 30/min -j ACCEPT
+4. Limit ICMP: iptables -A INPUT -p icmp -m limit --limit 1/sec -j ACCEPT
+5. Save rules: iptables-save &gt; /etc/sysconfig/iptables
+
+Contact the system administrator to implement appropriate rate-limiting for the environment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3813,13 +4009,48 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207499">
     <!--RuleTitle: The VMM must protect the confidentiality and integrity of transmitted information.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies SSH ciphers, XAPI TLS, and stunnel for transmitted data protection-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor protects the confidentiality and integrity of transmitted information using approved cryptographic mechanisms.
+
+The automated check verified:
+(1) SSH is configured with FIPS-approved ciphers (aes256-ctr, aes128-ctr, aes256-gcm@openssh.com, or aes128-gcm@openssh.com)
+(2) XAPI management interface uses TLS encryption with a valid certificate
+(3) stunnel is configured for any additional service tunneling requirements
+(4) No plaintext management protocols (telnet, unencrypted HTTP) are listening on network interfaces
+
+Finding: Not a Finding
+
+Justification: All management communication channels on the XCP-ng host use encrypted transport. SSH provides encrypted remote administration. The XAPI interface uses TLS for all management API calls from Xen Orchestra and other management tools. This meets the VMM SRG requirement for protecting confidentiality and integrity of transmitted information using NIST SP 800-52-compliant cryptographic mechanisms.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not fully protect the confidentiality and integrity of transmitted information.
+
+The automated check found one or more issues:
+(1) SSH ciphers include non-FIPS-approved algorithms or weak ciphers
+(2) XAPI TLS certificate is missing, expired, or self-signed without proper trust chain
+(3) Plaintext management services (telnet, unencrypted HTTP) are listening on network interfaces
+
+The VMM SRG requires all transmitted information be protected using FIPS 140-2 validated cryptographic mechanisms.
+
+Remediation:
+1. Configure SSH with approved ciphers only in /etc/ssh/sshd_config:
+   Ciphers aes256-ctr,aes128-ctr,aes256-gcm@openssh.com,aes128-gcm@openssh.com
+2. Verify XAPI TLS certificate: openssl s_client -connect localhost:443
+3. Replace self-signed certificates with organization-issued certificates
+4. Disable any plaintext services: systemctl stop telnet.socket; systemctl disable telnet.socket
+5. Restart SSH: systemctl restart sshd
+
+Contact the ISSO/ISSM and system administrator to ensure all transmission channels use approved encryption.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3827,13 +4058,45 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207500">
     <!--RuleTitle: The VMM must maintain the confidentiality and integrity of information during preparation for transmission.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies SSH ciphers, XAPI TLS certificate, and crypto preparation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor maintains confidentiality and integrity of information during preparation for transmission.
+
+The automated check verified:
+(1) SSH is configured with FIPS-approved ciphers for all remote sessions
+(2) XAPI TLS certificate is present and valid, ensuring management API data is encrypted before transmission
+(3) Cryptographic libraries (OpenSSL) are properly configured for data preparation
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host prepares all management data for encrypted transmission before sending over the network. SSH encrypts data in the application buffer before transmission. XAPI uses TLS to encrypt all XML-RPC management traffic. The OpenSSL library handles cryptographic operations for data preparation. This meets the VMM SRG requirement for maintaining confidentiality and integrity during preparation for transmission per NIST SP 800-52 guidelines.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not fully maintain confidentiality and integrity of information during preparation for transmission.
+
+The automated check found issues with cryptographic configuration for data preparation:
+(1) SSH cipher configuration includes weak or non-approved algorithms
+(2) XAPI TLS certificate issues detected (missing, expired, or weak key)
+(3) OpenSSL configuration may not enforce FIPS-approved algorithms
+
+The VMM SRG requires that information confidentiality and integrity be maintained during preparation for transmission.
+
+Remediation:
+1. Update SSH ciphers in /etc/ssh/sshd_config to use only FIPS-approved algorithms
+2. Renew or replace XAPI TLS certificates with properly signed certificates
+3. Verify OpenSSL version supports required algorithms: openssl version
+4. Restart affected services after configuration changes
+
+Contact the system administrator and ISSO to review and approve cryptographic configurations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3841,13 +4104,46 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207501">
     <!--RuleTitle: The VMM must maintain the confidentiality and integrity of information during reception.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies SSH MACs, XAPI TLS, and no plaintext services for reception-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor maintains confidentiality and integrity of information during reception.
+
+The automated check verified:
+(1) SSH is configured with FIPS-approved MACs (hmac-sha2-256, hmac-sha2-512, or AEAD ciphers) for integrity verification of received data
+(2) XAPI TLS is active, ensuring received management API data is decrypted and integrity-verified
+(3) No plaintext services (telnet, unencrypted HTTP on management ports) are accepting connections
+
+Finding: Not a Finding
+
+Justification: All data received by the XCP-ng host management interfaces is protected by cryptographic integrity checks. SSH uses HMAC algorithms to verify data integrity on reception. XAPI TLS provides both confidentiality and integrity for received XML-RPC management traffic. No plaintext services are exposed that could receive unprotected data. This meets the VMM SRG requirement for maintaining confidentiality and integrity during reception.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not fully maintain confidentiality and integrity of information during reception.
+
+The automated check found:
+(1) SSH MAC configuration may include weak algorithms (e.g., hmac-md5, hmac-sha1)
+(2) XAPI TLS reception protection could not be fully verified
+(3) Plaintext services may be accepting connections on management interfaces
+
+The VMM SRG requires that information confidentiality and integrity be maintained during reception using FIPS 140-2 validated mechanisms.
+
+Remediation:
+1. Configure SSH MACs in /etc/ssh/sshd_config:
+   MACs hmac-sha2-512,hmac-sha2-256,hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com
+2. Verify XAPI TLS is active: openssl s_client -connect localhost:443
+3. Disable plaintext services: check for telnet, unencrypted HTTP, and FTP
+4. Restart SSH: systemctl restart sshd
+
+Contact the system administrator to ensure all reception channels use approved cryptographic protections.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3855,13 +4151,47 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207502">
     <!--RuleTitle: The VMM must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies XAPI XML-RPC validation and kernel panic settings - inherent NF-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor behaves in a predictable and documented manner when invalid inputs are received.
+
+The automated check verified:
+(1) XAPI management daemon uses XML-RPC protocol with strict schema validation, rejecting malformed requests with documented error codes
+(2) Xen hypervisor validates all hypercall parameters at the hypervisor level before processing
+(3) Kernel panic behavior is configured (kernel.panic sysctl) to handle critical errors predictably
+(4) Kernel panic_on_oops is configured to respond to kernel errors in a documented manner
+
+Finding: Not a Finding
+
+Justification: The Xen hypervisor and XAPI management layer implement comprehensive input validation. XAPI uses XML-RPC with strict type checking - invalid inputs receive documented XML-RPC fault responses rather than undefined behavior. The Xen hypervisor validates all hypercall parameters and returns well-defined error codes for invalid inputs. Kernel panic settings ensure predictable behavior during critical system errors. This is an inherent property of the Xen/XAPI architecture and meets the VMM SRG requirement for predictable behavior on invalid inputs.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor input validation or error handling configuration could not be fully verified.
+
+The automated check was unable to confirm all aspects of predictable behavior on invalid inputs:
+(1) XAPI XML-RPC validation could not be verified
+(2) Kernel panic configuration may not be properly set
+(3) Error handling behavior may not be fully documented
+
+The VMM SRG requires the hypervisor to behave predictably when invalid inputs are received, reflecting organizational and system objectives.
+
+Remediation:
+1. Verify XAPI is running and processing requests: systemctl status xapi
+2. Configure kernel panic behavior: sysctl -w kernel.panic=10 (reboot after 10 seconds)
+3. Configure panic on oops: sysctl -w kernel.panic_on_oops=1
+4. Add settings to /etc/sysctl.conf for persistence
+5. Document expected behavior for invalid inputs in the System Security Plan
+
+Contact the ISSO/ISSM to ensure error handling procedures are documented in organizational security documentation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3869,13 +4199,45 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207503">
     <!--RuleTitle: The VMM must implement non-executable data to protect its memory from unauthorized code execution.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies NX/XD bit support via CPU flags and dmesg-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor implements non-executable data (NX/XD bit) to protect memory from unauthorized code execution.
+
+The automated check verified:
+(1) CPU supports the NX (No-eXecute) or XD (eXecute Disable) bit as shown in /proc/cpuinfo flags
+(2) NX protection is active in the running kernel as confirmed by dmesg output showing NX enabled
+(3) The Xen hypervisor enforces NX bit at the hardware level for both Dom0 and guest VMs
+
+Finding: Not a Finding
+
+Justification: The NX bit is a hardware-level memory protection feature that marks memory pages as non-executable, preventing code injection attacks. The XCP-ng host CPU supports NX/XD and the kernel has it enabled. The Xen hypervisor enforces NX protection at the hardware level through page table entries. This meets the VMM SRG requirement for non-executable data implementation to protect memory from unauthorized code execution.
+
+No additional configuration required - NX bit is enabled by default on modern x86_64 hardware.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor NX (No-eXecute) bit protection could not be verified or is not active.
+
+The automated check found:
+(1) NX/XD flag not found in /proc/cpuinfo CPU flags
+(2) dmesg does not show NX protection as active, or shows NX disabled
+
+The VMM SRG requires the hypervisor to implement non-executable data to protect memory from unauthorized code execution (DEP/NX).
+
+Remediation:
+1. Verify CPU supports NX: grep -c nx /proc/cpuinfo (should return non-zero)
+2. Check BIOS/UEFI settings - ensure Execute Disable Bit (XD) or No-Execute (NX) is enabled
+3. Verify kernel boot parameters do not include noexec=off
+4. Check dmesg for NX status: dmesg | grep -i 'execute disable\|NX'
+5. If hardware does not support NX, this is a hardware limitation requiring system replacement
+
+Contact the system administrator to verify BIOS/UEFI settings enable NX/XD bit support.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3883,13 +4245,45 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207504">
     <!--RuleTitle: The VMM must implement address space layout randomization to protect its memory from unauthorized code execution.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies kernel.randomize_va_space sysctl for full ASLR-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor implements Address Space Layout Randomization (ASLR) to protect memory from unauthorized code execution.
+
+The automated check verified:
+(1) kernel.randomize_va_space is set to 2 (full ASLR randomization), providing randomization of stack, VDSO, shared memory, and data segments
+(2) ASLR is enforced system-wide for all processes running in Dom0
+
+Finding: Not a Finding
+
+Justification: ASLR is a critical memory protection mechanism that randomizes the memory layout of processes, making it significantly more difficult for attackers to predict memory addresses for exploitation. The kernel.randomize_va_space value of 2 enables full randomization including stack, VDSO page, shared memory regions, and data segments. This is the maximum ASLR protection level available in the Linux kernel. This meets the VMM SRG requirement for address space layout randomization implementation.
+
+No additional configuration required - full ASLR is the default on CentOS 7-based XCP-ng.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not have full Address Space Layout Randomization (ASLR) enabled.
+
+The automated check found:
+(1) kernel.randomize_va_space is not set to 2 (current value indicates partial or no ASLR)
+- Value 0: ASLR disabled (critical vulnerability)
+- Value 1: Partial ASLR (stack randomization only)
+- Value 2: Full ASLR (required for compliance)
+
+The VMM SRG requires the hypervisor to implement ASLR to protect memory from unauthorized code execution.
+
+Remediation:
+1. Enable full ASLR immediately: sysctl -w kernel.randomize_va_space=2
+2. Make persistent by adding to /etc/sysctl.conf: kernel.randomize_va_space = 2
+3. Verify the setting: sysctl kernel.randomize_va_space (should return 2)
+4. Verify no kernel boot parameters override ASLR (check /proc/cmdline for norandmaps)
+
+Contact the system administrator to implement this change. Full ASLR is required for DoD compliance and should not be disabled under normal operating conditions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3897,13 +4291,46 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207505">
     <!--RuleTitle: The VMM must remove all software components after updated versions have been installed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies yum clean config, duplicate packages, and kernel count-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor is configured to remove superseded software components after updates.
+
+The automated check verified:
+(1) yum is configured with clean_requirements_on_remove=1 or equivalent, ensuring dependencies of removed packages are also cleaned
+(2) No duplicate RPM packages were found (rpm -qa shows no duplicate package names with different versions)
+(3) The number of installed kernels does not exceed the installonly_limit setting, confirming old kernels are properly rotated
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host package management system is configured to remove outdated software components when updates are installed. yum handles package upgrades by replacing old versions with new ones and cleaning up dependencies. The kernel rotation limit ensures old kernels are removed after the configured number of new kernels are installed. No duplicate packages indicate clean upgrade history. This meets the VMM SRG requirement for removing superseded software components.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor has not fully removed superseded software components.
+
+The automated check found one or more issues:
+(1) yum is not configured to clean up dependencies on package removal (clean_requirements_on_remove not set)
+(2) Duplicate RPM packages detected (multiple versions of the same package installed)
+(3) More kernels installed than the installonly_limit allows
+
+The VMM SRG requires that all software components be removed after updated versions have been installed to reduce attack surface.
+
+Remediation:
+1. Configure yum cleanup: echo "clean_requirements_on_remove=1" &gt;&gt; /etc/yum.conf
+2. Remove duplicate packages: package-cleanup --dupes then yum remove &lt;old-version&gt;
+3. Clean up old kernels: package-cleanup --oldkernels --count=2
+4. Set kernel limit in /etc/yum.conf: installonly_limit=3
+5. Verify no duplicates remain: rpm -qa --qf '%{NAME}\n' | sort | uniq -d
+
+Contact the system administrator to perform software cleanup and configure automatic removal of superseded components.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3911,13 +4338,49 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207506">
     <!--RuleTitle: The VMM must verify correct operation of all security functions.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies AIDE, RPM verification, and critical service status-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor has mechanisms to verify correct operation of security functions.
+
+The automated check verified:
+(1) AIDE (Advanced Intrusion Detection Environment) is installed for file integrity monitoring
+(2) RPM verification (rpm -V) capability is available for package integrity checks
+(3) Critical security services are running: auditd (audit logging), sshd (secure access), xapi (management)
+(4) iptables/firewall service is active for network security
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host has multiple mechanisms for verifying security function operation. AIDE provides file integrity monitoring to detect unauthorized changes to system files. RPM verification confirms package files have not been modified from their installed state. Critical security services (auditd, sshd, iptables) are running and operational. These mechanisms collectively satisfy the VMM SRG requirement for verifying correct operation of all security functions.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not have adequate mechanisms to verify correct operation of security functions.
+
+The automated check found:
+(1) AIDE is not installed - no file integrity monitoring capability
+(2) Critical security services may not be running (auditd, iptables)
+(3) No automated security function verification mechanism detected
+
+The VMM SRG requires the hypervisor to verify correct operation of all security functions to detect unauthorized modifications.
+
+Remediation:
+1. Install AIDE: yum install aide
+2. Initialize AIDE database: aide --init; mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz
+3. Verify security services are running:
+   systemctl status auditd sshd iptables xapi
+4. Enable services if not running:
+   systemctl enable --now auditd iptables
+5. Create a verification script that checks all security functions and schedule it via cron
+
+Contact the system administrator and ISSO to implement security function verification procedures.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3925,13 +4388,50 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207507">
     <!--RuleTitle: The VMM must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies AIDE cron jobs, crontab integrity checks, and boot services-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor performs periodic verification of security function operation.
+
+The automated check verified:
+(1) AIDE is configured to run periodically via cron (daily or weekly schedule) to verify file integrity
+(2) Integrity check cron jobs are present in /etc/cron.daily, /etc/cron.weekly, or crontab
+(3) Security services (auditd, sshd, iptables, xapi) are enabled at boot via systemctl
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host has periodic security verification mechanisms in place. AIDE cron jobs perform file integrity checks on a scheduled basis (meeting the 30-day requirement). Security services are configured to start automatically on system boot, ensuring verification occurs upon startup and restart. Privileged users can manually run AIDE checks (aide --check) on demand. These mechanisms satisfy the VMM SRG requirement for security function verification at startup, on command, and every 30 days.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not perform periodic verification of security function operation.
+
+The automated check found:
+(1) No AIDE cron jobs detected in /etc/cron.daily, /etc/cron.weekly, or system crontab
+(2) No automated integrity checking mechanism is scheduled
+(3) Some security services may not be enabled at boot
+
+The VMM SRG requires security function verification upon startup, on privileged user command, and at least every 30 days.
+
+Remediation:
+1. Install AIDE if not present: yum install aide; aide --init
+2. Create daily AIDE check cron job:
+   echo '#!/bin/bash' &gt; /etc/cron.daily/aide-check
+   echo '/usr/sbin/aide --check | /bin/mail -s "AIDE Report" root' &gt;&gt; /etc/cron.daily/aide-check
+   chmod 755 /etc/cron.daily/aide-check
+3. Enable security services at boot:
+   systemctl enable auditd sshd iptables xapi
+4. Document the verification schedule in the System Security Plan
+5. Ensure privileged users know how to run manual checks: aide --check
+
+Contact the system administrator and ISSO to establish a security verification schedule.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3939,13 +4439,51 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207508">
     <!--RuleTitle: The VMM must shut down, restart, and/or notify the system administrator when anomalies in the operation of any security functions are discovered.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies auditd failure action, rsyslog forwarding, kernel panic_on_oops-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor is configured to notify administrators and take action when security function anomalies are discovered.
+
+The automated check verified:
+(1) auditd is configured with appropriate failure actions (disk_full_action, disk_error_action, space_left_action in /etc/audit/auditd.conf) to halt or notify on audit failures
+(2) rsyslog is configured to forward security events to a central log server or local notification
+(3) Kernel panic_on_oops is configured to halt the system on kernel security anomalies rather than continuing in an undefined state
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host has multiple mechanisms for responding to security function anomalies. auditd handles audit subsystem failures by halting or notifying per configuration. rsyslog ensures security events are logged and forwarded. Kernel panic settings ensure the system halts on critical security anomalies rather than continuing to operate in an insecure state. These mechanisms meet the VMM SRG requirement for shutdown, restart, or notification when security function anomalies are discovered.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor is not fully configured to respond to security function anomalies.
+
+The automated check found:
+(1) auditd failure actions may not be properly configured in /etc/audit/auditd.conf
+(2) rsyslog may not be configured for security event forwarding or notification
+(3) Kernel panic_on_oops may not be set to respond to kernel anomalies
+
+The VMM SRG requires the hypervisor to shut down, restart, or notify the administrator when security function anomalies are discovered.
+
+Remediation:
+1. Configure auditd failure actions in /etc/audit/auditd.conf:
+   disk_full_action = HALT
+   disk_error_action = HALT
+   space_left_action = email
+   admin_space_left_action = halt
+2. Configure rsyslog to forward security events:
+   Add: *.crit @syslog-server:514 to /etc/rsyslog.conf
+3. Set kernel panic on oops: sysctl -w kernel.panic_on_oops=1
+   Add to /etc/sysctl.conf: kernel.panic_on_oops = 1
+4. Restart services: systemctl restart auditd rsyslog
+
+Contact the system administrator and ISSO to implement security anomaly notification procedures.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>
@@ -3953,13 +4491,57 @@ Contact the system administrator to configure password complexity requirements.<
   <Vuln ID="V-207509">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to access security objects occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Session #75 (2026-03-10): Automated check verifies auditd service and audit rules for security file access-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor generates audit records when attempts to access security objects occur.
+
+The automated check verified:
+(1) auditd service is installed, running, and enabled at boot
+(2) Audit rules are configured to monitor access to security-relevant files including:
+   - /etc/passwd, /etc/shadow, /etc/group (user account objects)
+   - /etc/sudoers, /etc/sudoers.d/ (privilege escalation objects)
+   - /etc/audit/ (audit configuration objects)
+   - /etc/ssh/sshd_config (SSH security objects)
+(3) Audit rules use -w (watch) or -a (append) directives with -p (permissions) flags to capture read, write, execute, and attribute change events
+
+Finding: Not a Finding
+
+Justification: The XCP-ng host auditd subsystem is configured to generate audit records for access to security objects. File watches monitor critical security files for any access attempts. The audit rules capture both successful and unsuccessful access attempts through permission-based monitoring. This meets the VMM SRG requirement for generating audit records on security object access.
+
+No additional configuration required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment></ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>XCP-ng hypervisor does not generate adequate audit records for security object access.
+
+The automated check found:
+(1) auditd may not be running or enabled at boot
+(2) Audit rules for security object access are missing or incomplete
+(3) Critical security files are not monitored for access attempts
+
+The VMM SRG requires the hypervisor to generate audit records when successful or unsuccessful attempts to access security objects occur.
+
+Remediation:
+1. Ensure auditd is installed and running:
+   yum install audit; systemctl enable --now auditd
+2. Add audit rules for security objects in /etc/audit/rules.d/security-objects.rules:
+   -w /etc/passwd -p wa -k identity
+   -w /etc/shadow -p wa -k identity
+   -w /etc/group -p wa -k identity
+   -w /etc/sudoers -p wa -k actions
+   -w /etc/sudoers.d/ -p wa -k actions
+   -w /etc/ssh/sshd_config -p wa -k sshd_config
+   -w /etc/audit/ -p wa -k audit_config
+3. Reload audit rules: augenrules --load
+4. Verify rules are active: auditctl -l
+
+Contact the system administrator to implement audit rules for all security-relevant objects.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment></ValidFalseComment>
       </Answer>
     </AnswerKey>

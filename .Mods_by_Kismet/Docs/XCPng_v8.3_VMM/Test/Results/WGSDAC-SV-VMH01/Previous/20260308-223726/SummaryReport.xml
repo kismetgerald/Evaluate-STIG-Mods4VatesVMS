@@ -1,0 +1,261 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Summary>
+  <Computer>
+    <ScanDate>03/08/2026</ScanDate>
+    <EvalSTIGVer>1.2507.6</EvalSTIGVer>
+    <ScanType>Classified</ScanType>
+    <Name>WGSDAC-SV-VMH01</Name>
+    <Manufacturer>HP</Manufacturer>
+    <Model>ProLiant DL360p Gen8</Model>
+    <SerialNumber>USE233C3E7</SerialNumber>
+    <BIOSVersion>P71</BIOSVersion>
+    <OSName>XCP-ng 8.3</OSName>
+    <OSVersion>8.3.0</OSVersion>
+    <OSArchitecture>x86_64</OSArchitecture>
+    <CPUArchitecture>x86_64</CPUArchitecture>
+    <NetworkAdapters>
+      <Adapter InterfaceIndex="11">
+        <Caption>Ethernet interface</Caption>
+        <MACAddress>2c:76:8a:53:fd:1d</MACAddress>
+        <IPv4Addresses>10.0.20.23</IPv4Addresses>
+        <IPv6Addresses>
+        </IPv6Addresses>
+      </Adapter>
+      <Adapter InterfaceIndex="12">
+        <Caption>Ethernet interface</Caption>
+        <MACAddress>2c:76:8a:53:fd:1c</MACAddress>
+        <IPv4Addresses>10.0.10.23</IPv4Addresses>
+        <IPv6Addresses>
+        </IPv6Addresses>
+      </Adapter>
+    </NetworkAdapters>
+    <DiskDrives>
+      <Disk Index="XSLocalEXT-5903cb1c-359e-33cf-cff9-ceab8eec43b7">
+        <DeviceID>5903cb1c-359e-33cf-cff9-ceab8eec43b7</DeviceID>
+        <Size>1.05 TiB</Size>
+        <Caption>
+        </Caption>
+        <SerialNumber>
+        </SerialNumber>
+        <MediaType>
+        </MediaType>
+        <InterfaceType>
+        </InterfaceType>
+      </Disk>
+    </DiskDrives>
+    <DistinguishedName>Not a domain member</DistinguishedName>
+    <ScannedUserProfile>root</ScannedUserProfile>
+    <Score>
+      <CATI_OpenNRTotal>26</CATI_OpenNRTotal>
+      <CATI_PossibleTotal>26</CATI_PossibleTotal>
+      <CATII_OpenNRTotal>367</CATII_OpenNRTotal>
+      <CATII_PossibleTotal>367</CATII_PossibleTotal>
+      <CATIII_OpenNRTotal>44</CATIII_OpenNRTotal>
+      <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
+      <CountRetrievalSuccess>1</CountRetrievalSuccess>
+      <RiskRating>Very High</RiskRating>
+      <WeightedAvg>100</WeightedAvg>
+    </Score>
+  </Computer>
+  <Results>
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-08T22:36:32.3547753-04:00" EvalScore="0">
+      <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
+      <CAT_II Total="193" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="193">
+        <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Not_Reviewed" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account creation." Status="Not_Reviewed" ID="V-207341" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period." Status="Not_Reviewed" ID="V-207342" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system." Status="Not_Reviewed" ID="V-207343" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Not_Reviewed" ID="V-207344" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="Not_Reviewed" ID="V-207345" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures." Status="Not_Reviewed" ID="V-207346" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must initiate a session lock after a 15-minute period of inactivity." Status="Not_Reviewed" ID="V-207347" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide the capability for users to directly initiate a session lock." Status="Not_Reviewed" ID="V-207348" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Not_Reviewed" ID="V-207349" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must monitor remote access methods automatically." Status="Not_Reviewed" ID="V-207350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Not_Reviewed" ID="V-207351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish what type of events occurred." Status="Not_Reviewed" ID="V-207352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish when (date and time) the events occurred." Status="Not_Reviewed" ID="V-207353" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish where the events occurred." Status="Not_Reviewed" ID="V-207354" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish the source of the events." Status="Not_Reviewed" ID="V-207355" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish the outcome of the events." Status="Not_Reviewed" ID="V-207356" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records containing the full-text recording of privileged commands or the individual identities of group account users." Status="Not_Reviewed" ID="V-207357" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must alert the ISSO and SA (at a minimum) in the event of an audit processing failure." Status="Not_Reviewed" ID="V-207358" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must support the capability to centrally review and analyze audit records from multiple components within the system." Status="Not_Reviewed" ID="V-207360" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must support the capability to filter audit records for events of interest based upon all audit fields within audit records." Status="Not_Reviewed" ID="V-207361" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use internal system clocks to generate time stamps for audit records." Status="Not_Reviewed" ID="V-207362" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit information from unauthorized read access." Status="Not_Reviewed" ID="V-207363" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit information from unauthorized modification." Status="Not_Reviewed" ID="V-207364" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit information from unauthorized deletion." Status="Not_Reviewed" ID="V-207365" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide audit record generation capability for DoD-defined auditable events for all VMM components." Status="Not_Reviewed" ID="V-207366" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must allow only the ISSM (or individuals or roles appointed by the ISSM) to select which auditable events are to be audited." Status="Not_Reviewed" ID="V-207367" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to access privileges occur." Status="Not_Reviewed" ID="V-207368" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM, for PKI-based authentication, must validate certificates by constructing a certification path (which includes status information) to an accepted trust anchor." Status="Not_Reviewed" ID="V-207369" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM, for PKI-based authentication, must enforce authorized access to the corresponding private key." Status="Not_Reviewed" ID="V-207370" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must map the authenticated identity to the user or group account for PKI-based authentication." Status="Not_Reviewed" ID="V-207371" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce password complexity by requiring that at least one uppercase character be used." Status="Not_Reviewed" ID="V-207372" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce password complexity by requiring that at least one lowercase character be used." Status="Not_Reviewed" ID="V-207373" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce password complexity by requiring that at least one numeric character be used." Status="Not_Reviewed" ID="V-207374" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must require the change of at least eight of the total number of characters when passwords are changed." Status="Not_Reviewed" ID="V-207375" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must store only encrypted representations of passwords." Status="Not_Reviewed" ID="V-207376" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must transmit only encrypted representations of passwords." Status="Not_Reviewed" ID="V-207377" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce 24 hours/one day as the minimum password lifetime." Status="Not_Reviewed" ID="V-207378" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce a 60-day maximum password lifetime restriction." Status="Not_Reviewed" ID="V-207379" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce a minimum 15-character password length." Status="Not_Reviewed" ID="V-207381" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must obscure feedback of authentication information during the authentication process to protect the information from possible exploitation/use by unauthorized individuals." Status="Not_Reviewed" ID="V-207382" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce approved authorizations for logical access to information and system resources in accordance with applicable access control policies." Status="Not_Reviewed" ID="V-207383" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured to disable non-essential capabilities." Status="Not_Reviewed" ID="V-207384" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the PPSM CAL and vulnerability assessments." Status="Not_Reviewed" ID="V-207385" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users)." Status="Not_Reviewed" ID="V-207386" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to privileged accounts." Status="Not_Reviewed" ID="V-207387" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for network access to non-privileged accounts." Status="Not_Reviewed" ID="V-207388" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to privileged accounts." Status="Not_Reviewed" ID="V-207389" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use multifactor authentication for local access to nonprivileged accounts." Status="Not_Reviewed" ID="V-207390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must require individuals to be authenticated with an individual authenticator prior to using a group authenticator." Status="Not_Reviewed" ID="V-207391" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to privileged accounts." Status="Not_Reviewed" ID="V-207392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement replay-resistant authentication mechanisms for network access to nonprivileged accounts." Status="Not_Reviewed" ID="V-207393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must uniquely identify peripherals before establishing a connection." Status="Not_Reviewed" ID="V-207394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must disable local account identifiers (individuals, groups, roles, and devices) after 35 days of inactivity." Status="Not_Reviewed" ID="V-207395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use mechanisms meeting the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance for authentication to a cryptographic module." Status="Not_Reviewed" ID="V-207396" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must support an audit reduction capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-207397" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must  automatically remove or disable emergency accounts after the crisis is resolved or 72 hours." Status="Not_Reviewed" ID="V-207398" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must employ strong authenticators in the establishment of nonlocal maintenance and diagnostic sessions." Status="Not_Reviewed" ID="V-207399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must separate user functionality (including user interface services) from VMM management functionality." Status="Not_Reviewed" ID="V-207401" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must isolate security functions from non-security functions." Status="Not_Reviewed" ID="V-207402" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent unauthorized and unintended information transfer via shared system resources." Status="Not_Reviewed" ID="V-207403" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must manage excess capacity, bandwidth, or other redundancy to limit the effects of information-flooding types of Denial of Service (DoS) attacks." Status="Not_Reviewed" ID="V-207404" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must terminate all network connections associated with a communications session at the end of the session, or as follows: for in-band management sessions (privileged sessions), the session must be terminated after 10 minutes of inactivity; and for user sessions (non-privileged session), the session must be terminated after 15 minutes of inactivity, except to fulfill documented and validated mission requirements." Status="Not_Reviewed" ID="V-207405" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must fail to a secure state if system initialization fails, shutdown fails, or aborts fail." Status="Not_Reviewed" ID="V-207406" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of all information at rest." Status="Not_Reviewed" ID="V-207407" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must check the validity of all data inputs except those specifically identified by the organization." Status="Not_Reviewed" ID="V-207409" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate error messages that provide information necessary for corrective actions without revealing information that could be exploited by adversaries." Status="Not_Reviewed" ID="V-207410" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must reveal system error messages only to authorized users." Status="Not_Reviewed" ID="V-207411" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="All interactions among guest VMs must be mediated by the VMM or its service VMs to support proper function." Status="Not_Reviewed" ID="V-207412" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account modification." Status="Not_Reviewed" ID="V-207413" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account disabling actions." Status="Not_Reviewed" ID="V-207414" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account removal actions." Status="Not_Reviewed" ID="V-207415" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="All guest VM network communications must be implemented through use of virtual network devices provisioned by the VMM." Status="Not_Reviewed" ID="V-207416" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="All interactions between guest VMs and external systems, via other interface devices, must be mediated by the VMM or its service VMs." Status="Not_Reviewed" ID="V-207417" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement cryptography to protect the integrity of remote access sessions." Status="Not_Reviewed" ID="V-207418" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must initiate session audits at system startup." Status="Not_Reviewed" ID="V-207419" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must produce audit records containing information to establish the identity of any individual or process associated with the event." Status="Not_Reviewed" ID="V-207420" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit tools from unauthorized access." Status="Not_Reviewed" ID="V-207421" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit tools from unauthorized modification." Status="Not_Reviewed" ID="V-207422" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect audit tools from unauthorized deletion." Status="Not_Reviewed" ID="V-207423" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must limit privileges to change software resident within software libraries." Status="Not_Reviewed" ID="V-207424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce password complexity by requiring that at least one special character be used." Status="Not_Reviewed" ID="V-207425" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="In the event of a system failure, the VMM must preserve any information necessary to determine cause of failure and any information necessary to return to operations with least disruption to mission processes." Status="Not_Reviewed" ID="V-207426" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify system administrators (SAs) and information system security officers (ISSOs) when accounts are created." Status="Not_Reviewed" ID="V-207427" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are modified." Status="Not_Reviewed" ID="V-207428" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are disabled." Status="Not_Reviewed" ID="V-207429" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify the system administrator (SA) and information system security officer (ISSO) when accounts are removed." Status="Not_Reviewed" ID="V-207430" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must use cryptographic mechanisms to protect the integrity of audit tools." Status="Not_Reviewed" ID="V-207431" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically terminate a user session after inactivity timeouts have expired or at shutdown." Status="Not_Reviewed" ID="V-207432" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="VMMs requiring user access authentication must provide a logout capability for user-initiated communications sessions." Status="Not_Reviewed" ID="V-207433" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must display an explicit logout message to users indicating the reliable termination of authenticated communications sessions." Status="Not_Reviewed" ID="V-207434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must control remote access methods." Status="Not_Reviewed" ID="V-207435" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide the capability to immediately disconnect or disable remote access to the information system." Status="Not_Reviewed" ID="V-207436" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect wireless access to the system using encryption." Status="Not_Reviewed" ID="V-207437" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect wireless access to the system using authentication of users and/or devices." Status="Not_Reviewed" ID="V-207438" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account enabling actions." Status="Not_Reviewed" ID="V-207439" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify the system administrator (SA) and information system security officer (ISSO) of account enabling actions." Status="Not_Reviewed" ID="V-207440" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement discretionary access controls to allow VMM admins to pass information to any other VMM admin, user, or guest VM." Status="Not_Reviewed" ID="V-207441" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement discretionary access controls to allow VMM admins to grant their privileges to other VMM admins." Status="Not_Reviewed" ID="V-207442" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement discretionary access controls to allow VMM admins to change security attributes on users, guest VMs, the VMM, or the VMMs components." Status="Not_Reviewed" ID="V-207443" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement discretionary access controls to allow VMM admins to choose the security attributes to be associated with newly created or revised guest VMs." Status="Not_Reviewed" ID="V-207444" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent non-privileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures." Status="Not_Reviewed" ID="V-207445" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent all software from executing at higher privilege levels than users executing the software." Status="Not_Reviewed" ID="V-207446" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must audit the execution of privileged functions." Status="Not_Reviewed" ID="V-207447" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically lock an account until the locked account is released by an administrator, when three unsuccessful logon attempts in 15 minutes are made." Status="Not_Reviewed" ID="V-207448" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide the capability for assigned IMOs/ISSOs or designated SAs to change the auditing to be performed on all VMM components, based on all selectable event criteria in near real time." Status="Not_Reviewed" ID="V-207449" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must allocate audit record storage capacity to store at least one weeks worth of audit records when audit records are not immediately sent to a central audit record storage facility." Status="Not_Reviewed" ID="V-207452" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must off-load audit records onto a different system or media than the system being audited." Status="Not_Reviewed" ID="V-207453" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide an immediate warning to the SA and ISSO, at a minimum, when allocated audit record storage volume reaches 75% of repository maximum audit record storage capacity." Status="Not_Reviewed" ID="V-207454" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide an immediate real-time alert to the SA and ISSO, at a minimum, of all audit failure events requiring real-time alerts." Status="Not_Reviewed" ID="V-207455" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide an audit reduction capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-207456" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide an audit reduction capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-207457" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide a report generation capability that supports on-demand audit review and analysis." Status="Not_Reviewed" ID="V-207458" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide a report generation capability that supports on-demand reporting requirements." Status="Not_Reviewed" ID="V-207459" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide a report generation capability that supports after-the-fact investigations of security incidents." Status="Not_Reviewed" ID="V-207460" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM that provides an audit reduction capability must not alter original content or time ordering of audit records." Status="Not_Reviewed" ID="V-207461" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM that provides a report generation capability must not alter original content or time ordering of audit records." Status="Not_Reviewed" ID="V-207462" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must, for networked systems, compare internal information system clocks at least every 24 hours with an authoritative time source." Status="Not_Reviewed" ID="V-207463" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must synchronize internal information system clocks to the authoritative time source when the time difference is greater than one second." Status="Not_Reviewed" ID="V-207464" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must record time stamps for audit records that meet a granularity of one second for a minimum degree of precision." Status="Not_Reviewed" ID="V-207465" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="Not_Reviewed" ID="V-207466" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce dual authorization for movement and/or deletion of all audit information, when such movement or deletion is not part of an authorized automatic process." Status="Not_Reviewed" ID="V-207467" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prohibit user installation of software without explicit privileged status." Status="Not_Reviewed" ID="V-207468" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must notify designated personnel if baseline configurations are changed in an unauthorized manner." Status="Not_Reviewed" ID="V-207469" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must enforce access restrictions associated with changes to the system." Status="Not_Reviewed" ID="V-207470" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must audit the enforcement actions used to restrict access associated with changes to the system." Status="Not_Reviewed" ID="V-207471" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent the installation of guest VMs, patches, service packs, device drivers, or VMM components without verification they have been digitally signed using a certificate that is recognized and approved by the organization." Status="Not_Reviewed" ID="V-207472" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent use of service and helper VMs not required to support proper VMM function." Status="Not_Reviewed" ID="V-207473" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prevent inappropriate use of redundant guest VMs." Status="Not_Reviewed" ID="V-207474" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must employ a deny-all, permit-by-exception policy to allow the execution of authorized software programs and guest VMs." Status="Not_Reviewed" ID="V-207475" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement multifactor authentication for remote access to privileged accounts such that one of the factors is provided by a device separate from the system gaining access." Status="Not_Reviewed" ID="V-207480" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must accept Personal Identity Verification (PIV) credentials." Status="Not_Reviewed" ID="V-207481" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must electronically verify Personal Identity Verification (PIV) credentials." Status="Not_Reviewed" ID="V-207482" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must authenticate peripherals before establishing a connection." Status="Not_Reviewed" ID="V-207483" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must authenticate all endpoint devices before establishing a local, remote, and/or network connection using bidirectional authentication that is cryptographically based." Status="Not_Reviewed" ID="V-207484" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prohibit the use of cached authenticators after one day." Status="Not_Reviewed" ID="V-207486" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM, for PKI-based authentication, must implement a local cache of revocation data to support path discovery and validation in case of the inability to access revocation information via the network." Status="Not_Reviewed" ID="V-207487" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement NSA-approved cryptography to protect classified information in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-207488" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must request data origin authentication verification on the name/address resolution responses the system receives from authoritative sources." Status="Not_Reviewed" ID="V-207489" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must request data integrity verification on the name/address resolution responses the system receives from authoritative sources." Status="Not_Reviewed" ID="V-207490" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must perform data integrity verification on the name/address resolution responses the system receives from authoritative sources." Status="Not_Reviewed" ID="V-207491" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must perform data origin verification authentication on the name/address resolution responses the system receives from authoritative sources." Status="Not_Reviewed" ID="V-207492" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must only allow the use of DoD PKI-established certificate authorities for verification of the establishment of protected sessions." Status="Not_Reviewed" ID="V-207493" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement cryptographic mechanisms to prevent unauthorized modification of all information at rest on all VMM components." Status="Not_Reviewed" ID="V-207494" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement cryptographic mechanisms to prevent unauthorized disclosure of all information at rest on all VMM components." Status="Not_Reviewed" ID="V-207495" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must maintain a separate execution domain for each executing process." Status="Not_Reviewed" ID="V-207496" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must maintain a separate execution domain for each guest VM." Status="Not_Reviewed" ID="V-207497" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect against or limit the effects of Denial of Service (DoS) attacks by ensuring the VMM is implementing rate-limiting measures on impacted network interfaces." Status="Not_Reviewed" ID="V-207498" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of transmitted information." Status="Not_Reviewed" ID="V-207499" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must maintain the confidentiality and integrity of information during preparation for transmission." Status="Not_Reviewed" ID="V-207500" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must maintain the confidentiality and integrity of information during reception." Status="Not_Reviewed" ID="V-207501" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must behave in a predictable and documented manner that reflects organizational and system objectives when invalid inputs are received." Status="Not_Reviewed" ID="V-207502" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement non-executable data to protect its memory from unauthorized code execution." Status="Not_Reviewed" ID="V-207503" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement address space layout randomization to protect its memory from unauthorized code execution." Status="Not_Reviewed" ID="V-207504" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must remove all software components after updated versions have been installed." Status="Not_Reviewed" ID="V-207505" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must verify correct operation of all security functions." Status="Not_Reviewed" ID="V-207506" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must perform verification of the correct operation of security functions: upon system startup and/or restart; upon command by a user with privileged access; and/or every 30 days." Status="Not_Reviewed" ID="V-207507" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must shut down, restart, and/or notify the system administrator when anomalies in the operation of any security functions are discovered." Status="Not_Reviewed" ID="V-207508" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to access security objects occur." Status="Not_Reviewed" ID="V-207509" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to access security levels occur." Status="Not_Reviewed" ID="V-207510" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur." Status="Not_Reviewed" ID="V-207511" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to modify privileges occur." Status="Not_Reviewed" ID="V-207512" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to modify security objects occur." Status="Not_Reviewed" ID="V-207513" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to modify security levels occur." Status="Not_Reviewed" ID="V-207514" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to delete privileges occur." Status="Not_Reviewed" ID="V-207515" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to delete security levels occur." Status="Not_Reviewed" ID="V-207516" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful attempts to delete security objects occur." Status="Not_Reviewed" ID="V-207517" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful logon attempts occur." Status="Not_Reviewed" ID="V-207518" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records for privileged activities or other system-level access." Status="Not_Reviewed" ID="V-207519" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records showing starting and ending time for user access to the system." Status="Not_Reviewed" ID="V-207520" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when concurrent logons from different workstations occur." Status="Not_Reviewed" ID="V-207521" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records when successful/unsuccessful accesses to objects occur." Status="Not_Reviewed" ID="V-207522" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records for all direct access to the VMM." Status="Not_Reviewed" ID="V-207523" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records for all account creations, modifications, disabling, and termination events." Status="Not_Reviewed" ID="V-207524" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must generate audit records for all module load, unload, and restart actions, and also for all program and guest VM initiations." Status="Not_Reviewed" ID="V-207525" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement NIST FIPS-validated cryptography for the following: to provision digital signatures; to generate cryptographic hashes; and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-207526" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must, at a minimum, off-load interconnected systems in real time and off-load standalone systems weekly." Status="Not_Reviewed" ID="V-207527" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs." Status="Not_Reviewed" ID="V-207528" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Reviewed" ID="V-207529" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must disable accounts when the accounts are no longer associated to a user." Status="Not_Reviewed" ID="V-264315" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prohibit the use or connection of unauthorized hardware components." Status="Not_Reviewed" ID="V-264316" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements." Status="Not_Reviewed" ID="V-264317" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in ia-5 (1) (a)." Status="Not_Reviewed" ID="V-264318" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, require immediate selection of a new password upon account recovery." Status="Not_Reviewed" ID="V-264319" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters." Status="Not_Reviewed" ID="V-264320" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators." Status="Not_Reviewed" ID="V-264321" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must accept only external credentials that are NIST-compliant." Status="Not_Reviewed" ID="V-264322" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must monitor the use of maintenance tools that execute with increased privilege." Status="Not_Reviewed" ID="V-264323" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must include only approved trust anchors in trust stores or certificate stores managed by the organization." Status="Not_Reviewed" ID="V-264324" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store." Status="Not_Reviewed" ID="V-264325" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must synchronize system clocks within and between systems or system components." Status="Not_Reviewed" ID="V-264326" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+      </CAT_II>
+      <CAT_III Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
+    </Result>
+  </Results>
+</Summary>
