@@ -14936,7 +14936,7 @@ Function Get-V207437 {
         $FindingDetails += "Wireless interfaces detected: $(if ($WirelessStr.Length -gt 0) { $WirelessStr } else { 'none' })" + $nl
 
         # Check if wireless kernel modules are loaded
-        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -i "wifi\|wireless\|iwl\|ath\|rtl\|wlan\|80211")
+        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -iE "cfg80211|mac80211|iwlwifi|iwl[0-9]|ath[0-9]k|rtlwifi|wlan[0-9]|brcmfmac")
         $WirelessModsStr = ("$WirelessMods").Trim()
         $FindingDetails += "Wireless kernel modules: $(if ($WirelessModsStr.Length -gt 0) { $WirelessModsStr } else { 'none loaded' })" + $nl
 
@@ -15068,7 +15068,7 @@ Function Get-V207438 {
         $FindingDetails += "Wireless interfaces detected: $(if ($WirelessStr.Length -gt 0) { $WirelessStr } else { 'none' })" + $nl
 
         # Check if wireless kernel modules are loaded
-        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -i "wifi\|wireless\|iwl\|ath\|rtl\|wlan\|80211")
+        $WirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -iE "cfg80211|mac80211|iwlwifi|iwl[0-9]|ath[0-9]k|rtlwifi|wlan[0-9]|brcmfmac")
         $WirelessModsStr = ("$WirelessMods").Trim()
         $FindingDetails += "Wireless kernel modules: $(if ($WirelessModsStr.Length -gt 0) { $WirelessModsStr } else { 'none loaded' })" + $nl
 
