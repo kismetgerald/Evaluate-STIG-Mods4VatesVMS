@@ -4549,224 +4549,352 @@ Contact the system administrator to implement audit rules for all security-relev
   <Vuln ID="V-207510">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to access security levels occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor access to security-level-related files and syscalls on the XCP-ng Dom0. Specifically, the scanner checks for audit rules matching access control files (/etc/security, /etc/pam.d) and access-related syscall monitoring. When auditd is active and relevant rules are present, audit records are generated for all attempts to access security levels, satisfying SRG-OS-000460-VMM-001820. XCP-ng Dom0 uses standard Linux auditd for system-level auditing, and the XAPI management stack logs hypervisor management actions. The combination of auditd rules and XAPI logging provides comprehensive audit coverage for security level access events on the virtual machine manager.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor security level access attempts on the XCP-ng Dom0. Per SRG-OS-000460-VMM-001820, the VMM must generate audit records when successful or unsuccessful attempts to access security levels occur. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add audit rules for security level access monitoring: auditctl -w /etc/security -p wa -k access, auditctl -w /etc/pam.d -p wa -k access, and add syscall rules: -a always,exit -F arch=b64 -S open -F dir=/etc/security -k access. (3) Make rules persistent by adding them to /etc/audit/rules.d/access.rules. (4) Restart auditd: service auditd restart. The site administrator is responsible for configuring audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207511">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor access to information category and classification-related files on the XCP-ng Dom0. The scanner checks for rules monitoring /etc/security, /etc/sudoers, /etc/pam.d, and access control configuration files. When auditd is active and relevant rules are present, audit records are generated for attempts to access categorized information, satisfying SRG-OS-000461-VMM-001830. XCP-ng uses discretionary access controls (DAC) rather than mandatory access controls (MAC) for information categorization, so audit rules focus on DAC-related configuration files and access control mechanisms. The audit subsystem captures both successful and unsuccessful access attempts.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor access to information categories on the XCP-ng Dom0. Per SRG-OS-000461-VMM-001830, the VMM must generate audit records for access to categories of information. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add audit rules: -w /etc/security -p wa -k access, -w /etc/sudoers -p wa -k access, -w /etc/pam.d -p wa -k access. (3) Make rules persistent in /etc/audit/rules.d/access.rules. (4) Restart auditd: service auditd restart. The site administrator is responsible for configuring and maintaining audit rules on the hypervisor.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207512">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to modify privileges occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor privilege modification syscalls on the XCP-ng Dom0. The scanner checks for rules monitoring chmod, fchmod, fchmodat, chown, fchown, fchownat, setxattr, and lsetxattr syscalls (typically tagged with the perm_mod key). When auditd is active and these rules are present, audit records are generated for all privilege modification attempts, satisfying SRG-OS-000462-VMM-001840. These syscalls cover file permission changes (chmod/chown), extended attribute modifications (setxattr), and ownership changes that affect access control on the hypervisor system. The audit records include the user, process, target file, and result of each modification attempt.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured for privilege modification monitoring on the XCP-ng Dom0. Per SRG-OS-000462-VMM-001840, the VMM must generate audit records for privilege modification attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add privilege modification rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -F auid!=4294967295 -k perm_mod, -a always,exit -F arch=b64 -S chown,fchown,fchownat -F auid&gt;=1000 -k perm_mod, -a always,exit -F arch=b64 -S setxattr,lsetxattr -F auid&gt;=1000 -k perm_mod. (3) Persist in /etc/audit/rules.d/perm_mod.rules. (4) Restart auditd. The site administrator must configure these rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207513">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to modify security objects occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor modifications to security objects on the XCP-ng Dom0. The scanner checks for file watch rules on critical identity and security files: /etc/passwd, /etc/shadow, /etc/group, /etc/gshadow, and /etc/sudoers (typically tagged with the identity key). When auditd is active and these rules are present, any write or attribute change to these files generates an audit record, satisfying SRG-OS-000463-VMM-001850. These files are the core security objects on a Linux-based hypervisor, controlling user accounts, passwords, group memberships, and privilege escalation. Monitoring modifications to these files is essential for detecting unauthorized changes.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor security object modifications on the XCP-ng Dom0. Per SRG-OS-000463-VMM-001850, the VMM must generate audit records for security object modification attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add file watch rules: -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity, -w /etc/gshadow -p wa -k identity, -w /etc/sudoers -p wa -k identity. (3) Persist in /etc/audit/rules.d/identity.rules. (4) Restart auditd: service auditd restart. The site administrator is responsible for configuring identity file monitoring.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207514">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to modify security levels occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor security level modifications on the XCP-ng Dom0. The scanner checks for rules monitoring permission change syscalls (chmod, fchmod, fchmodat, chown, fchown) and writes to /etc/security configuration files. XCP-ng uses DAC-based security levels rather than MAC labels, so security level modifications are tracked through file permission changes and security configuration file writes. When auditd is active with these rules, audit records capture all security level modification attempts, satisfying SRG-OS-000464-VMM-001860. The audit records include the user performing the modification, the target, and the result.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor security level modifications on the XCP-ng Dom0. Per SRG-OS-000464-VMM-001860, the VMM must generate audit records for security level modification attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid&gt;=1000 -k perm_mod, -w /etc/security -p wa -k security_mod. (3) Persist in /etc/audit/rules.d/perm_mod.rules. (4) Restart auditd. The site administrator must configure permission change and security configuration audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207515">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to delete privileges occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor privilege deletion events on the XCP-ng Dom0. The scanner checks for rules monitoring identity files (/etc/passwd, /etc/group, /etc/shadow) and account deletion commands (userdel, groupdel). When auditd is active and these rules are present, audit records are generated for all privilege deletion attempts including user account removal, group deletion, and changes to identity files that remove access, satisfying SRG-OS-000466-VMM-001870. The audit subsystem captures both successful and unsuccessful deletion attempts, providing a complete audit trail for privilege removal events on the hypervisor.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor privilege deletion on the XCP-ng Dom0. Per SRG-OS-000466-VMM-001870, the VMM must generate audit records for privilege deletion attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /etc/passwd -p wa -k identity, -w /etc/group -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /usr/sbin/userdel -p x -k priv_del, -w /usr/sbin/groupdel -p x -k priv_del. (3) Persist in /etc/audit/rules.d/identity.rules. (4) Restart auditd. The site administrator must configure privilege deletion audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207516">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to delete security levels occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor security level deletion events on the XCP-ng Dom0. The scanner checks for rules monitoring permission change syscalls (chmod, fchmod) and writes to /etc/security and /etc/pam.d directories. Security level deletion on XCP-ng corresponds to removing DAC permissions or security configuration entries. When auditd is active with permission modification rules, audit records capture all security level deletion attempts, satisfying SRG-OS-000467-VMM-001880. The audit records include the user, the target security configuration, the operation performed, and whether it succeeded or failed.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor security level deletion on the XCP-ng Dom0. Per SRG-OS-000467-VMM-001880, the VMM must generate audit records for security level deletion attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -k perm_mod, -w /etc/security -p wa -k security_del, -w /etc/pam.d -p wa -k security_del. (3) Persist in /etc/audit/rules.d/. (4) Restart auditd. The site administrator must configure security level deletion audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207517">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful attempts to delete security objects occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor security object deletion on the XCP-ng Dom0. The scanner checks for rules monitoring unlink, unlinkat, rename, and renameat syscalls as well as file watches on /etc/passwd, /etc/shadow, and /etc/group. When auditd is active and deletion-related rules are present, audit records capture all attempts to delete or rename security objects, satisfying SRG-OS-000468-VMM-001890. The unlink/rename syscall monitoring covers file deletion at the filesystem level, while identity file watches detect modifications that remove security entries. Both successful and failed deletion attempts are recorded.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor security object deletion on the XCP-ng Dom0. Per SRG-OS-000468-VMM-001890, the VMM must generate audit records for security object deletion attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid&gt;=1000 -F auid!=4294967295 -k delete, -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity. (3) Persist in /etc/audit/rules.d/delete.rules. (4) Restart auditd. The site administrator must configure deletion audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207518">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful logon attempts occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor logon attempts on the XCP-ng Dom0. The scanner checks for rules monitoring /var/log/lastlog, /var/log/tallylog, faillock, and /var/log/secure. Additionally, it verifies that /var/log/secure exists for PAM authentication logging. When auditd is active with logon tracking rules, audit records are generated for all successful and unsuccessful logon attempts, satisfying SRG-OS-000470-VMM-001900. SSH logon events are captured in /var/log/secure, and auditd rules on lastlog/tallylog files ensure that login accounting is audited. Failed login attempts trigger PAM faillock records that are also captured.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor logon attempts on the XCP-ng Dom0. Per SRG-OS-000470-VMM-001900, the VMM must generate audit records for logon attempts. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /var/log/lastlog -p wa -k logins, -w /var/log/tallylog -p wa -k logins, -w /var/run/faillock -p wa -k logins. (3) Ensure rsyslog captures authentication events to /var/log/secure. (4) Persist rules in /etc/audit/rules.d/logins.rules. (5) Restart auditd. The site administrator must configure logon attempt audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207519">
     <!--RuleTitle: The VMM must generate audit records for privileged activities or other system-level access.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor privileged activities on the XCP-ng Dom0. The scanner checks for rules monitoring sudo, su, /etc/sudoers, and privileged command execution. When auditd is active with privileged activity rules, audit records are generated for all privilege escalation and system-level access events, satisfying SRG-OS-000471-VMM-001910. On XCP-ng Dom0, privileged activities include sudo command execution, su authentication, and direct root access. The audit records capture the user, the command executed, and whether the privilege escalation was successful or denied.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor privileged activities on the XCP-ng Dom0. Per SRG-OS-000471-VMM-001910, the VMM must generate audit records for privileged activities. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /etc/sudoers -p wa -k actions, -w /etc/sudoers.d -p wa -k actions, -w /usr/bin/sudo -p x -k privileged, -w /usr/bin/su -p x -k privileged. (3) Persist in /etc/audit/rules.d/privileged.rules. (4) Restart auditd. The site administrator must configure privileged activity audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207520">
     <!--RuleTitle: The VMM must generate audit records showing starting and ending time for user access to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor user session start and end times on the XCP-ng Dom0. The scanner checks for rules monitoring /var/log/wtmp, /var/run/utmp, and /var/log/btmp files (typically tagged with the session key). These files are the standard Linux login accounting databases that record when users log in and out. When auditd is active with session tracking rules, audit records capture all session start and end events, satisfying SRG-OS-000472-VMM-001920. The wtmp file records complete login/logout history, utmp tracks current sessions, and btmp records failed login attempts with timestamps.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to monitor user session times on the XCP-ng Dom0. Per SRG-OS-000472-VMM-001920, the VMM must generate audit records showing user access start and end times. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /var/log/wtmp -p wa -k session, -w /var/run/utmp -p wa -k session, -w /var/log/btmp -p wa -k session. (3) Persist in /etc/audit/rules.d/session.rules. (4) Restart auditd. The site administrator must configure session tracking audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207521">
     <!--RuleTitle: The VMM must generate audit records when concurrent logons from different workstations occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to track concurrent logons on the XCP-ng Dom0. The scanner checks for rules monitoring wtmp, utmp, and login-related files. When auditd is active with session and login tracking rules, the system records all login events including the source address, terminal, and timestamp. This allows detection of concurrent logons from different workstations by correlating wtmp/utmp entries, satisfying SRG-OS-000473-VMM-001930. The utmp file shows current active sessions while wtmp maintains a complete login history. Security administrators can use the who, w, and last commands to identify concurrent sessions from different source addresses.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured to track concurrent logons on the XCP-ng Dom0. Per SRG-OS-000473-VMM-001930, the VMM must generate audit records for concurrent logons. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /var/log/wtmp -p wa -k session, -w /var/run/utmp -p wa -k session, -w /var/log/lastlog -p wa -k logins. (3) Persist in /etc/audit/rules.d/session.rules. (4) Restart auditd. The site administrator must configure session tracking rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207522">
     <!--RuleTitle: The VMM must generate audit records when successful/unsuccessful accesses to objects occur.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor object access syscalls on the XCP-ng Dom0. The scanner checks for rules monitoring open, openat, creat, truncate, ftruncate, and access syscalls. When auditd is active with object access rules, audit records are generated for all file open, create, and truncate operations, satisfying SRG-OS-000474-VMM-001940. These syscalls cover the primary methods by which processes access filesystem objects. The rules typically filter on exit codes (-EACCES, -EPERM) to capture both successful and unsuccessful access attempts, providing a comprehensive audit trail of object access on the hypervisor.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured for object access monitoring on the XCP-ng Dom0. Per SRG-OS-000474-VMM-001940, the VMM must generate audit records for object access. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -F auid&gt;=1000 -k access, -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -F auid&gt;=1000 -k access. (3) Persist in /etc/audit/rules.d/access.rules. (4) Restart auditd. The site administrator must configure object access audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207523">
     <!--RuleTitle: The VMM must generate audit records for all direct access to the VMM.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor direct access to the XCP-ng VMM. The scanner checks for rules monitoring /var/log/secure, SSH daemon events, and XAPI/xensource logging. Additionally, it verifies SSH LogLevel configuration and the presence of /var/log/xensource.log for XAPI management access logging. When auditd is active with direct access rules, SSH logs all connection attempts to /var/log/secure, and XAPI logs all management API calls to /var/log/xensource.log, satisfying SRG-OS-000475-VMM-001950. Direct VMM access includes SSH sessions, console access, and XAPI management connections.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured for direct VMM access monitoring on the XCP-ng Dom0. Per SRG-OS-000475-VMM-001950, the VMM must generate audit records for all direct access. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /var/log/lastlog -p wa -k logins, -w /var/log/secure -p wa -k logins. (3) Ensure SSH LogLevel is INFO or higher in /etc/ssh/sshd_config. (4) Verify XAPI logs to /var/log/xensource.log (default on XCP-ng). (5) Persist rules in /etc/audit/rules.d/logins.rules. (6) Restart auditd. The site administrator must configure direct access audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207524">
     <!--RuleTitle: The VMM must generate audit records for all account creations, modifications, disabling, and termination events.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor account lifecycle events on the XCP-ng Dom0. The scanner checks for rules monitoring identity files (/etc/passwd, /etc/group, /etc/shadow) and account management commands (useradd, usermod, userdel, groupadd, groupmod, groupdel, passwd). When auditd is active with account lifecycle rules, audit records are generated for all account creation, modification, disabling, and termination events, satisfying SRG-OS-000476-VMM-001960. File watches on identity files capture direct edits, while execution watches on account management commands capture standard account operations.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured for account lifecycle monitoring on the XCP-ng Dom0. Per SRG-OS-000476-VMM-001960, the VMM must generate audit records for all account lifecycle events. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity, -w /usr/sbin/useradd -p x -k account, -w /usr/sbin/userdel -p x -k account, -w /usr/sbin/usermod -p x -k account, -w /usr/sbin/groupadd -p x -k account. (3) Persist in /etc/audit/rules.d/identity.rules. (4) Restart auditd. The site administrator must configure account lifecycle rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207525">
     <!--RuleTitle: The VMM must generate audit records for all module load, unload, and restart actions, and also for all program and guest VM initiations.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 9: Audit record generation checks-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the auditd service is running and audit rules are configured to monitor kernel module events and VM lifecycle actions on the XCP-ng Dom0. The scanner checks for rules monitoring init_module, delete_module, and finit_module syscalls (typically tagged with the modules key). Additionally, it verifies that /var/log/xensource.log exists for Xen VM lifecycle logging. When auditd is active with module rules, audit records capture all kernel module load/unload events. Xen automatically logs VM start, stop, migrate, and restart events to xensource.log, providing audit coverage for guest VM initiations, satisfying SRG-OS-000477-VMM-001970.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is either not active or no audit rules are configured for module and VM event monitoring on the XCP-ng Dom0. Per SRG-OS-000477-VMM-001970, the VMM must generate audit records for module load/unload and VM initiations. To remediate: (1) Install and enable auditd: yum install audit &amp;&amp; systemctl enable --now auditd. (2) Add rules: -a always,exit -F arch=b64 -S init_module,delete_module,finit_module -k modules. (3) Verify Xen logs VM lifecycle events to /var/log/xensource.log (default on XCP-ng). (4) Persist rules in /etc/audit/rules.d/modules.rules. (5) Restart auditd. The site administrator must configure module and VM event audit rules.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

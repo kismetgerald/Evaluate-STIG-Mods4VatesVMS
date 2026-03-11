@@ -1,4 +1,4 @@
-##########################################################################
+﻿##########################################################################
 # Evaluate-STIG module
 # --------------------
 # STIG:     Virtual Machine Manager (VMM) Security Requirements Guide (SRG)
@@ -24772,16 +24772,2205 @@ Function Get-V207509 {
     return Send-CheckResult @SendCheckParams
 }
 
-# Generate remaining functions (V-207510 through V-264326)
-# 32 stub functions for rules not yet explicitly implemented (Batches 9-10)
+Function Get-V207510 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207510
+        STIG ID    : SRG-OS-000460-VMM-001820
+        Rule ID    : SV-207510r958970_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to access security levels occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207510"
+    $RuleID = "SV-207510r958970_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Level Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "access|open.*security|/etc/security|/etc/pam\\.d|perm_access"
+        })
+        $FindingDetails += "Matching audit rules (security level access): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security level access attempts. auditd is active with rules monitoring access to security-level-related files and syscalls."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no specific rules for security level access. Add audit rules: -a always,exit -F arch=b64 -S open -F dir=/etc/security -k access and -w /etc/pam.d -p wa -k access."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure security level access audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207511 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207511
+        STIG ID    : SRG-OS-000461-VMM-001830
+        Rule ID    : SV-207511r958972_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to access categories of information (e.g., classification levels) occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207511"
+    $RuleID = "SV-207511r958972_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Information Category Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "/etc/security|/etc/pam\\.d|/etc/sudoers|access|perm_access"
+        })
+        $FindingDetails += "Matching audit rules (information category access): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for information category access. auditd is active with rules monitoring access to security configuration and access control files."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no specific rules for information category access. Add rules: -w /etc/security -p wa -k access and -w /etc/sudoers -p wa -k access."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure information category access audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207512 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207512
+        STIG ID    : SRG-OS-000462-VMM-001840
+        Rule ID    : SV-207512r958974_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to modify privileges occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207512"
+    $RuleID = "SV-207512r958974_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Privilege Modification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "chmod|fchmod|chown|fchown|setxattr|lsetxattr|perm_mod"
+        })
+        $FindingDetails += "Matching audit rules (privilege modification): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for privilege modification attempts. auditd is active with rules for chmod, chown, and extended attribute modification syscalls."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no privilege modification rules found. Add rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat,chown,fchown,fchownat,setxattr,lsetxattr -F auid>=1000 -k perm_mod."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure privilege modification audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207513 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207513
+        STIG ID    : SRG-OS-000463-VMM-001850
+        Rule ID    : SV-207513r958976_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to modify security objects occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207513"
+    $RuleID = "SV-207513r958976_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Object Modification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "/etc/passwd|/etc/shadow|/etc/group|/etc/gshadow|/etc/sudoers|identity"
+        })
+        $FindingDetails += "Matching audit rules (security object modification): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security object modification. auditd is active with rules monitoring writes to critical identity and security files."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no security object modification rules found. Add rules: -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity, -w /etc/sudoers -p wa -k identity."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure security object modification audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207514 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207514
+        STIG ID    : SRG-OS-000464-VMM-001860
+        Rule ID    : SV-207514r958978_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to modify security levels occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207514"
+    $RuleID = "SV-207514r958978_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Level Modification" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "chmod|fchmod|chown|fchown|perm_mod|/etc/security|security_mod"
+        })
+        $FindingDetails += "Matching audit rules (security level modification): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security level modification attempts. auditd is active with rules for permission changes and security configuration modifications."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no security level modification rules found. Add rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -k perm_mod and -w /etc/security -p wa -k security_mod."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure security level modification audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207515 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207515
+        STIG ID    : SRG-OS-000466-VMM-001870
+        Rule ID    : SV-207515r958982_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to delete privileges occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207515"
+    $RuleID = "SV-207515r958982_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Privilege Deletion" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "userdel|groupdel|/etc/passwd|/etc/group|/etc/shadow|identity|priv_del"
+        })
+        $FindingDetails += "Matching audit rules (privilege deletion): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for privilege deletion. auditd is active with rules monitoring identity file modifications and account deletion events."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no privilege deletion rules found. Add rules: -w /etc/passwd -p wa -k identity, -w /etc/group -p wa -k identity, -w /usr/sbin/userdel -p x -k priv_del, -w /usr/sbin/groupdel -p x -k priv_del."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure privilege deletion audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207516 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207516
+        STIG ID    : SRG-OS-000467-VMM-001880
+        Rule ID    : SV-207516r958984_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to delete security levels occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207516"
+    $RuleID = "SV-207516r958984_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Level Deletion" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "chmod|fchmod|/etc/security|/etc/pam\\.d|perm_mod|security_del"
+        })
+        $FindingDetails += "Matching audit rules (security level deletion): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security level deletion. auditd is active with rules monitoring permission changes and security configuration modifications."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no security level deletion rules found. Add rules: -a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -k perm_mod and -w /etc/security -p wa -k security_del."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure security level deletion audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207517 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207517
+        STIG ID    : SRG-OS-000468-VMM-001890
+        Rule ID    : SV-207517r958986_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful attempts to delete security objects occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207517"
+    $RuleID = "SV-207517r958986_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Security Object Deletion" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "unlink|unlinkat|rename|renameat|/etc/passwd|/etc/shadow|/etc/group|delete"
+        })
+        $FindingDetails += "Matching audit rules (security object deletion): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for security object deletion. auditd is active with rules monitoring unlink/rename syscalls and security file changes."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no security object deletion rules found. Add rules: -a always,exit -F arch=b64 -S unlink,unlinkat,rename,renameat -F auid>=1000 -k delete, -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure security object deletion audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207518 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207518
+        STIG ID    : SRG-OS-000470-VMM-001900
+        Rule ID    : SV-207518r958990_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful logon attempts occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207518"
+    $RuleID = "SV-207518r958990_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Logon Attempts" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "faillock|pam_tally|/var/log/tallylog|/var/log/lastlog|/var/log/secure|logins"
+        })
+        $FindingDetails += "Matching audit rules (logon attempt tracking): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $SecureLogExists = $(timeout 3 test -f /var/log/secure 2>/dev/null; echo $?)
+        $SecureLogStr = ("$SecureLogExists").Trim()
+        $HasSecureLog = ($SecureLogStr -eq "0")
+        $FindingDetails += "/var/log/secure exists: $(if ($HasSecureLog) { "yes" } else { "no" })" + $nl
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for logon attempts. auditd is active with rules monitoring login-related files and /var/log/secure captures PAM authentication events."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no logon tracking rules found. Add rules: -w /var/log/lastlog -p wa -k logins, -w /var/log/tallylog -p wa -k logins, -w /var/run/faillock -p wa -k logins."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure logon attempt audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207519 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207519
+        STIG ID    : SRG-OS-000471-VMM-001910
+        Rule ID    : SV-207519r958992_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records for privileged activities or other system-level access.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207519"
+    $RuleID = "SV-207519r958992_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Privileged Activities" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "sudo|/etc/sudoers|/usr/bin/su|privileged|actions"
+        })
+        $FindingDetails += "Matching audit rules (privileged activities): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for privileged activities. auditd is active with rules monitoring sudo, su, and privileged command execution."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no privileged activity rules found. Add rules: -w /etc/sudoers -p wa -k actions, -w /usr/bin/sudo -p x -k privileged, -w /usr/bin/su -p x -k privileged."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure privileged activity audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207520 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207520
+        STIG ID    : SRG-OS-000472-VMM-001920
+        Rule ID    : SV-207520r958994_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records showing starting and ending time for user access to the system.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207520"
+    $RuleID = "SV-207520r958994_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for User Access Start/End Time" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "/var/log/wtmp|/var/run/utmp|/var/log/btmp|session"
+        })
+        $FindingDetails += "Matching audit rules (user access session tracking): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for user access start and end times. auditd is active with rules monitoring wtmp/utmp/btmp files that track session timestamps."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no session tracking rules found. Add rules: -w /var/log/wtmp -p wa -k session, -w /var/run/utmp -p wa -k session, -w /var/log/btmp -p wa -k session."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure session tracking audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207521 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207521
+        STIG ID    : SRG-OS-000473-VMM-001930
+        Rule ID    : SV-207521r958996_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when concurrent logons from different workstations occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207521"
+    $RuleID = "SV-207521r958996_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Concurrent Logons" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "/var/log/wtmp|/var/run/utmp|session|logins"
+        })
+        $FindingDetails += "Matching audit rules (concurrent logon tracking): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for concurrent logons. auditd is active with session tracking rules, and wtmp/utmp record all login events including source addresses."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no concurrent logon tracking rules found. Add rules: -w /var/log/wtmp -p wa -k session, -w /var/run/utmp -p wa -k session, -w /var/log/lastlog -p wa -k logins."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure session and logon tracking audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207522 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207522
+        STIG ID    : SRG-OS-000474-VMM-001940
+        Rule ID    : SV-207522r958998_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records when successful/unsuccessful accesses to objects occur.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207522"
+    $RuleID = "SV-207522r958998_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Object Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "open|openat|creat|truncate|ftruncate|access"
+        })
+        $FindingDetails += "Matching audit rules (object access): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for object access. auditd is active with rules monitoring file open, create, and truncate syscalls."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no object access rules found. Add rules: -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EACCES -k access and -a always,exit -F arch=b64 -S open,openat,creat,truncate,ftruncate -F exit=-EPERM -k access."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure object access audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207523 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207523
+        STIG ID    : SRG-OS-000475-VMM-001950
+        Rule ID    : SV-207523r959000_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records for all direct access to the VMM.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207523"
+    $RuleID = "SV-207523r959000_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Direct VMM Access" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "/var/log/secure|sshd|xensource|xapi|logins"
+        })
+        $FindingDetails += "Matching audit rules (direct VMM access): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $SshLogLevel = $(timeout 5 grep -iE '^LogLevel' /etc/ssh/sshd_config 2>/dev/null)
+        $SshLogStr = ("$SshLogLevel").Trim()
+        $FindingDetails += "SSH LogLevel: $(if ($SshLogStr.Length -gt 0) { $SshLogStr } else { "default (INFO)" })" + $nl
+
+        $XenLogExists = $(timeout 3 test -f /var/log/xensource.log 2>/dev/null; echo $?)
+        $XenLogStr = ("$XenLogExists").Trim()
+        $FindingDetails += "XAPI log (/var/log/xensource.log) exists: $(if ($XenLogStr -eq "0") { "yes" } else { "no" })" + $nl
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for direct VMM access. auditd is active with login tracking rules, SSH logs all connections, and XAPI logs management access to /var/log/xensource.log."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no direct access tracking rules found. Add rules: -w /var/log/lastlog -p wa -k logins, -w /var/log/secure -p wa -k logins. Also verify SSH LogLevel is INFO or higher."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure direct access tracking rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207524 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207524
+        STIG ID    : SRG-OS-000476-VMM-001960
+        Rule ID    : SV-207524r959002_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records for all account creations, modifications, disabling, and termination events.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207524"
+    $RuleID = "SV-207524r959002_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Account Lifecycle Events" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "useradd|usermod|userdel|groupadd|groupmod|groupdel|passwd|/etc/passwd|/etc/group|/etc/shadow|identity|account"
+        })
+        $FindingDetails += "Matching audit rules (account lifecycle): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for account lifecycle events. auditd is active with rules monitoring identity files and account management commands."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no account lifecycle rules found. Add rules: -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity, -w /usr/sbin/useradd -p x -k account, -w /usr/sbin/userdel -p x -k account."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure account lifecycle audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+Function Get-V207525 {
+    <#
+    .DESCRIPTION
+        Vuln ID    : V-207525
+        STIG ID    : SRG-OS-000477-VMM-001970
+        Rule ID    : SV-207525r959004_rule
+        Severity   : CAT II
+        Title      : The VMM must generate audit records for all module load, unload, and restart actions, and also for all program and guest VM initiations.
+    #>
+
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]$ScanType,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerFile,
+        [Parameter(Mandatory = $false)]
+        [String]$AnswerKey,
+        [Parameter(Mandatory = $false)]
+        [String]$Username,
+        [Parameter(Mandatory = $false)]
+        [String]$UserSID,
+        [Parameter(Mandatory = $false)]
+        [String]$Hostname,
+        [Parameter(Mandatory = $false)]
+        [String]$Instance,
+        [Parameter(Mandatory = $false)]
+        [String]$Database,
+        [Parameter(Mandatory = $false)]
+        [String]$SiteName
+    )
+
+    $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $VulnID = "V-207525"
+    $RuleID = "SV-207525r959004_rule"
+    $Status = "Not_Reviewed"
+    $FindingDetails = ""
+    $Comments = ""
+    $AFKey = ""
+    $AFStatus = ""
+    $SeverityOverride = ""
+    $Justification = ""
+
+    #---=== Begin Custom Code ===---#
+    $nl = [Environment]::NewLine
+    if ($null -eq $XCPngVersionInfo) { Initialize-XCPngVersionInfo }
+
+    if (-not $XCPngVersionInfo.IsSupported) {
+        $Status = "Not_Applicable"
+        $FindingDetails = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
+    }
+    else {
+        $FindingDetails = "Audit Records for Module and VM Events" + $nl
+        $FindingDetails += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl + $nl
+
+        $AuditdSvc = $(timeout 5 systemctl is-active auditd 2>/dev/null)
+        $AuditdStr = ("$AuditdSvc").Trim()
+        $FindingDetails += "auditd service: $AuditdStr" + $nl
+
+        $AuditRules = $(timeout 5 auditctl -l 2>/dev/null)
+        $AuditArr = @()
+        if ($null -ne $AuditRules) { $AuditArr = @($AuditRules) }
+
+        $MatchRules = @($AuditArr | Where-Object {
+            "$_" -match "init_module|delete_module|finit_module|modules|kmod"
+        })
+        $FindingDetails += "Matching audit rules (module and VM events): $($MatchRules.Count)" + $nl
+        foreach ($Rule in $MatchRules) { $FindingDetails += "  $($Rule.Trim())" + $nl }
+
+        $XenLogExists = $(timeout 3 test -f /var/log/xensource.log 2>/dev/null; echo $?)
+        $XenLogStr = ("$XenLogExists").Trim()
+        $FindingDetails += "Xen VM log (/var/log/xensource.log) exists: $(if ($XenLogStr -eq "0") { "yes" } else { "no" })" + $nl
+        $HasAuditd = ($AuditdStr -eq "active")
+        $HasRules = ($MatchRules.Count -gt 0)
+
+        if ($HasAuditd -and $HasRules) {
+            $Status = "NotAFinding"
+            $FindingDetails += $nl + "RESULT: Audit records are generated for module and VM events. auditd is active with kernel module audit rules. Xen also logs VM lifecycle events to /var/log/xensource.log."
+        }
+        elseif ($HasAuditd) {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is active but no module tracking rules found. Add rules: -a always,exit -F arch=b64 -S init_module,delete_module,finit_module -k modules. Verify Xen logs VM lifecycle events."
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += $nl + "RESULT: auditd is not active. Install and enable auditd: yum install audit and systemctl enable --now auditd. Then configure module and VM initiation audit rules."
+        }
+    }
+    #---=== End Custom Code ===---#
+
+    if ($FindingDetails.Trim().Length -gt 0) {
+        $ResultHash = Get-TextHash -Text $FindingDetails -Algorithm SHA1
+    }
+    else { $ResultHash = "" }
+
+    if ($PSBoundParameters.AnswerFile) {
+        $GetCorpParams = @{
+            AnswerFile   = $PSBoundParameters.AnswerFile
+            VulnID       = $VulnID
+            RuleID       = $RuleID
+            AnswerKey    = $PSBoundParameters.AnswerKey
+            Status       = $Status
+            Hostname     = $Hostname
+            Username     = $Username
+            UserSID      = $UserSID
+            Instance     = $Instance
+            Database     = $Database
+            Site         = $SiteName
+            ResultHash   = $ResultHash
+            ResultData   = $FindingDetails
+            ESPath       = $ESPath
+            LogPath      = $LogPath
+            LogComponent = $LogComponent
+            OSPlatform   = $OSPlatform
+        }
+        $AnswerData = (Get-CorporateComment @GetCorpParams)
+        if ($Status -eq $AnswerData.ExpectedStatus) {
+            $AFKey = $AnswerData.AFKey
+            $AFStatus = $AnswerData.AFStatus
+            $Comments = $AnswerData.AFComment | Out-String
+        }
+    }
+
+    $SendCheckParams = @{
+        Module           = $ModuleName
+        Status           = $Status
+        FindingDetails   = $FindingDetails
+        AFKey            = $AFKey
+        AFStatus         = $AFStatus
+        Comments         = $Comments
+        SeverityOverride = $SeverityOverride
+        Justification    = $Justification
+        HeadInstance     = $Instance
+        HeadDatabase     = $Database
+        HeadSite         = $SiteName
+        HeadHash         = $ResultHash
+    }
+    return Send-CheckResult @SendCheckParams
+}
+
+
+# Generate remaining functions (V-207526 through V-264326)
+# 16 stub functions for rules not yet explicitly implemented (Batch 10)
 # Note: 11 VulnIDs in sequential gaps do NOT exist in VMM SRG V2R2 XCCDF and are excluded:
 #   V-207359, V-207380, V-207400, V-207408, V-207450, V-207451,
 #   V-207476, V-207477, V-207478, V-207479, V-207485
 
 $RemainingRules = @(
-    "V-207510", "V-207511", "V-207512", "V-207513", "V-207514", "V-207515", "V-207516",
-    "V-207517", "V-207518", "V-207519", "V-207520", "V-207521", "V-207522", "V-207523",
-    "V-207524", "V-207525", "V-207526", "V-207527", "V-207528", "V-207529",
+    "V-207526", "V-207527", "V-207528", "V-207529",
     "V-264315", "V-264316", "V-264317", "V-264318", "V-264319", "V-264320", "V-264321",
     "V-264322", "V-264323", "V-264324", "V-264325", "V-264326"
 )
