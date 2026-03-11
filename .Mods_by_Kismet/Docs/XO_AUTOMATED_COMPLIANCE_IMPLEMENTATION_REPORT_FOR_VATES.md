@@ -3,7 +3,6 @@
 **Prepared for:** Vates Engineering Team
 **Prepared by:** Kismet Agbasi
 **Date:** March 4, 2026
-**Classification:** UNCLASSIFIED
 **Version:** 1.2 (V-264343 scanner update: automated TOTP 2FA detection via REST API)
 
 ---
@@ -22,6 +21,18 @@ There are currently **no official security compliance benchmarks or automated sc
 | Web Server (WebSRG) | Web Server Security Requirements Guide V4R4 | 126 | 100% Automated |
 | Operating System (GPOS) | General Purpose OS SRG V3R2 (Debian 12) | 198 | 100% Automated |
 | **Total** | **3 Security Baselines** | **610** | **100% Automated** |
+
+### Understanding Severity Categories (CAT I / CAT II / CAT III)
+
+Each security rule is assigned a severity category that reflects the potential impact if the requirement is not met:
+
+| Category | Severity | Meaning |
+|----------|----------|---------|
+| **CAT I** | Critical | Directly and immediately results in loss of confidentiality, availability, or integrity. These are the most serious findings — for example, using non-validated cryptography for sensitive data or running with known critical vulnerabilities. CAT I findings typically must be resolved (or have an approved remediation plan) before a system can receive authorization. |
+| **CAT II** | High | Has significant potential to lead to loss of confidentiality, availability, or integrity. Examples include missing login banners, weak password policies, or TLS misconfigurations. CAT II findings represent the bulk of most assessments and are expected to be addressed, though they are less urgent than CAT I. |
+| **CAT III** | Medium | Could degrade security measures or indirectly lead to loss of confidentiality, availability, or integrity. These are lower-priority items such as informational logging gaps or minor configuration deviations. They should still be addressed but carry less risk than CAT I or CAT II. |
+
+In the results tables throughout this report, each rule is categorized as one of: **NotAFinding** (compliant), **Open** (non-compliant — requires remediation), **Not Applicable** (rule does not apply to this system), or **Not Reviewed** (assessment could not determine status).
 
 ### Key Results (Test174i — March 3, 2026)
 
@@ -141,7 +152,7 @@ The following findings cannot be resolved through system configuration alone. Th
 
 **Finding:** Xen Orchestra uses **bcrypt** for local password hashing. bcrypt is cryptographically strong but is **not FIPS 140-2 validated**. Additionally, the system-wide FIPS mode is not enabled, and FIPS-validated cryptographic modules are not confirmed for TLS operations.
 
-**Compliance Requirement:** All cryptographic operations in classified environments must use FIPS 140-2 validated modules per NIST SP 800-53 SC-13.
+**Compliance Requirement:** All cryptographic operations in regulated environments must use FIPS 140-2 validated modules per NIST SP 800-53 SC-13.
 
 **Recommended Actions for Vates:**
 1. **Publish official statement** on FIPS 140-2 compliance roadmap for XO
@@ -566,7 +577,7 @@ The following artifacts are available for assessor review:
 | Term | Definition |
 |------|-----------|
 | **ASD** | Application Security and Development compliance baseline |
-| **CAT I/II/III** | Security severity categories (Critical/High/Medium) |
+| **CAT I/II/III** | Security severity categories: CAT I (Critical — direct, immediate risk), CAT II (High — significant potential risk), CAT III (Medium — could degrade security). See Section 1 for full definitions. |
 | **CKL/CKLB** | Compliance checklist file formats |
 | **EvalScore** | Percentage of applicable rules that are NotAFinding |
 | **FIPS 140-2** | Federal Information Processing Standard for cryptographic modules |
