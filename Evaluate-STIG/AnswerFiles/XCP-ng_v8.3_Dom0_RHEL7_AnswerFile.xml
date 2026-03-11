@@ -59,14 +59,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204392">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that all system file permissions, ownership, and group membership on this XCP-ng Dom0 (RHEL 7-based) system match the vendor-provided RPM package values. The scan executed 'rpm -Va' to compare installed file attributes against the RPM database and filtered results for permission (M), user ownership (U), and group ownership (G) deviations. No deviations were found, confirming that system files and commands have not been modified from their original vendor-supplied state. This meets the RHEL 7 STIG requirement (RHEL-07-010010) that file permissions, ownership, and group membership of system files and commands must match vendor values. The XCP-ng Dom0 system maintains file integrity consistent with the CentOS 7-based distribution packages. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check identified system files whose permissions, ownership, or group membership differ from vendor-provided RPM package values on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -Va' and found deviations in the M (permissions), U (user), or G (group) attributes compared to the RPM database. Per RHEL 7 STIG requirement RHEL-07-010010, all system file attributes must match vendor values to prevent unauthorized modification of system binaries and configuration files. Remediation: (1) Identify the package for each affected file: rpm -qf [filename]. (2) Reset user and group ownership: rpm --setugids [packagename]. (3) Reset permissions: rpm --setperms [packagename]. (4) If changes were intentional and documented, obtain ISSO/ISSM approval and document the deviation in the POA&amp;M. The system administrator must investigate each mismatch to determine if unauthorized modification occurred.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -493,28 +501,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204424">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng Dom0 (RHEL 7-based) system does not allow accounts with blank or null passwords to authenticate. The scan checked both /etc/pam.d/system-auth and /etc/pam.d/password-auth for the 'nullok' option in PAM authentication configuration. No instances of 'nullok' were found in either file, confirming that PAM is configured to reject authentication attempts from accounts with empty passwords. This meets the RHEL 7 STIG requirement (RHEL-07-010290) that prevents logon with accounts configured with blank or null passwords. The XCP-ng Dom0 PAM configuration enforces password-based authentication for all local accounts. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the XCP-ng Dom0 (RHEL 7-based) system allows accounts with blank or null passwords to authenticate. The scan detected the 'nullok' option in /etc/pam.d/system-auth and/or /etc/pam.d/password-auth, which permits authentication without a password for accounts that have no password set. Per RHEL 7 STIG requirement RHEL-07-010290, the operating system must not allow accounts configured with blank or null passwords. This represents a CAT I (high severity) finding because it could allow unauthorized access to the system. Remediation: (1) Remove all instances of 'nullok' from /etc/pam.d/system-auth. (2) Remove all instances of 'nullok' from /etc/pam.d/password-auth. (3) Verify no accounts exist with empty passwords: awk -F: '($2 == "") {print}' /etc/shadow. (4) Set passwords for any accounts found without one. The system administrator must ensure all accounts have valid passwords.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204425">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using an empty password.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the SSH daemon on this XCP-ng Dom0 (RHEL 7-based) system does not allow authentication using empty passwords. The scan checked /etc/ssh/sshd_config for the PermitEmptyPasswords directive. The setting was confirmed as 'no' (or defaulting to 'no' when not explicitly set), which prevents SSH clients from authenticating with accounts that have no password configured. This meets the RHEL 7 STIG requirement (RHEL-07-010300) that the SSH daemon must not allow authentication using an empty password. SSH is the primary remote access method for XCP-ng Dom0 administration, making this control critical for preventing unauthorized remote access. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the SSH daemon on this XCP-ng Dom0 (RHEL 7-based) system may allow authentication using empty passwords. The scan checked /etc/ssh/sshd_config and found that PermitEmptyPasswords is not set to 'no'. Per RHEL 7 STIG requirement RHEL-07-010300, the SSH daemon must not allow authentication using empty passwords. This is a CAT I finding because SSH is the primary remote administration interface for XCP-ng Dom0, and permitting empty password authentication could allow unauthorized access to the hypervisor. Remediation: (1) Edit /etc/ssh/sshd_config and add or modify: PermitEmptyPasswords no. (2) Restart the SSH service: systemctl restart sshd. (3) Verify the change: grep -i PermitEmptyPasswords /etc/ssh/sshd_config. (4) Ensure no accounts exist with empty passwords. The system administrator must apply this change immediately given the severity.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -605,28 +629,60 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204432">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not allow an unattended or automatic logon to the system via a graphical user interface.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng Dom0 (RHEL 7-based) system does not allow unattended or automatic logon via the graphical user interface. The scan checked /etc/gdm/custom.conf for the AutomaticLoginEnable parameter. The setting was confirmed as 'false' or not present (defaults to disabled), preventing automatic graphical logons without authentication. This meets the RHEL 7 STIG requirement (RHEL-07-010440) that unattended or automatic logon must be disabled. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the XCP-ng Dom0 (RHEL 7-based) system allows unattended or automatic logon via the graphical user interface. The AutomaticLoginEnable parameter in /etc/gdm/custom.conf is not set to 'false'. Per RHEL 7 STIG requirement RHEL-07-010440, the operating system must not allow automatic logon to prevent unauthorized access. Remediation: (1) Edit /etc/gdm/custom.conf. (2) In the [daemon] section, set: AutomaticLoginEnable=false. (3) Restart the display manager or reboot. The system administrator must ensure no automatic logon is configured for the graphical interface.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>GNOME desktop environment is not installed on this XCP-ng Dom0 system. XCP-ng Dom0 is a server-oriented hypervisor management domain that typically operates without a graphical user interface. Since the graphical user interface requirement does not apply to this system configuration, per the STIG guidance ('if the system does not have GNOME installed, this requirement is Not Applicable'), this check is Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204433">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not allow an unrestricted logon to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng Dom0 (RHEL 7-based) system does not allow unrestricted (timed) logon via the graphical user interface. The scan checked /etc/gdm/custom.conf for the TimedLoginEnable parameter. The setting was confirmed as 'false' or not present (defaults to disabled), preventing timed automatic logons without authentication. This meets the RHEL 7 STIG requirement (RHEL-07-010450). Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the XCP-ng Dom0 (RHEL 7-based) system allows unrestricted timed logon via the graphical user interface. The TimedLoginEnable parameter in /etc/gdm/custom.conf is not set to 'false'. Per RHEL 7 STIG requirement RHEL-07-010450, the operating system must not allow unrestricted logon. Remediation: (1) Edit /etc/gdm/custom.conf. (2) In the [daemon] section, set: TimedLoginEnable=false. (3) Restart the display manager or reboot. The system administrator must disable timed logon immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>GNOME desktop environment is not installed on this XCP-ng Dom0 system. XCP-ng Dom0 is a server-oriented hypervisor management domain that typically operates without a graphical user interface. Since the graphical user interface requirement does not apply, per the STIG guidance ('if the system does not have GNOME installed, this requirement is Not Applicable'), this check is Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -675,28 +731,60 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204438">
     <!--RuleTitle: Red Hat Enterprise Linux operating systems version 7.2 or newer with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that this XCP-ng Dom0 (RHEL 7-based) system with BIOS firmware requires GRUB2 authentication for single-user and maintenance modes. The scan confirmed that /boot/grub2/user.cfg contains a GRUB2_PASSWORD entry using grub.pbkdf2.sha512 encryption. This ensures that unauthorized users cannot boot into single-user mode to bypass authentication controls. This meets the RHEL 7 STIG requirement (RHEL-07-010482) for BIOS-based systems. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that this XCP-ng Dom0 (RHEL 7-based) system with BIOS firmware does not have a GRUB2 superuser password configured or the password is not using PBKDF2-SHA512 encryption. Per RHEL 7 STIG requirement RHEL-07-010482, BIOS systems must require authentication to boot into single-user and maintenance modes. Without boot authentication, an attacker with physical or console access could boot into single-user mode and gain root access without credentials. Remediation: (1) Run 'grub2-setpassword' to set an encrypted GRUB2 superuser password. (2) Verify the password is set: grep -iw grub2_password /boot/grub2/user.cfg. The system administrator must configure boot authentication immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This system uses UEFI firmware, not BIOS. Per the STIG guidance ('For systems that use UEFI, this is Not Applicable'), this BIOS-specific GRUB2 authentication check does not apply. The corresponding UEFI check (V-204440) applies instead.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204440">
     <!--RuleTitle: Red Hat Enterprise Linux operating systems version 7.2 or newer using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that this XCP-ng Dom0 (RHEL 7-based) system with UEFI firmware requires GRUB2 authentication for single-user and maintenance modes. The scan confirmed that the EFI GRUB2 user.cfg contains a GRUB2_PASSWORD entry using grub.pbkdf2.sha512 encryption. This ensures unauthorized users cannot boot into single-user mode to bypass authentication. This meets RHEL 7 STIG requirement RHEL-07-010491 for UEFI systems. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that this XCP-ng Dom0 (RHEL 7-based) system with UEFI firmware does not have a GRUB2 superuser password configured in the EFI partition. Per RHEL 7 STIG requirement RHEL-07-010491, UEFI systems must require authentication to boot into single-user and maintenance modes. Remediation: (1) Run 'grub2-setpassword' to set an encrypted GRUB2 superuser password. (2) Verify: grep -iw grub2_password /boot/efi/EFI/redhat/user.cfg (or centos path). The system administrator must configure UEFI boot authentication immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>This system uses BIOS firmware, not UEFI. Per the STIG guidance ('For systems that use BIOS, this is Not Applicable'), this UEFI-specific GRUB2 authentication check does not apply. The corresponding BIOS check (V-204438) applies instead.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -717,28 +805,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204442">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have the rsh-server package installed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the rsh-server package is not installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -q rsh-server' and confirmed the package is not present. The rsh (Remote Shell) service provides unencrypted remote access that does not protect the confidentiality or integrity of transmitted data. Its absence confirms compliance with RHEL 7 STIG requirement RHEL-07-020000. XCP-ng Dom0 uses SSH for all remote administration, which provides encrypted communications. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the rsh-server package is installed on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-020000, the rsh-server package must not be installed because it provides unencrypted remote access that does not protect confidentiality or integrity of user credentials and session data. This is a CAT I finding. Remediation: (1) Remove the package immediately: yum remove rsh-server. (2) Verify removal: rpm -q rsh-server. (3) Ensure SSH is configured as the sole remote access method. The system administrator must remove this package and ensure only encrypted remote access protocols are available.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204443">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have the ypserv package installed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the ypserv (NIS server) package is not installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -q ypserv' and confirmed the package is not present. NIS (Network Information Service) provides an unencrypted authentication service that does not protect the confidentiality or integrity of user passwords or remote sessions. Its absence confirms compliance with RHEL 7 STIG requirement RHEL-07-020010. XCP-ng Dom0 uses modern authentication methods that provide encrypted credential handling. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the ypserv (NIS server) package is installed on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-020010, the ypserv package must not be installed because NIS provides unencrypted authentication that exposes user passwords and session data. This is a CAT I finding. Remediation: (1) Remove the package immediately: yum remove ypserv. (2) Verify removal: rpm -q ypserv. (3) Migrate any NIS-dependent authentication to LDAP/Kerberos or local accounts. The system administrator must remove this package and transition to encrypted authentication services.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -787,28 +891,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204447">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that yum on this XCP-ng Dom0 (RHEL 7-based) system is configured to verify GPG signatures for repository packages. The scan confirmed that gpgcheck=1 is set in /etc/yum.conf. This ensures that all packages installed from repositories have been digitally signed by a trusted Certificate Authority, preventing installation of tampered or unauthorized software. This meets RHEL 7 STIG requirement RHEL-07-020050 for repository package signature verification. XCP-ng repositories use GPG-signed packages to maintain supply chain integrity. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that yum on this XCP-ng Dom0 (RHEL 7-based) system is not configured to verify GPG signatures for repository packages. The gpgcheck setting in /etc/yum.conf is not set to '1'. Per RHEL 7 STIG requirement RHEL-07-020050, the operating system must verify digital signatures before installing any packages from repositories. Without GPG verification, tampered or malicious packages could be installed. Remediation: (1) Edit /etc/yum.conf and set: gpgcheck=1 in the [main] section. (2) Verify all repository configuration files in /etc/yum.repos.d/ also have gpgcheck=1. (3) Ensure GPG keys for XCP-ng repositories are imported. The system administrator must enable signature verification immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204448">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that yum on this XCP-ng Dom0 (RHEL 7-based) system is configured to verify GPG signatures for local packages. The scan confirmed that localpkg_gpgcheck=1 is set in /etc/yum.conf. This ensures that locally-installed RPM packages must also be digitally signed by a trusted Certificate Authority, preventing installation of tampered or unauthorized local packages. This meets RHEL 7 STIG requirement RHEL-07-020060 for local package signature verification. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that yum on this XCP-ng Dom0 (RHEL 7-based) system is not configured to verify GPG signatures for local packages. The localpkg_gpgcheck setting in /etc/yum.conf is not set to '1'. Per RHEL 7 STIG requirement RHEL-07-020060, the operating system must verify digital signatures before installing local packages. Without this check, manually-downloaded RPM files could be installed without signature verification. Remediation: (1) Edit /etc/yum.conf and set: localpkg_gpgcheck=1 in the [main] section. (2) Verify the change: grep localpkg_gpgcheck /etc/yum.conf. The system administrator must enable local package signature verification.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -899,28 +1019,52 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204455">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the Ctrl-Alt-Delete key sequence is disabled on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed that the ctrl-alt-del.target systemd unit is masked, preventing the key combination from triggering an unintended system reboot. A masked unit cannot be started or enabled by any means, providing the strongest form of disablement. This meets RHEL 7 STIG requirement RHEL-07-020230 for disabling the Ctrl-Alt-Delete reboot sequence. On a hypervisor Dom0 system, preventing accidental reboots is critical to maintaining virtual machine availability. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the Ctrl-Alt-Delete key sequence is not properly disabled on this XCP-ng Dom0 (RHEL 7-based) system. The ctrl-alt-del.target systemd unit is not masked, which means the key combination could trigger an unintended system reboot. Per RHEL 7 STIG requirement RHEL-07-020230, the Ctrl-Alt-Delete sequence must be disabled to prevent accidental or malicious reboots. On a hypervisor Dom0, an unintended reboot would shut down all running virtual machines. Remediation: (1) Disable the target: systemctl disable ctrl-alt-del.target. (2) Mask the target: systemctl mask ctrl-alt-del.target. (3) Verify: systemctl status ctrl-alt-del.target (should show 'masked'). The system administrator must apply this change immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204456">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled in the Graphical User Interface.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 1: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the Ctrl-Alt-Delete key sequence is disabled in the graphical user interface on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed that the dconf setting for the GNOME logout action is configured to prevent Ctrl-Alt-Delete from triggering a logout/reboot in the GUI session. This meets RHEL 7 STIG requirement RHEL-07-020231. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the Ctrl-Alt-Delete key sequence is not disabled in the graphical user interface on this XCP-ng Dom0 (RHEL 7-based) system. The dconf logout setting is not configured to prevent Ctrl-Alt-Delete from triggering a GUI logout/reboot. Per RHEL 7 STIG requirement RHEL-07-020231, the key sequence must be disabled in the GUI. Remediation: (1) Create /etc/dconf/db/local.d/00-disable-CAD. (2) Add: [org/gnome/settings-daemon/plugins/media-keys] and logout=''. (3) Run: dconf update. The system administrator must apply this change.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>GNOME desktop environment is not installed on this XCP-ng Dom0 system. XCP-ng Dom0 is a server-oriented hypervisor management domain that typically operates without a graphical user interface. Per the STIG guidance ('if the operating system does not have a graphical user interface installed, this requirement is Not Applicable'), this check is Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
