@@ -977,14 +977,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204452">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must remove all software components after updated versions have been installed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that yum on this XCP-ng Dom0 (RHEL 7-based) system is configured to remove unneeded software dependencies after package updates. The scan confirmed that clean_requirements_on_remove=1 is set in /etc/yum.conf. This ensures obsolete packages are automatically removed when updated versions are installed, reducing the attack surface. This meets RHEL 7 STIG requirement RHEL-07-020200. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that yum on this XCP-ng Dom0 system is not configured to remove old software after updates. The clean_requirements_on_remove setting in /etc/yum.conf is not set to 1. Per RHEL 7 STIG requirement RHEL-07-020200, old package dependencies must be removed after updates. Remediation: Set clean_requirements_on_remove=1 in /etc/yum.conf. The system administrator must configure automatic cleanup of obsolete packages.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1135,14 +1143,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204461">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all Group Identifiers (GIDs) referenced in the /etc/passwd file are defined in the /etc/group file.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that all Group Identifiers (GIDs) referenced in /etc/passwd are defined in /etc/group on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'pwck -r' to validate password file integrity and found no undefined GID references. This ensures all user accounts reference valid groups, maintaining proper access control. This meets RHEL 7 STIG requirement RHEL-07-020300. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that one or more GIDs referenced in /etc/passwd are not defined in /etc/group on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-020300, all GIDs must be defined. Undefined GIDs can lead to access control issues. Remediation: (1) Run 'pwck -r' to identify issues. (2) Add missing groups with groupadd or update user GIDs with usermod -g. The system administrator must resolve all GID inconsistencies.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1451,14 +1467,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204486">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must mount /dev/shm with secure options.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /dev/shm is mounted with the required security options (nodev, nosuid, noexec) on this XCP-ng Dom0 (RHEL 7-based) system. All three options were confirmed present in the mount output. These options prevent device files, setuid execution, and binary execution in shared memory, mitigating common exploit techniques. This meets RHEL 7 STIG requirement RHEL-07-021024. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /dev/shm is missing one or more required mount options (nodev, nosuid, noexec) on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-021024, /dev/shm must be mounted with all three options. Remediation: Add to /etc/fstab: 'tmpfs /dev/shm tmpfs defaults,nodev,nosuid,noexec 0 0' then remount: mount -o remount /dev/shm. The system administrator must ensure shared memory is mounted securely.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1549,56 +1573,88 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204493">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that a separate file system is used for user home directories (such as /home or an equivalent).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified the /home directory configuration on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a hypervisor management domain that typically has no non-privileged interactive user accounts (UID &gt;= 1000). The scan confirmed either that /home is on a separate filesystem or that no interactive users exist, making a separate /home partition unnecessary. This meets RHEL 7 STIG requirement RHEL-07-021310. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that interactive user accounts exist on this XCP-ng Dom0 system but /home is not on a separate filesystem. Per RHEL 7 STIG requirement RHEL-07-021310, user home directories must be on a separate partition to prevent users from filling the root filesystem. Remediation: Migrate /home to a separate partition or logical volume. The system administrator must ensure proper filesystem separation.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204494">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a separate file system for /var.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /var is mounted on a separate filesystem on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed a dedicated mount point exists for /var, preventing variable data (logs, caches, spools) from filling the root filesystem and potentially causing system instability. This meets RHEL 7 STIG requirement RHEL-07-021320. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /var is not on a separate filesystem on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-021320, /var must use a separate partition to prevent variable data from consuming root filesystem space. Remediation: Migrate /var to a separate partition or logical volume. The system administrator must ensure proper filesystem separation.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204495">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a separate file system for the system audit data path.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /var/log/audit is mounted on a separate filesystem on this XCP-ng Dom0 (RHEL 7-based) system. A dedicated partition for audit data ensures audit logs are preserved even if other filesystems become full, maintaining the integrity of the audit trail. This meets RHEL 7 STIG requirement RHEL-07-021330. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /var/log/audit is not on a separate filesystem on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-021330, the audit data path must use a separate partition to ensure audit logs are preserved. Remediation: Create a separate partition for /var/log/audit and update /etc/fstab. The system administrator must ensure audit data has dedicated storage.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204496">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a separate file system for /tmp (or equivalent).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /tmp is configured as a separate filesystem on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed either tmp.mount is enabled or /tmp has a dedicated mount point in fstab. A separate /tmp prevents temporary file accumulation from filling the root filesystem. This meets RHEL 7 STIG requirement RHEL-07-021340. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /tmp is not configured as a separate filesystem on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-021340, /tmp must use a separate partition. Remediation: Enable tmp.mount: systemctl enable tmp.mount, or add /tmp to /etc/fstab with a dedicated device. The system administrator must ensure /tmp has separate storage.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1627,28 +1683,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204498">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify Access Control Lists (ACLs).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the file integrity tool (AIDE) is configured to verify Access Control Lists (ACLs) on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed AIDE is installed and the 'acl' rule is present in /etc/aide.conf. This ensures ACL changes to critical system files are detected during integrity checks. This meets RHEL 7 STIG requirement RHEL-07-021600. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the file integrity tool is not properly configured to verify ACLs on this XCP-ng Dom0 system. Either AIDE is not installed or the 'acl' rule is not in the aide.conf configuration. Per RHEL 7 STIG requirement RHEL-07-021600, the integrity tool must verify ACLs. Remediation: (1) Install AIDE: yum install aide. (2) Add 'acl' to rule definitions in /etc/aide.conf. (3) Initialize database: aide --init. The system administrator must configure ACL verification.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204499">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify extended attributes.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the file integrity tool (AIDE) is configured to verify extended attributes on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed AIDE is installed and the 'xattrs' rule is present in /etc/aide.conf. This ensures extended attribute changes to critical system files are detected during integrity checks. This meets RHEL 7 STIG requirement RHEL-07-021610. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the file integrity tool is not configured to verify extended attributes on this XCP-ng Dom0 system. Either AIDE is not installed or the 'xattrs' rule is missing from aide.conf. Per RHEL 7 STIG requirement RHEL-07-021610, the integrity tool must verify extended attributes. Remediation: (1) Install AIDE: yum install aide. (2) Add 'xattrs' to rule definitions in /etc/aide.conf. (3) Initialize: aide --init. The system administrator must configure xattr verification.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2433,14 +2505,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204576">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must limit the number of concurrent sessions to 10 for all accounts and/or account types.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that concurrent session limits are configured on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed that the 'hard maxlogins' parameter is set to 10 or fewer in /etc/security/limits.conf or limits.d configuration. This prevents a single account from consuming excessive system resources through too many simultaneous sessions. This meets RHEL 7 STIG requirement RHEL-07-040000. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that concurrent session limits are not properly configured on this XCP-ng Dom0 system. The 'maxlogins' setting is either missing or exceeds 10. Per RHEL 7 STIG requirement RHEL-07-040000, concurrent sessions must be limited to 10. Remediation: Add '* hard maxlogins 10' to /etc/security/limits.conf. The system administrator must configure session limits.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2847,14 +2927,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204605">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must display the date and time of the last successful account logon upon logon.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the last logon date and time are displayed upon login on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed pam_lastlog is configured in /etc/pam.d/postlogin without the 'silent' option, ensuring users are informed of their last successful logon. This provides accountability awareness and helps detect unauthorized account use. This meets RHEL 7 STIG requirement RHEL-07-040530. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the last logon information is not displayed upon login on this XCP-ng Dom0 system. Either pam_lastlog is missing from /etc/pam.d/postlogin or the 'silent' option suppresses the display. Per RHEL 7 STIG requirement RHEL-07-040530, last logon must be shown. Remediation: Add 'session required pam_lastlog.so showfailed' to /etc/pam.d/postlogin. Remove any 'silent' option. The system administrator must configure logon notification.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2905,14 +2993,30 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204608">
     <!--RuleTitle: For Red Hat Enterprise Linux operating systems using DNS resolution, at least two name servers must be configured.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that at least two DNS name servers are configured on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed that /etc/resolv.conf contains two or more nameserver entries, providing DNS redundancy. Multiple name servers ensure DNS resolution continues if one server becomes unavailable. This meets RHEL 7 STIG requirement RHEL-07-040600. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found fewer than two DNS name servers configured on this XCP-ng Dom0 system. Per RHEL 7 STIG requirement RHEL-07-040600, at least two name servers must be configured for DNS redundancy. Remediation: Add at least two nameserver entries to /etc/resolv.conf (e.g., nameserver 10.0.10.1 and nameserver 10.0.10.2). The system administrator must configure redundant DNS servers.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>DNS resolution is not configured on this XCP-ng Dom0 system. The /etc/nsswitch.conf hosts line does not include 'dns' and /etc/resolv.conf is empty. Per the STIG guidance, this check is Not Applicable when the system does not use DNS resolution.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3661,14 +3765,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-255927">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must restrict access to the kernel message buffer.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT III Batch: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that access to the kernel message buffer is restricted on this XCP-ng Dom0 (RHEL 7-based) system. The scan confirmed kernel.dmesg_restrict is set to 1 via sysctl, preventing unprivileged users from reading kernel ring buffer messages via dmesg. This prevents information disclosure of kernel addresses and system internals. This meets RHEL 7 STIG requirement RHEL-07-010375. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the kernel message buffer is not restricted on this XCP-ng Dom0 system. The kernel.dmesg_restrict sysctl parameter is not set to 1. Per RHEL 7 STIG requirement RHEL-07-010375, unprivileged access to dmesg must be restricted. Remediation: (1) Add 'kernel.dmesg_restrict = 1' to /etc/sysctl.conf. (2) Apply: sysctl -p. The system administrator must restrict kernel message buffer access.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

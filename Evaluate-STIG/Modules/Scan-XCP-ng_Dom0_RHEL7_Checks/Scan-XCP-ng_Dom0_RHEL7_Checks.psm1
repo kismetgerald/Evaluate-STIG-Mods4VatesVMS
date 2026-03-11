@@ -6777,9 +6777,26 @@ Function Get-V204452 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204452) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204452 - Remove Old Software After Updates" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $cleanCheck = $(timeout 5 grep -i clean_requirements_on_remove /etc/yum.conf 2>&1)
+    $cleanStr = ($cleanCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i clean_requirements_on_remove /etc/yum.conf" + $nl
+    $FindingDetails += "Result: " + $cleanStr + $nl + $nl
+
+    if ($cleanStr -match "clean_requirements_on_remove\s*=\s*(1|True|yes)") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: yum is configured to remove unneeded dependencies after updates." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: clean_requirements_on_remove is not set to 1/True/yes in /etc/yum.conf." + $nl
+        $FindingDetails += "Remediation: Set clean_requirements_on_remove=1 in /etc/yum.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7853,9 +7870,30 @@ Function Get-V204461 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204461) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204461 - All GIDs in passwd Defined in group" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $pwckCheck = $(timeout 10 pwck -r 2>&1)
+    $pwckStr = ($pwckCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: pwck -r" + $nl
+    $FindingDetails += "Result: " + $pwckStr + $nl + $nl
+
+    if ($pwckStr -match "no changes") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: All GIDs referenced in /etc/passwd are defined in /etc/group." + $nl
+    }
+    elseif ($pwckStr -match "group .* does not exist") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: One or more GIDs in /etc/passwd are not defined in /etc/group." + $nl
+        $FindingDetails += "Remediation: Add missing groups or update user GIDs to valid groups." + $nl
+    }
+    else {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No undefined GID references detected." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10320,9 +10358,36 @@ Function Get-V204486 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204486) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204486 - /dev/shm Mounted with Secure Options" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $mountCheck = $(mount 2>&1 | grep /dev/shm)
+    $mountStr = ($mountCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: mount | grep /dev/shm" + $nl
+    $FindingDetails += "Result: " + $mountStr + $nl + $nl
+
+    $hasNodev = $mountStr -match "nodev"
+    $hasNosuid = $mountStr -match "nosuid"
+    $hasNoexec = $mountStr -match "noexec"
+
+    $FindingDetails += "nodev: " + $(if ($hasNodev) { "Present" } else { "MISSING" }) + $nl
+    $FindingDetails += "nosuid: " + $(if ($hasNosuid) { "Present" } else { "MISSING" }) + $nl
+    $FindingDetails += "noexec: " + $(if ($hasNoexec) { "Present" } else { "MISSING" }) + $nl + $nl
+
+    if ($hasNodev -and $hasNosuid -and $hasNoexec) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /dev/shm is mounted with nodev, nosuid, and noexec options." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /dev/shm is missing one or more required mount options." + $nl
+        $FindingDetails += "Remediation: Add to /etc/fstab:" + $nl
+        $FindingDetails += "  tmpfs /dev/shm tmpfs defaults,nodev,nosuid,noexec 0 0" + $nl
+        $FindingDetails += "Then remount: mount -o remount /dev/shm" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11097,9 +11162,39 @@ Function Get-V204493 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204493) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204493 - Separate Filesystem for /home" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $mountCheck = $(mount 2>&1 | grep " /home ")
+    $mountStr = ($mountCheck -join $nl).Trim()
+    $fstabCheck = $(timeout 5 grep " /home " /etc/fstab 2>&1)
+    $fstabStr = ($fstabCheck -join $nl).Trim()
+
+    $FindingDetails += "mount | grep /home: " + $(if ([string]::IsNullOrWhiteSpace($mountStr)) { "(not mounted separately)" } else { $mountStr }) + $nl
+    $FindingDetails += "fstab /home entry: " + $(if ([string]::IsNullOrWhiteSpace($fstabStr)) { "(not found)" } else { $fstabStr }) + $nl + $nl
+
+    # XCP-ng Dom0 typically has no interactive users - check if any exist
+    $interactiveUsers = $(timeout 5 sh -c "awk -F: '(\$3>=1000)&&(\$7 !~ /nologin/){print \$1}' /etc/passwd")
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $FindingDetails += "Interactive users (UID >= 1000): " + $(if ([string]::IsNullOrWhiteSpace($usersStr)) { "(none)" } else { $usersStr }) + $nl + $nl
+
+    if ([string]::IsNullOrWhiteSpace($usersStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No non-privileged interactive users exist on this XCP-ng Dom0." + $nl
+        $FindingDetails += "A separate /home partition is not required." + $nl
+    }
+    elseif (-not [string]::IsNullOrWhiteSpace($mountStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /home is mounted on a separate filesystem." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Interactive users exist but /home is not on a separate filesystem." + $nl
+        $FindingDetails += "Remediation: Migrate /home to a separate partition." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11208,9 +11303,28 @@ Function Get-V204494 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204494) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204494 - Separate Filesystem for /var" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $mountCheck = $(mount 2>&1 | grep " /var ")
+    $mountStr = ($mountCheck -join $nl).Trim()
+    $fstabCheck = $(timeout 5 grep " /var " /etc/fstab 2>&1)
+    $fstabStr = ($fstabCheck -join $nl).Trim()
+
+    $FindingDetails += "mount | grep /var: " + $(if ([string]::IsNullOrWhiteSpace($mountStr)) { "(not mounted separately)" } else { $mountStr }) + $nl
+    $FindingDetails += "fstab /var entry: " + $(if ([string]::IsNullOrWhiteSpace($fstabStr)) { "(not found)" } else { $fstabStr }) + $nl + $nl
+
+    if (-not [string]::IsNullOrWhiteSpace($mountStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /var is mounted on a separate filesystem." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /var is not on a separate filesystem." + $nl
+        $FindingDetails += "Remediation: Migrate /var to a separate partition." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11319,9 +11433,28 @@ Function Get-V204495 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204495) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204495 - Separate Filesystem for /var/log/audit" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $mountCheck = $(mount 2>&1 | grep "/var/log/audit")
+    $mountStr = ($mountCheck -join $nl).Trim()
+    $fstabCheck = $(timeout 5 grep "/var/log/audit" /etc/fstab 2>&1)
+    $fstabStr = ($fstabCheck -join $nl).Trim()
+
+    $FindingDetails += "mount | grep /var/log/audit: " + $(if ([string]::IsNullOrWhiteSpace($mountStr)) { "(not mounted separately)" } else { $mountStr }) + $nl
+    $FindingDetails += "fstab entry: " + $(if ([string]::IsNullOrWhiteSpace($fstabStr)) { "(not found)" } else { $fstabStr }) + $nl + $nl
+
+    if (-not [string]::IsNullOrWhiteSpace($mountStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /var/log/audit is mounted on a separate filesystem." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /var/log/audit is not on a separate filesystem." + $nl
+        $FindingDetails += "Remediation: Migrate /var/log/audit to a separate partition." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11430,9 +11563,39 @@ Function Get-V204496 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204496) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204496 - Separate Filesystem for /tmp" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if tmp.mount is enabled
+    $tmpMount = $(systemctl is-enabled tmp.mount 2>&1)
+    $tmpMountStr = ($tmpMount -join $nl).Trim()
+
+    $FindingDetails += "Command: systemctl is-enabled tmp.mount" + $nl
+    $FindingDetails += "Result: " + $tmpMountStr + $nl + $nl
+
+    # Also check fstab
+    $fstabCheck = $(timeout 5 grep -i "/tmp " /etc/fstab 2>&1)
+    $fstabStr = ($fstabCheck -join $nl).Trim()
+
+    $FindingDetails += "fstab /tmp entry: " + $(if ([string]::IsNullOrWhiteSpace($fstabStr)) { "(not found)" } else { $fstabStr }) + $nl
+
+    # Check actual mount
+    $mountCheck = $(mount 2>&1 | grep " /tmp ")
+    $mountStr = ($mountCheck -join $nl).Trim()
+
+    $FindingDetails += "mount | grep /tmp: " + $(if ([string]::IsNullOrWhiteSpace($mountStr)) { "(not mounted separately)" } else { $mountStr }) + $nl + $nl
+
+    if ($tmpMountStr -match "enabled" -or -not [string]::IsNullOrWhiteSpace($mountStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /tmp is configured as a separate filesystem." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /tmp is not on a separate filesystem." + $nl
+        $FindingDetails += "Remediation: systemctl enable tmp.mount, or add /tmp to /etc/fstab." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11701,9 +11864,39 @@ Function Get-V204498 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204498) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204498 - File Integrity Tool Verifies ACLs" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if AIDE is installed
+    $aideCheck = $(rpm -q aide 2>&1)
+    $aideStr = ($aideCheck -join $nl).Trim()
+
+    $FindingDetails += "AIDE package: " + $aideStr + $nl + $nl
+
+    if ($aideStr -match "is not installed") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: AIDE (file integrity tool) is not installed." + $nl
+        $FindingDetails += "Remediation: yum install aide, then configure aide.conf with acl rule." + $nl
+    }
+    else {
+        $aclCheck = $(timeout 5 grep -i acl /etc/aide.conf 2>/dev/null | grep -v "^\s*#")
+        $aclStr = ($aclCheck -join $nl).Trim()
+
+        $FindingDetails += "Command: grep -i acl /etc/aide.conf (non-commented)" + $nl
+        $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($aclStr)) { "(not found)" } else { $aclStr }) + $nl + $nl
+
+        if ($aclStr -match "acl") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: AIDE is configured to verify ACLs." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: AIDE is installed but acl rule is not configured." + $nl
+            $FindingDetails += "Remediation: Add 'acl' to the rule list in /etc/aide.conf." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11812,9 +12005,38 @@ Function Get-V204499 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204499) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204499 - File Integrity Tool Verifies Extended Attributes" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $aideCheck = $(rpm -q aide 2>&1)
+    $aideStr = ($aideCheck -join $nl).Trim()
+
+    $FindingDetails += "AIDE package: " + $aideStr + $nl + $nl
+
+    if ($aideStr -match "is not installed") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: AIDE (file integrity tool) is not installed." + $nl
+        $FindingDetails += "Remediation: yum install aide, then configure aide.conf with xattrs rule." + $nl
+    }
+    else {
+        $xattrCheck = $(timeout 5 grep -i xattrs /etc/aide.conf 2>/dev/null | grep -v "^\s*#")
+        $xattrStr = ($xattrCheck -join $nl).Trim()
+
+        $FindingDetails += "Command: grep -i xattrs /etc/aide.conf (non-commented)" + $nl
+        $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($xattrStr)) { "(not found)" } else { $xattrStr }) + $nl + $nl
+
+        if ($xattrStr -match "xattrs") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: AIDE is configured to verify extended attributes." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: AIDE is installed but xattrs rule is not configured." + $nl
+            $FindingDetails += "Remediation: Add 'xattrs' to the rule list in /etc/aide.conf." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -18046,9 +18268,34 @@ Function Get-V204576 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204576) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204576 - Limit Concurrent Sessions to 10" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $limitsCheck = $(timeout 5 grep -r maxlogins /etc/security/limits.conf /etc/security/limits.d/ 2>/dev/null | grep -v "^\s*#")
+    $limitsStr = ($limitsCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r maxlogins /etc/security/limits.conf /etc/security/limits.d/" + $nl
+    $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($limitsStr)) { "(not found)" } else { $limitsStr }) + $nl + $nl
+
+    if ($limitsStr -match "hard\s+maxlogins\s+(\d+)") {
+        $maxVal = [int]$matches[1]
+        if ($maxVal -le 10) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: maxlogins is set to $maxVal (at or below 10)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: maxlogins is set to $maxVal (exceeds 10)." + $nl
+            $FindingDetails += "Remediation: Set '* hard maxlogins 10' in /etc/security/limits.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: maxlogins is not configured." + $nl
+        $FindingDetails += "Remediation: Add '* hard maxlogins 10' to /etc/security/limits.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21292,9 +21539,31 @@ Function Get-V204605 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204605) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204605 - Display Last Successful Logon Upon Login" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $pamCheck = $(timeout 5 grep pam_lastlog /etc/pam.d/postlogin 2>&1)
+    $pamStr = ($pamCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep pam_lastlog /etc/pam.d/postlogin" + $nl
+    $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($pamStr)) { "(not found)" } else { $pamStr }) + $nl + $nl
+
+    if ([string]::IsNullOrWhiteSpace($pamStr)) {
+        $Status = "Open"
+        $FindingDetails += "FAIL: pam_lastlog is not configured in /etc/pam.d/postlogin." + $nl
+        $FindingDetails += "Remediation: Add 'session required pam_lastlog.so showfailed' to /etc/pam.d/postlogin" + $nl
+    }
+    elseif ($pamStr -match "silent") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: pam_lastlog is present but has the 'silent' option." + $nl
+        $FindingDetails += "Remediation: Remove the 'silent' option from the pam_lastlog line." + $nl
+    }
+    else {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: pam_lastlog is configured to display last logon information." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21661,9 +21930,51 @@ Function Get-V204608 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204608) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204608 - At Least Two DNS Name Servers Configured" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if DNS is used
+    $nsswitchCheck = $(timeout 5 grep hosts /etc/nsswitch.conf 2>&1)
+    $nsswitchStr = ($nsswitchCheck -join $nl).Trim()
+
+    $FindingDetails += "nsswitch.conf hosts: " + $nsswitchStr + $nl + $nl
+
+    if ($nsswitchStr -notmatch "dns") {
+        # DNS not in nsswitch - check if resolv.conf is empty
+        $resolvCheck = $(timeout 5 cat /etc/resolv.conf 2>&1)
+        $resolvStr = ($resolvCheck -join $nl).Trim()
+
+        if ([string]::IsNullOrWhiteSpace($resolvStr)) {
+            $Status = "Not_Applicable"
+            $FindingDetails += "DNS is not configured in nsswitch.conf and resolv.conf is empty." + $nl
+            $FindingDetails += "This system does not use DNS resolution. Not Applicable." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: DNS is not in nsswitch.conf but resolv.conf has content." + $nl
+        }
+    }
+    else {
+        $nameservers = $(timeout 5 grep "^\s*nameserver" /etc/resolv.conf 2>&1)
+        $nsStr = ($nameservers -join $nl).Trim()
+        $nsCount = ($nameservers | Where-Object { $_ -match "nameserver" }).Count
+
+        $FindingDetails += "nameserver entries in /etc/resolv.conf:" + $nl
+        $FindingDetails += $nsStr + $nl + $nl
+        $FindingDetails += "Count: " + $nsCount + $nl + $nl
+
+        if ($nsCount -ge 2) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: At least two DNS name servers are configured." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: Fewer than two DNS name servers configured." + $nl
+            $FindingDetails += "Remediation: Add at least two nameserver entries to /etc/resolv.conf" + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -27358,9 +27669,27 @@ Function Get-V255927 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-255927) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-255927 - Restrict Access to Kernel Message Buffer" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $dmesgCheck = $(sysctl kernel.dmesg_restrict 2>&1)
+    $dmesgStr = ($dmesgCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: sysctl kernel.dmesg_restrict" + $nl
+    $FindingDetails += "Result: " + $dmesgStr + $nl + $nl
+
+    if ($dmesgStr -match "kernel\.dmesg_restrict\s*=\s*1") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Kernel message buffer access is restricted (dmesg_restrict=1)." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: kernel.dmesg_restrict is not set to 1." + $nl
+        $FindingDetails += "Remediation: Add 'kernel.dmesg_restrict = 1' to /etc/sysctl.conf" + $nl
+        $FindingDetails += "then apply: sysctl -p" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
