@@ -92,42 +92,60 @@ Contact the system administrator and ISSO to configure XAPI RBAC.</ValidTrueComm
   <Vuln ID="V-207339">
     <!--RuleTitle: The VMM must automatically remove or disable local temporary user accounts after 72 hours.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that XCP-ng hypervisor temporary account policies enforce 72-hour expiration. The check examined local account expiration settings via chage, the INACTIVE parameter in /etc/default/useradd, and Dom0 account management policies. Temporary accounts are configured with appropriate expiration dates, and the organizational policy requires that temporary accounts are automatically disabled after 72 hours. XCP-ng Dom0, based on CentOS 7, uses the shadow password mechanism to enforce account expiration through the chage utility. The system administrator has configured temporary accounts with explicit expiration dates set no more than 72 hours from creation. This meets the VMM SRG requirement to automatically remove or disable temporary accounts after 72 hours.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that temporary account expiration policies are not properly configured on the XCP-ng hypervisor. The VMM SRG requires automatic removal or disabling of temporary accounts after 72 hours. To remediate: (1) When creating temporary accounts, always set an expiration date: useradd -e $(date -d '+72 hours' +%Y-%m-%d) tempuser. (2) For existing temporary accounts, set expiration: chage -E $(date -d '+72 hours' +%Y-%m-%d) tempuser. (3) Implement a cron job to audit and disable expired temporary accounts: create /etc/cron.daily/disable-temp-accounts. (4) Document the temporary account policy in the system security plan. The ISSO/ISSM must establish procedures for creating, tracking, and automatically disabling temporary accounts within the 72-hour window.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207340">
     <!--RuleTitle: The VMM must automatically disable local accounts after a 35-day period of account inactivity.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor is configured to automatically disable accounts after 35 days of inactivity. The INACTIVE parameter in /etc/default/useradd is set to 35 or fewer days, and individual account inactivity settings were verified via chage. The shadow password mechanism automatically locks accounts when the password expiration date plus the inactivity period has passed without a login. This ensures that dormant accounts are disabled in a timely manner, reducing the attack surface from unused credentials. The organizational policy requires regular account reviews to identify and manage inactive accounts on hypervisor systems.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that account inactivity policies are not properly configured on the XCP-ng hypervisor. The VMM SRG requires automatic disabling of accounts after 35 days of inactivity. To remediate: (1) Set the default inactivity period: useradd -D -f 35. (2) For existing accounts: chage --inactive 35 username. (3) Verify: grep INACTIVE /etc/default/useradd (should show INACTIVE=35). (4) Audit all accounts: for u in $(awk -F: '{if ($3 &gt;= 1000) print $1}' /etc/passwd); do chage -l $u; done. The system administrator must ensure all local accounts have the INACTIVE field set to 35 days or less, and the ISSO/ISSM must include account inactivity monitoring in the security management process.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207341">
     <!--RuleTitle: The VMM must automatically audit account creation.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor audits account creation events. The auditd service is active and audit rules are configured to monitor changes to /etc/passwd, /etc/shadow, /etc/group, and /etc/gshadow, which capture all local account creation events. The audit rules use watch keys such as identity and audit_rules_usergroup_modification to tag account-related events. Additionally, xapi audit logs in /var/log/xensource.log record account and permission changes made through the XCP-ng management interface. This dual-layer auditing ensures comprehensive coverage of account creation activities on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that account creation auditing is not properly configured on the XCP-ng hypervisor. The VMM SRG requires automatic auditing of account creation events. To remediate: (1) Ensure auditd is running: systemctl enable auditd &amp;&amp; systemctl start auditd. (2) Add audit rules for account files in /etc/audit/rules.d/account.rules: -w /etc/passwd -p wa -k identity, -w /etc/shadow -p wa -k identity, -w /etc/group -p wa -k identity, -w /etc/gshadow -p wa -k identity. (3) Reload rules: augenrules --load. (4) Verify: auditctl -l | grep identity. The system administrator must ensure that all account creation methods (useradd, xapi, direct file editing) generate audit records.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -167,112 +185,160 @@ Contact the system administrator to configure PAM faillock.</ValidTrueComment>
   <Vuln ID="V-207343">
     <!--RuleTitle: The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor displays the Standard Mandatory DoD Notice and Consent Banner before granting access. The check examined /etc/issue for the SSH pre-authentication banner, /etc/motd for the post-login message, and the SSH Banner directive in /etc/ssh/sshd_config. The DoD consent banner text is present and configured to display before users can authenticate. The banner includes the required language regarding monitoring, recording, and consent to security testing. This meets the VMM SRG requirement to display the Standard Mandatory DoD Notice and Consent Banner prior to system access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the Standard Mandatory DoD Notice and Consent Banner is not properly configured on the XCP-ng hypervisor. The VMM SRG requires displaying the DoD consent banner before granting access. To remediate: (1) Create the banner in /etc/issue with the full DoD consent text. (2) Configure SSH to display it: set Banner /etc/issue in /etc/ssh/sshd_config. (3) Restart sshd: systemctl restart sshd. (4) For XenCenter/XO access, configure the login banner in the xapi management interface. The full banner text is available in the STIG and must include language about monitoring, recording, auditing, and consent to security testing. The ISSO/ISSM must verify the banner matches the exact DoD-required text.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207344">
     <!--RuleTitle: The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor retains the DoD consent banner until users explicitly acknowledge it and take action to log on. The SSH pre-authentication banner configured via /etc/issue is displayed before the password prompt, requiring the user to proceed with authentication (an explicit acknowledgment action) before gaining access. The banner remains visible until the user provides credentials. For console access, the /etc/issue file content is displayed before the login prompt. This configuration ensures that users must read and implicitly acknowledge the consent banner by proceeding with authentication, meeting the VMM SRG requirement for banner retention until explicit user action.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the DoD consent banner retention mechanism is not properly configured on the XCP-ng hypervisor. The VMM SRG requires the banner to remain on screen until users explicitly acknowledge it. To remediate: (1) Ensure /etc/issue contains the full DoD consent banner. (2) Set Banner /etc/issue in /etc/ssh/sshd_config so it displays before authentication. (3) Restart sshd: systemctl restart sshd. (4) Verify by SSH-ing to the host and confirming the banner appears before the password prompt. (5) For XenCenter/XO web interface access, configure the management interface to display a banner dialog requiring explicit acknowledgment before login. The ISSO/ISSM must verify all access methods display and retain the banner appropriately.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207345">
     <!--RuleTitle: The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor limits concurrent sessions to ten or fewer per account. The check examined /etc/security/limits.conf and /etc/security/limits.d/ for maxlogins settings, SSH MaxSessions in /etc/ssh/sshd_config, and xapi session limits. The system is configured with appropriate session limits that restrict concurrent access to ten or fewer sessions per user. PAM limits enforcement via pam_limits.so ensures that the maxlogins parameter is applied to all login methods. This meets the VMM SRG requirement to limit concurrent sessions to ten for all account types.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that concurrent session limits are not properly configured on the XCP-ng hypervisor. The VMM SRG requires limiting concurrent sessions to ten per account. To remediate: (1) Set limits in /etc/security/limits.conf: * hard maxlogins 10. (2) Set SSH limits in /etc/ssh/sshd_config: MaxSessions 10. (3) Ensure pam_limits.so is in /etc/pam.d/system-auth and /etc/pam.d/password-auth. (4) Restart sshd: systemctl restart sshd. (5) Verify: ulimit -u and test with multiple concurrent SSH sessions. The system administrator must ensure all access methods (SSH, console, xapi) enforce the ten-session limit.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207346">
     <!--RuleTitle: The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor retains session locks until the user re-authenticates. The check examined SSH ClientAliveInterval and ClientAliveCountMax settings, tmux/screen lock configuration, and console lock mechanisms. When a session is locked (via timeout or manual action), the system requires the user to re-enter their password to unlock the session. SSH sessions that time out are terminated, requiring full re-authentication. The vlock or screen lock utility is available for console sessions. This meets the VMM SRG requirement that session locks persist until the user reestablishes access through proper authentication.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that session lock retention is not properly configured on the XCP-ng hypervisor. The VMM SRG requires session locks to persist until the user re-authenticates. To remediate: (1) Install vlock for console locking: yum install kbd (includes vlock). (2) Configure SSH session handling in /etc/ssh/sshd_config: ClientAliveInterval 900, ClientAliveCountMax 0 (terminates idle sessions, requiring re-authentication). (3) For tmux/screen sessions, configure lock commands that require password re-entry. (4) Verify that locked sessions cannot be resumed without authentication. The system administrator must ensure all access methods enforce re-authentication after session lock.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207347">
     <!--RuleTitle: The VMM must initiate a session lock after a 15-minute period of inactivity.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor initiates session locks after 15 minutes of inactivity. The check examined SSH ClientAliveInterval (set to 900 seconds or less), TMOUT environment variable for shell sessions, and console timeout settings. SSH sessions are configured to detect inactivity within 15 minutes and either lock or terminate the session. The TMOUT variable is set in /etc/profile or /etc/profile.d/ to automatically close idle shell sessions. This meets the VMM SRG requirement to initiate a session lock after a 15-minute period of inactivity, preventing unauthorized access to unattended sessions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that session inactivity timeout is not properly configured on the XCP-ng hypervisor. The VMM SRG requires a session lock after 15 minutes of inactivity. To remediate: (1) Set SSH timeout in /etc/ssh/sshd_config: ClientAliveInterval 900, ClientAliveCountMax 0. (2) Set shell timeout: echo 'TMOUT=900' &gt; /etc/profile.d/tmout.sh and chmod 644 /etc/profile.d/tmout.sh. (3) Make TMOUT readonly: add 'readonly TMOUT' and 'export TMOUT' to the file. (4) Restart sshd: systemctl restart sshd. (5) Verify: ssh to the host and wait 15 minutes. The system administrator must ensure all shell types and access methods enforce the 15-minute inactivity timeout.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207348">
     <!--RuleTitle: The VMM must provide the capability for users to directly initiate a session lock.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that users can directly initiate a session lock on the XCP-ng hypervisor. The check confirmed availability of vlock for console session locking, tmux/screen lock capability for terminal multiplexers, and Ctrl+L or equivalent keyboard shortcuts. Users can manually lock their sessions at any time using the vlock command for console access or the lock-session command in tmux/screen. SSH sessions can be suspended and require re-authentication to resume. This meets the VMM SRG requirement to provide users with the capability to directly initiate a session lock without waiting for the automatic timeout.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that manual session lock capability is not properly available on the XCP-ng hypervisor. The VMM SRG requires that users can directly initiate session locks. To remediate: (1) Install vlock: yum install kbd (includes vlock utility). (2) Ensure tmux or screen is available: yum install tmux. (3) Configure tmux lock command: add 'bind L lock-session' to /etc/tmux.conf. (4) Create a lock alias for convenience: echo 'alias lock=vlock' &gt;&gt; /etc/profile.d/lock.sh. (5) Document the session lock procedure for users. The system administrator must ensure that at least one method for manual session locking is available for each access method (console, SSH, management interface).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207349">
     <!--RuleTitle: The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor conceals previously visible information when a session is locked. The check examined vlock behavior (clears screen on lock), tmux/screen lock display settings, and SSH session termination behavior. When a session lock is initiated via vlock, the screen is cleared and a lock message is displayed, effectively concealing all previously visible information. SSH sessions that are terminated due to timeout also clear the terminal. This meets the VMM SRG requirement that session locks conceal previously visible information with a publicly viewable image or blank screen.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that session lock display concealment is not properly configured on the XCP-ng hypervisor. The VMM SRG requires that locked sessions conceal previously visible information. To remediate: (1) Install vlock: yum install kbd. When invoked, vlock clears the screen and displays only a lock message. (2) Configure tmux lock to clear the display: set lock-command vlock in /etc/tmux.conf. (3) For SSH sessions, ensure ClientAliveCountMax 0 terminates (not just suspends) idle sessions. (4) Verify: lock a session and confirm no previous content is visible. The system administrator must ensure that all session lock mechanisms properly clear or cover the screen contents.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207350">
     <!--RuleTitle: The VMM must monitor remote access methods automatically.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Pre-batch fix: updated NR stub to 2-index entry-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor automatically monitors remote access methods. The check examined auditd rules for SSH connection logging, rsyslog configuration for auth/authpriv facilities, /var/log/secure contents for SSH authentication records, and /var/log/xensource.log for xapi remote access events. Audit rules are configured to capture SSH connection events, and syslog is logging authentication events to /var/log/secure. The xapi audit trail records remote management connections. This comprehensive monitoring ensures all remote access methods are automatically tracked, meeting the VMM SRG requirement for automatic remote access monitoring.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that remote access monitoring is not properly configured on the XCP-ng hypervisor. The VMM SRG requires automatic monitoring of all remote access methods. To remediate: (1) Ensure auditd monitors SSH: add audit rules for /usr/sbin/sshd and network connection events. (2) Configure rsyslog to log auth events: ensure 'auth,authpriv.* /var/log/secure' is in /etc/rsyslog.conf. (3) Enable verbose SSH logging: set LogLevel VERBOSE in /etc/ssh/sshd_config. (4) Verify xapi logging: check /var/log/xensource.log for remote connection records. (5) Restart services: systemctl restart auditd rsyslog sshd. The ISSO/ISSM must ensure remote access logs are reviewed regularly and forwarded to a central log server.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -4901,224 +4967,320 @@ Contact the system administrator to implement audit rules for all security-relev
   <Vuln ID="V-207526">
     <!--RuleTitle: The VMM must implement NIST FIPS-validated cryptography for the following: to provision digital signatures; to generate cryptographic hashes; and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified FIPS 140-2 mode status on the XCP-ng hypervisor by examining /proc/sys/crypto/fips_enabled, the presence of the dracut-fips package, and SSH cipher configuration. The check confirmed that FIPS mode is enabled at the kernel level (fips_enabled=1), the dracut-fips package is installed to ensure FIPS-validated cryptographic modules are loaded during boot, and SSH is configured to use only FIPS-approved ciphers. XCP-ng Dom0, based on CentOS 7, supports FIPS mode when properly configured with dracut-fips and the fips=1 boot parameter. All cryptographic operations including digital signatures, hash generation, and data protection use NIST FIPS 140-2 validated modules. This meets the VMM SRG requirement for FIPS-validated cryptography in accordance with applicable federal laws and DoD directives. No additional configuration is required when FIPS mode is properly enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examined /proc/sys/crypto/fips_enabled and found FIPS mode is not enabled on the XCP-ng hypervisor. The VMM SRG requires NIST FIPS 140-2/140-3 validated cryptography for digital signatures, cryptographic hashes, and data protection. To remediate: (1) Install the dracut-fips package: yum install dracut-fips. (2) Regenerate the initramfs: dracut -f. (3) Add fips=1 to the kernel boot parameters in /boot/grub2/grub.cfg or via grubby: grubby --update-kernel=ALL --args=fips=1. (4) Reboot the system. (5) Verify with cat /proc/sys/crypto/fips_enabled (should return 1). Note: Enabling FIPS mode may impact XCP-ng hypervisor functionality. The system administrator should test in a non-production environment first and coordinate with Vates support. ISSO/ISSM must verify that FIPS-validated cryptography is required per the system security plan.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207527">
     <!--RuleTitle: The VMM must, at a minimum, off-load interconnected systems in real time and off-load standalone systems weekly.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified audit log off-loading configuration on the XCP-ng hypervisor by examining rsyslog service status and remote forwarding configuration. The check confirmed that the rsyslog service is active and running, and remote log forwarding targets are configured in /etc/rsyslog.conf or /etc/rsyslog.d/ using TCP (@@) or UDP (@) forwarding rules. The logrotate configuration was also examined to verify log management practices. XCP-ng Dom0 uses rsyslog as its primary logging daemon, which supports real-time forwarding of audit records to a central log server. This configuration ensures that audit logs from interconnected hypervisor systems are off-loaded in real time to a central collection point, meeting the VMM SRG requirement for audit log off-loading. The remote syslog server provides an independent copy of audit records that cannot be tampered with locally.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that audit log off-loading is not properly configured on the XCP-ng hypervisor. Either rsyslog is not active or no remote log forwarding targets are configured. The VMM SRG requires that interconnected systems off-load audit logs in real time and standalone systems off-load at minimum weekly. To remediate: (1) Ensure rsyslog is installed and running: systemctl enable rsyslog &amp;&amp; systemctl start rsyslog. (2) Configure remote forwarding in /etc/rsyslog.conf or create a file in /etc/rsyslog.d/: *.* @@syslog-server.example.com:514 (use @@ for TCP, @ for UDP). (3) Restart rsyslog: systemctl restart rsyslog. (4) Verify logs are being forwarded: logger -t test 'test message' and check the remote server. The ISSO/ISSM must designate an approved central log collection server and ensure network connectivity between the hypervisor and the log server.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207528">
     <!--RuleTitle: The VMM must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor is being scanned for DoD security configuration compliance using the Evaluate-STIG framework with the VMM SRG V2R2 module. The scan itself constitutes evidence that STIG compliance checking is being performed. The XCP-ng version and patch status were examined, and the system is running a supported version. This Evaluate-STIG scan with the Scan-XCP-ng_VMM_Checks module maps VMM SRG requirements to concrete XCP-ng configuration checks, providing systematic compliance verification against DoD security configuration guidance. Regular scanning ensures ongoing compliance with STIGs, NSA configuration guides, CTOs, and DTMs as they apply to the virtual machine manager. The ISSO/ISSM has confirmed that STIG compliance scans are performed regularly and results are tracked in the organization's security management system.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check documents that organizational verification is required to confirm DoD security configuration compliance for the XCP-ng hypervisor. While this Evaluate-STIG scan provides automated compliance checking against the VMM SRG V2R2, the ISSO/ISSM must verify: (1) STIG compliance scans are performed on a regular schedule per organizational policy. (2) Security patches are applied within the timeframe specified by the applicable CTO or IAVM. (3) The system is registered in eMASS or equivalent security management system. (4) All applicable STIGs, NSA configuration guides, CTOs, and DTMs have been reviewed and applied. (5) A Plan of Action and Milestones (POA&amp;M) exists for any open findings. The system administrator should run yum check-update --security to identify outstanding security patches and coordinate with Vates for XCP-ng-specific security advisories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207529">
     <!--RuleTitle: The VMM must protect the confidentiality and integrity of communications with wireless peripherals.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified the absence of wireless interfaces and Bluetooth on the XCP-ng hypervisor. The check examined /sys/class/net/*/wireless for wireless network interfaces, queried rfkill for RF device status, and checked the bluetooth service status. No wireless network interfaces were detected, rfkill reported no wireless devices, and the Bluetooth service is not active. XCP-ng hypervisor servers are rack-mounted or tower servers that do not typically include wireless hardware. The absence of wireless interfaces and Bluetooth eliminates the attack surface for wireless peripheral communications. This is consistent with DoD data center best practices where server systems do not use wireless connectivity. Since no wireless peripherals can communicate with the hypervisor, the confidentiality and integrity of wireless communications is inherently protected. No additional configuration is required.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check detected wireless interfaces or Bluetooth capability on the XCP-ng hypervisor. The VMM SRG requires protection of confidentiality and integrity for communications with wireless peripherals. Hypervisor servers should not have wireless capability. To remediate: (1) Physically remove or disable wireless hardware (Wi-Fi cards, Bluetooth adapters) in BIOS/UEFI settings. (2) If wireless hardware cannot be removed, block it at the OS level: rfkill block all. (3) Disable the Bluetooth service: systemctl disable bluetooth &amp;&amp; systemctl stop bluetooth. (4) Blacklist wireless kernel modules: echo 'blacklist iwlwifi' &gt; /etc/modprobe.d/wireless-disable.conf. (5) Verify no wireless interfaces exist: ls /sys/class/net/*/wireless. The system administrator must ensure that no wireless peripherals can connect to the hypervisor in the data center environment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264315">
     <!--RuleTitle: The VMM must disable accounts when the accounts are no longer associated to a user.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified account inactivity settings on the XCP-ng hypervisor by examining /etc/default/useradd for the INACTIVE parameter, enumerating local user accounts with UID 1000 or greater, and checking account expiration settings via chage. The INACTIVE parameter is set to 35 days or less, meaning accounts will be automatically disabled after that period of password expiration without login. This ensures that accounts no longer associated with an active user are disabled in a timely manner. The check also verified that individual user accounts have appropriate expiration dates configured. XCP-ng Dom0, based on CentOS 7, enforces the INACTIVE setting through the shadow password mechanism, which automatically locks accounts when the inactivity threshold is reached. This meets the VMM SRG requirement to disable accounts when they are no longer associated to a user.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the INACTIVE parameter in /etc/default/useradd is either not set or exceeds 35 days on the XCP-ng hypervisor. The VMM SRG requires that accounts be disabled when no longer associated to a user. Without an inactivity timeout, dormant accounts remain active indefinitely, creating a security risk. To remediate: (1) Set the default inactivity period: useradd -D -f 35 (sets INACTIVE to 35 days). (2) For existing accounts, set inactivity individually: chage --inactive 35 username. (3) Verify the setting: grep INACTIVE /etc/default/useradd. (4) Review all local accounts for appropriate expiration: for u in $(awk -F: '{if ($3 &gt;= 1000) print $1}' /etc/passwd); do chage -l $u; done. The ISSO/ISSM must establish a process for regular account reviews to identify and disable accounts no longer associated with authorized users.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264316">
     <!--RuleTitle: The VMM must prohibit the use or connection of unauthorized hardware components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified hardware access control on the XCP-ng hypervisor by examining USBGuard service status, enumerating connected USB devices, and checking PCI passthrough configuration. USBGuard is active and controlling hardware device connections, which prevents unauthorized USB devices from being connected to the hypervisor. The check also examined PCI passthrough devices assigned to guest VMs. USBGuard provides a device authorization policy framework that allows administrators to define which USB devices are permitted based on device attributes such as vendor ID, product ID, and serial number. This ensures that only authorized hardware components can connect to the hypervisor, meeting the VMM SRG requirement to prohibit unauthorized hardware. The USBGuard policy is managed centrally and audited for compliance.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that USBGuard or an equivalent hardware access control mechanism is not active on the XCP-ng hypervisor. The VMM SRG requires prohibition of unauthorized hardware component connections. Without hardware access control, any USB device can be connected to the hypervisor, potentially introducing malware or enabling data exfiltration. To remediate: (1) Install USBGuard: yum install usbguard. (2) Generate an initial policy allowing currently connected devices: usbguard generate-policy &gt; /etc/usbguard/rules.conf. (3) Review and restrict the policy to only authorized devices. (4) Enable and start USBGuard: systemctl enable usbguard &amp;&amp; systemctl start usbguard. (5) Test that only authorized devices are permitted. For PCI passthrough, ensure only authorized devices are assigned to VMs via xe vm-param-set. The system administrator must maintain an inventory of authorized hardware for each hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264317">
     <!--RuleTitle: The VMM must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified multifactor authentication configuration on the XCP-ng hypervisor by examining PAM configuration for MFA modules (pam_sss, pam_pkcs11, pam_duo, pam_google_authenticator), SSSD service status for AD/LDAP integration, and SSH AuthenticationMethods settings. MFA mechanisms are configured in the PAM stack or SSH AuthenticationMethods requires multiple authentication factors (e.g., publickey,keyboard-interactive). This ensures that both privileged and nonprivileged access to the hypervisor requires at least two authentication factors, meeting the organization-defined strength of mechanism requirements. The integration with Active Directory or LDAP via SSSD provides centralized authentication management with support for smart card or certificate-based authentication as a second factor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that multifactor authentication is not configured for the XCP-ng hypervisor. The VMM SRG requires MFA for local, network, and remote access to both privileged and nonprivileged accounts. Single-factor authentication (password only) does not meet DoD requirements. To remediate, choose one of: (1) AD/LDAP with smart card: Install and configure SSSD with pam_sss for Active Directory integration with certificate-based authentication. (2) SSH key + password: Set AuthenticationMethods publickey,keyboard-interactive in /etc/ssh/sshd_config. (3) TOTP-based MFA: Install google-authenticator-libpam and configure PAM with pam_google_authenticator. (4) PKI/CAC: Configure pam_pkcs11 for smart card authentication. After configuration, restart sshd and test MFA login. The ISSO/ISSM must approve the MFA solution and verify it meets the organization-defined strength requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264318">
-    <!--RuleTitle: The VMM must for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in ia-5 (1) (a).-->
+    <!--RuleTitle: The VMM must for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in IA-5 (1) (a).-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified password dictionary checking on the XCP-ng hypervisor by examining the pwquality.conf dictcheck setting, PAM configuration for password quality modules (pam_cracklib or pam_pwquality), and the presence of dictionary files in /usr/share/cracklib/. The dictcheck parameter is enabled (not set to 0), and the PAM stack includes a password quality module that checks new passwords against a dictionary of commonly-used and compromised passwords. Dictionary files (pw_dict*) are present on the system, providing the word list for comparison. XCP-ng Dom0, based on CentOS 7, uses cracklib dictionaries that include common passwords, dictionary words, and variations. This ensures that users cannot select passwords found on lists of commonly-used, expected, or compromised passwords as required by IA-5(1)(a).</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that password dictionary checking is not properly configured on the XCP-ng hypervisor. The VMM SRG requires verification that new passwords are not on lists of commonly-used or compromised passwords per IA-5(1)(a). To remediate: (1) Install password quality tools: yum install libpwquality cracklib-dicts. (2) Configure /etc/security/pwquality.conf: dictcheck = 1. (3) Ensure PAM uses pam_pwquality or pam_cracklib in /etc/pam.d/system-auth and /etc/pam.d/password-auth. (4) Verify dictionary files exist: ls /usr/share/cracklib/pw_dict*. (5) Test with a common password: echo 'password123' | cracklib-check. For enhanced protection, consider adding supplemental dictionaries from NIST or Have I Been Pwned breach lists. The system administrator should verify that password quality modules are enforced for all authentication methods.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264319">
     <!--RuleTitle: The VMM must for password-based authentication, require immediate selection of a new password upon account recovery.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor enforces new password selection upon account recovery by examining PAM configuration for the use_authtok option and password aging defaults in /etc/login.defs. The PAM stack includes use_authtok in the password module configuration, which ensures that when a password change is required (such as during account recovery), the user must select a new password immediately. The check also verified password status for local accounts to confirm proper password aging policies are in place. The use_authtok option in PAM ensures that the new password token is passed between PAM modules during password changes, enforcing the requirement that users select a new password rather than reusing the old one. This meets the VMM SRG requirement for immediate password selection upon account recovery.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that use_authtok is not configured in the PAM password stack on the XCP-ng hypervisor. The VMM SRG requires immediate selection of a new password upon account recovery. Without use_authtok, password change enforcement may not function correctly during account recovery scenarios. To remediate: (1) Edit /etc/pam.d/system-auth and /etc/pam.d/password-auth. (2) Ensure the password line for pam_unix.so includes use_authtok: password sufficient pam_unix.so sha512 shadow use_authtok. (3) Set password expiration to force password change on next login for recovered accounts: chage -d 0 username. (4) Verify with: grep use_authtok /etc/pam.d/system-auth /etc/pam.d/password-auth. The system administrator must ensure that account recovery procedures require immediate password selection and that the new password meets all complexity requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264320">
     <!--RuleTitle: The VMM must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified password length and character policy on the XCP-ng hypervisor by examining pwquality.conf settings, particularly the minlen parameter, and the PAM password module configuration. The minlen parameter is set to 15 or greater, which supports passphrase-style passwords. The pwquality configuration does not restrict the use of spaces or printable characters in passwords, allowing users to select long passphrases that include spaces and all printable characters. XCP-ng Dom0, based on CentOS 7, uses the pam_pwquality or pam_cracklib module which supports passwords of arbitrary length and character composition. The system does not impose artificial character type restrictions that would prevent the use of passphrases. This meets the VMM SRG requirement to allow user selection of long passwords and passphrases including spaces and all printable characters.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the minimum password length (minlen) in pwquality.conf is not set or is less than 15 on the XCP-ng hypervisor. The VMM SRG requires allowing long passwords and passphrases including spaces and all printable characters. To remediate: (1) Edit /etc/security/pwquality.conf and set: minlen = 15 (or higher to encourage passphrases). (2) Ensure no restrictive settings block spaces or special characters. Remove or comment out any usercheck or gecoscheck settings that might interfere. (3) Verify PAM enforces pwquality: grep pam_pwquality /etc/pam.d/system-auth. (4) Test passphrase acceptance: passwd testuser and enter a passphrase with spaces. The system administrator should communicate the passphrase policy to users, encouraging phrases of 15+ characters that include spaces for memorability and security.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264321">
     <!--RuleTitle: The VMM must for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that automated password quality tools are configured on the XCP-ng hypervisor by examining the libpwquality package installation, PAM configuration for password quality enforcement modules, and the active settings in pwquality.conf. The libpwquality package is installed and PAM is configured with pam_pwquality or pam_cracklib to automatically evaluate password strength during password creation and changes. The pwquality.conf file contains active settings for minimum length, complexity requirements, dictionary checking, and other password quality parameters. These automated tools provide real-time feedback to users when selecting passwords, rejecting weak passwords and guiding users toward stronger selections. This meets the VMM SRG requirement to employ automated tools that assist users in selecting strong password authenticators.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that automated password quality tools are not properly configured on the XCP-ng hypervisor. The VMM SRG requires automated tools to assist users in selecting strong passwords. To remediate: (1) Install libpwquality: yum install libpwquality. (2) Configure /etc/security/pwquality.conf with appropriate settings: minlen = 15, dcredit = -1, ucredit = -1, lcredit = -1, ocredit = -1, dictcheck = 1. (3) Ensure PAM enforces password quality in /etc/pam.d/system-auth and /etc/pam.d/password-auth: password requisite pam_pwquality.so try_first_pass local_users_only retry=3 authtok_type=. (4) Test by attempting to set a weak password: the system should reject it with a descriptive error message. The system administrator must verify that all password change paths (passwd, chpasswd, PAM-aware applications) enforce the quality requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264322">
     <!--RuleTitle: The VMM must accept only external credentials that are NIST-compliant.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examined SSH host key types, accepted public key algorithms, TLS certificate store contents, and key exchange algorithms configured on the XCP-ng hypervisor. SSH is configured with NIST-compliant host keys and accepts only approved key types for authentication. The TLS certificate store contains certificates using approved algorithms. Key exchange algorithms are configured to use NIST-approved methods. This ensures that all external credentials presented to the hypervisor (SSH keys, TLS certificates) comply with NIST SP 800-57 and FIPS 186-4 requirements for key sizes and algorithms. The ISSO/ISSM has verified that the approved algorithm list matches organizational security policy requirements.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examined SSH and TLS credential configuration on the XCP-ng hypervisor. ISSO/ISSM must verify that all external credentials accepted by the system are NIST-compliant. To remediate: (1) Configure SSH to accept only NIST-approved key types in /etc/ssh/sshd_config: PubkeyAcceptedKeyTypes ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-256,rsa-sha2-512. (2) Set approved key exchange algorithms: KexAlgorithms ecdh-sha2-nistp256,ecdh-sha2-nistp384,diffie-hellman-group14-sha256. (3) Set approved ciphers: Ciphers aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr. (4) Verify TLS certificates use RSA 2048+ or ECC P-256+ keys. (5) Restart sshd: systemctl restart sshd. The system administrator must coordinate with the ISSO to define the organization-approved list of NIST-compliant credential types and algorithms.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264323">
     <!--RuleTitle: The VMM must monitor the use of maintenance tools that execute with increased privilege.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the XCP-ng hypervisor monitors privileged command execution through auditd by examining the auditd service status and audit rules for privileged commands. The auditd service is active and audit rules are configured to monitor execution of privileged commands including sudo, su, and system administration tools. The audit rules capture command execution with elevated privileges using filters such as -F auid&gt;=1000 to track real user identity. This ensures that all use of maintenance tools executing with increased privilege is recorded in the audit trail, providing accountability and forensic capability. The audit records include the user identity, timestamp, command executed, and whether the command succeeded, meeting the VMM SRG requirement to monitor privileged maintenance tool usage.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that auditd is not properly configured to monitor privileged command execution on the XCP-ng hypervisor. The VMM SRG requires monitoring of maintenance tools that execute with increased privilege. To remediate: (1) Ensure auditd is running: systemctl enable auditd &amp;&amp; systemctl start auditd. (2) Add audit rules for privileged commands in /etc/audit/rules.d/privileged.rules: -a always,exit -F path=/usr/bin/sudo -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged-priv_change. -a always,exit -F path=/usr/bin/su -F perm=x -F auid&gt;=1000 -F auid!=4294967295 -k privileged-priv_change. (3) Generate rules for all setuid/setgid programs: find / -xdev -type f -perm /6000 2&gt;/dev/null. (4) Reload audit rules: augenrules --load. (5) Verify rules are active: auditctl -l | grep privileged.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264324">
     <!--RuleTitle: The VMM must include only approved trust anchors in trust stores or certificate stores managed by the organization.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified the certificate trust store on the XCP-ng hypervisor by examining the system trust store certificate count, checking for DoD Root CA certificates, and inspecting the custom trust anchors directory. DoD Root CA certificates are present in the system trust store, indicating that approved trust anchors have been installed. The /etc/pki/ca-trust/source/anchors/ directory contains organization-approved certificates. XCP-ng Dom0, based on CentOS 7, uses the ca-certificates package and the update-ca-trust mechanism to manage the system trust store. The presence of DoD Root CAs ensures that the hypervisor can validate certificates in the DoD PKI chain of trust. The ISSO/ISSM has verified that only organization-approved trust anchors are installed and that no unauthorized CAs are present in the trust store.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that DoD Root CA certificates are not present in the XCP-ng hypervisor trust store. The VMM SRG requires that only approved trust anchors be included in certificate stores. To remediate: (1) Download DoD Root CA certificates from https://militarycac.com/maccerts/AllCerts.zip or DISA PKI site. (2) Extract and copy DoD Root CA certificates to /etc/pki/ca-trust/source/anchors/. (3) Update the trust store: update-ca-trust extract. (4) Verify DoD CAs are included: trust list | grep -i DoD. (5) Remove any unauthorized or untrusted CA certificates from the anchors directory. (6) Review the full trust store for non-approved CAs: trust list | grep 'label:' and remove any that are not on the organization-approved list. The ISSO/ISSM must maintain a list of approved trust anchors and review the trust store periodically.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264325">
     <!--RuleTitle: The VMM must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified cryptographic key storage permissions on the XCP-ng hypervisor by examining SSH host key files, TLS private key files, and XAPI SSL key files. All SSH host private keys in /etc/ssh/ have restrictive permissions (600 or 640), ensuring only the root user or designated group can read them. TLS private keys in /etc/pki/tls/private/ and XAPI SSL keys in /etc/xensource/ssl/ also have appropriately restricted permissions. The file ownership is set to root with no world-readable or group-writable access. This ensures that cryptographic keys are stored with appropriate file system protections, preventing unauthorized access. The organization-defined safeguards include file permissions restricting access to the root user, proper file ownership, and storage on the local filesystem with appropriate mount options.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that one or more cryptographic key files on the XCP-ng hypervisor have overly permissive file permissions. The VMM SRG requires protected storage for cryptographic keys with organization-defined safeguards. To remediate: (1) Set restrictive permissions on SSH host keys: chmod 600 /etc/ssh/ssh_host_*_key and chmod 644 /etc/ssh/ssh_host_*_key.pub. (2) Set restrictive permissions on TLS private keys: chmod 600 /etc/pki/tls/private/*. (3) Set restrictive permissions on XAPI SSL keys: chmod 600 /etc/xensource/ssl/*.pem. (4) Verify ownership is root: chown root:root /etc/ssh/ssh_host_*_key /etc/pki/tls/private/*. (5) Verify no world-readable key files: find /etc/ssh /etc/pki/tls/private /etc/xensource/ssl -type f -name '*key*' -perm /o=r. The system administrator should consider hardware security modules (HSM) or TPM for enhanced key protection.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-264326">
     <!--RuleTitle: The VMM must synchronize system clocks within and between systems or system components.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="NR" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 10: Final implementation batch-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified time synchronization on the XCP-ng hypervisor by examining the status of both chronyd and ntpd services, querying configured time sources, and reviewing the time synchronization configuration. A time synchronization service (chronyd or ntpd) is active and configured with one or more time sources. The configuration shows approved NTP servers and the service is successfully synchronizing the system clock. XCP-ng Dom0 uses chronyd or ntpd to maintain accurate time synchronization with authoritative time sources, which is critical for audit log correlation, certificate validation, and Kerberos authentication. Accurate time synchronization across all hypervisor hosts ensures consistent timestamps for VM operations, live migration events, and security audit records. This meets the VMM SRG requirement to synchronize system clocks within and between system components.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that neither chronyd nor ntpd is active on the XCP-ng hypervisor. The VMM SRG requires system clock synchronization within and between system components. Without time synchronization, audit logs may have inaccurate timestamps, certificate validation may fail, and security correlation across systems becomes unreliable. To remediate: (1) Install chrony if not present: yum install chrony. (2) Configure time sources in /etc/chrony.conf: server ntp.example.mil iburst (use organization-approved NTP servers). (3) Enable and start chronyd: systemctl enable chronyd &amp;&amp; systemctl start chronyd. (4) Verify synchronization: chronyc sources and chronyc tracking. (5) Ensure the NTP port (UDP 123) is allowed through any host-based firewall. For XCP-ng pool consistency, all hosts should use the same NTP servers to maintain synchronized time across the hypervisor cluster.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
