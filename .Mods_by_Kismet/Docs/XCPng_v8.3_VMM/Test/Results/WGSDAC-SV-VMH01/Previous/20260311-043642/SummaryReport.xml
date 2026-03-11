@@ -58,22 +58,22 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-11T07:20:38.7087355-04:00" EvalScore="34.72">
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-11T04:35:03.3868374-04:00" EvalScore="34.72">
       <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
-      <CAT_II Total="193" Not_Applicable="2" Open="126" NotAFinding="65" Not_Reviewed="0">
+      <CAT_II Total="193" Not_Applicable="2" Open="115" NotAFinding="65" Not_Reviewed="11">
         <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Open" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Open" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically audit account creation." Status="Open" ID="V-207341" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account creation." Status="Not_Reviewed" ID="V-207341" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period." Status="Open" ID="V-207342" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system." Status="Open" ID="V-207343" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Open" ID="V-207344" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="Open" ID="V-207345" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures." Status="Open" ID="V-207346" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must initiate a session lock after a 15-minute period of inactivity." Status="Open" ID="V-207347" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must provide the capability for users to directly initiate a session lock." Status="Open" ID="V-207348" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Open" ID="V-207349" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must monitor remote access methods automatically." Status="Open" ID="V-207350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system." Status="Not_Reviewed" ID="V-207343" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Not_Reviewed" ID="V-207344" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="Not_Reviewed" ID="V-207345" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures." Status="Not_Reviewed" ID="V-207346" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must initiate a session lock after a 15-minute period of inactivity." Status="Not_Reviewed" ID="V-207347" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide the capability for users to directly initiate a session lock." Status="Not_Reviewed" ID="V-207348" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Not_Reviewed" ID="V-207349" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must monitor remote access methods automatically." Status="Not_Reviewed" ID="V-207350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must use DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-207351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must produce audit records containing information to establish what type of events occurred." Status="Open" ID="V-207352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must produce audit records containing information to establish when (date and time) the events occurred." Status="Open" ID="V-207353" Override="" Justification="" AFStatusChange="" PreAFStatus="" />

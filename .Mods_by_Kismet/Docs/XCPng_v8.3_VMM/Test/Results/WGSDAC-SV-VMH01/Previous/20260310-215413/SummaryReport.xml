@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>03/11/2026</ScanDate>
+    <ScanDate>03/10/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>WGSDAC-SV-VMH01</Name>
@@ -48,7 +48,7 @@
     <Score>
       <CATI_OpenNRTotal>26</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>300</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>305</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>44</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
@@ -58,22 +58,22 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-11T07:20:38.7087355-04:00" EvalScore="34.72">
+    <Result STIG="VMM" Version="2" Release="2" Site="" Instance="" ShortName="XCP-ng_VMM" StartTime="2026-03-10T21:45:58.6031701-04:00" EvalScore="32.12">
       <CAT_I Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
-      <CAT_II Total="193" Not_Applicable="2" Open="126" NotAFinding="65" Not_Reviewed="0">
+      <CAT_II Total="193" Not_Applicable="2" Open="104" NotAFinding="60" Not_Reviewed="27">
         <Vuln RuleTitle="The VMM must provide automated mechanisms for supporting account management functions." Status="Open" ID="V-207338" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Open" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Open" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must automatically audit account creation." Status="Open" ID="V-207341" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically remove or disable local temporary user accounts after 72 hours." Status="Not_Reviewed" ID="V-207339" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically disable local accounts after a 35-day period of account inactivity." Status="Not_Reviewed" ID="V-207340" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must automatically audit account creation." Status="Not_Reviewed" ID="V-207341" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must enforce the limit of three consecutive invalid logon attempts by a user during a 15-minute time period." Status="Open" ID="V-207342" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system." Status="Open" ID="V-207343" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Open" ID="V-207344" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="Open" ID="V-207345" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures." Status="Open" ID="V-207346" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must initiate a session lock after a 15-minute period of inactivity." Status="Open" ID="V-207347" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must provide the capability for users to directly initiate a session lock." Status="Open" ID="V-207348" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Open" ID="V-207349" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must monitor remote access methods automatically." Status="Open" ID="V-207350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must display the Standard Mandatory DoD Notice and Consent Banner before granting access to the system." Status="Not_Reviewed" ID="V-207343" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the Standard Mandatory DoD Notice and Consent Banner on the screen until users acknowledge the usage conditions and take explicit actions to log on for further access." Status="Not_Reviewed" ID="V-207344" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must limit the number of concurrent sessions to ten for all accounts and/or account types." Status="Not_Reviewed" ID="V-207345" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must retain the session lock until the user reestablishes access using established identification and authentication procedures." Status="Not_Reviewed" ID="V-207346" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must initiate a session lock after a 15-minute period of inactivity." Status="Not_Reviewed" ID="V-207347" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide the capability for users to directly initiate a session lock." Status="Not_Reviewed" ID="V-207348" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must conceal, via the session lock, information previously visible on the display with a publicly viewable image." Status="Not_Reviewed" ID="V-207349" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must monitor remote access methods automatically." Status="Not_Reviewed" ID="V-207350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must use DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-207351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must produce audit records containing information to establish what type of events occurred." Status="Open" ID="V-207352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must produce audit records containing information to establish when (date and time) the events occurred." Status="Open" ID="V-207353" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -238,22 +238,22 @@
         <Vuln RuleTitle="The VMM must generate audit records for all direct access to the VMM." Status="Open" ID="V-207523" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must generate audit records for all account creations, modifications, disabling, and termination events." Status="Open" ID="V-207524" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The VMM must generate audit records for all module load, unload, and restart actions, and also for all program and guest VM initiations." Status="Open" ID="V-207525" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must implement NIST FIPS-validated cryptography for the following: to provision digital signatures; to generate cryptographic hashes; and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Open" ID="V-207526" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must, at a minimum, off-load interconnected systems in real time and off-load standalone systems weekly." Status="Open" ID="V-207527" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs." Status="Open" ID="V-207528" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of communications with wireless peripherals." Status="Open" ID="V-207529" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must disable accounts when the accounts are no longer associated to a user." Status="Open" ID="V-264315" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must prohibit the use or connection of unauthorized hardware components." Status="Open" ID="V-264316" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements." Status="Open" ID="V-264317" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in ia-5 (1) (a)." Status="NotAFinding" ID="V-264318" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must for password-based authentication, require immediate selection of a new password upon account recovery." Status="NotAFinding" ID="V-264319" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters." Status="Open" ID="V-264320" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators." Status="NotAFinding" ID="V-264321" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must accept only external credentials that are NIST-compliant." Status="Open" ID="V-264322" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must monitor the use of maintenance tools that execute with increased privilege." Status="Open" ID="V-264323" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must include only approved trust anchors in trust stores or certificate stores managed by the organization." Status="Open" ID="V-264324" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store." Status="NotAFinding" ID="V-264325" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The VMM must synchronize system clocks within and between systems or system components." Status="NotAFinding" ID="V-264326" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement NIST FIPS-validated cryptography for the following: to provision digital signatures; to generate cryptographic hashes; and to protect unclassified information requiring confidentiality and cryptographic protection in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Not_Reviewed" ID="V-207526" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must, at a minimum, off-load interconnected systems in real time and off-load standalone systems weekly." Status="Not_Reviewed" ID="V-207527" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must be configured in accordance with the security configuration settings based on DoD security configuration or implementation guidance, including STIGs, NSA configuration guides, CTOs, and DTMs." Status="Not_Reviewed" ID="V-207528" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must protect the confidentiality and integrity of communications with wireless peripherals." Status="Not_Reviewed" ID="V-207529" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must disable accounts when the accounts are no longer associated to a user." Status="Not_Reviewed" ID="V-264315" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must prohibit the use or connection of unauthorized hardware components." Status="Not_Reviewed" ID="V-264316" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must implement multifactor authentication for local, network, and/or remote access to privileged accounts and/or nonprivileged accounts such that the device meets organization-defined strength of mechanism requirements." Status="Not_Reviewed" ID="V-264317" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, verify when users create or update passwords the passwords are not found on the list of commonly-used, expected, or compromised passwords in ia-5 (1) (a)." Status="Not_Reviewed" ID="V-264318" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, require immediate selection of a new password upon account recovery." Status="Not_Reviewed" ID="V-264319" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, allow user selection of long passwords and passphrases, including spaces and all printable characters." Status="Not_Reviewed" ID="V-264320" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must for password-based authentication, employ automated tools to assist the user in selecting strong password authenticators." Status="Not_Reviewed" ID="V-264321" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must accept only external credentials that are NIST-compliant." Status="Not_Reviewed" ID="V-264322" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must monitor the use of maintenance tools that execute with increased privilege." Status="Not_Reviewed" ID="V-264323" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must include only approved trust anchors in trust stores or certificate stores managed by the organization." Status="Not_Reviewed" ID="V-264324" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must provide protected storage for cryptographic keys with organization-defined safeguards and/or hardware protected key store." Status="Not_Reviewed" ID="V-264325" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The VMM must synchronize system clocks within and between systems or system components." Status="Not_Reviewed" ID="V-264326" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_II>
       <CAT_III Total="0" Not_Applicable="0" Open="0" NotAFinding="0" Not_Reviewed="0" />
     </Result>
