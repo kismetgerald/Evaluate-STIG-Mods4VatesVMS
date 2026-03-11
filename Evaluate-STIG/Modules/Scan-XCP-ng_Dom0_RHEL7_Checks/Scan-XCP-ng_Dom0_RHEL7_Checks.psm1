@@ -168,9 +168,31 @@ Function Get-V204392 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204392) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204392 - File Permissions/Ownership Match Vendor Values" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for permission/ownership/group deviations from vendor defaults
+    # rpm -Va flags: M=permissions, U=user, G=group
+    $rpmCheck = $(timeout 30 sh -c 'rpm -Va 2>/dev/null | grep -E "^.M|^.{5}U|^.{6}G" | head -25')
+    $rpmStr = ($rpmCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -Va | grep permission/ownership/group changes" + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    if ([string]::IsNullOrWhiteSpace($rpmStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: All system file permissions, ownership, and group membership" + $nl
+        $FindingDetails += "match vendor-provided RPM package values." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The following files have permissions, ownership, or group" + $nl
+        $FindingDetails += "membership that differ from vendor RPM defaults:" + $nl + $nl
+        $FindingDetails += $rpmStr + $nl + $nl
+        $FindingDetails += "Remediation: rpm --setugids and rpm --setperms for affected packages." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3609,9 +3631,50 @@ Function Get-V204424 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204424) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204424 - No Blank or Null Passwords Allowed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $sysAuth = $(timeout 5 grep -i nullok /etc/pam.d/system-auth 2>&1)
+    $pwAuth = $(timeout 5 grep -i nullok /etc/pam.d/password-auth 2>&1)
+    $sysStr = ($sysAuth -join $nl).Trim()
+    $pwStr = ($pwAuth -join $nl).Trim()
+
+    $FindingDetails += "Check 1: /etc/pam.d/system-auth" + $nl
+    $FindingDetails += "Command: grep -i nullok /etc/pam.d/system-auth" + $nl
+
+    $hasNullok = $false
+
+    if ([string]::IsNullOrWhiteSpace($sysStr) -or $sysStr -match "No such file") {
+        $FindingDetails += "Result: No nullok option found (PASS)" + $nl + $nl
+    }
+    else {
+        $hasNullok = $true
+        $FindingDetails += "Result: " + $sysStr + $nl + $nl
+    }
+
+    $FindingDetails += "Check 2: /etc/pam.d/password-auth" + $nl
+    $FindingDetails += "Command: grep -i nullok /etc/pam.d/password-auth" + $nl
+
+    if ([string]::IsNullOrWhiteSpace($pwStr) -or $pwStr -match "No such file") {
+        $FindingDetails += "Result: No nullok option found (PASS)" + $nl + $nl
+    }
+    else {
+        $hasNullok = $true
+        $FindingDetails += "Result: " + $pwStr + $nl + $nl
+    }
+
+    if ($hasNullok) {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The nullok option allows accounts with blank passwords to authenticate." + $nl
+        $FindingDetails += "Remediation: Remove all instances of 'nullok' from" + $nl
+        $FindingDetails += "/etc/pam.d/system-auth and /etc/pam.d/password-auth." + $nl
+    }
+    else {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No nullok option found. Blank/null passwords cannot be used." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3720,9 +3783,28 @@ Function Get-V204425 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204425) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204425 - SSH Must Not Allow Empty Passwords" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $sshCheck = $(timeout 5 grep -i PermitEmptyPasswords /etc/ssh/sshd_config 2>&1)
+    $sshStr = ($sshCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i PermitEmptyPasswords /etc/ssh/sshd_config" + $nl
+    $FindingDetails += "Result: " + $sshStr + $nl + $nl
+
+    # Default is "no" - so no line, commented line, or "no" are all compliant
+    if ([string]::IsNullOrWhiteSpace($sshStr) -or $sshStr -match "^\s*#" -or $sshStr -match "(?i)PermitEmptyPasswords\s+no") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: SSH daemon does not allow authentication with empty passwords." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SSH daemon may allow authentication with empty passwords." + $nl
+        $FindingDetails += "Remediation: Set 'PermitEmptyPasswords no' in /etc/ssh/sshd_config" + $nl
+        $FindingDetails += "then restart sshd: systemctl restart sshd" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4497,9 +4579,41 @@ Function Get-V204432 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204432) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204432 - No Unattended/Automatic GUI Login" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-settings-daemon 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "GNOME desktop is not installed on this XCP-ng Dom0 system." + $nl
+        $FindingDetails += "This check is Not Applicable." + $nl
+    }
+    else {
+        $gdmCheck = $(timeout 5 grep -i automaticloginenable /etc/gdm/custom.conf 2>&1)
+        $gdmStr = ($gdmCheck -join $nl).Trim()
+
+        $FindingDetails += "Command: grep -i automaticloginenable /etc/gdm/custom.conf" + $nl
+        $FindingDetails += "Result: " + $gdmStr + $nl + $nl
+
+        if ($gdmStr -match "(?i)AutomaticLoginEnable\s*=\s*false") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: Automatic login is disabled in GDM configuration." + $nl
+        }
+        elseif ([string]::IsNullOrWhiteSpace($gdmStr) -or $gdmStr -match "No such file") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: GDM config not found or setting not present (defaults to disabled)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: AutomaticLoginEnable is not set to false." + $nl
+            $FindingDetails += "Remediation: Set AutomaticLoginEnable=false in /etc/gdm/custom.conf [daemon] section." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4608,9 +4722,40 @@ Function Get-V204433 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204433) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204433 - No Unrestricted (Timed) GUI Login" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $gnomeCheck = $(rpm -q gnome-settings-daemon 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "GNOME desktop is not installed on this XCP-ng Dom0 system." + $nl
+        $FindingDetails += "This check is Not Applicable." + $nl
+    }
+    else {
+        $gdmCheck = $(timeout 5 grep -i timedloginenable /etc/gdm/custom.conf 2>&1)
+        $gdmStr = ($gdmCheck -join $nl).Trim()
+
+        $FindingDetails += "Command: grep -i timedloginenable /etc/gdm/custom.conf" + $nl
+        $FindingDetails += "Result: " + $gdmStr + $nl + $nl
+
+        if ($gdmStr -match "(?i)TimedLoginEnable\s*=\s*false") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: Timed login is disabled in GDM configuration." + $nl
+        }
+        elseif ([string]::IsNullOrWhiteSpace($gdmStr) -or $gdmStr -match "No such file") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: GDM config not found or setting not present (defaults to disabled)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: TimedLoginEnable is not set to false." + $nl
+            $FindingDetails += "Remediation: Set TimedLoginEnable=false in /etc/gdm/custom.conf [daemon] section." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5052,9 +5197,38 @@ Function Get-V204438 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204438) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204438 - BIOS GRUB2 Boot Authentication" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if system uses UEFI (if so, this check is N/A)
+    $uefiCheck = $(timeout 5 ls /sys/firmware/efi 2>/dev/null)
+    $uefiStr = ($uefiCheck -join $nl).Trim()
+
+    if (-not [string]::IsNullOrWhiteSpace($uefiStr)) {
+        $Status = "Not_Applicable"
+        $FindingDetails += "This system uses UEFI firmware (not BIOS)." + $nl
+        $FindingDetails += "This check is Not Applicable for UEFI systems." + $nl
+    }
+    else {
+        $grubPw = $(timeout 5 grep -iw grub2_password /boot/grub2/user.cfg 2>/dev/null)
+        $grubStr = ($grubPw -join $nl).Trim()
+
+        $FindingDetails += "Firmware: BIOS" + $nl
+        $FindingDetails += "Command: grep -iw grub2_password /boot/grub2/user.cfg" + $nl
+        $FindingDetails += "Result: " + $grubStr + $nl + $nl
+
+        if ($grubStr -match "grub\.pbkdf2\.sha512") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: GRUB2 superuser password is set with PBKDF2-SHA512 hash." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: GRUB2 superuser password not found or not using PBKDF2-SHA512." + $nl
+            $FindingDetails += "Remediation: Run 'grub2-setpassword' to set an encrypted boot password." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5163,9 +5337,45 @@ Function Get-V204440 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204440) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204440 - UEFI GRUB2 Boot Authentication" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if system uses BIOS (if so, this check is N/A)
+    $uefiCheck = $(timeout 5 ls /sys/firmware/efi 2>/dev/null)
+    $uefiStr = ($uefiCheck -join $nl).Trim()
+
+    if ([string]::IsNullOrWhiteSpace($uefiStr)) {
+        $Status = "Not_Applicable"
+        $FindingDetails += "This system uses BIOS firmware (not UEFI)." + $nl
+        $FindingDetails += "This check is Not Applicable for BIOS systems." + $nl
+    }
+    else {
+        # UEFI system - check for GRUB2 password in EFI path
+        $grubPw = $(timeout 5 grep -iw grub2_password /boot/efi/EFI/redhat/user.cfg 2>/dev/null)
+        $grubStr = ($grubPw -join $nl).Trim()
+
+        if ([string]::IsNullOrWhiteSpace($grubStr)) {
+            # Also check XCP-ng/CentOS path
+            $grubPw2 = $(timeout 5 grep -iw grub2_password /boot/efi/EFI/centos/user.cfg 2>/dev/null)
+            $grubStr = ($grubPw2 -join $nl).Trim()
+        }
+
+        $FindingDetails += "Firmware: UEFI" + $nl
+        $FindingDetails += "Command: grep -iw grub2_password /boot/efi/EFI/{redhat,centos}/user.cfg" + $nl
+        $FindingDetails += "Result: " + $grubStr + $nl + $nl
+
+        if ($grubStr -match "grub\.pbkdf2\.sha512") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: UEFI GRUB2 superuser password is set with PBKDF2-SHA512 hash." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: UEFI GRUB2 superuser password not found or not using PBKDF2-SHA512." + $nl
+            $FindingDetails += "Remediation: Run 'grub2-setpassword' to set an encrypted boot password." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5385,9 +5595,27 @@ Function Get-V204442 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204442) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204442 - rsh-server Package Must Not Be Installed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $rshCheck = $(rpm -q rsh-server 2>&1)
+    $rshStr = ($rshCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q rsh-server" + $nl
+    $FindingDetails += "Result: " + $rshStr + $nl + $nl
+
+    if ($rshStr -match "is not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The rsh-server package is not installed." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The rsh-server package is installed." + $nl
+        $FindingDetails += "rsh provides unencrypted remote access and must be removed." + $nl
+        $FindingDetails += "Remediation: yum remove rsh-server" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5496,9 +5724,27 @@ Function Get-V204443 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204443) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204443 - ypserv Package Must Not Be Installed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $ypCheck = $(rpm -q ypserv 2>&1)
+    $ypStr = ($ypCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q ypserv" + $nl
+    $FindingDetails += "Result: " + $ypStr + $nl + $nl
+
+    if ($ypStr -match "is not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The ypserv (NIS server) package is not installed." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The ypserv package is installed." + $nl
+        $FindingDetails += "NIS provides unencrypted authentication and must be removed." + $nl
+        $FindingDetails += "Remediation: yum remove ypserv" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5940,9 +6186,27 @@ Function Get-V204447 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204447) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204447 - Repository GPG Signature Verification" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $gpgCheck = $(timeout 5 grep -i gpgcheck /etc/yum.conf 2>&1)
+    $gpgStr = ($gpgCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i gpgcheck /etc/yum.conf" + $nl
+    $FindingDetails += "Result: " + $gpgStr + $nl + $nl
+
+    if ($gpgStr -match "gpgcheck\s*=\s*1") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: yum is configured to verify GPG signatures (gpgcheck=1)." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: gpgcheck is not set to 1 in /etc/yum.conf." + $nl
+        $FindingDetails += "Packages from repositories may be installed without signature verification." + $nl
+        $FindingDetails += "Remediation: Set gpgcheck=1 in /etc/yum.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6051,9 +6315,27 @@ Function Get-V204448 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204448) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204448 - Local Package GPG Signature Verification" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $gpgCheck = $(timeout 5 grep -i localpkg_gpgcheck /etc/yum.conf 2>&1)
+    $gpgStr = ($gpgCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i localpkg_gpgcheck /etc/yum.conf" + $nl
+    $FindingDetails += "Result: " + $gpgStr + $nl + $nl
+
+    if ($gpgStr -match "localpkg_gpgcheck\s*=\s*1") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: yum is configured to verify GPG signatures of local packages." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: localpkg_gpgcheck is not set to 1 in /etc/yum.conf." + $nl
+        $FindingDetails += "Local packages may be installed without signature verification." + $nl
+        $FindingDetails += "Remediation: Set localpkg_gpgcheck=1 in /etc/yum.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6828,9 +7110,28 @@ Function Get-V204455 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204455) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204455 - Ctrl-Alt-Delete Key Sequence Disabled (CLI)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $cadStatus = $(systemctl status ctrl-alt-del.target 2>&1)
+    $cadStr = ($cadStatus -join $nl).Trim()
+
+    $FindingDetails += "Command: systemctl status ctrl-alt-del.target" + $nl
+    $FindingDetails += "Result:" + $nl + $cadStr + $nl + $nl
+
+    if ($cadStr -match "masked") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: ctrl-alt-del.target is masked and cannot trigger a reboot." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: ctrl-alt-del.target is not masked." + $nl
+        $FindingDetails += "Remediation:" + $nl
+        $FindingDetails += "  systemctl disable ctrl-alt-del.target" + $nl
+        $FindingDetails += "  systemctl mask ctrl-alt-del.target" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6939,9 +7240,39 @@ Function Get-V204456 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204456) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204456 - Ctrl-Alt-Delete Key Sequence Disabled (GUI)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $gnomeCheck = $(rpm -q gnome-settings-daemon 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "GNOME desktop is not installed on this XCP-ng Dom0 system." + $nl
+        $FindingDetails += "This check is Not Applicable." + $nl
+    }
+    else {
+        $dconfCheck = $(timeout 5 grep -r logout /etc/dconf/db/local.d/ 2>/dev/null)
+        $dconfStr = ($dconfCheck -join $nl).Trim()
+
+        $FindingDetails += "GNOME is installed. Checking dconf Ctrl-Alt-Delete setting:" + $nl
+        $FindingDetails += "Command: grep -r logout /etc/dconf/db/local.d/" + $nl
+        $FindingDetails += "Result: " + $dconfStr + $nl + $nl
+
+        if ($dconfStr -match "logout=''") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: Ctrl-Alt-Delete is disabled in the graphical interface." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: Ctrl-Alt-Delete logout action is not disabled in dconf." + $nl
+            $FindingDetails += "Remediation: Create /etc/dconf/db/local.d/00-disable-CAD with:" + $nl
+            $FindingDetails += "  [org/gnome/settings-daemon/plugins/media-keys]" + $nl
+            $FindingDetails += "  logout=''" + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
