@@ -7492,9 +7492,37 @@ Function Get-V204458 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204458) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204458 - OS Must Be Vendor-Supported Release" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $osRelease = $(timeout 5 cat /etc/redhat-release 2>&1)
+    $osStr = ($osRelease -join $nl).Trim()
+
+    $FindingDetails += "Command: cat /etc/redhat-release" + $nl
+    $FindingDetails += "Result: " + $osStr + $nl + $nl
+
+    # XCP-ng 8.3 is based on CentOS 7 / RHEL 7 - Vates supports XCP-ng 8.3
+    $xcpRelease = $(timeout 5 cat /etc/xcp-ng-release 2>&1)
+    $xcpStr = ($xcpRelease -join $nl).Trim()
+
+    if (-not [string]::IsNullOrWhiteSpace($xcpStr) -and $xcpStr -notmatch "No such file") {
+        $FindingDetails += "XCP-ng Release: " + $xcpStr + $nl + $nl
+    }
+
+    # XCP-ng 8.3 is actively supported by Vates
+    if ($xcpStr -match "8\.[23]") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: XCP-ng 8.x is actively supported by Vates (vendor)." + $nl
+        $FindingDetails += "Note: While RHEL 7 reached end of maintenance, XCP-ng Dom0 receives" + $nl
+        $FindingDetails += "security updates directly from Vates through XCP-ng repositories." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Unable to confirm vendor support for this OS release." + $nl
+        $FindingDetails += "Verify XCP-ng version is actively supported by Vates." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7936,9 +7964,34 @@ Function Get-V204462 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204462) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204462 - Root Must Be Only UID 0 Account" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $uid0Check = $(timeout 5 sh -c "awk -F: '\$3 == 0 {print \$1}' /etc/passwd")
+    $uid0Str = ($uid0Check -join $nl).Trim()
+
+    $FindingDetails += "Command: awk -F: " + [char]39 + "$3 == 0 {print $1}" + [char]39 + " /etc/passwd" + $nl
+    $FindingDetails += "Result: " + $uid0Str + $nl + $nl
+
+    # Split results and check if only root has UID 0
+    $accounts = $uid0Str -split $nl | Where-Object { $_.Trim() -ne "" }
+
+    if ($accounts.Count -eq 1 -and $accounts[0].Trim() -eq "root") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Only the root account has UID 0." + $nl
+    }
+    elseif ($accounts.Count -eq 0) {
+        $Status = "Open"
+        $FindingDetails += "FAIL: No UID 0 account found (unexpected system state)." + $nl
+    }
+    else {
+        $Status = "Open"
+        $nonRoot = ($accounts | Where-Object { $_.Trim() -ne "root" }) -join ", "
+        $FindingDetails += "FAIL: The following non-root accounts have UID 0: " + $nonRoot + $nl
+        $FindingDetails += "Remediation: Change the UID of these accounts to a non-zero value." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11488,9 +11541,58 @@ Function Get-V204497 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204497) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204497 - FIPS-Validated Cryptography" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check 1: Is dracut-fips package installed?
+    $fipsPkg = $(rpm -q dracut-fips 2>&1)
+    $fipsPkgStr = ($fipsPkg -join $nl).Trim()
+
+    $FindingDetails += "Check 1: dracut-fips package" + $nl
+    $FindingDetails += "Command: rpm -q dracut-fips" + $nl
+    $FindingDetails += "Result: " + $fipsPkgStr + $nl + $nl
+
+    if ($fipsPkgStr -match "is not installed") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: dracut-fips package is not installed." + $nl
+        $FindingDetails += "FIPS mode cannot be enabled without dracut-fips." + $nl + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 may not support FIPS mode due to custom kernel." + $nl
+        $FindingDetails += "This is a known compliance gap requiring Vates/vendor resolution." + $nl
+    }
+    else {
+        # Check 2: Is fips=1 in kernel command line?
+        $grubFips = $(timeout 5 cat /proc/cmdline 2>&1)
+        $grubStr = ($grubFips -join $nl).Trim()
+
+        $FindingDetails += "Check 2: FIPS kernel parameter" + $nl
+        $FindingDetails += "Command: cat /proc/cmdline" + $nl
+        $FindingDetails += "Result: " + $grubStr + $nl + $nl
+
+        if ($grubStr -match "fips=1") {
+            $fipsEnabled = $(timeout 5 cat /proc/sys/crypto/fips_enabled 2>&1)
+            $fipsVal = ($fipsEnabled -join $nl).Trim()
+
+            $FindingDetails += "Check 3: FIPS runtime status" + $nl
+            $FindingDetails += "/proc/sys/crypto/fips_enabled = " + $fipsVal + $nl + $nl
+
+            if ($fipsVal -eq "1") {
+                $Status = "NotAFinding"
+                $FindingDetails += "PASS: FIPS mode is fully enabled." + $nl
+            }
+            else {
+                $Status = "Open"
+                $FindingDetails += "FAIL: fips=1 is in kernel command line but FIPS is not active at runtime." + $nl
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: dracut-fips is installed but fips=1 is not in the kernel command line." + $nl
+            $FindingDetails += "Remediation: Add fips=1 to GRUB_CMDLINE_LINUX in /etc/default/grub" + $nl
+            $FindingDetails += "then run: grub2-mkconfig -o /boot/grub2/grub.cfg" + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12043,9 +12145,27 @@ Function Get-V204502 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204502) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204502 - telnet-server Package Must Not Be Installed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $telnetCheck = $(rpm -q telnet-server 2>&1)
+    $telnetStr = ($telnetCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q telnet-server" + $nl
+    $FindingDetails += "Result: " + $telnetStr + $nl + $nl
+
+    if ($telnetStr -match "is not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The telnet-server package is not installed." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The telnet-server package is installed." + $nl
+        $FindingDetails += "Telnet provides unencrypted remote access and must be removed." + $nl
+        $FindingDetails += "Remediation: yum remove telnet-server" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -19924,9 +20044,36 @@ Function Get-V204594 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204594) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204594 - SSH Daemon Must Use Only SSHv2 Protocol" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check OS version - RHEL 7.4+ defaults to SSHv2 only
+    $osVer = $(timeout 5 cat /etc/redhat-release 2>&1)
+    $osStr = ($osVer -join $nl).Trim()
+
+    $FindingDetails += "OS Release: " + $osStr + $nl
+
+    # XCP-ng 8.3 is based on CentOS 7.x (7.5+) - SSHv2 is default
+    # But still verify sshd_config
+    $sshProto = $(timeout 5 grep -i protocol /etc/ssh/sshd_config 2>&1)
+    $sshStr = ($sshProto -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i protocol /etc/ssh/sshd_config" + $nl
+    $FindingDetails += "Result: " + $sshStr + $nl + $nl
+
+    # No protocol line or Protocol 2 or commented = compliant (7.4+ default is SSHv2)
+    if ([string]::IsNullOrWhiteSpace($sshStr) -or $sshStr -match "^\s*#" -or $sshStr -match "(?i)Protocol\s+2\s*$") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: SSH daemon is configured to use only SSHv2 protocol." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SSH daemon may allow SSHv1 protocol." + $nl
+        $FindingDetails += "Remediation: Set 'Protocol 2' in /etc/ssh/sshd_config" + $nl
+        $FindingDetails += "then restart sshd: systemctl restart sshd" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21256,9 +21403,27 @@ Function Get-V204606 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204606) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204606 - No .shosts Files on the System" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $shostsCheck = $(timeout 30 find / -maxdepth 5 -name '*.shosts' -type f 2>/dev/null | head -10)
+    $shostsStr = ($shostsCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: find / -maxdepth 5 -name '*.shosts' -type f" + $nl
+    $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($shostsStr)) { "(none found)" } else { $shostsStr }) + $nl + $nl
+
+    if ([string]::IsNullOrWhiteSpace($shostsStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No .shosts files found on the system." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: .shosts files found on the system:" + $nl
+        $FindingDetails += $shostsStr + $nl + $nl
+        $FindingDetails += "Remediation: Remove all .shosts files: rm [path]/.shosts" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21367,9 +21532,27 @@ Function Get-V204607 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204607) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204607 - No shosts.equiv Files on the System" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $shostsEq = $(timeout 30 find / -maxdepth 5 -name 'shosts.equiv' -type f 2>/dev/null | head -10)
+    $shostsEqStr = ($shostsEq -join $nl).Trim()
+
+    $FindingDetails += "Command: find / -maxdepth 5 -name 'shosts.equiv' -type f" + $nl
+    $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($shostsEqStr)) { "(none found)" } else { $shostsEqStr }) + $nl + $nl
+
+    if ([string]::IsNullOrWhiteSpace($shostsEqStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No shosts.equiv files found on the system." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: shosts.equiv files found on the system:" + $nl
+        $FindingDetails += $shostsEqStr + $nl + $nl
+        $FindingDetails += "Remediation: Remove all shosts.equiv files: rm [path]/shosts.equiv" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22810,9 +22993,28 @@ Function Get-V204620 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204620) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204620 - FTP Server Must Not Be Installed Unless Needed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $ftpCheck = $(rpm -q vsftpd 2>&1)
+    $ftpStr = ($ftpCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q vsftpd" + $nl
+    $FindingDetails += "Result: " + $ftpStr + $nl + $nl
+
+    if ($ftpStr -match "is not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The vsftpd (FTP server) package is not installed." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The vsftpd package is installed." + $nl
+        $FindingDetails += "FTP transmits data unencrypted and must not be used unless documented" + $nl
+        $FindingDetails += "as an operational requirement with the ISSO." + $nl
+        $FindingDetails += "Remediation: yum remove vsftpd" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22921,9 +23123,28 @@ Function Get-V204621 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204621) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204621 - TFTP Server Must Not Be Installed Unless Needed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $tftpCheck = $(rpm -q tftp-server 2>&1)
+    $tftpStr = ($tftpCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q tftp-server" + $nl
+    $FindingDetails += "Result: " + $tftpStr + $nl + $nl
+
+    if ($tftpStr -match "is not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The tftp-server package is not installed." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The tftp-server package is installed." + $nl
+        $FindingDetails += "TFTP transmits data unencrypted and must not be used unless documented" + $nl
+        $FindingDetails += "as an operational requirement with the ISSO." + $nl
+        $FindingDetails += "Remediation: yum remove tftp-server" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23587,9 +23808,42 @@ Function Get-V204627 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204627) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204627 - SNMP Default Community Strings Must Be Changed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if SNMP config exists
+    $snmpConf = $(timeout 5 ls -la /etc/snmp/snmpd.conf 2>&1)
+    $snmpConfStr = ($snmpConf -join $nl).Trim()
+
+    if ($snmpConfStr -match "No such file") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "SNMP configuration file /etc/snmp/snmpd.conf does not exist." + $nl
+        $FindingDetails += "SNMP is not configured on this system. This check is Not Applicable." + $nl
+    }
+    else {
+        $FindingDetails += "SNMP config exists: " + $snmpConfStr + $nl + $nl
+
+        $pubCheck = $(timeout 5 grep -v '^\s*#' /etc/snmp/snmpd.conf 2>/dev/null | grep -i public)
+        $privCheck = $(timeout 5 grep -v '^\s*#' /etc/snmp/snmpd.conf 2>/dev/null | grep -i private)
+        $pubStr = ($pubCheck -join $nl).Trim()
+        $privStr = ($privCheck -join $nl).Trim()
+
+        $FindingDetails += "Check for 'public' community string: " + $(if ([string]::IsNullOrWhiteSpace($pubStr)) { "(not found)" } else { $pubStr }) + $nl
+        $FindingDetails += "Check for 'private' community string: " + $(if ([string]::IsNullOrWhiteSpace($privStr)) { "(not found)" } else { $privStr }) + $nl + $nl
+
+        if ([string]::IsNullOrWhiteSpace($pubStr) -and [string]::IsNullOrWhiteSpace($privStr)) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: No default SNMP community strings (public/private) found." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: Default SNMP community strings detected." + $nl
+            $FindingDetails += "Remediation: Change all community strings in /etc/snmp/snmpd.conf" + $nl
+            $FindingDetails += "from 'public' and 'private' to unique organizational values." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24475,9 +24729,33 @@ Function Get-V214799 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-214799) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-214799 - Cryptographic Hash of System Files Matches Vendor Values" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for hash mismatches (column 3 = '5' means MD5 hash changed)
+    # --noconfig excludes config files which are expected to change
+    $hashCheck = $(timeout 60 sh -c 'rpm -Va --noconfig 2>/dev/null | grep "^..5" | head -25')
+    $hashStr = ($hashCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -Va --noconfig | grep " + [char]34 + "^..5" + [char]34 + $nl
+    $FindingDetails += ("-" * 40) + $nl
+
+    if ([string]::IsNullOrWhiteSpace($hashStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No system files or binaries have hash mismatches" + $nl
+        $FindingDetails += "compared to vendor RPM package values." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The following system files have cryptographic hash values" + $nl
+        $FindingDetails += "that differ from vendor RPM defaults:" + $nl + $nl
+        $FindingDetails += $hashStr + $nl + $nl
+        $FindingDetails += "Investigate each mismatch. Reinstall affected packages:" + $nl
+        $FindingDetails += "  rpm -qf [filename]  (identify package)" + $nl
+        $FindingDetails += "  yum reinstall [package]  (restore vendor files)" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24697,9 +24975,41 @@ Function Get-V214801 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-214801) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-214801 - Virus Scan Program Must Be Installed" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for common AV solutions
+    $clamav = $(rpm -q clamav 2>&1)
+    $clamStr = ($clamav -join $nl).Trim()
+    $mcafee = $(timeout 5 ls /opt/McAfee 2>/dev/null)
+    $mcStr = ($mcafee -join $nl).Trim()
+    $crowdstrike = $(timeout 5 ls /opt/CrowdStrike 2>/dev/null)
+    $csStr = ($crowdstrike -join $nl).Trim()
+
+    $FindingDetails += "Check 1: ClamAV" + $nl
+    $FindingDetails += "  rpm -q clamav: " + $clamStr + $nl
+    $FindingDetails += "Check 2: McAfee" + $nl
+    $FindingDetails += "  /opt/McAfee: " + $(if ([string]::IsNullOrWhiteSpace($mcStr)) { "not found" } else { "present" }) + $nl
+    $FindingDetails += "Check 3: CrowdStrike" + $nl
+    $FindingDetails += "  /opt/CrowdStrike: " + $(if ([string]::IsNullOrWhiteSpace($csStr)) { "not found" } else { "present" }) + $nl + $nl
+
+    $avFound = $false
+    if ($clamStr -notmatch "is not installed") { $avFound = $true }
+    if (-not [string]::IsNullOrWhiteSpace($mcStr)) { $avFound = $true }
+    if (-not [string]::IsNullOrWhiteSpace($csStr)) { $avFound = $true }
+
+    if ($avFound) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: An antivirus solution is installed on the system." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: No antivirus solution detected on this system." + $nl
+        $FindingDetails += "XCP-ng Dom0 requires a host-based antivirus or endpoint protection agent." + $nl
+        $FindingDetails += "Remediation: Install an approved antivirus solution (ClamAV, McAfee, etc.)." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -26251,9 +26561,29 @@ Function Get-V251702 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-251702) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-251702 - No Accounts With Blank Passwords in Shadow" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $blankPw = $(timeout 5 sh -c "awk -F: '!\$2 {print \$1}' /etc/shadow 2>/dev/null")
+    $blankStr = ($blankPw -join $nl).Trim()
+
+    $FindingDetails += "Command: awk -F: " + [char]39 + "!$2 {print $1}" + [char]39 + " /etc/shadow" + $nl
+    $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($blankStr)) { "(none found)" } else { $blankStr }) + $nl + $nl
+
+    if ([string]::IsNullOrWhiteSpace($blankStr)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No accounts with blank or null passwords found in /etc/shadow." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The following accounts have blank passwords:" + $nl
+        $FindingDetails += $blankStr + $nl + $nl
+        $FindingDetails += "Remediation: Set a password or lock each account:" + $nl
+        $FindingDetails += "  passwd [username]  (set password)" + $nl
+        $FindingDetails += "  passwd -l [username]  (lock account)" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

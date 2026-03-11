@@ -1085,14 +1085,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204458">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be a vendor supported release.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that this XCP-ng Dom0 system is running a vendor-supported operating system release. While XCP-ng Dom0 is based on CentOS 7 (RHEL 7), it receives active security updates and maintenance from Vates, the XCP-ng vendor. The scan confirmed the XCP-ng version is 8.x, which is within the current Vates support lifecycle. XCP-ng maintains its own package repositories with security patches independent of RHEL 7 end-of-life status. This meets the RHEL 7 STIG requirement (RHEL-07-020250) that the operating system must be a vendor-supported release, as Vates provides ongoing vendor support for the XCP-ng platform. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check could not confirm that this XCP-ng Dom0 system is running a vendor-supported release. Per RHEL 7 STIG requirement RHEL-07-020250, the operating system must be a vendor-supported release to ensure security patches and updates are available. While XCP-ng is based on CentOS 7/RHEL 7, it must be within the Vates support lifecycle to receive security updates. Remediation: (1) Verify the XCP-ng version: cat /etc/xcp-ng-release. (2) Check Vates support lifecycle for your version at the XCP-ng project website. (3) If the version is end-of-life, plan migration to a supported version. (4) Ensure XCP-ng repositories are configured for receiving security updates. The system administrator must maintain the system within vendor support.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1141,14 +1149,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204462">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the root account must be the only account having unrestricted access to the system.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that only the root account has UID 0 on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'awk' against /etc/passwd to identify all accounts with UID 0 and confirmed that root is the only account with unrestricted (UID 0) access. No duplicate UID 0 accounts were found. This meets the RHEL 7 STIG requirement (RHEL-07-020310) that root must be the only account with UID 0, preventing unauthorized accounts from having unrestricted system access on the hypervisor management domain. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that accounts other than root have UID 0 on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-020310, only the root account may have UID 0. Additional UID 0 accounts have unrestricted access to the entire system, which on a hypervisor Dom0 means full control over all virtual machines. Remediation: (1) Identify the non-root UID 0 accounts: awk -F: '$3 == 0 {print $1}' /etc/passwd. (2) Change each account's UID: usermod -u [new_uid] [username]. (3) System accounts should use UID 1-999, regular accounts 1000+. (4) Verify file ownership after UID changes. The system administrator must remove all duplicate UID 0 accounts immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1589,14 +1605,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204497">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that this XCP-ng Dom0 (RHEL 7-based) system implements FIPS-validated cryptography. The scan confirmed that the dracut-fips package is installed, the fips=1 kernel parameter is set in the boot command line, and the runtime FIPS mode is active (/proc/sys/crypto/fips_enabled = 1). This ensures all cryptographic operations use NIST FIPS 140-2 validated algorithms for digital signatures, cryptographic hashing, and data-at-rest protection as required by RHEL 7 STIG requirement RHEL-07-021350. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that this XCP-ng Dom0 (RHEL 7-based) system does not fully implement FIPS-validated cryptography. The scan detected that either the dracut-fips package is not installed, the fips=1 kernel parameter is missing from the boot command line, or FIPS mode is not active at runtime. Per RHEL 7 STIG requirement RHEL-07-021350, the operating system must implement NIST FIPS-validated cryptography. Note: XCP-ng Dom0 may not support FIPS mode due to its custom Xen kernel. This is a known compliance gap requiring Vates vendor resolution. Remediation: (1) Install dracut-fips: yum install dracut-fips. (2) Add fips=1 to GRUB_CMDLINE_LINUX in /etc/default/grub. (3) Regenerate GRUB config: grub2-mkconfig -o /boot/grub2/grub.cfg. (4) Rebuild initramfs: dracut -f. (5) Reboot. Contact Vates for XCP-ng FIPS compatibility guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1659,14 +1683,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204502">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have the telnet-server package installed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the telnet-server package is not installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -q telnet-server' and confirmed the package is not present. Telnet provides an unencrypted remote access service that transmits credentials and session data in cleartext, making it unsuitable for DoD environments. Its absence confirms compliance with RHEL 7 STIG requirement RHEL-07-021710. XCP-ng Dom0 uses SSH for all remote administration. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the telnet-server package is installed on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-021710, telnet-server must not be installed because it transmits all data including passwords in cleartext. This is a CAT I finding on a hypervisor management domain. Remediation: (1) Remove immediately: yum remove telnet-server. (2) Verify removal: rpm -q telnet-server. (3) Ensure SSH is the sole remote access method. The system administrator must remove this package immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2653,14 +2685,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204594">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use the SSHv2 protocol.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the SSH daemon on this XCP-ng Dom0 (RHEL 7-based) system is configured to use only the SSHv2 protocol. The scan checked /etc/ssh/sshd_config for the Protocol directive and confirmed that SSHv1 is not enabled. XCP-ng is based on CentOS 7.5+, which defaults to SSHv2 only. SSHv1 has known cryptographic weaknesses and must not be used. This meets RHEL 7 STIG requirement RHEL-07-040390. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the SSH daemon on this XCP-ng Dom0 (RHEL 7-based) system may allow the SSHv1 protocol. Per RHEL 7 STIG requirement RHEL-07-040390, only SSHv2 is permitted. SSHv1 has critical cryptographic vulnerabilities. Remediation: (1) Edit /etc/ssh/sshd_config. (2) Set: Protocol 2. (3) Remove any lines referencing Protocol 1. (4) Restart sshd: systemctl restart sshd. The system administrator must disable SSHv1 immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2821,28 +2861,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204606">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not contain .shosts files.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that no .shosts files exist on this XCP-ng Dom0 (RHEL 7-based) system. The scan searched the entire filesystem (with depth limits) for files matching '*.shosts' and found none. The .shosts file provides host-based authentication for rsh-related services, which use unencrypted communications. Their absence confirms compliance with RHEL 7 STIG requirement RHEL-07-040540. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found .shosts files on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-040540, no .shosts files may exist on the system. These files enable host-based authentication for rsh services which transmit data unencrypted. Remediation: Remove all .shosts files found: rm [path]/.shosts. Investigate why they were created and ensure rsh-based services are not in use. The system administrator must remove these files immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204607">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not contain shosts.equiv files.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that no shosts.equiv files exist on this XCP-ng Dom0 (RHEL 7-based) system. The scan searched the entire filesystem (with depth limits) for files named 'shosts.equiv' and found none. The shosts.equiv file provides system-wide host-based authentication for rsh services, which use unencrypted communications. Their absence confirms compliance with RHEL 7 STIG requirement RHEL-07-040550. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found shosts.equiv files on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-040550, no shosts.equiv files may exist. These files enable system-wide host-based authentication for rsh services which transmit data unencrypted. Remediation: Remove all shosts.equiv files: rm [path]/shosts.equiv. Investigate why they were created. The system administrator must remove these files immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3017,28 +3073,44 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204620">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have a File Transfer Protocol (FTP) server package installed unless needed.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the vsftpd (FTP server) package is not installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -q vsftpd' and confirmed the package is not present. FTP transmits data and credentials in cleartext and must not be installed on DoD systems unless documented as an operational requirement with the ISSO. Its absence confirms compliance with RHEL 7 STIG requirement RHEL-07-040690. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the vsftpd (FTP server) package is installed on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-040690, FTP server must not be installed unless documented with the ISSO as an operational requirement. FTP transmits credentials in cleartext. Remediation: (1) If not required: yum remove vsftpd. (2) If operationally required: document the requirement with the ISSO and implement compensating controls (SFTP/FTPS). The system administrator must address this finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204621">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have the Trivial File Transfer Protocol (TFTP) server package installed if not required for operational support.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the tftp-server package is not installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -q tftp-server' and confirmed the package is not present. TFTP provides an unencrypted, unauthenticated file transfer service and must not be installed unless required for specific operational support (e.g., PXE boot). Its absence confirms compliance with RHEL 7 STIG requirement RHEL-07-040700. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the tftp-server package is installed on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-040700, TFTP server must not be installed unless documented with the ISSO as required for operational support. TFTP has no authentication mechanism. Remediation: (1) If not required: yum remove tftp-server. (2) If required for PXE: document with the ISSO and restrict access via firewall rules. The system administrator must address this finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3115,14 +3187,30 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204627">
     <!--RuleTitle: SNMP community strings on the Red Hat Enterprise Linux operating system must be changed from the default.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that SNMP community strings on this XCP-ng Dom0 (RHEL 7-based) system are not set to default values. The scan checked /etc/snmp/snmpd.conf for the default 'public' and 'private' community strings and found neither in active (non-commented) configuration lines. Custom community strings prevent unauthorized SNMP access to system information. This meets RHEL 7 STIG requirement RHEL-07-040800. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found default SNMP community strings on this XCP-ng Dom0 (RHEL 7-based) system. The 'public' and/or 'private' community strings were detected in /etc/snmp/snmpd.conf. Per RHEL 7 STIG requirement RHEL-07-040800, default community strings must be changed to prevent unauthorized SNMP reconnaissance. Remediation: (1) Edit /etc/snmp/snmpd.conf. (2) Replace all 'public' and 'private' community strings with unique organizational values. (3) Restart snmpd: systemctl restart snmpd. Consider using SNMPv3 with authentication and encryption. The system administrator must change default community strings.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>SNMP is not configured on this XCP-ng Dom0 system. The /etc/snmp/snmpd.conf configuration file does not exist, indicating SNMP service is not installed or configured. Per the STIG guidance ('If the file does not exist, this is Not Applicable'), this check does not apply to this system.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3227,14 +3315,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-214799">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the cryptographic hash of system files and commands matches vendor values.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that cryptographic hashes of system files and commands on this XCP-ng Dom0 (RHEL 7-based) system match vendor-provided RPM package values. The scan executed 'rpm -Va --noconfig' and filtered for MD5 hash mismatches (flag position 3 = '5'). Configuration files were excluded as they are expected to change. No hash mismatches were found for system binaries or libraries, confirming file integrity is maintained. This meets RHEL 7 STIG requirement RHEL-07-010020. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found system files whose cryptographic hashes differ from vendor RPM package values on this XCP-ng Dom0 (RHEL 7-based) system. The scan executed 'rpm -Va --noconfig' and detected MD5 hash mismatches for non-configuration files. Per RHEL 7 STIG requirement RHEL-07-010020, system file hashes must match vendor values to ensure integrity. Hash changes may indicate unauthorized modification, compromise, or corruption. Remediation: (1) Identify the package for each file: rpm -qf [filename]. (2) Reinstall affected packages: yum reinstall [package]. (3) Investigate whether changes were authorized. (4) Review system audit logs for evidence of tampering. The system administrator must investigate and remediate all hash mismatches.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3255,14 +3351,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-214801">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a virus scan program.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that an antivirus solution is installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan checked for common antivirus packages including ClamAV, McAfee, and CrowdStrike, and confirmed that at least one endpoint protection solution is present. Antivirus software is required on all DoD systems to detect and prevent malware. This meets RHEL 7 STIG requirement RHEL-07-032000 for virus scan program installation on the hypervisor management domain. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found no antivirus solution installed on this XCP-ng Dom0 (RHEL 7-based) system. The scan checked for ClamAV, McAfee, and CrowdStrike and found none. Per RHEL 7 STIG requirement RHEL-07-032000, all systems must have an antivirus program installed. The hypervisor management domain (Dom0) has access to all virtual machine resources and must be protected against malware. Remediation: (1) Install an approved antivirus: yum install clamav clamav-update (for ClamAV). (2) Configure automatic signature updates. (3) Enable on-access scanning if supported. (4) Schedule regular full system scans. The ISSO must ensure an approved antivirus solution is deployed on all XCP-ng hosts.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3451,14 +3555,22 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-251702">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT I Batch 2: Automated check implementation-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that no accounts on this XCP-ng Dom0 (RHEL 7-based) system have blank or null passwords in /etc/shadow. The scan used awk to check for empty password fields in the shadow file and found none. All accounts either have a valid password hash or are locked (indicated by '!' or '*' in the password field). This meets RHEL 7 STIG requirement RHEL-07-010291 that prevents accounts with blank passwords from existing on the system. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found accounts with blank or null passwords in /etc/shadow on this XCP-ng Dom0 (RHEL 7-based) system. Per RHEL 7 STIG requirement RHEL-07-010291, no accounts may have blank passwords as this allows authentication without credentials. This is a CAT I finding on a hypervisor management domain. Remediation: For each affected account: (1) Set a password: passwd [username]. (2) Or lock the account: passwd -l [username]. (3) Verify no blank passwords remain: awk -F: '!$2 {print $1}' /etc/shadow. The system administrator must remediate all blank password accounts immediately.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
