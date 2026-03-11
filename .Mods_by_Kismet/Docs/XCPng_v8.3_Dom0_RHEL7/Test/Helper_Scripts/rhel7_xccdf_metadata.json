@@ -1,0 +1,2198 @@
+{
+  "V-204392": {
+    "stig_id": "RHEL-07-010010",
+    "rule_id": "SV-204392r991558_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values.",
+    "discuss_md5": "0afe26f66204090b10a2480f90524935",
+    "check_md5": "13a177c378f1ac5f48edf383c8ba158a",
+    "fix_md5": "43f178e85c4d89cefbedad693f8afa91"
+  },
+  "V-204393": {
+    "stig_id": "RHEL-07-010030",
+    "rule_id": "SV-204393r958390_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.",
+    "discuss_md5": "ea236f0f62428443d22b6bb7e5c8ed9c",
+    "check_md5": "17800021f079a35fe959210a6a60ab98",
+    "fix_md5": "ed406ee63427b47e96c9d7df497d00fa"
+  },
+  "V-204394": {
+    "stig_id": "RHEL-07-010040",
+    "rule_id": "SV-204394r958390_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.",
+    "discuss_md5": "73b1b197b7bf218ac276114cf2a67951",
+    "check_md5": "b2d0b460db9af9c5949e82c5c5a376af",
+    "fix_md5": "f3022fba03de028ee3b28703bce4e069"
+  },
+  "V-204395": {
+    "stig_id": "RHEL-07-010050",
+    "rule_id": "SV-204395r958390_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.",
+    "discuss_md5": "09c5732c32684d5df2f9090217debf1b",
+    "check_md5": "3e1bfd75049884b3b883c88744bebe81",
+    "fix_md5": "100de6aa7e14c431c4541f257011297c"
+  },
+  "V-204396": {
+    "stig_id": "RHEL-07-010060",
+    "rule_id": "SV-204396r958400_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures.",
+    "discuss_md5": "a5a08bc995aefaa4e01006e4b4094737",
+    "check_md5": "177a4a4e98e6ac92dd35357163e830c1",
+    "fix_md5": "501074d84ca1ade43e60d7d73da8cbd7"
+  },
+  "V-204397": {
+    "stig_id": "RHEL-07-010061",
+    "rule_id": "SV-204397r982216_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate users using multifactor authentication via a graphical user logon.",
+    "discuss_md5": "dc7b7f1bdb27cfb4dbc6a3b81cbe4716",
+    "check_md5": "2852482b411a37a7a9d5e8c8f0f10a29",
+    "fix_md5": "85b2e768066dea80cb396fc14b623170"
+  },
+  "V-204398": {
+    "stig_id": "RHEL-07-010070",
+    "rule_id": "SV-204398r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces.",
+    "discuss_md5": "596b503073245f0953a0e88187b79ec5",
+    "check_md5": "e2edcc3b6c879ab6e07775de7080fe56",
+    "fix_md5": "6fe9c737389d64bbe0c146565575f387"
+  },
+  "V-204399": {
+    "stig_id": "RHEL-07-010081",
+    "rule_id": "SV-204399r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-delay setting for the graphical user interface.",
+    "discuss_md5": "596b503073245f0953a0e88187b79ec5",
+    "check_md5": "e0f7835545da6a125696c76bb9722cfb",
+    "fix_md5": "cbe110bf60a026fa92a49627e3361ddc"
+  },
+  "V-204400": {
+    "stig_id": "RHEL-07-010082",
+    "rule_id": "SV-204400r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent a user from overriding the session idle-delay setting for the graphical user interface.",
+    "discuss_md5": "596b503073245f0953a0e88187b79ec5",
+    "check_md5": "100b6ca00625a7990499a92915b8434b",
+    "fix_md5": "002cc1fe34d303a1027cd67ca8d7b4d0"
+  },
+  "V-204402": {
+    "stig_id": "RHEL-07-010100",
+    "rule_id": "SV-204402r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.",
+    "discuss_md5": "596b503073245f0953a0e88187b79ec5",
+    "check_md5": "5c7fea5ee921e835b98b786e1fa99301",
+    "fix_md5": "b2a39f36a9d7d9b592f8cea46f409231"
+  },
+  "V-204403": {
+    "stig_id": "RHEL-07-010101",
+    "rule_id": "SV-204403r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver idle-activation-enabled setting for the graphical user interface.",
+    "discuss_md5": "223c788c637d6bbd42e14ddbb7a74e07",
+    "check_md5": "b8223d92a0f2b2f50ec5884e61fc41bd",
+    "fix_md5": "6ff5cb97561aa1b4e3717abd9baf6aab"
+  },
+  "V-204404": {
+    "stig_id": "RHEL-07-010110",
+    "rule_id": "SV-204404r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must initiate a session lock for graphical user interfaces when the screensaver is activated.",
+    "discuss_md5": "596b503073245f0953a0e88187b79ec5",
+    "check_md5": "6d78c2133cbb20c2303d44169266f902",
+    "fix_md5": "218a92b6ee1f219c01db47bf66b05330"
+  },
+  "V-204405": {
+    "stig_id": "RHEL-07-010118",
+    "rule_id": "SV-204405r982195_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that /etc/pam.d/passwd implements /etc/pam.d/system-auth when changing passwords.",
+    "discuss_md5": "0622da50e2e17ef4889544a3ba28ae38",
+    "check_md5": "9fdc8196223a08fc55a7e019ce11b26e",
+    "fix_md5": "6bf250f047d90d6957ffea0a12613188"
+  },
+  "V-204406": {
+    "stig_id": "RHEL-07-010119",
+    "rule_id": "SV-204406r982195_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used.",
+    "discuss_md5": "193c6e32b74c7b6e7f6bb012f1d588fb",
+    "check_md5": "d0ece429a2b91843de3ecbdef4618de3",
+    "fix_md5": "7d48a8e10bf5a826df8e0c8407395c0e"
+  },
+  "V-204407": {
+    "stig_id": "RHEL-07-010120",
+    "rule_id": "SV-204407r982195_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one upper-case character.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "28de0aa2fadbb75ea612d61b4ae93948",
+    "fix_md5": "ced2081d986e42278f934717c1c248e0"
+  },
+  "V-204408": {
+    "stig_id": "RHEL-07-010130",
+    "rule_id": "SV-204408r982196_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one lower-case character.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "a7fe8a9bcbead9e2b0e2666413d74995",
+    "fix_md5": "eee2176a165ea2a27bafdfa11f870a0a"
+  },
+  "V-204409": {
+    "stig_id": "RHEL-07-010140",
+    "rule_id": "SV-204409r982197_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are assigned, the new password must contain at least one numeric character.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "d49ba085e52e69ebe4c99c9754163d57",
+    "fix_md5": "62fb260700e28ff1d913bb30db4ca4bf"
+  },
+  "V-204410": {
+    "stig_id": "RHEL-07-010150",
+    "rule_id": "SV-204410r991561_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one special character.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "c95e7485d54d9b2b010202e74c5b9334",
+    "fix_md5": "2d1029e4fe08a293ea00d7a2729924fc"
+  },
+  "V-204411": {
+    "stig_id": "RHEL-07-010160",
+    "rule_id": "SV-204411r982198_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of eight of the total number of characters must be changed.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "309e2949ebe0678533a2953667683356",
+    "fix_md5": "e9fb22f02fb592b801f1f8822d0851fe"
+  },
+  "V-204412": {
+    "stig_id": "RHEL-07-010170",
+    "rule_id": "SV-204412r982198_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of four character classes must be changed.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "1a5f8ec23acd6b37682d162a97f18f1e",
+    "fix_md5": "61fdcfea97d08eb57aeca1db0640746a"
+  },
+  "V-204413": {
+    "stig_id": "RHEL-07-010180",
+    "rule_id": "SV-204413r982198_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating consecutive characters must not be more than three characters.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "ec5c660969a7c7d9834901ed224e4d80",
+    "fix_md5": "bdfd197b8eccb7a213a5696fd644ef6c"
+  },
+  "V-204414": {
+    "stig_id": "RHEL-07-010190",
+    "rule_id": "SV-204414r982198_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating characters of the same character class must not be more than four characters.",
+    "discuss_md5": "99a2d25eeb7b76c3aa02868f9e43242f",
+    "check_md5": "c8c52251c01a0ad9a613962c36105b45",
+    "fix_md5": "feb1d4bab90a02024ec7a048ccc0ba2b"
+  },
+  "V-204415": {
+    "stig_id": "RHEL-07-010200",
+    "rule_id": "SV-204415r982199_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the PAM system service is configured to store only encrypted representations of passwords.",
+    "discuss_md5": "f717187cccbbc27ca5227d80248c0a3b",
+    "check_md5": "9e14e117baa1a155f64c0fa9699845b4",
+    "fix_md5": "49c26d4083aee39a5f6cfda4f0967053"
+  },
+  "V-204416": {
+    "stig_id": "RHEL-07-010210",
+    "rule_id": "SV-204416r982199_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to use the shadow file to store only encrypted representations of passwords.",
+    "discuss_md5": "f717187cccbbc27ca5227d80248c0a3b",
+    "check_md5": "42b411bc9fc7e99f06e71327d19ab925",
+    "fix_md5": "89510b6daf70f2bf8e76e88744188d87"
+  },
+  "V-204417": {
+    "stig_id": "RHEL-07-010220",
+    "rule_id": "SV-204417r982199_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.",
+    "discuss_md5": "f717187cccbbc27ca5227d80248c0a3b",
+    "check_md5": "104749eb655d425a908459dea61a0e1e",
+    "fix_md5": "08d414acc8f26b06022884a51e746ae1"
+  },
+  "V-204418": {
+    "stig_id": "RHEL-07-010230",
+    "rule_id": "SV-204418r982188_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 24 hours/1 day minimum lifetime.",
+    "discuss_md5": "4b1da8b9fcc6526808e9446e287ef64f",
+    "check_md5": "2cb13af76f77ba3437c108c3f42820e6",
+    "fix_md5": "14a65756205d5d8b2b79636740a72c91"
+  },
+  "V-204419": {
+    "stig_id": "RHEL-07-010240",
+    "rule_id": "SV-204419r982188_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that passwords are restricted to a 24 hours/1 day minimum lifetime.",
+    "discuss_md5": "4b1da8b9fcc6526808e9446e287ef64f",
+    "check_md5": "927e471b65db1ce695be52e5b1b8ee32",
+    "fix_md5": "96e34093a549326c1cbb3a0e4999195e"
+  },
+  "V-204420": {
+    "stig_id": "RHEL-07-010250",
+    "rule_id": "SV-204420r982200_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 60-day maximum lifetime.",
+    "discuss_md5": "1b60b0231f96c1634ea54d6b3a5329cf",
+    "check_md5": "e60e110f974467bd07de851d378e58fb",
+    "fix_md5": "25e530ef10938c22c590571b7fb3b0a9"
+  },
+  "V-204421": {
+    "stig_id": "RHEL-07-010260",
+    "rule_id": "SV-204421r982200_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that existing passwords are restricted to a 60-day maximum lifetime.",
+    "discuss_md5": "1b60b0231f96c1634ea54d6b3a5329cf",
+    "check_md5": "4667b56a105ca632aa65ac7c68287ded",
+    "fix_md5": "c7d1fdc62f0ec389d53f355146a33eb6"
+  },
+  "V-204422": {
+    "stig_id": "RHEL-07-010270",
+    "rule_id": "SV-204422r982201_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that passwords are prohibited from reuse for a minimum of five generations.",
+    "discuss_md5": "d211fb0ff106f05c6452eac9d4bbdb42",
+    "check_md5": "e1348cb39357a31e2269127df71fb35f",
+    "fix_md5": "6221e14729b751addf29e9354c6ed9e6"
+  },
+  "V-204423": {
+    "stig_id": "RHEL-07-010280",
+    "rule_id": "SV-204423r982202_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that passwords are a minimum of 15 characters in length.",
+    "discuss_md5": "ac553fb941e0c109b52498035d2d0328",
+    "check_md5": "75a23ef7635984666a0322a4a02d3339",
+    "fix_md5": "5c4d4faa646e5242836b9c022e160f5a"
+  },
+  "V-204424": {
+    "stig_id": "RHEL-07-010290",
+    "rule_id": "SV-204424r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords.",
+    "discuss_md5": "2f5b4b5419b73164aeb0e2ea80d1454d",
+    "check_md5": "064d0092bfc7aaea6e4a5054e2bbe45f",
+    "fix_md5": "95f6bd3c29b491daac8df1c79c82303b"
+  },
+  "V-204425": {
+    "stig_id": "RHEL-07-010300",
+    "rule_id": "SV-204425r958486_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using an empty password.",
+    "discuss_md5": "bf95483b0df7dd372c3d559d3f1e88d9",
+    "check_md5": "d4da0f25927b29ec5f6aacc72d3d0c6e",
+    "fix_md5": "1469252d5c6f1a753638ffe64eeba873"
+  },
+  "V-204426": {
+    "stig_id": "RHEL-07-010310",
+    "rule_id": "SV-204426r982189_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must disable account identifiers (individuals, groups, roles, and devices) if the password expires.",
+    "discuss_md5": "702b0c109f871d307060ec75df670fdb",
+    "check_md5": "75dbcbe31b1c9e96d1370c426a73ec35",
+    "fix_md5": "c3d63b6924ab03456e1af8961ce18cf1"
+  },
+  "V-204427": {
+    "stig_id": "RHEL-07-010320",
+    "rule_id": "SV-204427r958736_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to lock accounts for a minimum of 15 minutes after three unsuccessful logon attempts within a 15-minute timeframe.",
+    "discuss_md5": "4bc232732f4c6c2464e7d25105b5e35f",
+    "check_md5": "69191ec6c496afd4eec05c7330ac14d0",
+    "fix_md5": "f76cb1230b04cd607896a17ccd8ab072"
+  },
+  "V-204428": {
+    "stig_id": "RHEL-07-010330",
+    "rule_id": "SV-204428r958736_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must lock the associated account after three unsuccessful root logon attempts are made within a 15-minute period.",
+    "discuss_md5": "0ed4687260c722a88b7694d5d60709a2",
+    "check_md5": "5db8e6090edf823311970fa58823563a",
+    "fix_md5": "2b3b0dcc1e3b6595921a2f23df700435"
+  },
+  "V-204429": {
+    "stig_id": "RHEL-07-010340",
+    "rule_id": "SV-204429r987879_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that users must provide a password for privilege escalation.",
+    "discuss_md5": "c21cfb72092fb9afb73d032f04bda291",
+    "check_md5": "6b593f42046234f3c81d1bf07049474a",
+    "fix_md5": "e48610894f9817595efff450e87fd29b"
+  },
+  "V-204430": {
+    "stig_id": "RHEL-07-010350",
+    "rule_id": "SV-204430r987879_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that users must re-authenticate for privilege escalation.",
+    "discuss_md5": "c79573ee57491f497439f26cbbdcad6b",
+    "check_md5": "dcb01cd427508236396c021f62a00e8e",
+    "fix_md5": "a0ad4091f5de7153693986b371c9a447"
+  },
+  "V-204431": {
+    "stig_id": "RHEL-07-010430",
+    "rule_id": "SV-204431r991588_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the delay between logon prompts following a failed console logon attempt is at least four seconds.",
+    "discuss_md5": "34ac82ac52a0317ebe2f93a1b706f680",
+    "check_md5": "15fb569072318a121c2e31ec8d2ae355",
+    "fix_md5": "854c355defedbed5068a2d4d50c5438c"
+  },
+  "V-204432": {
+    "stig_id": "RHEL-07-010440",
+    "rule_id": "SV-204432r991591_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not allow an unattended or automatic logon to the system via a graphical user interface.",
+    "discuss_md5": "3b2c3568cd91d7b7d416b3e039e4fe70",
+    "check_md5": "120d4c116de5698d177baf2d3dfc827d",
+    "fix_md5": "d08cf0c8d23352a8b38c42fc7328298f"
+  },
+  "V-204433": {
+    "stig_id": "RHEL-07-010450",
+    "rule_id": "SV-204433r991591_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not allow an unrestricted logon to the system.",
+    "discuss_md5": "3b2c3568cd91d7b7d416b3e039e4fe70",
+    "check_md5": "3b2aa22b97cd7fa410566d7b1cb1b5cb",
+    "fix_md5": "96817b0456b1bee81a1f2897f85e5a51"
+  },
+  "V-204434": {
+    "stig_id": "RHEL-07-010460",
+    "rule_id": "SV-204434r991591_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not allow users to override SSH environment variables.",
+    "discuss_md5": "3b2c3568cd91d7b7d416b3e039e4fe70",
+    "check_md5": "9df3a861a305497f6802ddb30ae81f7f",
+    "fix_md5": "5b739f2ce8fb1f138886a5870269c00c"
+  },
+  "V-204435": {
+    "stig_id": "RHEL-07-010470",
+    "rule_id": "SV-204435r991591_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not allow a non-certificate trusted host SSH logon to the system.",
+    "discuss_md5": "3b2c3568cd91d7b7d416b3e039e4fe70",
+    "check_md5": "71d4f0ca0db565eecda0d7997831845c",
+    "fix_md5": "89821327f467d18c319f59fb0ccdef7e"
+  },
+  "V-204437": {
+    "stig_id": "RHEL-07-010481",
+    "rule_id": "SV-204437r958472_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must require authentication upon booting into single-user and maintenance modes.",
+    "discuss_md5": "dcd37be9bcdf50ac46825cf8dc44c54e",
+    "check_md5": "7f0d8be4e4bc0345c7cc12362dfa2eac",
+    "fix_md5": "d6662868cf8751c5bdd22c9b522b5fc7"
+  },
+  "V-204438": {
+    "stig_id": "RHEL-07-010482",
+    "rule_id": "SV-204438r958472_rule",
+    "severity": "high",
+    "title": "Red Hat Enterprise Linux operating systems version 7.2 or newer with a Basic Input/Output System (BIOS) must require authentication upon booting into single-user and maintenance modes.",
+    "discuss_md5": "21a1aa159d628306b3031682316f699c",
+    "check_md5": "9917814dfe486577bcaf5071ad41b33d",
+    "fix_md5": "3d1077d97141f0c9ae07a49141d199e7"
+  },
+  "V-204440": {
+    "stig_id": "RHEL-07-010491",
+    "rule_id": "SV-204440r958472_rule",
+    "severity": "high",
+    "title": "Red Hat Enterprise Linux operating systems version 7.2 or newer using Unified Extensible Firmware Interface (UEFI) must require authentication upon booting into single-user and maintenance modes.",
+    "discuss_md5": "21a1aa159d628306b3031682316f699c",
+    "check_md5": "5116d26f4ca9d1386ca2798fe94aae42",
+    "fix_md5": "4ba932788dcbea99d628fb414ee97f9f"
+  },
+  "V-204441": {
+    "stig_id": "RHEL-07-010500",
+    "rule_id": "SV-204441r958482_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication.",
+    "discuss_md5": "6d21390f844041335bd77549b8c7d64e",
+    "check_md5": "d20bb8a7342d70812fed56ac0c071891",
+    "fix_md5": "f9a6be0fc9e7f85f8b756b9d17ddefdc"
+  },
+  "V-204442": {
+    "stig_id": "RHEL-07-020000",
+    "rule_id": "SV-204442r958478_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have the rsh-server package installed.",
+    "discuss_md5": "356359031a85405f6153f50eebfa972d",
+    "check_md5": "d550c9094163f694b61da4a9d9062966",
+    "fix_md5": "bd2926f350609dde13e91dd0d17ecbe1"
+  },
+  "V-204443": {
+    "stig_id": "RHEL-07-020010",
+    "rule_id": "SV-204443r958478_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have the ypserv package installed.",
+    "discuss_md5": "c9896db6d288f02a8520637a50847b0b",
+    "check_md5": "e3197235a7157eac9d8ec01dec8ed0e9",
+    "fix_md5": "d2940cf14ce585e7fa9be10ee15570f1"
+  },
+  "V-204444": {
+    "stig_id": "RHEL-07-020020",
+    "rule_id": "SV-204444r958726_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures.",
+    "discuss_md5": "2c62ef30a18b0b4af86aee76a79a5c25",
+    "check_md5": "21ab9c0f66c3e33bc979168895f26e16",
+    "fix_md5": "0b68c2d008b54fa6349037727bc38a2f"
+  },
+  "V-204445": {
+    "stig_id": "RHEL-07-020030",
+    "rule_id": "SV-204445r958794_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that a file integrity tool verifies the baseline operating system configuration at least weekly.",
+    "discuss_md5": "d3caa3bdf7f7ffde0e31bce52d9cf445",
+    "check_md5": "3e41ef19c50f5dcd1a5480c0d977cc62",
+    "fix_md5": "4f0771c0c664073c98aba1bc74fdae09"
+  },
+  "V-204446": {
+    "stig_id": "RHEL-07-020040",
+    "rule_id": "SV-204446r958794_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that designated personnel are notified if baseline configurations are changed in an unauthorized manner.",
+    "discuss_md5": "d3caa3bdf7f7ffde0e31bce52d9cf445",
+    "check_md5": "3b2277980e8d20232010352abb373136",
+    "fix_md5": "73078d43869d14a1f0be8946128396ce"
+  },
+  "V-204447": {
+    "stig_id": "RHEL-07-020050",
+    "rule_id": "SV-204447r982212_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components from a repository without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.",
+    "discuss_md5": "3e8accc21f1dd45b1ac4ae81ee3e5b8a",
+    "check_md5": "19eb04ac833506f61de5443325b55539",
+    "fix_md5": "a936de1b964e2f07fcf79bdaf66aa7fb"
+  },
+  "V-204448": {
+    "stig_id": "RHEL-07-020060",
+    "rule_id": "SV-204448r982212_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must prevent the installation of software, patches, service packs, device drivers, or operating system components of local packages without verification they have been digitally signed using a certificate that is issued by a Certificate Authority (CA) that is recognized and approved by the organization.",
+    "discuss_md5": "3e8accc21f1dd45b1ac4ae81ee3e5b8a",
+    "check_md5": "c5cc5f4adabd882cc6f12c3cfe00d88e",
+    "fix_md5": "4ab6b633563f5a5a019c8c050b4039d9"
+  },
+  "V-204449": {
+    "stig_id": "RHEL-07-020100",
+    "rule_id": "SV-204449r958498_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to disable USB mass storage.",
+    "discuss_md5": "809ef6f9fad96084516dec3be9d20f16",
+    "check_md5": "3c96db9bf56dac0e9afce946d7583dd0",
+    "fix_md5": "36631a50f21144e0f3ee8925a02760d2"
+  },
+  "V-204450": {
+    "stig_id": "RHEL-07-020101",
+    "rule_id": "SV-204450r958820_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the Datagram Congestion Control Protocol (DCCP) kernel module is disabled unless required.",
+    "discuss_md5": "a5f081c1457b51d20f794d542be61b7b",
+    "check_md5": "6f97f22cdacf7b096610c256b22e895c",
+    "fix_md5": "84bf545d2a20124f5517c9fb07240ab8"
+  },
+  "V-204451": {
+    "stig_id": "RHEL-07-020110",
+    "rule_id": "SV-204451r958498_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must disable the file system automounter unless required.",
+    "discuss_md5": "7fa5d7139431230432864f50887e362a",
+    "check_md5": "4978892b558d92524500d3d07873a8e7",
+    "fix_md5": "ec4e2554812c98c5194392bf2700f14d"
+  },
+  "V-204452": {
+    "stig_id": "RHEL-07-020200",
+    "rule_id": "SV-204452r958936_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must remove all software components after updated versions have been installed.",
+    "discuss_md5": "d6fb98876a82b206bc1b1da32457793a",
+    "check_md5": "490901470beb0cdcae8d5739c92e27d7",
+    "fix_md5": "2a9614b592cabc11e0e2ff6d6446c31f"
+  },
+  "V-204453": {
+    "stig_id": "RHEL-07-020210",
+    "rule_id": "SV-204453r958944_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must enable SELinux.",
+    "discuss_md5": "5e882e5361b08908b246ba071d7c4b5d",
+    "check_md5": "ac98e352733221882c249e4d34ae5fbf",
+    "fix_md5": "e3d800ad0d7254f4d453cb35f6b8a24e"
+  },
+  "V-204454": {
+    "stig_id": "RHEL-07-020220",
+    "rule_id": "SV-204454r958944_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must enable the SELinux targeted policy.",
+    "discuss_md5": "5e882e5361b08908b246ba071d7c4b5d",
+    "check_md5": "79bcc5090d304f98975d9140e11bd73a",
+    "fix_md5": "4bc2fe1ede55fc9bb2ef119f94d93e01"
+  },
+  "V-204455": {
+    "stig_id": "RHEL-07-020230",
+    "rule_id": "SV-204455r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line.",
+    "discuss_md5": "520b12b2f8af89996086295f8085326c",
+    "check_md5": "771a0897a7deaa77fe0d76fc64570878",
+    "fix_md5": "a2d03e04c07f285f99ec1e3023db5a54"
+  },
+  "V-204456": {
+    "stig_id": "RHEL-07-020231",
+    "rule_id": "SV-204456r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled in the Graphical User Interface.",
+    "discuss_md5": "7afca8d4308edd2a61b8d9b75b3932eb",
+    "check_md5": "a3cc2390c5a73557e36e50ac9e5e47c8",
+    "fix_md5": "22a205997dbf569db6248441ad54c838"
+  },
+  "V-204457": {
+    "stig_id": "RHEL-07-020240",
+    "rule_id": "SV-204457r991590_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.",
+    "discuss_md5": "311f3571110a097076a88659187fb26e",
+    "check_md5": "639608e7a2d99781634893ed349ab236",
+    "fix_md5": "eb61b4fcd8385815cfd306b646d55fed"
+  },
+  "V-204458": {
+    "stig_id": "RHEL-07-020250",
+    "rule_id": "SV-204458r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be a vendor supported release.",
+    "discuss_md5": "f1a95c13d6736edd7ca2f7bbb252aa11",
+    "check_md5": "655ec7a9a8bed8583ccf06e889385e5f",
+    "fix_md5": "b670d3fc6ca52f4463ae2f6065684510"
+  },
+  "V-204459": {
+    "stig_id": "RHEL-07-020260",
+    "rule_id": "SV-204459r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date.",
+    "discuss_md5": "996b00028f1d0f7c3f2c1df6a795837c",
+    "check_md5": "8066ce55e01044046e3022d5c89fec25",
+    "fix_md5": "6d8667c5e3941b10c40941ccfdb6a08a"
+  },
+  "V-204460": {
+    "stig_id": "RHEL-07-020270",
+    "rule_id": "SV-204460r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not have unnecessary accounts.",
+    "discuss_md5": "64e47d6d8de7d5dd111bd0a71cded0b9",
+    "check_md5": "a3054d7231a9d57151c27088f32bc9d1",
+    "fix_md5": "91bfe978a182bb1b71b7da17527c934b"
+  },
+  "V-204461": {
+    "stig_id": "RHEL-07-020300",
+    "rule_id": "SV-204461r958482_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all Group Identifiers (GIDs) referenced in the /etc/passwd file are defined in the /etc/group file.",
+    "discuss_md5": "293d5f6335360f2e74df57a3f71156e4",
+    "check_md5": "4de00f0fe2576ab605adc0734b9e104a",
+    "fix_md5": "444a9c210dbbda5f900359303551b1c0"
+  },
+  "V-204462": {
+    "stig_id": "RHEL-07-020310",
+    "rule_id": "SV-204462r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the root account must be the only account having unrestricted access to the system.",
+    "discuss_md5": "91d9e7ceaa43a8fded2d5d7358c33712",
+    "check_md5": "06804367b6f06f5e41108cc8cab10d54",
+    "fix_md5": "8ecb162b918a3d82243bc6a0d12bbe30"
+  },
+  "V-204463": {
+    "stig_id": "RHEL-07-020320",
+    "rule_id": "SV-204463r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid owner.",
+    "discuss_md5": "e0b5a9f1df0f418e79c75b86f0b02ed2",
+    "check_md5": "2c9e6bf85fd4325b0dca943aa150f917",
+    "fix_md5": "5978f3718362feca9bde87d75a5c4d27"
+  },
+  "V-204464": {
+    "stig_id": "RHEL-07-020330",
+    "rule_id": "SV-204464r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid group owner.",
+    "discuss_md5": "5f3595373fa78d739de1022cb6651fe7",
+    "check_md5": "ac2e5352693246932dc99a7e30a729ae",
+    "fix_md5": "a75f33bf54b716f580831dc305ae3538"
+  },
+  "V-204466": {
+    "stig_id": "RHEL-07-020610",
+    "rule_id": "SV-204466r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive user accounts, upon creation, are assigned a home directory.",
+    "discuss_md5": "2901522ed0242cac5096d11b9532e920",
+    "check_md5": "77564094992a388716c71596e44d6e08",
+    "fix_md5": "562bba391e003e4a34ddff97ef4f5caf"
+  },
+  "V-204467": {
+    "stig_id": "RHEL-07-020620",
+    "rule_id": "SV-204467r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive users have a home directory assigned and defined in the /etc/passwd file.",
+    "discuss_md5": "dbb8538877e2b9642ede37ffa0f195ce",
+    "check_md5": "47a4550eb619450205f34d9e7cfdbc91",
+    "fix_md5": "cad7d8fd155d21393035f48494f7a2ff"
+  },
+  "V-204468": {
+    "stig_id": "RHEL-07-020630",
+    "rule_id": "SV-204468r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories have mode 0750 or less permissive.",
+    "discuss_md5": "ac909a9c8a37de01a1f08abaf9dc93b6",
+    "check_md5": "b39f4885ecac3e52504f79eecafba396",
+    "fix_md5": "4c0c0859226cd74361647422ea860d4c"
+  },
+  "V-204469": {
+    "stig_id": "RHEL-07-020640",
+    "rule_id": "SV-204469r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are owned by their respective users.",
+    "discuss_md5": "f90c3fc724895237907c667616d50806",
+    "check_md5": "5cf87345d6ac840ac22b8a48430922eb",
+    "fix_md5": "a25da37d1222022cfb4a83e1c3093d12"
+  },
+  "V-204470": {
+    "stig_id": "RHEL-07-020650",
+    "rule_id": "SV-204470r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are group-owned by the home directory owners primary group.",
+    "discuss_md5": "4b0751634b50d61cad14e85578f56f02",
+    "check_md5": "0a31f5c0193ddced2a47a0c6bb3fc3d6",
+    "fix_md5": "e801e9b6349c593380a32c09a93297cc"
+  },
+  "V-204471": {
+    "stig_id": "RHEL-07-020660",
+    "rule_id": "SV-204471r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a valid owner.",
+    "discuss_md5": "e0b5a9f1df0f418e79c75b86f0b02ed2",
+    "check_md5": "1fd1d311ff5527e88514ae4a8ecf57b4",
+    "fix_md5": "5ca152602d878f0d1e642c0ed125cffb"
+  },
+  "V-204472": {
+    "stig_id": "RHEL-07-020670",
+    "rule_id": "SV-204472r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.",
+    "discuss_md5": "12f5f7778631be264e9d8a0fbfb774bb",
+    "check_md5": "a03787b9b19a8e4f7b9b406ab03bef8f",
+    "fix_md5": "f9c354ac12fa47569b050a5f05eaec20"
+  },
+  "V-204473": {
+    "stig_id": "RHEL-07-020680",
+    "rule_id": "SV-204473r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a mode of 0750 or less permissive.",
+    "discuss_md5": "96c6961b4c1e861017566018f330b2cb",
+    "check_md5": "129cbe2bbcead3c2998931651e2796f6",
+    "fix_md5": "3fcb51b792e5b770b22765cda25b30d7"
+  },
+  "V-204474": {
+    "stig_id": "RHEL-07-020690",
+    "rule_id": "SV-204474r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for interactive users are owned by the home directory user or root.",
+    "discuss_md5": "484e688670917e883e34e8eb2a7772e1",
+    "check_md5": "08ea618e43c1e09a541f72ff35f90279",
+    "fix_md5": "a57ba5e4dcaca3c717830196c0fa4a2c"
+  },
+  "V-204475": {
+    "stig_id": "RHEL-07-020700",
+    "rule_id": "SV-204475r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for local interactive users are be group-owned by the users primary group or root.",
+    "discuss_md5": "aa63583bb2cc15327d45563c8953f2ec",
+    "check_md5": "d619800c8fbd8b87646cc3356f21545a",
+    "fix_md5": "030204c8229cadebadac3dced33dea6f"
+  },
+  "V-204476": {
+    "stig_id": "RHEL-07-020710",
+    "rule_id": "SV-204476r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local initialization files have mode 0740 or less permissive.",
+    "discuss_md5": "484e688670917e883e34e8eb2a7772e1",
+    "check_md5": "64bb98e3486f70e2ddd2a32bb742a72c",
+    "fix_md5": "5c9fb7f27f0042e9f209ecc526f4d092"
+  },
+  "V-204477": {
+    "stig_id": "RHEL-07-020720",
+    "rule_id": "SV-204477r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all local interactive user initialization files executable search paths contain only paths that resolve to the users home directory.",
+    "discuss_md5": "3f2a9e6f8dd7873043ed1390186fc0a0",
+    "check_md5": "9cb20ddb6b798740e54dbac2391e21b3",
+    "fix_md5": "f0e32bfd951dd2dd9c5cd2b54a416d35"
+  },
+  "V-204478": {
+    "stig_id": "RHEL-07-020730",
+    "rule_id": "SV-204478r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that local initialization files do not execute world-writable programs.",
+    "discuss_md5": "06cc98d2496fb2b6da55f91cae4c2cf6",
+    "check_md5": "58e6155b49f90fe5234fbc52f370fca7",
+    "fix_md5": "e8da43d1d102622b6d29f7efb63b73d0"
+  },
+  "V-204479": {
+    "stig_id": "RHEL-07-020900",
+    "rule_id": "SV-204479r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all system device files are correctly labeled to prevent unauthorized modification.",
+    "discuss_md5": "5ee4fea6467dba8c26def156bc283a75",
+    "check_md5": "7198c6a33bb3d1437f44db1ca77c0ba1",
+    "fix_md5": "4672cf6ea6e48aeb185c8638733e99b3"
+  },
+  "V-204480": {
+    "stig_id": "RHEL-07-021000",
+    "rule_id": "SV-204480r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that file systems containing user home directories are mounted to prevent files with the setuid and setgid bit set from being executed.",
+    "discuss_md5": "654c66440d690295f4d8b6b8bfc5cae9",
+    "check_md5": "5d50e4d86c4f5ef2fcdbe5c6362cc4e1",
+    "fix_md5": "b7722bf83368490568e0e37cd2159f7e"
+  },
+  "V-204481": {
+    "stig_id": "RHEL-07-021010",
+    "rule_id": "SV-204481r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are used with removable media.",
+    "discuss_md5": "cb7f99dd1e9363e720eaa9d2a7e268d9",
+    "check_md5": "1f08fe0f775dd004373e1755ae20aa95",
+    "fix_md5": "f2c2209a06f494fa3404c7e32a66d946"
+  },
+  "V-204482": {
+    "stig_id": "RHEL-07-021020",
+    "rule_id": "SV-204482r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent files with the setuid and setgid bit set from being executed on file systems that are being imported via Network File System (NFS).",
+    "discuss_md5": "cb7f99dd1e9363e720eaa9d2a7e268d9",
+    "check_md5": "3af34e8062927cfc76959de626cd3c02",
+    "fix_md5": "19bda23f11c6c07c80a6ee3fdd1da6eb"
+  },
+  "V-204483": {
+    "stig_id": "RHEL-07-021021",
+    "rule_id": "SV-204483r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent binary files from being executed on file systems that are being imported via Network File System (NFS).",
+    "discuss_md5": "0d7c6c842cd4bae56ea4aacada0288e0",
+    "check_md5": "3cdb11c1d0178ebf2e2ecd682b108ebc",
+    "fix_md5": "e5382dde8e262959e40ccabb16c8e50d"
+  },
+  "V-204486": {
+    "stig_id": "RHEL-07-021024",
+    "rule_id": "SV-204486r958804_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must mount /dev/shm with secure options.",
+    "discuss_md5": "f85032691a7e6c0feefa78e7647d71af",
+    "check_md5": "403c1d4205d095a6e9a6df83f2091571",
+    "fix_md5": "ac0848e85840888b143f8d1eda6a02b8"
+  },
+  "V-204487": {
+    "stig_id": "RHEL-07-021030",
+    "rule_id": "SV-204487r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all world-writable directories are group-owned by root, sys, bin, or an application group.",
+    "discuss_md5": "51940f5539670625cfc69b3c2dc55a34",
+    "check_md5": "afba478ed649a23e5462612274b33873",
+    "fix_md5": "8b1869e419f5f907869eeb3e4265e5a7"
+  },
+  "V-204488": {
+    "stig_id": "RHEL-07-021040",
+    "rule_id": "SV-204488r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must set the umask value to 077 for all local interactive user accounts.",
+    "discuss_md5": "7d8094f60537202c2d38403045d7a80c",
+    "check_md5": "bcc458c562f87e0beb7e208a793eea6b",
+    "fix_md5": "3b0afa6cfdd7d9bd23d09d2c786893fe"
+  },
+  "V-204489": {
+    "stig_id": "RHEL-07-021100",
+    "rule_id": "SV-204489r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must have cron logging implemented.",
+    "discuss_md5": "de377daa2877a0c9b5699e8c0a26e67d",
+    "check_md5": "cca3e53096ed00c4f604756df359ecfb",
+    "fix_md5": "74a27e3531871a25ed3891e5559c425f"
+  },
+  "V-204490": {
+    "stig_id": "RHEL-07-021110",
+    "rule_id": "SV-204490r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is owned by root.",
+    "discuss_md5": "ebc76325e7bbd2e790ca31ef03b97ad9",
+    "check_md5": "aa72217b4ab877f2fefc158c91af39d3",
+    "fix_md5": "0764958bc52fabcd9b9db58790a211be"
+  },
+  "V-204491": {
+    "stig_id": "RHEL-07-021120",
+    "rule_id": "SV-204491r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is group-owned by root.",
+    "discuss_md5": "fd841e9ec4d809b5e9a4e15b5dcfdaa7",
+    "check_md5": "df25f3ea565af8ffcf172a7fd2a94179",
+    "fix_md5": "dbb0a0d4d6ab1fb70879066f301a6e27"
+  },
+  "V-204492": {
+    "stig_id": "RHEL-07-021300",
+    "rule_id": "SV-204492r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must disable Kernel core dumps unless needed.",
+    "discuss_md5": "0c7eeef06c6fec2064cafc12da3290a6",
+    "check_md5": "b4eedb39f81098960f0b1c34f7ea1b7a",
+    "fix_md5": "3fa47bbc45b092e691b0fcd531cf8d0b"
+  },
+  "V-204493": {
+    "stig_id": "RHEL-07-021310",
+    "rule_id": "SV-204493r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that a separate file system is used for user home directories (such as /home or an equivalent).",
+    "discuss_md5": "9353cdbcee011ff7b97f19df88685bc5",
+    "check_md5": "63a5d03a716bca597e051712c6d3c4bf",
+    "fix_md5": "e3beec1126ee8c5b7952ecf7c44eb9e1"
+  },
+  "V-204494": {
+    "stig_id": "RHEL-07-021320",
+    "rule_id": "SV-204494r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must use a separate file system for /var.",
+    "discuss_md5": "9353cdbcee011ff7b97f19df88685bc5",
+    "check_md5": "1b1041697036872a5faf3ec6294208f6",
+    "fix_md5": "b42664dfecc08eec56397615518df32c"
+  },
+  "V-204495": {
+    "stig_id": "RHEL-07-021330",
+    "rule_id": "SV-204495r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must use a separate file system for the system audit data path.",
+    "discuss_md5": "9353cdbcee011ff7b97f19df88685bc5",
+    "check_md5": "883c4bfed1c7f35ece0f9f19cba2b908",
+    "fix_md5": "7fb25ffee55b3486f573a9fafb178030"
+  },
+  "V-204496": {
+    "stig_id": "RHEL-07-021340",
+    "rule_id": "SV-204496r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must use a separate file system for /tmp (or equivalent).",
+    "discuss_md5": "9353cdbcee011ff7b97f19df88685bc5",
+    "check_md5": "c36dd41409186ebe734d2a26d825a5c7",
+    "fix_md5": "241d202967037eff594c5c69b71f44fe"
+  },
+  "V-204497": {
+    "stig_id": "RHEL-07-021350",
+    "rule_id": "SV-204497r958408_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards.",
+    "discuss_md5": "861078416b4c4bd5acbf781689696cdf",
+    "check_md5": "bf2db442ad69ee8bda9943d1f0836ffa",
+    "fix_md5": "3f24f25c056649cdef6bdc402ba7f5bf"
+  },
+  "V-204498": {
+    "stig_id": "RHEL-07-021600",
+    "rule_id": "SV-204498r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify Access Control Lists (ACLs).",
+    "discuss_md5": "717bb746043ba48fec0a8aaf82f4fdd5",
+    "check_md5": "14df425b4d8a192b377743528313d25c",
+    "fix_md5": "adb4e4026fdcd57c0b108a0f1c0f5d02"
+  },
+  "V-204499": {
+    "stig_id": "RHEL-07-021610",
+    "rule_id": "SV-204499r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the file integrity tool is configured to verify extended attributes.",
+    "discuss_md5": "25e09f114c31ca33117d886e07e5cc05",
+    "check_md5": "d29a4804f534fcb2840b244ef3df7a80",
+    "fix_md5": "986c2585711b979357ec4470410bd036"
+  },
+  "V-204500": {
+    "stig_id": "RHEL-07-021620",
+    "rule_id": "SV-204500r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.",
+    "discuss_md5": "4a195a77981000476321f4c0f49a7e4a",
+    "check_md5": "62cc54c338bfe5f98a0ad4f147515fed",
+    "fix_md5": "1d2191d88752970d06c2a3260dae3d89"
+  },
+  "V-204501": {
+    "stig_id": "RHEL-07-021700",
+    "rule_id": "SV-204501r958796_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved.",
+    "discuss_md5": "29a74ce6e99f52ba8000d08583455081",
+    "check_md5": "ec59adcead21f9ea2ea56cb863a9b564",
+    "fix_md5": "11d99c7e5e692f48eaec2b7bcad3726a"
+  },
+  "V-204502": {
+    "stig_id": "RHEL-07-021710",
+    "rule_id": "SV-204502r958478_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have the telnet-server package installed.",
+    "discuss_md5": "b6ff7ec70ac747f4e474ed1cd2f65cc3",
+    "check_md5": "2eaf7a4c433854e238c4ffaeca4e46cf",
+    "fix_md5": "7fa54bf16f84338bc0ca756f5aff31f4"
+  },
+  "V-204503": {
+    "stig_id": "RHEL-07-030000",
+    "rule_id": "SV-204503r958414_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that auditing is configured to produce records containing information to establish what type of events occurred, where the events occurred, the source of the events, and the outcome of the events. These audit records must also identify individual identities of group account users.",
+    "discuss_md5": "1fd1eb6713d55bd7422668dc43d04f94",
+    "check_md5": "b8ac55b1df05a933566461a37b099938",
+    "fix_md5": "787894d0885aa99286135809e7dc67c1"
+  },
+  "V-204504": {
+    "stig_id": "RHEL-07-030010",
+    "rule_id": "SV-204504r958424_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern. If availability is a concern, the system must alert the designated staff (System Administrator [SA] and Information System Security Officer [ISSO] at a minimum) in the event of an audit processing failure.",
+    "discuss_md5": "0ebeaa3119483a0d53f4e9725731a9d8",
+    "check_md5": "3db92562e268ac820c47e3c87f94989a",
+    "fix_md5": "54b1daa45da91af01624ebd755f01b02"
+  },
+  "V-204506": {
+    "stig_id": "RHEL-07-030201",
+    "rule_id": "SV-204506r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited.",
+    "discuss_md5": "ae11318f6c0a4556bbbe8605cb24dcbd",
+    "check_md5": "12d1bdf1e11c83fc85a5586536e68336",
+    "fix_md5": "a312d6367942c4e049a1210d1921783c"
+  },
+  "V-204507": {
+    "stig_id": "RHEL-07-030210",
+    "rule_id": "SV-204507r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must take appropriate action when the remote logging buffer is full.",
+    "discuss_md5": "32da51b7c80d44eb16c9395c87cc4416",
+    "check_md5": "312aae4a31bb7ac2c4bf725c4ec57f66",
+    "fix_md5": "1a04f471f68094e032b7c4ba5e753e30"
+  },
+  "V-204508": {
+    "stig_id": "RHEL-07-030211",
+    "rule_id": "SV-204508r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must label all off-loaded audit logs before sending them to the central log server.",
+    "discuss_md5": "815290961b0341afefd044e645f5c423",
+    "check_md5": "88ce064b46d1a792b2f24baf48d6a8ef",
+    "fix_md5": "72ad55cbf6c7045661c891125ec15dbe"
+  },
+  "V-204509": {
+    "stig_id": "RHEL-07-030300",
+    "rule_id": "SV-204509r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must off-load audit records onto a different system or media from the system being audited.",
+    "discuss_md5": "04bc40d6cdc9cf96ec3915aaec9b1718",
+    "check_md5": "357e08df88d5f2dc85a5d47983fcefa5",
+    "fix_md5": "84cadd8d385a3adad0df48ee964445cb"
+  },
+  "V-204510": {
+    "stig_id": "RHEL-07-030310",
+    "rule_id": "SV-204510r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.",
+    "discuss_md5": "04bc40d6cdc9cf96ec3915aaec9b1718",
+    "check_md5": "dac6964395388f6bd7ad66277ee291b0",
+    "fix_md5": "e3f94227d607b538b906877b29f13435"
+  },
+  "V-204511": {
+    "stig_id": "RHEL-07-030320",
+    "rule_id": "SV-204511r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when the audit storage volume is full.",
+    "discuss_md5": "caa8d7c24f13716136774090f11360b3",
+    "check_md5": "d1c2fd2acb95626967d4356f2ad637f4",
+    "fix_md5": "747197b3e100b76b71b71ae780fb1db5"
+  },
+  "V-204512": {
+    "stig_id": "RHEL-07-030321",
+    "rule_id": "SV-204512r958754_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when there is an error sending audit records to a remote system.",
+    "discuss_md5": "58dd2facd4f03c3d898be7f79799f151",
+    "check_md5": "84fdcf44111f3010274ccc850d213b7c",
+    "fix_md5": "c730d1fb2063507776933df81be7db27"
+  },
+  "V-204513": {
+    "stig_id": "RHEL-07-030330",
+    "rule_id": "SV-204513r971542_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must initiate an action to notify the System Administrator (SA) and Information System Security Officer ISSO, at a minimum, when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity.",
+    "discuss_md5": "2e82e4c84139c8318ee8c8e46e216df5",
+    "check_md5": "85a676aa5dff5ab8b73a0f03cd55f9eb",
+    "fix_md5": "95b519171820ea7411a7f5549d1d09b1"
+  },
+  "V-204514": {
+    "stig_id": "RHEL-07-030340",
+    "rule_id": "SV-204514r971542_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) via email when the threshold for the repository maximum audit record storage capacity is reached.",
+    "discuss_md5": "b996d1aea72f02200d0fefbf40771344",
+    "check_md5": "0f65bb55551cc771b6759afcb2d0f210",
+    "fix_md5": "a0110c57471bed3cb14b83967d64aba8"
+  },
+  "V-204515": {
+    "stig_id": "RHEL-07-030350",
+    "rule_id": "SV-204515r971542_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must immediately notify the System Administrator (SA) and Information System Security Officer (ISSO) (at a minimum) when the threshold for the repository maximum audit record storage capacity is reached.",
+    "discuss_md5": "b996d1aea72f02200d0fefbf40771344",
+    "check_md5": "df48412eb519966ec127bc6b493b8f6b",
+    "fix_md5": "dc775fd6d4e4ef7addc92c67cf48a478"
+  },
+  "V-204516": {
+    "stig_id": "RHEL-07-030360",
+    "rule_id": "SV-204516r958732_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all executions of privileged functions.",
+    "discuss_md5": "dda8c22cefdf9d1a3f2fef9cff58c156",
+    "check_md5": "fc97a042a6791beec09f60f9e7421f2d",
+    "fix_md5": "83bcfbe595f0ee4d7b7f83928bbff61d"
+  },
+  "V-204517": {
+    "stig_id": "RHEL-07-030370",
+    "rule_id": "SV-204517r958446_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the chown, fchown, fchownat, and lchown syscalls.",
+    "discuss_md5": "839d945a3b7648eabbbdf0b4e84cda6e",
+    "check_md5": "0aff4e1ab943d6ad5062838dbdbc974b",
+    "fix_md5": "3172dc670f87ee4b2d2cdf4555681d7e"
+  },
+  "V-204521": {
+    "stig_id": "RHEL-07-030410",
+    "rule_id": "SV-204521r991570_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the chmod, fchmod, and fchmodat syscalls.",
+    "discuss_md5": "5b19ae15c2fb8f0c641546d2e00b7831",
+    "check_md5": "50196667163f7e5803b44a992a9831b7",
+    "fix_md5": "08d7f6c126aa643784ecf63e8af07ca8"
+  },
+  "V-204524": {
+    "stig_id": "RHEL-07-030440",
+    "rule_id": "SV-204524r991570_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr syscalls.",
+    "discuss_md5": "5b19ae15c2fb8f0c641546d2e00b7831",
+    "check_md5": "5454a4f9914c1b0ad8d03b4b871109d4",
+    "fix_md5": "ddbaf5d62f1e6d550589806e02d30a8d"
+  },
+  "V-204531": {
+    "stig_id": "RHEL-07-030510",
+    "rule_id": "SV-204531r958446_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the creat, open, openat, open_by_handle_at, truncate, and ftruncate syscalls.",
+    "discuss_md5": "0704e85b58fca0c99afe3e84c238341f",
+    "check_md5": "0598e8468ea5e4ce535b607436278ded",
+    "fix_md5": "60fe4b03b1c2dc9899bc97e562e3181e"
+  },
+  "V-204536": {
+    "stig_id": "RHEL-07-030560",
+    "rule_id": "SV-204536r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the semanage command.",
+    "discuss_md5": "b6e26837a526e24d32a1747bf08fc938",
+    "check_md5": "e040dbae966aeb7345e880e2a7b183e9",
+    "fix_md5": "a7a9b397f3b584bf107a4db9df23d6bb"
+  },
+  "V-204537": {
+    "stig_id": "RHEL-07-030570",
+    "rule_id": "SV-204537r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the setsebool command.",
+    "discuss_md5": "b6e26837a526e24d32a1747bf08fc938",
+    "check_md5": "a07bd4961eb52d4e95a392b60e7eaa23",
+    "fix_md5": "a7b159e0385946a1ec6b17df4e720066"
+  },
+  "V-204538": {
+    "stig_id": "RHEL-07-030580",
+    "rule_id": "SV-204538r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the chcon command.",
+    "discuss_md5": "b6e26837a526e24d32a1747bf08fc938",
+    "check_md5": "805e9bcf08bc921e3e7db912fc99db11",
+    "fix_md5": "549acfd668aed2b5c2e33c8ca99e04cc"
+  },
+  "V-204539": {
+    "stig_id": "RHEL-07-030590",
+    "rule_id": "SV-204539r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the setfiles command.",
+    "discuss_md5": "b6e26837a526e24d32a1747bf08fc938",
+    "check_md5": "7242b659b17ccdfe8f5cb0346c4d12c9",
+    "fix_md5": "9b4e5b2a9327da5929c161f16e45b203"
+  },
+  "V-204540": {
+    "stig_id": "RHEL-07-030610",
+    "rule_id": "SV-204540r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all unsuccessful account access events.",
+    "discuss_md5": "5dac3393d89faae19c2e0cffb89f36ea",
+    "check_md5": "e91500573599278a22ad471e212e7a89",
+    "fix_md5": "eb074b15f9da69d78bdd39f32537dc82"
+  },
+  "V-204541": {
+    "stig_id": "RHEL-07-030620",
+    "rule_id": "SV-204541r958846_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all successful account access events.",
+    "discuss_md5": "5dac3393d89faae19c2e0cffb89f36ea",
+    "check_md5": "eed8302b1c4ef990948bf51e0f81926f",
+    "fix_md5": "a46bdb28d5d4ae817528eefd2249bd3f"
+  },
+  "V-204542": {
+    "stig_id": "RHEL-07-030630",
+    "rule_id": "SV-204542r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the passwd command.",
+    "discuss_md5": "fcf9a110a2e8db57403a828b577f1f51",
+    "check_md5": "8299566868386c6ab493ece6a1e91ee5",
+    "fix_md5": "6cb56640c4ed264dd4bcf224cbd66a54"
+  },
+  "V-204543": {
+    "stig_id": "RHEL-07-030640",
+    "rule_id": "SV-204543r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the unix_chkpwd command.",
+    "discuss_md5": "fcf9a110a2e8db57403a828b577f1f51",
+    "check_md5": "dfd919e067c76a42f022a58e9c735658",
+    "fix_md5": "cf39acbcd21c55dea8f03b9b745d9c5a"
+  },
+  "V-204544": {
+    "stig_id": "RHEL-07-030650",
+    "rule_id": "SV-204544r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the gpasswd command.",
+    "discuss_md5": "fcf9a110a2e8db57403a828b577f1f51",
+    "check_md5": "342347cd02c681791bf4198adae77ad9",
+    "fix_md5": "09a5aaff2979264b4dfd90d88104bd9d"
+  },
+  "V-204545": {
+    "stig_id": "RHEL-07-030660",
+    "rule_id": "SV-204545r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the chage command.",
+    "discuss_md5": "fcf9a110a2e8db57403a828b577f1f51",
+    "check_md5": "1075bfa397fb917907918d76eb307e87",
+    "fix_md5": "63c345a513934b564052cbba481dfb9c"
+  },
+  "V-204546": {
+    "stig_id": "RHEL-07-030670",
+    "rule_id": "SV-204546r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the userhelper command.",
+    "discuss_md5": "fcf9a110a2e8db57403a828b577f1f51",
+    "check_md5": "511e7bb415ba1775c27fa309d54c78a3",
+    "fix_md5": "df6c2cfdfcd49839aaa11aa14c2a4e55"
+  },
+  "V-204547": {
+    "stig_id": "RHEL-07-030680",
+    "rule_id": "SV-204547r958412_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the su command.",
+    "discuss_md5": "8a66dd782496747f30b40b3899deef41",
+    "check_md5": "0cb3f4c8d9da1d1c6f4a39cbef959daa",
+    "fix_md5": "6fe2353eaff3f8743c0ea2bea8d01e41"
+  },
+  "V-204548": {
+    "stig_id": "RHEL-07-030690",
+    "rule_id": "SV-204548r958412_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the sudo command.",
+    "discuss_md5": "8a66dd782496747f30b40b3899deef41",
+    "check_md5": "dcddb8a5ef2a2828fc1e5e372db989db",
+    "fix_md5": "b7faae5149a23a9071e7cae93f3a624e"
+  },
+  "V-204549": {
+    "stig_id": "RHEL-07-030700",
+    "rule_id": "SV-204549r958412_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory.",
+    "discuss_md5": "56e4b0a54047113a2e830ab6c008dd0e",
+    "check_md5": "a23c2c3f7fde4a4223cf32015c0cc4e4",
+    "fix_md5": "e32c7d86e4f36c40b73e729b64645ad6"
+  },
+  "V-204550": {
+    "stig_id": "RHEL-07-030710",
+    "rule_id": "SV-204550r958412_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the newgrp command.",
+    "discuss_md5": "8a66dd782496747f30b40b3899deef41",
+    "check_md5": "472a6375b57e6cd0ea4b0e4edf1573ab",
+    "fix_md5": "580f25a8f41acee63d4480a7594cc57c"
+  },
+  "V-204551": {
+    "stig_id": "RHEL-07-030720",
+    "rule_id": "SV-204551r958412_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the chsh command.",
+    "discuss_md5": "8a66dd782496747f30b40b3899deef41",
+    "check_md5": "57c95e015b49adc992e960cbb795df1d",
+    "fix_md5": "1d7e7a4a21238cf96e3c73829f5f76ca"
+  },
+  "V-204552": {
+    "stig_id": "RHEL-07-030740",
+    "rule_id": "SV-204552r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the mount command and syscall.",
+    "discuss_md5": "b7ea23e5b6f822dc7d27e79cdfb6f799",
+    "check_md5": "33e702a21aea33b0e7298b2e4950be31",
+    "fix_md5": "85c45c7a7725849f030a59c14406f19c"
+  },
+  "V-204553": {
+    "stig_id": "RHEL-07-030750",
+    "rule_id": "SV-204553r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the umount command.",
+    "discuss_md5": "b7ea23e5b6f822dc7d27e79cdfb6f799",
+    "check_md5": "f67bf0f2828c9cd6329a2cca26402456",
+    "fix_md5": "537c0bccd83cde5a6c15278470e833da"
+  },
+  "V-204554": {
+    "stig_id": "RHEL-07-030760",
+    "rule_id": "SV-204554r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the postdrop command.",
+    "discuss_md5": "d46f00a77dd33eee24977893db1009a6",
+    "check_md5": "a4d5ec17e21974c588141d17cb196592",
+    "fix_md5": "bd69008ff55703afdbf9cd3328f21ff1"
+  },
+  "V-204555": {
+    "stig_id": "RHEL-07-030770",
+    "rule_id": "SV-204555r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the postqueue command.",
+    "discuss_md5": "d46f00a77dd33eee24977893db1009a6",
+    "check_md5": "e351e420e09d8aaa125c58e90786e793",
+    "fix_md5": "5c1e87a7a9529a64fc44a8a860936b03"
+  },
+  "V-204556": {
+    "stig_id": "RHEL-07-030780",
+    "rule_id": "SV-204556r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the ssh-keysign command.",
+    "discuss_md5": "d27a0d83ae7673f4cb92f3c28b26d93c",
+    "check_md5": "e45b5902f95b2a2189baf3fb9dbfab06",
+    "fix_md5": "40fdc5d3f77433090b6f3597e3fa763b"
+  },
+  "V-204557": {
+    "stig_id": "RHEL-07-030800",
+    "rule_id": "SV-204557r958422_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the crontab command.",
+    "discuss_md5": "a4e147e233455533374bf1cba1c0f899",
+    "check_md5": "30c342ea6968c3dfb5687d55e509d2e5",
+    "fix_md5": "7d7735ce1a9fc181d5cb73784155bd73"
+  },
+  "V-204558": {
+    "stig_id": "RHEL-07-030810",
+    "rule_id": "SV-204558r991579_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command.",
+    "discuss_md5": "008efffa4ef77d26807a1c652e1504d3",
+    "check_md5": "48abb0768977903929262110198e4bdd",
+    "fix_md5": "edae2b3fc39c789cfe3957db5d212f80"
+  },
+  "V-204559": {
+    "stig_id": "RHEL-07-030819",
+    "rule_id": "SV-204559r991580_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall.",
+    "discuss_md5": "8019f8264355f330dd4ecc7dbbeeacf0",
+    "check_md5": "9a09bd9c78214285d554a9688db5cd70",
+    "fix_md5": "98622ffcf300e12fda6d63ae38ad9f28"
+  },
+  "V-204560": {
+    "stig_id": "RHEL-07-030820",
+    "rule_id": "SV-204560r991580_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the init_module and finit_module syscalls.",
+    "discuss_md5": "ecc3347111d2725ec0b3ebb31415c275",
+    "check_md5": "9b4b4e2e0b349508549baa7e46620bf5",
+    "fix_md5": "ec168fc025351f1dade9da144a52093f"
+  },
+  "V-204562": {
+    "stig_id": "RHEL-07-030830",
+    "rule_id": "SV-204562r991580_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the delete_module syscall.",
+    "discuss_md5": "8019f8264355f330dd4ecc7dbbeeacf0",
+    "check_md5": "d43c4cf88bb01e8ec7a06c75e3d12765",
+    "fix_md5": "4fa52f4200b845df9c30e5bd5e2dc074"
+  },
+  "V-204563": {
+    "stig_id": "RHEL-07-030840",
+    "rule_id": "SV-204563r991580_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the kmod command.",
+    "discuss_md5": "3973ee990c189b7dd6680024f92f4d7b",
+    "check_md5": "cf394f81bf8823ab6bdbd0fcdc7be084",
+    "fix_md5": "ce7587bed59f45cd69e2ef65f27cbec4"
+  },
+  "V-204564": {
+    "stig_id": "RHEL-07-030870",
+    "rule_id": "SV-204564r958368_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/passwd.",
+    "discuss_md5": "8dcb325867d7f112f8ae5d9c9154c234",
+    "check_md5": "99805e5901b081973c15ce413de9517b",
+    "fix_md5": "43428aeb31c5df1a2b3faa5700cbcf24"
+  },
+  "V-204565": {
+    "stig_id": "RHEL-07-030871",
+    "rule_id": "SV-204565r958368_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/group.",
+    "discuss_md5": "54b117448d2d37375c1440c2f61bb02a",
+    "check_md5": "a6634aeb0ffde98d9601d998dfe29ee6",
+    "fix_md5": "6fe85a342903e8879188648d1ae6605a"
+  },
+  "V-204566": {
+    "stig_id": "RHEL-07-030872",
+    "rule_id": "SV-204566r958368_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/gshadow.",
+    "discuss_md5": "54b117448d2d37375c1440c2f61bb02a",
+    "check_md5": "c11f04e2ef422ac0659139d5c9c3a888",
+    "fix_md5": "cf8c26d46d503fd16ef725a4c1d89764"
+  },
+  "V-204567": {
+    "stig_id": "RHEL-07-030873",
+    "rule_id": "SV-204567r958368_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/shadow.",
+    "discuss_md5": "54b117448d2d37375c1440c2f61bb02a",
+    "check_md5": "726a745f97070c044aa859acdcb49d58",
+    "fix_md5": "0b9802512afbe676ee316b4bac53e49b"
+  },
+  "V-204568": {
+    "stig_id": "RHEL-07-030874",
+    "rule_id": "SV-204568r958368_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must generate audit records for all account creations, modifications, disabling, and termination events that affect /etc/security/opasswd.",
+    "discuss_md5": "54b117448d2d37375c1440c2f61bb02a",
+    "check_md5": "3d35dcaf156b517dcda248fb77c4846b",
+    "fix_md5": "1c76f4f2ab706731870b43bba6a84402"
+  },
+  "V-204572": {
+    "stig_id": "RHEL-07-030910",
+    "rule_id": "SV-204572r991575_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must audit all uses of the unlink, unlinkat, rename, renameat, and rmdir syscalls.",
+    "discuss_md5": "d08ff2d3b1ae58eebfdcdbd7bd1c1042",
+    "check_md5": "a73b1e3fc988c00be94ac5c99c6bdfdd",
+    "fix_md5": "a8325f59ba9528c668fa11abb01aca96"
+  },
+  "V-204574": {
+    "stig_id": "RHEL-07-031000",
+    "rule_id": "SV-204574r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must send rsyslog output to a log aggregation server.",
+    "discuss_md5": "c36b19dc702af2deded7741209e634d4",
+    "check_md5": "2781db90d6b33937e20eacbb5d0c84d3",
+    "fix_md5": "b5ba3061f58bbd5684b2e72199180061"
+  },
+  "V-204575": {
+    "stig_id": "RHEL-07-031010",
+    "rule_id": "SV-204575r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the rsyslog daemon does not accept log messages from other servers unless the server is being used for log aggregation.",
+    "discuss_md5": "b40c65b1b4d8b5fb84c6cb13c7925729",
+    "check_md5": "f942d52b0eedc4a5b967c4a579e21fe7",
+    "fix_md5": "d111e6404596c8ccde4b68e526cda038"
+  },
+  "V-204576": {
+    "stig_id": "RHEL-07-040000",
+    "rule_id": "SV-204576r958398_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must limit the number of concurrent sessions to 10 for all accounts and/or account types.",
+    "discuss_md5": "53171afca92ca4aa4013964cd2e7f62d",
+    "check_md5": "361700c84ad4b529d432bffd2987706e",
+    "fix_md5": "262c03632bb2ef271c4d5ba6cd1c2344"
+  },
+  "V-204577": {
+    "stig_id": "RHEL-07-040100",
+    "rule_id": "SV-204577r958480_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to prohibit or restrict the use of functions, ports, protocols, and/or services, as defined in the Ports, Protocols, and Services Management Component Local Service Assessment (PPSM CLSA) and vulnerability assessments.",
+    "discuss_md5": "38ec953e0dc664fe2c277f78d7d64465",
+    "check_md5": "87f1a8412bc0a9d22ab44459cc985d8d",
+    "fix_md5": "8ed8f762e7e4e862f692af88aaff01cf"
+  },
+  "V-204578": {
+    "stig_id": "RHEL-07-040110",
+    "rule_id": "SV-204578r958408_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux 7 operating system must implement DoD-approved encryption to protect the confidentiality of SSH connections.",
+    "discuss_md5": "efc285b3f3c36c31fc997b9308242d7f",
+    "check_md5": "41f21fae9bb40e8b2102fdf551bad1d7",
+    "fix_md5": "a48db2027a0eef4642967c5262503040"
+  },
+  "V-204579": {
+    "stig_id": "RHEL-07-040160",
+    "rule_id": "SV-204579r970703_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with a communication session are terminated at the end of the session or after 15 minutes of inactivity from the user at a command prompt, except to fulfill documented and validated mission requirements.",
+    "discuss_md5": "0191c61f9b22eab5bcfd0ce34a7397cd",
+    "check_md5": "4da2d5b16bdef1709d77fd399ee13e1b",
+    "fix_md5": "558c359f169bb83d9f47543f5cf591bd"
+  },
+  "V-204580": {
+    "stig_id": "RHEL-07-040170",
+    "rule_id": "SV-204580r958390_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner immediately prior to, or as part of, remote access logon prompts.",
+    "discuss_md5": "e71fca5532aeaead8082fb27da4a0225",
+    "check_md5": "bbb7825c1d016e746017f862a865bbc8",
+    "fix_md5": "a717cd07d45a2bd26ca73339364799fb"
+  },
+  "V-204581": {
+    "stig_id": "RHEL-07-040180",
+    "rule_id": "SV-204581r991554_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) authentication communications.",
+    "discuss_md5": "aaca7898718a0d039f0326fd93d4a68f",
+    "check_md5": "5b3a035939e5c1381a4c1b6922430cc1",
+    "fix_md5": "30f21d5ec64ff9864d70c96fdb65c3b4"
+  },
+  "V-204582": {
+    "stig_id": "RHEL-07-040190",
+    "rule_id": "SV-204582r991554_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.",
+    "discuss_md5": "aaca7898718a0d039f0326fd93d4a68f",
+    "check_md5": "ec6e4c6ba7dadf582576924015946f46",
+    "fix_md5": "97af32ac00f9e22b9aaa022614fafdff"
+  },
+  "V-204583": {
+    "stig_id": "RHEL-07-040200",
+    "rule_id": "SV-204583r991554_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement cryptography to protect the integrity of Lightweight Directory Access Protocol (LDAP) communications.",
+    "discuss_md5": "aaca7898718a0d039f0326fd93d4a68f",
+    "check_md5": "f098776bc5761cf8a5fcad5385172a59",
+    "fix_md5": "bfb6438c7ff265779cb5de6d5a279c04"
+  },
+  "V-204584": {
+    "stig_id": "RHEL-07-040201",
+    "rule_id": "SV-204584r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement virtual address space randomization.",
+    "discuss_md5": "270a1246138c3a676524274a32b444b4",
+    "check_md5": "09f0c5990d84e688f3db866d36d3bd78",
+    "fix_md5": "3b7356f298fd9dacfdd77e5239de9e50"
+  },
+  "V-204585": {
+    "stig_id": "RHEL-07-040300",
+    "rule_id": "SV-204585r958908_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all networked systems have SSH installed.",
+    "discuss_md5": "ad154ed245178b3df0a76478a660a18a",
+    "check_md5": "51ab507d857ef32f3a29175aaad2fd57",
+    "fix_md5": "9f2067ee8605e4cbe56a316fa00fbc12"
+  },
+  "V-204586": {
+    "stig_id": "RHEL-07-040310",
+    "rule_id": "SV-204586r958908_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all networked systems use SSH for confidentiality and integrity of transmitted and received information as well as information during preparation for transmission.",
+    "discuss_md5": "ef5f1e1c9e592bbae5f0256beeaef9d0",
+    "check_md5": "ceef43a81884d2318fa3a9749c4d196d",
+    "fix_md5": "b026e4c69ae1d5f3e20a32d551dcc560"
+  },
+  "V-204587": {
+    "stig_id": "RHEL-07-040320",
+    "rule_id": "SV-204587r970703_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic are terminated after 10 minutes of becoming unresponsive.",
+    "discuss_md5": "a26271ecfedb4ce8f254cceb3080c771",
+    "check_md5": "c2eb84473a5da546a7e9931cf8a89641",
+    "fix_md5": "635b7b07d00f09c39ba1a79e15503371"
+  },
+  "V-204588": {
+    "stig_id": "RHEL-07-040330",
+    "rule_id": "SV-204588r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using RSA rhosts authentication.",
+    "discuss_md5": "bf95483b0df7dd372c3d559d3f1e88d9",
+    "check_md5": "18f6a9ae7e3e2bca9f848bd431e193cc",
+    "fix_md5": "eee835847b1fbfb5ed0565e1420b3b11"
+  },
+  "V-204589": {
+    "stig_id": "RHEL-07-040340",
+    "rule_id": "SV-204589r970703_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic terminate after becoming unresponsive.",
+    "discuss_md5": "a26271ecfedb4ce8f254cceb3080c771",
+    "check_md5": "922d4e4009b8152fcbf53db0e0517909",
+    "fix_md5": "ea1c263f7e6a1d4608ab9890b54a3562"
+  },
+  "V-204590": {
+    "stig_id": "RHEL-07-040350",
+    "rule_id": "SV-204590r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using rhosts authentication.",
+    "discuss_md5": "bf95483b0df7dd372c3d559d3f1e88d9",
+    "check_md5": "2413e237bec4e66a392da4056dec3383",
+    "fix_md5": "f6489b3ca6903dbb0fbcd9e3044033be"
+  },
+  "V-204591": {
+    "stig_id": "RHEL-07-040360",
+    "rule_id": "SV-204591r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must display the date and time of the last successful account logon upon an SSH logon.",
+    "discuss_md5": "530bdb5f52217e3baedeaa7705fc2287",
+    "check_md5": "c03b0182466184e2483787cef47cf8d0",
+    "fix_md5": "8db8e92a2e8ae4d551c286aa0692ed2a"
+  },
+  "V-204592": {
+    "stig_id": "RHEL-07-040370",
+    "rule_id": "SV-204592r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not permit direct logons to the root account using remote access via SSH.",
+    "discuss_md5": "81ac0566727d521fb0ef219fdf707c8c",
+    "check_md5": "82b69e95e1acb2236e0301464272cecd",
+    "fix_md5": "96f6b0b401553815310c5e2354b80908"
+  },
+  "V-204593": {
+    "stig_id": "RHEL-07-040380",
+    "rule_id": "SV-204593r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using known hosts authentication.",
+    "discuss_md5": "bf95483b0df7dd372c3d559d3f1e88d9",
+    "check_md5": "9854e295a8ad13d59ea10e1eb5917e58",
+    "fix_md5": "ed1225f72f720f1a5f43a4cc47c89742"
+  },
+  "V-204594": {
+    "stig_id": "RHEL-07-040390",
+    "rule_id": "SV-204594r987796_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use the SSHv2 protocol.",
+    "discuss_md5": "7a7ac8f6f76cdb634684b58df54d7635",
+    "check_md5": "036d1513f85fc12d64f7fe466d48bfb4",
+    "fix_md5": "f8c14db4598b092e53734cb6186e5d36"
+  },
+  "V-204595": {
+    "stig_id": "RHEL-07-040400",
+    "rule_id": "SV-204595r991554_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use Message Authentication Codes (MACs) employing FIPS 140-2 approved cryptographic hash algorithms.",
+    "discuss_md5": "db65ec1840492b0978c70ef94c012311",
+    "check_md5": "30c37b6cc58bbc647360380156f190c4",
+    "fix_md5": "c5bfb71859f9bb4a2ed01f311dd56e15"
+  },
+  "V-204596": {
+    "stig_id": "RHEL-07-040410",
+    "rule_id": "SV-204596r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH public host key files have mode 0644 or less permissive.",
+    "discuss_md5": "e83bcbbd6a56d451fea50c357d4825df",
+    "check_md5": "2a295ed19697eb6e6cc64f161ea92827",
+    "fix_md5": "7d74cd4a657adc45128689a02839c114"
+  },
+  "V-204597": {
+    "stig_id": "RHEL-07-040420",
+    "rule_id": "SV-204597r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH private host key files have mode 0640 or less permissive.",
+    "discuss_md5": "db7636a68782690d8f06226f5232d6c6",
+    "check_md5": "6bf809f04bf44e5f3f7ecf746e71fee3",
+    "fix_md5": "ae39e6618576fc0833d61c5b373c07e8"
+  },
+  "V-204598": {
+    "stig_id": "RHEL-07-040430",
+    "rule_id": "SV-204598r958796_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not permit Generic Security Service Application Program Interface (GSSAPI) authentication unless needed.",
+    "discuss_md5": "f61b9f76507138da4202751c4fd38a71",
+    "check_md5": "2afefeca386ccf313211652d732a1a9e",
+    "fix_md5": "e6d5474e28af08202cd8341bc3778360"
+  },
+  "V-204599": {
+    "stig_id": "RHEL-07-040440",
+    "rule_id": "SV-204599r958796_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not permit Kerberos authentication unless needed.",
+    "discuss_md5": "f48a1d27e7ea4a40bd26938d5a085593",
+    "check_md5": "4efae67a5a4d547a29d5c7b81809b8ed",
+    "fix_md5": "25022cde79105fa70fa96908536dfa06"
+  },
+  "V-204600": {
+    "stig_id": "RHEL-07-040450",
+    "rule_id": "SV-204600r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon performs strict mode checking of home directory configuration files.",
+    "discuss_md5": "45bce65d318c16499646c3a2e4571520",
+    "check_md5": "101b3aff68cd52fe3ee54505c6ad6fa7",
+    "fix_md5": "84b41055571c391e153a13301ee854d0"
+  },
+  "V-204601": {
+    "stig_id": "RHEL-07-040460",
+    "rule_id": "SV-204601r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon uses privilege separation.",
+    "discuss_md5": "c4388dfcc8f530d5d4a4293a277456db",
+    "check_md5": "eb8b696fd0320a50b734c58445947b88",
+    "fix_md5": "83fa75ce6e2e21cd7c69d45582d6dd32"
+  },
+  "V-204602": {
+    "stig_id": "RHEL-07-040470",
+    "rule_id": "SV-204602r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow compression or only allows compression after successful authentication.",
+    "discuss_md5": "ce7fc85bb9eb8487c387158f85563596",
+    "check_md5": "ec214c5ed2fc01de242b2e2c08e76b27",
+    "fix_md5": "ef20890b4b855bc4a11803d7f2828259"
+  },
+  "V-204603": {
+    "stig_id": "RHEL-07-040500",
+    "rule_id": "SV-204603r982208_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must, for networked systems, synchronize clocks with a server that is synchronized to one of the redundant United States Naval Observatory (USNO) time servers, a time server designated for the appropriate DoD network (NIPRNet/SIPRNet), and/or the Global Positioning System (GPS).",
+    "discuss_md5": "6d8f013f39779e0e9b8e128348bc0dd3",
+    "check_md5": "9d336aaa4569838d0786c5da12213299",
+    "fix_md5": "161233113bc90fa0fc61a4b6727b5c19"
+  },
+  "V-204604": {
+    "stig_id": "RHEL-07-040520",
+    "rule_id": "SV-204604r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must enable an application firewall, if available.",
+    "discuss_md5": "1666327ff32c556ab18b6bb1ef9e2c29",
+    "check_md5": "b315daf354f1b768add2bbd3871a8f56",
+    "fix_md5": "439b4935f00dbe6651946c4540237fec"
+  },
+  "V-204605": {
+    "stig_id": "RHEL-07-040530",
+    "rule_id": "SV-204605r991589_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must display the date and time of the last successful account logon upon logon.",
+    "discuss_md5": "bf570ce9e0e439a051cd7c07e36ccf9a",
+    "check_md5": "d0e0ad71ae9edcd2c9acd478b83925f6",
+    "fix_md5": "f78b3e171ed2110f51d72a168d0d4fd1"
+  },
+  "V-204606": {
+    "stig_id": "RHEL-07-040540",
+    "rule_id": "SV-204606r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not contain .shosts files.",
+    "discuss_md5": "7097c461426c9c129f19d7eddf85f853",
+    "check_md5": "19d3d2cff9469c09cb3e5b6084cba203",
+    "fix_md5": "cd7bd7928b5be933768aea6cee89b009"
+  },
+  "V-204607": {
+    "stig_id": "RHEL-07-040550",
+    "rule_id": "SV-204607r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not contain shosts.equiv files.",
+    "discuss_md5": "32d7bc8308f3e6551cb558c4c95bba73",
+    "check_md5": "e3e4bb57e6de88bc4c06f801e32b5953",
+    "fix_md5": "fd0d38791a8532c935a8ea9a4ab283ae"
+  },
+  "V-204608": {
+    "stig_id": "RHEL-07-040600",
+    "rule_id": "SV-204608r991589_rule",
+    "severity": "low",
+    "title": "For Red Hat Enterprise Linux operating systems using DNS resolution, at least two name servers must be configured.",
+    "discuss_md5": "1a23d4b5cfcfdb912cb852599b83b511",
+    "check_md5": "6022750839d57e75bf45381ed947dfc5",
+    "fix_md5": "dd74faed4b6190be60568f51e6114c16"
+  },
+  "V-204609": {
+    "stig_id": "RHEL-07-040610",
+    "rule_id": "SV-204609r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not forward Internet Protocol version 4 (IPv4) source-routed packets.",
+    "discuss_md5": "ea2a5576d3daa52fdd4198a9f760a336",
+    "check_md5": "ce9d54897d6d17f7bc268c6ebfbce94e",
+    "fix_md5": "49250d110e9a1c340e9e72a2863dac0f"
+  },
+  "V-204610": {
+    "stig_id": "RHEL-07-040611",
+    "rule_id": "SV-204610r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible on all interfaces.",
+    "discuss_md5": "9c539d4b6745b8a8a67835037f89d7cf",
+    "check_md5": "bd66ca409c2fa592f483eca598918253",
+    "fix_md5": "d0e8f3e3d4dbc216aace8261f1772171"
+  },
+  "V-204611": {
+    "stig_id": "RHEL-07-040612",
+    "rule_id": "SV-204611r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must use a reverse-path filter for IPv4 network traffic when possible by default.",
+    "discuss_md5": "551d73b68e6f497cf59926513ca75f3d",
+    "check_md5": "9c76d84c53ed76bafa60b2db8df2e351",
+    "fix_md5": "9f9b86be229b8e48fffa238754b05b83"
+  },
+  "V-204612": {
+    "stig_id": "RHEL-07-040620",
+    "rule_id": "SV-204612r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not forward Internet Protocol version 4 (IPv4) source-routed packets by default.",
+    "discuss_md5": "ea2a5576d3daa52fdd4198a9f760a336",
+    "check_md5": "21bbfd703c183006c424f78379dac02f",
+    "fix_md5": "91f2f842116bc1a3161894cd6fde4b15"
+  },
+  "V-204613": {
+    "stig_id": "RHEL-07-040630",
+    "rule_id": "SV-204613r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not respond to Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) echoes sent to a broadcast address.",
+    "discuss_md5": "31ebf40b14623e02be349acaae153c6b",
+    "check_md5": "ea49fc61b81ea4e1d4de1cc61729aa7f",
+    "fix_md5": "1240b655a94aca1ae0c572725433a105"
+  },
+  "V-204614": {
+    "stig_id": "RHEL-07-040640",
+    "rule_id": "SV-204614r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages from being accepted.",
+    "discuss_md5": "122e43cfc82461bbae85c58c340764ae",
+    "check_md5": "698017ff2450e8ee446b61aecda69507",
+    "fix_md5": "4a6f96d4f63962c64d09053964cbf6af"
+  },
+  "V-204615": {
+    "stig_id": "RHEL-07-040641",
+    "rule_id": "SV-204615r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must ignore Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages.",
+    "discuss_md5": "122e43cfc82461bbae85c58c340764ae",
+    "check_md5": "dd034e8652c196c0123ec5ffe0bd5f56",
+    "fix_md5": "cc9dd6a9a6697303399012f5095a552d"
+  },
+  "V-204616": {
+    "stig_id": "RHEL-07-040650",
+    "rule_id": "SV-204616r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not allow interfaces to perform Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects by default.",
+    "discuss_md5": "3ee069a7bcc6405d3ca7f4e94fd519f3",
+    "check_md5": "6bd47041dcff53da8cb42e9893d0a572",
+    "fix_md5": "4c1e18f11d197ace92aa8e63c0239700"
+  },
+  "V-204617": {
+    "stig_id": "RHEL-07-040660",
+    "rule_id": "SV-204617r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not send Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects.",
+    "discuss_md5": "3ee069a7bcc6405d3ca7f4e94fd519f3",
+    "check_md5": "efa02c9126ee579c9c7641501730e89f",
+    "fix_md5": "781b48732d0b62658b6c6c736cec5bb9"
+  },
+  "V-204618": {
+    "stig_id": "RHEL-07-040670",
+    "rule_id": "SV-204618r991589_rule",
+    "severity": "medium",
+    "title": "Network interfaces configured on the Red Hat Enterprise Linux operating system must not be in promiscuous mode.",
+    "discuss_md5": "891e9b13930f6b6df4d0a23c525b9f7f",
+    "check_md5": "1b1a74b437aed3da062bdb07e2382f9a",
+    "fix_md5": "daacc00758a6a6324659dac3a98e47f5"
+  },
+  "V-204619": {
+    "stig_id": "RHEL-07-040680",
+    "rule_id": "SV-204619r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to prevent unrestricted mail relaying.",
+    "discuss_md5": "e141eb8f3b246c8871c726ed98857935",
+    "check_md5": "d59006ad26b74fdcdeed47911ebef2c5",
+    "fix_md5": "770172fd172377a4949313b18e6b106f"
+  },
+  "V-204620": {
+    "stig_id": "RHEL-07-040690",
+    "rule_id": "SV-204620r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have a File Transfer Protocol (FTP) server package installed unless needed.",
+    "discuss_md5": "f509c182a63acc54ed0dbd774725a5c5",
+    "check_md5": "7d3cc02ceca5c64f843ca62aa9e9723a",
+    "fix_md5": "4410eda26e00606cb41ac3228fcce207"
+  },
+  "V-204621": {
+    "stig_id": "RHEL-07-040700",
+    "rule_id": "SV-204621r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have the Trivial File Transfer Protocol (TFTP) server package installed if not required for operational support.",
+    "discuss_md5": "9a1f49a8e94b6e825636ced5131f87f3",
+    "check_md5": "774c1085baaf0e8316190314959036ce",
+    "fix_md5": "8092dc4bb55a54ae34ba3edb8758f01f"
+  },
+  "V-204622": {
+    "stig_id": "RHEL-07-040710",
+    "rule_id": "SV-204622r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that remote X connections are disabled except to fulfill documented and validated mission requirements.",
+    "discuss_md5": "b27e2f44a9687c693c9c7f337cd47202",
+    "check_md5": "58c01817828266ee85d0f9a0ff1d4b1b",
+    "fix_md5": "742d1cc1a5d8d52769bd5beed4aa6904"
+  },
+  "V-204623": {
+    "stig_id": "RHEL-07-040720",
+    "rule_id": "SV-204623r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode.",
+    "discuss_md5": "ddfeecaad53f6c90abf4d8f61f288b45",
+    "check_md5": "4410da3a974ce10b81c0370f0aa13c4b",
+    "fix_md5": "3e272c43834d9dcac90e0b448abe0cbd"
+  },
+  "V-204624": {
+    "stig_id": "RHEL-07-040730",
+    "rule_id": "SV-204624r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not have a graphical display manager installed unless approved.",
+    "discuss_md5": "fc4c9b9c39c428da48209f0df59b7ddf",
+    "check_md5": "22f576a547c456155494524af5ff1cdc",
+    "fix_md5": "c2ece2e91844ba6a49327b095c1b8e10"
+  },
+  "V-204625": {
+    "stig_id": "RHEL-07-040740",
+    "rule_id": "SV-204625r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not be performing packet forwarding unless the system is a router.",
+    "discuss_md5": "012c026e311dbe3ca7e64a25701af200",
+    "check_md5": "fcf9d8076d157899f45a206b80373561",
+    "fix_md5": "370b7609fc51913062d2049586ee5f34"
+  },
+  "V-204626": {
+    "stig_id": "RHEL-07-040750",
+    "rule_id": "SV-204626r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS.",
+    "discuss_md5": "21403b14521ae2af16c857308a2c00d1",
+    "check_md5": "b11c2ece1ec40c138b4eea0f7a30ea6d",
+    "fix_md5": "7a40c0968a3782de17d2d79160260ab3"
+  },
+  "V-204627": {
+    "stig_id": "RHEL-07-040800",
+    "rule_id": "SV-204627r991589_rule",
+    "severity": "high",
+    "title": "SNMP community strings on the Red Hat Enterprise Linux operating system must be changed from the default.",
+    "discuss_md5": "c2b6ba95768145b39717abb85f8b0f5e",
+    "check_md5": "6b9e7a3b07eb6602ec9eb0ee5c10a94b",
+    "fix_md5": "6c7dbd309f77befa06eb51ae211f7132"
+  },
+  "V-204628": {
+    "stig_id": "RHEL-07-040810",
+    "rule_id": "SV-204628r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system access control program must be configured to grant or deny system access to specific hosts and services.",
+    "discuss_md5": "559757aee363d9d714af369c1b83194a",
+    "check_md5": "64b6a481faa01dc39b0c306271c245f7",
+    "fix_md5": "e338c538d2c191cb2507faf12c13f4ee"
+  },
+  "V-204629": {
+    "stig_id": "RHEL-07-040820",
+    "rule_id": "SV-204629r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not have unauthorized IP tunnels configured.",
+    "discuss_md5": "eb1d51242102c1d16d46402d017c52d6",
+    "check_md5": "2847908a44771130843b715a89309faa",
+    "fix_md5": "ddcaf65406bae098e3cd3a87b344bec8"
+  },
+  "V-204630": {
+    "stig_id": "RHEL-07-040830",
+    "rule_id": "SV-204630r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not forward IPv6 source-routed packets.",
+    "discuss_md5": "ae8e3d9c408ee063d0c24b1ee775f970",
+    "check_md5": "4e6f8327e52333c94af7abbc471930a4",
+    "fix_md5": "cc3cc8da47cc4348aa5c85a7c020b375"
+  },
+  "V-204631": {
+    "stig_id": "RHEL-07-041001",
+    "rule_id": "SV-204631r982216_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must have the required packages for multifactor authentication installed.",
+    "discuss_md5": "d96accfe0bf952fbe8dfc94136b762ac",
+    "check_md5": "42b36245e2a78c76b6a17a3975a74085",
+    "fix_md5": "e557c107c9e32c138637cbc0109e545e"
+  },
+  "V-204632": {
+    "stig_id": "RHEL-07-041002",
+    "rule_id": "SV-204632r982216_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM).",
+    "discuss_md5": "d96accfe0bf952fbe8dfc94136b762ac",
+    "check_md5": "cc0efa300deefc3b53cd827625920994",
+    "fix_md5": "8de9b60fcf6e4cd7274331811f95e9b5"
+  },
+  "V-204633": {
+    "stig_id": "RHEL-07-041003",
+    "rule_id": "SV-204633r982216_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement certificate status checking for PKI authentication.",
+    "discuss_md5": "d96accfe0bf952fbe8dfc94136b762ac",
+    "check_md5": "2995f88d697d751568e611e388fe6cea",
+    "fix_md5": "526b299d2089b55ad9587305c6bc7e6a"
+  },
+  "V-204634": {
+    "stig_id": "RHEL-07-041010",
+    "rule_id": "SV-204634r971547_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all wireless network adapters are disabled.",
+    "discuss_md5": "9eedf2139d33dc74bbe09864475d60e4",
+    "check_md5": "7e018e25d5c2320fb96eb5a076c880b8",
+    "fix_md5": "995abe51be18201dcd6b0d52bf3b47b1"
+  },
+  "V-214799": {
+    "stig_id": "RHEL-07-010020",
+    "rule_id": "SV-214799r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that the cryptographic hash of system files and commands matches vendor values.",
+    "discuss_md5": "410865a26bc724d776f1dea3ba7c2810",
+    "check_md5": "9872d427cf2b5c6e6136e9ec84c11834",
+    "fix_md5": "16c164aeb4868a64099e79eb8c43630e"
+  },
+  "V-214800": {
+    "stig_id": "RHEL-07-020019",
+    "rule_id": "SV-214800r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must implement the Endpoint Security for Linux Threat Prevention tool.",
+    "discuss_md5": "bf0ce662c27c44fcc8f4dc6cdffd250c",
+    "check_md5": "46bf33f0d8a2c248f00cd132b2a63bb8",
+    "fix_md5": "f776c299ad1b52095e48eedf860dbe95"
+  },
+  "V-214801": {
+    "stig_id": "RHEL-07-032000",
+    "rule_id": "SV-214801r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must use a virus scan program.",
+    "discuss_md5": "69d4c22e9847225968c2e66f86e9666b",
+    "check_md5": "bb72bd0c08d72aaf11fbc7c2e2eb37ca",
+    "fix_md5": "a40025d8ec129c91e249659d5dad4558"
+  },
+  "V-214937": {
+    "stig_id": "RHEL-07-010062",
+    "rule_id": "SV-214937r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface.",
+    "discuss_md5": "1a7010d0d587e51d42d4fed278bd355d",
+    "check_md5": "465a48e872c7cca68237e0a8aff47bf4",
+    "fix_md5": "b514e3193829e12585376d96b9d77eab"
+  },
+  "V-219059": {
+    "stig_id": "RHEL-07-020111",
+    "rule_id": "SV-219059r958498_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must disable the graphical user interface automounter unless required.",
+    "discuss_md5": "7fa5d7139431230432864f50887e362a",
+    "check_md5": "a728a94cdaac64486360eab1e94948ac",
+    "fix_md5": "75c9c6838f9b286c2ab44dc4a29e02fa"
+  },
+  "V-228563": {
+    "stig_id": "RHEL-07-021031",
+    "rule_id": "SV-228563r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured so that all world-writable directories are owned by root, sys, bin, or an application user.",
+    "discuss_md5": "b14491ccb1bd5ef1a1ac42366d01a605",
+    "check_md5": "a99e5c98911864f196d86e77716960e4",
+    "fix_md5": "6d8e6a9d9cfc464f036a5784acf792fe"
+  },
+  "V-228564": {
+    "stig_id": "RHEL-07-910055",
+    "rule_id": "SV-228564r958434_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must protect audit information from unauthorized read, modification, or deletion.",
+    "discuss_md5": "ace0586b40cdc6a235ec4a77178a00cf",
+    "check_md5": "b6d09c4edde6b83aada5d28a8d44870b",
+    "fix_md5": "cc63e11b3a84cc05e94a509462d8ab4d"
+  },
+  "V-233307": {
+    "stig_id": "RHEL-07-040711",
+    "rule_id": "SV-233307r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system SSH daemon must prevent remote hosts from connecting to the proxy display.",
+    "discuss_md5": "a974d991e53226286b8341bbb2382c53",
+    "check_md5": "15bb9971e2d6c13af588eeae151225dc",
+    "fix_md5": "bac33fe3adb72af0b0b142f1f498b3f5"
+  },
+  "V-237633": {
+    "stig_id": "RHEL-07-010341",
+    "rule_id": "SV-237633r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must restrict privilege elevation to authorized personnel.",
+    "discuss_md5": "02c8687e7cb59f08f4af58872d533110",
+    "check_md5": "aa540a4712a1473928b66a692a443aa4",
+    "fix_md5": "b1823661ad93c9ff77165ed0c1c48dc9"
+  },
+  "V-237634": {
+    "stig_id": "RHEL-07-010342",
+    "rule_id": "SV-237634r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must use the invoking user's password for privilege escalation when using \"sudo\".",
+    "discuss_md5": "f6b256934b57da648766aa0e8ff13646",
+    "check_md5": "f35c40a700375b8f9e1c7ab667f1e606",
+    "fix_md5": "e3e08a63829083f8bc9615d6633ef2a0"
+  },
+  "V-237635": {
+    "stig_id": "RHEL-07-010343",
+    "rule_id": "SV-237635r987879_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must require re-authentication when using the \"sudo\" command.",
+    "discuss_md5": "c2c951cc30d9902d833a3a0505fc528c",
+    "check_md5": "f558a5ca393a1bc3242d8f62787f5e89",
+    "fix_md5": "83d95d5751b5d4ded2d935f229294652"
+  },
+  "V-244557": {
+    "stig_id": "RHEL-07-010483",
+    "rule_id": "SV-244557r958472_rule",
+    "severity": "medium",
+    "title": "Red Hat Enterprise Linux operating systems version 7.2 or newer booted with a BIOS must have a unique name for the grub superusers account when booting into single-user and maintenance modes.",
+    "discuss_md5": "c297f64f20aa4610c262d4e7576ceab4",
+    "check_md5": "40d9ee4123f9ec8a5578a6c35323e58d",
+    "fix_md5": "7743d304d2adcb7c1b446f0ea82b3a84"
+  },
+  "V-244558": {
+    "stig_id": "RHEL-07-010492",
+    "rule_id": "SV-244558r958472_rule",
+    "severity": "medium",
+    "title": "Red Hat Enterprise Linux operating systems version 7.2 or newer booted with United Extensible Firmware Interface (UEFI) must have a unique name for the grub superusers account when booting into single-user mode and maintenance.",
+    "discuss_md5": "c297f64f20aa4610c262d4e7576ceab4",
+    "check_md5": "8de0d400b9eaa83de0d51b7d56d24a66",
+    "fix_md5": "8105aa0d232b3be5127f3c2ee783efc5"
+  },
+  "V-250312": {
+    "stig_id": "RHEL-07-020021",
+    "rule_id": "SV-250312r958726_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must confine SELinux users to roles that conform to least privilege.",
+    "discuss_md5": "2c62ef30a18b0b4af86aee76a79a5c25",
+    "check_md5": "90f10adc67302c4483e7358390445a81",
+    "fix_md5": "9345f58f240fabebb8d5da2fe84272f1"
+  },
+  "V-250313": {
+    "stig_id": "RHEL-07-020022",
+    "rule_id": "SV-250313r958726_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not allow privileged accounts to utilize SSH.",
+    "discuss_md5": "ba85013c0bb4c0a8aea188f529778d5d",
+    "check_md5": "d4b97f9b081da7a31245ec0f4f50f775",
+    "fix_md5": "2ec03bcd778733e7e5c78299311eb1c4"
+  },
+  "V-250314": {
+    "stig_id": "RHEL-07-020023",
+    "rule_id": "SV-250314r958726_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must elevate the SELinux context when an administrator calls the sudo command.",
+    "discuss_md5": "2c62ef30a18b0b4af86aee76a79a5c25",
+    "check_md5": "dfb7bc309ae20a10ee8fc2f16b93c6e9",
+    "fix_md5": "2fa04a17e245ecc9cffed17c45e8817f"
+  },
+  "V-251702": {
+    "stig_id": "RHEL-07-010291",
+    "rule_id": "SV-251702r991589_rule",
+    "severity": "high",
+    "title": "The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords.",
+    "discuss_md5": "2f5b4b5419b73164aeb0e2ea80d1454d",
+    "check_md5": "ba187f3efc24b9453bb30ec4713ef741",
+    "fix_md5": "722e5fd0cc17d9ba1ed42921eee216c6"
+  },
+  "V-251703": {
+    "stig_id": "RHEL-07-010339",
+    "rule_id": "SV-251703r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must specify the default \"include\" directory for the /etc/sudoers file.",
+    "discuss_md5": "71310465de9a32bce077669d4ef56ff3",
+    "check_md5": "1bbd9d8120658c22da6919fd49b187b1",
+    "fix_md5": "181d9ffb38ddabe1fe1d9ef242882513"
+  },
+  "V-251704": {
+    "stig_id": "RHEL-07-010344",
+    "rule_id": "SV-251704r987879_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must not be configured to bypass password requirements for privilege escalation.",
+    "discuss_md5": "c21cfb72092fb9afb73d032f04bda291",
+    "check_md5": "2b18f03f41629aa4e87b26a096553f2a",
+    "fix_md5": "f8f235fd0b9a2a648a4b7594a0b837e7"
+  },
+  "V-251705": {
+    "stig_id": "RHEL-07-020029",
+    "rule_id": "SV-251705r958944_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must use a file integrity tool to verify correct operation of all security functions.",
+    "discuss_md5": "341177d7b6700e9028f78ad53b7ead1f",
+    "check_md5": "b4af7467903a3f20e58f6a81fc49e393",
+    "fix_md5": "5a1e9821d0fde93d283ce11e4531541e"
+  },
+  "V-254523": {
+    "stig_id": "RHEL-07-010271",
+    "rule_id": "SV-254523r958508_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must automatically expire temporary accounts within 72 hours.",
+    "discuss_md5": "fcd98ecef4c2658004c7a91e7756848f",
+    "check_md5": "b1c0dc1ecbb65f2bafbbc9900c539f3f",
+    "fix_md5": "d18d5707ad33c593f9e6bf994ef78831"
+  },
+  "V-255925": {
+    "stig_id": "RHEL-07-040712",
+    "rule_id": "SV-255925r958408_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system SSH server must be configured to use only FIPS-validated key exchange algorithms.",
+    "discuss_md5": "1ca1128fb50be3851d773f77d0714297",
+    "check_md5": "59976730a2c2fc50a68d0dc1d65563e0",
+    "fix_md5": "8fedad393440e313a3b3fb7b0d82ade5"
+  },
+  "V-255926": {
+    "stig_id": "RHEL-07-010090",
+    "rule_id": "SV-255926r958402_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must have the screen package installed.",
+    "discuss_md5": "03b0dc74ae10284bb935124f010b35bf",
+    "check_md5": "08c7ca686b5bf61eceda82d86ec2bbc1",
+    "fix_md5": "a7ae3500eab9643f521677f40389b946"
+  },
+  "V-255927": {
+    "stig_id": "RHEL-07-010375",
+    "rule_id": "SV-255927r958524_rule",
+    "severity": "low",
+    "title": "The Red Hat Enterprise Linux operating system must restrict access to the kernel message buffer.",
+    "discuss_md5": "e8427984d870caf1ab2882c3316a9030",
+    "check_md5": "a52e3ea3a812e58158503d702fcb94c5",
+    "fix_md5": "50bd21b3f2a70aea8672cee15bc9c1d9"
+  },
+  "V-255928": {
+    "stig_id": "RHEL-07-010199",
+    "rule_id": "SV-255928r982199_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to prevent overwriting of custom authentication configuration settings by the authconfig utility.",
+    "discuss_md5": "5ae9dde89782e334256c2ae54b33b6c1",
+    "check_md5": "c4969712ad0463544007da4b9b04c429",
+    "fix_md5": "44c12ca8a2d8760fdb961097ec0296e4"
+  },
+  "V-256968": {
+    "stig_id": "RHEL-07-010019",
+    "rule_id": "SV-256968r982212_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must ensure cryptographic verification of vendor software packages.",
+    "discuss_md5": "b50c0c28554285167256c1b9117dec0c",
+    "check_md5": "238eea6f42d2eaaef261982c3eb98e0f",
+    "fix_md5": "a3b519898c581fc101eded5d66d34074"
+  },
+  "V-256969": {
+    "stig_id": "RHEL-07-010063",
+    "rule_id": "SV-256969r991589_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must disable the login screen user list for graphical user interfaces.",
+    "discuss_md5": "dd02d5309c7bdb180fe5f77d8f083e76",
+    "check_md5": "84e96d6d3a411ccfebd46bd34908614b",
+    "fix_md5": "0660e5df8e48380076c997b63487eb38"
+  },
+  "V-256970": {
+    "stig_id": "RHEL-07-020028",
+    "rule_id": "SV-256970r958794_rule",
+    "severity": "medium",
+    "title": "The Red Hat Enterprise Linux operating system must be configured to allow sending email notifications of configuration changes and adverse events to designated personnel.",
+    "discuss_md5": "532661b56ce968c1145c898719743462",
+    "check_md5": "9b9f4a4f060836934802f7fd4ae6a1e5",
+    "fix_md5": "beaaf91974f237e39de7db0692667a2c"
+  }
+}
