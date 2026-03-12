@@ -301,9 +301,27 @@ Function Get-V204393 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204393) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204393 - DoD Notice Banner via Graphical Logon" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010030." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -412,9 +430,27 @@ Function Get-V204394 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204394) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204394 - Approved DoD Banner Text via Graphical Logon" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010040." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -523,9 +559,45 @@ Function Get-V204395 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204395) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204395 - DoD Notice Banner via Command Line Logon" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check /etc/issue for DoD banner
+    $issueContent = $(cat /etc/issue 2>&1)
+    $issueStr = ($issueContent -join $nl).Trim()
+
+    $FindingDetails += "Command: cat /etc/issue" + $nl
+    $FindingDetails += "Result:" + $nl + $issueStr + $nl + $nl
+
+    # Check for key phrases from the DoD banner
+    $bannerKeyPhrases = @(
+        "U.S. Government",
+        "USG-authorized use only",
+        "you consent to the following conditions",
+        "routinely intercepts and monitors",
+        "not private"
+    )
+
+    $matchCount = 0
+    foreach ($phrase in $bannerKeyPhrases) {
+        if ($issueStr -match [regex]::Escape($phrase)) {
+            $matchCount++
+        }
+    }
+
+    $FindingDetails += "Banner Key Phrases Found: " + $matchCount + " of " + $bannerKeyPhrases.Count + $nl + $nl
+
+    if ($matchCount -ge 4) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: The /etc/issue file contains the Standard Mandatory DoD Notice and Consent Banner." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The /etc/issue file does not contain the required DoD banner." + $nl
+        $FindingDetails += "Remediation: Update /etc/issue with the Standard Mandatory DoD Notice and Consent Banner." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -634,9 +706,27 @@ Function Get-V204396 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204396) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204396 - Session Lock Until Re-authentication (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010060." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -745,9 +835,27 @@ Function Get-V204397 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204397) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204397 - MFA via Graphical User Logon (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010061." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -856,9 +964,27 @@ Function Get-V204398 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204398) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204398 - Screensaver After 15-min Inactivity (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010070." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -967,9 +1093,27 @@ Function Get-V204399 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204399) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204399 - Prevent Override of Screensaver Lock (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010081." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1078,9 +1222,27 @@ Function Get-V204400 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204400) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204400 - Prevent Override of Session Idle-Delay (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010082." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1189,9 +1351,27 @@ Function Get-V204402 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204402) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204402 - Session Lock via idle-activation-enabled (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010100." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1300,9 +1480,27 @@ Function Get-V204403 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204403) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204403 - Prevent Override of idle-activation-enabled (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010101." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1411,9 +1609,27 @@ Function Get-V204404 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204404) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204404 - Session Lock When Screensaver Activated (GNOME)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if GNOME is installed
+    $gnomeCheck = $(rpm -q gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomeCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q gnome-desktop3" + $nl
+    $FindingDetails += "Result: " + $gnomeStr + $nl + $nl
+
+    if ($gnomeStr -match "is not installed") {
+        $Status = "Not_Applicable"
+        $FindingDetails += "NOT APPLICABLE: GNOME is not installed on XCP-ng Dom0." + $nl
+        $FindingDetails += "This check applies only to systems with a graphical user interface." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "GNOME is installed. Manual review required for RHEL-07-010110." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1522,9 +1738,35 @@ Function Get-V204405 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204405) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204405 - /etc/pam.d/passwd Must Use system-auth Substack" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check /etc/pam.d/passwd for system-auth substack
+    $pamPasswd = $(cat /etc/pam.d/passwd 2>&1)
+    $pamStr = ($pamPasswd -join $nl).Trim()
+
+    $FindingDetails += "Command: cat /etc/pam.d/passwd" + $nl
+    $FindingDetails += "Result:" + $nl + $pamStr + $nl + $nl
+
+    # Look for: password substack system-auth
+    $substackCheck = $(grep -i substack /etc/pam.d/passwd 2>&1)
+    $substackStr = ($substackCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i substack /etc/pam.d/passwd" + $nl
+    $FindingDetails += "Result: " + $substackStr + $nl + $nl
+
+    if ($substackStr -match "system-auth") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /etc/pam.d/passwd uses system-auth substack for password changes." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /etc/pam.d/passwd does not use system-auth substack." + $nl
+        $FindingDetails += "Remediation: Add to /etc/pam.d/passwd:" + $nl
+        $FindingDetails += "  password     substack     system-auth" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1633,9 +1875,45 @@ Function Get-V204406 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204406) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204406 - system-auth Must Use pam_pwquality.so" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check /etc/pam.d/system-auth for pam_pwquality
+    $pwqCheck = $(grep pam_pwquality /etc/pam.d/system-auth 2>&1)
+    $pwqStr = ($pwqCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep pam_pwquality /etc/pam.d/system-auth" + $nl
+    $FindingDetails += "Result: " + $pwqStr + $nl + $nl
+
+    if ($pwqStr -match "pam_pwquality") {
+        # Check retry value
+        if ($pwqStr -match "retry=(\d+)") {
+            $retryVal = $Matches[1]
+            $FindingDetails += "Retry value: " + $retryVal + $nl + $nl
+
+            if ([int]$retryVal -ge 1 -and [int]$retryVal -le 3) {
+                $Status = "NotAFinding"
+                $FindingDetails += "PASS: pam_pwquality.so is configured with retry=" + $retryVal + "." + $nl
+            }
+            else {
+                $Status = "Open"
+                $FindingDetails += "FAIL: retry value must be between 1 and 3 (found: " + $retryVal + ")." + $nl
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: pam_pwquality.so is present but retry is not configured." + $nl
+            $FindingDetails += "Remediation: Set retry=3 in pam_pwquality.so line." + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: pam_pwquality.so is not configured in /etc/pam.d/system-auth." + $nl
+        $FindingDetails += "Remediation: Add to /etc/pam.d/system-auth:" + $nl
+        $FindingDetails += "  password requisite pam_pwquality.so retry=3" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1744,9 +2022,42 @@ Function Get-V204407 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204407) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204407 - Password Must Require Upper-case Character (ucredit)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check ucredit in pwquality.conf
+    $ucreditCheck = $(grep ucredit /etc/security/pwquality.conf 2>&1)
+    $ucreditStr = ($ucreditCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep ucredit /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $ucreditStr + $nl + $nl
+
+    # Parse active (non-commented) ucredit line
+    $activeLines = ($ucreditCheck | Where-Object { $_ -match "^\s*ucredit" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "ucredit\s*=\s*(-?\d+)") {
+        $ucreditVal = [int]$Matches[1]
+        $FindingDetails += "Active ucredit value: " + $ucreditVal + $nl + $nl
+
+        if ($ucreditVal -lt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: ucredit is set to a negative value (" + $ucreditVal + "), requiring at least " + ([Math]::Abs($ucreditVal)) + " upper-case character(s)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: ucredit must be set to a negative value (found: " + $ucreditVal + ")." + $nl
+            $FindingDetails += "Remediation: Set ucredit = -1 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: ucredit is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  ucredit = -1" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -1855,9 +2166,42 @@ Function Get-V204408 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204408) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204408 - Password Must Require Lower-case Character (lcredit)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check lcredit in pwquality.conf
+    $lcreditCheck = $(grep lcredit /etc/security/pwquality.conf 2>&1)
+    $lcreditStr = ($lcreditCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep lcredit /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $lcreditStr + $nl + $nl
+
+    # Parse active (non-commented) lcredit line
+    $activeLines = ($lcreditCheck | Where-Object { $_ -match "^\s*lcredit" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "lcredit\s*=\s*(-?\d+)") {
+        $lcreditVal = [int]$Matches[1]
+        $FindingDetails += "Active lcredit value: " + $lcreditVal + $nl + $nl
+
+        if ($lcreditVal -lt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: lcredit is set to a negative value (" + $lcreditVal + "), requiring at least " + ([Math]::Abs($lcreditVal)) + " lower-case character(s)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: lcredit must be set to a negative value (found: " + $lcreditVal + ")." + $nl
+            $FindingDetails += "Remediation: Set lcredit = -1 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: lcredit is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  lcredit = -1" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
