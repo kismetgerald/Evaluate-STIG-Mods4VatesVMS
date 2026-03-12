@@ -289,212 +289,332 @@ This file contains answers for known opens and findings that cannot be evaluated
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204409">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are assigned, the new password must contain at least one numeric character.-->
+    <!--RuleTitle: Password must require numeric character (dcredit)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that dcredit is set to a negative value in /etc/security/pwquality.conf on this XCP-ng Dom0 system, requiring at least one numeric character in new passwords. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that dcredit is not configured or not set to a negative value in /etc/security/pwquality.conf. Remediation: Set dcredit = -1 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204410">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one special character.-->
+    <!--RuleTitle: Password must require special character (ocredit)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that ocredit is set to a negative value in /etc/security/pwquality.conf on this XCP-ng Dom0 system, requiring at least one special character in new passwords. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that ocredit is not configured or not set to a negative value in /etc/security/pwquality.conf. Remediation: Set ocredit = -1 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204411">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of eight of the total number of characters must be changed.-->
+    <!--RuleTitle: Password must differ by 8 characters from old password (difok)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that difok is set to 8 or greater in /etc/security/pwquality.conf on this XCP-ng Dom0 system, requiring at least 8 characters to differ from the previous password. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that difok is not configured or set below 8 in /etc/security/pwquality.conf. Remediation: Set difok = 8 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204412">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of four character classes must be changed.-->
+    <!--RuleTitle: Password must use 4 character classes (minclass)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that minclass is set to 4 or greater in /etc/security/pwquality.conf on this XCP-ng Dom0 system, requiring characters from at least 4 classes (upper, lower, digit, special). Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that minclass is not configured or set below 4 in /etc/security/pwquality.conf. Remediation: Set minclass = 4 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204413">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating consecutive characters must not be more than three characters.-->
+    <!--RuleTitle: Password max consecutive repeating characters (maxrepeat)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that maxrepeat is set to 3 or less in /etc/security/pwquality.conf on this XCP-ng Dom0 system, limiting consecutive repeating characters in passwords. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that maxrepeat is not configured or set above 3 in /etc/security/pwquality.conf. Remediation: Set maxrepeat = 3 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204414">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating characters of the same character class must not be more than four characters.-->
+    <!--RuleTitle: Password max consecutive same-class characters (maxclassrepeat)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that maxclassrepeat is set to 4 or less in /etc/security/pwquality.conf on this XCP-ng Dom0 system, limiting consecutive characters from the same class. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that maxclassrepeat is not configured or set above 4 in /etc/security/pwquality.conf. Remediation: Set maxclassrepeat = 4 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204415">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the PAM system service is configured to store only encrypted representations of passwords.-->
+    <!--RuleTitle: PAM must store passwords using SHA512-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that PAM is configured to use SHA512 for password hashing in both /etc/pam.d/system-auth and /etc/pam.d/password-auth on this XCP-ng Dom0 system. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that PAM is not configured to use SHA512 in one or both auth files. Remediation: Ensure pam_unix.so includes sha512 option in /etc/pam.d/system-auth and /etc/pam.d/password-auth. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204416">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured to use the shadow file to store only encrypted representations of passwords.-->
+    <!--RuleTitle: Shadow file must use SHA512 hashing-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that ENCRYPT_METHOD is set to SHA512 in /etc/login.defs on this XCP-ng Dom0 system, ensuring all shadow file passwords use strong hashing. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that ENCRYPT_METHOD is not set to SHA512 in /etc/login.defs. Remediation: Set ENCRYPT_METHOD SHA512 in /etc/login.defs. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204417">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that user and group account administration utilities are configured to store only encrypted representations of passwords.-->
+    <!--RuleTitle: User/group admin utilities must use SHA512-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that crypt_style is set to sha512 in /etc/libuser.conf on this XCP-ng Dom0 system, ensuring user administration utilities create SHA512 hashed passwords. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that crypt_style is not set to sha512 in /etc/libuser.conf. Remediation: Set crypt_style = sha512 in the [defaults] section of /etc/libuser.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204418">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 24 hours/1 day minimum lifetime.-->
+    <!--RuleTitle: Minimum password lifetime 24 hours for new users (PASS_MIN_DAYS)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that PASS_MIN_DAYS is set to 1 or greater in /etc/login.defs on this XCP-ng Dom0 system, enforcing a 24-hour minimum password lifetime for new user accounts. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that PASS_MIN_DAYS is not configured or set below 1 in /etc/login.defs. Remediation: Set PASS_MIN_DAYS 1 in /etc/login.defs. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204419">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that passwords are restricted to a 24 hours/1 day minimum lifetime.-->
+    <!--RuleTitle: Existing passwords must have 24-hour minimum lifetime-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that no non-system accounts on this XCP-ng Dom0 system have a minimum password age less than 1 day in /etc/shadow. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found non-system accounts with minimum password age less than 1 day in /etc/shadow. Remediation: Run chage -m 1 [username] for each affected account. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204420">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that passwords for new users are restricted to a 60-day maximum lifetime.-->
+    <!--RuleTitle: Maximum password lifetime 60 days for new users (PASS_MAX_DAYS)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that PASS_MAX_DAYS is set to 60 or less in /etc/login.defs on this XCP-ng Dom0 system, enforcing a 60-day maximum password lifetime for new user accounts. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that PASS_MAX_DAYS is not configured or set above 60 in /etc/login.defs. Remediation: Set PASS_MAX_DAYS 60 in /etc/login.defs. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204421">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that existing passwords are restricted to a 60-day maximum lifetime.-->
+    <!--RuleTitle: Existing passwords must have 60-day maximum lifetime-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that no non-system accounts on this XCP-ng Dom0 system have a maximum password age greater than 60 days in /etc/shadow. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found non-system accounts with maximum password age greater than 60 days in /etc/shadow. Remediation: Run chage -M 60 [username] for each affected account. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204422">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that passwords are prohibited from reuse for a minimum of five generations.-->
+    <!--RuleTitle: Password reuse prohibited for 5 generations (remember)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that the remember parameter is set to 5 or greater in both /etc/pam.d/system-auth and /etc/pam.d/password-auth on this XCP-ng Dom0 system, preventing password reuse for at least 5 generations. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the remember parameter is not configured or set below 5 in one or both PAM auth files. Remediation: Add remember=5 to pam_unix.so or pam_pwhistory.so in /etc/pam.d/system-auth and /etc/pam.d/password-auth. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204423">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that passwords are a minimum of 15 characters in length.-->
+    <!--RuleTitle: Password minimum length 15 characters (minlen)-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 2: Password Complexity and Aging-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that minlen is set to 15 or greater in /etc/security/pwquality.conf on this XCP-ng Dom0 system, enforcing a minimum password length of 15 characters. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that minlen is not configured or set below 15 in /etc/security/pwquality.conf. Remediation: Set minlen = 15 in /etc/security/pwquality.conf. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
