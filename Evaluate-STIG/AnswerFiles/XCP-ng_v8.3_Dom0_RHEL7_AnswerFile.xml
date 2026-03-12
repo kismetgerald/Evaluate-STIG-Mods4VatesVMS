@@ -81,210 +81,330 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204393">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204394">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204395">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: Automated CLI banner check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /etc/issue on this XCP-ng Dom0 (RHEL 7-based) system contains the Standard Mandatory DoD Notice and Consent Banner. The check confirmed the presence of required key phrases including references to U.S. Government authorization, consent conditions, routine monitoring, data seizure rights, and privacy limitations. The banner is displayed before granting command line access to the system, meeting the RHEL 7 STIG requirement (RHEL-07-010050) for DoD Notice and Consent Banner display. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /etc/issue on this XCP-ng Dom0 (RHEL 7-based) system does not contain the required Standard Mandatory DoD Notice and Consent Banner or is missing key required phrases. Per RHEL 7 STIG requirement RHEL-07-010050, the operating system must display the DoD banner before granting command line access. Remediation: Update /etc/issue with the full Standard Mandatory DoD Notice and Consent Banner text as specified in the STIG check guidance. The banner must include all required elements: USG authorization notice, consent conditions, monitoring disclosure, data seizure rights, privacy limitations, and privileged communications exception. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204396">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must enable a user session lock until that user re-establishes access using established identification and authentication procedures.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204397">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate users using multifactor authentication via a graphical user logon.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204398">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must initiate a screensaver after a 15-minute period of inactivity for graphical user interfaces.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204399">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-delay setting for the graphical user interface.-->
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock after a 15-minute period of inactivity for graphical user interfaces.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204400">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent a user from overriding the session idle-delay setting for the graphical user interface.-->
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent a user from overriding the session idle-delay after a 15-minute period of inactivity for graphical user interfaces.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204402">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must initiate a session lock for the screensaver after a period of inactivity for graphical user interfaces.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204403">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver idle-activation-enabled setting for the graphical user interface.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204404">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must initiate a session lock for graphical user interfaces when the screensaver is activated.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: GNOME Not Applicable on XCP-ng Dom0-->
+      <Answer Index="1" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that GNOME desktop environment is not installed on this XCP-ng Dom0 (RHEL 7-based) system. XCP-ng Dom0 is a headless hypervisor host that operates exclusively via command line and remote management interfaces (SSH, XenCenter, Xen Orchestra). Without a graphical user interface installed, this STIG requirement does not apply. The check confirmed that the gnome-desktop3 RPM package is not present on the system. Finding: Not Applicable.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that GNOME desktop environment is unexpectedly installed on this XCP-ng Dom0 system. This is unusual for a hypervisor host, which should operate headless. Since GNOME is present, the graphical user interface STIG requirements apply and the system must be configured to meet them. The system administrator should either remove the GNOME desktop packages (recommended for hypervisor hosts) or configure the required GNOME settings per the RHEL 7 STIG. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204405">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that /etc/pam.d/passwd implements /etc/pam.d/system-auth when changing passwords.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: Automated PAM substack check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /etc/pam.d/passwd on this XCP-ng Dom0 (RHEL 7-based) system includes a substack reference to system-auth. This ensures that password changes go through the centralized PAM authentication stack defined in /etc/pam.d/system-auth, providing consistent password policy enforcement including complexity requirements (pam_pwquality), account lockout (pam_faillock), and password history (pam_pwhistory). Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /etc/pam.d/passwd on this XCP-ng Dom0 (RHEL 7-based) system does not include a substack reference to system-auth. Without this configuration, password changes may bypass the centralized PAM authentication stack, potentially allowing passwords that do not meet complexity, lockout, or history requirements. Remediation: Add or modify the following line in /etc/pam.d/passwd: password substack system-auth. This ensures all password changes are processed through the system-wide authentication configuration. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204406">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, pwquality must be used.-->
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed the number of repeating consecutive characters must not be more than three characters.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: Automated pam_pwquality check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /etc/pam.d/system-auth on this XCP-ng Dom0 (RHEL 7-based) system includes pam_pwquality.so with an appropriate retry value (between 1 and 3). This ensures password quality enforcement is active through the PAM stack, requiring new passwords to meet complexity standards before acceptance. The retry parameter limits the number of attempts a user has to provide an acceptable password. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that pam_pwquality.so is either not configured in /etc/pam.d/system-auth or has an invalid retry value on this XCP-ng Dom0 (RHEL 7-based) system. Without pam_pwquality enforcement, password changes may not be validated against complexity requirements, allowing weak passwords. Remediation: Add or modify the following line in /etc/pam.d/system-auth: password requisite pam_pwquality.so retry=3. The retry value must be between 1 and 3. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204407">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one upper-case character.-->
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of one upper-case character must be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: Automated ucredit check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /etc/security/pwquality.conf on this XCP-ng Dom0 (RHEL 7-based) system has ucredit set to a negative value, requiring at least one upper-case character in new passwords. The ucredit parameter in pwquality.conf controls the minimum number of upper-case characters required. A negative value indicates the minimum number of upper-case characters that must be present. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that ucredit is either not configured or not set to a negative value in /etc/security/pwquality.conf on this XCP-ng Dom0 (RHEL 7-based) system. Without this setting, password changes may not require upper-case characters, reducing password complexity and making passwords more susceptible to brute-force attacks. Remediation: Add or modify the following line in /etc/security/pwquality.conf: ucredit = -1. This requires at least one upper-case character in new passwords. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204408">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed or new passwords are established, the new password must contain at least one lower-case character.-->
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that when passwords are changed a minimum of one lower-case character must be used.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--CAT II Batch 1: Automated lcredit check-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verified that /etc/security/pwquality.conf on this XCP-ng Dom0 (RHEL 7-based) system has lcredit set to a negative value, requiring at least one lower-case character in new passwords. The lcredit parameter in pwquality.conf controls the minimum number of lower-case characters required. A negative value indicates the minimum number of lower-case characters that must be present. Finding: Not a Finding.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that lcredit is either not configured or not set to a negative value in /etc/security/pwquality.conf on this XCP-ng Dom0 (RHEL 7-based) system. Without this setting, password changes may not require lower-case characters, reducing password complexity and making passwords more susceptible to brute-force attacks. Remediation: Add or modify the following line in /etc/security/pwquality.conf: lcredit = -1. This requires at least one lower-case character in new passwords. Finding: Open.
+        </ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
