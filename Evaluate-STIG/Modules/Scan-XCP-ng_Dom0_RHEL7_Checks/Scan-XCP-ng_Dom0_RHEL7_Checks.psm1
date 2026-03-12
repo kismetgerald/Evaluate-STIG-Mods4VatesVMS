@@ -2310,9 +2310,42 @@ Function Get-V204409 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204409) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204409 - Password Must Require Numeric Character (dcredit)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check dcredit in pwquality.conf
+    $paramCheck = $(grep dcredit /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep dcredit /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*dcredit" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "dcredit\s*=\s*(-?\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active dcredit value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -lt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: dcredit is set to a negative value (" + $paramVal + ")." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: dcredit must be set to a negative value (found: " + $paramVal + ")." + $nl
+            $FindingDetails += "Remediation: Set dcredit = -1 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: dcredit is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  dcredit = -1" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2421,9 +2454,42 @@ Function Get-V204410 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204410) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204410 - Password Must Require Special Character (ocredit)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check ocredit in pwquality.conf
+    $paramCheck = $(grep ocredit /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep ocredit /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*ocredit" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "ocredit\s*=\s*(-?\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active ocredit value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -lt 0) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: ocredit is set to a negative value (" + $paramVal + ")." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: ocredit must be set to a negative value (found: " + $paramVal + ")." + $nl
+            $FindingDetails += "Remediation: Set ocredit = -1 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: ocredit is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  ocredit = -1" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2532,9 +2598,42 @@ Function Get-V204411 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204411) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204411 - Password Must Differ by 8 Characters (difok)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check difok in pwquality.conf
+    $paramCheck = $(grep difok /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep difok /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*difok" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "difok\s*=\s*(\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active difok value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -ge 8) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: difok is set to " + $paramVal + " (required: >= 8)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: difok is set to " + $paramVal + " (required: >= 8)." + $nl
+            $FindingDetails += "Remediation: Set difok = 8 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: difok is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  difok = 8" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2643,9 +2742,42 @@ Function Get-V204412 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204412) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204412 - Password Must Use 4 Character Classes (minclass)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check minclass in pwquality.conf
+    $paramCheck = $(grep minclass /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep minclass /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*minclass" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "minclass\s*=\s*(\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active minclass value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -ge 4) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: minclass is set to " + $paramVal + " (required: >= 4)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: minclass is set to " + $paramVal + " (required: >= 4)." + $nl
+            $FindingDetails += "Remediation: Set minclass = 4 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: minclass is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  minclass = 4" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2754,9 +2886,42 @@ Function Get-V204413 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204413) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204413 - Password Max Consecutive Repeating Characters (maxrepeat)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check maxrepeat in pwquality.conf
+    $paramCheck = $(grep maxrepeat /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep maxrepeat /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*maxrepeat" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "maxrepeat\s*=\s*(\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active maxrepeat value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -gt 0 -and $paramVal -le 3) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: maxrepeat is set to " + $paramVal + " (required: <= 3 and > 0)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: maxrepeat is set to " + $paramVal + " (required: <= 3 and > 0)." + $nl
+            $FindingDetails += "Remediation: Set maxrepeat = 3 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: maxrepeat is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  maxrepeat = 3" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2865,9 +3030,42 @@ Function Get-V204414 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204414) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204414 - Password Max Consecutive Same-Class Characters (maxclassrepeat)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check maxclassrepeat in pwquality.conf
+    $paramCheck = $(grep maxclassrepeat /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep maxclassrepeat /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*maxclassrepeat" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "maxclassrepeat\s*=\s*(\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active maxclassrepeat value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -gt 0 -and $paramVal -le 4) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: maxclassrepeat is set to " + $paramVal + " (required: <= 4 and > 0)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: maxclassrepeat is set to " + $paramVal + " (required: <= 4 and > 0)." + $nl
+            $FindingDetails += "Remediation: Set maxclassrepeat = 4 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: maxclassrepeat is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  maxclassrepeat = 4" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -2976,9 +3174,31 @@ Function Get-V204415 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204415) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204415 - PAM Must Store Passwords Using SHA512" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for SHA512 in system-auth and password-auth
+    $sysAuth = $(grep -i sha512 /etc/pam.d/system-auth 2>&1)
+    $sysAuthStr = ($sysAuth -join $nl).Trim()
+    $pwAuth = $(grep -i sha512 /etc/pam.d/password-auth 2>&1)
+    $pwAuthStr = ($pwAuth -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i sha512 /etc/pam.d/system-auth" + $nl
+    $FindingDetails += "Result: " + $sysAuthStr + $nl + $nl
+    $FindingDetails += "Command: grep -i sha512 /etc/pam.d/password-auth" + $nl
+    $FindingDetails += "Result: " + $pwAuthStr + $nl + $nl
+
+    if ($sysAuthStr -match "sha512" -and $pwAuthStr -match "sha512") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: PAM is configured to use SHA512 for password hashing in both system-auth and password-auth." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: PAM is not configured to use SHA512 in one or both auth files." + $nl
+        $FindingDetails += "Remediation: Ensure pam_unix.so includes sha512 in /etc/pam.d/system-auth and /etc/pam.d/password-auth." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3087,9 +3307,31 @@ Function Get-V204416 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204416) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204416 - Shadow File Must Use SHA512 Hashing" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check ENCRYPT_METHOD in /etc/login.defs
+    $encryptCheck = $(grep -i encrypt_method /etc/login.defs 2>&1)
+    $encryptStr = ($encryptCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i encrypt_method /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $encryptStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($encryptCheck | Where-Object { $_ -match "^\s*ENCRYPT_METHOD" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "SHA512") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: ENCRYPT_METHOD is set to SHA512 in /etc/login.defs." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: ENCRYPT_METHOD is not set to SHA512 in /etc/login.defs." + $nl
+        $FindingDetails += "Remediation: Set ENCRYPT_METHOD SHA512 in /etc/login.defs" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3198,9 +3440,31 @@ Function Get-V204417 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204417) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204417 - User/Group Admin Utilities Must Use SHA512" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check /etc/libuser.conf for crypt_style
+    $libuserCheck = $(grep -i crypt_style /etc/libuser.conf 2>&1)
+    $libuserStr = ($libuserCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i crypt_style /etc/libuser.conf" + $nl
+    $FindingDetails += "Result: " + $libuserStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($libuserCheck | Where-Object { $_ -match "^\s*crypt_style" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "sha512") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: crypt_style is set to sha512 in /etc/libuser.conf." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: crypt_style is not set to sha512 in /etc/libuser.conf." + $nl
+        $FindingDetails += "Remediation: Set crypt_style = sha512 in the [defaults] section of /etc/libuser.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3309,9 +3573,41 @@ Function Get-V204418 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204418) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204418 - Minimum Password Lifetime 24 Hours (PASS_MIN_DAYS)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check PASS_MIN_DAYS in /etc/login.defs
+    $minDaysCheck = $(grep -i pass_min_days /etc/login.defs 2>&1)
+    $minDaysStr = ($minDaysCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i pass_min_days /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $minDaysStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($minDaysCheck | Where-Object { $_ -match "^\s*PASS_MIN_DAYS" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "PASS_MIN_DAYS\s+(\d+)") {
+        $minDays = [int]$Matches[1]
+        $FindingDetails += "Active PASS_MIN_DAYS value: " + $minDays + $nl + $nl
+
+        if ($minDays -ge 1) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: PASS_MIN_DAYS is set to " + $minDays + " (required: >= 1)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: PASS_MIN_DAYS is set to " + $minDays + " (required: >= 1)." + $nl
+            $FindingDetails += "Remediation: Set PASS_MIN_DAYS 1 in /etc/login.defs" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: PASS_MIN_DAYS is not configured in /etc/login.defs." + $nl
+        $FindingDetails += "Remediation: Add PASS_MIN_DAYS 1 to /etc/login.defs" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3420,9 +3716,47 @@ Function Get-V204419 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204419) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204419 - Existing Passwords Must Have 24-Hour Minimum Lifetime" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for accounts with PASS_MIN_DAYS < 1 in /etc/shadow
+    $shadowCheck = $(awk -F: '$4 < 1 {print $1 " " $4}' /etc/shadow 2>&1)
+    $shadowStr = ($shadowCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: awk -F: '$4 < 1 {print $1, $4}' /etc/shadow" + $nl
+    $FindingDetails += "Result: " + $shadowStr + $nl + $nl
+
+    # Filter out system accounts (UID < 1000)
+    $systemAccounts = @("bin", "daemon", "adm", "lp", "sync", "shutdown", "halt", "mail",
+                        "operator", "games", "ftp", "nobody", "systemd-network", "dbus",
+                        "polkitd", "sshd", "postfix", "chrony", "ntp", "tss", "nfsnobody",
+                        "rpc", "rpcuser", "xcp-rrdd", "xcp-networkd")
+
+    $violations = @()
+    foreach ($line in $shadowCheck) {
+        $lineStr = $line.ToString().Trim()
+        if ($lineStr -ne "" -and $lineStr -notmatch "^(awk|grep)") {
+            $parts = $lineStr -split "\s+"
+            if ($parts.Count -ge 1 -and $parts[0] -notin $systemAccounts) {
+                $violations += $lineStr
+            }
+        }
+    }
+
+    if ($violations.Count -eq 0) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No non-system accounts have a minimum password age less than 1 day." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The following non-system accounts have minimum password age less than 1 day:" + $nl
+        foreach ($v in $violations) {
+            $FindingDetails += "  " + $v + $nl
+        }
+        $FindingDetails += "Remediation: chage -m 1 [username] for each affected account" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3531,9 +3865,41 @@ Function Get-V204420 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204420) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204420 - Maximum Password Lifetime 60 Days (PASS_MAX_DAYS)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check PASS_MAX_DAYS in /etc/login.defs
+    $maxDaysCheck = $(grep -i pass_max_days /etc/login.defs 2>&1)
+    $maxDaysStr = ($maxDaysCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i pass_max_days /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $maxDaysStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($maxDaysCheck | Where-Object { $_ -match "^\s*PASS_MAX_DAYS" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "PASS_MAX_DAYS\s+(\d+)") {
+        $maxDays = [int]$Matches[1]
+        $FindingDetails += "Active PASS_MAX_DAYS value: " + $maxDays + $nl + $nl
+
+        if ($maxDays -le 60) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: PASS_MAX_DAYS is set to " + $maxDays + " (required: <= 60)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: PASS_MAX_DAYS is set to " + $maxDays + " (required: <= 60)." + $nl
+            $FindingDetails += "Remediation: Set PASS_MAX_DAYS 60 in /etc/login.defs" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: PASS_MAX_DAYS is not configured in /etc/login.defs." + $nl
+        $FindingDetails += "Remediation: Add PASS_MAX_DAYS 60 to /etc/login.defs" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3642,9 +4008,47 @@ Function Get-V204421 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204421) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204421 - Existing Passwords Must Have 60-Day Maximum Lifetime" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for accounts with PASS_MAX_DAYS > 60 in /etc/shadow
+    $shadowCheck = $(awk -F: '$5 > 60 {print $1 " " $5}' /etc/shadow 2>&1)
+    $shadowStr = ($shadowCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: awk -F: '$5 > 60 {print $1, $5}' /etc/shadow" + $nl
+    $FindingDetails += "Result: " + $shadowStr + $nl + $nl
+
+    # Filter out system accounts
+    $systemAccounts = @("bin", "daemon", "adm", "lp", "sync", "shutdown", "halt", "mail",
+                        "operator", "games", "ftp", "nobody", "systemd-network", "dbus",
+                        "polkitd", "sshd", "postfix", "chrony", "ntp", "tss", "nfsnobody",
+                        "rpc", "rpcuser", "xcp-rrdd", "xcp-networkd")
+
+    $violations = @()
+    foreach ($line in $shadowCheck) {
+        $lineStr = $line.ToString().Trim()
+        if ($lineStr -ne "" -and $lineStr -notmatch "^(awk|grep)") {
+            $parts = $lineStr -split "\s+"
+            if ($parts.Count -ge 1 -and $parts[0] -notin $systemAccounts) {
+                $violations += $lineStr
+            }
+        }
+    }
+
+    if ($violations.Count -eq 0) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No non-system accounts have a maximum password age greater than 60 days." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: The following non-system accounts have maximum password age greater than 60 days:" + $nl
+        foreach ($v in $violations) {
+            $FindingDetails += "  " + $v + $nl
+        }
+        $FindingDetails += "Remediation: chage -M 60 [username] for each affected account" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3753,9 +4157,46 @@ Function Get-V204422 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204422) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204422 - Password Reuse Prohibited for 5 Generations (remember)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for remember in system-auth and password-auth
+    $sysAuth = $(grep -i remember /etc/pam.d/system-auth 2>&1)
+    $sysAuthStr = ($sysAuth -join $nl).Trim()
+    $pwAuth = $(grep -i remember /etc/pam.d/password-auth 2>&1)
+    $pwAuthStr = ($pwAuth -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i remember /etc/pam.d/system-auth" + $nl
+    $FindingDetails += "Result: " + $sysAuthStr + $nl + $nl
+    $FindingDetails += "Command: grep -i remember /etc/pam.d/password-auth" + $nl
+    $FindingDetails += "Result: " + $pwAuthStr + $nl + $nl
+
+    $sysRemember = 0
+    $pwRemember = 0
+
+    if ($sysAuthStr -match "remember=(\d+)") {
+        $sysRemember = [int]$Matches[1]
+    }
+    if ($pwAuthStr -match "remember=(\d+)") {
+        $pwRemember = [int]$Matches[1]
+    }
+
+    $FindingDetails += "system-auth remember value: " + $sysRemember + $nl
+    $FindingDetails += "password-auth remember value: " + $pwRemember + $nl + $nl
+
+    if ($sysRemember -ge 5 -and $pwRemember -ge 5) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Password reuse is prohibited for at least 5 generations in both auth files." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Password reuse must be prohibited for at least 5 generations." + $nl
+        $FindingDetails += "Remediation: Add remember=5 to pam_unix.so or pam_pwhistory.so in both:" + $nl
+        $FindingDetails += "  /etc/pam.d/system-auth" + $nl
+        $FindingDetails += "  /etc/pam.d/password-auth" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -3864,9 +4305,42 @@ Function Get-V204423 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204423) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204423 - Password Minimum Length 15 Characters (minlen)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check minlen in pwquality.conf
+    $paramCheck = $(grep minlen /etc/security/pwquality.conf 2>&1)
+    $paramStr = ($paramCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep minlen /etc/security/pwquality.conf" + $nl
+    $FindingDetails += "Result: " + $paramStr + $nl + $nl
+
+    # Parse active (non-commented) line
+    $activeLines = ($paramCheck | Where-Object { $_ -match "^\s*minlen" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "minlen\s*=\s*(\d+)") {
+        $paramVal = [int]$Matches[1]
+        $FindingDetails += "Active minlen value: " + $paramVal + $nl + $nl
+
+        if ($paramVal -ge 15) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: minlen is set to " + $paramVal + " (required: >= 15)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: minlen is set to " + $paramVal + " (required: >= 15)." + $nl
+            $FindingDetails += "Remediation: Set minlen = 15 in /etc/security/pwquality.conf" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: minlen is not configured in /etc/security/pwquality.conf." + $nl
+        $FindingDetails += "Remediation: Add to /etc/security/pwquality.conf:" + $nl
+        $FindingDetails += "  minlen = 15" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
