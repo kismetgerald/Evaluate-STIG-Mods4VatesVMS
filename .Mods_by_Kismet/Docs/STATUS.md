@@ -3,8 +3,8 @@
 ## Project Overview
 **XCP-ng & Xen Orchestra STIG Compliance Framework for Evaluate-STIG**
 
-**Last Updated:** March 1, 2026 (Session #65)
-**Phase:** XO Modules 100% Complete — XCP-ng Enhancement Next
+**Last Updated:** March 12, 2026 (Session #78)
+**Phase:** XO + VMM 100% Complete — Dom0 RHEL7 CAT II In Progress
 
 ---
 
@@ -15,9 +15,9 @@
 | **Scan-XO_WebSRG_Checks** | 126 (5 CAT I + 121 CAT II) | 126/126 | 41.27% | Test124 (Feb 11) | **100% COMPLETE** |
 | **Scan-XO_ASD_Checks** | 286 (34 CAT I + 252 CAT II/III) | 286/286 | 43.36% | Test148b (Feb 18) | **100% COMPLETE** |
 | **Scan-XO_GPOS_Debian12_Checks** | 198 (18 CAT I + 170 CAT II + 10 CAT III) | 198/198 | 46.46% | Test173b (Mar 1) | **100% COMPLETE** |
-| **Scan-XCP-ng_VMM_Checks** | 204 | 3 CAT I enhanced | ~0% | Jan 24 | Framework baseline |
-| **Scan-XCP-ng_Dom0_RHEL7_Checks** | 244 (26 CAT I + 205 CAT II + 13 CAT III) | 12 CAT I enhanced | ~0% | Jan 21 | Framework baseline |
-| **Total** | **1,058** | **610 XO + baseline XCP-ng** | — | — | **XO 100%** |
+| **Scan-XCP-ng_VMM_Checks** | 193 (3 CAT I + 159 CAT II + 31 CAT III) | 193/193 | 34.72% | Test187b (Mar 11) | **100% COMPLETE** |
+| **Scan-XCP-ng_Dom0_RHEL7_Checks** | 244 (26 CAT I + 205 CAT II + 13 CAT III) | 84/244 | 15.16% | Test194b (Mar 12) | **In Progress** — CAT II Batch 3/14 |
+| **Total** | **1,047** | **803 XO+VMM + 84 Dom0** | — | — | **XO+VMM 100%, Dom0 34.4%** |
 
 ---
 
@@ -37,16 +37,25 @@
 
 ---
 
-## XCP-ng Modules — Next Phase
+## XCP-ng Modules
 
-### Current State
-- VMM: 204 functions (mostly stubs with dynamic generation, 3 CAT I enhanced)
-- Dom0 RHEL7: 244 functions (mostly stubs, 12 CAT I enhanced, naming mismatch needs Session #50-style remediation — only 171/244 exported)
+### VMM — 100% COMPLETE
+- 193/193 functions, all explicit (0 stubs), EvalScore 34.72%
+- Test187b validated (Mar 11), PRs #47-58 merged
+- Bash helpers in `Modules/Scan-XCP-ng_VMM_Checks/Bash_Helpers/`
+
+### Dom0 RHEL7 — In Progress (84/244, 34.4%)
+- Phase 0 remediation complete (Session #76, PR #60)
+- CAT I: 26/26 complete (Session #77, PR #61)
+- CAT III: 13/13 complete (Session #77, PR #62)
+- CAT II: 45/205 done (Batches 1-3, PRs #64-66)
+- EvalScore: 15.16%, Test194b (Mar 12)
+- Remaining: 160 CAT II functions across Batches 4-14
 
 ### Key Technical Notes
 - XCP-ng 8.3 is based on **RHEL 7/CentOS 7** (not RHEL 8)
 - Requires PowerShell 7.3.12 (7.4+ incompatible due to glibc)
-- Dom0 module needs naming alignment (function names vs manifest exports)
+- Dom0 is headless — GNOME checks return Not_Applicable
 
 ---
 
@@ -57,8 +66,10 @@
 | WebSRG | XO_WebSRG | Test1–Test124 | Test124 | Exit 0, 41.27% |
 | ASD | XO_ASD | Test125–Test148b | Test148b | Exit 0, 43.36% |
 | GPOS Debian12 | XO_GPOS_Debian12 | Test149–Test173b | Test173b | Exit 0, 46.46% |
+| XCP-ng VMM | XCP-ng_VMM | Test176–Test187b | Test187b | Exit 0, 34.72% |
+| XCP-ng Dom0 | XCP-ng_Dom0_RHEL7 | Test188–Test194b | Test194b | Exit 0, 15.16% |
 
-All scans: zero errors, zero VulnTimeouts, CKL/CKLB/XCCDF generation verified.
+All scans: zero errors, zero VulnTimeouts, CKL/CKLB generation verified.
 
 ---
 
@@ -69,8 +80,8 @@ All scans: zero errors, zero VulnTimeouts, CKL/CKLB/XCCDF generation verified.
 Scan-XO_WebSRG_Checks/          # 100% COMPLETE
 Scan-XO_ASD_Checks/             # 100% COMPLETE
 Scan-XO_GPOS_Debian12_Checks/   # 100% COMPLETE
-Scan-XCP-ng_VMM_Checks/         # Framework baseline
-Scan-XCP-ng_Dom0_RHEL7_Checks/  # Framework baseline (needs remediation)
+Scan-XCP-ng_VMM_Checks/         # 100% COMPLETE
+Scan-XCP-ng_Dom0_RHEL7_Checks/  # In progress (84/244)
 ```
 
 ### Answer Files (in `Evaluate-STIG/AnswerFiles/`)
@@ -78,6 +89,8 @@ Scan-XCP-ng_Dom0_RHEL7_Checks/  # Framework baseline (needs remediation)
 XO_v5.x_WebSRG_AnswerFile.xml
 XO_v5.x_ASD_AnswerFile.xml
 XO_v5.x_GPOS_Debian12_AnswerFile.xml
+XCP-ng_v8.3_VMM_AnswerFile.xml
+XCP-ng_v8.3_Dom0_RHEL7_AnswerFile.xml
 ```
 
 ### Documentation (in `.Mods_by_Kismet/Docs/`)
@@ -91,6 +104,7 @@ XCP-ng_RHEL7_Compatibility_Issue.md  # Resolved PS compatibility issue
 XO_v5.x_GPOS/             # GPOS implementation tracker and guide
 XO_v5.x_WebSRG/           # WebSRG implementation trackers
 XO_v5.x_ASD/              # ASD implementation plan and trackers
+XCPng_v8.3_Dom0_RHEL7/    # Dom0 RHEL7 plan, guide, tracker, test logs/results
 ```
 
 ---
@@ -109,4 +123,4 @@ See `VATES_COMPLIANCE_BLOCKERS.md` for full details and remediation options.
 
 ---
 
-**Status:** XO Modules 100% Complete (610/610) | **Next:** XCP-ng VMM and Dom0 Enhancement
+**Status:** XO + VMM 100% Complete (803/803) | Dom0 RHEL7 84/244 (34.4%) | **Next:** Dom0 CAT II Batches 4-14
