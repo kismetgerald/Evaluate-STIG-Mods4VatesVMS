@@ -48,7 +48,7 @@
     <Score>
       <CATI_OpenNRTotal>10</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>349</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>350</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>41</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
@@ -58,7 +58,7 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-12T15:53:05.2991309-04:00" EvalScore="15.16">
+    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-12T10:19:27.0763010-04:00" EvalScore="14.75">
       <CAT_I Total="26" Not_Applicable="5" Open="10" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values." Status="Open" ID="V-204392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords." Status="Open" ID="V-204424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -87,7 +87,7 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must use a virus scan program." Status="Open" ID="V-214801" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords." Status="NotAFinding" ID="V-251702" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="205" Not_Applicable="10" Open="27" NotAFinding="8" Not_Reviewed="160">
+      <CAT_II Total="205" Not_Applicable="10" Open="27" NotAFinding="7" Not_Reviewed="161">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon." Status="Open" ID="V-204395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -127,7 +127,7 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow users to override SSH environment variables." Status="Open" ID="V-204434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow a non-certificate trusted host SSH logon to the system." Status="Open" ID="V-204435" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must require authentication upon booting into single-user and maintenance modes." Status="NotAFinding" ID="V-204437" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication." Status="NotAFinding" ID="V-204441" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must uniquely identify and must authenticate organizational users (or processes acting on behalf of organizational users) using multifactor authentication." Status="Not_Reviewed" ID="V-204441" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must prevent nonprivileged users from executing privileged functions to include disabling, circumventing, or altering implemented security safeguards/countermeasures." Status="Open" ID="V-204444" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that a file integrity tool verifies the baseline operating system configuration at least weekly." Status="Open" ID="V-204445" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that designated personnel are notified if baseline configurations are changed in an unauthorized manner." Status="Open" ID="V-204446" Override="" Justification="" AFStatusChange="" PreAFStatus="" />

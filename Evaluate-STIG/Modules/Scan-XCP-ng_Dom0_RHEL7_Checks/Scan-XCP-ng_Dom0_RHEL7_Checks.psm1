@@ -4731,9 +4731,39 @@ Function Get-V204426 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204426) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204426 - Disable Account After Password Expiry (INACTIVE)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $inactiveCheck = $(grep -i inactive /etc/default/useradd 2>&1)
+    $inactiveStr = ($inactiveCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i inactive /etc/default/useradd" + $nl
+    $FindingDetails += "Result: " + $inactiveStr + $nl + $nl
+
+    $activeLines = ($inactiveCheck | Where-Object { $_ -match "^\s*INACTIVE" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "INACTIVE\s*=\s*(-?\d+)") {
+        $inactiveVal = [int]$Matches[1]
+        $FindingDetails += "Active INACTIVE value: " + $inactiveVal + $nl + $nl
+
+        if ($inactiveVal -ge 0 -and $inactiveVal -le 35) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: INACTIVE is set to " + $inactiveVal + " (required: 0-35)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: INACTIVE is set to " + $inactiveVal + " (required: 0-35, not -1)." + $nl
+            $FindingDetails += "Remediation: useradd -D -f 35" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: INACTIVE is not configured in /etc/default/useradd." + $nl
+        $FindingDetails += "Remediation: useradd -D -f 35" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4842,9 +4872,39 @@ Function Get-V204427 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204427) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204427 - Lock Accounts After 3 Failed Attempts (pam_faillock)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $faillockCheck = $(grep pam_faillock /etc/pam.d/password-auth 2>&1)
+    $faillockStr = ($faillockCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep pam_faillock /etc/pam.d/password-auth" + $nl
+    $FindingDetails += "Result:" + $nl + $faillockStr + $nl + $nl
+
+    $hasDeny = $faillockStr -match "deny=([0-9]+)"
+    $denyVal = if ($hasDeny) { [int]$Matches[1] } else { 0 }
+    $hasInterval = $faillockStr -match "fail_interval=([0-9]+)"
+    $intervalVal = if ($hasInterval) { [int]$Matches[1] } else { 0 }
+    $hasUnlock = $faillockStr -match "unlock_time=([0-9]+)"
+    $unlockVal = if ($hasUnlock) { [int]$Matches[1] } else { 0 }
+
+    $FindingDetails += "deny=" + $denyVal + " (required: <= 3)" + $nl
+    $FindingDetails += "fail_interval=" + $intervalVal + " (required: >= 900)" + $nl
+    $FindingDetails += "unlock_time=" + $unlockVal + " (required: >= 900 or 0=never)" + $nl + $nl
+
+    if ($hasDeny -and $denyVal -le 3 -and $denyVal -gt 0 -and
+        $hasInterval -and $intervalVal -ge 900 -and
+        $hasUnlock -and ($unlockVal -ge 900 -or $unlockVal -eq 0)) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: pam_faillock is properly configured in password-auth." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: pam_faillock is not properly configured in password-auth." + $nl
+        $FindingDetails += "Remediation: Configure pam_faillock.so with deny=3 fail_interval=900 unlock_time=900" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -4953,9 +5013,32 @@ Function Get-V204428 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204428) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204428 - Lock Root Account After 3 Failed Attempts" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $faillockCheck = $(grep pam_faillock /etc/pam.d/password-auth 2>&1)
+    $faillockStr = ($faillockCheck -join $nl).Trim()
+    $sysAuthCheck = $(grep pam_faillock /etc/pam.d/system-auth 2>&1)
+    $sysAuthStr = ($sysAuthCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep pam_faillock /etc/pam.d/password-auth" + $nl
+    $FindingDetails += "Result:" + $nl + $faillockStr + $nl + $nl
+    $FindingDetails += "Command: grep pam_faillock /etc/pam.d/system-auth" + $nl
+    $FindingDetails += "Result:" + $nl + $sysAuthStr + $nl + $nl
+
+    $combinedStr = $faillockStr + $nl + $sysAuthStr
+
+    if ($combinedStr -match "even_deny_root") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: pam_faillock includes even_deny_root, locking root after failed attempts." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: pam_faillock does not include even_deny_root." + $nl
+        $FindingDetails += "Remediation: Add even_deny_root to pam_faillock.so lines in PAM auth files." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5064,9 +5147,32 @@ Function Get-V204429 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204429) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204429 - Users Must Provide Password for Privilege Escalation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $nopasswdCheck = $(grep -ir NOPASSWD /etc/sudoers /etc/sudoers.d/ 2>&1)
+    $nopasswdStr = ($nopasswdCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -ir NOPASSWD /etc/sudoers /etc/sudoers.d/" + $nl
+    $FindingDetails += "Result: " + $nopasswdStr + $nl + $nl
+
+    # Filter out commented lines
+    $activeLines = ($nopasswdCheck | Where-Object { $_ -notmatch "^\s*#" -and $_ -match "NOPASSWD" })
+
+    if ($activeLines.Count -eq 0 -or [string]::IsNullOrWhiteSpace(($activeLines -join ""))) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No NOPASSWD entries found in sudoers configuration." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: NOPASSWD entries found in sudoers configuration:" + $nl
+        foreach ($line in $activeLines) {
+            $FindingDetails += "  " + $line.ToString().Trim() + $nl
+        }
+        $FindingDetails += "Remediation: Remove NOPASSWD from sudoers entries or document with ISSO." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5175,9 +5281,32 @@ Function Get-V204430 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204430) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204430 - Users Must Re-authenticate for Privilege Escalation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $noauthCheck = $(grep -ir authenticate /etc/sudoers /etc/sudoers.d/ 2>&1)
+    $noauthStr = ($noauthCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -ir authenticate /etc/sudoers /etc/sudoers.d/" + $nl
+    $FindingDetails += "Result: " + $noauthStr + $nl + $nl
+
+    # Filter for uncommented !authenticate lines
+    $activeLines = ($noauthCheck | Where-Object { $_ -notmatch "^\s*#" -and $_ -match "!authenticate" })
+
+    if ($activeLines.Count -eq 0 -or [string]::IsNullOrWhiteSpace(($activeLines -join ""))) {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No !authenticate entries found in sudoers configuration." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: !authenticate entries found in sudoers:" + $nl
+        foreach ($line in $activeLines) {
+            $FindingDetails += "  " + $line.ToString().Trim() + $nl
+        }
+        $FindingDetails += "Remediation: Remove !authenticate tags from sudoers entries." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5286,9 +5415,39 @@ Function Get-V204431 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204431) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204431 - Failed Logon Delay Must Be 4+ Seconds (FAIL_DELAY)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $delayCheck = $(grep -i fail_delay /etc/login.defs 2>&1)
+    $delayStr = ($delayCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i fail_delay /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $delayStr + $nl + $nl
+
+    $activeLines = ($delayCheck | Where-Object { $_ -match "^\s*FAIL_DELAY" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "FAIL_DELAY\s+(\d+)") {
+        $delayVal = [int]$Matches[1]
+        $FindingDetails += "Active FAIL_DELAY value: " + $delayVal + $nl + $nl
+
+        if ($delayVal -ge 4) {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: FAIL_DELAY is set to " + $delayVal + " (required: >= 4)." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: FAIL_DELAY is set to " + $delayVal + " (required: >= 4)." + $nl
+            $FindingDetails += "Remediation: Set FAIL_DELAY 4 in /etc/login.defs" + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: FAIL_DELAY is not configured in /etc/login.defs." + $nl
+        $FindingDetails += "Remediation: Add FAIL_DELAY 4 to /etc/login.defs" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5682,9 +5841,29 @@ Function Get-V204434 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204434) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204434 - SSH Must Not Allow User Environment Override" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $sshCheck = $(grep -i permituserenvironment /etc/ssh/sshd_config 2>&1)
+    $sshStr = ($sshCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i permituserenvironment /etc/ssh/sshd_config" + $nl
+    $FindingDetails += "Result: " + $sshStr + $nl + $nl
+
+    $activeLines = ($sshCheck | Where-Object { $_ -match "^\s*PermitUserEnvironment" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "PermitUserEnvironment\s+no") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: PermitUserEnvironment is set to no." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: PermitUserEnvironment is not set to no in sshd_config." + $nl
+        $FindingDetails += "Remediation: Set PermitUserEnvironment no in /etc/ssh/sshd_config" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5793,9 +5972,29 @@ Function Get-V204435 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204435) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204435 - SSH Must Not Allow Host-based Authentication" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $sshCheck = $(grep -i hostbasedauthentication /etc/ssh/sshd_config 2>&1)
+    $sshStr = ($sshCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i hostbasedauthentication /etc/ssh/sshd_config" + $nl
+    $FindingDetails += "Result: " + $sshStr + $nl + $nl
+
+    $activeLines = ($sshCheck | Where-Object { $_ -match "^\s*HostbasedAuthentication" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "HostbasedAuthentication\s+no") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: HostbasedAuthentication is set to no." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: HostbasedAuthentication is not set to no in sshd_config." + $nl
+        $FindingDetails += "Remediation: Set HostbasedAuthentication no in /etc/ssh/sshd_config" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -5904,9 +6103,26 @@ Function Get-V204437 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204437) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204437 - Single-User Mode Must Require Authentication" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $rescueCheck = $(grep -i execstart /usr/lib/systemd/system/rescue.service 2>&1)
+    $rescueStr = ($rescueCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i execstart /usr/lib/systemd/system/rescue.service" + $nl
+    $FindingDetails += "Result: " + $rescueStr + $nl + $nl
+
+    if ($rescueStr -match "sulogin") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: rescue.service uses sulogin, requiring authentication for single-user mode." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: rescue.service does not use sulogin for single-user mode authentication." + $nl
+        $FindingDetails += "Remediation: Configure ExecStart in rescue.service to include /usr/sbin/sulogin." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6302,9 +6518,56 @@ Function Get-V204441 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204441) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204441 - Must Authenticate Users via MFA/Smartcard" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if authconfig is available
+    $pamCheckStr = ""
+    $pkcs11Str = ""
+    $authconfigExists = $(which authconfig 2>/dev/null)
+    $authconfigExistsStr = ($authconfigExists -join $nl).Trim()
+
+    if ($authconfigExistsStr -ne "") {
+        $authconfigCheck = $(authconfig --test 2>&1)
+        $authconfigStr = ($authconfigCheck -join $nl).Trim()
+
+        # Check for pam_pkcs11
+        $pkcs11Lines = ($authconfigCheck | Where-Object { $_ -match "pam_pkcs11" })
+        $pkcs11Str = ($pkcs11Lines -join $nl).Trim()
+
+        $FindingDetails += "Command: authconfig --test | grep pam_pkcs11" + $nl
+        $FindingDetails += "Result: " + $pkcs11Str + $nl + $nl
+
+        # Check smartcard removal action
+        $smartcardLines = ($authconfigCheck | Where-Object { $_ -match "smartcard removal" })
+        $smartcardStr = ($smartcardLines -join $nl).Trim()
+
+        $FindingDetails += "Smartcard removal action: " + $smartcardStr + $nl + $nl
+    }
+    else {
+        $pkcs11Str = ""
+        $FindingDetails += "Command: which authconfig" + $nl
+        $FindingDetails += "Result: authconfig is not installed" + $nl + $nl
+
+        # Fallback: check PAM files directly for pam_pkcs11
+        $pamCheck = $(timeout 10 grep -r "pam_pkcs11" /etc/pam.d/ 2>/dev/null)
+        $pamCheckStr = ($pamCheck -join $nl).Trim()
+        $FindingDetails += "Fallback: grep -r pam_pkcs11 /etc/pam.d/" + $nl
+        $FindingDetails += "Result: " + $(if ($pamCheckStr -ne "") { $pamCheckStr } else { "(none found)" }) + $nl + $nl
+    }
+
+    if ($pkcs11Str -match "pam_pkcs11 is enabled" -or $pamCheckStr -match "pam_pkcs11") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Smartcard authentication (pam_pkcs11) is enabled." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Smartcard authentication (pam_pkcs11) is not enabled." + $nl
+        $FindingDetails += "Remediation: Install authconfig, then run: authconfig --enablesmartcard --smartcardaction=0 --update" + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 may require organizational compensating controls for MFA." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6671,9 +6934,35 @@ Function Get-V204444 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204444) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204444 - Prevent Nonprivileged Users from Executing Privileged Functions" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check SELinux status
+    $selinuxCheck = $(getenforce 2>&1)
+    $selinuxStr = ($selinuxCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: getenforce" + $nl
+    $FindingDetails += "Result: " + $selinuxStr + $nl + $nl
+
+    # Check SELinux config
+    $selinuxConf = $(grep -i "^SELINUX=" /etc/selinux/config 2>&1)
+    $selinuxConfStr = ($selinuxConf -join $nl).Trim()
+
+    $FindingDetails += "Command: grep SELINUX= /etc/selinux/config" + $nl
+    $FindingDetails += "Result: " + $selinuxConfStr + $nl + $nl
+
+    if ($selinuxStr -match "Enforcing") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: SELinux is in Enforcing mode." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SELinux is not in Enforcing mode (current: " + $selinuxStr + ")." + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 typically operates with SELinux disabled." + $nl
+        $FindingDetails += "Remediation: Set SELINUX=enforcing in /etc/selinux/config and reboot." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6782,9 +7071,40 @@ Function Get-V204445 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204445) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204445 - File Integrity Tool Must Verify Baseline (AIDE)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if AIDE is installed
+    $aideCheck = $(rpm -q aide 2>&1)
+    $aideStr = ($aideCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q aide" + $nl
+    $FindingDetails += "Result: " + $aideStr + $nl + $nl
+
+    # Check for AIDE cron job
+    $cronCheck = $(grep -r aide /etc/cron.daily/ /etc/cron.weekly/ /etc/crontab /var/spool/cron/ 2>&1)
+    $cronStr = ($cronCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r aide /etc/cron.daily/ /etc/cron.weekly/ /etc/crontab /var/spool/cron/" + $nl
+    $FindingDetails += "Result: " + $cronStr + $nl + $nl
+
+    if ($aideStr -notmatch "is not installed" -and $cronStr -match "aide") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: AIDE is installed and a cron job is configured to run it regularly." + $nl
+    }
+    else {
+        $Status = "Open"
+        if ($aideStr -match "is not installed") {
+            $FindingDetails += "FAIL: AIDE is not installed." + $nl
+            $FindingDetails += "Remediation: yum install aide; aide --init; mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz" + $nl
+        }
+        else {
+            $FindingDetails += "FAIL: AIDE is installed but no cron job found to run it regularly." + $nl
+            $FindingDetails += "Remediation: Add a daily/weekly cron job: aide --check" + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -6893,9 +7213,42 @@ Function Get-V204446 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204446) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204446 - File Integrity Tool Must Notify Personnel of Changes" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if AIDE is installed
+    $aideCheck = $(rpm -q aide 2>&1)
+    $aideStr = ($aideCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q aide" + $nl
+    $FindingDetails += "Result: " + $aideStr + $nl + $nl
+
+    # Check for AIDE cron job with notification (mail/email)
+    $cronCheck = $(grep -r aide /etc/cron.daily/ /etc/cron.weekly/ /etc/crontab /var/spool/cron/ 2>&1)
+    $cronStr = ($cronCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r aide /etc/cron.daily/ /etc/cron.weekly/ /etc/crontab /var/spool/cron/" + $nl
+    $FindingDetails += "Result: " + $cronStr + $nl + $nl
+
+    if ($aideStr -notmatch "is not installed" -and $cronStr -match "aide") {
+        # AIDE is installed and scheduled - check for notification mechanism
+        if ($cronStr -match "mail|notify|email|\|") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: AIDE is configured with notification mechanism." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: AIDE cron job does not include notification to personnel." + $nl
+            $FindingDetails += "Remediation: Configure AIDE cron job to email results to designated personnel." + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: AIDE is not installed or not scheduled." + $nl
+        $FindingDetails += "Remediation: Install AIDE and configure cron job with email notification." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7262,9 +7615,30 @@ Function Get-V204449 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204449) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204449 - USB Mass Storage Must Be Disabled" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $usbCheck = $(grep -r usb-storage /etc/modprobe.d/ 2>&1)
+    $usbStr = ($usbCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r usb-storage /etc/modprobe.d/" + $nl
+    $FindingDetails += "Result: " + $usbStr + $nl + $nl
+
+    # Check for active (non-commented) install usb-storage /bin/false or /bin/true
+    $activeLines = ($usbCheck | Where-Object { $_ -notmatch "^\s*#" -and $_ -match "usb-storage" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "install\s+usb-storage\s+/bin/(false|true)") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: USB mass storage kernel module is disabled." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: USB mass storage kernel module is not disabled." + $nl
+        $FindingDetails += "Remediation: echo " + [char]34 + "install usb-storage /bin/false" + [char]34 + " > /etc/modprobe.d/usb-storage.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -7373,9 +7747,30 @@ Function Get-V204450 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204450) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204450 - DCCP Kernel Module Must Be Disabled" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $dccpCheck = $(grep -r dccp /etc/modprobe.d/ 2>&1)
+    $dccpStr = ($dccpCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r dccp /etc/modprobe.d/" + $nl
+    $FindingDetails += "Result: " + $dccpStr + $nl + $nl
+
+    # Check for active (non-commented) install dccp /bin/false or /bin/true
+    $activeLines = ($dccpCheck | Where-Object { $_ -notmatch "^\s*#" -and $_ -match "dccp" })
+    $activeStr = ($activeLines -join $nl).Trim()
+
+    if ($activeStr -match "install\s+dccp\s+/bin/(false|true)") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: DCCP kernel module is disabled." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: DCCP kernel module is not disabled." + $nl
+        $FindingDetails += "Remediation: echo " + [char]34 + "install dccp /bin/false" + [char]34 + " > /etc/modprobe.d/dccp.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
