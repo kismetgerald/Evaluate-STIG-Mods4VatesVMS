@@ -12,12 +12,12 @@
 | Phase | Functions | Status |
 |-------|-----------|--------|
 | Phase 0: Remediation | -- | COMPLETE (Session #76, PR #60) |
-| Phase 1: CAT I | 0/26 | Not Started |
-| Phase 2: CAT II | 0/205 | Not Started |
-| Phase 3: CAT III | 0/13 | Not Started |
-| **Total** | **0/244** | **Remediation complete, awaiting baseline test** |
+| Phase 1: CAT I | 26/26 | COMPLETE (Session #77, PR #61) |
+| Phase 2: CAT II | 45/205 | In Progress â€” Batches 1-3 done |
+| Phase 3: CAT III | 13/13 | COMPLETE (Session #77, PR #62) |
+| **Total** | **84/244** | **34.4% implemented** |
 
-**Last Test:** Test188 (pending) -- Phase 0 baseline
+**Last Test:** Test194b (Mar 12) â€” EvalScore 15.16%, 0 errors, exit code 0
 
 ---
 
@@ -33,7 +33,7 @@
 
 ---
 
-## Phase 0: Module Remediation — COMPLETE
+## Phase 0: Module Remediation ï¿½ COMPLETE
 
 | Defect | Fix | Status |
 |--------|-----|--------|
@@ -52,42 +52,42 @@
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-204392 | SV-204392r991558_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204424 | SV-204424r991589_rule | The Red Hat Enterprise Linux operating system must not allow accounts | NR | -- | -- | -- |
-| V-204425 | SV-204425r958486_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204432 | SV-204432r991591_rule | The Red Hat Enterprise Linux operating system must not allow an unatte | NR | -- | -- | -- |
-| V-204433 | SV-204433r991591_rule | The Red Hat Enterprise Linux operating system must not allow an unrest | NR | -- | -- | -- |
-| V-204438 | SV-204438r958472_rule | Red Hat Enterprise Linux operating systems version 7.2 or newer with a | NR | -- | -- | -- |
-| V-204440 | SV-204440r958472_rule | Red Hat Enterprise Linux operating systems version 7.2 or newer using | NR | -- | -- | -- |
-| V-204442 | SV-204442r958478_rule | The Red Hat Enterprise Linux operating system must not have the rsh-se | NR | -- | -- | -- |
-| V-204443 | SV-204443r958478_rule | The Red Hat Enterprise Linux operating system must not have the ypserv | NR | -- | -- | -- |
-| V-204447 | SV-204447r982212_rule | The Red Hat Enterprise Linux operating system must prevent the install | NR | -- | -- | -- |
+| V-204392 | SV-204392r991558_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-204424 | SV-204424r991589_rule | The Red Hat Enterprise Linux operating system must not allow accounts | DONE | Test188 | #77 | O |
+| V-204425 | SV-204425r958486_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-204432 | SV-204432r991591_rule | The Red Hat Enterprise Linux operating system must not allow an unatte | DONE | Test188 | #77 | NA |
+| V-204433 | SV-204433r991591_rule | The Red Hat Enterprise Linux operating system must not allow an unrest | DONE | Test188 | #77 | NA |
+| V-204438 | SV-204438r958472_rule | Red Hat Enterprise Linux operating systems version 7.2 or newer with a | DONE | Test188 | #77 | O |
+| V-204440 | SV-204440r958472_rule | Red Hat Enterprise Linux operating systems version 7.2 or newer using | DONE | Test188 | #77 | O |
+| V-204442 | SV-204442r958478_rule | The Red Hat Enterprise Linux operating system must not have the rsh-se | DONE | Test188 | #77 | NF |
+| V-204443 | SV-204443r958478_rule | The Red Hat Enterprise Linux operating system must not have the ypserv | DONE | Test188 | #77 | NF |
+| V-204447 | SV-204447r982212_rule | The Red Hat Enterprise Linux operating system must prevent the install | DONE | Test188 | #77 | O |
 
 ### Batch CAT1-B: Account Security & SSH (10 functions)
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-204448 | SV-204448r982212_rule | The Red Hat Enterprise Linux operating system must prevent the install | NR | -- | -- | -- |
-| V-204455 | SV-204455r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204456 | SV-204456r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204458 | SV-204458r991589_rule | The Red Hat Enterprise Linux operating system must be a vendor support | NR | -- | -- | -- |
-| V-204462 | SV-204462r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204497 | SV-204497r958408_rule | The Red Hat Enterprise Linux operating system must implement NIST FIPS | NR | -- | -- | -- |
-| V-204502 | SV-204502r958478_rule | The Red Hat Enterprise Linux operating system must not have the telnet | NR | -- | -- | -- |
-| V-204594 | SV-204594r987796_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-204606 | SV-204606r991589_rule | The Red Hat Enterprise Linux operating system must not contain .shosts | NR | -- | -- | -- |
-| V-204607 | SV-204607r991589_rule | The Red Hat Enterprise Linux operating system must not contain shosts. | NR | -- | -- | -- |
+| V-204448 | SV-204448r982212_rule | The Red Hat Enterprise Linux operating system must prevent the install | DONE | Test188 | #77 | O |
+| V-204455 | SV-204455r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-204456 | SV-204456r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | NF |
+| V-204458 | SV-204458r991589_rule | The Red Hat Enterprise Linux operating system must be a vendor support | DONE | Test188 | #77 | O |
+| V-204462 | SV-204462r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-204497 | SV-204497r958408_rule | The Red Hat Enterprise Linux operating system must implement NIST FIPS | DONE | Test188 | #77 | O |
+| V-204502 | SV-204502r958478_rule | The Red Hat Enterprise Linux operating system must not have the telnet | DONE | Test188 | #77 | NF |
+| V-204594 | SV-204594r987796_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-204606 | SV-204606r991589_rule | The Red Hat Enterprise Linux operating system must not contain .shosts | DONE | Test188 | #77 | NF |
+| V-204607 | SV-204607r991589_rule | The Red Hat Enterprise Linux operating system must not contain shosts. | DONE | Test188 | #77 | NF |
 
 ### Batch CAT1-C: Remaining CAT I (6 functions)
 
 | Vuln ID | Rule ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|------------|--------|------|---------|---------|
-| V-204620 | SV-204620r991589_rule | The Red Hat Enterprise Linux operating system must not have a File Tra | NR | -- | -- | -- |
-| V-204621 | SV-204621r991589_rule | The Red Hat Enterprise Linux operating system must not have the Trivia | NR | -- | -- | -- |
-| V-204627 | SV-204627r991589_rule | SNMP community strings on the Red Hat Enterprise Linux operating syste | NR | -- | -- | -- |
-| V-214799 | SV-214799r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | NR | -- | -- | -- |
-| V-214801 | SV-214801r991589_rule | The Red Hat Enterprise Linux operating system must use a virus scan pr | NR | -- | -- | -- |
-| V-251702 | SV-251702r991589_rule | The Red Hat Enterprise Linux operating system must not have accounts c | NR | -- | -- | -- |
+| V-204620 | SV-204620r991589_rule | The Red Hat Enterprise Linux operating system must not have a File Tra | DONE | Test188 | #77 | NF |
+| V-204621 | SV-204621r991589_rule | The Red Hat Enterprise Linux operating system must not have the Trivia | DONE | Test188 | #77 | NF |
+| V-204627 | SV-204627r991589_rule | SNMP community strings on the Red Hat Enterprise Linux operating syste | DONE | Test188 | #77 | O |
+| V-214799 | SV-214799r991589_rule | The Red Hat Enterprise Linux operating system must be configured so th | DONE | Test188 | #77 | O |
+| V-214801 | SV-214801r991589_rule | The Red Hat Enterprise Linux operating system must use a virus scan pr | DONE | Test188 | #77 | O |
+| V-251702 | SV-251702r991589_rule | The Red Hat Enterprise Linux operating system must not have accounts c | DONE | Test188 | #77 | NF |
 
 ---
 
@@ -98,63 +98,63 @@ STIG range: RHEL-07-010030 through RHEL-07-010130
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204393 | SV-204393r958390_rule | RHEL-07-010030 | The Red Hat Enterprise Linux operating system must display t | NR | -- | -- | -- |
-| V-204394 | SV-204394r958390_rule | RHEL-07-010040 | The Red Hat Enterprise Linux operating system must display t | NR | -- | -- | -- |
-| V-204395 | SV-204395r958390_rule | RHEL-07-010050 | The Red Hat Enterprise Linux operating system must display t | NR | -- | -- | -- |
-| V-204396 | SV-204396r958400_rule | RHEL-07-010060 | The Red Hat Enterprise Linux operating system must enable a | NR | -- | -- | -- |
-| V-204397 | SV-204397r982216_rule | RHEL-07-010061 | The Red Hat Enterprise Linux operating system must uniquely | NR | -- | -- | -- |
-| V-204398 | SV-204398r958402_rule | RHEL-07-010070 | The Red Hat Enterprise Linux operating system must initiate | NR | -- | -- | -- |
-| V-204399 | SV-204399r958402_rule | RHEL-07-010081 | The Red Hat Enterprise Linux operating system must prevent a | NR | -- | -- | -- |
-| V-204400 | SV-204400r958402_rule | RHEL-07-010082 | The Red Hat Enterprise Linux operating system must prevent a | NR | -- | -- | -- |
-| V-204402 | SV-204402r958402_rule | RHEL-07-010100 | The Red Hat Enterprise Linux operating system must initiate | NR | -- | -- | -- |
-| V-204403 | SV-204403r958402_rule | RHEL-07-010101 | The Red Hat Enterprise Linux operating system must prevent a | NR | -- | -- | -- |
-| V-204404 | SV-204404r958402_rule | RHEL-07-010110 | The Red Hat Enterprise Linux operating system must initiate | NR | -- | -- | -- |
-| V-204405 | SV-204405r982195_rule | RHEL-07-010118 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204406 | SV-204406r982195_rule | RHEL-07-010119 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204407 | SV-204407r982195_rule | RHEL-07-010120 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204408 | SV-204408r982196_rule | RHEL-07-010130 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
+| V-204393 | SV-204393r958390_rule | RHEL-07-010030 | The Red Hat Enterprise Linux operating system must display t | DONE | Test192 | #78 | NA |
+| V-204394 | SV-204394r958390_rule | RHEL-07-010040 | The Red Hat Enterprise Linux operating system must display t | DONE | Test192 | #78 | NA |
+| V-204395 | SV-204395r958390_rule | RHEL-07-010050 | The Red Hat Enterprise Linux operating system must display t | DONE | Test192 | #78 | NA |
+| V-204396 | SV-204396r958400_rule | RHEL-07-010060 | The Red Hat Enterprise Linux operating system must enable a | DONE | Test192 | #78 | NA |
+| V-204397 | SV-204397r982216_rule | RHEL-07-010061 | The Red Hat Enterprise Linux operating system must uniquely | DONE | Test192 | #78 | NA |
+| V-204398 | SV-204398r958402_rule | RHEL-07-010070 | The Red Hat Enterprise Linux operating system must initiate | DONE | Test192 | #78 | NA |
+| V-204399 | SV-204399r958402_rule | RHEL-07-010081 | The Red Hat Enterprise Linux operating system must prevent a | DONE | Test192 | #78 | NA |
+| V-204400 | SV-204400r958402_rule | RHEL-07-010082 | The Red Hat Enterprise Linux operating system must prevent a | DONE | Test192 | #78 | NA |
+| V-204402 | SV-204402r958402_rule | RHEL-07-010100 | The Red Hat Enterprise Linux operating system must initiate | DONE | Test192 | #78 | NA |
+| V-204403 | SV-204403r958402_rule | RHEL-07-010101 | The Red Hat Enterprise Linux operating system must prevent a | DONE | Test192 | #78 | NA |
+| V-204404 | SV-204404r958402_rule | RHEL-07-010110 | The Red Hat Enterprise Linux operating system must initiate | DONE | Test192 | #78 | NA |
+| V-204405 | SV-204405r982195_rule | RHEL-07-010118 | The Red Hat Enterprise Linux operating system must be config | DONE | Test192 | #78 | O |
+| V-204406 | SV-204406r982195_rule | RHEL-07-010119 | The Red Hat Enterprise Linux operating system must be config | DONE | Test192 | #78 | O |
+| V-204407 | SV-204407r982195_rule | RHEL-07-010120 | The Red Hat Enterprise Linux operating system must be config | DONE | Test192 | #78 | O |
+| V-204408 | SV-204408r982196_rule | RHEL-07-010130 | The Red Hat Enterprise Linux operating system must be config | DONE | Test192 | #78 | O |
 
 ### Batch 2: Password Complexity & Aging (15 functions)
 STIG range: RHEL-07-010140 through RHEL-07-010280
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204409 | SV-204409r982197_rule | RHEL-07-010140 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204410 | SV-204410r991561_rule | RHEL-07-010150 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204411 | SV-204411r982198_rule | RHEL-07-010160 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204412 | SV-204412r982198_rule | RHEL-07-010170 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204413 | SV-204413r982198_rule | RHEL-07-010180 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204414 | SV-204414r982198_rule | RHEL-07-010190 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204415 | SV-204415r982199_rule | RHEL-07-010200 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204416 | SV-204416r982199_rule | RHEL-07-010210 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204417 | SV-204417r982199_rule | RHEL-07-010220 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204418 | SV-204418r982188_rule | RHEL-07-010230 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204419 | SV-204419r982188_rule | RHEL-07-010240 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204420 | SV-204420r982200_rule | RHEL-07-010250 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204421 | SV-204421r982200_rule | RHEL-07-010260 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204422 | SV-204422r982201_rule | RHEL-07-010270 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204423 | SV-204423r982202_rule | RHEL-07-010280 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
+| V-204409 | SV-204409r982197_rule | RHEL-07-010140 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204410 | SV-204410r991561_rule | RHEL-07-010150 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204411 | SV-204411r982198_rule | RHEL-07-010160 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204412 | SV-204412r982198_rule | RHEL-07-010170 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204413 | SV-204413r982198_rule | RHEL-07-010180 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204414 | SV-204414r982198_rule | RHEL-07-010190 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204415 | SV-204415r982199_rule | RHEL-07-010200 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | NF |
+| V-204416 | SV-204416r982199_rule | RHEL-07-010210 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | NF |
+| V-204417 | SV-204417r982199_rule | RHEL-07-010220 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | NF |
+| V-204418 | SV-204418r982188_rule | RHEL-07-010230 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204419 | SV-204419r982188_rule | RHEL-07-010240 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204420 | SV-204420r982200_rule | RHEL-07-010250 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204421 | SV-204421r982200_rule | RHEL-07-010260 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204422 | SV-204422r982201_rule | RHEL-07-010270 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
+| V-204423 | SV-204423r982202_rule | RHEL-07-010280 | The Red Hat Enterprise Linux operating system must be config | DONE | Test193 | #78 | O |
 
 ### Batch 3: Authentication & PAM (15 functions)
 STIG range: RHEL-07-010310 through RHEL-07-020101
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204426 | SV-204426r982189_rule | RHEL-07-010310 | The Red Hat Enterprise Linux operating system must disable a | NR | -- | -- | -- |
-| V-204427 | SV-204427r958736_rule | RHEL-07-010320 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204428 | SV-204428r958736_rule | RHEL-07-010330 | The Red Hat Enterprise Linux operating system must lock the | NR | -- | -- | -- |
-| V-204429 | SV-204429r987879_rule | RHEL-07-010340 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204430 | SV-204430r987879_rule | RHEL-07-010350 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204431 | SV-204431r991588_rule | RHEL-07-010430 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204434 | SV-204434r991591_rule | RHEL-07-010460 | The Red Hat Enterprise Linux operating system must not allow | NR | -- | -- | -- |
-| V-204435 | SV-204435r991591_rule | RHEL-07-010470 | The Red Hat Enterprise Linux operating system must not allow | NR | -- | -- | -- |
-| V-204437 | SV-204437r958472_rule | RHEL-07-010481 | The Red Hat Enterprise Linux operating system must require a | NR | -- | -- | -- |
-| V-204441 | SV-204441r958482_rule | RHEL-07-010500 | The Red Hat Enterprise Linux operating system must uniquely | NR | -- | -- | -- |
-| V-204444 | SV-204444r958726_rule | RHEL-07-020020 | The Red Hat Enterprise Linux operating system must prevent n | NR | -- | -- | -- |
-| V-204445 | SV-204445r958794_rule | RHEL-07-020030 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204446 | SV-204446r958794_rule | RHEL-07-020040 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204449 | SV-204449r958498_rule | RHEL-07-020100 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204450 | SV-204450r958820_rule | RHEL-07-020101 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
+| V-204426 | SV-204426r982189_rule | RHEL-07-010310 | The Red Hat Enterprise Linux operating system must disable a | DONE | Test194b | #78 | O |
+| V-204427 | SV-204427r958736_rule | RHEL-07-010320 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204428 | SV-204428r958736_rule | RHEL-07-010330 | The Red Hat Enterprise Linux operating system must lock the | DONE | Test194b | #78 | O |
+| V-204429 | SV-204429r987879_rule | RHEL-07-010340 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204430 | SV-204430r987879_rule | RHEL-07-010350 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | NF |
+| V-204431 | SV-204431r991588_rule | RHEL-07-010430 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204434 | SV-204434r991591_rule | RHEL-07-010460 | The Red Hat Enterprise Linux operating system must not allow | DONE | Test194b | #78 | O |
+| V-204435 | SV-204435r991591_rule | RHEL-07-010470 | The Red Hat Enterprise Linux operating system must not allow | DONE | Test194b | #78 | O |
+| V-204437 | SV-204437r958472_rule | RHEL-07-010481 | The Red Hat Enterprise Linux operating system must require a | DONE | Test194b | #78 | NF |
+| V-204441 | SV-204441r958482_rule | RHEL-07-010500 | The Red Hat Enterprise Linux operating system must uniquely | DONE | Test194b | #78 | NF |
+| V-204444 | SV-204444r958726_rule | RHEL-07-020020 | The Red Hat Enterprise Linux operating system must prevent n | DONE | Test194b | #78 | O |
+| V-204445 | SV-204445r958794_rule | RHEL-07-020030 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204446 | SV-204446r958794_rule | RHEL-07-020040 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204449 | SV-204449r958498_rule | RHEL-07-020100 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
+| V-204450 | SV-204450r958820_rule | RHEL-07-020101 | The Red Hat Enterprise Linux operating system must be config | DONE | Test194b | #78 | O |
 
 ### Batch 4: System Integrity & Software (15 functions)
 STIG range: RHEL-07-020110 through RHEL-07-020670
@@ -219,7 +219,7 @@ STIG range: RHEL-07-021120 through RHEL-07-030340
 | V-204513 | SV-204513r971542_rule | RHEL-07-030330 | The Red Hat Enterprise Linux operating system must initiate | NR | -- | -- | -- |
 | V-204514 | SV-204514r971542_rule | RHEL-07-030340 | The Red Hat Enterprise Linux operating system must immediate | NR | -- | -- | -- |
 
-### Batch 7: Audit Rules — File & Access (15 functions)
+### Batch 7: Audit Rules ï¿½ File & Access (15 functions)
 STIG range: RHEL-07-030350 through RHEL-07-030650
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
@@ -240,7 +240,7 @@ STIG range: RHEL-07-030350 through RHEL-07-030650
 | V-204543 | SV-204543r958422_rule | RHEL-07-030640 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
 | V-204544 | SV-204544r958422_rule | RHEL-07-030650 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
 
-### Batch 8: Audit Rules — Execution & Privilege (15 functions)
+### Batch 8: Audit Rules ï¿½ Execution & Privilege (15 functions)
 STIG range: RHEL-07-030660 through RHEL-07-030819
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
