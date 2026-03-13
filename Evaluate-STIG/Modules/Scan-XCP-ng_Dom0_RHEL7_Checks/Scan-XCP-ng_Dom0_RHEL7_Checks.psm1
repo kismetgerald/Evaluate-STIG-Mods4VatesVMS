@@ -10744,9 +10744,45 @@ Function Get-V204473 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204473) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204473 - Home Dir Files Mode 0750 or Less" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $badFiles = $(timeout 10 find $homedir -maxdepth 3 -not -name ".*" -type f -perm /027 2>/dev/null | head -10)
+                $badStr = ($badFiles -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + " Home: " + $homedir + $nl
+                if ($badStr -ne "") {
+                    $FindingDetails += "  Files exceeding 0750: " + $badStr + $nl
+                    $allOk = $false
+                } else {
+                    $FindingDetails += "  All non-dotfiles have mode 0750 or less." + $nl
+                }
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All files in home directories have mode 0750 or less." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Files exceeding 0750 permissions found. Use: chmod 0750 <file>" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10855,9 +10891,48 @@ Function Get-V204474 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204474) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204474 - Init Files Owned by User or Root" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $initFiles = $(timeout 5 find $homedir -maxdepth 1 -name ".*" -type f 2>/dev/null | head -20)
+                foreach ($f in $initFiles) {
+                    $fStr = "$f".Trim()
+                    if ($fStr -eq "") { continue }
+                    $owner = $(stat -c "%U" $fStr 2>/dev/null)
+                    $ownerStr = ($owner -join $nl).Trim()
+                    if ($ownerStr -ne $uname -and $ownerStr -ne "root") {
+                        $FindingDetails += "  BAD: " + $fStr + " owned by " + $ownerStr + " (expected " + $uname + " or root)" + $nl
+                        $allOk = $false
+                    }
+                }
+                $FindingDetails += "User: " + $uname + " init files checked." + $nl
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All init files are owned by user or root." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Init files with incorrect ownership found." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10966,9 +11041,49 @@ Function Get-V204475 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204475) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204475 - Init Files Group-Owned by Primary Group or Root" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 3) {
+                $uname = $parts[0]
+                $primaryGid = $parts[1]
+                $homedir = $parts[2]
+                $initFiles = $(timeout 5 find $homedir -maxdepth 1 -name ".*" -type f 2>/dev/null | head -20)
+                foreach ($f in $initFiles) {
+                    $fStr = "$f".Trim()
+                    if ($fStr -eq "") { continue }
+                    $gid = $(stat -c "%g" $fStr 2>/dev/null)
+                    $gidStr = ($gid -join $nl).Trim()
+                    if ($gidStr -ne $primaryGid -and $gidStr -ne "0") {
+                        $FindingDetails += "  BAD: " + $fStr + " GID=" + $gidStr + " (expected " + $primaryGid + " or 0)" + $nl
+                        $allOk = $false
+                    }
+                }
+                $FindingDetails += "User: " + $uname + " init files group checked." + $nl
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All init files group-owned by primary group or root." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Init files with incorrect group ownership found." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11077,9 +11192,45 @@ Function Get-V204476 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204476) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204476 - Init Files Mode 0740 or Less" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $badInit = $(timeout 5 find $homedir -maxdepth 1 -name ".*" -type f -perm /037 2>/dev/null | head -10)
+                $badStr = ($badInit -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + " Home: " + $homedir + $nl
+                if ($badStr -ne "") {
+                    $FindingDetails += "  Init files exceeding 0740: " + $badStr + $nl
+                    $allOk = $false
+                } else {
+                    $FindingDetails += "  All init files have mode 0740 or less." + $nl
+                }
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All local init files have mode 0740 or less." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Init files exceeding 0740 found. Use: chmod 0740 <file>" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11188,9 +11339,35 @@ Function Get-V204477 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204477) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204477 - Init File PATH References Only Home Dir" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $pathLines = $(timeout 5 grep -i "PATH=" $homedir/.* 2>/dev/null | head -10)
+                $pathStr = ($pathLines -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + " Home: " + $homedir + $nl
+                $FindingDetails += "  PATH statements: " + $(if ($pathStr -ne "") { $pathStr } else { "(none)" }) + $nl
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    $Status = "Open"
+    $FindingDetails += $nl + "NOTE: ISSO must verify that all PATH statements in user init files reference only the user home directory or documented application directories." + $nl
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11299,9 +11476,26 @@ Function Get-V204478 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204478) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204478 - Init Files Must Not Execute World-Writable Programs" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Find world-writable files
+    $wwFiles = $(timeout 15 find / -maxdepth 5 -xdev -perm -002 -type f 2>/dev/null | head -20)
+    $wwStr = ($wwFiles -join $nl).Trim()
+
+    $FindingDetails += "World-writable files found:" + $nl
+    $FindingDetails += $(if ($wwStr -ne "") { $wwStr } else { "(none)" }) + $nl + $nl
+
+    if ($wwStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No world-writable files found on the system." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: World-writable files exist. Verify none are referenced in user init files." + $nl
+        $FindingDetails += "Remediation: chmod 0755 <file> for each world-writable file." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11410,9 +11604,33 @@ Function Get-V204479 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204479) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204479 - Device Files Correctly Labeled" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check SELinux status first
+    $getenforce = $(getenforce 2>&1)
+    $getenforceStr = ($getenforce -join $nl).Trim()
+
+    $FindingDetails += "SELinux status: " + $getenforceStr + $nl + $nl
+
+    if ($getenforceStr -eq "Disabled") {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SELinux is disabled. Device file labeling cannot be verified without SELinux." + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 typically runs with SELinux disabled. This is a known finding." + $nl
+    } else {
+        $unlabeled = $(timeout 10 find /dev -maxdepth 3 -context "*:unlabeled_t:*" 2>/dev/null | head -10)
+        $unlabeledStr = ($unlabeled -join $nl).Trim()
+        $FindingDetails += "Unlabeled device files: " + $(if ($unlabeledStr -ne "") { $unlabeledStr } else { "(none)" }) + $nl + $nl
+        if ($unlabeledStr -eq "") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: All device files are correctly labeled." + $nl
+        } else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: Unlabeled device files found." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11521,9 +11739,28 @@ Function Get-V204480 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204480) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204480 - Home Dir FS Mounted with nosuid" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if /home is a separate partition
+    $homeMount = $(timeout 5 mount 2>&1 | grep " /home ")
+    $homeMountStr = ($homeMount -join $nl).Trim()
+
+    $FindingDetails += "Command: mount | grep /home" + $nl
+    $FindingDetails += "Result: " + $(if ($homeMountStr -ne "") { $homeMountStr } else { "(not a separate partition)" }) + $nl + $nl
+
+    if ($homeMountStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /home is not a separate file system. The nosuid option cannot be used on /." + $nl
+    } elseif ($homeMountStr -match "nosuid") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /home is mounted with nosuid option." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: /home is a separate partition but not mounted with nosuid." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11632,9 +11869,27 @@ Function Get-V204481 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204481) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204481 - Removable Media Mounted with nosuid" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $removable = $(timeout 5 grep -E "vfat|ntfs|udf|iso9660" /etc/fstab 2>/dev/null | grep -v "^#")
+    $removableStr = ($removable -join $nl).Trim()
+
+    $FindingDetails += "Removable media in /etc/fstab:" + $nl
+    $FindingDetails += $(if ($removableStr -ne "") { $removableStr } else { "(none configured)" }) + $nl + $nl
+
+    if ($removableStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No removable media file systems configured in /etc/fstab." + $nl
+    } elseif ($removableStr -match "nosuid") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Removable media entries include nosuid option." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Removable media in /etc/fstab without nosuid option." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11743,9 +11998,27 @@ Function Get-V204482 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204482) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204482 - NFS Imports with nosuid" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $nfsMounts = $(timeout 5 grep -E "\bnfs\b|\bnfs4\b" /etc/fstab 2>/dev/null | grep -v "^#")
+    $nfsStr = ($nfsMounts -join $nl).Trim()
+
+    $FindingDetails += "NFS entries in /etc/fstab:" + $nl
+    $FindingDetails += $(if ($nfsStr -ne "") { $nfsStr } else { "(none configured)" }) + $nl + $nl
+
+    if ($nfsStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No NFS file systems configured in /etc/fstab." + $nl
+    } elseif ($nfsStr -match "nosuid") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: NFS mounts include nosuid option." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: NFS mounts in /etc/fstab without nosuid option." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -11854,9 +12127,27 @@ Function Get-V204483 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204483) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204483 - NFS Imports with noexec" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $nfsMounts = $(timeout 5 grep -E "\bnfs\b|\bnfs4\b" /etc/fstab 2>/dev/null | grep -v "^#")
+    $nfsStr = ($nfsMounts -join $nl).Trim()
+
+    $FindingDetails += "NFS entries in /etc/fstab:" + $nl
+    $FindingDetails += $(if ($nfsStr -ne "") { $nfsStr } else { "(none configured)" }) + $nl + $nl
+
+    if ($nfsStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No NFS file systems configured in /etc/fstab." + $nl
+    } elseif ($nfsStr -match "noexec") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: NFS mounts include noexec option." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: NFS mounts in /etc/fstab without noexec option." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12103,9 +12394,39 @@ Function Get-V204487 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204487) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204487 - World-Writable Dirs Group-Owned by System Account" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $wwDirs = $(timeout 15 find / -maxdepth 5 -xdev -type d -perm -0002 2>/dev/null | head -20)
+    $wwStr = ($wwDirs -join $nl).Trim()
+
+    $FindingDetails += "World-writable directories:" + $nl
+
+    $allOk = $true
+    if ($wwStr -ne "") {
+        foreach ($d in $wwDirs) {
+            $dStr = "$d".Trim()
+            if ($dStr -eq "") { continue }
+            $gid = $(stat -c "%g" $dStr 2>/dev/null)
+            $gidStr = ($gid -join $nl).Trim()
+            $FindingDetails += "  " + $dStr + " GID=" + $gidStr + $nl
+            if ($gidStr -ne "" -and [int]$gidStr -ge 1000) {
+                $allOk = $false
+            }
+        }
+    } else {
+        $FindingDetails += "  (none found)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All world-writable directories are group-owned by system accounts." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: World-writable directories with non-system group ownership found." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12214,9 +12535,43 @@ Function Get-V204488 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204488) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204488 - User Umask Value 077" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $umaskLines = $(timeout 5 grep -i "^umask" $homedir/.bashrc $homedir/.bash_profile $homedir/.profile 2>/dev/null)
+                $umaskStr = ($umaskLines -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + $nl
+                $FindingDetails += "  Umask in init files: " + $(if ($umaskStr -ne "") { $umaskStr } else { "(not set)" }) + $nl
+                if ($umaskStr -ne "" -and $umaskStr -notmatch "077") {
+                    $allOk = $false
+                }
+            }
+        }
+    } else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All user init files have umask 077 or no umask override." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: User init files contain umask less restrictive than 077." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12325,9 +12680,25 @@ Function Get-V204489 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204489) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204489 - Cron Logging Implemented" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $cronLog = $(timeout 5 grep -r "cron" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | grep -v "^#")
+    $cronLogStr = ($cronLog -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -r cron /etc/rsyslog.conf /etc/rsyslog.d/" + $nl
+    $FindingDetails += "Result: " + $(if ($cronLogStr -ne "") { $cronLogStr } else { "(not configured)" }) + $nl + $nl
+
+    if ($cronLogStr -match "cron\.\*" -or $cronLogStr -match "cron\.") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: Cron logging is configured in rsyslog." + $nl
+    } else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Cron logging is not configured in rsyslog." + $nl
+        $FindingDetails += "Remediation: Add [char]34 + cron.* /var/log/cron + [char]34 to /etc/rsyslog.conf" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -12436,9 +12807,32 @@ Function Get-V204490 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204490) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204490 - cron.allow Owned by Root" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $cronAllowExists = $(test -f /etc/cron.allow && echo "exists" || echo "missing")
+    $cronAllowStr = ($cronAllowExists -join $nl).Trim()
+
+    $FindingDetails += "File: /etc/cron.allow" + $nl
+    $FindingDetails += "Exists: " + $cronAllowStr + $nl + $nl
+
+    if ($cronAllowStr -eq "missing") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: /etc/cron.allow does not exist. No ownership issue." + $nl
+    } else {
+        $owner = $(stat -c "%U" /etc/cron.allow 2>/dev/null)
+        $ownerStr = ($owner -join $nl).Trim()
+        $FindingDetails += "Owner: " + $ownerStr + $nl + $nl
+        if ($ownerStr -eq "root") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: /etc/cron.allow is owned by root." + $nl
+        } else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: /etc/cron.allow is not owned by root (owner: " + $ownerStr + ")." + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
