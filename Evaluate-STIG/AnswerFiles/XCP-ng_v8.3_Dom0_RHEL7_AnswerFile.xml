@@ -1551,9 +1551,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204473">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a mode of 0750 or less permissive.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1571,9 +1569,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204474">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for interactive users are owned by the home directory user or root.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1591,9 +1587,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204475">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for local interactive users are be group-owned by the users primary group or root.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1611,9 +1605,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204476">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local initialization files for interactive users have mode 0740 or less permissive.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1631,9 +1623,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204477">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that local initialization files do not execute world-writable programs.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1651,9 +1641,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204478">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that user home directories do not execute world-writable programs.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1671,9 +1659,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204479">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all device files are correctly labeled with a SELinux type.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -1691,9 +1677,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204480">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that file systems mounted on removable media must limit access with the nosuid option.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1711,9 +1695,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204481">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that file systems mounted on removable media must limit access with the nosuid option.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1731,9 +1713,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204482">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1751,9 +1731,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204483">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all network connections associated with SSH traffic are terminated at the end of the session or after 10 minutes of inactivity, except to fulfill documented and validated mission requirements.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1791,9 +1769,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204487">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all world-writable directories are group-owned by root, sys, bin, or an application group.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1811,9 +1787,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204488">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the umask for all local interactive user accounts is 077.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -1831,9 +1805,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204489">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that cron logging is implemented.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1851,9 +1823,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204490">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is owned by root.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 5: User/Group Management & Filesystem-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1871,24 +1841,42 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204491">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is group-owned by root.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies group ownership of /etc/cron.allow on the XCP-ng Dom0 system. If /etc/cron.allow exists, it must be group-owned by root to prevent unauthorized modification of the approved cron user list. The check uses stat to determine group ownership. If /etc/cron.allow does not exist, the system relies on /etc/cron.deny for cron access control and this requirement is satisfied. On this XCP-ng Dom0 hypervisor, the cron.allow file is either absent or properly group-owned by root, meeting the STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that /etc/cron.allow is not group-owned by root. This violates the STIG requirement because non-root group ownership could allow group members to modify the approved cron user list, potentially granting unauthorized cron access. To remediate, change group ownership: chgrp root /etc/cron.allow. Verify with: stat -c '%G' /etc/cron.allow should return root. Also ensure appropriate permissions (mode 0600) to prevent unauthorized access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204492">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must disable Kernel core dumps unless needed.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the kdump (kernel crash dump) service status on the XCP-ng Dom0 system. The check uses systemctl to determine if kdump.service is active and enabled. Kernel core dumps can consume significant disk space and may contain sensitive memory contents. Unless specifically required for debugging purposes and documented with the ISSO, the kdump service should be disabled. On this system, the kdump service is not active, meeting the STIG requirement for disabling unnecessary kernel core dump functionality.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the kdump service is active on the system. This violates the STIG requirement to disable kernel core dumps unless specifically needed and documented. Active kernel core dumps consume disk space and may expose sensitive memory contents. To remediate, disable the kdump service: systemctl disable kdump.service and systemctl stop kdump.service. If kernel core dumps are required for operational purposes, document the need with the ISSO and retain evidence of approval.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2033,24 +2021,42 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204500">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies that AIDE (Advanced Intrusion Detection Environment) is installed and configured to use FIPS 140-2 approved cryptographic hashes (sha512) for file integrity validation on the XCP-ng Dom0 system. The check first verifies AIDE installation via rpm, then examines /etc/aide.conf for sha512 hash algorithm configuration. AIDE with sha512 provides cryptographically strong file integrity monitoring that meets FIPS 140-2 requirements for detecting unauthorized changes to system files and directories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies that AIDE (Advanced Intrusion Detection Environment) is installed and configured to use FIPS 140-2 approved cryptographic hashes (sha512) for file integrity validation on the XCP-ng Dom0 system. The check first verifies AIDE installation via rpm, then examines /etc/aide.conf for sha512 hash algorithm configuration. AIDE with sha512 provides cryptographically strong file integrity monitoring that meets FIPS 140-2 requirements for detecting unauthorized changes to system files and directories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204501">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check searches for grub.cfg boot loader configuration files across the filesystem and verifies none exist on removable media paths. Standard boot loader locations (/boot/grub2/grub.cfg, /boot/efi/EFI/redhat/grub.cfg, and XCP-ng specific EFI paths) are considered acceptable. Any grub.cfg found outside these standard locations could indicate a boot loader on removable media. On this XCP-ng Dom0 system, no boot loader configurations were found on removable media paths, meeting the STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found grub.cfg boot loader configuration files in non-standard locations that may indicate removable media boot capability. This violates the STIG requirement because booting from removable media bypasses system security controls and could allow unauthorized operating system loading. To remediate, remove alternate boot loader configurations from removable media paths. If booting from removable media is operationally required, document the configuration with ISSO approval.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -2075,123 +2081,222 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204503">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that auditing is configured to produce records containing information to establish what type of events occurred.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies that the auditd service is active on the XCP-ng Dom0 system using systemctl is-active auditd.service. The audit daemon is essential for producing audit records that establish what type of events occurred, where they occurred, the source, and the outcome. An active auditd service ensures continuous monitoring of security-relevant events including user actions, system changes, and access attempts on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the auditd service is not active. This violates the STIG requirement for audit record generation. Without auditd, the system cannot produce records establishing event types, locations, sources, and outcomes. To remediate, start and enable the audit service: systemctl start auditd.service and systemctl enable auditd.service. Verify activation: systemctl is-active auditd.service should return active.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204504">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the audit failure mode using auditctl -s on the XCP-ng Dom0 system. The failure mode determines system behavior when audit processing fails. A value of 2 causes system panic (shutdown), while 1 logs the failure to the kernel log. Both values are acceptable per STIG guidance — value 2 provides maximum security by preventing unaudited operations, while value 1 prioritizes availability by continuing operation with failure logging. The system is configured with an acceptable failure mode.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check found that the audit failure mode is not set to an acceptable value (1 or 2). This violates the STIG requirement for appropriate action on audit processing failure. To remediate, set the failure mode: auditctl -f 2 (for shutdown on failure) or auditctl -f 1 (for logging on failure). Make persistent by adding -f 2 to /etc/audit/rules.d/audit.rules. If availability is an overriding concern, use -f 1 and document the justification with ISSO approval.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204506">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/plugins.d/au-remote.conf to verify the au-remote plugin is configured for audit log off-loading. Required settings: active=yes, direction=out, path=/sbin/audisp-remote, type=always. Audit log off-loading ensures audit records are preserved on a separate system even if the audited system is compromised. On this XCP-ng Dom0 system, the au-remote plugin configuration is examined for all required parameters.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/plugins.d/au-remote.conf to verify the au-remote plugin is configured for audit log off-loading. Required settings: active=yes, direction=out, path=/sbin/audisp-remote, type=always. Audit log off-loading ensures audit records are preserved on a separate system even if the audited system is compromised. On this XCP-ng Dom0 system, the au-remote plugin configuration is examined for all required parameters.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204507">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must take appropriate action when the remote logging buffer is full.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audispd.conf for the overflow_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. The overflow_action determines what happens when the audisp dispatcher internal queue is full, which could occur during heavy audit traffic or when the remote audit server is unavailable. Proper configuration ensures audit events are not silently dropped when the buffer fills.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audispd.conf for the overflow_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. The overflow_action determines what happens when the audisp dispatcher internal queue is full, which could occur during heavy audit traffic or when the remote audit server is unavailable. Proper configuration ensures audit events are not silently dropped when the buffer fills.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204508">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must label all off-loaded audit logs before sending them to the central log server.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audispd.conf for the name_format setting on the XCP-ng Dom0 system. Acceptable values are hostname, fqd, or numeric. The name_format setting labels off-loaded audit logs with the originating system identifier before sending to the central log server. Proper labeling ensures audit records can be traced back to the originating system in a centralized log collection environment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audispd.conf for the name_format setting on the XCP-ng Dom0 system. Acceptable values are hostname, fqd, or numeric. The name_format setting labels off-loaded audit logs with the originating system identifier before sending to the central log server. Proper labeling ensures audit records can be traced back to the originating system in a centralized log collection environment.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204509">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must off-load audit records onto a different system or media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the remote_server setting on the XCP-ng Dom0 system. A valid remote server address must be configured to off-load audit records to a separate system. This ensures audit records are preserved independently of the audited system and cannot be tampered with if the system is compromised. The check verifies that a non-empty, non-zero IP address is configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the remote_server setting on the XCP-ng Dom0 system. A valid remote server address must be configured to off-load audit records to a separate system. This ensures audit records are preserved independently of the audited system and cannot be tampered with if the system is compromised. The check verifies that a non-empty, non-zero IP address is configured.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204510">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the enable_krb5 setting on the XCP-ng Dom0 system. Kerberos 5 encryption must be enabled (enable_krb5=yes) to protect audit records during transfer to the remote audit server. Without encryption, audit records could be intercepted or modified in transit, compromising the integrity of the audit trail.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the enable_krb5 setting on the XCP-ng Dom0 system. Kerberos 5 encryption must be enabled (enable_krb5=yes) to protect audit records during transfer to the remote audit server. Without encryption, audit records could be intercepted or modified in transit, compromising the integrity of the audit trail.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204511">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when the audit storage volume is full.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the disk_full_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. This setting determines what action the system takes when the remote audit storage volume is full, ensuring audit events are not silently lost when storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the disk_full_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. This setting determines what action the system takes when the remote audit storage volume is full, ensuring audit events are not silently lost when storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204512">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when there is an error sending audit records to a remote system.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the network_failure_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. This setting determines system behavior when audit records cannot be sent to the remote audit server due to network issues, ensuring appropriate action is taken rather than silently dropping audit events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audisp/audisp-remote.conf for the network_failure_action setting on the XCP-ng Dom0 system. Acceptable values are syslog, single, or halt. This setting determines system behavior when audit records cannot be sent to the remote audit server due to network issues, ensuring appropriate action is taken rather than silently dropping audit events.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204513">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must initiate an action to notify the SA and ISSO when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the space_left setting and compares it against 25% of the audit log partition size. The audit log location is determined from log_file in auditd.conf, and the partition size is obtained via df. The space_left value should be at least 25% of the partition to trigger notification at the 75% usage threshold. This ensures administrators are alerted before audit storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the space_left setting and compares it against 25% of the audit log partition size. The audit log location is determined from log_file in auditd.conf, and the partition size is obtained via df. The space_left value should be at least 25% of the partition to trigger notification at the 75% usage threshold. This ensures administrators are alerted before audit storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204514">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must immediately notify the SA and ISSO via email when the threshold for the repository maximum audit record storage capacity is reached.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 6: File Permissions & Audit Setup-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the space_left_action setting on the XCP-ng Dom0 system. The required value is email to ensure SA and ISSO are immediately notified when audit storage reaches the threshold. Email notification provides timely alerting so administrators can take action before audit storage is exhausted and audit records are lost.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the space_left_action setting on the XCP-ng Dom0 system. The required value is email to ensure SA and ISSO are immediately notified when audit storage reaches the threshold. Email notification provides timely alerting so administrators can take action before audit storage is exhausted and audit records are lost.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
