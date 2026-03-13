@@ -13,11 +13,11 @@
 |-------|-----------|--------|
 | Phase 0: Remediation | -- | COMPLETE (Session #76, PR #60) |
 | Phase 1: CAT I | 26/26 | COMPLETE (Session #77, PR #61) |
-| Phase 2: CAT II | 75/205 | In Progress — Batches 1-5 done |
+| Phase 2: CAT II | 105/205 | In Progress — Batches 1-7 done |
 | Phase 3: CAT III | 13/13 | COMPLETE (Session #77, PR #62) |
-| **Total** | **114/244** | **46.7% implemented** |
+| **Total** | **144/244** | **59.0% implemented** |
 
-**Last Test:** Test196 (Mar 12) — EvalScore 24.18%, 0 errors, exit code 0
+**Last Test:** Test198 (Mar 13) — EvalScore 25.41%, 0 errors, exit code 0
 
 ---
 
@@ -203,42 +203,42 @@ STIG range: RHEL-07-021120 through RHEL-07-030340
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204491 | SV-204491r991589_rule | RHEL-07-021120 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204492 | SV-204492r991589_rule | RHEL-07-021300 | The Red Hat Enterprise Linux operating system must disable K | NR | -- | -- | -- |
-| V-204500 | SV-204500r991589_rule | RHEL-07-021620 | The Red Hat Enterprise Linux operating system must use a fil | NR | -- | -- | -- |
-| V-204501 | SV-204501r958796_rule | RHEL-07-021700 | The Red Hat Enterprise Linux operating system must not allow | NR | -- | -- | -- |
-| V-204503 | SV-204503r958414_rule | RHEL-07-030000 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204504 | SV-204504r958424_rule | RHEL-07-030010 | The Red Hat Enterprise Linux operating system must shut down | NR | -- | -- | -- |
-| V-204506 | SV-204506r958754_rule | RHEL-07-030201 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204507 | SV-204507r958754_rule | RHEL-07-030210 | The Red Hat Enterprise Linux operating system must take appr | NR | -- | -- | -- |
-| V-204508 | SV-204508r958754_rule | RHEL-07-030211 | The Red Hat Enterprise Linux operating system must label all | NR | -- | -- | -- |
-| V-204509 | SV-204509r958754_rule | RHEL-07-030300 | The Red Hat Enterprise Linux operating system must off-load | NR | -- | -- | -- |
-| V-204510 | SV-204510r958754_rule | RHEL-07-030310 | The Red Hat Enterprise Linux operating system must encrypt t | NR | -- | -- | -- |
-| V-204511 | SV-204511r958754_rule | RHEL-07-030320 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204512 | SV-204512r958754_rule | RHEL-07-030321 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204513 | SV-204513r971542_rule | RHEL-07-030330 | The Red Hat Enterprise Linux operating system must initiate | NR | -- | -- | -- |
-| V-204514 | SV-204514r971542_rule | RHEL-07-030340 | The Red Hat Enterprise Linux operating system must immediate | NR | -- | -- | -- |
+| V-204491 | SV-204491r991589_rule | RHEL-07-021120 | The Red Hat Enterprise Linux operating system must be config | DONE | Test197 | #79 | NF |
+| V-204492 | SV-204492r991589_rule | RHEL-07-021300 | The Red Hat Enterprise Linux operating system must disable K | DONE | Test197 | #79 | O |
+| V-204500 | SV-204500r991589_rule | RHEL-07-021620 | The Red Hat Enterprise Linux operating system must use a fil | DONE | Test197 | #79 | O |
+| V-204501 | SV-204501r958796_rule | RHEL-07-021700 | The Red Hat Enterprise Linux operating system must not allow | DONE | Test197 | #79 | O |
+| V-204503 | SV-204503r958414_rule | RHEL-07-030000 | The Red Hat Enterprise Linux operating system must be config | DONE | Test197 | #79 | O |
+| V-204504 | SV-204504r958424_rule | RHEL-07-030010 | The Red Hat Enterprise Linux operating system must shut down | DONE | Test197 | #79 | O |
+| V-204506 | SV-204506r958754_rule | RHEL-07-030201 | The Red Hat Enterprise Linux operating system must be config | DONE | Test197 | #79 | O |
+| V-204507 | SV-204507r958754_rule | RHEL-07-030210 | The Red Hat Enterprise Linux operating system must take appr | DONE | Test197 | #79 | O |
+| V-204508 | SV-204508r958754_rule | RHEL-07-030211 | The Red Hat Enterprise Linux operating system must label all | DONE | Test197 | #79 | O |
+| V-204509 | SV-204509r958754_rule | RHEL-07-030300 | The Red Hat Enterprise Linux operating system must off-load | DONE | Test197 | #79 | O |
+| V-204510 | SV-204510r958754_rule | RHEL-07-030310 | The Red Hat Enterprise Linux operating system must encrypt t | DONE | Test197 | #79 | O |
+| V-204511 | SV-204511r958754_rule | RHEL-07-030320 | The Red Hat Enterprise Linux operating system must be config | DONE | Test197 | #79 | O |
+| V-204512 | SV-204512r958754_rule | RHEL-07-030321 | The Red Hat Enterprise Linux operating system must be config | DONE | Test197 | #79 | O |
+| V-204513 | SV-204513r971542_rule | RHEL-07-030330 | The Red Hat Enterprise Linux operating system must initiate | DONE | Test197 | #79 | O |
+| V-204514 | SV-204514r971542_rule | RHEL-07-030340 | The Red Hat Enterprise Linux operating system must immediate | DONE | Test197 | #79 | O |
 
 ### Batch 7: Audit Rules � File & Access (15 functions)
 STIG range: RHEL-07-030350 through RHEL-07-030650
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204515 | SV-204515r971542_rule | RHEL-07-030350 | The Red Hat Enterprise Linux operating system must immediate | NR | -- | -- | -- |
-| V-204516 | SV-204516r958732_rule | RHEL-07-030360 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204517 | SV-204517r958446_rule | RHEL-07-030370 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204521 | SV-204521r991570_rule | RHEL-07-030410 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204524 | SV-204524r991570_rule | RHEL-07-030440 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204531 | SV-204531r958446_rule | RHEL-07-030510 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204536 | SV-204536r958846_rule | RHEL-07-030560 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204537 | SV-204537r958846_rule | RHEL-07-030570 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204538 | SV-204538r958846_rule | RHEL-07-030580 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204539 | SV-204539r958846_rule | RHEL-07-030590 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204540 | SV-204540r958846_rule | RHEL-07-030610 | The Red Hat Enterprise Linux operating system must generate | NR | -- | -- | -- |
-| V-204541 | SV-204541r958846_rule | RHEL-07-030620 | The Red Hat Enterprise Linux operating system must generate | NR | -- | -- | -- |
-| V-204542 | SV-204542r958422_rule | RHEL-07-030630 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204543 | SV-204543r958422_rule | RHEL-07-030640 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
-| V-204544 | SV-204544r958422_rule | RHEL-07-030650 | The Red Hat Enterprise Linux operating system must audit all | NR | -- | -- | -- |
+| V-204515 | SV-204515r971542_rule | RHEL-07-030350 | The Red Hat Enterprise Linux operating system must immediate | DONE | Test198 | #79 | O |
+| V-204516 | SV-204516r958732_rule | RHEL-07-030360 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204517 | SV-204517r958446_rule | RHEL-07-030370 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204521 | SV-204521r991570_rule | RHEL-07-030410 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204524 | SV-204524r991570_rule | RHEL-07-030440 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204531 | SV-204531r958446_rule | RHEL-07-030510 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204536 | SV-204536r958846_rule | RHEL-07-030560 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | NF |
+| V-204537 | SV-204537r958846_rule | RHEL-07-030570 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204538 | SV-204538r958846_rule | RHEL-07-030580 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204539 | SV-204539r958846_rule | RHEL-07-030590 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204540 | SV-204540r958846_rule | RHEL-07-030610 | The Red Hat Enterprise Linux operating system must generate | DONE | Test198 | #79 | O |
+| V-204541 | SV-204541r958846_rule | RHEL-07-030620 | The Red Hat Enterprise Linux operating system must generate | DONE | Test198 | #79 | O |
+| V-204542 | SV-204542r958422_rule | RHEL-07-030630 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204543 | SV-204543r958422_rule | RHEL-07-030640 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
+| V-204544 | SV-204544r958422_rule | RHEL-07-030650 | The Red Hat Enterprise Linux operating system must audit all | DONE | Test198 | #79 | O |
 
 ### Batch 8: Audit Rules � Execution & Privilege (15 functions)
 STIG range: RHEL-07-030660 through RHEL-07-030819
@@ -416,5 +416,8 @@ STIG range: RHEL-07-010339 through RHEL-07-020028
 | Test193 | Mar 12 | #78 | CAT II Batch 2 | 15 CAT II | Pass | 13.52% | Password & auth policy |
 | Test194b | Mar 12 | #78 | CAT II Batch 3 | 15 CAT II | Pass | 15.16% | SSH & PAM config |
 | Test195 | Mar 12 | #78 | CAT II Batch 4 | 15 CAT II | Pass | 18.85% | System integrity & software |
+| Test196 | Mar 12 | #78 | CAT II Batch 5 | 15 CAT II | Pass | 24.18% | User/group mgmt & filesystem |
+| Test197 | Mar 12 | #79 | CAT II Batch 6 | 15 CAT II | Pass | 24.59% | File permissions & audit setup |
+| Test198 | Mar 13 | #79 | CAT II Batch 7 | 15 CAT II | Pass | 25.41% | Audit rules — file & access |
 | Test196 | Mar 12 | #78 | CAT II Batch 5 | 15 CAT II | Pass | 24.18% | User/group mgmt & filesystem |
 

@@ -26,7 +26,7 @@ an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD u
 | `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | :white_check_mark: **Complete** — all 286 checks automated (34 CAT I + 252 CAT II/III); EvalScore 43.36% |
 | `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | :white_check_mark: **Complete** — all 198 checks automated (18 CAT I + 170 CAT II + 10 CAT III); EvalScore 46.46% |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 193 | :white_check_mark: **Complete** — all 193 checks automated (3 CAT I + 159 CAT II + 31 CAT III); EvalScore 34.72% |
-| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 244 | :hammer_and_wrench: **In Progress** — 114/244 checks automated (26 CAT I + 75 CAT II + 13 CAT III); EvalScore 24.18% |
+| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 244 | :hammer_and_wrench: **In Progress** — 144/244 checks automated (26 CAT I + 105 CAT II + 13 CAT III); EvalScore 25.41% |
 
 ### Modified Framework Files (`Evaluate-STIG/xml/`)
 
