@@ -12941,9 +12941,35 @@ Function Get-V204491 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204491) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204491 - cron.allow Group Ownership" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $cronAllow = $(timeout 5 ls -al /etc/cron.allow 2>&1)
+    $cronAllowStr = $cronAllow -join $nl
+
+    if ($cronAllowStr -match "No such file") {
+        $FindingDetails += "File /etc/cron.allow does not exist." + $nl
+        $FindingDetails += "System uses /etc/cron.deny for access control." + $nl + $nl
+        $FindingDetails += "RESULT: PASS - cron.allow not present, requirement not applicable" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $groupOwner = $(timeout 5 stat -c '%G' /etc/cron.allow 2>&1)
+        $groupOwnerStr = ($groupOwner -join $nl).Trim()
+        $FindingDetails += "File: /etc/cron.allow" + $nl
+        $FindingDetails += "Group Owner: " + $groupOwnerStr + $nl + $nl
+
+        if ($groupOwnerStr -eq "root") {
+            $FindingDetails += "RESULT: PASS - cron.allow is group-owned by root" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "RESULT: FAIL - cron.allow group owner is not root" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -13052,9 +13078,28 @@ Function Get-V204492 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204492) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204492 - Kernel Core Dumps (kdump)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $kdumpStatus = $(timeout 5 systemctl is-active kdump.service 2>&1)
+    $kdumpStatusStr = ($kdumpStatus -join $nl).Trim()
+    $kdumpEnabled = $(timeout 5 systemctl is-enabled kdump.service 2>&1)
+    $kdumpEnabledStr = ($kdumpEnabled -join $nl).Trim()
+
+    $FindingDetails += "kdump.service status: " + $kdumpStatusStr + $nl
+    $FindingDetails += "kdump.service enabled: " + $kdumpEnabledStr + $nl + $nl
+
+    if ($kdumpStatusStr -eq "active") {
+        $FindingDetails += "RESULT: FAIL - kdump service is active" + $nl
+        $FindingDetails += "If kernel core dumps are required, document with the ISSO." + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: PASS - kdump service is not active" + $nl
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14146,9 +14191,38 @@ Function Get-V204500 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204500) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204500 - File Integrity Tool (AIDE) FIPS Hashes" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if AIDE is installed
+    $aideInstalled = $(timeout 5 rpm -q aide 2>&1)
+    $aideInstalledStr = ($aideInstalled -join $nl).Trim()
+
+    $FindingDetails += "AIDE package: " + $aideInstalledStr + $nl + $nl
+
+    if ($aideInstalledStr -match "not installed") {
+        $FindingDetails += "RESULT: FAIL - AIDE is not installed" + $nl
+        $FindingDetails += "A file integrity tool using FIPS 140-2 hashes is required." + $nl
+        $Status = "Open"
+    }
+    else {
+        # Check aide.conf for sha512
+        $aideConf = $(timeout 5 cat /etc/aide.conf 2>&1)
+        $aideConfStr = $aideConf -join $nl
+
+        if ($aideConfStr -match "sha512") {
+            $FindingDetails += "AIDE configuration includes sha512 hash algorithm." + $nl + $nl
+            $FindingDetails += "RESULT: PASS - AIDE uses FIPS 140-2 approved hashes" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "AIDE configuration does not include sha512." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - AIDE not configured with FIPS 140-2 hashes" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14257,9 +14331,46 @@ Function Get-V204501 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204501) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204501 - Boot Loader on Removable Media" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Find grub.cfg locations
+    $grubFiles = $(timeout 10 find / -maxdepth 5 -name grub.cfg 2>/dev/null | head -10 2>&1)
+    $grubFilesStr = ($grubFiles -join $nl).Trim()
+
+    $FindingDetails += "grub.cfg locations found:" + $nl
+    if ($grubFilesStr -ne "") {
+        $FindingDetails += $grubFilesStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if any grub.cfg exists outside standard locations
+    $nonStandard = @()
+    if ($grubFilesStr -ne "") {
+        foreach ($line in ($grubFiles | Where-Object { "$_".Trim() -ne "" })) {
+            $path = "$line".Trim()
+            if ($path -ne "/boot/grub2/grub.cfg" -and $path -ne "/boot/efi/EFI/redhat/grub.cfg" -and $path -ne "/boot/efi/EFI/xenserver/grub.cfg" -and $path -ne "/boot/efi/EFI/xcp-ng/grub.cfg") {
+                $nonStandard += $path
+            }
+        }
+    }
+
+    if ($nonStandard.Count -gt 0) {
+        $FindingDetails += "Non-standard grub.cfg locations:" + $nl
+        foreach ($ns in $nonStandard) {
+            $FindingDetails += "  " + $ns + $nl
+        }
+        $FindingDetails += $nl + "RESULT: FAIL - Boot loader found on potential removable media" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: PASS - No boot loader on removable media" + $nl
+        $Status = "NotAFinding"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14497,9 +14608,24 @@ Function Get-V204503 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204503) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204503 - Audit Service (auditd) Active" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditdStatus = $(timeout 5 systemctl is-active auditd.service 2>&1)
+    $auditdStatusStr = ($auditdStatus -join $nl).Trim()
+
+    $FindingDetails += "auditd.service status: " + $auditdStatusStr + $nl + $nl
+
+    if ($auditdStatusStr -eq "active") {
+        $FindingDetails += "RESULT: PASS - auditd service is active" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - auditd service is not active" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14608,9 +14734,38 @@ Function Get-V204504 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204504) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204504 - Audit Processing Failure Action" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $failMode = $(timeout 5 auditctl -s 2>&1)
+    $failModeStr = $failMode -join $nl
+
+    $FindingDetails += "auditctl -s output:" + $nl + $failModeStr + $nl + $nl
+
+    if ($failModeStr -match "failure\s+(\d+)") {
+        $failValue = $matches[1]
+        $FindingDetails += "Failure mode: " + $failValue + $nl + $nl
+
+        if ($failValue -eq "2") {
+            $FindingDetails += "RESULT: PASS - System configured to panic on audit failure (failure=2)" + $nl
+            $Status = "NotAFinding"
+        }
+        elseif ($failValue -eq "1") {
+            $FindingDetails += "RESULT: PASS - System configured to log audit failure (failure=1)" + $nl
+            $FindingDetails += "Note: System will not shut down but will record failure in kernel log." + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "RESULT: FAIL - Audit failure mode is not set to 1 or 2" + $nl
+            $Status = "Open"
+        }
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - Unable to determine audit failure mode" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14719,9 +14874,49 @@ Function Get-V204506 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204506) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204506 - Off-load Audit Logs (au-remote plugin)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auRemoteConf = $(timeout 5 cat /etc/audisp/plugins.d/au-remote.conf 2>&1)
+    $auRemoteStr = $auRemoteConf -join $nl
+
+    if ($auRemoteStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/plugins.d/au-remote.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - au-remote plugin not configured for audit log off-loading" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "au-remote.conf contents (non-comment):" + $nl
+        foreach ($line in $auRemoteConf) {
+            $l = "$line".Trim()
+            if ($l -ne "" -and -not $l.StartsWith("#")) {
+                $FindingDetails += "  " + $l + $nl
+            }
+        }
+        $FindingDetails += $nl
+
+        $activeOk = $auRemoteStr -match "(?m)^\s*active\s*=\s*yes"
+        $directionOk = $auRemoteStr -match "(?m)^\s*direction\s*=\s*out"
+        $pathOk = $auRemoteStr -match "(?m)^\s*path\s*=\s*/sbin/audisp-remote"
+        $typeOk = $auRemoteStr -match "(?m)^\s*type\s*=\s*always"
+
+        if ($activeOk -and $directionOk -and $pathOk -and $typeOk) {
+            $FindingDetails += "RESULT: PASS - au-remote plugin properly configured" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $missing = @()
+            if (-not $activeOk) { $missing += "active=yes" }
+            if (-not $directionOk) { $missing += "direction=out" }
+            if (-not $pathOk) { $missing += "path=/sbin/audisp-remote" }
+            if (-not $typeOk) { $missing += "type=always" }
+            $FindingDetails += "Missing/incorrect settings: " + ($missing -join ", ") + $nl
+            $FindingDetails += "RESULT: FAIL - au-remote plugin not fully configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14830,9 +15025,39 @@ Function Get-V204507 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204507) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204507 - Audisp Overflow Action" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $audispConf = $(timeout 5 cat /etc/audisp/audispd.conf 2>&1)
+    $audispStr = $audispConf -join $nl
+
+    if ($audispStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audispd.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp dispatcher not configured" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($audispStr -match "(?m)^\s*overflow_action\s*=\s*(\S+)") {
+            $overflowAction = $matches[1].ToLower()
+            $FindingDetails += "overflow_action = " + $overflowAction + $nl + $nl
+
+            if ($overflowAction -eq "syslog" -or $overflowAction -eq "single" -or $overflowAction -eq "halt") {
+                $FindingDetails += "RESULT: PASS - overflow_action set to acceptable value" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - overflow_action not set to syslog, single, or halt" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "overflow_action not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - overflow_action not configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -14941,9 +15166,39 @@ Function Get-V204508 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204508) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204508 - Audisp Name Format (Log Labeling)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $audispConf = $(timeout 5 cat /etc/audisp/audispd.conf 2>&1)
+    $audispStr = $audispConf -join $nl
+
+    if ($audispStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audispd.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp dispatcher not configured" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($audispStr -match "(?m)^\s*name_format\s*=\s*(\S+)") {
+            $nameFormat = $matches[1].ToLower()
+            $FindingDetails += "name_format = " + $nameFormat + $nl + $nl
+
+            if ($nameFormat -eq "hostname" -or $nameFormat -eq "fqd" -or $nameFormat -eq "numeric") {
+                $FindingDetails += "RESULT: PASS - name_format set to acceptable value" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - name_format not set to hostname, fqd, or numeric" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "name_format not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - name_format not configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15052,9 +15307,39 @@ Function Get-V204509 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204509) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204509 - Audit Off-load Remote Server" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $remoteConf = $(timeout 5 cat /etc/audisp/audisp-remote.conf 2>&1)
+    $remoteStr = $remoteConf -join $nl
+
+    if ($remoteStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audisp-remote.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp-remote not configured for audit off-loading" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($remoteStr -match "(?m)^\s*remote_server\s*=\s*(\S+)") {
+            $remoteServer = $matches[1]
+            $FindingDetails += "remote_server = " + $remoteServer + $nl + $nl
+
+            if ($remoteServer -ne "" -and $remoteServer -ne "0.0.0.0") {
+                $FindingDetails += "RESULT: PASS - Remote audit server configured" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - Remote server not set to a valid address" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "remote_server not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - No remote audit server configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15163,9 +15448,39 @@ Function Get-V204510 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204510) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204510 - Encrypted Audit Transfer (Kerberos)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $remoteConf = $(timeout 5 cat /etc/audisp/audisp-remote.conf 2>&1)
+    $remoteStr = $remoteConf -join $nl
+
+    if ($remoteStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audisp-remote.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp-remote not configured" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($remoteStr -match "(?m)^\s*enable_krb5\s*=\s*(\S+)") {
+            $krb5 = $matches[1].ToLower()
+            $FindingDetails += "enable_krb5 = " + $krb5 + $nl + $nl
+
+            if ($krb5 -eq "yes") {
+                $FindingDetails += "RESULT: PASS - Kerberos encryption enabled for audit transfer" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - Kerberos encryption not enabled" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "enable_krb5 not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - Kerberos encryption not configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15274,9 +15589,39 @@ Function Get-V204511 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204511) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204511 - Audit Storage Volume Full Action" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $remoteConf = $(timeout 5 cat /etc/audisp/audisp-remote.conf 2>&1)
+    $remoteStr = $remoteConf -join $nl
+
+    if ($remoteStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audisp-remote.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp-remote not configured" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($remoteStr -match "(?m)^\s*disk_full_action\s*=\s*(\S+)") {
+            $diskAction = $matches[1].ToLower()
+            $FindingDetails += "disk_full_action = " + $diskAction + $nl + $nl
+
+            if ($diskAction -eq "syslog" -or $diskAction -eq "single" -or $diskAction -eq "halt") {
+                $FindingDetails += "RESULT: PASS - disk_full_action set to acceptable value" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - disk_full_action not set to syslog, single, or halt" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "disk_full_action not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - disk_full_action not configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15385,9 +15730,39 @@ Function Get-V204512 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204512) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204512 - Audit Network Failure Action" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $remoteConf = $(timeout 5 cat /etc/audisp/audisp-remote.conf 2>&1)
+    $remoteStr = $remoteConf -join $nl
+
+    if ($remoteStr -match "No such file") {
+        $FindingDetails += "File /etc/audisp/audisp-remote.conf not found." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - audisp-remote not configured" + $nl
+        $Status = "Open"
+    }
+    else {
+        if ($remoteStr -match "(?m)^\s*network_failure_action\s*=\s*(\S+)") {
+            $netAction = $matches[1].ToLower()
+            $FindingDetails += "network_failure_action = " + $netAction + $nl + $nl
+
+            if ($netAction -eq "syslog" -or $netAction -eq "single" -or $netAction -eq "halt") {
+                $FindingDetails += "RESULT: PASS - network_failure_action set to acceptable value" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - network_failure_action not set to syslog, single, or halt" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "network_failure_action not found or commented out." + $nl + $nl
+            $FindingDetails += "RESULT: FAIL - network_failure_action not configured" + $nl
+            $Status = "Open"
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15496,9 +15871,60 @@ Function Get-V204513 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204513) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204513 - Audit Record Storage 75% Notification" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Get audit log location
+    $auditdConf = $(timeout 5 cat /etc/audit/auditd.conf 2>&1)
+    $auditdStr = $auditdConf -join $nl
+
+    $logFile = "/var/log/audit/audit.log"
+    if ($auditdStr -match "(?m)^\s*log_file\s*=\s*(.+)") {
+        $logFile = $matches[1].Trim()
+    }
+    $FindingDetails += "Audit log file: " + $logFile + $nl
+
+    # Get partition size
+    $logDir = $(timeout 5 dirname $logFile 2>&1)
+    $logDirStr = ($logDir -join $nl).Trim()
+    $dfOutput = $(timeout 5 df -m $logDirStr 2>&1)
+    $dfStr = $dfOutput -join $nl
+    $FindingDetails += "Partition info:" + $nl + $dfStr + $nl + $nl
+
+    # Get space_left value
+    if ($auditdStr -match "(?m)^\s*space_left\s*=\s*(\d+)") {
+        $spaceLeft = [int]$matches[1]
+        $FindingDetails += "space_left = " + $spaceLeft + " MB" + $nl + $nl
+
+        # Calculate 25% of partition
+        if ($dfStr -match "\s+(\d+)\s+\d+\s+\d+\s+\d+%") {
+            $partSize = [int]$matches[1]
+            $target = [math]::Floor($partSize * 0.25)
+            $FindingDetails += "Partition size: " + $partSize + " MB" + $nl
+            $FindingDetails += "25% threshold: " + $target + " MB" + $nl + $nl
+
+            if ($spaceLeft -ge $target) {
+                $FindingDetails += "RESULT: PASS - space_left meets or exceeds 25% of partition" + $nl
+                $Status = "NotAFinding"
+            }
+            else {
+                $FindingDetails += "RESULT: FAIL - space_left (" + $spaceLeft + " MB) is less than 25% (" + $target + " MB)" + $nl
+                $Status = "Open"
+            }
+        }
+        else {
+            $FindingDetails += "Unable to determine partition size." + $nl
+            $FindingDetails += "RESULT: FAIL - Cannot verify space_left meets 25% threshold" + $nl
+            $Status = "Open"
+        }
+    }
+    else {
+        $FindingDetails += "space_left not found in auditd.conf." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - space_left not configured" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -15607,9 +16033,33 @@ Function Get-V204514 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204514) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204514 - Audit Storage Notification Action" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditdConf = $(timeout 5 cat /etc/audit/auditd.conf 2>&1)
+    $auditdStr = $auditdConf -join $nl
+
+    if ($auditdStr -match "(?m)^\s*space_left_action\s*=\s*(\S+)") {
+        $spaceAction = $matches[1].ToLower()
+        $FindingDetails += "space_left_action = " + $spaceAction + $nl + $nl
+
+        if ($spaceAction -eq "email") {
+            $FindingDetails += "RESULT: PASS - space_left_action configured to email" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "RESULT: FAIL - space_left_action is not set to email" + $nl
+            $FindingDetails += "Required: space_left_action = email" + $nl
+            $Status = "Open"
+        }
+    }
+    else {
+        $FindingDetails += "space_left_action not found in auditd.conf." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - space_left_action not configured" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
