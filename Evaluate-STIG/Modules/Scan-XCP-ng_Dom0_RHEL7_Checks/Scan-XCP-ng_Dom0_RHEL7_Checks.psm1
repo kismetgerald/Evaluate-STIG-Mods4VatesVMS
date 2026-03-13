@@ -16168,9 +16168,36 @@ Function Get-V204515 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204515) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204515 - Audit Storage Notification Email Account" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditdConf = $(timeout 5 cat /etc/audit/auditd.conf 2>&1)
+    $auditdStr = $auditdConf -join $nl
+
+    if ($auditdStr -match "(?m)^\s*action_mail_acct\s*=\s*(\S+)") {
+        $mailAcct = $matches[1]
+        $FindingDetails += "action_mail_acct = " + $mailAcct + $nl + $nl
+
+        if ($mailAcct -eq "root") {
+            $FindingDetails += "RESULT: PASS - Audit notifications sent to root account" + $nl
+            $Status = "NotAFinding"
+        }
+        elseif ($mailAcct -ne "") {
+            $FindingDetails += "RESULT: PASS - Audit notifications sent to designated account" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "RESULT: FAIL - action_mail_acct is empty" + $nl
+            $Status = "Open"
+        }
+    }
+    else {
+        $FindingDetails += "action_mail_acct not found in auditd.conf." + $nl + $nl
+        $FindingDetails += "RESULT: FAIL - action_mail_acct not configured" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16279,9 +16306,40 @@ Function Get-V204516 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204516) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204516 - Audit Privileged Function Execution (execve)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -iw 'execve' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules matching 'execve':" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    $hasB32 = $auditStr -match "(?m).*arch=b32.*execve.*"
+    $hasB64 = $auditStr -match "(?m).*arch=b64.*execve.*"
+
+    if ($hasB32 -and $hasB64) {
+        $FindingDetails += "RESULT: PASS - Both b32 and b64 audit rules present for execve" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($hasB32 -or $hasB64) {
+        $FindingDetails += "RESULT: FAIL - Only partial audit rules found (need both b32 and b64)" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rules found for execve" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16390,9 +16448,40 @@ Function Get-V204517 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204517) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204517 - Audit chown/fchown/fchownat/lchown" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -iw 'chown' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules matching 'chown':" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    $hasB32 = $auditStr -match "(?m).*arch=b32.*chown.*"
+    $hasB64 = $auditStr -match "(?m).*arch=b64.*chown.*"
+
+    if ($hasB32 -and $hasB64) {
+        $FindingDetails += "RESULT: PASS - Both b32 and b64 audit rules present for chown" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($hasB32 -or $hasB64) {
+        $FindingDetails += "RESULT: FAIL - Only partial audit rules found (need both b32 and b64)" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rules found for chown" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16501,9 +16590,40 @@ Function Get-V204521 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204521) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204521 - Audit chmod/fchmod/fchmodat" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -iw 'chmod' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules matching 'chmod':" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    $hasB32 = $auditStr -match "(?m).*arch=b32.*chmod.*"
+    $hasB64 = $auditStr -match "(?m).*arch=b64.*chmod.*"
+
+    if ($hasB32 -and $hasB64) {
+        $FindingDetails += "RESULT: PASS - Both b32 and b64 audit rules present for chmod" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($hasB32 -or $hasB64) {
+        $FindingDetails += "RESULT: FAIL - Only partial audit rules found (need both b32 and b64)" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rules found for chmod" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16612,9 +16732,40 @@ Function Get-V204524 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204524) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204524 - Audit xattr Operations" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -iw 'xattr' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules matching 'xattr':" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    $hasB32 = $auditStr -match "(?m).*arch=b32.*setxattr.*"
+    $hasB64 = $auditStr -match "(?m).*arch=b64.*setxattr.*"
+
+    if ($hasB32 -and $hasB64) {
+        $FindingDetails += "RESULT: PASS - Both b32 and b64 audit rules present for setxattr" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($hasB32 -or $hasB64) {
+        $FindingDetails += "RESULT: FAIL - Only partial audit rules found (need both b32 and b64)" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rules found for setxattr" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16723,9 +16874,40 @@ Function Get-V204531 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204531) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204531 - Audit File Access (creat/open/truncate)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 sh -c 'grep -E "open|truncate|creat" /etc/audit/audit.rules' 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for file access syscalls:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    $hasB32 = $auditStr -match "(?m).*arch=b32.*creat.*"
+    $hasB64 = $auditStr -match "(?m).*arch=b64.*creat.*"
+
+    if ($hasB32 -and $hasB64) {
+        $FindingDetails += "RESULT: PASS - Both b32 and b64 audit rules present for file access syscalls" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($hasB32 -or $hasB64) {
+        $FindingDetails += "RESULT: FAIL - Only partial audit rules found (need both b32 and b64)" + $nl
+        $Status = "Open"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rules found for file access syscalls" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16834,9 +17016,42 @@ Function Get-V204536 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204536) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204536 - Audit semanage Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/sbin/semanage' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/sbin/semanage:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/sbin/semanage 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/sbin/semanage not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/sbin/semanage.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/sbin/semanage" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/sbin/semanage" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -16945,9 +17160,42 @@ Function Get-V204537 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204537) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204537 - Audit setsebool Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/sbin/setsebool' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/sbin/setsebool:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/sbin/setsebool 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/sbin/setsebool not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/sbin/setsebool.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/sbin/setsebool" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/sbin/setsebool" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17056,9 +17304,42 @@ Function Get-V204538 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204538) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204538 - Audit chcon Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/bin/chcon' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/bin/chcon:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/bin/chcon 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/bin/chcon not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/bin/chcon.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/bin/chcon" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/bin/chcon" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17167,9 +17448,42 @@ Function Get-V204539 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204539) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204539 - Audit setfiles Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/sbin/setfiles' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/sbin/setfiles:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/sbin/setfiles 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/sbin/setfiles not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/sbin/setfiles.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/sbin/setfiles" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/sbin/setfiles" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17278,9 +17592,33 @@ Function Get-V204540 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204540) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204540 - Audit Unsuccessful Account Access (faillock)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/var/run/faillock' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /var/run/faillock:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    if ($auditStr -match "(?m).*-w\s+[/]var[/]run[/]faillock.*-p\s+wa.*") {
+        $FindingDetails += "RESULT: PASS - File watch audit rule present for /var/run/faillock" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No file watch audit rule found for /var/run/faillock" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17389,9 +17727,33 @@ Function Get-V204541 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204541) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204541 - Audit Successful Account Access (lastlog)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/var/log/lastlog' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /var/log/lastlog:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    if ($auditStr -match "(?m).*-w\s+[/]var[/]log[/]lastlog.*-p\s+wa.*") {
+        $FindingDetails += "RESULT: PASS - File watch audit rule present for /var/log/lastlog" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No file watch audit rule found for /var/log/lastlog" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17500,9 +17862,42 @@ Function Get-V204542 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204542) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204542 - Audit passwd Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/bin/passwd' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/bin/passwd:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/bin/passwd 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/bin/passwd not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/bin/passwd.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/bin/passwd" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/bin/passwd" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17611,9 +18006,42 @@ Function Get-V204543 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204543) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204543 - Audit unix_chkpwd Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/sbin/unix_chkpwd' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/sbin/unix_chkpwd:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/sbin/unix_chkpwd 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/sbin/unix_chkpwd not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/sbin/unix_chkpwd.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/sbin/unix_chkpwd" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/sbin/unix_chkpwd" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -17722,9 +18150,42 @@ Function Get-V204544 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204544) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204544 - Audit gpasswd Command" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
+    $auditStr = $auditRules -join $nl
+
+    $grepResult = $(timeout 5 grep -w '/usr/bin/gpasswd' /etc/audit/audit.rules 2>&1)
+    $grepStr = ($grepResult -join $nl).Trim()
+
+    $FindingDetails += "Audit rules for /usr/bin/gpasswd:" + $nl
+    if ($grepStr -ne "") {
+        $FindingDetails += $grepStr + $nl + $nl
+    }
+    else {
+        $FindingDetails += "(none found)" + $nl + $nl
+    }
+
+    # Check if command exists on system
+    $cmdExists = $(timeout 5 ls -l /usr/bin/gpasswd 2>&1)
+    $cmdExistsStr = ($cmdExists -join $nl).Trim()
+
+    if ($cmdExistsStr -match "No such file") {
+        $FindingDetails += "Command /usr/bin/gpasswd not found on system." + $nl
+        $FindingDetails += "RESULT: PASS - Command not present, audit rule not required" + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($auditStr -match "(?m).*path=/usr/bin/gpasswd.*perm=x.*auid>=1000.*") {
+        $FindingDetails += "RESULT: PASS - Audit rule present for /usr/bin/gpasswd" + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "RESULT: FAIL - No audit rule found for /usr/bin/gpasswd" + $nl
+        $Status = "Open"
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

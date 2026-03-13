@@ -1841,9 +1841,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204491">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the cron.allow file, if it exists, is group-owned by root.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -1861,9 +1859,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204492">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must disable Kernel core dumps unless needed.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -2021,9 +2017,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204500">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must use a file integrity tool that is configured to use FIPS 140-2 approved cryptographic hashes for validating file contents and directories.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2041,9 +2035,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204501">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must not allow removable media to be used as the boot loader unless approved.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -2081,9 +2073,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204503">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that auditing is configured to produce records containing information to establish what type of events occurred.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -2101,9 +2091,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204504">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must shut down upon audit processing failure, unless availability is an overriding concern.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
@@ -2121,9 +2109,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204506">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured to off-load audit logs onto a different system or storage media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2141,9 +2127,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204507">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must take appropriate action when the remote logging buffer is full.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2161,9 +2145,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204508">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must label all off-loaded audit logs before sending them to the central log server.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2181,9 +2163,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204509">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must off-load audit records onto a different system or media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2201,9 +2181,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204510">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must encrypt the transfer of audit records off-loaded onto a different system or media from the system being audited.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2221,9 +2199,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204511">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when the audit storage volume is full.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2241,9 +2217,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204512">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that the audit system takes appropriate action when there is an error sending audit records to a remote system.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2261,9 +2235,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204513">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must initiate an action to notify the SA and ISSO when allocated audit record storage volume reaches 75% of the repository maximum audit record storage capacity.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2281,9 +2253,7 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204514">
-    <!--RuleTitle: The Red Hat Enterprise Linux operating system must immediately notify the SA and ISSO via email when the threshold for the repository maximum audit record storage capacity is reached.-->
     <AnswerKey Name="XCP-ng">
-      <!--Batch 6: File Permissions & Audit Setup-->
       <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
@@ -2301,167 +2271,302 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204515">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must immediately notify the SA and ISSO via email when the threshold for the repository maximum audit record storage capacity is reached.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the action_mail_acct setting on the XCP-ng Dom0 system. This setting specifies which account receives email notification when audit storage reaches the configured threshold. The check verifies that action_mail_acct is set to root or another valid account. This ensures responsible personnel are notified before audit storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/auditd.conf for the action_mail_acct setting on the XCP-ng Dom0 system. This setting specifies which account receives email notification when audit storage reaches the configured threshold. The check verifies that action_mail_acct is set to root or another valid account. This ensures responsible personnel are notified before audit storage is exhausted.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204516">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all executions of privileged functions.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for execve syscall audit rules on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) rules must be present to audit all privileged function executions where uid!=euid (setuid) and gid!=egid (setgid). These rules detect when processes execute with elevated privileges, which is critical for security monitoring on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for execve syscall audit rules on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) rules must be present to audit all privileged function executions where uid!=euid (setuid) and gid!=egid (setgid). These rules detect when processes execute with elevated privileges, which is critical for security monitoring on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204517">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the chown, fchown, fchownat, and lchown syscalls.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for chown/fchown/fchownat/lchown syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present to capture all ownership change attempts. These rules are essential for detecting unauthorized file ownership modifications that could be used to escalate privileges or hide malicious activity on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for chown/fchown/fchownat/lchown syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present to capture all ownership change attempts. These rules are essential for detecting unauthorized file ownership modifications that could be used to escalate privileges or hide malicious activity on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204521">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the chmod, fchmod, and fchmodat syscalls.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for chmod/fchmod/fchmodat syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present to capture all permission change attempts. These rules detect unauthorized file permission modifications that could weaken security controls on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for chmod/fchmod/fchmodat syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present to capture all permission change attempts. These rules detect unauthorized file permission modifications that could weaken security controls on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204524">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr syscalls.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for extended attribute (xattr) syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present for setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr. These rules detect modifications to file extended attributes including SELinux labels and ACLs.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for extended attribute (xattr) syscall audit rules on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present for setxattr, fsetxattr, lsetxattr, removexattr, fremovexattr, and lremovexattr. These rules detect modifications to file extended attributes including SELinux labels and ACLs.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204531">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the creat, open, openat, open_by_handle_at, truncate, and ftruncate syscalls.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for file access syscall audit rules (creat, open, openat, open_by_handle_at, truncate, ftruncate) on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present. These rules detect unauthorized file access attempts and are critical for maintaining an audit trail of file operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for file access syscall audit rules (creat, open, openat, open_by_handle_at, truncate, ftruncate) on the XCP-ng Dom0 system. Both 32-bit and 64-bit rules must be present. These rules detect unauthorized file access attempts and are critical for maintaining an audit trail of file operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204536">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the semanage command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the semanage command (/usr/sbin/semanage) on the XCP-ng Dom0 system. The rule must specify path, execution permission (perm=x), and auid filter. If semanage is not installed on the system, the check passes as the audit rule is not required for a non-existent command. Semanage is used to manage SELinux policy and auditing its use is critical for tracking security policy changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the semanage command (/usr/sbin/semanage) on the XCP-ng Dom0 system. The rule must specify path, execution permission (perm=x), and auid filter. If semanage is not installed on the system, the check passes as the audit rule is not required for a non-existent command. Semanage is used to manage SELinux policy and auditing its use is critical for tracking security policy changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204537">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the setsebool command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the setsebool command (/usr/sbin/setsebool) on the XCP-ng Dom0 system. If setsebool is not installed, the check passes. Setsebool modifies SELinux boolean values and auditing its use tracks security policy modifications on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the setsebool command (/usr/sbin/setsebool) on the XCP-ng Dom0 system. If setsebool is not installed, the check passes. Setsebool modifies SELinux boolean values and auditing its use tracks security policy modifications on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204538">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the chcon command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the chcon command (/usr/bin/chcon) on the XCP-ng Dom0 system. If chcon is not installed, the check passes. Chcon changes SELinux security context of files and auditing its use is critical for detecting unauthorized security label modifications.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the chcon command (/usr/bin/chcon) on the XCP-ng Dom0 system. If chcon is not installed, the check passes. Chcon changes SELinux security context of files and auditing its use is critical for detecting unauthorized security label modifications.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204539">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the setfiles command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the setfiles command (/usr/sbin/setfiles) on the XCP-ng Dom0 system. If setfiles is not installed, the check passes. Setfiles sets SELinux security contexts on filesystem paths and auditing its use tracks bulk security label changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the setfiles command (/usr/sbin/setfiles) on the XCP-ng Dom0 system. If setfiles is not installed, the check passes. Setfiles sets SELinux security contexts on filesystem paths and auditing its use tracks bulk security label changes.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204540">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must generate audit records for all unsuccessful account access events.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for a file watch rule on /var/run/faillock on the XCP-ng Dom0 system. The faillock directory records failed authentication attempts and auditing write/attribute changes to it captures unsuccessful account access events. This is essential for detecting brute force attacks and unauthorized access attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for a file watch rule on /var/run/faillock on the XCP-ng Dom0 system. The faillock directory records failed authentication attempts and auditing write/attribute changes to it captures unsuccessful account access events. This is essential for detecting brute force attacks and unauthorized access attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204541">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must generate audit records for all successful account access events.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for a file watch rule on /var/log/lastlog on the XCP-ng Dom0 system. The lastlog file records successful login events and auditing write/attribute changes to it captures all successful account access events. This provides an audit trail of who logged into the system and when.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for a file watch rule on /var/log/lastlog on the XCP-ng Dom0 system. The lastlog file records successful login events and auditing write/attribute changes to it captures all successful account access events. This provides an audit trail of who logged into the system and when.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204542">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the passwd command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the passwd command (/usr/bin/passwd) on the XCP-ng Dom0 system. The passwd command changes user passwords and auditing its use is critical for tracking password management activities and detecting unauthorized password changes on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the passwd command (/usr/bin/passwd) on the XCP-ng Dom0 system. The passwd command changes user passwords and auditing its use is critical for tracking password management activities and detecting unauthorized password changes on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204543">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the unix_chkpwd command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the unix_chkpwd command (/usr/sbin/unix_chkpwd) on the XCP-ng Dom0 system. The unix_chkpwd helper verifies user passwords for PAM authentication and auditing its use captures authentication verification attempts that may indicate unauthorized access attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the unix_chkpwd command (/usr/sbin/unix_chkpwd) on the XCP-ng Dom0 system. The unix_chkpwd helper verifies user passwords for PAM authentication and auditing its use captures authentication verification attempts that may indicate unauthorized access attempts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204544">
+    <!--RuleTitle: The Red Hat Enterprise Linux operating system must audit all uses of the gpasswd command.-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 7: Audit Rules - File & Access-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the gpasswd command (/usr/bin/gpasswd) on the XCP-ng Dom0 system. The gpasswd command administers /etc/group and /etc/gshadow and auditing its use tracks group membership and password management activities on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule covering the gpasswd command (/usr/bin/gpasswd) on the XCP-ng Dom0 system. The gpasswd command administers /etc/group and /etc/gshadow and auditing its use tracks group membership and password management activities on the hypervisor.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
