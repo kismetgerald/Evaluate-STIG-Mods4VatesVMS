@@ -13,11 +13,11 @@
 |-------|-----------|--------|
 | Phase 0: Remediation | -- | COMPLETE (Session #76, PR #60) |
 | Phase 1: CAT I | 26/26 | COMPLETE (Session #77, PR #61) |
-| Phase 2: CAT II | 45/205 | In Progress — Batches 1-3 done |
+| Phase 2: CAT II | 75/205 | In Progress — Batches 1-5 done |
 | Phase 3: CAT III | 13/13 | COMPLETE (Session #77, PR #62) |
-| **Total** | **84/244** | **34.4% implemented** |
+| **Total** | **114/244** | **46.7% implemented** |
 
-**Last Test:** Test194b (Mar 12) — EvalScore 15.16%, 0 errors, exit code 0
+**Last Test:** Test196 (Mar 12) — EvalScore 24.18%, 0 errors, exit code 0
 
 ---
 
@@ -161,42 +161,42 @@ STIG range: RHEL-07-020110 through RHEL-07-020670
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204451 | SV-204451r958498_rule | RHEL-07-020110 | The Red Hat Enterprise Linux operating system must disable t | NR | -- | -- | -- |
-| V-204453 | SV-204453r958944_rule | RHEL-07-020210 | The Red Hat Enterprise Linux operating system must enable SE | NR | -- | -- | -- |
-| V-204454 | SV-204454r958944_rule | RHEL-07-020220 | The Red Hat Enterprise Linux operating system must enable th | NR | -- | -- | -- |
-| V-204457 | SV-204457r991590_rule | RHEL-07-020240 | The Red Hat Enterprise Linux operating system must define de | NR | -- | -- | -- |
-| V-204459 | SV-204459r991589_rule | RHEL-07-020260 | The Red Hat Enterprise Linux operating system security patch | NR | -- | -- | -- |
-| V-204460 | SV-204460r991589_rule | RHEL-07-020270 | The Red Hat Enterprise Linux operating system must not have | NR | -- | -- | -- |
-| V-204463 | SV-204463r991589_rule | RHEL-07-020320 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204464 | SV-204464r991589_rule | RHEL-07-020330 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204466 | SV-204466r991589_rule | RHEL-07-020610 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204467 | SV-204467r991589_rule | RHEL-07-020620 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204468 | SV-204468r991589_rule | RHEL-07-020630 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204469 | SV-204469r991589_rule | RHEL-07-020640 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204470 | SV-204470r991589_rule | RHEL-07-020650 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204471 | SV-204471r991589_rule | RHEL-07-020660 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204472 | SV-204472r991589_rule | RHEL-07-020670 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
+| V-204451 | SV-204451r958498_rule | RHEL-07-020110 | The Red Hat Enterprise Linux operating system must disable t | DONE | Test195 | #78 | NF |
+| V-204453 | SV-204453r958944_rule | RHEL-07-020210 | The Red Hat Enterprise Linux operating system must enable SE | DONE | Test195 | #78 | O |
+| V-204454 | SV-204454r958944_rule | RHEL-07-020220 | The Red Hat Enterprise Linux operating system must enable th | DONE | Test195 | #78 | O |
+| V-204457 | SV-204457r991590_rule | RHEL-07-020240 | The Red Hat Enterprise Linux operating system must define de | DONE | Test195 | #78 | NF |
+| V-204459 | SV-204459r991589_rule | RHEL-07-020260 | The Red Hat Enterprise Linux operating system security patch | DONE | Test195 | #78 | O |
+| V-204460 | SV-204460r991589_rule | RHEL-07-020270 | The Red Hat Enterprise Linux operating system must not have | DONE | Test195 | #78 | O |
+| V-204463 | SV-204463r991589_rule | RHEL-07-020320 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | O |
+| V-204464 | SV-204464r991589_rule | RHEL-07-020330 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | O |
+| V-204466 | SV-204466r991589_rule | RHEL-07-020610 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204467 | SV-204467r991589_rule | RHEL-07-020620 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204468 | SV-204468r991589_rule | RHEL-07-020630 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204469 | SV-204469r991589_rule | RHEL-07-020640 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204470 | SV-204470r991589_rule | RHEL-07-020650 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204471 | SV-204471r991589_rule | RHEL-07-020660 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
+| V-204472 | SV-204472r991589_rule | RHEL-07-020670 | The Red Hat Enterprise Linux operating system must be config | DONE | Test195 | #78 | NF |
 
 ### Batch 5: User/Group Management & Filesystem (15 functions)
 STIG range: RHEL-07-020680 through RHEL-07-021110
 
 | Vuln ID | Rule ID | STIG ID | Rule Title | Status | Test | Session | Finding |
 |---------|---------|---------|------------|--------|------|---------|---------|
-| V-204473 | SV-204473r991589_rule | RHEL-07-020680 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204474 | SV-204474r991589_rule | RHEL-07-020690 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204475 | SV-204475r991589_rule | RHEL-07-020700 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204476 | SV-204476r991589_rule | RHEL-07-020710 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204477 | SV-204477r991589_rule | RHEL-07-020720 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204478 | SV-204478r991589_rule | RHEL-07-020730 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204479 | SV-204479r991589_rule | RHEL-07-020900 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204480 | SV-204480r991589_rule | RHEL-07-021000 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204481 | SV-204481r991589_rule | RHEL-07-021010 | The Red Hat Enterprise Linux operating system must prevent f | NR | -- | -- | -- |
-| V-204482 | SV-204482r991589_rule | RHEL-07-021020 | The Red Hat Enterprise Linux operating system must prevent f | NR | -- | -- | -- |
-| V-204483 | SV-204483r991589_rule | RHEL-07-021021 | The Red Hat Enterprise Linux operating system must prevent b | NR | -- | -- | -- |
-| V-204487 | SV-204487r991589_rule | RHEL-07-021030 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
-| V-204488 | SV-204488r991589_rule | RHEL-07-021040 | The Red Hat Enterprise Linux operating system must set the u | NR | -- | -- | -- |
-| V-204489 | SV-204489r991589_rule | RHEL-07-021100 | The Red Hat Enterprise Linux operating system must have cron | NR | -- | -- | -- |
-| V-204490 | SV-204490r991589_rule | RHEL-07-021110 | The Red Hat Enterprise Linux operating system must be config | NR | -- | -- | -- |
+| V-204473 | SV-204473r991589_rule | RHEL-07-020680 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204474 | SV-204474r991589_rule | RHEL-07-020690 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204475 | SV-204475r991589_rule | RHEL-07-020700 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204476 | SV-204476r991589_rule | RHEL-07-020710 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204477 | SV-204477r991589_rule | RHEL-07-020720 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | O |
+| V-204478 | SV-204478r991589_rule | RHEL-07-020730 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204479 | SV-204479r991589_rule | RHEL-07-020900 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | O |
+| V-204480 | SV-204480r991589_rule | RHEL-07-021000 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204481 | SV-204481r991589_rule | RHEL-07-021010 | The Red Hat Enterprise Linux operating system must prevent f | DONE | Test196 | #78 | NF |
+| V-204482 | SV-204482r991589_rule | RHEL-07-021020 | The Red Hat Enterprise Linux operating system must prevent f | DONE | Test196 | #78 | NF |
+| V-204483 | SV-204483r991589_rule | RHEL-07-021021 | The Red Hat Enterprise Linux operating system must prevent b | DONE | Test196 | #78 | NF |
+| V-204487 | SV-204487r991589_rule | RHEL-07-021030 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
+| V-204488 | SV-204488r991589_rule | RHEL-07-021040 | The Red Hat Enterprise Linux operating system must set the u | DONE | Test196 | #78 | NF |
+| V-204489 | SV-204489r991589_rule | RHEL-07-021100 | The Red Hat Enterprise Linux operating system must have cron | DONE | Test196 | #78 | NF |
+| V-204490 | SV-204490r991589_rule | RHEL-07-021110 | The Red Hat Enterprise Linux operating system must be config | DONE | Test196 | #78 | NF |
 
 ### Batch 6: File Permissions & Audit Setup (15 functions)
 STIG range: RHEL-07-021120 through RHEL-07-030340
@@ -408,5 +408,13 @@ STIG range: RHEL-07-010339 through RHEL-07-020028
 
 | Test | Date | Session | Phase/Batch | Functions | Result | EvalScore | Notes |
 |------|------|---------|-------------|-----------|--------|-----------|-------|
-| Test188 | pending | #76 | Phase 0 baseline | 244 stubs | pending | ~0% | Remediation baseline |
+| Test188 | Mar 11 | #76 | Phase 0 baseline | 244 stubs | Pass | 0% | Remediation baseline |
+| Test189 | Mar 11 | #77 | CAT I Batch 1 | 10 CAT I | Pass | 6.56% | First CAT I functions |
+| Test190 | Mar 11 | #77 | CAT I Batch 2 | 10 CAT I | Pass | 9.84% | |
+| Test191 | Mar 11 | #77 | CAT I Batch 3 | 6 CAT I + 13 CAT III | Pass | 12.30% | CAT I + CAT III complete |
+| Test192 | Mar 12 | #78 | CAT II Batch 1 | 15 CAT II | Pass | 12.30% | Account & login |
+| Test193 | Mar 12 | #78 | CAT II Batch 2 | 15 CAT II | Pass | 13.52% | Password & auth policy |
+| Test194b | Mar 12 | #78 | CAT II Batch 3 | 15 CAT II | Pass | 15.16% | SSH & PAM config |
+| Test195 | Mar 12 | #78 | CAT II Batch 4 | 15 CAT II | Pass | 18.85% | System integrity & software |
+| Test196 | Mar 12 | #78 | CAT II Batch 5 | 15 CAT II | Pass | 24.18% | User/group mgmt & filesystem |
 
