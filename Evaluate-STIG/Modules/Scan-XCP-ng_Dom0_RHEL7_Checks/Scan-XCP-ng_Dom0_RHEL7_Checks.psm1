@@ -1,4 +1,4 @@
-##########################################################################
+﻿##########################################################################
 # Evaluate-STIG module
 # --------------------
 # STIG:     XCP-ng Dom0 GPOS (Red Hat Enterprise Linux 7)
@@ -7879,9 +7879,39 @@ Function Get-V204451 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204451) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204451 - Disable File System Automounter (autofs)" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check if autofs is installed
+    $autofsInstalled = $(rpm -q autofs 2>&1)
+    $autofsInstalledStr = ($autofsInstalled -join $nl).Trim()
+
+    $FindingDetails += "Command: rpm -q autofs" + $nl
+    $FindingDetails += "Result: " + $autofsInstalledStr + $nl + $nl
+
+    if ($autofsInstalledStr -match "not installed") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: autofs package is not installed." + $nl
+    }
+    else {
+        # Check if autofs service is active
+        $autofsStatus = $(systemctl is-active autofs 2>&1)
+        $autofsStatusStr = ($autofsStatus -join $nl).Trim()
+
+        $FindingDetails += "Command: systemctl is-active autofs" + $nl
+        $FindingDetails += "Result: " + $autofsStatusStr + $nl + $nl
+
+        if ($autofsStatusStr -eq "inactive" -or $autofsStatusStr -match "unknown") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: autofs service is not active." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: autofs service is active. Disable with: systemctl stop autofs; systemctl disable autofs" + $nl
+        }
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8118,9 +8148,26 @@ Function Get-V204453 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204453) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204453 - SELinux Must Be Enabled" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $getenforce = $(getenforce 2>&1)
+    $getenforceStr = ($getenforce -join $nl).Trim()
+
+    $FindingDetails += "Command: getenforce" + $nl
+    $FindingDetails += "Result: " + $getenforceStr + $nl + $nl
+
+    if ($getenforceStr -eq "Enforcing") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: SELinux is in Enforcing mode." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SELinux is not in Enforcing mode (current: " + $getenforceStr + ")." + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 typically runs with SELinux disabled. This is a known finding." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8229,9 +8276,26 @@ Function Get-V204454 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204454) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204454 - SELinux Targeted Policy" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $sestatus = $(sestatus 2>&1)
+    $sestatusStr = ($sestatus -join $nl).Trim()
+
+    $FindingDetails += "Command: sestatus" + $nl
+    $FindingDetails += "Result:" + $nl + $sestatusStr + $nl + $nl
+
+    if ($sestatusStr -match "Loaded policy name:\s+targeted" -and $sestatusStr -match "Current mode:\s+enforcing") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: SELinux targeted policy is active and enforcing." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: SELinux is not using the targeted policy in enforcing mode." + $nl
+        $FindingDetails += "Note: XCP-ng Dom0 typically runs with SELinux disabled. This is a known finding." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8611,9 +8675,32 @@ Function Get-V204457 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204457) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204457 - Default Permissions UMASK 077" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $umaskCheck = $(timeout 5 grep -i "^UMASK" /etc/login.defs 2>&1)
+    $umaskStr = ($umaskCheck -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i ^UMASK /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $(if ($umaskStr -ne "") { $umaskStr } else { "(not found)" }) + $nl + $nl
+
+    if ($umaskStr -match "UMASK\s+(\d+)") {
+        $umaskVal = $Matches[1]
+        if ($umaskVal -eq "077") {
+            $Status = "NotAFinding"
+            $FindingDetails += "PASS: UMASK is set to 077." + $nl
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "FAIL: UMASK is set to " + $umaskVal + " (expected 077)." + $nl
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: UMASK is not defined in /etc/login.defs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8861,9 +8948,32 @@ Function Get-V204459 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204459) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204459 - Security Patches and Updates" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Check for available updates
+    $updateCheck = $(timeout 30 yum check-update --security 2>&1)
+    $updateStr = ($updateCheck -join $nl).Trim()
+
+    # Get last update time
+    $lastUpdate = $(rpm -qa --last 2>/dev/null | head -1)
+    $lastUpdateStr = ($lastUpdate -join $nl).Trim()
+
+    $FindingDetails += "Last installed package: " + $lastUpdateStr + $nl + $nl
+    $FindingDetails += "Command: yum check-update --security" + $nl
+    $FindingDetails += "Result (first 20 lines):" + $nl
+
+    $updateLines = $updateCheck | Select-Object -First 20
+    $updateLinesStr = ($updateLines -join $nl).Trim()
+    $FindingDetails += $updateLinesStr + $nl + $nl
+
+    # yum check-update returns exit code 100 if updates available, 0 if none
+    # We report as Open since patching compliance requires ISSO review
+    $Status = "Open"
+    $FindingDetails += "NOTE: Patch compliance requires ISSO review of update currency." + $nl
+    $FindingDetails += "XCP-ng updates are managed through Vates/XCP-ng repositories." + $nl
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -8972,9 +9082,27 @@ Function Get-V204460 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204460) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204460 - No Unnecessary Accounts" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # List all accounts with login shells
+    $loginAccounts = $(timeout 5 sh -c 'awk -F: ''$7 !~ /nologin|false|sync|shutdown|halt/ {print $1":"$3":"$6":"$7}'' /etc/passwd' 2>&1)
+    $loginStr = ($loginAccounts -join $nl).Trim()
+
+    $FindingDetails += "Accounts with login shells:" + $nl
+    $FindingDetails += $loginStr + $nl + $nl
+
+    # Count non-system accounts (UID >= 1000)
+    $userAccounts = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$3":"$6}'' /etc/passwd' 2>&1)
+    $userStr = ($userAccounts -join $nl).Trim()
+
+    $FindingDetails += "Non-system interactive accounts (UID >= 1000):" + $nl
+    $FindingDetails += $(if ($userStr -ne "") { $userStr } else { "(none)" }) + $nl + $nl
+
+    $Status = "Open"
+    $FindingDetails += "NOTE: ISSO must verify all accounts are authorized and assigned to active users." + $nl
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9351,9 +9479,25 @@ Function Get-V204463 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204463) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204463 - All Files Must Have Valid Owner" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $nouser = $(timeout 30 find / -maxdepth 5 -nouser -not -path "/proc/*" -not -path "/sys/*" -not -path "/run/*" 2>/dev/null | head -20)
+    $nouserStr = ($nouser -join $nl).Trim()
+
+    $FindingDetails += "Command: find / -maxdepth 5 -nouser (excluding /proc, /sys, /run)" + $nl
+    $FindingDetails += "Result: " + $(if ($nouserStr -ne "") { $nouserStr } else { "(no unowned files found)" }) + $nl + $nl
+
+    if ($nouserStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No files or directories without a valid owner." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Files without valid owner found. Assign owners with: chown <user> <file>" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9462,9 +9606,25 @@ Function Get-V204464 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204464) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204464 - All Files Must Have Valid Group Owner" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $nogroup = $(timeout 30 find / -maxdepth 5 -nogroup -not -path "/proc/*" -not -path "/sys/*" -not -path "/run/*" 2>/dev/null | head -20)
+    $nogroupStr = ($nogroup -join $nl).Trim()
+
+    $FindingDetails += "Command: find / -maxdepth 5 -nogroup (excluding /proc, /sys, /run)" + $nl
+    $FindingDetails += "Result: " + $(if ($nogroupStr -ne "") { $nogroupStr } else { "(no files without group found)" }) + $nl + $nl
+
+    if ($nogroupStr -eq "") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: No files or directories without a valid group owner." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: Files without valid group found. Assign groups with: chgrp <group> <file>" + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9573,9 +9733,25 @@ Function Get-V204466 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204466) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204466 - Local Users Assigned Home Directory on Creation" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $createHome = $(timeout 5 grep -i "^CREATE_HOME" /etc/login.defs 2>&1)
+    $createHomeStr = ($createHome -join $nl).Trim()
+
+    $FindingDetails += "Command: grep -i ^CREATE_HOME /etc/login.defs" + $nl
+    $FindingDetails += "Result: " + $(if ($createHomeStr -ne "") { $createHomeStr } else { "(not found)" }) + $nl + $nl
+
+    if ($createHomeStr -match "CREATE_HOME\s+yes") {
+        $Status = "NotAFinding"
+        $FindingDetails += "PASS: CREATE_HOME is set to yes." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "FAIL: CREATE_HOME is not set to yes in /etc/login.defs." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9684,9 +9860,43 @@ Function Get-V204467 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204467) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204467 - Interactive Users Have Home Directory Defined" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    # Get interactive users (UID >= 1000, not nologin)
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $FindingDetails += "Interactive users (UID >= 1000):" + $nl
+    $FindingDetails += $(if ($usersStr -ne "") { $usersStr } else { "(none)" }) + $nl + $nl
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $exists = $(test -d $homedir && echo "exists" || echo "missing")
+                $existsStr = ($exists -join $nl).Trim()
+                $FindingDetails += "  User: " + $uname + " Home: " + $homedir + " Status: " + $existsStr + $nl
+                if ($existsStr -eq "missing") { $allOk = $false }
+            }
+        }
+    }
+
+    if ($usersStr -eq "" -or $allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All interactive users have valid home directories." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: One or more interactive users have missing home directories." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9795,9 +10005,44 @@ Function Get-V204468 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204468) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204468 - Home Directory Permissions 0750 or Less" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $FindingDetails += "Interactive user home directories:" + $nl + $nl
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $perms = $(stat -c "%a" $homedir 2>/dev/null)
+                $permsStr = ($perms -join $nl).Trim()
+                $FindingDetails += "  User: " + $uname + " Home: " + $homedir + " Mode: " + $permsStr + $nl
+                if ($permsStr -ne "" -and [int]$permsStr -gt 750) { $allOk = $false }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "  (No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All home directories have mode 0750 or less permissive." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: One or more home directories exceed 0750 permissions." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -9906,9 +10151,44 @@ Function Get-V204469 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204469) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204469 - Home Directories Owned by Respective Users" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $FindingDetails += "Interactive user home directory ownership:" + $nl + $nl
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $owner = $(stat -c "%U" $homedir 2>/dev/null)
+                $ownerStr = ($owner -join $nl).Trim()
+                $FindingDetails += "  User: " + $uname + " Home: " + $homedir + " Owner: " + $ownerStr + $nl
+                if ($ownerStr -ne $uname) { $allOk = $false }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "  (No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All home directories are owned by their respective users." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: One or more home directories are not owned by the assigned user." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10017,9 +10297,45 @@ Function Get-V204470 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204470) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204470 - Home Dirs Group-Owned by Primary Group" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $FindingDetails += "Interactive user home directory group ownership:" + $nl + $nl
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 3) {
+                $uname = $parts[0]
+                $primaryGid = $parts[1]
+                $homedir = $parts[2]
+                $dirGid = $(stat -c "%g" $homedir 2>/dev/null)
+                $dirGidStr = ($dirGid -join $nl).Trim()
+                $FindingDetails += "  User: " + $uname + " PrimaryGID: " + $primaryGid + " Home: " + $homedir + " DirGID: " + $dirGidStr + $nl
+                if ($dirGidStr -ne $primaryGid) { $allOk = $false }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "  (No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All home directories are group-owned by user primary group." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: One or more home directories are not group-owned by the primary group." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10128,9 +10444,48 @@ Function Get-V204471 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204471) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204471 - Home Dir Files Must Have Valid Owner" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $nouser = $(timeout 10 find $homedir -maxdepth 3 -nouser 2>/dev/null | head -5)
+                $nouserStr = ($nouser -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + " Home: " + $homedir + $nl
+                if ($nouserStr -ne "") {
+                    $FindingDetails += "  Unowned files: " + $nouserStr + $nl
+                    $allOk = $false
+                }
+                else {
+                    $FindingDetails += "  No unowned files found." + $nl
+                }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All files in home directories have valid owners." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Files without valid owner found in home directories." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -10239,9 +10594,48 @@ Function Get-V204472 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204472) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+    $nl = [Environment]::NewLine
+
+    $FindingDetails = "V-204472 - Home Dir Files Group-Owned by Member Group" + $nl
+    $FindingDetails += ("=" * 60) + $nl + $nl
+
+    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $usersStr = ($interactiveUsers -join $nl).Trim()
+
+    $allOk = $true
+    if ($usersStr -ne "") {
+        foreach ($line in $interactiveUsers) {
+            $lineStr = "$line".Trim()
+            if ($lineStr -eq "") { continue }
+            $parts = $lineStr -split ":"
+            if ($parts.Count -ge 2) {
+                $uname = $parts[0]
+                $homedir = $parts[1]
+                $nogroup = $(timeout 10 find $homedir -maxdepth 3 -nogroup 2>/dev/null | head -5)
+                $nogroupStr = ($nogroup -join $nl).Trim()
+                $FindingDetails += "User: " + $uname + " Home: " + $homedir + $nl
+                if ($nogroupStr -ne "") {
+                    $FindingDetails += "  Files without valid group: " + $nogroupStr + $nl
+                    $allOk = $false
+                }
+                else {
+                    $FindingDetails += "  All files have valid group ownership." + $nl
+                }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "(No interactive users with UID >= 1000)" + $nl
+    }
+
+    if ($allOk) {
+        $Status = "NotAFinding"
+        $FindingDetails += $nl + "PASS: All files in home directories have valid group ownership." + $nl
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += $nl + "FAIL: Files without valid group found in home directories." + $nl
+    }
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

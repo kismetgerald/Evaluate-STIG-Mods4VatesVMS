@@ -1323,14 +1323,20 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204451">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must disable the file system automounter unless required.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified whether the autofs (automount) service is installed and active on the XCP-ng Dom0 system. The check ran &quot;rpm -q autofs&quot; to determine if the package is installed, and if present, &quot;systemctl is-active autofs&quot; to verify the service state. On this system, autofs is either not installed or the service is inactive/disabled, confirming the automounter is not running. XCP-ng Dom0 does not require autofs for normal hypervisor operations, and NFS mounts if needed should be configured statically in /etc/fstab. This satisfies the RHEL 7 STIG requirement to disable the file system automounter unless operationally required and documented with the ISSO.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that the autofs (automount) service is active on the XCP-ng Dom0 system. The RHEL 7 STIG requires that the file system automounter be disabled unless operationally required and documented with the ISSO. To remediate, disable the autofs service: &quot;systemctl stop autofs; systemctl disable autofs&quot;. If autofs is required for NFS operations, the ISSO must document the operational requirement. The system administrator should verify no critical services depend on autofs before disabling, then confirm the service remains disabled after reboot.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1359,28 +1365,40 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204453">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must enable SELinux.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check ran &quot;getenforce&quot; to determine the SELinux enforcement status on the XCP-ng Dom0 system. The check confirmed that SELinux is in Enforcing mode, meaning mandatory access controls are actively protecting the system. SELinux in Enforcing mode prevents unauthorized access to files, processes, and network resources by applying security policies beyond traditional discretionary access controls. This satisfies the RHEL 7 STIG requirement that SELinux must be active and in Enforcing mode to verify correct operation of all security functions.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check ran &quot;getenforce&quot; and found that SELinux is not in Enforcing mode on the XCP-ng Dom0 system. XCP-ng Dom0 typically ships with SELinux disabled or in Permissive mode, which is a known compliance gap for RHEL 7 STIG requirements. The STIG requires SELinux to be active and in Enforcing mode. To remediate, edit /etc/selinux/config and set SELINUX=enforcing, then reboot. WARNING: Enabling SELinux on XCP-ng Dom0 may impact hypervisor operations and requires thorough testing. The system administrator should consult Vates support before enabling SELinux in production. This finding requires organizational risk acceptance if SELinux cannot be enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204454">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must enable the SELinux targeted policy.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check ran &quot;sestatus&quot; to verify both the SELinux policy type and enforcement mode on the XCP-ng Dom0 system. The output confirmed that the loaded policy name is &quot;targeted&quot; and the current mode is &quot;enforcing&quot;, meaning SELinux is actively applying the targeted policy. The targeted policy confines specific system daemons and services while leaving unconfined processes with standard DAC permissions. This satisfies the RHEL 7 STIG requirement that SELinux must use the targeted policy in enforcing mode.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check ran &quot;sestatus&quot; and found that SELinux is not using the targeted policy in enforcing mode on the XCP-ng Dom0 system. XCP-ng Dom0 typically runs with SELinux disabled, which is a known compliance gap. The STIG requires SELINUXTYPE=targeted in /etc/selinux/config and enforcing mode active. To remediate, edit /etc/selinux/config: set SELINUX=enforcing and SELINUXTYPE=targeted, then reboot. WARNING: Changing SELinux policy on XCP-ng Dom0 may affect hypervisor operations. Test thoroughly in a non-production environment first. The system administrator should coordinate with Vates support and the ISSO for risk acceptance if SELinux cannot be enabled.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1439,14 +1457,20 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204457">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must define default permissions for all authenticated users in such a way that the user can only read and modify their own files.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified the UMASK setting in /etc/login.defs on the XCP-ng Dom0 system. The check ran &quot;grep -i ^UMASK /etc/login.defs&quot; and confirmed that UMASK is set to 077. A UMASK of 077 ensures that newly created files and directories are accessible only by the creating user (owner read/write/execute, no group or other permissions). This is the most restrictive default permission setting and satisfies the RHEL 7 STIG requirement that default permissions must prevent other users from reading or modifying files.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that the UMASK value in /etc/login.defs is not set to 077 on the XCP-ng Dom0 system. The RHEL 7 STIG requires UMASK to be 077 to ensure newly created files are only accessible by the file owner. A less restrictive UMASK (e.g., 022) allows other users to read files by default, which violates the principle of least privilege. To remediate, edit /etc/login.defs and set: UMASK 077. The system administrator should also verify that no user-level profiles override this setting in /etc/profile or /etc/bashrc.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1475,28 +1499,40 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204459">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system security patches and updates must be installed and up to date.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified the patch status of the XCP-ng Dom0 system by running &quot;yum check-update --security&quot; and checking the most recently installed package. The system is current with available security patches as determined by the configured XCP-ng repositories. Patch management for XCP-ng Dom0 is handled through Vates/XCP-ng repositories rather than Red Hat Network. The ISSO has verified that the patching cadence meets organizational requirements. Regular patch assessment and timely application of security updates is maintained per site policy.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check assessed the patch status of the XCP-ng Dom0 system using &quot;yum check-update --security&quot;. Patch compliance requires ISSO review to verify that security patches and updates are installed within the timeframe defined by site policy (typically 30 days for critical patches). XCP-ng updates are managed through Vates/XCP-ng repositories, not Red Hat Network. The system administrator should review available updates, test in a non-production environment, and apply using &quot;yum update --security&quot;. The ISSO must document the patching schedule and verify compliance. For XCP-ng-specific updates, follow Vates guidance at https://xcp-ng.org/docs/updates.html.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204460">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must not have unnecessary accounts.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check listed all accounts with login shells and non-system interactive accounts (UID &gt;= 1000) on the XCP-ng Dom0 system. The ISSO has reviewed the account list and confirmed that all accounts are authorized and assigned to active system functions or users. XCP-ng Dom0 typically has minimal accounts: root for administration and system service accounts with nologin shells. No unnecessary or unauthorized accounts were identified during the review. This satisfies the RHEL 7 STIG requirement that the system must not have unnecessary accounts.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check listed all accounts with login shells on the XCP-ng Dom0 system. The ISSO must review this list and verify that every account is authorized and assigned to an active system, application, or user. Any accounts not supporting approved system activities must be removed or disabled. To remediate, remove unauthorized accounts with &quot;userdel &lt;username&gt;&quot; or lock them with &quot;passwd -l &lt;username&gt;&quot;. The system administrator should document all authorized accounts and their purpose. Regular account reviews should be scheduled per organizational policy to ensure no unauthorized accounts persist.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -1547,126 +1583,180 @@ This file contains answers for known opens and findings that cannot be evaluated
   <Vuln ID="V-204463">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid owner.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check searched the XCP-ng Dom0 filesystem for files and directories without a valid owner using &quot;find / -maxdepth 5 -nouser&quot; (excluding /proc, /sys, /run). No unowned files or directories were found, confirming that all files on the system are assigned to valid user accounts. Proper file ownership ensures accountability and prevents unauthorized access to system resources. This satisfies the RHEL 7 STIG requirement that all files and directories must have a valid owner.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found files or directories without a valid owner on the XCP-ng Dom0 system using &quot;find / -maxdepth 5 -nouser&quot;. Unowned files may indicate deleted user accounts or improper file management, and they represent a security risk as they cannot be properly attributed for auditing purposes. To remediate, assign a valid owner to each unowned file using &quot;chown &lt;user&gt; &lt;file&gt;&quot;. If the files are no longer needed, remove them. The system administrator should investigate why files lack ownership and ensure user account removal procedures include file ownership transfer.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204464">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all files and directories have a valid group owner.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check searched the XCP-ng Dom0 filesystem for files and directories without a valid group owner using &quot;find / -maxdepth 5 -nogroup&quot; (excluding /proc, /sys, /run). No files without valid group ownership were found, confirming that all files on the system are assigned to valid groups. Proper group ownership ensures correct access control and audit accountability. This satisfies the RHEL 7 STIG requirement that all files and directories must have a valid group owner.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found files or directories without a valid group owner on the XCP-ng Dom0 system. Files without valid group ownership may indicate deleted groups or improper file management, creating potential security gaps in access control. To remediate, assign a valid group to each file using &quot;chgrp &lt;group&gt; &lt;file&gt;&quot;. If the files are no longer needed, remove them. The system administrator should investigate the root cause and ensure group removal procedures include updating file group ownership.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204466">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local interactive user accounts, upon creation, are assigned a home directory.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified the CREATE_HOME parameter in /etc/login.defs on the XCP-ng Dom0 system. The check confirmed that CREATE_HOME is set to &quot;yes&quot;, ensuring that when new local interactive user accounts are created using useradd, a home directory is automatically created for them. This prevents users from being created without a personal workspace and ensures proper file isolation between users. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that CREATE_HOME is not set to &quot;yes&quot; in /etc/login.defs on the XCP-ng Dom0 system. Without this setting, new user accounts may be created without home directories, preventing proper file isolation. To remediate, edit /etc/login.defs and set: CREATE_HOME yes. The system administrator should also verify that existing users have home directories assigned and created.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204467">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local interactive users have a home directory assigned and defined in the /etc/passwd file.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that all local interactive users (UID &gt;= 1000 with login shells) on the XCP-ng Dom0 system have home directories assigned in /etc/passwd and that those directories exist on the filesystem. Each interactive user account was checked for both the home directory assignment and physical existence. All assigned home directories were confirmed to exist. This satisfies the RHEL 7 STIG requirement that interactive users must have valid home directories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that one or more interactive users on the XCP-ng Dom0 system have missing home directories. Each user with a login shell must have a home directory assigned in /etc/passwd that physically exists on the filesystem. To remediate, create missing home directories using &quot;mkhomedir_helper &lt;username&gt;&quot; or &quot;mkdir /home/&lt;username&gt;; chown &lt;username&gt;:&lt;group&gt; /home/&lt;username&gt;; chmod 0750 /home/&lt;username&gt;&quot;. The system administrator should verify all interactive accounts have proper home directories.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204468">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories have mode 0750 or less permissive.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified the permissions of all local interactive user home directories (UID &gt;= 1000) on the XCP-ng Dom0 system using &quot;stat -c %a&quot;. All home directories were confirmed to have permissions of 0750 or less permissive, ensuring that only the directory owner and their primary group can access the contents. This prevents unauthorized users from reading, writing, or executing files in other users home directories. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that one or more interactive user home directories on the XCP-ng Dom0 system have permissions exceeding 0750. Home directories that are too permissive allow unauthorized users to access, modify, or execute files belonging to other users. To remediate, set proper permissions using &quot;chmod 0750 /home/&lt;username&gt;&quot; for each affected directory. The system administrator should verify that no application functionality depends on broader home directory permissions before restricting access.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204469">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are owned by their respective users.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that all local interactive user home directories (UID &gt;= 1000) on the XCP-ng Dom0 system are owned by their respective users using &quot;stat -c %U&quot;. Each home directory ownership was compared against the assigned user in /etc/passwd. All directories were confirmed to be owned by their assigned users, ensuring proper access control and accountability. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that one or more interactive user home directories on the XCP-ng Dom0 system are not owned by their respective users. Incorrect home directory ownership can allow unauthorized access and complicate auditing. To remediate, correct ownership using &quot;chown &lt;username&gt; /home/&lt;username&gt;&quot; for each affected directory. The system administrator should investigate why ownership is incorrect and ensure user management procedures maintain proper directory ownership.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204470">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all local interactive user home directories are group-owned by the home directory owners primary group.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check verified that all local interactive user home directories (UID &gt;= 1000) on the XCP-ng Dom0 system are group-owned by each user primary group. The check compared the directory group ID (via &quot;stat -c %g&quot;) against the user primary GID from /etc/passwd. All directories matched their respective user primary groups, ensuring proper group-based access control. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found that one or more interactive user home directories on the XCP-ng Dom0 system are not group-owned by the respective user primary group. Incorrect group ownership can expose files to unauthorized group members. To remediate, correct group ownership using &quot;chgrp &lt;primary_group&gt; /home/&lt;username&gt;&quot;. The user primary GID can be found in /etc/passwd. The system administrator should ensure user management procedures maintain proper directory group ownership.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204471">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories have a valid owner.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check searched all local interactive user home directories (UID &gt;= 1000) on the XCP-ng Dom0 system for files without a valid owner using &quot;find &lt;homedir&gt; -maxdepth 3 -nouser&quot;. No unowned files were found in any user home directory. Proper file ownership within home directories ensures accountability and prevents unauthorized file access. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found files without a valid owner in one or more interactive user home directories on the XCP-ng Dom0 system. Unowned files in home directories may result from deleted user accounts or improper file copying. To remediate, assign ownership using &quot;chown &lt;username&gt; &lt;file&gt;&quot; for each unowned file, or remove files that are no longer needed. The system administrator should investigate the source of unowned files and ensure proper cleanup procedures exist.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204472">
     <!--RuleTitle: The Red Hat Enterprise Linux operating system must be configured so that all files and directories contained in local interactive user home directories are group-owned by a group of which the home directory owner is a member.-->
     <AnswerKey Name="XCP-ng">
-      <!--AnswerKey created by Evaluate-STIG_GUI.ps1 and modified by Kismet Agbasi (KismetG17@gmail.com) and modified by Kismet Agbasi (KismetG17@gmail.com)-->
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <!--Index created by Evaluate-STIG_GUI.ps1-->
+      <!--Batch 4: System Integrity and Software-->
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode></ValidationCode>
-        <ValidTrueStatus></ValidTrueStatus>
-        <ValidTrueComment></ValidTrueComment>
-        <ValidFalseStatus></ValidFalseStatus>
-        <ValidFalseComment></ValidFalseComment>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check searched all local interactive user home directories (UID &gt;= 1000) on the XCP-ng Dom0 system for files without a valid group using &quot;find &lt;homedir&gt; -maxdepth 3 -nogroup&quot;. No files with invalid group ownership were found. Proper group ownership of files within home directories ensures that access control lists function correctly and audit trails are meaningful. This satisfies the RHEL 7 STIG requirement.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated STIG check found files without valid group ownership in one or more interactive user home directories on the XCP-ng Dom0 system. Files with invalid groups may have been copied from other systems or their groups may have been deleted. To remediate, assign a valid group using &quot;chgrp &lt;group&gt; &lt;file&gt;&quot;, ensuring the group is one the home directory owner belongs to. The system administrator should check user group memberships with &quot;id &lt;username&gt;&quot; and correct file groups accordingly.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
