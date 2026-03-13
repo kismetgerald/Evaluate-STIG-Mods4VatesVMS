@@ -16,8 +16,8 @@
 | **Scan-XO_ASD_Checks** | 286 (34 CAT I + 252 CAT II/III) | 286/286 | 43.36% | Test148b (Feb 18) | **100% COMPLETE** |
 | **Scan-XO_GPOS_Debian12_Checks** | 198 (18 CAT I + 170 CAT II + 10 CAT III) | 198/198 | 46.46% | Test173b (Mar 1) | **100% COMPLETE** |
 | **Scan-XCP-ng_VMM_Checks** | 193 (3 CAT I + 159 CAT II + 31 CAT III) | 193/193 | 34.72% | Test187b (Mar 11) | **100% COMPLETE** |
-| **Scan-XCP-ng_Dom0_RHEL7_Checks** | 244 (26 CAT I + 205 CAT II + 13 CAT III) | 84/244 | 15.16% | Test194b (Mar 12) | **In Progress** — CAT II Batch 3/14 |
-| **Total** | **1,047** | **803 XO+VMM + 84 Dom0** | — | — | **XO+VMM 100%, Dom0 34.4%** |
+| **Scan-XCP-ng_Dom0_RHEL7_Checks** | 244 (26 CAT I + 205 CAT II + 13 CAT III) | 114/244 | 24.18% | Test196 (Mar 12) | **In Progress** — CAT II Batch 5/14 |
+| **Total** | **1,047** | **803 XO+VMM + 114 Dom0** | — | — | **XO+VMM 100%, Dom0 46.7%** |
 
 ---
 
@@ -44,13 +44,13 @@
 - Test187b validated (Mar 11), PRs #47-58 merged
 - Bash helpers in `Modules/Scan-XCP-ng_VMM_Checks/Bash_Helpers/`
 
-### Dom0 RHEL7 — In Progress (84/244, 34.4%)
+### Dom0 RHEL7 — In Progress (114/244, 46.7%)
 - Phase 0 remediation complete (Session #76, PR #60)
 - CAT I: 26/26 complete (Session #77, PR #61)
 - CAT III: 13/13 complete (Session #77, PR #62)
-- CAT II: 45/205 done (Batches 1-3, PRs #64-66)
-- EvalScore: 15.16%, Test194b (Mar 12)
-- Remaining: 160 CAT II functions across Batches 4-14
+- CAT II: 75/205 done (Batches 1-5, PRs #64-69)
+- EvalScore: 24.18%, Test196 (Mar 12)
+- Remaining: 130 CAT II functions across Batches 6-14
 
 ### Key Technical Notes
 - XCP-ng 8.3 is based on **RHEL 7/CentOS 7** (not RHEL 8)
@@ -67,7 +67,7 @@
 | ASD | XO_ASD | Test125–Test148b | Test148b | Exit 0, 43.36% |
 | GPOS Debian12 | XO_GPOS_Debian12 | Test149–Test173b | Test173b | Exit 0, 46.46% |
 | XCP-ng VMM | XCP-ng_VMM | Test176–Test187b | Test187b | Exit 0, 34.72% |
-| XCP-ng Dom0 | XCP-ng_Dom0_RHEL7 | Test188–Test194b | Test194b | Exit 0, 15.16% |
+| XCP-ng Dom0 | XCP-ng_Dom0_RHEL7 | Test188–Test196 | Test196 | Exit 0, 24.18% |
 
 All scans: zero errors, zero VulnTimeouts, CKL/CKLB generation verified.
 
