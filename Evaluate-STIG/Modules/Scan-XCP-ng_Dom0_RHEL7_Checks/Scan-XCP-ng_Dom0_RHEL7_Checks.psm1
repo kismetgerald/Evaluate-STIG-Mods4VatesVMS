@@ -20204,9 +20204,30 @@ Function Get-V204560 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204560) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep -w "init_module" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit rules for init_module syscall(s):" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        $hasB32 = $auditStr -match "arch=b32.*-S.*init_module"
+        $hasB64 = $auditStr -match "arch=b64.*-S.*init_module"
+        if ($hasB32 -and $hasB64) {
+            $Status = "NotAFinding"
+        }
+        else {
+            if (-not $hasB32) { $FindingDetails += "Missing b32 audit rule" + $nl }
+            if (-not $hasB64) { $FindingDetails += "Missing b64 audit rule" + $nl }
+        }
+    }
+    else {
+        $FindingDetails += "No audit rules found for init_module" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20315,9 +20336,30 @@ Function Get-V204562 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204562) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep -w "delete_module" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit rules for delete_module syscall(s):" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        $hasB32 = $auditStr -match "arch=b32.*-S.*delete_module"
+        $hasB64 = $auditStr -match "arch=b64.*-S.*delete_module"
+        if ($hasB32 -and $hasB64) {
+            $Status = "NotAFinding"
+        }
+        else {
+            if (-not $hasB32) { $FindingDetails += "Missing b32 audit rule" + $nl }
+            if (-not $hasB64) { $FindingDetails += "Missing b64 audit rule" + $nl }
+        }
+    }
+    else {
+        $FindingDetails += "No audit rules found for delete_module" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20426,9 +20468,24 @@ Function Get-V204563 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204563) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep -w "/usr/bin/kmod" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit rules for kmod:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/usr\/bin\/kmod") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit rule found for /usr/bin/kmod" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20537,9 +20594,24 @@ Function Get-V204564 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204564) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep "/etc/passwd" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit watch for /etc/passwd:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/etc\/passwd") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit watch found for /etc/passwd" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20648,9 +20720,24 @@ Function Get-V204565 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204565) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep "/etc/group" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit watch for /etc/group:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/etc\/group") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit watch found for /etc/group" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20759,9 +20846,24 @@ Function Get-V204566 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204566) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep "/etc/gshadow" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit watch for /etc/gshadow:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/etc\/gshadow") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit watch found for /etc/gshadow" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20870,9 +20972,24 @@ Function Get-V204567 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204567) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep "/etc/shadow" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit watch for /etc/shadow:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/etc\/shadow") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit watch found for /etc/shadow" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -20981,9 +21098,24 @@ Function Get-V204568 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204568) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep "/etc/security/opasswd" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit watch for /etc/security/opasswd:" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        if ($auditStr -match "\/etc\/security\/opasswd") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No audit watch found for /etc/security/opasswd" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21092,9 +21224,30 @@ Function Get-V204572 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204572) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $auditRules = $(timeout 10 grep -w "unlink" /etc/audit/audit.rules 2>&1)
+    $FindingDetails += "Audit rules for unlink syscall(s):" + $nl
+    if ($auditRules) {
+        $FindingDetails += ($auditRules | Out-String).Trim() + $nl
+        $auditStr = ($auditRules | Out-String)
+        $hasB32 = $auditStr -match "arch=b32.*-S.*unlink"
+        $hasB64 = $auditStr -match "arch=b64.*-S.*unlink"
+        if ($hasB32 -and $hasB64) {
+            $Status = "NotAFinding"
+        }
+        else {
+            if (-not $hasB32) { $FindingDetails += "Missing b32 audit rule" + $nl }
+            if (-not $hasB64) { $FindingDetails += "Missing b64 audit rule" + $nl }
+        }
+    }
+    else {
+        $FindingDetails += "No audit rules found for unlink" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21203,9 +21356,24 @@ Function Get-V204574 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204574) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $rsyslogConf = $(timeout 10 grep -r "@@" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null)
+    $FindingDetails += "Rsyslog remote log aggregation configuration:" + $nl
+    if ($rsyslogConf) {
+        $FindingDetails += ($rsyslogConf | Out-String).Trim() + $nl
+        $rsyslogStr = ($rsyslogConf | Out-String)
+        if ($rsyslogStr -match "@@") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No remote log aggregation server configured in rsyslog" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21314,9 +21482,45 @@ Function Get-V204575 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204575) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $imtcp = $(timeout 10 grep -s "imtcp" /etc/rsyslog.conf 2>/dev/null)
+    $imudp = $(timeout 10 grep -s "imudp" /etc/rsyslog.conf 2>/dev/null)
+    $imrelp = $(timeout 10 grep -s "imrelp" /etc/rsyslog.conf 2>/dev/null)
+    $FindingDetails += "Rsyslog input module configuration:" + $nl
+    $inputModules = @()
+    if ($imtcp) {
+        $imtcpStr = ($imtcp | Out-String).Trim()
+        if ($imtcpStr -notmatch "^#") {
+            $inputModules += "imtcp is loaded"
+            $FindingDetails += "imtcp: " + $imtcpStr + $nl
+        }
+    }
+    if ($imudp) {
+        $imudpStr = ($imudp | Out-String).Trim()
+        if ($imudpStr -notmatch "^#") {
+            $inputModules += "imudp is loaded"
+            $FindingDetails += "imudp: " + $imudpStr + $nl
+        }
+    }
+    if ($imrelp) {
+        $imrelpStr = ($imrelp | Out-String).Trim()
+        if ($imrelpStr -notmatch "^#") {
+            $inputModules += "imrelp is loaded"
+            $FindingDetails += "imrelp: " + $imrelpStr + $nl
+        }
+    }
+    if ($inputModules.Count -gt 0) {
+        $Status = "Open"
+        $FindingDetails += "System is accepting rsyslog messages from other servers" + $nl
+    }
+    else {
+        $FindingDetails += "No rsyslog input modules are loaded - system is not accepting remote messages" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21561,9 +21765,37 @@ Function Get-V204577 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204577) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $fwCmd = $(timeout 10 firewall-cmd --list-all 2>&1)
+    $iptables = $(timeout 10 iptables -L -n 2>&1)
+    $FindingDetails += "Firewall configuration:" + $nl
+    if ($fwCmd) {
+        $fwStr = ($fwCmd | Out-String).Trim()
+        if ($fwStr -notmatch "not running|not found|command not found") {
+            $FindingDetails += "firewall-cmd --list-all:" + $nl + $fwStr + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "firewalld is not running" + $nl
+        }
+    }
+    if ($Status -eq "Open" -and $iptables) {
+        $iptStr = ($iptables | Out-String).Trim()
+        if ($iptStr -notmatch "command not found") {
+            $FindingDetails += "iptables -L -n:" + $nl + $iptStr + $nl
+            if ($iptStr -match "ACCEPT|DROP|REJECT") {
+                $Status = "NotAFinding"
+            }
+        }
+    }
+    if ($Status -eq "Open") {
+        $FindingDetails += "No active firewall configuration found" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21672,9 +21904,34 @@ Function Get-V204578 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204578) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $ciphers = $(timeout 10 grep -i "^Ciphers" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH Ciphers configuration:" + $nl
+    if ($ciphers) {
+        $cipherStr = ($ciphers | Out-String).Trim()
+        $FindingDetails += $cipherStr + $nl
+        $approvedCiphers = @("aes128-ctr", "aes192-ctr", "aes256-ctr", "aes128-cbc", "aes192-cbc", "aes256-cbc")
+        $configuredCiphers = ($cipherStr -replace "(?i)ciphers\s+", "") -split ","
+        $allApproved = $true
+        foreach ($c in $configuredCiphers) {
+            $trimmed = $c.Trim()
+            if ($trimmed -and $trimmed -notin $approvedCiphers) {
+                $allApproved = $false
+                $FindingDetails += "Non-approved cipher found: " + $trimmed + $nl
+            }
+        }
+        if ($allApproved) {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No Ciphers directive found in /etc/ssh/sshd_config (using defaults)" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21783,9 +22040,31 @@ Function Get-V204579 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204579) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $tmout = $(timeout 10 grep -irw "TMOUT" /etc/profile /etc/bashrc /etc/profile.d/ 2>/dev/null)
+    $FindingDetails += "TMOUT configuration:" + $nl
+    if ($tmout) {
+        $tmoutStr = ($tmout | Out-String).Trim()
+        $FindingDetails += $tmoutStr + $nl
+        if ($tmoutStr -match "TMOUT=(\d+)") {
+            $tmoutVal = [int]$Matches[1]
+            if ($tmoutVal -le 900 -and $tmoutVal -gt 0) {
+                $Status = "NotAFinding"
+                $FindingDetails += "TMOUT is set to $tmoutVal seconds (within 900 second limit)" + $nl
+            }
+            else {
+                $FindingDetails += "TMOUT value $tmoutVal exceeds 900 seconds" + $nl
+            }
+        }
+    }
+    else {
+        $FindingDetails += "TMOUT is not configured" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -21894,9 +22173,39 @@ Function Get-V204580 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204580) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $banner = $(timeout 10 grep -i "^Banner" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH Banner configuration:" + $nl
+    if ($banner) {
+        $bannerStr = ($banner | Out-String).Trim()
+        $FindingDetails += $bannerStr + $nl
+        if ($bannerStr -match "(?i)banner\s+(\S+)") {
+            $bannerFile = $Matches[1]
+            $FindingDetails += "Banner file: $bannerFile" + $nl
+            $bannerContent = $(timeout 10 cat $bannerFile 2>&1)
+            if ($bannerContent) {
+                $bannerContentStr = ($bannerContent | Out-String).Trim()
+                $FindingDetails += "Banner content:" + $nl + $bannerContentStr + $nl
+                if ($bannerContentStr -match "USG|U\.S\. Government|consent to monitoring") {
+                    $Status = "NotAFinding"
+                }
+                else {
+                    $FindingDetails += "Banner does not contain required DoD Notice and Consent text" + $nl
+                }
+            }
+            else {
+                $FindingDetails += "Banner file does not exist or is empty" + $nl
+            }
+        }
+    }
+    else {
+        $FindingDetails += "No Banner directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
