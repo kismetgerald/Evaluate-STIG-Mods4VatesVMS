@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+﻿<?xml version='1.0' encoding='utf-8'?>
 <STIGComments Name="XCP-ng_Dom0_RHEL7">
   <Vuln ID="V-204392">
     <AnswerKey Name="XCP-ng">
@@ -2571,167 +2571,302 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204545">
+    <!--RuleTitle: Audit audit chage command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the chage command on the XCP-ng Dom0 system. The chage command modifies password aging settings, and auditing its use is required to track privileged account management actions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the chage command on the XCP-ng Dom0 system. The chage command modifies password aging settings, and auditing its use is required to track privileged account management actions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204546">
+    <!--RuleTitle: Audit audit userhelper command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the userhelper command on the XCP-ng Dom0 system. The userhelper command assists with privilege escalation, and auditing its use is required to track authentication-related actions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the userhelper command on the XCP-ng Dom0 system. The userhelper command assists with privilege escalation, and auditing its use is required to track authentication-related actions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204547">
+    <!--RuleTitle: Audit audit su command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the su command on the XCP-ng Dom0 system. The su command allows switching user identity, and auditing its use is critical for tracking privilege escalation attempts on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the su command on the XCP-ng Dom0 system. The su command allows switching user identity, and auditing its use is critical for tracking privilege escalation attempts on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204548">
+    <!--RuleTitle: Audit audit sudo command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the sudo command on the XCP-ng Dom0 system. The sudo command allows executing commands as another user, and auditing its use is critical for tracking privilege escalation on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the sudo command on the XCP-ng Dom0 system. The sudo command allows executing commands as another user, and auditing its use is critical for tracking privilege escalation on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204549">
+    <!--RuleTitle: Audit audit sudoers file access-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit watches on /etc/sudoers and /etc/sudoers.d/ on the XCP-ng Dom0 system. Changes to sudoers configuration can grant elevated privileges, and auditing these files is required to detect unauthorized privilege modifications on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit watches on /etc/sudoers and /etc/sudoers.d/ on the XCP-ng Dom0 system. Changes to sudoers configuration can grant elevated privileges, and auditing these files is required to detect unauthorized privilege modifications on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204550">
+    <!--RuleTitle: Audit audit newgrp command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the newgrp command on the XCP-ng Dom0 system. The newgrp command changes group membership, and auditing its use is required to track privilege changes on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the newgrp command on the XCP-ng Dom0 system. The newgrp command changes group membership, and auditing its use is required to track privilege changes on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204551">
+    <!--RuleTitle: Audit audit chsh command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the chsh command on the XCP-ng Dom0 system. The chsh command changes user login shells, and auditing its use is required to track account modifications on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the chsh command on the XCP-ng Dom0 system. The chsh command changes user login shells, and auditing its use is required to track account modifications on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204552">
+    <!--RuleTitle: Audit audit mount command and syscall-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit rules monitoring the mount command and syscall on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) syscall rules plus the command path rule must be present. Mounting filesystems can expose the system to unauthorized data, so auditing mount operations is critical on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit rules monitoring the mount command and syscall on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) syscall rules plus the command path rule must be present. Mounting filesystems can expose the system to unauthorized data, so auditing mount operations is critical on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204553">
+    <!--RuleTitle: Audit audit umount command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the umount command on the XCP-ng Dom0 system. Unmounting filesystems can affect system availability, and auditing its use is required to track storage operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the umount command on the XCP-ng Dom0 system. Unmounting filesystems can affect system availability, and auditing its use is required to track storage operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204554">
+    <!--RuleTitle: Audit audit postdrop command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the postdrop command on the XCP-ng Dom0 system. The postdrop command is a privileged Postfix utility, and auditing its use is required to track mail system operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the postdrop command on the XCP-ng Dom0 system. The postdrop command is a privileged Postfix utility, and auditing its use is required to track mail system operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204555">
+    <!--RuleTitle: Audit audit postqueue command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the postqueue command on the XCP-ng Dom0 system. The postqueue command is a privileged Postfix utility, and auditing its use is required to track mail system operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the postqueue command on the XCP-ng Dom0 system. The postqueue command is a privileged Postfix utility, and auditing its use is required to track mail system operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204556">
+    <!--RuleTitle: Audit audit ssh-keysign command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the ssh-keysign command on the XCP-ng Dom0 system. The ssh-keysign command is used for host-based SSH authentication, and auditing its use is required to track SSH key operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the ssh-keysign command on the XCP-ng Dom0 system. The ssh-keysign command is used for host-based SSH authentication, and auditing its use is required to track SSH key operations on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204557">
+    <!--RuleTitle: Audit audit crontab command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the crontab command on the XCP-ng Dom0 system. The crontab command manages scheduled tasks, and auditing its use is required to track changes to automated job scheduling on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the crontab command on the XCP-ng Dom0 system. The crontab command manages scheduled tasks, and auditing its use is required to track changes to automated job scheduling on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204558">
+    <!--RuleTitle: Audit audit pam_timestamp_check command-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the pam_timestamp_check command on the XCP-ng Dom0 system. This PAM module validates cached authentication timestamps, and auditing its use is required to track authentication bypass attempts on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for an audit rule monitoring the pam_timestamp_check command on the XCP-ng Dom0 system. This PAM module validates cached authentication timestamps, and auditing its use is required to track authentication bypass attempts on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204559">
+    <!--RuleTitle: Audit audit create_module syscall-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 8: Audit Rules - Execution &amp; Privilege-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit rules monitoring the create_module syscall on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) rules must be present. The create_module syscall loads kernel modules, which can fundamentally alter system behavior, making auditing critical on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/audit/audit.rules for audit rules monitoring the create_module syscall on the XCP-ng Dom0 system. Both 32-bit (b32) and 64-bit (b64) rules must be present. The create_module syscall loads kernel modules, which can fundamentally alter system behavior, making auditing critical on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>

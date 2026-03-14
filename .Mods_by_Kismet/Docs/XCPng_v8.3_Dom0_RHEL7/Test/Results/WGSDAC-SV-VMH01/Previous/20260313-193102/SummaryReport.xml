@@ -58,7 +58,7 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-13T23:37:10.3989938-04:00" EvalScore="25.41">
+    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-13T06:22:20.6285202-04:00" EvalScore="25.41">
       <CAT_I Total="26" Not_Applicable="5" Open="9" NotAFinding="12" Not_Reviewed="0">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values." Status="NotAFinding" ID="V-204392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords." Status="Open" ID="V-204424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -87,7 +87,7 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must use a virus scan program." Status="Open" ID="V-214801" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords." Status="NotAFinding" ID="V-251702" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="205" Not_Applicable="10" Open="78" NotAFinding="32" Not_Reviewed="85">
+      <CAT_II Total="205" Not_Applicable="10" Open="63" NotAFinding="32" Not_Reviewed="100">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon." Status="Open" ID="V-204395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -193,21 +193,21 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the passwd command." Status="Open" ID="V-204542" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the unix_chkpwd command." Status="Open" ID="V-204543" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the gpasswd command." Status="Open" ID="V-204544" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the chage command." Status="Open" ID="V-204545" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the userhelper command." Status="Open" ID="V-204546" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the su command." Status="Open" ID="V-204547" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the sudo command." Status="Open" ID="V-204548" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory." Status="Open" ID="V-204549" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the newgrp command." Status="Open" ID="V-204550" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the chsh command." Status="Open" ID="V-204551" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the mount command and syscall." Status="Open" ID="V-204552" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the umount command." Status="Open" ID="V-204553" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the postdrop command." Status="Open" ID="V-204554" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the postqueue command." Status="Open" ID="V-204555" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the ssh-keysign command." Status="Open" ID="V-204556" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the crontab command." Status="Open" ID="V-204557" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command." Status="Open" ID="V-204558" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall." Status="Open" ID="V-204559" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the chage command." Status="Not_Reviewed" ID="V-204545" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the userhelper command." Status="Not_Reviewed" ID="V-204546" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the su command." Status="Not_Reviewed" ID="V-204547" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the sudo command." Status="Not_Reviewed" ID="V-204548" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the sudoers file and all files in the /etc/sudoers.d/ directory." Status="Not_Reviewed" ID="V-204549" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the newgrp command." Status="Not_Reviewed" ID="V-204550" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the chsh command." Status="Not_Reviewed" ID="V-204551" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the mount command and syscall." Status="Not_Reviewed" ID="V-204552" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the umount command." Status="Not_Reviewed" ID="V-204553" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the postdrop command." Status="Not_Reviewed" ID="V-204554" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the postqueue command." Status="Not_Reviewed" ID="V-204555" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the ssh-keysign command." Status="Not_Reviewed" ID="V-204556" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the crontab command." Status="Not_Reviewed" ID="V-204557" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the pam_timestamp_check command." Status="Not_Reviewed" ID="V-204558" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the create_module syscall." Status="Not_Reviewed" ID="V-204559" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the init_module and finit_module syscalls." Status="Not_Reviewed" ID="V-204560" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the delete_module syscall." Status="Not_Reviewed" ID="V-204562" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must audit all uses of the kmod command." Status="Not_Reviewed" ID="V-204563" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
