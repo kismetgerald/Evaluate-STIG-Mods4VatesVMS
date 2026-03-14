@@ -31743,9 +31743,36 @@ Function Get-V251703 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-251703) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $includeLines = $(timeout 10 grep -i "include" /etc/sudoers 2>/dev/null | grep -v "^#")
+    $FindingDetails += "Sudoers include directives:" + $nl
+    if ($includeLines) {
+        $incStr = ($includeLines | Out-String).Trim()
+        $FindingDetails += $incStr + $nl
+        if ($incStr -match "#includedir\s+/etc/sudoers\.d" -or $incStr -match "@includedir\s+/etc/sudoers\.d") {
+            $Status = "NotAFinding"
+            $nestedInc = $(timeout 10 grep -rli "include" /etc/sudoers.d/ 2>/dev/null)
+            if ($nestedInc) {
+                $nestedStr = ($nestedInc | Out-String).Trim()
+                if ($nestedStr) {
+                    $Status = "Open"
+                    $FindingDetails += "Nested include files found in /etc/sudoers.d/:" + $nl + $nestedStr + $nl
+                }
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "Include directory is not the default /etc/sudoers.d" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No include or includedir directives in /etc/sudoers - Not Applicable" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31854,9 +31881,28 @@ Function Get-V251704 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-251704) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $pamSucceed = $(timeout 10 grep -i "pam_succeed_if" /etc/pam.d/sudo 2>/dev/null)
+    $FindingDetails += "PAM sudo configuration (pam_succeed_if):" + $nl
+    if ($pamSucceed) {
+        $pamStr = ($pamSucceed | Out-String).Trim()
+        if ($pamStr) {
+            $Status = "Open"
+            $FindingDetails += $pamStr + $nl
+            $FindingDetails += "pam_succeed_if found - password bypass configured" + $nl
+        }
+        else {
+            $FindingDetails += "No pam_succeed_if entries found in /etc/pam.d/sudo" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No pam_succeed_if entries found in /etc/pam.d/sudo" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31965,9 +32011,39 @@ Function Get-V251705 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-251705) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $aidePkg = $(rpm -qa aide 2>&1)
+    $FindingDetails += "File integrity tool (AIDE):" + $nl
+    if ($aidePkg) {
+        $aideStr = ($aidePkg | Out-String).Trim()
+        if ($aideStr -match "aide") {
+            $FindingDetails += $aideStr + $nl
+            $aideCron = $(timeout 10 grep -r "aide" /etc/cron.d/ /etc/crontab /var/spool/cron/root 2>/dev/null | grep -v "^#")
+            if ($aideCron) {
+                $FindingDetails += "AIDE cron job:" + $nl + ($aideCron | Out-String).Trim() + $nl
+            }
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "AIDE is not installed" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "AIDE is not installed" + $nl
+        $tripwire = $(rpm -qa tripwire 2>&1)
+        if ($tripwire) {
+            $twStr = ($tripwire | Out-String).Trim()
+            if ($twStr -match "tripwire") {
+                $FindingDetails += "Alternative: " + $twStr + $nl
+                $Status = "NotAFinding"
+            }
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32076,9 +32152,27 @@ Function Get-V254523 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-254523) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $tempAccounts = $(timeout 10 grep -E "^[^:]+:[^:]+:[0-9]{4,}" /etc/passwd 2>/dev/null | grep -vi "nologin\|false\|sync\|shutdown\|halt")
+    $FindingDetails += "User accounts with login shells:" + $nl
+    if ($tempAccounts) {
+        $tempStr = ($tempAccounts | Out-String).Trim()
+        $FindingDetails += $tempStr + $nl
+        $FindingDetails += "Verify any temporary accounts have expiration dates within 72 hours" + $nl
+        $expireInfo = $(timeout 10 chage -l root 2>&1)
+        if ($expireInfo) {
+            $FindingDetails += "Root account expiration:" + $nl + ($expireInfo | Out-String).Trim() + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No additional user accounts found" + $nl
+    }
+    $FindingDetails += "Manual review required to identify temporary accounts and verify expiration" + $nl
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32187,9 +32281,34 @@ Function Get-V255925 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-255925) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $kexAlgo = $(timeout 10 grep -i "^KexAlgorithms" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH KexAlgorithms:" + $nl
+    if ($kexAlgo) {
+        $kexStr = ($kexAlgo | Out-String).Trim()
+        $FindingDetails += $kexStr + $nl
+        $approvedKex = @("ecdh-sha2-nistp256", "ecdh-sha2-nistp384", "ecdh-sha2-nistp521", "diffie-hellman-group-exchange-sha256")
+        $configuredKex = ($kexStr -replace "(?i)KexAlgorithms\s+", "") -split ","
+        $allApproved = $true
+        foreach ($k in $configuredKex) {
+            $trimmed = $k.Trim()
+            if ($trimmed -and $trimmed -notin $approvedKex) {
+                $allApproved = $false
+                $FindingDetails += "Non-FIPS key exchange: " + $trimmed + $nl
+            }
+        }
+        if ($allApproved) {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "KexAlgorithms not configured in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32298,9 +32417,28 @@ Function Get-V255926 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-255926) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $screenPkg = $(rpm -qa screen 2>&1)
+    $tmuxPkg = $(rpm -qa tmux 2>&1)
+    $FindingDetails += "Terminal multiplexer packages:" + $nl
+    $screenStr = ($screenPkg | Out-String).Trim()
+    $tmuxStr = ($tmuxPkg | Out-String).Trim()
+    if ($screenStr -match "screen") {
+        $FindingDetails += "screen: " + $screenStr + $nl
+        $Status = "NotAFinding"
+    }
+    elseif ($tmuxStr -match "tmux") {
+        $FindingDetails += "tmux: " + $tmuxStr + $nl
+        $Status = "NotAFinding"
+    }
+    else {
+        $FindingDetails += "Neither screen nor tmux is installed" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32538,9 +32676,27 @@ Function Get-V255928 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-255928) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $sysAuth = $(ls -l /etc/pam.d/system-auth 2>&1)
+    $pwAuth = $(ls -l /etc/pam.d/password-auth 2>&1)
+    $FindingDetails += "PAM authentication file links:" + $nl
+    $sysStr = ($sysAuth | Out-String).Trim()
+    $pwStr = ($pwAuth | Out-String).Trim()
+    $FindingDetails += $sysStr + $nl
+    $FindingDetails += $pwStr + $nl
+    if ($sysStr -notmatch "system-auth-local") {
+        $Status = "Open"
+        $FindingDetails += "system-auth is not a symlink to system-auth-local" + $nl
+    }
+    if ($pwStr -notmatch "password-auth-local") {
+        $Status = "Open"
+        $FindingDetails += "password-auth is not a symlink to password-auth-local" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32649,9 +32805,28 @@ Function Get-V256968 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-256968) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $gpgKeys = $(rpm -q --queryformat "%{SUMMARY}\n" gpg-pubkey 2>&1)
+    $FindingDetails += "Installed GPG keys:" + $nl
+    if ($gpgKeys) {
+        $gpgStr = ($gpgKeys | Out-String).Trim()
+        $FindingDetails += $gpgStr + $nl
+        if ($gpgStr -match "gpg\(") {
+            $Status = "NotAFinding"
+            $keyFile = $(timeout 10 ls /etc/pki/rpm-gpg/RPM-GPG-KEY-* 2>/dev/null)
+            if ($keyFile) {
+                $FindingDetails += "Key files:" + $nl + ($keyFile | Out-String).Trim() + $nl
+            }
+        }
+    }
+    else {
+        $FindingDetails += "No GPG keys installed for package verification" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32760,9 +32935,33 @@ Function Get-V256969 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-256969) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $gnomePkg = $(rpm -qa gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomePkg | Out-String).Trim()
+    $FindingDetails += "GNOME desktop package:" + $nl
+    if ($gnomeStr -match "gnome-desktop3") {
+        $FindingDetails += $gnomeStr + $nl
+        $Status = "Open"
+        $userList = $(timeout 10 grep -is "disable-user-list" /etc/dconf/db/gdm.d/* 2>/dev/null)
+        if ($userList) {
+            $ulStr = ($userList | Out-String).Trim()
+            $FindingDetails += "disable-user-list: " + $ulStr + $nl
+            if ($ulStr -match "disable-user-list\s*=\s*true") {
+                $Status = "NotAFinding"
+            }
+        }
+        else {
+            $FindingDetails += "disable-user-list not configured in /etc/dconf/db/gdm.d/" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "GNOME is not installed - Not Applicable (XCP-ng Dom0 is headless)" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -32871,9 +33070,27 @@ Function Get-V256970 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-256970) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $mailxPkg = $(rpm -qa mailx 2>&1)
+    $FindingDetails += "Email notification package (mailx):" + $nl
+    if ($mailxPkg) {
+        $mailStr = ($mailxPkg | Out-String).Trim()
+        if ($mailStr -match "mailx") {
+            $FindingDetails += $mailStr + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "mailx is not installed" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "mailx is not installed" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {

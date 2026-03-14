@@ -4627,68 +4627,122 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-251703">
+    <!--RuleTitle: Sudoers default include directory-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/sudoers for include/includedir directives on the XCP-ng Dom0 system. If no include directives exist, the check returns Not_Applicable. The default include directory must be /etc/sudoers.d with no nested includes to prevent unauthorized privilege escalation configurations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/sudoers for include/includedir directives on the XCP-ng Dom0 system. If no include directives exist, the check returns Not_Applicable. The default include directory must be /etc/sudoers.d with no nested includes to prevent unauthorized privilege escalation configurations.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-251704">
+    <!--RuleTitle: No sudo password bypass via PAM-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam.d/sudo for pam_succeed_if entries on the XCP-ng Dom0 system. No pam_succeed_if entries should be present, as they can bypass password requirements for privilege escalation on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam.d/sudo for pam_succeed_if entries on the XCP-ng Dom0 system. No pam_succeed_if entries should be present, as they can bypass password requirements for privilege escalation on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-251705">
+    <!--RuleTitle: AIDE file integrity tool installed-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the AIDE (or tripwire) package is installed on the XCP-ng Dom0 system. A file integrity tool must be installed and configured to verify correct operation of all security functions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the AIDE (or tripwire) package is installed on the XCP-ng Dom0 system. A file integrity tool must be installed and configured to verify correct operation of all security functions on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-254523">
+    <!--RuleTitle: Temporary accounts expire within 72 hours-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines user accounts on the XCP-ng Dom0 system. Any temporary accounts must be provisioned with an expiration date within 72 hours to prevent unauthorized persistent access to the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines user accounts on the XCP-ng Dom0 system. Any temporary accounts must be provisioned with an expiration date within 72 hours to prevent unauthorized persistent access to the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-255925">
+    <!--RuleTitle: SSH FIPS-validated key exchange algorithms-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/ssh/sshd_config for KexAlgorithms on the XCP-ng Dom0 system. Only FIPS 140-2 validated key exchange algorithms (ecdh-sha2-nistp256/384/521, diffie-hellman-group-exchange-sha256) are permitted for SSH connections to ensure cryptographic compliance on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/ssh/sshd_config for KexAlgorithms on the XCP-ng Dom0 system. Only FIPS 140-2 validated key exchange algorithms (ecdh-sha2-nistp256/384/521, diffie-hellman-group-exchange-sha256) are permitted for SSH connections to ensure cryptographic compliance on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-255926">
+    <!--RuleTitle: Screen or tmux package installed-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the screen or tmux package is installed on the XCP-ng Dom0 system. A terminal multiplexer must be available to support session locking and management on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the screen or tmux package is installed on the XCP-ng Dom0 system. A terminal multiplexer must be available to support session locking and management on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -4713,46 +4767,82 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-255928">
+    <!--RuleTitle: PAM auth files are symlinks to local-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam.d/system-auth and /etc/pam.d/password-auth on the XCP-ng Dom0 system. These files must be symbolic links to their -local counterparts to prevent the authconfig utility from overwriting custom authentication settings on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam.d/system-auth and /etc/pam.d/password-auth on the XCP-ng Dom0 system. These files must be symbolic links to their -local counterparts to prevent the authconfig utility from overwriting custom authentication settings on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-256968">
+    <!--RuleTitle: GPG keys for vendor package verification-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines installed GPG public keys and /etc/pki/rpm-gpg/ key files on the XCP-ng Dom0 system. Package-signing keys must be installed to enable cryptographic verification of vendor software packages on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines installed GPG public keys and /etc/pki/rpm-gpg/ key files on the XCP-ng Dom0 system. Package-signing keys must be installed to enable cryptographic verification of vendor software packages on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-256969">
+    <!--RuleTitle: GNOME login user list disabled-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies GNOME installation on the XCP-ng Dom0 system. If GNOME is not installed (headless server), the check returns Not_Applicable. XCP-ng Dom0 is a headless hypervisor host without a graphical interface.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies GNOME installation on the XCP-ng Dom0 system. If GNOME is not installed (headless server), the check returns Not_Applicable. XCP-ng Dom0 is a headless hypervisor host without a graphical interface.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-256970">
+    <!--RuleTitle: mailx package for email notifications-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 14: Final Controls-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the mailx package is installed on the XCP-ng Dom0 system. The mailx package provides the mail command required for sending email notifications of configuration changes and adverse events on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the mailx package is installed on the XCP-ng Dom0 system. The mailx package provides the mail command required for sending email notifications of configuration changes and adverse events on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
