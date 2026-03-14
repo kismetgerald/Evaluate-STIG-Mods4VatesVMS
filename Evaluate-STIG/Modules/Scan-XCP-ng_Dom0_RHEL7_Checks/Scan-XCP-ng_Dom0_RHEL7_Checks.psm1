@@ -22314,9 +22314,36 @@ Function Get-V204581 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204581) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $sssdStatus = $(systemctl status sssd.service 2>&1)
+    $FindingDetails += "SSSD service status:" + $nl
+    $sssdStr = ($sssdStatus | Out-String).Trim()
+    if ($sssdStr -match "Active:\s+active") {
+        $FindingDetails += $sssdStr + $nl
+        $ldapConf = $(timeout 10 grep -i "ldap_id_use_start_tls" /etc/sssd/sssd.conf 2>/dev/null)
+        if ($ldapConf) {
+            $ldapStr = ($ldapConf | Out-String).Trim()
+            $FindingDetails += "ldap_id_use_start_tls: " + $ldapStr + $nl
+            if ($ldapStr -match "(?i)ldap_id_use_start_tls\s*=\s*true") {
+                $Status = "NotAFinding"
+            }
+            else {
+                $Status = "Open"
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "ldap_id_use_start_tls not found in /etc/sssd/sssd.conf" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "SSSD is not active - LDAP not in use, requirement is Not Applicable" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22425,9 +22452,31 @@ Function Get-V204582 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204582) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $sssdStatus = $(systemctl status sssd.service 2>&1)
+    $sssdStr = ($sssdStatus | Out-String).Trim()
+    $FindingDetails += "SSSD service status:" + $nl
+    if ($sssdStr -match "Active:\s+active") {
+        $FindingDetails += $sssdStr + $nl
+        $cacertConf = $(timeout 10 grep -i "ldap_tls_cacertdir\|ldap_tls_cacert" /etc/sssd/sssd.conf 2>/dev/null)
+        if ($cacertConf) {
+            $cacertStr = ($cacertConf | Out-String).Trim()
+            $FindingDetails += "LDAP TLS CA cert config: " + $cacertStr + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "No ldap_tls_cacertdir or ldap_tls_cacert found in /etc/sssd/sssd.conf" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "SSSD is not active - LDAP not in use, requirement is Not Applicable" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22536,9 +22585,36 @@ Function Get-V204583 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204583) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $sssdStatus = $(systemctl status sssd.service 2>&1)
+    $sssdStr = ($sssdStatus | Out-String).Trim()
+    $FindingDetails += "SSSD service status:" + $nl
+    if ($sssdStr -match "Active:\s+active") {
+        $FindingDetails += $sssdStr + $nl
+        $reqcertConf = $(timeout 10 grep -i "ldap_tls_reqcert" /etc/sssd/sssd.conf 2>/dev/null)
+        if ($reqcertConf) {
+            $reqcertStr = ($reqcertConf | Out-String).Trim()
+            $FindingDetails += "ldap_tls_reqcert: " + $reqcertStr + $nl
+            if ($reqcertStr -match "(?i)ldap_tls_reqcert\s*=\s*(demand|hard)") {
+                $Status = "NotAFinding"
+            }
+            else {
+                $Status = "Open"
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "ldap_tls_reqcert not found in /etc/sssd/sssd.conf" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "SSSD is not active - LDAP not in use, requirement is Not Applicable" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22647,9 +22723,24 @@ Function Get-V204584 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204584) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $aslr = $(sysctl kernel.randomize_va_space 2>&1)
+    $FindingDetails += "ASLR configuration:" + $nl
+    if ($aslr) {
+        $aslrStr = ($aslr | Out-String).Trim()
+        $FindingDetails += $aslrStr + $nl
+        if ($aslrStr -match "kernel\.randomize_va_space\s*=\s*2") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "Unable to determine kernel.randomize_va_space setting" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22758,9 +22849,24 @@ Function Get-V204585 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204585) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshPkg = $(rpm -qa openssh-server 2>&1)
+    $FindingDetails += "SSH server package:" + $nl
+    if ($sshPkg) {
+        $sshStr = ($sshPkg | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "openssh-server") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "openssh-server package is not installed" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22869,9 +22975,24 @@ Function Get-V204586 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204586) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshdStatus = $(systemctl status sshd.service 2>&1)
+    $FindingDetails += "SSHD service status:" + $nl
+    if ($sshdStatus) {
+        $sshdStr = ($sshdStatus | Out-String).Trim()
+        $FindingDetails += $sshdStr + $nl
+        if ($sshdStr -match "Active:\s+active") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "Unable to determine sshd service status" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -22980,9 +23101,31 @@ Function Get-V204587 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204587) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $cai = $(timeout 10 grep -i "^ClientAliveInterval" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH ClientAliveInterval:" + $nl
+    if ($cai) {
+        $caiStr = ($cai | Out-String).Trim()
+        $FindingDetails += $caiStr + $nl
+        if ($caiStr -match "(?i)ClientAliveInterval\s+(\d+)") {
+            $val = [int]$Matches[1]
+            if ($val -le 600 -and $val -gt 0) {
+                $Status = "NotAFinding"
+                $FindingDetails += "Value $val is within 600 second limit" + $nl
+            }
+            else {
+                $FindingDetails += "Value $val exceeds 600 seconds" + $nl
+            }
+        }
+    }
+    else {
+        $FindingDetails += "ClientAliveInterval not configured in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23091,9 +23234,37 @@ Function Get-V204588 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204588) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $release = $(cat /etc/redhat-release 2>&1)
+    $FindingDetails += "OS Release: " + ($release | Out-String).Trim() + $nl
+    $releaseStr = ($release | Out-String).Trim()
+    $FindingDetails += "XCP-ng Dom0 is based on CentOS/RHEL 7.x" + $nl
+    if ($releaseStr -match "(\d+)\.(\d+)") {
+        $major = [int]$Matches[1]
+        $minor = [int]$Matches[2]
+        if ($major -ge 7 -and $minor -ge 4) {
+            $FindingDetails += "Release is 7.4 or newer - RhostsRSAAuthentication requirement is Not Applicable" + $nl
+        }
+        else {
+            $Status = "Open"
+            $rhosts = $(timeout 10 grep -i "^RhostsRSAAuthentication" /etc/ssh/sshd_config 2>&1)
+            if ($rhosts) {
+                $rhostsStr = ($rhosts | Out-String).Trim()
+                $FindingDetails += "RhostsRSAAuthentication: " + $rhostsStr + $nl
+                if ($rhostsStr -match "(?i)RhostsRSAAuthentication\s+no") {
+                    $Status = "NotAFinding"
+                }
+            }
+            else {
+                $FindingDetails += "RhostsRSAAuthentication not configured" + $nl
+            }
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23202,9 +23373,24 @@ Function Get-V204589 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204589) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshConfig = $(timeout 10 grep -i "^ClientAliveCountMax" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH ClientAliveCountMax configuration:" + $nl
+    if ($sshConfig) {
+        $sshStr = ($sshConfig | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "(?i)clientalivecountmax\s+0") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No ClientAliveCountMax directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23313,9 +23499,24 @@ Function Get-V204590 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204590) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshConfig = $(timeout 10 grep -i "^IgnoreRhosts" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH IgnoreRhosts configuration:" + $nl
+    if ($sshConfig) {
+        $sshStr = ($sshConfig | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "(?i)ignorerhosts\s+yes") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No IgnoreRhosts directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23424,9 +23625,24 @@ Function Get-V204591 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204591) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshConfig = $(timeout 10 grep -i "^PrintLastLog" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH PrintLastLog configuration:" + $nl
+    if ($sshConfig) {
+        $sshStr = ($sshConfig | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "(?i)printlastlog\s+yes") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No PrintLastLog directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23535,9 +23751,24 @@ Function Get-V204592 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204592) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshConfig = $(timeout 10 grep -i "^PermitRootLogin" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH PermitRootLogin configuration:" + $nl
+    if ($sshConfig) {
+        $sshStr = ($sshConfig | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "(?i)permitrootlogin\s+no") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No PermitRootLogin directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23646,9 +23877,24 @@ Function Get-V204593 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204593) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sshConfig = $(timeout 10 grep -i "^IgnoreUserKnownHosts" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH IgnoreUserKnownHosts configuration:" + $nl
+    if ($sshConfig) {
+        $sshStr = ($sshConfig | Out-String).Trim()
+        $FindingDetails += $sshStr + $nl
+        if ($sshStr -match "(?i)ignoreuserknownhosts\s+yes") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No IgnoreUserKnownHosts directive found in /etc/ssh/sshd_config" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -23895,9 +24141,34 @@ Function Get-V204595 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204595) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $macs = $(timeout 10 grep -i "^MACs" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH MACs configuration:" + $nl
+    if ($macs) {
+        $macStr = ($macs | Out-String).Trim()
+        $FindingDetails += $macStr + $nl
+        $approvedMACs = @("hmac-sha2-256", "hmac-sha2-512")
+        $configuredMACs = ($macStr -replace "(?i)MACs\s+", "") -split ","
+        $allApproved = $true
+        foreach ($m in $configuredMACs) {
+            $trimmed = $m.Trim()
+            if ($trimmed -and $trimmed -notin $approvedMACs) {
+                $allApproved = $false
+                $FindingDetails += "Non-approved MAC found: " + $trimmed + $nl
+            }
+        }
+        if ($allApproved) {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "No MACs directive found in /etc/ssh/sshd_config (using defaults)" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -24006,9 +24277,36 @@ Function Get-V204596 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204596) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $pubKeys = $(timeout 10 find /etc/ssh -name "*.pub" -maxdepth 1 2>/dev/null)
+    $FindingDetails += "SSH public host key files:" + $nl
+    if ($pubKeys) {
+        $pubKeyArr = ($pubKeys | Out-String).Trim() -split $nl
+        foreach ($keyFile in $pubKeyArr) {
+            $trimmed = $keyFile.Trim()
+            if ($trimmed) {
+                $perms = $(stat -c "%a %U %G %n" $trimmed 2>&1)
+                $permsStr = ($perms | Out-String).Trim()
+                $FindingDetails += $permsStr + $nl
+                if ($permsStr -match "^(\d+)") {
+                    $mode = $Matches[1]
+                    $modeInt = [int]$mode
+                    if ($modeInt -gt 644) {
+                        $Status = "Open"
+                        $FindingDetails += "File $trimmed has mode $mode (exceeds 0644)" + $nl
+                    }
+                }
+            }
+        }
+    }
+    else {
+        $FindingDetails += "No SSH public host key files found in /etc/ssh/" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
