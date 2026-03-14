@@ -29328,9 +29328,33 @@ Function Get-V204634 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-204634) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $ipLink = $(ip link show 2>&1)
+    $FindingDetails += "Network interfaces:" + $nl
+    if ($ipLink) {
+        $ipStr = ($ipLink | Out-String).Trim()
+        $FindingDetails += $ipStr + $nl
+        $wlDevices = $(ls /sys/class/net/ 2>/dev/null | grep -i "wl\|wlan\|wifi")
+        if ($wlDevices) {
+            $wlStr = ($wlDevices | Out-String).Trim()
+            if ($wlStr) {
+                $Status = "Open"
+                $FindingDetails += "Wireless interfaces detected: " + $wlStr + $nl
+                $FindingDetails += "Must be disabled unless documented with ISSO" + $nl
+            }
+            else {
+                $FindingDetails += "No wireless interfaces detected - Not Applicable" + $nl
+            }
+        }
+        else {
+            $FindingDetails += "No wireless interfaces detected" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -29574,9 +29598,30 @@ Function Get-V214800 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-214800) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $mcafeePkg = $(rpm -qa 2>&1 | grep -i mcafeetp)
+    $FindingDetails += "Endpoint security (McAfee TP) package:" + $nl
+    if ($mcafeePkg) {
+        $mcStr = ($mcafeePkg | Out-String).Trim()
+        $FindingDetails += $mcStr + $nl
+        $mfeDaemon = $(ps -ef 2>&1 | grep -i mfetpd | grep -v grep)
+        if ($mfeDaemon) {
+            $FindingDetails += "mfetpd daemon: running" + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "mfetpd daemon: not running" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "McAfee Threat Prevention package is not installed" + $nl
+        $FindingDetails += "Verify alternative endpoint security tool is deployed per site policy" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -29828,9 +29873,33 @@ Function Get-V214937 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-214937) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $gnomePkg = $(rpm -qa gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomePkg | Out-String).Trim()
+    $FindingDetails += "GNOME desktop package:" + $nl
+    if ($gnomeStr -match "gnome-desktop3") {
+        $FindingDetails += $gnomeStr + $nl
+        $Status = "Open"
+        $lockSetting = $(timeout 10 grep -r "lock-enabled" /etc/dconf/db/local.d/locks/ 2>/dev/null)
+        if ($lockSetting) {
+            $lockStr = ($lockSetting | Out-String).Trim()
+            $FindingDetails += "lock-enabled locks: " + $lockStr + $nl
+            if ($lockStr -match "lock-enabled") {
+                $Status = "NotAFinding"
+            }
+        }
+        else {
+            $FindingDetails += "No lock-enabled setting found in /etc/dconf/db/local.d/locks/" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "GNOME is not installed - Not Applicable (XCP-ng Dom0 is headless)" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -29939,9 +30008,33 @@ Function Get-V219059 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-219059) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $gnomePkg = $(rpm -qa gnome-desktop3 2>&1)
+    $gnomeStr = ($gnomePkg | Out-String).Trim()
+    $FindingDetails += "GNOME desktop package:" + $nl
+    if ($gnomeStr -match "gnome-desktop3") {
+        $FindingDetails += $gnomeStr + $nl
+        $Status = "Open"
+        $autoMount = $(timeout 10 grep -ri "automount" /etc/dconf/db/local.d/ 2>/dev/null)
+        if ($autoMount) {
+            $autoStr = ($autoMount | Out-String).Trim()
+            $FindingDetails += "Automount settings: " + $autoStr + $nl
+            if ($autoStr -match "automount.*false" -and $autoStr -match "automount-open.*false") {
+                $Status = "NotAFinding"
+            }
+        }
+        else {
+            $FindingDetails += "No automount settings found in /etc/dconf/db/local.d/" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "GNOME is not installed - Not Applicable (XCP-ng Dom0 is headless)" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30050,9 +30143,27 @@ Function Get-V228563 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-228563) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $wwDirs = $(timeout 30 find / -xdev -type d -perm -0002 -uid +999 -maxdepth 5 2>/dev/null)
+    $FindingDetails += "World-writable directories not owned by system accounts:" + $nl
+    if ($wwDirs) {
+        $wwStr = ($wwDirs | Out-String).Trim()
+        if ($wwStr) {
+            $Status = "Open"
+            $FindingDetails += $wwStr + $nl
+        }
+        else {
+            $FindingDetails += "None found" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "None found" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30161,9 +30272,36 @@ Function Get-V228564 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-228564) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $auditLogs = $(timeout 10 ls -la /var/log/audit/ 2>&1)
+    $FindingDetails += "Audit log directory contents:" + $nl
+    if ($auditLogs) {
+        $logStr = ($auditLogs | Out-String).Trim()
+        $FindingDetails += $logStr + $nl
+        $logLines = $logStr -split $nl
+        foreach ($line in $logLines) {
+            $trimLine = $line.Trim()
+            if ($trimLine -match "^-" -and $trimLine -match "audit") {
+                if ($trimLine -notmatch "^-rw-------") {
+                    $Status = "Open"
+                    $FindingDetails += "File has permissions more permissive than 0600" + $nl
+                }
+                if ($trimLine -notmatch "\sroot\s+root\s") {
+                    $Status = "Open"
+                    $FindingDetails += "File is not owned by root:root" + $nl
+                }
+            }
+        }
+    }
+    else {
+        $Status = "Open"
+        $FindingDetails += "Unable to access /var/log/audit/" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30272,9 +30410,25 @@ Function Get-V233307 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-233307) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $x11Local = $(timeout 10 grep -i "^X11UseLocalhost" /etc/ssh/sshd_config 2>&1)
+    $FindingDetails += "SSH X11UseLocalhost configuration:" + $nl
+    if ($x11Local) {
+        $x11Str = ($x11Local | Out-String).Trim()
+        $FindingDetails += $x11Str + $nl
+        if ($x11Str -match "(?i)X11UseLocalhost\s+yes") {
+            $Status = "NotAFinding"
+        }
+    }
+    else {
+        $FindingDetails += "X11UseLocalhost not found in /etc/ssh/sshd_config (default is yes)" + $nl
+        $Status = "NotAFinding"
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30383,9 +30537,25 @@ Function Get-V237633 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-237633) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "NotAFinding"
+    $FindingDetails = ""
+
+    $sudoAll = $(timeout 10 grep -iw "ALL" /etc/sudoers /etc/sudoers.d/* 2>/dev/null | grep -v "^#" | grep -v "#")
+    $FindingDetails += "Sudoers ALL entries:" + $nl
+    if ($sudoAll) {
+        $sudoStr = ($sudoAll | Out-String).Trim()
+        $FindingDetails += $sudoStr + $nl
+        if ($sudoStr -match "ALL\s+ALL=\(ALL\)\s+ALL" -or $sudoStr -match "ALL\s+ALL=\(ALL:ALL\)\s+ALL") {
+            $Status = "Open"
+            $FindingDetails += "Unrestricted sudo access found" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "No unrestricted ALL entries found in sudoers" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30494,9 +30664,36 @@ Function Get-V237634 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-237634) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $sudoPw = $(timeout 10 grep -Eir "(rootpw|targetpw|runaspw)" /etc/sudoers /etc/sudoers.d/* 2>/dev/null | grep -v "^#" | grep -v "#")
+    $FindingDetails += "Sudo password policy:" + $nl
+    if ($sudoPw) {
+        $pwStr = ($sudoPw | Out-String).Trim()
+        $FindingDetails += $pwStr + $nl
+        $hasTargetpw = $false
+        $hasRootpw = $false
+        $hasRunaspw = $false
+        if ($pwStr -match "!targetpw") { $hasTargetpw = $true }
+        if ($pwStr -match "!rootpw") { $hasRootpw = $true }
+        if ($pwStr -match "!runaspw") { $hasRunaspw = $true }
+        if ($hasTargetpw -and $hasRootpw -and $hasRunaspw) {
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "Missing required Defaults:" + $nl
+            if (-not $hasTargetpw) { $FindingDetails += "  Defaults !targetpw" + $nl }
+            if (-not $hasRootpw) { $FindingDetails += "  Defaults !rootpw" + $nl }
+            if (-not $hasRunaspw) { $FindingDetails += "  Defaults !runaspw" + $nl }
+        }
+    }
+    else {
+        $FindingDetails += "No targetpw/rootpw/runaspw settings found in sudoers" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30605,9 +30802,31 @@ Function Get-V237635 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-237635) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $tsTimeout = $(timeout 10 grep -ir "timestamp_timeout" /etc/sudoers /etc/sudoers.d/* 2>/dev/null | grep -v "^#" | grep -v "#")
+    $FindingDetails += "Sudo timestamp_timeout:" + $nl
+    if ($tsTimeout) {
+        $tsStr = ($tsTimeout | Out-String).Trim()
+        $FindingDetails += $tsStr + $nl
+        if ($tsStr -match "timestamp_timeout\s*=\s*(\d+)") {
+            $val = [int]$Matches[1]
+            if ($val -ge 0) {
+                $Status = "NotAFinding"
+                $FindingDetails += "timestamp_timeout is set to $val (non-negative)" + $nl
+            }
+        }
+        elseif ($tsStr -match "timestamp_timeout\s*=\s*-") {
+            $FindingDetails += "timestamp_timeout is set to a negative value (never expires)" + $nl
+        }
+    }
+    else {
+        $FindingDetails += "timestamp_timeout not configured in sudoers" + $nl
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30716,9 +30935,37 @@ Function Get-V244557 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-244557) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $uefiCheck = $(test -d /sys/firmware/efi && echo "UEFI" || echo "BIOS")
+    $bootMode = ($uefiCheck | Out-String).Trim()
+    $FindingDetails += "Boot mode: " + $bootMode + $nl
+    if ($bootMode -eq "UEFI") {
+        $FindingDetails += "System boots with UEFI - this BIOS check is Not Applicable" + $nl
+    }
+    else {
+        $grubCfg = $(timeout 10 grep -iw "superusers" /boot/grub2/grub.cfg 2>/dev/null)
+        $FindingDetails += "GRUB superusers configuration:" + $nl
+        if ($grubCfg) {
+            $grubStr = ($grubCfg | Out-String).Trim()
+            $FindingDetails += $grubStr + $nl
+            if ($grubStr -match "set superusers=" -and $grubStr -notmatch "superusers=" + [char]34 + "root" + [char]34) {
+                $Status = "NotAFinding"
+            }
+            else {
+                $Status = "Open"
+                $FindingDetails += "superusers account may be using a common OS name" + $nl
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "No superusers configured in /boot/grub2/grub.cfg" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30827,9 +31074,40 @@ Function Get-V244558 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-244558) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Not_Applicable"
+    $FindingDetails = ""
+
+    $uefiCheck = $(test -d /sys/firmware/efi && echo "UEFI" || echo "BIOS")
+    $bootMode = ($uefiCheck | Out-String).Trim()
+    $FindingDetails += "Boot mode: " + $bootMode + $nl
+    if ($bootMode -eq "BIOS") {
+        $FindingDetails += "System boots with BIOS - this UEFI check is Not Applicable" + $nl
+    }
+    else {
+        $grubCfg = $(timeout 10 grep -iw "superusers" /boot/efi/EFI/redhat/grub.cfg 2>/dev/null)
+        if (-not $grubCfg) {
+            $grubCfg = $(timeout 10 grep -iw "superusers" /boot/efi/EFI/xcp-ng/grub.cfg 2>/dev/null)
+        }
+        $FindingDetails += "GRUB superusers configuration (UEFI):" + $nl
+        if ($grubCfg) {
+            $grubStr = ($grubCfg | Out-String).Trim()
+            $FindingDetails += $grubStr + $nl
+            if ($grubStr -match "set superusers=" -and $grubStr -notmatch "superusers=" + [char]34 + "root" + [char]34) {
+                $Status = "NotAFinding"
+            }
+            else {
+                $Status = "Open"
+                $FindingDetails += "superusers account may be using a common OS name" + $nl
+            }
+        }
+        else {
+            $Status = "Open"
+            $FindingDetails += "No superusers configured in UEFI grub.cfg" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -30938,9 +31216,28 @@ Function Get-V250312 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-250312) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $selinuxStatus = $(getenforce 2>&1)
+    $seStr = ($selinuxStatus | Out-String).Trim()
+    $FindingDetails += "SELinux status: " + $seStr + $nl
+    if ($seStr -eq "Disabled") {
+        $FindingDetails += "SELinux is disabled on this XCP-ng Dom0 system" + $nl
+    }
+    else {
+        $seUsers = $(timeout 10 semanage user -l 2>&1)
+        if ($seUsers) {
+            $FindingDetails += "SELinux user mapping:" + $nl + ($seUsers | Out-String).Trim() + $nl
+            $Status = "NotAFinding"
+        }
+        else {
+            $FindingDetails += "Unable to query SELinux user mappings" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31049,9 +31346,31 @@ Function Get-V250313 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-250313) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $selinuxStatus = $(getenforce 2>&1)
+    $seStr = ($selinuxStatus | Out-String).Trim()
+    $FindingDetails += "SELinux status: " + $seStr + $nl
+    if ($seStr -eq "Disabled") {
+        $FindingDetails += "SELinux is disabled on this XCP-ng Dom0 system" + $nl
+    }
+    else {
+        $sshBool = $(getsebool ssh_sysadm_login 2>&1)
+        if ($sshBool) {
+            $boolStr = ($sshBool | Out-String).Trim()
+            $FindingDetails += "ssh_sysadm_login: " + $boolStr + $nl
+            if ($boolStr -match "off") {
+                $Status = "NotAFinding"
+            }
+        }
+        else {
+            $FindingDetails += "Unable to query ssh_sysadm_login boolean" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
@@ -31160,9 +31479,31 @@ Function Get-V250314 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "This check requires manual review of XCP-ng Dom0 (RHEL 7-based) system configuration. " +
-                      "Refer to the Red Hat Enterprise Linux 7 STIG (V-250314) for detailed requirements. " +
-                      "Evidence should include system configuration files, security policies, and operational procedures."
+
+    $nl = [Environment]::NewLine
+    $Status = "Open"
+    $FindingDetails = ""
+
+    $selinuxStatus = $(getenforce 2>&1)
+    $seStr = ($selinuxStatus | Out-String).Trim()
+    $FindingDetails += "SELinux status: " + $seStr + $nl
+    if ($seStr -eq "Disabled") {
+        $FindingDetails += "SELinux is disabled on this XCP-ng Dom0 system" + $nl
+    }
+    else {
+        $sudoSe = $(timeout 10 grep -r "sysadm_r" /etc/sudoers /etc/sudoers.d/ 2>/dev/null | grep -v "^#")
+        if ($sudoSe) {
+            $sudoStr = ($sudoSe | Out-String).Trim()
+            $FindingDetails += "Sudo SELinux context:" + $nl + $sudoStr + $nl
+            if ($sudoStr -match "TYPE=sysadm_t" -and $sudoStr -match "ROLE=sysadm_r") {
+                $Status = "NotAFinding"
+            }
+        }
+        else {
+            $FindingDetails += "No sysadm_r configuration found in sudoers" + $nl
+        }
+    }
+
     #---=== End Custom Code ===---#
 
     if ($FindingDetails.Trim().Length -gt 0) {
