@@ -48,17 +48,17 @@
     <Score>
       <CATI_OpenNRTotal>10</CATI_OpenNRTotal>
       <CATI_PossibleTotal>26</CATI_PossibleTotal>
-      <CATII_OpenNRTotal>298</CATII_OpenNRTotal>
+      <CATII_OpenNRTotal>306</CATII_OpenNRTotal>
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>41</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
       <CountRetrievalSuccess>1</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
-      <WeightedAvg>53</WeightedAvg>
+      <WeightedAvg>54</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-14T02:08:16.5247911-04:00" EvalScore="36.07">
+    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-14T01:36:24.6032422-04:00" EvalScore="32.79">
       <CAT_I Total="26" Not_Applicable="5" Open="10" NotAFinding="11" Not_Reviewed="0">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values." Status="Open" ID="V-204392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords." Status="Open" ID="V-204424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -87,7 +87,7 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must use a virus scan program." Status="Open" ID="V-214801" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have accounts configured with blank or null passwords." Status="NotAFinding" ID="V-251702" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="205" Not_Applicable="17" Open="111" NotAFinding="52" Not_Reviewed="25">
+      <CAT_II Total="205" Not_Applicable="13" Open="104" NotAFinding="48" Not_Reviewed="40">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204393" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the approved Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a graphical user logon." Status="Not_Applicable" ID="V-204394" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must display the Standard Mandatory DoD Notice and Consent Banner before granting local or remote access to the system via a command line user logon." Status="Open" ID="V-204395" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -253,21 +253,21 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not respond to Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) echoes sent to a broadcast address." Status="NotAFinding" ID="V-204613" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must prevent Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages from being accepted." Status="Open" ID="V-204614" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must ignore Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirect messages." Status="NotAFinding" ID="V-204615" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow interfaces to perform Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects by default." Status="Open" ID="V-204616" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not send Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects." Status="Open" ID="V-204617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="Network interfaces configured on the Red Hat Enterprise Linux operating system must not be in promiscuous mode." Status="NotAFinding" ID="V-204618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured to prevent unrestricted mail relaying." Status="Not_Applicable" ID="V-204619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that remote X connections are disabled except to fulfill documented and validated mission requirements." Status="Open" ID="V-204622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode." Status="Not_Applicable" ID="V-204623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have a graphical display manager installed unless approved." Status="Open" ID="V-204624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not be performing packet forwarding unless the system is a router." Status="Open" ID="V-204625" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS." Status="Not_Applicable" ID="V-204626" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system access control program must be configured to grant or deny system access to specific hosts and services." Status="NotAFinding" ID="V-204628" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have unauthorized IP tunnels configured." Status="NotAFinding" ID="V-204629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not forward IPv6 source-routed packets." Status="NotAFinding" ID="V-204630" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must have the required packages for multifactor authentication installed." Status="Open" ID="V-204631" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM)." Status="Not_Applicable" ID="V-204632" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement certificate status checking for PKI authentication." Status="Open" ID="V-204633" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow interfaces to perform Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects by default." Status="Not_Reviewed" ID="V-204616" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not send Internet Protocol version 4 (IPv4) Internet Control Message Protocol (ICMP) redirects." Status="Not_Reviewed" ID="V-204617" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="Network interfaces configured on the Red Hat Enterprise Linux operating system must not be in promiscuous mode." Status="Not_Reviewed" ID="V-204618" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured to prevent unrestricted mail relaying." Status="Not_Reviewed" ID="V-204619" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that remote X connections are disabled except to fulfill documented and validated mission requirements." Status="Not_Reviewed" ID="V-204622" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that if the Trivial File Transfer Protocol (TFTP) server is required, the TFTP daemon is configured to operate in secure mode." Status="Not_Reviewed" ID="V-204623" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have a graphical display manager installed unless approved." Status="Not_Reviewed" ID="V-204624" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not be performing packet forwarding unless the system is a router." Status="Not_Reviewed" ID="V-204625" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the Network File System (NFS) is configured to use RPCSEC_GSS." Status="Not_Reviewed" ID="V-204626" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system access control program must be configured to grant or deny system access to specific hosts and services." Status="Not_Reviewed" ID="V-204628" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have unauthorized IP tunnels configured." Status="Not_Reviewed" ID="V-204629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not forward IPv6 source-routed packets." Status="Not_Reviewed" ID="V-204630" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must have the required packages for multifactor authentication installed." Status="Not_Reviewed" ID="V-204631" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement multifactor authentication for access to privileged accounts via pluggable authentication modules (PAM)." Status="Not_Reviewed" ID="V-204632" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement certificate status checking for PKI authentication." Status="Not_Reviewed" ID="V-204633" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that all wireless network adapters are disabled." Status="Not_Reviewed" ID="V-204634" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement the Endpoint Security for Linux Threat Prevention tool." Status="Not_Reviewed" ID="V-214800" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must prevent a user from overriding the screensaver lock-enabled setting for the graphical user interface." Status="Not_Reviewed" ID="V-214937" Override="" Justification="" AFStatusChange="" PreAFStatus="" />

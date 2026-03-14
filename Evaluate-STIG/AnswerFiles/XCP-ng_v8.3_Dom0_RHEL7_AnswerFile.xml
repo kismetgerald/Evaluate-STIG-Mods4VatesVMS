@@ -3899,46 +3899,82 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204616">
+    <!--RuleTitle: IPv4 ICMP redirects not sent (default)-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.conf.default.send_redirects sysctl setting on the XCP-ng Dom0 system. This must be set to 0 to prevent the system from sending ICMP redirect messages by default, which could be exploited to manipulate routing on the hypervisor network.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.conf.default.send_redirects sysctl setting on the XCP-ng Dom0 system. This must be set to 0 to prevent the system from sending ICMP redirect messages by default, which could be exploited to manipulate routing on the hypervisor network.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204617">
+    <!--RuleTitle: IPv4 ICMP redirects not sent (all)-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.conf.all.send_redirects sysctl setting on the XCP-ng Dom0 system. This must be set to 0 to prevent the system from sending ICMP redirect messages on any interface, protecting the hypervisor network from routing manipulation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.conf.all.send_redirects sysctl setting on the XCP-ng Dom0 system. This must be set to 0 to prevent the system from sending ICMP redirect messages on any interface, protecting the hypervisor network from routing manipulation.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204618">
+    <!--RuleTitle: No promiscuous mode interfaces-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines network interfaces via ip link on the XCP-ng Dom0 system. No interfaces should be in promiscuous mode unless approved and documented, as promiscuous mode allows capture of all network traffic on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines network interfaces via ip link on the XCP-ng Dom0 system. No interfaces should be in promiscuous mode unless approved and documented, as promiscuous mode allows capture of all network traffic on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204619">
+    <!--RuleTitle: Postfix mail relay restricted-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies postfix installation and smtpd_client_restrictions on the XCP-ng Dom0 system. If postfix is not installed, the check returns Not_Applicable. If installed, mail relay must be restricted to prevent unauthorized use of the hypervisor as a mail relay.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies postfix installation and smtpd_client_restrictions on the XCP-ng Dom0 system. If postfix is not installed, the check returns Not_Applicable. If installed, mail relay must be restricted to prevent unauthorized use of the hypervisor as a mail relay.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -3983,57 +4019,102 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204622">
+    <!--RuleTitle: SSH X11Forwarding disabled-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/ssh/sshd_config for X11Forwarding on the XCP-ng Dom0 system. This must be set to no to prevent X11 display forwarding through SSH, reducing the attack surface on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/ssh/sshd_config for X11Forwarding on the XCP-ng Dom0 system. This must be set to no to prevent X11 display forwarding through SSH, reducing the attack surface on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204623">
+    <!--RuleTitle: TFTP secure mode-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies tftp-server package installation and xinetd configuration on the XCP-ng Dom0 system. If TFTP is not installed, the check returns Not_Applicable. If installed, the server must operate in secure mode with the -s option.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies tftp-server package installation and xinetd configuration on the XCP-ng Dom0 system. If TFTP is not installed, the check returns Not_Applicable. If installed, the server must operate in secure mode with the -s option.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204624">
+    <!--RuleTitle: No graphical display manager-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies systemctl default target is multi-user.target and no X.org server packages are installed on the XCP-ng Dom0 system. A headless hypervisor host must boot to command line only.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies systemctl default target is multi-user.target and no X.org server packages are installed on the XCP-ng Dom0 system. A headless hypervisor host must boot to command line only.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204625">
+    <!--RuleTitle: IPv4 packet forwarding disabled-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.ip_forward sysctl setting on the XCP-ng Dom0 system. This must be set to 0 unless the system is a router. Note: XCP-ng hypervisors may have this enabled for VM network bridging.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv4.ip_forward sysctl setting on the XCP-ng Dom0 system. This must be set to 0 unless the system is a router. Note: XCP-ng hypervisors may have this enabled for VM network bridging.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204626">
+    <!--RuleTitle: NFS uses RPCSEC_GSS-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/fstab for NFS mounts on the XCP-ng Dom0 system. If no NFS mounts are configured, the check returns Not_Applicable. NFS mounts must use sec=krb5 Kerberos security to protect data integrity and confidentiality.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/fstab for NFS mounts on the XCP-ng Dom0 system. If no NFS mounts are configured, the check returns Not_Applicable. NFS mounts must use sec=krb5 Kerberos security to protect data integrity and confidentiality.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -4066,68 +4147,122 @@
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204628">
+    <!--RuleTitle: Firewall grants/denies access to hosts-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies firewalld or iptables is active and examines the firewall configuration on the XCP-ng Dom0 system. The access control program must be configured to grant or deny system access to specific hosts and services on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies firewalld or iptables is active and examines the firewall configuration on the XCP-ng Dom0 system. The access control program must be configured to grant or deny system access to specific hosts and services on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204629">
+    <!--RuleTitle: No unauthorized IP tunnels-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines libreswan installation and IPsec service status on the XCP-ng Dom0 system. If libreswan is not installed or IPsec is inactive, no tunnels exist. Active tunnels require ISSO documentation and approval on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines libreswan installation and IPsec service status on the XCP-ng Dom0 system. If libreswan is not installed or IPsec is inactive, no tunnels exist. Active tunnels require ISSO documentation and approval on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204630">
+    <!--RuleTitle: IPv6 source-routed packets disabled-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv6.conf.all.accept_source_route sysctl setting on the XCP-ng Dom0 system. If IPv6 is not enabled, the check returns Not_Applicable. If enabled, this must be set to 0 to prevent acceptance of IPv6 source-routed packets on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines the net.ipv6.conf.all.accept_source_route sysctl setting on the XCP-ng Dom0 system. If IPv6 is not enabled, the check returns Not_Applicable. If enabled, this must be set to 0 to prevent acceptance of IPv6 source-routed packets on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204631">
+    <!--RuleTitle: MFA pam_pkcs11 installed-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the pam_pkcs11 package is installed on the XCP-ng Dom0 system. This package is required for multifactor authentication using PKI certificates on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check verifies the pam_pkcs11 package is installed on the XCP-ng Dom0 system. This package is required for multifactor authentication using PKI certificates on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204632">
+    <!--RuleTitle: SSSD PAM service for MFA-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines SSSD service status and /etc/sssd/sssd.conf for the pam service on the XCP-ng Dom0 system. If SSSD is not active, the check returns Not_Applicable. When active, pam must be listed in the services line for MFA support on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines SSSD service status and /etc/sssd/sssd.conf for the pam service on the XCP-ng Dom0 system. If SSSD is not active, the check returns Not_Applicable. When active, pam must be listed in the services line for MFA support on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-204633">
+    <!--RuleTitle: OCSP certificate status checking-->
     <AnswerKey Name="XCP-ng">
-      <Answer Index="1" ExpectedStatus="Not_Reviewed" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <!--Batch 12: Firewall, Network Misc &amp; PKI-->
+      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus />
-        <ValidTrueComment />
-        <ValidFalseStatus />
-        <ValidFalseComment />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam_pkcs11/pam_pkcs11.conf for cert_policy lines with ocsp_on on the XCP-ng Dom0 system. At least three lines must have ocsp_on enabled for Online Certificate Status Protocol checking to validate PKI certificates on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated check examines /etc/pam_pkcs11/pam_pkcs11.conf for cert_policy lines with ocsp_on on the XCP-ng Dom0 system. At least three lines must have ocsp_on enabled for Online Certificate Status Protocol checking to validate PKI certificates on the hypervisor host.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
