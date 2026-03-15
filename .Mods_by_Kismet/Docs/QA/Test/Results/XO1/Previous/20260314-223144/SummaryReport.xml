@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <Summary>
   <Computer>
-    <ScanDate>03/15/2026</ScanDate>
+    <ScanDate>03/14/2026</ScanDate>
     <EvalSTIGVer>1.2507.6</EvalSTIGVer>
     <ScanType>Classified</ScanType>
     <Name>XO1</Name>
@@ -25,15 +25,15 @@
       <Disk Index="0">
         <DeviceID>/dev/sr0</DeviceID>
         <Size>1024M</Size>
-        <Caption>QEMU DVD-ROM</Caption>
-        <SerialNumber>QM00004</SerialNumber>
-        <MediaType>rom</MediaType>
-        <InterfaceType>ATA</InterfaceType>
+        <Caption>QEMU</Caption>
+        <SerialNumber>DVD-ROM</SerialNumber>
+        <MediaType>ata  rom</MediaType>
+        <InterfaceType>QM00004</InterfaceType>
       </Disk>
       <Disk Index="1">
         <DeviceID>/dev/xvda</DeviceID>
         <Size>30G</Size>
-        <Caption>N/A</Caption>
+        <Caption>disk</Caption>
         <SerialNumber>N/A</SerialNumber>
         <MediaType>disk</MediaType>
         <InterfaceType>N/A</InterfaceType>
@@ -54,7 +54,7 @@
     </Score>
   </Computer>
   <Results>
-    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-15T05:58:37.3447144-04:00" EvalScore="46.46">
+    <Result STIG="General_Purpose_Operating_System" Version="3" Release="2" Site="" Instance="" ShortName="XO_GPOS_Debian12" StartTime="2026-03-14T22:24:01.1067269-04:00" EvalScore="46.46">
       <CAT_I Total="18" Not_Applicable="1" Open="10" NotAFinding="7" Not_Reviewed="0">
         <Vuln RuleTitle="The operating system must implement DoD-approved encryption to protect the confidentiality of remote access sessions." Status="Open" ID="V-203603" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The operating system must store only encrypted representations of passwords." Status="NotAFinding" ID="V-203629" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -260,7 +260,7 @@
         <Vuln RuleTitle="The operating system must record time stamps for audit records that can be mapped to Coordinated Universal Time (UTC) or Greenwich Mean Time (GMT)." Status="NotAFinding" ID="V-203714" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-15T06:00:50.2924893-04:00" EvalScore="43.36">
+    <Result STIG="Application_Security_Development_STIG" Version="6" Release="4" Site="" Instance="" ShortName="XO_ASD" StartTime="2026-03-14T22:26:12.0047387-04:00" EvalScore="43.36">
       <CAT_I Total="34" Not_Applicable="5" Open="16" NotAFinding="13" Not_Reviewed="0">
         <Vuln RuleTitle="Messages protected with WS_Security must use time stamps with creation and expiration times." Status="Not_Applicable" ID="V-222399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Validity periods must be verified on all application messages using WS-Security or SAML assertions." Status="Not_Applicable" ID="V-222400" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -554,7 +554,7 @@
         <Vuln RuleTitle="The application must generate audit records when concurrent logons from different workstations occur." Status="NotAFinding" ID="V-222672" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_III>
     </Result>
-    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-15T06:03:40.4453719-04:00" EvalScore="42.86">
+    <Result STIG="Web_Server_SRG" Version="4" Release="4" Site="" Instance="" ShortName="XO_WebSRG" StartTime="2026-03-14T22:29:07.8689482-04:00" EvalScore="43.65">
       <CAT_I Total="5" Not_Applicable="0" Open="2" NotAFinding="3" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must use cryptographic modules that meet the requirements of applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance when encrypting stored data." Status="Open" ID="V-206390" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must generate a unique session identifier for each session using a FIPS 140-2 approved random number generator." Status="NotAFinding" ID="V-206399" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -562,7 +562,7 @@
         <Vuln RuleTitle="The web server must employ cryptographic mechanisms (TLS/DTLS/SSL) preventing the unauthorized disclosure of information during transmission." Status="NotAFinding" ID="V-206434" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must be a version supported by the vendor." Status="NotAFinding" ID="V-279029" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
       </CAT_I>
-      <CAT_II Total="121" Not_Applicable="2" Open="70" NotAFinding="49" Not_Reviewed="0">
+      <CAT_II Total="121" Not_Applicable="2" Open="69" NotAFinding="50" Not_Reviewed="0">
         <Vuln RuleTitle="The web server must limit the number of allowed simultaneous session requests." Status="Open" ID="V-206350" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must perform server-side session management." Status="NotAFinding" ID="V-206351" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use encryption strength in accordance with the categorization of data hosted by the web server when remote connections are provided." Status="NotAFinding" ID="V-206352" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -579,7 +579,7 @@
         <Vuln RuleTitle="The web server must produce log records that contain sufficient information to establish the outcome (success or failure) of events." Status="NotAFinding" ID="V-206364" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must produce log records containing sufficient information to establish the identity of any user/subject or process associated with an event." Status="NotAFinding" ID="V-206365" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The web server must use a logging mechanism that is configured to alert the ISSO and SA in the event of a processing failure." Status="Open" ID="V-206366" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The web server must use the internal system clock to generate time stamps for log records." Status="Open" ID="V-206367" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The web server must use the internal system clock to generate time stamps for log records." Status="NotAFinding" ID="V-206367" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="Web server log files must only be accessible by privileged users." Status="NotAFinding" ID="V-206368" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The log information from the web server must be protected from unauthorized modification." Status="Open" ID="V-206369" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The log information from the web server must be protected from unauthorized deletion." Status="Open" ID="V-206370" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
