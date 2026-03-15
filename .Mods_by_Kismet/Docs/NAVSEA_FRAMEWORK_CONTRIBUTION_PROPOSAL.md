@@ -38,7 +38,7 @@ The Evaluate-STIG framework already supports VMware, Hyper-V, and other commerci
 
 | Module | STIG/SRG Applied | Target System | Checks | EvalScore |
 |--------|-----------------|---------------|--------|-----------|
-| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | 41.27% |
+| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | 43.65% |
 | `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | 43.36% |
 | `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | 46.46% |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 193 | 34.72% |
@@ -76,7 +76,7 @@ This provides **defense-in-depth coverage** across all layers of the virtualizat
 
 ## Upstream Framework Changes Required
 
-The entire implementation requires modifications to only **four upstream files**, totaling approximately **375 lines of changes**. All modifications are additive and backward-compatible — no existing functionality is altered.
+The entire implementation requires modifications to only **four upstream files**, totaling approximately **400 lines of changes**. All modifications are additive and backward-compatible — no existing functionality is altered.
 
 ### 1. `Modules/Master_Functions/STIGDetection/STIGDetection.psm1`
 
@@ -99,11 +99,15 @@ XCP-ng systems can return null values for `IpAddress` and `MacAddress` in Target
 
 ### 3. `Modules/Master_Functions/Master_Functions.psm1`
 
-**~10 lines changed** — Filters virtual network interfaces during Linux asset data collection.
+**~35 lines changed** — Two fixes for Linux asset data collection.
 
+**Fix 1: Virtual network interface filter (~10 lines)**
 Hypervisor environments (XCP-ng, KVM, etc.) create dozens of virtual bridge and tap interfaces that pollute the network adapter inventory. The fix filters `ip -4 addr` output to only include interfaces with assigned IPv4 addresses.
 
-**This is also a general improvement** that benefits any Linux system with virtual interfaces.
+**Fix 2: Linux disk collection for Summary Report (~25 lines)**
+The existing Linux disk collection code uses `lsblk`/`lvscan` with broken parsing — it only populates 3 of 7 disk fields (Index, DeviceID, Size) and pipes hashtable objects through `cut` commands, producing "Name Value ---- ------" garbage in the Summary Report HTML. The fix replaces this with proper `lsblk -dno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE` parsing, populating all 7 fields (Index, DeviceID, Size, Caption, SerialNumber, MediaType, InterfaceType) to match the Windows CIM structure.
+
+**Both are general improvements** that benefit any Linux system scanned by the framework, not just XCP-ng/XO targets.
 
 ### 4. `xml/STIGList.xml`
 
@@ -131,9 +135,9 @@ The upstream changes are small (~375 lines across 4 files), backward-compatible,
 
 This is not a proof-of-concept. All 1,047 functions have been individually implemented and validated through 200+ test iterations. Every upstream change is annotated with inline `# MODIFIED_BY` comments. A complete modifications guide documents every line changed and why.
 
-### 4. Two of Three Framework Fixes Benefit All Users
+### 4. Three of Four Framework Fixes Benefit All Users
 
-The FormatOutput null-reference fix and the network interface filter improvement benefit **any** Linux system scanned by the framework, not just XCP-ng/XO targets. These should be incorporated regardless of whether the full Vates VMS support is accepted.
+The FormatOutput null-reference fix, the network interface filter, and the Linux Summary Report disk collection fix all benefit **any** Linux system scanned by the framework, not just XCP-ng/XO targets. These should be incorporated regardless of whether the full Vates VMS support is accepted.
 
 ### 5. Consistent Architecture
 
@@ -251,10 +255,10 @@ The complete source code, documentation, and integration guide are publicly avai
 | **Total automated checks** | 1,047 |
 | **STIGs/SRGs covered** | ASD V6R4, Web SRG V4R4, GPOS V3R2, VMM SRG V2R2, RHEL 7 V3R15 |
 | **Upstream files changed** | 4 (STIGDetection, FormatOutput, Master_Functions, STIGList.xml) |
-| **Upstream lines changed** | ~375 (all additive, backward-compatible) |
+| **Upstream lines changed** | ~400 (all additive, backward-compatible) |
 | **Test iterations** | 200+ framework test runs |
 | **Output formats** | CKL, CKLB, XCCDF — all validated |
-| **EvalScores** | 34.72% — 46.46% (meaningful compliance assessment) |
+| **EvalScores** | 34.72% — 46.46% (meaningful compliance assessment, post-QA) |
 
 I believe this work provides significant value to the DoD STIG compliance community and would be a natural extension of Evaluate-STIG's existing platform coverage. I welcome any questions, feedback, or guidance on how to move forward.
 
