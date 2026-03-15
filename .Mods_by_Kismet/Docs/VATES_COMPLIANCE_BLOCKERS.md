@@ -2,7 +2,7 @@
 
 **Purpose:** Track compliance blockers, missing packages/features, and items requiring Vates team input for DoD STIG compliance approval (IATT/ATO).
 
-**Last Updated:** February 16, 2026
+**Last Updated:** March 15, 2026
 **Document Owner:** Kismet Agbasi
 **Target:** DoD Classified Environment Approval (IATT for PoC or Full ATO for Production)
 
@@ -15,8 +15,8 @@ The Vates Virtualization Management Stack (Xen Orchestra + XCP-ng) currently has
 | Component | Applicable STIGs/SRGs | Rule Count | Current Status |
 |-----------|----------------------|------------|----------------|
 | **Xen Orchestra** | ASD STIG + Web SRG + Debian12 GPOS SRG | 286 + 126 + 198 = 610 | **ALL 3 MODULES 100% COMPLETE** |
-| **XCP-ng Hypervisor** | VMM SRG + RHEL7 STIG + GPOS SRG | 204 + 244 + 198 = 646 | Framework baseline, CAT I enhanced |
-| **Total** | 5+ STIGs/SRGs | ~1,256 rules | XO fully automated (610/610) |
+| **XCP-ng Hypervisor** | VMM SRG + RHEL7 STIG | 193 + 244 = 437 | **BOTH MODULES 100% COMPLETE** |
+| **Total** | 5 STIGs/SRGs | 1,047 rules | **ALL 5 MODULES 100% COMPLETE (1,047/1,047)** |
 
 ---
 
@@ -262,6 +262,83 @@ echo "minclass = 4" >> /etc/security/pwquality.conf
 
 ---
 
+### 1.9 Virtual Disk Devices Lack Unique Hardware Identifiers
+
+| Issue ID | ASSET-001 |
+|----------|-----------|
+| **Affected Components** | All VMs running on XCP-ng (XOA, XOCE, and any guest VM) |
+| **Severity** | CAT II (asset identification and inventory compliance) |
+| **Discovery** | Session #83 — QA Phase 2 (March 15, 2026) |
+
+**Finding:** Xen paravirtualized (PV) block devices (e.g., `/dev/xvda`, `/dev/xvdb`) expose **no hardware identification metadata** to guest operating systems. Standard Linux disk interrogation tools (`lsblk`, `udevadm`, `/sys/block/`) return empty values for Model, Serial Number, and Transport type. In contrast, QEMU-emulated devices on the same host (e.g., `/dev/sr0`) correctly expose all identification fields.
+
+| Device | Type | Model | Serial Number | Transport | Identifiable? |
+|--------|------|-------|---------------|-----------|---------------|
+| `/dev/sr0` | QEMU emulated | QEMU DVD-ROM | QM00004 | ATA | Yes |
+| `/dev/xvda` | Xen PV block | *(empty)* | *(empty)* | *(empty)* | **No** |
+
+**Why This Matters for DoD Compliance:**
+
+Federal security frameworks mandate that all hardware components be uniquely identifiable for asset management, change detection, and forensic purposes:
+
+- **NIST SP 800-53 CM-8 (Information System Component Inventory):** Organizations must maintain an accurate, current inventory of information system components that includes "a means for identifying by name, position, and/or role, individuals responsible/accountable for administering those components." Disk devices without serial numbers or model identifiers cannot be positively inventoried.
+
+- **NIST SP 800-53 CM-3 (Configuration Change Control):** Change detection requires the ability to identify *which specific component* changed. If multiple virtual disks are indistinguishable from each other at the OS level, an auditor cannot verify that the correct disk was inspected, replaced, or encrypted.
+
+- **CNSSI 1253 (Security Categorization and Control Selection for National Security Systems):** For classified systems, hardware asset tracking must support chain-of-custody verification. A virtual disk that cannot be uniquely identified by the operating system breaks the chain of evidence from the physical storage layer through the hypervisor to the guest.
+
+- **DISA STIG SI-7 (Software, Firmware, and Information Integrity):** Integrity verification requires unique component identification. An integrity monitoring tool inside a guest VM cannot distinguish between virtual disks if they all report identical empty metadata.
+
+**The information exists — it's just not exposed to guests.** XCP-ng's XAPI management layer maintains rich metadata for every Virtual Disk Image (VDI):
+
+```
+xe vdi-list params=uuid,name-label,sr-name-label,virtual-size,physical-utilisation
+```
+
+Each VDI has a globally unique UUID, a storage repository association, and size attributes. This metadata is available to the hypervisor and management tools but is **not propagated** to the guest OS through the Xen PV block driver (`xen-blkfront`).
+
+**Precedent — QEMU/KVM Already Does This:**
+
+QEMU-based hypervisors (KVM, Proxmox, OpenStack) routinely expose virtual disk serial numbers and model strings to guest operating systems via virtio-blk or SCSI emulation:
+
+```xml
+<!-- libvirt domain XML example -->
+<disk type='volume' device='disk'>
+  <driver name='qemu' type='qcow2'/>
+  <serial>vol-a1b2c3d4</serial>
+  <target dev='vda' bus='virtio'/>
+</disk>
+```
+
+Inside the guest, `lsblk -o NAME,SERIAL,MODEL` then returns the configured serial. This is standard practice in cloud environments (AWS EBS volumes expose volume IDs as serial numbers to EC2 instances).
+
+**Proposed Solution:**
+
+Populate the Xen PV block driver's sysfs attributes with VDI metadata from XAPI. When a VBD (Virtual Block Device) is attached to a VM, the hypervisor should set:
+
+| Linux sysfs attribute | Proposed value | Source |
+|-----------------------|---------------|--------|
+| `/sys/block/xvda/device/model` | SR name or "XCP-ng VDI" | `xe sr-list` |
+| `/sys/block/xvda/device/serial` | VDI UUID (first 20 chars) | `xe vdi-list uuid=` |
+| `/sys/block/xvda/device/rev` | XCP-ng version | `xe host-list` |
+
+This could be implemented via:
+1. **xenstore entries** that `xen-blkfront` reads during device initialization (similar to how network device MAC addresses are configured)
+2. **XAPI VBD parameters** that propagate to the PV backend driver
+
+**Impact Assessment:**
+- **Scope:** Affects every guest VM on every XCP-ng host — not just XO, but any workload running on the platform
+- **Compliance frameworks affected:** NIST 800-53, CNSSI 1253, DISA STIGs (CM-8, CM-3, SI-7)
+- **Competitive disadvantage:** VMware vSphere and Microsoft Hyper-V both expose virtual disk identifiers to guests. QEMU/KVM does as well. XCP-ng is the outlier among enterprise hypervisors in this regard.
+
+**Action Required from Vates:**
+- **[HIGH]** Expose VDI UUID as virtual disk serial number to guest VMs via the Xen PV block driver
+- **[HIGH]** Expose SR name or "XCP-ng VDI" as the model string for virtual disk devices
+- **[MEDIUM]** Document the VDI-to-VBD-to-guest-device mapping for auditors who need to correlate hypervisor-side inventory with guest-side device enumeration
+- **[MEDIUM]** Consider extending `xe vbd-param-set` to allow administrators to set custom serial/model strings per VBD (similar to libvirt's `<serial>` element)
+
+---
+
 ## Section 2: Architecture-Level Blockers (From January 2026)
 
 ### 2.1 Xen Orchestra Deployment Models
@@ -281,6 +358,7 @@ echo "minclass = 4" >> /etc/security/pwquality.conf
 | ARCH-011 | PowerShell 7.4+ incompatible | Limits automation tooling | PS 7.3.12 works | Document glibc dependency |
 | ARCH-012 | No SCAP benchmark available | Manual verification required | N/A | Consider SCAP content development |
 | ARCH-013 | xe CLI not fully documented for STIG | Auditors need command reference | Partial | Provide STIG-relevant xe command guide |
+| ARCH-014 | Xen PV block devices lack hardware identifiers | Guest VMs cannot inventory virtual disks (CM-8, SI-7) | ❌ OPEN | Expose VDI UUID/SR name via xen-blkfront sysfs (See Section 1.9) |
 
 ---
 
@@ -351,16 +429,18 @@ GPOS Debian12 module is **100% complete** (198/198 functions, Test173b, EvalScor
 7. **[MEDIUM] Cryptographic Statement** - Key storage architecture documentation (Section 1.7)
 8. **[MEDIUM] xe CLI Reference** - Security-relevant xe commands for audit evidence
 9. **[MEDIUM] Log Format Documentation** - xen.log and audit log formats for SIEM integration
-10. **[LOW] AppArmor-to-SELinux Equivalence** - For Debian 12 GPOS SRG compliance
+10. **[HIGH] Virtual Disk Hardware Identifiers** - Expose VDI UUID/SR name to guest VMs via xen-blkfront (Section 1.9)
+11. **[LOW] AppArmor-to-SELinux Equivalence** - For Debian 12 GPOS SRG compliance
 
 ### From Implementation Team
 
 1. ✅ Complete WebSRG checks (126/126) — **DONE** (February 11, 2026, Test124)
 2. ✅ Complete ASD checks (286/286) — **DONE** (February 18, 2026, Test148b)
 3. ✅ Complete GPOS Debian12 checks (198/198) — **DONE** (March 1, 2026, Test173b)
-4. ✅ Framework baseline stable — **DONE** (all scans exit code 0)
-5. ⏳ Continue XCP-ng VMM and Dom0 RHEL7 CAT II implementation
-6. ⏳ Develop answer file entries for XCP-ng modules (VMM, Dom0)
+4. ✅ Complete XCP-ng VMM checks (193/193) — **DONE** (March 11, 2026, Test187b)
+5. ✅ Complete XCP-ng Dom0 RHEL7 checks (244/244) — **DONE** (March 14, 2026, Test205)
+6. ✅ Framework baseline stable — **DONE** (all scans exit code 0, zero errors)
+7. ✅ QA remediation Phase 1 + Phase 2 — **DONE** (March 15, 2026, Test215)
 
 ---
 
