@@ -456,6 +456,78 @@ Federal security frameworks mandate that all hardware components be uniquely ide
 
 **Recommended Actions for Vates:** Expand the existing hardening guide (or publish a compliance supplement) with the specific technical procedures listed above. The existing guide provides an excellent framework — adding compliance-specific sections would make it a complete reference for both XO and XCP-ng.
 
+### 4.9 CRITICAL — XCP-ng Requires Root Account for XO Connection (CAT I/CAT II)
+
+| Attribute | Detail |
+|-----------|--------|
+| **Issue ID** | AUTH-003 |
+| **Affected Components** | XCP-ng Dom0 (all hosts) + Xen Orchestra (management connection) |
+| **Severity** | CAT I/CAT II (privilege separation, least privilege, account management) |
+| **Impact** | 10-15+ Open findings across VMM and Dom0 RHEL7 modules |
+
+**Finding:** Xen Orchestra connects to XCP-ng hosts **exclusively via the root account**. There is no supported mechanism to use an alternate administrator account. This creates a cascade of compliance failures:
+
+1. **The root account cannot be locked or disabled** — XO requires it to manage the hypervisor
+2. **Root SSH login must remain enabled** — violating SSH hardening STIGs requiring `PermitRootLogin no`
+3. **No privilege separation** — all management operations run as root, violating least privilege
+4. **No individual accountability** — when multiple administrators access Dom0, all operations execute as root, making it impossible to attribute actions to specific individuals
+5. **Key-based authentication not enforced** — the default XO-to-XCP-ng connection uses password auth
+
+| STIG Requirement | VulnID Examples | Why It's Open |
+|-----------------|----------------|---------------|
+| Prohibit direct root login | V-204425, V-204428 | Root login required for XO connection |
+| Enforce least privilege | V-207370, V-207383 | All operations run as root |
+| Individual accountability | V-207338, V-207347 | Shared root prevents user attribution |
+| SSH access restrictions | V-204594, V-204595 | Root SSH must remain open |
+| Account lockout | V-204419 | Cannot lock root — would lock out XO |
+
+**Precedent:** VMware ESXi supports non-root administrative accounts and AD-integrated authentication. Microsoft Hyper-V uses AD domain accounts. Proxmox VE supports PAM, LDAP, and AD authentication with RBAC. XCP-ng's mandatory root requirement is the outlier among enterprise hypervisors.
+
+**Recommended Actions for Vates:**
+1. **[CRITICAL]** Enable XO to connect to XCP-ng using a non-root service account with appropriate XAPI privileges
+2. **[HIGH]** Support key-based authentication as the default method for XO-to-XCP-ng connections
+3. **[HIGH]** Document a supported procedure for locking down root once an alternate admin account is configured
+4. **[HIGH]** Ensure `sudo` is properly configured on Dom0 for privilege escalation with audit logging
+5. **[MEDIUM]** Support individual named accounts for direct SSH access to Dom0
+
+### 4.10 HIGH — XCP-ng Dom0 Lacks External Identity Provider Integration (CAT II)
+
+| Attribute | Detail |
+|-----------|--------|
+| **Issue ID** | AUTH-002 |
+| **Affected Components** | XCP-ng Dom0 (all hosts) |
+| **Severity** | CAT II (authentication, account management, MFA delegation) |
+| **Impact** | 20-29 Open findings in Dom0 RHEL7 module could be resolved or mitigated |
+
+**Finding:** XCP-ng Dom0 has **no supported mechanism for integrating with an external identity provider** such as Active Directory or LDAP. All authentication is performed against local accounts.
+
+**Why This Matters — Lessons Learned from Xen Orchestra:**
+
+During the XO assessment, the **auth-ldap plugin** proved transformative. When XO authentication is delegated to Active Directory:
+- **5 GPOS functions flipped from Open to NotAFinding** (centralized account lifecycle)
+- **4 additional functions benefited** from AD as supplementary evidence
+- **MFA requirements partially satisfied** — AD enforces organizational MFA policies
+- **Account notification requirements met** — AD provides centralized audit and notification
+
+The same pattern would apply to Dom0. CentOS 7 supports AD integration via SSSD/realmd. If Vates officially supported this, 20-29 Dom0 findings could be resolved:
+
+| Finding Area | Approx. Count | How AD Helps |
+|-------------|---------------|-------------|
+| Account management (creation, modification, disabling) | 5-8 | Centralized lifecycle |
+| Password policy (complexity, aging, history) | 8-10 | AD enforces policy |
+| MFA/multi-factor authentication | 2-3 | AD enforces MFA |
+| Account notification and auditing | 3-5 | Centralized audit trail |
+| Individual accountability | 2-3 | Named AD accounts |
+| **Total** | **20-29** | **~8-12% EvalScore improvement** |
+
+**Precedent:** VMware ESXi supports AD integration for host authentication — a standard feature in enterprise hypervisors.
+
+**Recommended Actions for Vates:**
+1. **[HIGH]** Validate and document whether SSSD/realmd AD integration is safe on XCP-ng Dom0
+2. **[HIGH]** If supported: publish step-by-step configuration guide for AD-joining Dom0
+3. **[MEDIUM]** Ensure SSSD packages are available in XCP-ng repositories
+4. **[MEDIUM]** Document interaction between AD-joined Dom0 and XAPI pool operations
+
 ---
 
 ## 5. Findings Addressable by Site Configuration
@@ -683,6 +755,8 @@ Based on the Dom0 assessment, the highest-impact hardening actions are:
 |------------|--------------|------------|-------------------|
 | FIPS 140-2 cryptography not validated | 10+ | XO + Dom0 | Vates (product change or guidance) |
 | No mandatory consent banner | 5+ | XO + Dom0 | Vates (feature) + Site (nginx/SSH config) |
+| Mandatory root account for XO connection | 10-15 | Dom0 + VMM | Vates (non-root service account + key-based auth) |
+| No AD/LDAP integration on Dom0 | 20-29 | Dom0 | Vates (SSSD/realmd support and documentation) |
 | SELinux disabled on Dom0 | 1 (CAT I) | Dom0 | Vates (official position + compensating controls) |
 | MFA/2FA not fully detected | 3 | XO | V-264343 resolved; 3 remaining require manual review |
 | TLS 1.1 enabled | 3 | XO | Vates (default change) + Site (config) |
@@ -767,24 +841,28 @@ The goal should be to bring the compliance effort for Vates VMS to within 2-3x o
 
 ### Immediate Actions (for Security Authorization Support)
 
-1. **Publish a compliance supplement to the existing Hardening Guide** — the v0.1 guide (May 2024) is an excellent foundation; add compliance-specific procedures for PAM, FIPS, consent banner, smart card authentication, session management, audit rules, and SSH hardening (see Section 4.8 gap table)
-2. **Provide FIPS 140-2 compliance statement** for both XO and XCP-ng (even if the answer is "not currently validated" — assessors need official documentation)
-3. **Publish nginx consent banner template** for regulated XO deployments (can be done without product code changes)
-4. **Document TLS hardening steps** to disable TLS 1.1 and enforce TLS 1.2+
-5. **Publish SELinux position statement** for XCP-ng Dom0 — whether it can be enabled safely, and if not, what compensating controls exist
-6. **Document Dom0 security update strategy** — how CentOS 7 EOL is handled, what receives patches, and the update cadence
-7. **Document smart card + SAML/OIDC integration** as the recommended MFA architecture for regulated environments
-8. **Clarify 2FA/SAML/OIDC configuration storage** — provide documentation on where XO stores MFA configuration so automated scanners can detect it
+1. **[CRITICAL] Enable non-root XO-to-XCP-ng connection** — allow XO to connect using a dedicated service account; support key-based auth; document root lockdown procedure (Section 4.9) — **highest compliance ROI, 10-15+ findings resolved**
+2. **[CRITICAL] Provide FIPS 140-2 compliance statement** for both XO and XCP-ng (even if the answer is "not currently validated" — assessors need official documentation)
+3. **[HIGH] Validate and document AD/LDAP integration for Dom0** — SSSD/realmd support would resolve 20-29 Dom0 findings by delegating authentication to Active Directory (Section 4.10)
+4. **Publish a compliance supplement to the existing Hardening Guide** — add procedures for PAM, FIPS, consent banner, smart card authentication, session management, audit rules, and SSH hardening (Section 4.8)
+5. **Publish nginx consent banner template** for regulated XO deployments (no product code changes needed)
+6. **Document TLS hardening steps** to disable TLS 1.1 and enforce TLS 1.2+
+7. **Publish SELinux position statement** for XCP-ng Dom0 — whether it can be enabled safely, and if not, what compensating controls exist
+8. **Document Dom0 security update strategy** — how CentOS 7 EOL is handled, what receives patches, and the update cadence
+9. **Document smart card + SAML/OIDC integration** as the recommended MFA architecture for regulated environments
+10. **Clarify 2FA/SAML/OIDC configuration storage** — documentation on where XO stores MFA configuration for automated scanner detection
 
 ### Product Roadmap Items (for Full Security Authorization)
 
-1. **Native pre-login banner with acknowledgment** in the XO web UI
-2. **FIPS mode support** (PBKDF2 for local passwords, FIPS-validated TLS libraries)
-3. **Disable TLS 1.1 by default** in new releases
-4. **Expose VDI UUID/SR name to guest VMs** via `xen-blkfront` sysfs attributes — required for hardware asset inventory compliance (CM-8, SI-7)
-5. **Mask TOTP secrets in REST API** — return boolean instead of Base32 secret to prevent credential exposure
-6. **Automated scanning benchmark development** for compliance scanning
-7. **Dom0 base OS migration** — roadmap for moving to a supported base OS in future XCP-ng releases
+1. **Non-root service account for XO management connection** — the single highest-impact change for compliance (Section 4.9)
+2. **AD/LDAP integration for Dom0** — SSSD/realmd support with official documentation (Section 4.10)
+3. **Native pre-login banner with acknowledgment** in the XO web UI
+4. **FIPS mode support** (PBKDF2 for local passwords, FIPS-validated TLS libraries)
+5. **Disable TLS 1.1 by default** in new releases
+6. **Expose VDI UUID/SR name to guest VMs** via `xen-blkfront` sysfs attributes — required for hardware asset inventory compliance (CM-8, SI-7)
+7. **Mask TOTP secrets in REST API** — return boolean instead of Base32 secret to prevent credential exposure
+8. **Automated scanning benchmark development** for compliance scanning
+9. **Dom0 base OS migration** — roadmap for moving to a supported base OS in future XCP-ng releases
 
 ### Documentation Deliverables
 
