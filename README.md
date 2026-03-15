@@ -1,8 +1,7 @@
 # Evaluate-STIG Modifications for Vates VMS
 
 Custom STIG compliance scanning modules for **Xen Orchestra (XO)** and **XCP-ng**,
-extending the [NAVSEA Evaluate-STIG](https://www.niwcatlantic.navy.mil/Technology/SoftwareFactory/Evaluate-STIG/)
-framework to support DoD compliance scanning of the
+extending the Evaluate-STIG framework to support automated compliance scanning of the
 [Vates Virtualization Management Stack](https://vates.tech).
 
 ---
@@ -12,7 +11,7 @@ framework to support DoD compliance scanning of the
 No official DISA STIGs or SCAP Benchmarks exist for Xen Orchestra or XCP-ng. This
 project adapts applicable Security Requirements Guides (SRGs) and existing STIGs to
 enable automated compliance scanning and STIG checklist (CKL/CKLB) generation — supporting
-an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD use.
+security authorization packages (IATT / ATO) in regulated environments.
 
 ---
 
@@ -49,9 +48,8 @@ for findings in each module.
 
 ## Getting Started
 
-> **This repository does not include the NAVSEA Evaluate-STIG framework.**
-> You must obtain it separately from
-> [NISC](https://www.niwcatlantic.navy.mil/Technology/SoftwareFactory/Evaluate-STIG/)
+> **This repository does not include the Evaluate-STIG framework.**
+> You must obtain it separately from your local Cybersecurity team
 > and integrate these modules into it.
 
 See **[`.Mods_by_Kismet/README.md`](.Mods_by_Kismet/README.md)** for complete
@@ -112,5 +110,5 @@ for full details and recommended mitigations.
 ## Authors
 
 **Modifications by:** Kismet Agbasi
-**Original Framework:** NAVSEA / NIWC Atlantic
+**Original Framework:** Evaluate-STIG
 **Developed with:** GitHub Copilot and Claude Code (Anthropic)

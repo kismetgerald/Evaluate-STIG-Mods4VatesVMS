@@ -3,14 +3,14 @@
 
 **Prepared by:** Kismet Agbasi
 **Last Updated:** February 11, 2026 (Session #35)
-**Framework Base:** NAVSEA Evaluate-STIG v1.2507.6
+**Framework Base:** Evaluate-STIG v1.2507.6
 
 ---
 
 ## Overview
 
 This guide explains how to integrate the custom STIG check modules for Xen Orchestra (XO) and
-XCP-ng into a fresh installation of the NAVSEA Evaluate-STIG framework, and how to run
+XCP-ng into a fresh installation of the Evaluate-STIG framework, and how to run
 compliance scans against both types of target systems.
 
 The custom modules cover five STIG/SRG documents:
@@ -95,7 +95,7 @@ pwsh --version && echo "PowerShell: OK" || echo "PowerShell: MISSING"
 
 #### Offline / Air-Gapped Package Installation
 
-In air-gapped DoD environments, target systems have no direct Internet access. All packages
+In air-gapped environments, target systems have no direct Internet access. All packages
 must be downloaded on an Internet-connected system first, transferred via approved media
 (removable drive, jump host, or authorized file transfer), and then installed locally.
 
@@ -923,7 +923,7 @@ rm -rf /tmp/Evaluate-STIG_RemoteComputer
 
 ## Updating the Framework (Evaluate-STIG Version Changes)
 
-When NAVSEA releases a new version of Evaluate-STIG, you cannot simply overwrite the installed
+When a new version of Evaluate-STIG is released, you cannot simply overwrite the installed
 copy with the new release. The custom integration modifies several upstream files. If those
 changes are lost, scans will fail. Follow this process for every version update.
 
@@ -1005,7 +1005,7 @@ StigContent/U_ASD_STIG_V6R4_Manual-xccdf.xml
 StigContent/U_Web_Server_SRG_V4R4_Manual-xccdf.xml
 ```
 
-> **Tip:** If NAVSEA ships a new version of one of these XCCDF files (e.g., updated VMM SRG),
+> **Tip:** If a new version of one of these XCCDF files is released (e.g., updated VMM SRG),
 > also update the `<ContentHash>` in `STIGList.xml` to match the new file's SHA-256 hash.
 > Compute the hash with:
 > ```powershell
