@@ -271,7 +271,7 @@ The following findings cannot be resolved through system configuration alone. Th
 | **Severity** | CAT II |
 | **Impact** | 5+ Open findings across ASD, GPOS, and Dom0 modules |
 
-**Finding:** Xen Orchestra has **no built-in mechanism** to display a mandatory notice and consent banner before granting access. XCP-ng Dom0 SSH does not ship with a DoD banner configured in `/etc/issue.net`.
+**Finding:** Xen Orchestra has **no built-in mechanism** to display a mandatory notice and consent banner before granting access. XCP-ng Dom0 SSH does not ship with a consent banner configured in `/etc/issue.net`.
 
 **Compliance Requirement:** The organization's standard mandatory notice and consent banner must be displayed, and users must explicitly acknowledge it before login proceeds.
 
@@ -362,7 +362,7 @@ Federal security frameworks mandate that all hardware components be uniquely ide
 
 - **NIST SP 800-53 CM-8 (Component Inventory):** Organizations must maintain an accurate inventory of system components. Disk devices without serial numbers or model identifiers cannot be positively inventoried.
 - **NIST SP 800-53 CM-3 (Configuration Change Control):** Change detection requires identifying *which specific component* changed. Indistinguishable virtual disks prevent this.
-- **CNSSI 1253:** For classified systems, hardware asset tracking must support chain-of-custody verification. A virtual disk that cannot be uniquely identified breaks the chain of evidence.
+- **CNSSI 1253:** For high-impact systems, hardware asset tracking must support chain-of-custody verification. A virtual disk that cannot be uniquely identified breaks the chain of evidence.
 - **DISA STIG SI-7 (Integrity):** Integrity verification requires unique component identification.
 
 **The information exists — it's just not exposed to guests.** XCP-ng's XAPI maintains rich VDI metadata (UUID, SR association, size) but the Xen PV block driver (`xen-blkfront`) does not propagate it to the guest OS.
@@ -591,7 +591,7 @@ These findings are Open but can be resolved by the deploying organization withou
 
 | Area | Requirement | Remediation |
 |------|-------------|-------------|
-| SSH Banner | Display DoD consent banner | Configure `/etc/issue.net` and `Banner` in sshd_config |
+| SSH Banner | Display mandatory consent banner | Configure `/etc/issue.net` and `Banner` in sshd_config |
 | SSH Protocol | Disable weak ciphers, MACs, key exchange | Configure `Ciphers`, `MACs`, `KexAlgorithms` in sshd_config |
 | SSH Timeout | Session inactivity lockout | `ClientAliveInterval 600`, `ClientAliveCountMax 0` |
 | SSH Access | Restrict root login | `PermitRootLogin no` (requires alternate admin account) |
@@ -886,7 +886,7 @@ The goal should be to bring the compliance effort for Vates VMS to within 2-3x o
 
 ### Framework
 
-- **Tool:** Custom automated compliance scanning framework (extension of NAVSEA Evaluate-STIG v1.2507.6)
+- **Tool:** Custom automated compliance scanning framework (extension of Evaluate-STIG v1.2507.6)
 - **Modules:** 5 custom PowerShell modules (1,047 functions total)
 - **Execution:** Remote SSH-based PSRemoting from scanning workstation to target systems
 - **Output:** Compliance checklist files (CKL, CKLB, XCCDF) + XML/HTML Summary Reports
@@ -932,7 +932,7 @@ The following artifacts are available for assessor review:
 3. **Scanner Update (PARTIALLY COMPLETE):** V-264343 now detects native TOTP 2FA via REST API and flips Open &rarr; NotAFinding when all users have 2FA enabled. V-264344 requires organizational attestation (cannot fully automate). V-203642/V-203643 are OS-level PAM/SSH checks not addressable by application-level 2FA.
 4. **Authorization Package Assembly:** Compile checklist files, this report, Vates hardening guide, and remediation plans into security authorization submission package
 5. **Production Validation:** Run full 5-module scan against production-representative environment with hardening applied to measure improvement in EvalScores
-6. **Framework Migration:** Evaluate integration of custom modules into future Evaluate-STIG releases (see separate NAVSEA Framework Contribution Proposal)
+6. **Framework Migration:** Evaluate integration of custom modules into future Evaluate-STIG releases (see separate Framework Contribution Proposal)
 
 ---
 
