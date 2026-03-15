@@ -38,7 +38,7 @@ The Evaluate-STIG framework already supports VMware, Hyper-V, and other commerci
 
 | Module | STIG/SRG Applied | Target System | Checks | EvalScore |
 |--------|-----------------|---------------|--------|-----------|
-| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | 43.65% |
+| `Scan-XO_WebSRG_Checks` | Web Server SRG V4R4 | Xen Orchestra | 126 | 42.86% |
 | `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | 43.36% |
 | `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | 46.46% |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 193 | 34.72% |
@@ -105,7 +105,7 @@ XCP-ng systems can return null values for `IpAddress` and `MacAddress` in Target
 Hypervisor environments (XCP-ng, KVM, etc.) create dozens of virtual bridge and tap interfaces that pollute the network adapter inventory. The fix filters `ip -4 addr` output to only include interfaces with assigned IPv4 addresses.
 
 **Fix 2: Linux disk collection for Summary Report (~25 lines)**
-The existing Linux disk collection code uses `lsblk`/`lvscan` with broken parsing — it only populates 3 of 7 disk fields (Index, DeviceID, Size) and pipes hashtable objects through `cut` commands, producing "Name Value ---- ------" garbage in the Summary Report HTML. The fix replaces this with proper `lsblk -dno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE` parsing, populating all 7 fields (Index, DeviceID, Size, Caption, SerialNumber, MediaType, InterfaceType) to match the Windows CIM structure.
+The existing Linux disk collection code uses `lsblk`/`lvscan` with broken parsing — it only populates 3 of 7 disk fields (Index, DeviceID, Size) and pipes hashtable objects through `cut` commands, producing "Name Value ---- ------" garbage in the Summary Report HTML. The fix replaces this with `lsblk -Pdno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE` (pairs output with quoted values) and regex KEY="VALUE" parsing, correctly handling fields containing spaces (e.g., MODEL="QEMU DVD-ROM"). Populates all 7 fields (Index, DeviceID, Size, Caption, SerialNumber, MediaType, InterfaceType) to match the Windows CIM structure.
 
 **Both are general improvements** that benefit any Linux system scanned by the framework, not just XCP-ng/XO targets.
 

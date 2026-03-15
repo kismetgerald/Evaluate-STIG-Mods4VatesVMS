@@ -216,17 +216,18 @@ $NetAdapters = @(ip -4 addr | grep -B1 "inet " | grep "^[0-9]\+:" | awk '{print 
 **Impact:** Reduces false positive interfaces from 14+ to only active interfaces with real IP addresses
 **Compatibility:** Works on all Linux distributions; no impact on Windows interface detection
 
-#### Lines 1573-1598: Fixed Linux disk collection for Summary Report (MODIFIED_BY: Kismet Agbasi on 03/14/2026)
+#### Lines 1573-1598: Fixed Linux disk collection for Summary Report (MODIFIED_BY: Kismet Agbasi on 03/15/2026)
 ```powershell
-# MODIFIED_BY: Kismet Agbasi on 03/14/2026 - Fix broken lsblk/lvscan parsing, populate all 7 disk fields
+# MODIFIED_BY: Kismet Agbasi on 03/15/2026 - Fix broken lsblk/lvscan parsing, populate all 7 disk fields
 # Original code only collected 3 of 7 fields (Index, DeviceID, Size) and had broken parsing
 # producing "Name Value ---- ------" garbage in Summary Report HTML.
-# Fix: Use lsblk -dno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE to populate all 7 fields
+# Fix: Use lsblk -Pdno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE (pairs output with quoted values)
+# to handle fields containing spaces (e.g., MODEL="QEMU DVD-ROM"), then parse KEY="VALUE" pairs
 # matching the Windows CIM structure (Index, DeviceID, Size, Caption, SerialNumber, MediaType, InterfaceType)
 ```
-**Rationale:** Linux disk data in Summary Report was malformed — only 3 fields populated, `lsblk` output parsing was broken (piping hashtables through `cut`), and `lvscan` Try/Catch path produced raw strings instead of structured data
+**Rationale:** Linux disk data in Summary Report was malformed — only 3 fields populated, `lsblk` output parsing was broken (piping hashtables through `cut`), and `lvscan` Try/Catch path produced raw strings instead of structured data. Initial fix (v1) used whitespace splitting which broke on MODEL values containing spaces (e.g., "QEMU DVD-ROM"); v2 uses `-P` pairs output with regex KEY="VALUE" parsing.
 **Impact:** Summary Report HTML now shows complete disk information on Linux systems matching the Windows 7-column table format
-**Compatibility:** Linux only; no impact on Windows disk detection. Uses `lsblk -d` (physical disks only), available on all supported Linux distributions
+**Compatibility:** Linux only; no impact on Windows disk detection. Uses `lsblk -Pd` (physical disks, pairs output), available on all supported Linux distributions (util-linux 2.22+)
 
 ---
 

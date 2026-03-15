@@ -280,6 +280,30 @@ All scripts in `.Mods_by_Kismet/Docs/QA/`:
 | Test210 | 2026-03-14 | XO1: ASD+WebSRG+GPOS | 6 | PARTIAL | GPOS: PASS 46.46%. ASD: 5 func errors (-name×3, iptables×1, ulimit×1). WebSRG: 16 func errors (-name×9, 2>&1×2, ufw×2, ntpq×1, configPath×1, xoServerPath×1) |
 | Test211 | 2026-03-14 | XO1: GPOS+ASD+WebSRG | 6H | PARTIAL | GPOS: PASS 46.46% ✓. ASD: 43.71% (above baseline!), 2 errors (V-222554, V-222601 — `{}` ScriptBlock). WebSRG: 43.65% (above baseline!), 2 errors (V-206443 `'$xoServerPath'`, V-264356 `{}` ScriptBlock) |
 | Test212 | 2026-03-14 | XO1: GPOS+ASD+WebSRG | 6I | **PASS** | **ZERO errors.** GPOS: 46.46% (=baseline). ASD: 44.06% (+0.70%). WebSRG: 42.86% (+1.59%). All 3 XO modules clean. |
+| Test213 | 2026-03-14 | XO1: GPOS+ASD+WebSRG | Phase 2 | PARTIAL | Summary Report disk fix validated (lsblk -dno). 2 Not_Reviewed: V-222425 (ASD), V-206414 (WebSRG) — xargs -I {} ScriptBlock parsing. |
+| Test214 | 2026-03-14 | XO1: GPOS+ASD+WebSRG | Phase 2 | **PASS** | **ZERO errors.** GPOS: 46.46%. ASD: 43.36%. WebSRG: 43.65%. xargs -I {} fixes validated. |
+| Test215 | 2026-03-15 | XO1: GPOS+ASD+WebSRG | Phase 2 | **PASS** | **ZERO errors.** GPOS: 46.46%. ASD: 43.36%. WebSRG: 42.86%. Disk fix v2 (lsblk -P pairs) validated — MODEL="QEMU DVD-ROM" parsed correctly. |
+
+---
+
+## QA Phase 2: Linux Summary Report Disk Fix + Remaining xargs Fixes
+
+### Framework Fix: Master_Functions.psm1 Linux Disk Collection
+
+**Root cause:** Original code used `lsblk`/`lvscan` with broken parsing — only 3 of 7 fields populated, hashtable objects piped through `cut`. Initial fix (v1) used whitespace splitting which broke on MODEL values with spaces (e.g., "QEMU DVD-ROM"). Final fix (v2) uses `lsblk -Pdno` (pairs output with quoted KEY="VALUE" format) and regex parsing.
+
+**Impact:** Summary Report HTML now shows complete 7-column disk table on Linux matching Windows.
+
+### Module Fix: xargs -I {} ScriptBlock Parsing
+
+| Fix | Module | Line | VulnID | Status |
+|-----|--------|------|--------|--------|
+| `xargs -I {} ... {}` → `xargs -I '{}' ... '{}'` | ASD | 40356 | V-222574 | DONE |
+| `xargs -I {} ... {}` → `xargs -I '{}' ... '{}'` | ASD | 40370 | V-222574 | DONE |
+| `xargs -I {} ... {}` → `xargs -I '{}' ... '{}'` | ASD | 42938 | V-222425 | DONE |
+| `xargs -I {} ... {}` → `xargs -I '{}' ... '{}'` | WebSRG | 16996 | V-206414 | DONE |
+| `xargs -I {} ... {}` → `xargs -I '{}' ... '{}'` + `'$certDir'` → `$certDir` | WebSRG | 35119 | V-264352 | DONE |
+| **Total** | | | | **5 fixes** |
 
 ---
 
