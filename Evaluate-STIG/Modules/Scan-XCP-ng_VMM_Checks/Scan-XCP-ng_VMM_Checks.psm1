@@ -196,6 +196,7 @@ Function Get-V207338 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-207338"
     $RuleID = "SV-207338r958362_rule"
     $Status = "Not_Reviewed"
@@ -217,12 +218,12 @@ Function Get-V207338 {
     if (-not $XCPngVersionInfo.IsSupported) {
         $Status = "Not_Applicable"
         $FindingMessage = "XCP-ng version $($XCPngVersionInfo.Version) is not supported for VMM SRG compliance scanning."
-        $FindingMessage += "`nSupported versions: XCP-ng 8.x, 9.x"
+        $FindingMessage += $nl + "Supported versions: XCP-ng 8.x, 9.x"
     }
     else {
-        $FindingMessage = "XCP-ng RBAC (Role-Based Access Control) Verification`n"
-        $FindingMessage += "XCP-ng Version: $($XCPngVersionInfo.VersionString)`n"
-        $FindingMessage += "=" * 60 + "`n`n"
+        $FindingMessage = "XCP-ng RBAC (Role-Based Access Control) Verification" + $nl
+        $FindingMessage += "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl
+        $FindingMessage += "=" * 60 + $nl + $nl
 
         $RBACConfigured = $false
         $HasNonAdminRoles = $false
@@ -232,46 +233,46 @@ Function Get-V207338 {
         # ----------------------------------------------------------------
         # Step 1: Query available roles using xe role-list
         # ----------------------------------------------------------------
-        $FindingMessage += "--- RBAC Roles Available ---`n"
+        $FindingMessage += "--- RBAC Roles Available ---" + $nl
         try {
             $RoleListOutput = $(xe role-list 2>/dev/null)
             if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($RoleListOutput)) {
-                $FindingMessage += "ERROR: Unable to retrieve role list. xe command failed or returned empty.`n"
+                $FindingMessage += "ERROR: Unable to retrieve role list. xe command failed or returned empty." + $nl
                 $CommandsFailed = $true
             }
             else {
-                $FindingMessage += $RoleListOutput + "`n"
+                $FindingMessage += $RoleListOutput + $nl
                 # XCP-ng has built-in roles: pool-admin, pool-operator, vm-power-admin, vm-admin, vm-operator, read-only
                 if ($RoleListOutput -match "pool-admin|pool-operator|vm-power-admin|vm-admin|vm-operator|read-only") {
                     $RBACConfigured = $true
-                    $FindingMessage += "`nRBAC roles are available in xapi.`n"
+                    $FindingMessage += $nl + "RBAC roles are available in xapi." + $nl
                 }
             }
         }
         catch {
-            $FindingMessage += "ERROR: Exception executing xe role-list: $($_.Exception.Message)`n"
+            $FindingMessage += "ERROR: Exception executing xe role-list: $($_.Exception.Message)" + $nl
             $CommandsFailed = $true
         }
 
-        $FindingMessage += "`n"
+        $FindingMessage += $nl
 
         # ----------------------------------------------------------------
         # Step 2: Query subjects (users/groups) configured for RBAC
         # ----------------------------------------------------------------
-        $FindingMessage += "--- RBAC Subjects (Users/Groups) ---`n"
+        $FindingMessage += "--- RBAC Subjects (Users/Groups) ---" + $nl
         try {
             $SubjectListOutput = $(xe subject-list 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
-                $FindingMessage += "ERROR: Unable to retrieve subject list. xe command failed.`n"
+                $FindingMessage += "ERROR: Unable to retrieve subject list. xe command failed." + $nl
                 $CommandsFailed = $true
             }
             elseif ([string]::IsNullOrWhiteSpace($SubjectListOutput)) {
-                $FindingMessage += "No RBAC subjects configured.`n"
-                $FindingMessage += "WARNING: No external users/groups are assigned RBAC roles.`n"
-                $FindingMessage += "Only local root account has access (default pool-admin).`n"
+                $FindingMessage += "No RBAC subjects configured." + $nl
+                $FindingMessage += "WARNING: No external users/groups are assigned RBAC roles." + $nl
+                $FindingMessage += "Only local root account has access (default pool-admin)." + $nl
             }
             else {
-                $FindingMessage += $SubjectListOutput + "`n"
+                $FindingMessage += $SubjectListOutput + $nl
 
                 # Parse subjects to check for non-admin role assignments
                 # Subject entries contain: uuid, subject-identifier, other-config, roles
@@ -280,44 +281,44 @@ Function Get-V207338 {
                     $SubjectCount = ([regex]::Matches($SubjectListOutput, "uuid")).Count
                 }
 
-                $FindingMessage += "`nTotal subjects found: $SubjectCount`n"
+                $FindingMessage += $nl + "Total subjects found: $SubjectCount" + $nl
 
                 # Check if any subjects have non-admin roles
                 if ($SubjectListOutput -match "vm-operator|vm-admin|vm-power-admin|pool-operator|read-only") {
                     $HasNonAdminRoles = $true
-                    $FindingMessage += "GOOD: Non-admin roles are assigned to some subjects.`n"
+                    $FindingMessage += "GOOD: Non-admin roles are assigned to some subjects." + $nl
                 }
                 elseif ($SubjectListOutput -match "pool-admin" -and $SubjectCount -gt 0) {
-                    $FindingMessage += "WARNING: All configured subjects appear to have pool-admin role.`n"
+                    $FindingMessage += "WARNING: All configured subjects appear to have pool-admin role." + $nl
                 }
             }
         }
         catch {
-            $FindingMessage += "ERROR: Exception executing xe subject-list: $($_.Exception.Message)`n"
+            $FindingMessage += "ERROR: Exception executing xe subject-list: $($_.Exception.Message)" + $nl
             $CommandsFailed = $true
         }
 
-        $FindingMessage += "`n"
+        $FindingMessage += $nl
 
         # ----------------------------------------------------------------
         # Step 3: Check for LDAP/AD integration configuration
         # ----------------------------------------------------------------
-        $FindingMessage += "--- External Authentication (LDAP/AD) ---`n"
+        $FindingMessage += "--- External Authentication (LDAP/AD) ---" + $nl
         try {
             # Check pool authentication configuration
             $PoolAuthOutput = $(xe pool-list params=name-label,external-auth-type,external-auth-service-name 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
-                $FindingMessage += "ERROR: Unable to retrieve pool authentication settings.`n"
+                $FindingMessage += "ERROR: Unable to retrieve pool authentication settings." + $nl
                 $CommandsFailed = $true
             }
             else {
-                $FindingMessage += $PoolAuthOutput + "`n"
+                $FindingMessage += $PoolAuthOutput + $nl
 
                 # Check if external auth is configured (AD or LDAP)
                 if ($PoolAuthOutput -match "external-auth-type\s*\(\s*RO\s*\)\s*:\s*AD" -or
                     $PoolAuthOutput -match "external-auth-type.*:\s*AD") {
                     $LDAPConfigured = $true
-                    $FindingMessage += "`nActive Directory integration is ENABLED.`n"
+                    $FindingMessage += $nl + "Active Directory integration is ENABLED." + $nl
                 }
                 elseif ($PoolAuthOutput -match "external-auth-type\s*\(\s*RO\s*\)\s*:\s*\S+" -or
                         $PoolAuthOutput -match "external-auth-type.*:\s*\S+") {
@@ -325,88 +326,88 @@ Function Get-V207338 {
                     if (-not ($PoolAuthOutput -match "external-auth-type.*:\s*$" -or
                               $PoolAuthOutput -match "external-auth-type\s*\(\s*RO\s*\)\s*:\s*$")) {
                         $LDAPConfigured = $true
-                        $FindingMessage += "`nExternal authentication is ENABLED.`n"
+                        $FindingMessage += $nl + "External authentication is ENABLED." + $nl
                     }
                     else {
-                        $FindingMessage += "`nNo external authentication configured.`n"
+                        $FindingMessage += $nl + "No external authentication configured." + $nl
                     }
                 }
                 else {
-                    $FindingMessage += "`nNo external authentication configured.`n"
+                    $FindingMessage += $nl + "No external authentication configured." + $nl
                 }
             }
         }
         catch {
-            $FindingMessage += "ERROR: Exception checking pool authentication: $($_.Exception.Message)`n"
+            $FindingMessage += "ERROR: Exception checking pool authentication: $($_.Exception.Message)" + $nl
             $CommandsFailed = $true
         }
 
-        $FindingMessage += "`n"
+        $FindingMessage += $nl
 
         # ----------------------------------------------------------------
         # Step 4: Check local user accounts in Dom0
         # ----------------------------------------------------------------
-        $FindingMessage += "--- Dom0 Local User Accounts ---`n"
+        $FindingMessage += "--- Dom0 Local User Accounts ---" + $nl
         try {
             # List users with UID >= 1000 (non-system accounts) plus root
             $LocalUsersOutput = $(awk -F: '{if ($3 >= 1000 || $1 == "root") print $1":UID="$3":GID="$4}' /etc/passwd 2>/dev/null)
             if ($LASTEXITCODE -ne 0) {
-                $FindingMessage += "ERROR: Unable to query local user accounts.`n"
+                $FindingMessage += "ERROR: Unable to query local user accounts." + $nl
                 $CommandsFailed = $true
             }
             else {
-                $FindingMessage += "Local accounts:`n$LocalUsersOutput`n"
+                $FindingMessage += "Local accounts:" + $nl + "$LocalUsersOutput" + $nl
             }
         }
         catch {
-            $FindingMessage += "ERROR: Exception querying local users: $($_.Exception.Message)`n"
+            $FindingMessage += "ERROR: Exception querying local users: $($_.Exception.Message)" + $nl
             $CommandsFailed = $true
         }
 
-        $FindingMessage += "`n"
+        $FindingMessage += $nl
 
         # ----------------------------------------------------------------
         # Step 5: Determine final status
         # ----------------------------------------------------------------
-        $FindingMessage += "=" * 60 + "`n"
-        $FindingMessage += "--- Assessment Summary ---`n"
+        $FindingMessage += "=" * 60 + $nl
+        $FindingMessage += "--- Assessment Summary ---" + $nl
 
         if ($CommandsFailed) {
             $Status = "Not_Reviewed"
-            $FindingMessage += "STATUS: Not_Reviewed`n"
-            $FindingMessage += "REASON: One or more xe commands failed. Manual verification required.`n"
-            $FindingMessage += "RECOMMENDATION: Verify xe CLI is functional and user has sufficient privileges.`n"
+            $FindingMessage += "STATUS: Not_Reviewed" + $nl
+            $FindingMessage += "REASON: One or more xe commands failed. Manual verification required." + $nl
+            $FindingMessage += "RECOMMENDATION: Verify xe CLI is functional and user has sufficient privileges." + $nl
         }
         elseif ($RBACConfigured -and ($LDAPConfigured -or $HasNonAdminRoles)) {
             # RBAC is configured with either AD/LDAP or role-differentiated subjects
             $Status = "NotAFinding"
-            $FindingMessage += "STATUS: NotAFinding`n"
-            $FindingMessage += "REASON: RBAC is configured with automated account management.`n"
+            $FindingMessage += "STATUS: NotAFinding" + $nl
+            $FindingMessage += "REASON: RBAC is configured with automated account management." + $nl
             if ($LDAPConfigured) {
-                $FindingMessage += "  - External authentication (AD/LDAP) is enabled for centralized account management.`n"
+                $FindingMessage += "  - External authentication (AD/LDAP) is enabled for centralized account management." + $nl
             }
             if ($HasNonAdminRoles) {
-                $FindingMessage += "  - Role-based permissions are assigned (not all users are pool-admin).`n"
+                $FindingMessage += "  - Role-based permissions are assigned (not all users are pool-admin)." + $nl
             }
         }
         elseif ($RBACConfigured -and -not $LDAPConfigured -and -not $HasNonAdminRoles) {
             # RBAC exists but no external auth and no role differentiation
             $Status = "Open"
-            $FindingMessage += "STATUS: Open (Finding)`n"
-            $FindingMessage += "REASON: RBAC infrastructure exists but is not effectively utilized.`n"
-            $FindingMessage += "  - No external authentication (AD/LDAP) configured.`n"
-            $FindingMessage += "  - No subjects with differentiated roles (all admin or no subjects).`n"
-            $FindingMessage += "RECOMMENDATION:`n"
-            $FindingMessage += "  1. Configure Active Directory integration: xe pool-enable-external-auth`n"
-            $FindingMessage += "  2. Add subjects with appropriate roles: xe subject-add`n"
-            $FindingMessage += "  3. Assign least-privilege roles (vm-operator, read-only, etc.)`n"
+            $FindingMessage += "STATUS: Open (Finding)" + $nl
+            $FindingMessage += "REASON: RBAC infrastructure exists but is not effectively utilized." + $nl
+            $FindingMessage += "  - No external authentication (AD/LDAP) configured." + $nl
+            $FindingMessage += "  - No subjects with differentiated roles (all admin or no subjects)." + $nl
+            $FindingMessage += "RECOMMENDATION:" + $nl
+            $FindingMessage += "  1. Configure Active Directory integration: xe pool-enable-external-auth" + $nl
+            $FindingMessage += "  2. Add subjects with appropriate roles: xe subject-add" + $nl
+            $FindingMessage += "  3. Assign least-privilege roles (vm-operator, read-only, etc.)" + $nl
         }
         else {
             # RBAC not configured or cannot determine
             $Status = "Not_Reviewed"
-            $FindingMessage += "STATUS: Not_Reviewed`n"
-            $FindingMessage += "REASON: Unable to determine RBAC configuration state.`n"
-            $FindingMessage += "RECOMMENDATION: Manually verify xapi RBAC configuration.`n"
+            $FindingMessage += "STATUS: Not_Reviewed" + $nl
+            $FindingMessage += "REASON: Unable to determine RBAC configuration state." + $nl
+            $FindingMessage += "RECOMMENDATION: Manually verify xapi RBAC configuration." + $nl
         }
     }
 
@@ -913,6 +914,7 @@ Function Get-V207342 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-207342"
     $RuleID = "SV-207342r958388_rule"
     $Status = "Not_Reviewed"
@@ -954,7 +956,7 @@ Function Get-V207342 {
     try {
         # Check each PAM file for pam_faillock or pam_tally2 configuration
         foreach ($PamFile in $PamFiles) {
-            $FileExists = $(sh -c "test -f '$PamFile' && echo 'exists' || echo 'missing'")
+            $FileExists = $(test -f '$PamFile' && echo 'exists' || echo 'missing' 2>&1)
 
             if ($FileExists -eq "exists") {
                 $PamFilesChecked += $PamFile
@@ -967,7 +969,7 @@ Function Get-V207342 {
                         $FailLockFound = $true
                         $ConfigDetails += "File: $PamFile"
                         $ConfigDetails += "  pam_faillock configuration found:"
-                        foreach ($Line in ($FailLockLines -split "`n")) {
+                        foreach ($Line in ($FailLockLines -split $nl)) {
                             if ($Line.Trim() -ne "") {
                                 $ConfigDetails += "    $($Line.Trim())"
 
@@ -993,7 +995,7 @@ Function Get-V207342 {
                         $Tally2Found = $true
                         $ConfigDetails += "File: $PamFile"
                         $ConfigDetails += "  pam_tally2 configuration found:"
-                        foreach ($Line in ($Tally2Lines -split "`n")) {
+                        foreach ($Line in ($Tally2Lines -split $nl)) {
                             if ($Line.Trim() -ne "") {
                                 $ConfigDetails += "    $($Line.Trim())"
 
@@ -1014,12 +1016,12 @@ Function Get-V207342 {
 
         # Check faillock.conf if pam_faillock was found but deny value not in PAM files
         if ($FailLockFound -and $null -eq $DenyValue) {
-            $FailLockConfExists = $(sh -c "test -f '$FailLockConf' && echo 'exists' || echo 'missing'")
+            $FailLockConfExists = $(test -f '$FailLockConf' && echo 'exists' || echo 'missing' 2>&1)
             if ($FailLockConfExists -eq "exists") {
-                $FailLockConfContent = $(sh -c "grep -v '^#' '$FailLockConf' 2>/dev/null | grep -v '^$'")
+                $FailLockConfContent = $(grep -v '^#' '$FailLockConf' 2>/dev/null | grep -v '^$')
                 if ($null -ne $FailLockConfContent -and $FailLockConfContent -ne "") {
                     $ConfigDetails += "File: $FailLockConf"
-                    foreach ($Line in ($FailLockConfContent -split "`n")) {
+                    foreach ($Line in ($FailLockConfContent -split $nl)) {
                         if ($Line.Trim() -ne "") {
                             $ConfigDetails += "  $($Line.Trim())"
 
@@ -1042,78 +1044,78 @@ Function Get-V207342 {
         }
 
         # Evaluate findings and set status
-        $FindingMessage = "Account Lockout Configuration Check (CAT I)`n"
-        $FindingMessage += "============================================`n`n"
+        $FindingMessage = "Account Lockout Configuration Check (CAT I)" + $nl
+        $FindingMessage += "============================================" + $nl + $nl
 
         if ($PamFilesChecked.Count -eq 0) {
             $Status = "Not_Reviewed"
-            $FindingMessage += "RESULT: Unable to verify - PAM configuration files not accessible.`n`n"
-            $FindingMessage += "Expected files:`n"
+            $FindingMessage += "RESULT: Unable to verify - PAM configuration files not accessible." + $nl + $nl
+            $FindingMessage += "Expected files:" + $nl
             foreach ($f in $PamFiles) {
-                $FindingMessage += "  - $f`n"
+                $FindingMessage += "  - $f" + $nl
             }
-            $FindingMessage += "`nManual verification required.`n"
+            $FindingMessage += $nl + "Manual verification required." + $nl
         }
         elseif (-not $FailLockFound -and -not $Tally2Found) {
             $Status = "Open"
-            $FindingMessage += "RESULT: FINDING - No account lockout mechanism configured.`n`n"
-            $FindingMessage += "Neither pam_faillock nor pam_tally2 module is configured in PAM files.`n`n"
-            $FindingMessage += "Files checked:`n"
+            $FindingMessage += "RESULT: FINDING - No account lockout mechanism configured." + $nl + $nl
+            $FindingMessage += "Neither pam_faillock nor pam_tally2 module is configured in PAM files." + $nl + $nl
+            $FindingMessage += "Files checked:" + $nl
             foreach ($f in $PamFilesChecked) {
-                $FindingMessage += "  - $f`n"
+                $FindingMessage += "  - $f" + $nl
             }
-            $FindingMessage += "`nREMEDIATION:`n"
-            $FindingMessage += "Configure pam_faillock in /etc/pam.d/system-auth and /etc/pam.d/password-auth:`n"
-            $FindingMessage += "  auth required pam_faillock.so preauth deny=3 unlock_time=900 fail_interval=900`n"
-            $FindingMessage += "  auth required pam_faillock.so authfail deny=3 unlock_time=900 fail_interval=900`n"
+            $FindingMessage += $nl + "REMEDIATION:" + $nl
+            $FindingMessage += "Configure pam_faillock in /etc/pam.d/system-auth and /etc/pam.d/password-auth:" + $nl
+            $FindingMessage += "  auth required pam_faillock.so preauth deny=3 unlock_time=900 fail_interval=900" + $nl
+            $FindingMessage += "  auth required pam_faillock.so authfail deny=3 unlock_time=900 fail_interval=900" + $nl
         }
         elseif ($null -eq $DenyValue) {
             $Status = "Open"
-            $FindingMessage += "RESULT: FINDING - Account lockout module found but deny threshold not configured.`n`n"
-            if ($FailLockFound) { $FindingMessage += "pam_faillock module is present but 'deny=' parameter is missing.`n" }
-            if ($Tally2Found) { $FindingMessage += "pam_tally2 module is present but 'deny=' parameter is missing.`n" }
-            $FindingMessage += "`nConfiguration found:`n"
+            $FindingMessage += "RESULT: FINDING - Account lockout module found but deny threshold not configured." + $nl + $nl
+            if ($FailLockFound) { $FindingMessage += "pam_faillock module is present but 'deny=' parameter is missing." + $nl }
+            if ($Tally2Found) { $FindingMessage += "pam_tally2 module is present but 'deny=' parameter is missing." + $nl }
+            $FindingMessage += $nl + "Configuration found:" + $nl
             foreach ($detail in $ConfigDetails) {
-                $FindingMessage += "$detail`n"
+                $FindingMessage += "$detail" + $nl
             }
-            $FindingMessage += "`nREMEDIATION: Add 'deny=3' parameter to the PAM module configuration.`n"
+            $FindingMessage += $nl + "REMEDIATION: Add 'deny=3' parameter to the PAM module configuration." + $nl
         }
         elseif ($DenyValue -gt 3) {
             $Status = "Open"
-            $FindingMessage += "RESULT: FINDING - Account lockout threshold exceeds maximum allowed (3).`n`n"
-            $FindingMessage += "Current deny value: $DenyValue (maximum allowed: 3)`n"
-            if ($null -ne $UnlockTime) { $FindingMessage += "Unlock time: $UnlockTime seconds`n" }
-            if ($null -ne $FailInterval) { $FindingMessage += "Fail interval: $FailInterval seconds`n" }
-            $FindingMessage += "`nConfiguration found:`n"
+            $FindingMessage += "RESULT: FINDING - Account lockout threshold exceeds maximum allowed (3)." + $nl + $nl
+            $FindingMessage += "Current deny value: $DenyValue (maximum allowed: 3)" + $nl
+            if ($null -ne $UnlockTime) { $FindingMessage += "Unlock time: $UnlockTime seconds" + $nl }
+            if ($null -ne $FailInterval) { $FindingMessage += "Fail interval: $FailInterval seconds" + $nl }
+            $FindingMessage += $nl + "Configuration found:" + $nl
             foreach ($detail in $ConfigDetails) {
-                $FindingMessage += "$detail`n"
+                $FindingMessage += "$detail" + $nl
             }
-            $FindingMessage += "`nREMEDIATION: Change 'deny=$DenyValue' to 'deny=3' or lower.`n"
+            $FindingMessage += $nl + "REMEDIATION: Change 'deny=$DenyValue' to 'deny=3' or lower." + $nl
         }
         else {
             $Status = "NotAFinding"
-            $FindingMessage += "RESULT: NOT A FINDING - Account lockout properly configured.`n`n"
-            $FindingMessage += "Deny threshold: $DenyValue attempts (compliant: <= 3)`n"
+            $FindingMessage += "RESULT: NOT A FINDING - Account lockout properly configured." + $nl + $nl
+            $FindingMessage += "Deny threshold: $DenyValue attempts (compliant: <= 3)" + $nl
             if ($null -ne $UnlockTime) {
                 $UnlockMinutes = [math]::Round($UnlockTime / 60, 1)
-                $FindingMessage += "Unlock time: $UnlockTime seconds ($UnlockMinutes minutes)`n"
+                $FindingMessage += "Unlock time: $UnlockTime seconds ($UnlockMinutes minutes)" + $nl
             }
             if ($null -ne $FailInterval) {
                 $IntervalMinutes = [math]::Round($FailInterval / 60, 1)
-                $FindingMessage += "Fail interval: $FailInterval seconds ($IntervalMinutes minutes)`n"
+                $FindingMessage += "Fail interval: $FailInterval seconds ($IntervalMinutes minutes)" + $nl
             }
-            $FindingMessage += "`nConfiguration details:`n"
+            $FindingMessage += $nl + "Configuration details:" + $nl
             foreach ($detail in $ConfigDetails) {
-                $FindingMessage += "$detail`n"
+                $FindingMessage += "$detail" + $nl
             }
         }
 
-        $FindingMessage += "`nXCP-ng Version: $($XCPngVersionInfo.VersionString)`n"
+        $FindingMessage += $nl + "XCP-ng Version: $($XCPngVersionInfo.VersionString)" + $nl
     }
     catch {
         $Status = "Not_Reviewed"
-        $FindingMessage = "Error checking PAM configuration: $($_.Exception.Message)`n"
-        $FindingMessage += "Manual verification required.`n"
+        $FindingMessage = "Error checking PAM configuration: $($_.Exception.Message)" + $nl
+        $FindingMessage += "Manual verification required." + $nl
     }
 
         $FindingDetails = $FindingMessage
@@ -2189,6 +2191,7 @@ Function Get-V207351 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-207351"
     $RuleID = "SV-207351r958408_rule"
     $Status = "Not_Reviewed"
@@ -2247,281 +2250,281 @@ Function Get-V207351 {
 
     try {
         # ===== SSH Configuration Checks =====
-        $FindingDetails += "===== SSH Configuration Analysis =====" + "`n`n"
+        $FindingDetails += "===== SSH Configuration Analysis =====" + $nl + $nl
 
         # Check if sshd_config exists
-        $SSHConfigExists = $(sh -c "test -f /etc/ssh/sshd_config && echo 'exists' || echo 'missing'")
+        $SSHConfigExists = $(test -f /etc/ssh/sshd_config && echo 'exists' || echo 'missing' 2>&1)
 
         if ($SSHConfigExists -eq "missing") {
-            $FindingDetails += "ERROR: /etc/ssh/sshd_config not found" + "`n"
+            $FindingDetails += "ERROR: /etc/ssh/sshd_config not found" + $nl
             $CheckFailed = $true
         }
         else {
             # Check SSH Protocol version
-            $FindingDetails += "--- SSH Protocol Version ---" + "`n"
-            $ProtocolLine = $(sh -c "grep -i '^Protocol' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
+            $FindingDetails += "--- SSH Protocol Version ---" + $nl
+            $ProtocolLine = $(grep -i '^Protocol' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET')
 
             if ($ProtocolLine -eq "NOT_SET" -or $ProtocolLine -match "^\s*$") {
-                $FindingDetails += "Protocol: Not explicitly set (defaults to 2 in modern OpenSSH)" + "`n"
+                $FindingDetails += "Protocol: Not explicitly set (defaults to 2 in modern OpenSSH)" + $nl
                 # Check OpenSSH version to confirm default
                 $SSHVersion = $(ssh -V 2>&1)
-                $FindingDetails += "SSH Version: $SSHVersion" + "`n"
+                $FindingDetails += "SSH Version: $SSHVersion" + $nl
             }
             elseif ($ProtocolLine -match "Protocol\s+2") {
-                $FindingDetails += "Protocol: 2 (Compliant)" + "`n"
+                $FindingDetails += "Protocol: 2 (Compliant)" + $nl
             }
             elseif ($ProtocolLine -match "Protocol\s+1") {
-                $FindingDetails += "FINDING: Protocol 1 is enabled - WEAK/DEPRECATED" + "`n"
+                $FindingDetails += "FINDING: Protocol 1 is enabled - WEAK/DEPRECATED" + $nl
                 $HasSSHIssue = $true
             }
             else {
-                $FindingDetails += "Protocol setting: $ProtocolLine" + "`n"
+                $FindingDetails += "Protocol setting: $ProtocolLine" + $nl
             }
-            $FindingDetails += "`n"
+            $FindingDetails += $nl
 
             # Check Ciphers
-            $FindingDetails += "--- SSH Ciphers ---" + "`n"
-            $CiphersLine = $(sh -c "grep -i '^Ciphers' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
+            $FindingDetails += "--- SSH Ciphers ---" + $nl
+            $CiphersLine = $(grep -i '^Ciphers' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET')
 
             if ($CiphersLine -eq "NOT_SET" -or $CiphersLine -match "^\s*$") {
-                $FindingDetails += "Ciphers: Using system defaults" + "`n"
+                $FindingDetails += "Ciphers: Using system defaults" + $nl
                 # Get actual ciphers in use
-                $ActualCiphers = $(sh -c "sshd -T 2>/dev/null | grep '^ciphers' | cut -d' ' -f2")
+                $ActualCiphers = $(sshd -T 2>/dev/null | grep '^ciphers' | cut -d' ' -f2)
                 if ($ActualCiphers) {
-                    $FindingDetails += "Active ciphers: $ActualCiphers" + "`n"
+                    $FindingDetails += "Active ciphers: $ActualCiphers" + $nl
                     $CipherList = $ActualCiphers -split ","
                     foreach ($cipher in $CipherList) {
                         if ($WeakCiphers -contains $cipher.Trim()) {
-                            $FindingDetails += "  WEAK CIPHER FOUND: $cipher" + "`n"
+                            $FindingDetails += "  WEAK CIPHER FOUND: $cipher" + $nl
                             $HasSSHIssue = $true
                         }
                     }
                 }
             }
             else {
-                $FindingDetails += "Configured: $CiphersLine" + "`n"
+                $FindingDetails += "Configured: $CiphersLine" + $nl
                 $ConfiguredCiphers = ($CiphersLine -replace "Ciphers\s+", "") -split ","
                 foreach ($cipher in $ConfiguredCiphers) {
                     $cipher = $cipher.Trim()
                     if ($WeakCiphers -contains $cipher) {
-                        $FindingDetails += "  WEAK CIPHER: $cipher" + "`n"
+                        $FindingDetails += "  WEAK CIPHER: $cipher" + $nl
                         $HasSSHIssue = $true
                     }
                     elseif ($ApprovedCiphers -contains $cipher) {
-                        $FindingDetails += "  Approved: $cipher" + "`n"
+                        $FindingDetails += "  Approved: $cipher" + $nl
                     }
                     else {
-                        $FindingDetails += "  Other: $cipher" + "`n"
+                        $FindingDetails += "  Other: $cipher" + $nl
                     }
                 }
             }
-            $FindingDetails += "`n"
+            $FindingDetails += $nl
 
             # Check MACs
-            $FindingDetails += "--- SSH MACs (Message Authentication Codes) ---" + "`n"
-            $MACsLine = $(sh -c "grep -i '^MACs' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
+            $FindingDetails += "--- SSH MACs (Message Authentication Codes) ---" + $nl
+            $MACsLine = $(grep -i '^MACs' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET')
 
             if ($MACsLine -eq "NOT_SET" -or $MACsLine -match "^\s*$") {
-                $FindingDetails += "MACs: Using system defaults" + "`n"
-                $ActualMACs = $(sh -c "sshd -T 2>/dev/null | grep '^macs' | cut -d' ' -f2")
+                $FindingDetails += "MACs: Using system defaults" + $nl
+                $ActualMACs = $(sshd -T 2>/dev/null | grep '^macs' | cut -d' ' -f2)
                 if ($ActualMACs) {
-                    $FindingDetails += "Active MACs: $ActualMACs" + "`n"
+                    $FindingDetails += "Active MACs: $ActualMACs" + $nl
                     $MACList = $ActualMACs -split ","
                     foreach ($mac in $MACList) {
                         if ($WeakMACs -contains $mac.Trim()) {
-                            $FindingDetails += "  WEAK MAC FOUND: $mac" + "`n"
+                            $FindingDetails += "  WEAK MAC FOUND: $mac" + $nl
                             $HasSSHIssue = $true
                         }
                     }
                 }
             }
             else {
-                $FindingDetails += "Configured: $MACsLine" + "`n"
+                $FindingDetails += "Configured: $MACsLine" + $nl
                 $ConfiguredMACs = ($MACsLine -replace "MACs\s+", "") -split ","
                 foreach ($mac in $ConfiguredMACs) {
                     $mac = $mac.Trim()
                     if ($WeakMACs -contains $mac) {
-                        $FindingDetails += "  WEAK MAC: $mac" + "`n"
+                        $FindingDetails += "  WEAK MAC: $mac" + $nl
                         $HasSSHIssue = $true
                     }
                     elseif ($ApprovedMACs -contains $mac) {
-                        $FindingDetails += "  Approved: $mac" + "`n"
+                        $FindingDetails += "  Approved: $mac" + $nl
                     }
                     else {
-                        $FindingDetails += "  Other: $mac" + "`n"
+                        $FindingDetails += "  Other: $mac" + $nl
                     }
                 }
             }
-            $FindingDetails += "`n"
+            $FindingDetails += $nl
 
             # Check Key Exchange Algorithms
-            $FindingDetails += "--- SSH Key Exchange Algorithms ---" + "`n"
-            $KexLine = $(sh -c "grep -i '^KexAlgorithms' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET'")
+            $FindingDetails += "--- SSH Key Exchange Algorithms ---" + $nl
+            $KexLine = $(grep -i '^KexAlgorithms' /etc/ssh/sshd_config 2>/dev/null || echo 'NOT_SET')
 
             if ($KexLine -eq "NOT_SET" -or $KexLine -match "^\s*$") {
-                $FindingDetails += "KexAlgorithms: Using system defaults" + "`n"
-                $ActualKex = $(sh -c "sshd -T 2>/dev/null | grep '^kexalgorithms' | cut -d' ' -f2")
+                $FindingDetails += "KexAlgorithms: Using system defaults" + $nl
+                $ActualKex = $(sshd -T 2>/dev/null | grep '^kexalgorithms' | cut -d' ' -f2)
                 if ($ActualKex) {
-                    $FindingDetails += "Active algorithms: $ActualKex" + "`n"
+                    $FindingDetails += "Active algorithms: $ActualKex" + $nl
                     $KexList = $ActualKex -split ","
                     foreach ($kex in $KexList) {
                         if ($WeakKex -contains $kex.Trim()) {
-                            $FindingDetails += "  WEAK KEX FOUND: $kex" + "`n"
+                            $FindingDetails += "  WEAK KEX FOUND: $kex" + $nl
                             $HasSSHIssue = $true
                         }
                     }
                 }
             }
             else {
-                $FindingDetails += "Configured: $KexLine" + "`n"
+                $FindingDetails += "Configured: $KexLine" + $nl
                 $ConfiguredKex = ($KexLine -replace "KexAlgorithms\s+", "") -split ","
                 foreach ($kex in $ConfiguredKex) {
                     $kex = $kex.Trim()
                     if ($WeakKex -contains $kex) {
-                        $FindingDetails += "  WEAK KEX: $kex" + "`n"
+                        $FindingDetails += "  WEAK KEX: $kex" + $nl
                         $HasSSHIssue = $true
                     }
                     elseif ($ApprovedKexAlgorithms -contains $kex) {
-                        $FindingDetails += "  Approved: $kex" + "`n"
+                        $FindingDetails += "  Approved: $kex" + $nl
                     }
                     else {
-                        $FindingDetails += "  Other: $kex" + "`n"
+                        $FindingDetails += "  Other: $kex" + $nl
                     }
                 }
             }
-            $FindingDetails += "`n"
+            $FindingDetails += $nl
         }
 
         # ===== XAPI TLS Configuration Checks =====
-        $FindingDetails += "===== XAPI TLS Configuration Analysis =====" + "`n`n"
+        $FindingDetails += "===== XAPI TLS Configuration Analysis =====" + $nl + $nl
 
         # Check if openssl is available
-        $OpenSSLExists = $(sh -c "command -v openssl >/dev/null 2>&1 && echo 'exists' || echo 'missing'")
+        $OpenSSLExists = $(command -v openssl >/dev/null 2>&1 && echo 'exists' || echo 'missing')
 
         if ($OpenSSLExists -eq "missing") {
-            $FindingDetails += "WARNING: openssl command not available for TLS verification" + "`n"
+            $FindingDetails += "WARNING: openssl command not available for TLS verification" + $nl
             $CheckFailed = $true
         }
         else {
             # Check xapi TLS connection on localhost:443
-            $FindingDetails += "--- XAPI HTTPS/TLS Certificate Check ---" + "`n"
+            $FindingDetails += "--- XAPI HTTPS/TLS Certificate Check ---" + $nl
 
             # Get TLS protocol and cipher information
-            $TLSInfo = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null')
+            $TLSInfo = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null)
 
             if ([string]::IsNullOrWhiteSpace($TLSInfo)) {
-                $FindingDetails += "WARNING: Could not connect to localhost:443 for TLS verification" + "`n"
-                $FindingDetails += "XAPI/stunnel may not be running or listening on port 443" + "`n"
+                $FindingDetails += "WARNING: Could not connect to localhost:443 for TLS verification" + $nl
+                $FindingDetails += "XAPI/stunnel may not be running or listening on port 443" + $nl
                 $CheckFailed = $true
             }
             else {
                 # Extract TLS version
-                $TLSVersion = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | grep "Protocol" | head -1')
+                $TLSVersion = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null | grep "Protocol" | head -1)
                 if ($TLSVersion) {
-                    $FindingDetails += "TLS Protocol: $TLSVersion" + "`n"
+                    $FindingDetails += "TLS Protocol: $TLSVersion" + $nl
 
                     if ($TLSVersion -match "TLSv1\.3|TLSv1\.2") {
-                        $FindingDetails += "  Status: Compliant (TLS 1.2+ in use)" + "`n"
+                        $FindingDetails += "  Status: Compliant (TLS 1.2+ in use)" + $nl
                     }
                     elseif ($TLSVersion -match "TLSv1\.1|TLSv1\.0|SSLv3|SSLv2") {
-                        $FindingDetails += "  FINDING: Weak TLS/SSL version in use" + "`n"
+                        $FindingDetails += "  FINDING: Weak TLS/SSL version in use" + $nl
                         $HasTLSIssue = $true
                     }
                 }
 
                 # Extract cipher suite
-                $CipherSuite = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | grep "Cipher" | head -1')
+                $CipherSuite = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null | grep "Cipher" | head -1)
                 if ($CipherSuite) {
-                    $FindingDetails += "Cipher Suite: $CipherSuite" + "`n"
+                    $FindingDetails += "Cipher Suite: $CipherSuite" + $nl
                 }
 
                 # Check certificate details
-                $CertSubject = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -subject 2>/dev/null')
-                $CertIssuer = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -issuer 2>/dev/null')
-                $CertDates = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -dates 2>/dev/null')
+                $CertSubject = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject 2>/dev/null)
+                $CertIssuer = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -issuer 2>/dev/null)
+                $CertDates = $(echo '' | timeout 5 openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -dates 2>/dev/null)
 
                 if ($CertSubject) {
-                    $FindingDetails += "Certificate Subject: $CertSubject" + "`n"
+                    $FindingDetails += "Certificate Subject: $CertSubject" + $nl
                 }
                 if ($CertIssuer) {
-                    $FindingDetails += "Certificate Issuer: $CertIssuer" + "`n"
+                    $FindingDetails += "Certificate Issuer: $CertIssuer" + $nl
                 }
                 if ($CertDates) {
-                    $FindingDetails += "Certificate Validity: $CertDates" + "`n"
+                    $FindingDetails += "Certificate Validity: $CertDates" + $nl
                 }
-                $FindingDetails += "`n"
+                $FindingDetails += $nl
             }
 
             # Check for TLS 1.0/1.1 support (should be disabled)
-            $FindingDetails += "--- TLS Version Support Check ---" + "`n"
+            $FindingDetails += "--- TLS Version Support Check ---" + $nl
 
             # Test TLS 1.2
-            $TLS12Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_2 </dev/null 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported')
-            $FindingDetails += "TLS 1.2: $TLS12Test" + "`n"
+            $TLS12Test = $(echo '' | timeout 5 openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported)
+            $FindingDetails += "TLS 1.2: $TLS12Test" + $nl
 
             # Test TLS 1.3 (may not be available on older OpenSSL)
-            $TLS13Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_3 </dev/null 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported')
-            $FindingDetails += "TLS 1.3: $TLS13Test" + "`n"
+            $TLS13Test = $(echo '' | timeout 5 openssl s_client -connect localhost:443 -tls1_3 2>&1 | grep -q "Cipher is" && echo supported || echo not_supported)
+            $FindingDetails += "TLS 1.3: $TLS13Test" + $nl
 
             # Test weak TLS versions (should NOT be supported)
-            $TLS11Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1_1 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
-            $TLS10Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -tls1 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
-            $SSL3Test = $(sh -c 'timeout 5 openssl s_client -connect localhost:443 -ssl3 </dev/null 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled')
+            $TLS11Test = $(echo '' | timeout 5 openssl s_client -connect localhost:443 -tls1_1 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled)
+            $TLS10Test = $(echo '' | timeout 5 openssl s_client -connect localhost:443 -tls1 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled)
+            $SSL3Test = $(echo '' | timeout 5 openssl s_client -connect localhost:443 -ssl3 2>&1 | grep -q "Cipher is" && echo ENABLED-WEAK || echo disabled)
 
-            $FindingDetails += "TLS 1.1: $TLS11Test" + "`n"
-            $FindingDetails += "TLS 1.0: $TLS10Test" + "`n"
-            $FindingDetails += "SSL 3.0: $SSL3Test" + "`n"
+            $FindingDetails += "TLS 1.1: $TLS11Test" + $nl
+            $FindingDetails += "TLS 1.0: $TLS10Test" + $nl
+            $FindingDetails += "SSL 3.0: $SSL3Test" + $nl
 
             if ($TLS11Test -eq "ENABLED-WEAK" -or $TLS10Test -eq "ENABLED-WEAK" -or $SSL3Test -eq "ENABLED-WEAK") {
-                $FindingDetails += "`nFINDING: Weak TLS/SSL versions are still enabled" + "`n"
+                $FindingDetails += $nl + "FINDING: Weak TLS/SSL versions are still enabled" + $nl
                 $HasTLSIssue = $true
             }
 
             if ($TLS12Test -eq "not_supported" -and $TLS13Test -eq "not_supported") {
-                $FindingDetails += "`nFINDING: Neither TLS 1.2 nor TLS 1.3 is supported" + "`n"
+                $FindingDetails += $nl + "FINDING: Neither TLS 1.2 nor TLS 1.3 is supported" + $nl
                 $HasTLSIssue = $true
             }
         }
 
         # ===== Determine Overall Status =====
-        $FindingDetails += "`n===== Summary =====" + "`n"
+        $FindingDetails += $nl + "===== Summary =====" + $nl
 
         if ($CheckFailed) {
             $Status = "Not_Reviewed"
-            $FindingDetails += "Status: Not_Reviewed - Some checks could not be completed" + "`n"
-            $FindingDetails += "Manual verification required for:" + "`n"
+            $FindingDetails += "Status: Not_Reviewed - Some checks could not be completed" + $nl
+            $FindingDetails += "Manual verification required for:" + $nl
             if ($SSHConfigExists -eq "missing") {
-                $FindingDetails += "  - SSH configuration file not found" + "`n"
+                $FindingDetails += "  - SSH configuration file not found" + $nl
             }
             if ($OpenSSLExists -eq "missing") {
-                $FindingDetails += "  - OpenSSL not available for TLS checks" + "`n"
+                $FindingDetails += "  - OpenSSL not available for TLS checks" + $nl
             }
-            $FindingDetails += "`nNote: Automated checks incomplete. Manual verification required." + "`n"
+            $FindingDetails += $nl + "Note: Automated checks incomplete. Manual verification required." + $nl
         }
         elseif ($HasSSHIssue -or $HasTLSIssue) {
             $Status = "Open"
-            $FindingDetails += "Status: Open - Security issues detected" + "`n"
+            $FindingDetails += "Status: Open - Security issues detected" + $nl
             if ($HasSSHIssue) {
-                $FindingDetails += "  - SSH: Weak cryptographic algorithms detected" + "`n"
-                $FindingDetails += "    Recommendation: Configure only DoD-approved ciphers, MACs, and key exchange algorithms" + "`n"
+                $FindingDetails += "  - SSH: Weak cryptographic algorithms detected" + $nl
+                $FindingDetails += "    Recommendation: Configure only DoD-approved ciphers, MACs, and key exchange algorithms" + $nl
             }
             if ($HasTLSIssue) {
-                $FindingDetails += "  - TLS: Weak protocol versions or configuration detected" + "`n"
-                $FindingDetails += "    Recommendation: Disable TLS 1.1 and below, require TLS 1.2+" + "`n"
+                $FindingDetails += "  - TLS: Weak protocol versions or configuration detected" + $nl
+                $FindingDetails += "    Recommendation: Disable TLS 1.1 and below, require TLS 1.2+" + $nl
             }
-            $FindingDetails += "`nNote: Weak encryption detected. Remediation required." + "`n"
+            $FindingDetails += $nl + "Note: Weak encryption detected. Remediation required." + $nl
         }
         else {
             $Status = "NotAFinding"
-            $FindingDetails += "Status: NotAFinding - DoD-approved encryption is properly configured" + "`n"
-            $FindingDetails += "  - SSH uses approved ciphers, MACs, and key exchange algorithms" + "`n"
-            $FindingDetails += "  - XAPI/stunnel uses TLS 1.2 or higher" + "`n"
+            $FindingDetails += "Status: NotAFinding - DoD-approved encryption is properly configured" + $nl
+            $FindingDetails += "  - SSH uses approved ciphers, MACs, and key exchange algorithms" + $nl
+            $FindingDetails += "  - XAPI/stunnel uses TLS 1.2 or higher" + $nl
         }
     }
     catch {
         $Status = "Not_Reviewed"
-        $FindingDetails += "ERROR: Exception during check execution: $($_.Exception.Message)" + "`n"
-        $FindingDetails += "Manual verification required." + "`n"
+        $FindingDetails += "ERROR: Exception during check execution: $($_.Exception.Message)" + $nl
+        $FindingDetails += "Manual verification required." + $nl
     }
     }
 
@@ -3442,7 +3445,7 @@ Function Get-V207357 {
             $FindingDetails += "Audit rules include sudo/privileged monitoring: $HasSudoRule" + $nl
 
             # Check sudo logging configuration
-            $SudoLogCheck = $(timeout 3 sh -c "grep -i 'log_output\|logfile\|syslog' /etc/sudoers /etc/sudoers.d/* 2>/dev/null | head -5")
+            $SudoLogCheck = $(timeout 3 grep -i 'log_output\|logfile\|syslog' /etc/sudoers /etc/sudoers.d/* 2>/dev/null | head -5)
             $SudoLogStr = ($SudoLogCheck -join $nl).Trim()
             if ($SudoLogStr -ne "") {
                 $FindingDetails += $nl + "Sudo logging configuration:" + $nl + $SudoLogStr + $nl
@@ -3452,7 +3455,7 @@ Function Get-V207357 {
             }
 
             # Check for EXECVE records in audit log
-            $ExecveRecords = $(timeout 3 sh -c "grep -c EXECVE /var/log/audit/audit.log 2>/dev/null || echo 0")
+            $ExecveRecords = $(timeout 3 grep -c EXECVE /var/log/audit/audit.log 2>/dev/null || echo 0)
             $ExecveStr = ("$ExecveRecords").Trim()
             $FindingDetails += "EXECVE records in audit log: $ExecveStr" + $nl
 
@@ -3758,7 +3761,7 @@ Function Get-V207360 {
         $FindingDetails += "rsyslog service: $RsyslogStatus" + $nl
 
         # Check for remote syslog forwarding rules
-        $RemoteForward = $(timeout 3 sh -c "grep -rh '@@\|@[^@]' /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | grep -v '^#' | head -5")
+        $RemoteForward = $(timeout 3 grep -rh '@@\|@[^@]' /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | grep -v '^#' | head -5)
         $RemoteForwardStr = ($RemoteForward -join $nl).Trim()
         if ($RemoteForwardStr -ne "") {
             $FindingDetails += $nl + "Remote syslog forwarding configured:" + $nl + $RemoteForwardStr + $nl
@@ -3768,7 +3771,7 @@ Function Get-V207360 {
         }
 
         # Check if audisp remote plugin is configured
-        $AudispRemote = $(timeout 3 sh -c "grep -l 'active.*yes' /etc/audisp/plugins.d/*.conf 2>/dev/null | head -3")
+        $AudispRemote = $(timeout 3 grep -l 'active.*yes' /etc/audisp/plugins.d/*.conf 2>/dev/null | head -3)
         $AudispStr = ($AudispRemote -join $nl).Trim()
         if ($AudispStr -ne "") {
             $FindingDetails += "Active audisp plugins: $AudispStr" + $nl
@@ -4390,7 +4393,7 @@ Function Get-V207364 {
         }
 
         # Check immutable attribute on audit rules (auditctl -e 2)
-        $AuditEnabled = $(timeout 3 sh -c "auditctl -s 2>/dev/null | grep enabled")
+        $AuditEnabled = $(timeout 3 auditctl -s 2>/dev/null | grep enabled)
         $AuditEnabledStr = ("$AuditEnabled").Trim()
         $FindingDetails += $nl + "Audit system status: $AuditEnabledStr" + $nl
 
@@ -4720,7 +4723,7 @@ Function Get-V207366 {
             $FindingDetails += "  aureport: $(if ($AureportPath) { 'Yes' } else { 'No' })" + $nl
 
             # Check Xen-specific audit sources
-            $XenLogExists = $(timeout 3 sh -c "test -d /var/log/xen && echo yes || echo no")
+            $XenLogExists = $(timeout 3 test -d /var/log/xen && echo yes || echo no 2>&1)
             $FindingDetails += $nl + "Xen log directory (/var/log/xen): $XenLogExists" + $nl
 
             # Check syslog is active
@@ -22439,7 +22442,7 @@ Function Get-V207493 {
         $FindingDetails += "System CA bundle: $(if ($CaTrustStr.Length -gt 0) { $CaTrustStr } else { 'not found' })" + $nl
 
         # Check for DoD CA certificates
-        $DodCerts = $(timeout 5 sh -c 'grep -c "DoD" /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null || echo 0')
+        $DodCerts = $(timeout 5 grep -c "DoD" /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null || echo 0)
         $DodCertsStr = ("$DodCerts").Trim()
         $FindingDetails += "DoD CA references in trust bundle: $DodCertsStr" + $nl
 
@@ -23362,7 +23365,7 @@ Function Get-V207499 {
         $FindingDetails += "XAPI TLS certificate: $(if ($XapiCertStr.Length -gt 0) { 'present' } else { 'not found' })" + $nl
 
         # Check TLS protocol version on XAPI
-        $TlsVer = $(timeout 10 sh -c 'echo | openssl s_client -connect 127.0.0.1:443 -tls1_2 2>/dev/null | grep -i "protocol\|cipher"' 2>/dev/null)
+        $TlsVer = $(timeout 10 echo | openssl s_client -connect 127.0.0.1:443 -tls1_2 2>/dev/null | grep -i "protocol\|cipher" 2>/dev/null)
         $TlsArr = @()
         if ($null -ne $TlsVer) { $TlsArr = @($TlsVer) }
         if ($TlsArr.Count -gt 0) {
@@ -24153,7 +24156,7 @@ Function Get-V207505 {
         $YumCleanStr = ("$YumClean").Trim()
         $FindingDetails += "yum clean_requirements_on_remove: $(if ($YumCleanStr.Length -gt 0) { $YumCleanStr } else { 'not set (default: 0)' })" + $nl
 
-        $DupePkgs = $(timeout 10 sh -c 'rpm -qa --queryformat "%{NAME}\n" 2>/dev/null | sort | uniq -d | head -10')
+        $DupePkgs = $(timeout 10 rpm -qa --queryformat "%{NAME}\n" 2>/dev/null | sort | uniq -d | head -10)
         $DupeArr = @()
         if ($null -ne $DupePkgs) { $DupeArr = @($DupePkgs) }
         $DupeArr = @($DupeArr | Where-Object { "$_".Trim().Length -gt 0 })
@@ -24430,7 +24433,7 @@ Function Get-V207507 {
         $AideCronArr = @($AideCronArr | Where-Object { "$_".Trim().Length -gt 0 })
         $FindingDetails += "AIDE cron jobs: $($AideCronArr.Count)" + $nl
 
-        $CronCheck = $(timeout 5 sh -c 'grep -r "rpm -V\|aide.*check" /etc/crontab /var/spool/cron/ /etc/cron.d/ 2>/dev/null | head -5')
+        $CronCheck = $(timeout 5 grep -r "rpm -V\|aide.*check" /etc/crontab /var/spool/cron/ /etc/cron.d/ 2>/dev/null | head -5)
         $CronArr = @()
         if ($null -ne $CronCheck) { $CronArr = @($CronCheck) }
         $CronArr = @($CronArr | Where-Object { "$_".Trim().Length -gt 0 })
@@ -27050,7 +27053,7 @@ Function Get-V207526 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  rpm -q dracut-fips: " + $dracutStr + $nl + $nl
 
-    $sshCiphers = $(timeout 5 sh -c 'grep -i "^Ciphers" /etc/ssh/sshd_config 2>/dev/null || echo "not configured"')
+    $sshCiphers = $(timeout 5 grep -i "^Ciphers" /etc/ssh/sshd_config 2>/dev/null || echo "not configured")
     $sshCiphersStr = ($sshCiphers -join $nl).Trim()
     $FindingDetails += "Check 3: SSH FIPS-Approved Ciphers" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27177,13 +27180,13 @@ Function Get-V207527 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  rsyslog status: " + $rsyslogStr + $nl + $nl
 
-    $remoteConf = $(timeout 5 sh -c 'grep -rn "^[^#]*@@\?" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -10 || echo "none found"')
+    $remoteConf = $(timeout 5 grep -rn "^[^#]*@@\?" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -10 || echo "none found")
     $remoteStr = ($remoteConf -join $nl).Trim()
     $FindingDetails += "Check 2: Remote Log Forwarding Configuration" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  Remote targets: " + $nl + "  " + $remoteStr + $nl + $nl
 
-    $logrotateConf = $(timeout 5 sh -c 'cat /etc/logrotate.conf 2>/dev/null | head -20')
+    $logrotateConf = $(timeout 5 cat /etc/logrotate.conf 2>/dev/null | head -20)
     $logrotateStr = ($logrotateConf -join $nl).Trim()
     $FindingDetails += "Check 3: Log Rotation Configuration" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27312,7 +27315,7 @@ Function Get-V207528 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  Version: " + $XCPngVersionInfo.VersionString + $nl
 
-    $yumUpdates = $(timeout 10 sh -c 'yum check-update --security 2>/dev/null | tail -5 || echo "unable to check"')
+    $yumUpdates = $(timeout 10 yum check-update --security 2>/dev/null | tail -5 || echo "unable to check")
     $yumStr = ($yumUpdates -join $nl).Trim()
     $FindingDetails += "  Security updates available: " + $nl + "  " + $yumStr + $nl + $nl
 
@@ -27432,19 +27435,19 @@ Function Get-V207529 {
         $FindingDetails = "V-207529 - SRG-OS-000481-VMM-002010" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $wirelessIfaces = $(timeout 5 sh -c 'ls /sys/class/net/*/wireless 2>/dev/null | head -5 || echo "none"')
+    $wirelessIfaces = $(timeout 5 ls /sys/class/net/*/wireless 2>/dev/null | head -5 || echo "none")
     $wirelessStr = ($wirelessIfaces -join $nl).Trim()
     $FindingDetails += "Check 1: Wireless Network Interfaces" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  Wireless interfaces: " + $wirelessStr + $nl + $nl
 
-    $rfkillResult = $(timeout 5 sh -c 'rfkill list 2>/dev/null || echo "rfkill not available"')
+    $rfkillResult = $(timeout 5 rfkill list 2>/dev/null || echo "rfkill not available")
     $rfkillStr = ($rfkillResult -join $nl).Trim()
     $FindingDetails += "Check 2: RF Kill Status" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  rfkill output: " + $rfkillStr + $nl + $nl
 
-    $btResult = $(timeout 5 sh -c 'systemctl is-active bluetooth 2>/dev/null || echo "inactive"')
+    $btResult = $(timeout 5 systemctl is-active bluetooth 2>/dev/null || echo "inactive")
     $btStr = ($btResult -join $nl).Trim()
     $FindingDetails += "Check 3: Bluetooth Service" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27564,13 +27567,13 @@ Function Get-V264315 {
         $FindingDetails = "V-264315 - SRG-OS-000590-VMM-000110" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $inactiveDefault = $(timeout 5 sh -c 'grep -i "^INACTIVE" /etc/default/useradd 2>/dev/null || echo "not set"')
+    $inactiveDefault = $(timeout 5 grep -i "^INACTIVE" /etc/default/useradd 2>/dev/null || echo "not set")
     $inactiveStr = ($inactiveDefault -join $nl).Trim()
     $FindingDetails += "Check 1: Default Account Inactivity Setting" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  /etc/default/useradd INACTIVE: " + $inactiveStr + $nl + $nl
 
-    $localAccounts = $(timeout 5 sh -c 'awk -F: "{if (\$3 >= 1000 && \$3 != 65534) print \$1}" /etc/passwd 2>/dev/null | head -20')
+    $localAccounts = $(timeout 5 awk -F: "{if (\$3 >= 1000 && \$3 != 65534) print \$1}" /etc/passwd 2>/dev/null | head -20)
     $accountsStr = ($localAccounts -join $nl).Trim()
     $FindingDetails += "Check 2: Local User Accounts (UID >= 1000)" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27580,7 +27583,7 @@ Function Get-V264315 {
         $FindingDetails += "  No local user accounts found." + $nl + $nl
     }
 
-    $chageInfo = $(timeout 5 sh -c 'for u in $(awk -F: "{if (\$3 >= 1000 && \$3 != 65534) print \$1}" /etc/passwd 2>/dev/null | head -10); do echo "=== $u ==="; chage -l "$u" 2>/dev/null | grep -i "inactive\|expires"; done')
+    $chageInfo = $(awk -F: '{if ($3 >= 1000 && $3 != 65534) print $1}' /etc/passwd 2>/dev/null | head -10)
     $chageStr = ($chageInfo -join $nl).Trim()
     $FindingDetails += "Check 3: Account Expiration Settings" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27700,19 +27703,19 @@ Function Get-V264316 {
         $FindingDetails = "V-264316 - SRG-OS-000690-VMM-000140" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $usbguardStatus = $(timeout 5 sh -c 'systemctl is-active usbguard 2>/dev/null || echo "inactive"')
+    $usbguardStatus = $(timeout 5 systemctl is-active usbguard 2>/dev/null || echo "inactive")
     $usbguardStr = ($usbguardStatus -join $nl).Trim()
     $FindingDetails += "Check 1: USBGuard Service" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  usbguard status: " + $usbguardStr + $nl + $nl
 
-    $usbDevices = $(timeout 5 sh -c 'lsusb 2>/dev/null | head -15 || echo "lsusb not available"')
+    $usbDevices = $(timeout 5 lsusb 2>/dev/null | head -15 || echo "lsusb not available")
     $usbStr = ($usbDevices -join $nl).Trim()
     $FindingDetails += "Check 2: Connected USB Devices" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $usbStr + $nl + $nl
 
-    $pciPassthrough = $(timeout 5 sh -c 'xe pci-list 2>/dev/null | head -20 || echo "none"')
+    $pciPassthrough = $(timeout 5 xe pci-list 2>/dev/null | head -20 || echo "none")
     $pciStr = ($pciPassthrough -join $nl).Trim()
     $FindingDetails += "Check 3: PCI Passthrough Devices" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27832,19 +27835,19 @@ Function Get-V264317 {
         $FindingDetails = "V-264317 - SRG-OS-000705-VMM-000150" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $pamSSSD = $(timeout 5 sh -c 'grep -l "pam_sss\|pam_pkcs11\|pam_duo\|pam_google_authenticator" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null || echo "none"')
+    $pamSSSD = $(timeout 5 grep -l "pam_sss\|pam_pkcs11\|pam_duo\|pam_google_authenticator" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null || echo "none")
     $pamStr = ($pamSSSD -join $nl).Trim()
     $FindingDetails += "Check 1: PAM MFA Modules" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  MFA PAM modules found in: " + $pamStr + $nl + $nl
 
-    $sssdStatus = $(timeout 5 sh -c 'systemctl is-active sssd 2>/dev/null || echo "inactive"')
+    $sssdStatus = $(timeout 5 systemctl is-active sssd 2>/dev/null || echo "inactive")
     $sssdStr = ($sssdStatus -join $nl).Trim()
     $FindingDetails += "Check 2: SSSD Service (AD/LDAP Integration)" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  sssd status: " + $sssdStr + $nl + $nl
 
-    $sshAuthMethods = $(timeout 5 sh -c 'grep -i "^AuthenticationMethods" /etc/ssh/sshd_config 2>/dev/null || echo "not configured"')
+    $sshAuthMethods = $(timeout 5 grep -i "^AuthenticationMethods" /etc/ssh/sshd_config 2>/dev/null || echo "not configured")
     $sshAuthStr = ($sshAuthMethods -join $nl).Trim()
     $FindingDetails += "Check 3: SSH AuthenticationMethods" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -27976,13 +27979,13 @@ Function Get-V264318 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  dictcheck value: " + $dictcheck + $nl + $nl
 
-    $cracklib = $(timeout 5 sh -c 'grep -r "pam_cracklib\|pam_pwquality" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "none"')
+    $cracklib = $(timeout 5 grep -r "pam_cracklib\|pam_pwquality" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "none")
     $cracklibStr = ($cracklib -join $nl).Trim()
     $FindingDetails += "Check 2: PAM Password Quality Module" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $cracklibStr + $nl + $nl
 
-    $dictFiles = $(timeout 5 sh -c 'ls /usr/share/cracklib/pw_dict* 2>/dev/null | head -5 || echo "no dictionary files found"')
+    $dictFiles = $(timeout 5 ls /usr/share/cracklib/pw_dict* 2>/dev/null | head -5 || echo "no dictionary files found")
     $dictStr = ($dictFiles -join $nl).Trim()
     $FindingDetails += "Check 3: Dictionary Files Present" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28107,19 +28110,26 @@ Function Get-V264319 {
         $FindingDetails = "V-264319 - SRG-OS-000720-VMM-000170" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $shadowEntries = $(timeout 5 sh -c 'awk -F: "{if (\$3 >= 1000 && \$3 != 65534) print \$1}" /etc/passwd 2>/dev/null | while read u; do echo "$u: $(passwd -S "$u" 2>/dev/null)"; done | head -10')
+    $userList = $(timeout 5 awk -F: '{if ($3 >= 1000 && $3 != 65534) print $1}' /etc/passwd 2>/dev/null | head -10)
+    $shadowEntries = @()
+    foreach ($u in $userList) {
+        if ($u.Trim()) {
+            $pStatus = $(passwd -S $u 2>/dev/null)
+            $shadowEntries += "$u`: $pStatus"
+        }
+    }
     $shadowStr = ($shadowEntries -join $nl).Trim()
     $FindingDetails += "Check 1: Password Status for Local Accounts" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $shadowStr + $nl + $nl
 
-    $pamAuth = $(timeout 5 sh -c 'grep "use_authtok" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "not found"')
+    $pamAuth = $(timeout 5 grep "use_authtok" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "not found")
     $pamStr = ($pamAuth -join $nl).Trim()
     $FindingDetails += "Check 2: PAM use_authtok Setting" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $pamStr + $nl + $nl
 
-    $chageDefaults = $(timeout 5 sh -c 'grep -E "^(PASS_MIN_DAYS|PASS_MAX_DAYS)" /etc/login.defs 2>/dev/null || echo "not configured"')
+    $chageDefaults = $(timeout 5 grep -E "^(PASS_MIN_DAYS|PASS_MAX_DAYS)" /etc/login.defs 2>/dev/null || echo "not configured")
     $chageStr = ($chageDefaults -join $nl).Trim()
     $FindingDetails += "Check 3: login.defs Password Aging Defaults" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28259,7 +28269,7 @@ Function Get-V264320 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  maxrepeat = " + $maxlen + $nl + $nl
 
-    $pamMaxLen = $(timeout 5 sh -c 'grep -E "pam_cracklib|pam_pwquality" /etc/pam.d/system-auth 2>/dev/null | head -3 || echo "not found"')
+    $pamMaxLen = $(timeout 5 grep -E "pam_cracklib|pam_pwquality" /etc/pam.d/system-auth 2>/dev/null | head -3 || echo "not found")
     $pamStr2 = ($pamMaxLen -join $nl).Trim()
     $FindingDetails += "Check 3: PAM Password Module Configuration" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28385,13 +28395,13 @@ Function Get-V264321 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $pwqInstStr + $nl + $nl
 
-    $pamPwq = $(timeout 5 sh -c 'grep "pam_pwquality\|pam_cracklib" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "not configured"')
+    $pamPwq = $(timeout 5 grep "pam_pwquality\|pam_cracklib" /etc/pam.d/system-auth /etc/pam.d/password-auth 2>/dev/null | head -5 || echo "not configured")
     $pamStr = ($pamPwq -join $nl).Trim()
     $FindingDetails += "Check 2: PAM Password Quality Enforcement" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $pamStr + $nl + $nl
 
-    $pwqConf = $(timeout 5 sh -c 'grep -v "^#\|^$" /etc/security/pwquality.conf 2>/dev/null | head -15 || echo "no active settings"')
+    $pwqConf = $(timeout 5 grep -v "^#\|^$" /etc/security/pwquality.conf 2>/dev/null | head -15 || echo "no active settings")
     $pwqStr = ($pwqConf -join $nl).Trim()
     $FindingDetails += "Check 3: Active pwquality.conf Settings" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28511,25 +28521,25 @@ Function Get-V264322 {
         $FindingDetails = "V-264322 - SRG-OS-000745-VMM-000210" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $sshHostKeyTypes = $(timeout 5 sh -c 'grep -i "^HostKey\b" /etc/ssh/sshd_config 2>/dev/null || echo "defaults"')
+    $sshHostKeyTypes = $(timeout 5 grep -i "^HostKey\b" /etc/ssh/sshd_config 2>/dev/null || echo "defaults")
     $hostKeyStr = ($sshHostKeyTypes -join $nl).Trim()
     $FindingDetails += "Check 1: SSH Host Key Types" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $hostKeyStr + $nl + $nl
 
-    $sshPubkeyTypes = $(timeout 5 sh -c 'grep -i "^PubkeyAcceptedKeyTypes\|^PubkeyAcceptedAlgorithms" /etc/ssh/sshd_config 2>/dev/null || echo "not explicitly configured"')
+    $sshPubkeyTypes = $(timeout 5 grep -i "^PubkeyAcceptedKeyTypes\|^PubkeyAcceptedAlgorithms" /etc/ssh/sshd_config 2>/dev/null || echo "not explicitly configured")
     $pubkeyStr = ($sshPubkeyTypes -join $nl).Trim()
     $FindingDetails += "Check 2: SSH Accepted Key Types" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $pubkeyStr + $nl + $nl
 
-    $tlsCerts = $(timeout 5 sh -c 'ls -la /etc/pki/tls/certs/ 2>/dev/null | head -10 || echo "directory not found"')
+    $tlsCerts = $(timeout 5 ls -la /etc/pki/tls/certs/ 2>/dev/null | head -10 || echo "directory not found")
     $tlsStr = ($tlsCerts -join $nl).Trim()
     $FindingDetails += "Check 3: TLS Certificate Store" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $tlsStr + $nl + $nl
 
-    $sshKex = $(timeout 5 sh -c 'grep -i "^KexAlgorithms" /etc/ssh/sshd_config 2>/dev/null || echo "not configured"')
+    $sshKex = $(timeout 5 grep -i "^KexAlgorithms" /etc/ssh/sshd_config 2>/dev/null || echo "not configured")
     $kexStr = ($sshKex -join $nl).Trim()
     $FindingDetails += "Check 4: SSH Key Exchange Algorithms" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28650,13 +28660,13 @@ Function Get-V264323 {
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  auditd status: " + $auditdStr + $nl + $nl
 
-    $privRules = $(timeout 5 sh -c 'auditctl -l 2>/dev/null | grep -i "execve\|privileged\|sudo\|su " | head -10 || echo "none found"')
+    $privRules = $(timeout 5 auditctl -l 2>/dev/null | grep -i "execve\|privileged\|sudo\|su " | head -10 || echo "none found")
     $privStr = ($privRules -join $nl).Trim()
     $FindingDetails += "Check 2: Audit Rules for Privileged Commands" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $privStr + $nl + $nl
 
-    $sudoLog = $(timeout 5 sh -c 'auditctl -l 2>/dev/null | grep -i "/usr/bin/sudo\|/usr/bin/su\|/usr/sbin" | head -10 || echo "none found"')
+    $sudoLog = $(timeout 5 auditctl -l 2>/dev/null | grep -i "/usr/bin/sudo\|/usr/bin/su\|/usr/sbin" | head -10 || echo "none found")
     $sudoStr = ($sudoLog -join $nl).Trim()
     $FindingDetails += "Check 3: Audit Rules for sudo/su/Admin Tools" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28776,19 +28786,19 @@ Function Get-V264324 {
         $FindingDetails = "V-264324 - SRG-OS-000775-VMM-000230" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $caBundleCerts = $(timeout 5 sh -c 'trust list 2>/dev/null | grep -c "type: certificate" || echo "0"')
+    $caBundleCerts = $(timeout 5 trust list 2>/dev/null | grep -c "type: certificate" || echo "0")
     $caCount = ($caBundleCerts -join $nl).Trim()
     $FindingDetails += "Check 1: System Trust Store Certificate Count" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  Certificates in trust store: " + $caCount + $nl + $nl
 
-    $dodCerts = $(timeout 5 sh -c 'trust list 2>/dev/null | grep -i "DoD\|department of defense\|DISA" | head -10 || echo "none found"')
+    $dodCerts = $(timeout 5 trust list 2>/dev/null | grep -i "DoD\|department of defense\|DISA" | head -10 || echo "none found")
     $dodStr = ($dodCerts -join $nl).Trim()
     $FindingDetails += "Check 2: DoD Root CA Certificates" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $dodStr + $nl + $nl
 
-    $anchorDir = $(timeout 5 sh -c 'ls /etc/pki/ca-trust/source/anchors/ 2>/dev/null | head -10 || echo "empty or missing"')
+    $anchorDir = $(timeout 5 ls /etc/pki/ca-trust/source/anchors/ 2>/dev/null | head -10 || echo "empty or missing")
     $anchorStr = ($anchorDir -join $nl).Trim()
     $FindingDetails += "Check 3: Custom Trust Anchors Directory" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -28908,19 +28918,19 @@ Function Get-V264325 {
         $FindingDetails = "V-264325 - SRG-OS-000780-VMM-000240" + $nl
         $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $sshKeyPerms = $(timeout 5 sh -c 'stat -c "%a %U %G %n" /etc/ssh/ssh_host_*_key 2>/dev/null | head -10 || echo "no host keys found"')
+    $sshKeyPerms = $(timeout 5 stat -c "%a %U %G %n" /etc/ssh/ssh_host_*_key 2>/dev/null | head -10 || echo "no host keys found")
     $sshKeyStr = ($sshKeyPerms -join $nl).Trim()
     $FindingDetails += "Check 1: SSH Host Key Permissions" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $sshKeyStr + $nl + $nl
 
-    $tlsKeyPerms = $(timeout 5 sh -c 'stat -c "%a %U %G %n" /etc/pki/tls/private/* 2>/dev/null | head -10 || echo "no TLS private keys"')
+    $tlsKeyPerms = $(timeout 5 stat -c "%a %U %G %n" /etc/pki/tls/private/* 2>/dev/null | head -10 || echo "no TLS private keys")
     $tlsStr = ($tlsKeyPerms -join $nl).Trim()
     $FindingDetails += "Check 2: TLS Private Key Permissions" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  " + $tlsStr + $nl + $nl
 
-    $xapiKeyPerms = $(timeout 5 sh -c 'stat -c "%a %U %G %n" /etc/xensource/ssl/* 2>/dev/null | head -10 || echo "no xapi SSL files found"')
+    $xapiKeyPerms = $(timeout 5 stat -c "%a %U %G %n" /etc/xensource/ssl/* 2>/dev/null | head -10 || echo "no xapi SSL files found")
     $xapiStr = ($xapiKeyPerms -join $nl).Trim()
     $FindingDetails += "Check 3: XAPI SSL Key Permissions" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -29060,25 +29070,25 @@ Function Get-V264326 {
     $FindingDetails += "  ntpd status: " + $ntpStr + $nl + $nl
 
     if ($chronyStr -eq "active") {
-        $chronySources = $(timeout 5 sh -c 'chronyc sources 2>/dev/null | head -15 || echo "unable to query"')
+        $chronySources = $(timeout 5 chronyc sources 2>/dev/null | head -15 || echo "unable to query")
         $sourcesStr = ($chronySources -join $nl).Trim()
         $FindingDetails += "Check 2: Chrony Time Sources" + $nl
         $FindingDetails += ("-" * 40) + $nl
         $FindingDetails += "  " + $sourcesStr + $nl + $nl
 
-        $chronyConf = $(timeout 5 sh -c 'grep -v "^#\|^$" /etc/chrony.conf 2>/dev/null | head -15 || echo "no config"')
+        $chronyConf = $(timeout 5 grep -v "^#\|^$" /etc/chrony.conf 2>/dev/null | head -15 || echo "no config")
         $confStr = ($chronyConf -join $nl).Trim()
         $FindingDetails += "Check 3: Chrony Configuration" + $nl
         $FindingDetails += ("-" * 40) + $nl
         $FindingDetails += "  " + $confStr + $nl + $nl
     } elseif ($ntpStr -eq "active") {
-        $ntpPeers = $(timeout 5 sh -c 'ntpq -p 2>/dev/null | head -15 || echo "unable to query"')
+        $ntpPeers = $(timeout 5 ntpq -p 2>/dev/null | head -15 || echo "unable to query")
         $peersStr = ($ntpPeers -join $nl).Trim()
         $FindingDetails += "Check 2: NTP Peers" + $nl
         $FindingDetails += ("-" * 40) + $nl
         $FindingDetails += "  " + $peersStr + $nl + $nl
 
-        $ntpConf = $(timeout 5 sh -c 'grep -v "^#\|^$" /etc/ntp.conf 2>/dev/null | head -15 || echo "no config"')
+        $ntpConf = $(timeout 5 grep -v "^#\|^$" /etc/ntp.conf 2>/dev/null | head -15 || echo "no config")
         $confStr = ($ntpConf -join $nl).Trim()
         $FindingDetails += "Check 3: NTP Configuration" + $nl
         $FindingDetails += ("-" * 40) + $nl

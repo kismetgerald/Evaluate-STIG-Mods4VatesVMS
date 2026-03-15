@@ -1,8 +1,7 @@
 # Evaluate-STIG Modifications for Vates VMS
 
 Custom STIG compliance scanning modules for **Xen Orchestra (XO)** and **XCP-ng**,
-extending the [NAVSEA Evaluate-STIG](https://www.niwcatlantic.navy.mil/Technology/SoftwareFactory/Evaluate-STIG/)
-framework to support DoD compliance scanning of the
+extending the Evaluate-STIG framework to support automated compliance scanning of the
 [Vates Virtualization Management Stack](https://vates.tech).
 
 ---
@@ -12,7 +11,7 @@ framework to support DoD compliance scanning of the
 No official DISA STIGs or SCAP Benchmarks exist for Xen Orchestra or XCP-ng. This
 project adapts applicable Security Requirements Guides (SRGs) and existing STIGs to
 enable automated compliance scanning and STIG checklist (CKL/CKLB) generation — supporting
-an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD use.
+security authorization packages (IATT / ATO) in regulated environments.
 
 ---
 
@@ -26,7 +25,7 @@ an IATT (Interim Authority to Test) or full ATO (Authority to Operate) for DoD u
 | `Scan-XO_ASD_Checks` | ASD STIG V6R4 | Xen Orchestra | 286 | :white_check_mark: **Complete** — all 286 checks automated (34 CAT I + 252 CAT II/III); EvalScore 43.36% |
 | `Scan-XO_GPOS_Debian12_Checks` | GPOS SRG V3R2 | XO (Debian 12) | 198 | :white_check_mark: **Complete** — all 198 checks automated (18 CAT I + 170 CAT II + 10 CAT III); EvalScore 46.46% |
 | `Scan-XCP-ng_VMM_Checks` | VMM SRG V2R2 | XCP-ng Dom0 | 193 | :white_check_mark: **Complete** — all 193 checks automated (3 CAT I + 159 CAT II + 31 CAT III); EvalScore 34.72% |
-| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 244 | :hammer_and_wrench: **In Progress** — 114/244 checks automated (26 CAT I + 75 CAT II + 13 CAT III); EvalScore 24.18% |
+| `Scan-XCP-ng_Dom0_RHEL7_Checks` | RHEL 7 STIG V3R15 (adapted) | XCP-ng Dom0 | 244 | :white_check_mark: **Complete** — all 244 checks automated (26 CAT I + 205 CAT II + 13 CAT III); EvalScore 42.21% |
 
 ### Modified Framework Files (`Evaluate-STIG/xml/`)
 
@@ -49,9 +48,8 @@ for findings in each module.
 
 ## Getting Started
 
-> **This repository does not include the NAVSEA Evaluate-STIG framework.**
-> You must obtain it separately from
-> [NISC](https://www.niwcatlantic.navy.mil/Technology/SoftwareFactory/Evaluate-STIG/)
+> **This repository does not include the Evaluate-STIG framework.**
+> You must obtain it separately from your local Cybersecurity team
 > and integrate these modules into it.
 
 See **[`.Mods_by_Kismet/README.md`](.Mods_by_Kismet/README.md)** for complete
@@ -112,5 +110,5 @@ for full details and recommended mitigations.
 ## Authors
 
 **Modifications by:** Kismet Agbasi
-**Original Framework:** NAVSEA / NIWC Atlantic
+**Original Framework:** Evaluate-STIG
 **Developed with:** GitHub Copilot and Claude Code (Anthropic)

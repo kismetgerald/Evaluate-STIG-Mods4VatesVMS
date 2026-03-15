@@ -24,19 +24,7 @@
 $global:XOVersionInfo = $null
 $ErrorActionPreference = "Stop"
 
-# ============================================================================
-# Helper: bash function for shell command execution
-# ============================================================================
-filter bash {
-    param([string]$c)
-    try {
-        $result = sh -c $c 2>&1
-        return $result
-    }
-    catch {
-        return $null
-    }
-}
+# bash filter function removed (QA Phase 2D — Rule 4 remediation)
 
 # ============================================================================
 # Helper: Get-XOVersionInfo
@@ -417,7 +405,7 @@ Function Get-V222389 {
     $xoPid = $(timeout 5 pgrep -f "xo-server" 2>&1 | head -1 2>&1)
     $xoPidStr = ($xoPid -join $nl).Trim()
     if ($xoPidStr -ne "" -and $xoPidStr -match '^\d+$') {
-        $envVars = $(timeout 5 sh -c "cat /proc/${xoPidStr}/environ 2>/dev/null | tr '\0' '\n' | grep -iE 'TOKEN|SESSION|TIMEOUT|EXPIRE' | head -5 2>&1")
+        $envVars = $(timeout 5 cat /proc/${xoPidStr}/environ 2>/dev/null | tr '\0' '\n' | grep -iE 'TOKEN|SESSION|TIMEOUT|EXPIRE' | head -5 2>&1)
         $envVarsStr = ($envVars -join $nl).Trim()
         if ($envVarsStr -ne "") {
             $FindingDetails += "Session-related environment variables:" + $nl + $envVarsStr + $nl + $nl
@@ -1394,7 +1382,7 @@ Function Get-V222396 {
     # Check 1: Active TLS 1.2 connection test
     $FindingDetails += "Check 1: TLS 1.2 Availability" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $tls12Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1")
+    $tls12Result = $(timeout 10 echo Q | openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1)
     $tls12Str = $tls12Result -join $nl
     if ($tls12Str -match "Cipher is" -or $tls12Str -match "SSL-Session") {
         $FindingDetails += "TLS 1.2: AVAILABLE" + $nl
@@ -1410,7 +1398,7 @@ Function Get-V222396 {
     # Check 2: Active TLS 1.3 connection test
     $FindingDetails += "Check 2: TLS 1.3 Availability" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $tls13Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1")
+    $tls13Result = $(timeout 10 echo Q | openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1)
     $tls13Str = $tls13Result -join $nl
     if ($tls13Str -match "Cipher is" -or $tls13Str -match "SSL-Session") {
         $FindingDetails += "TLS 1.3: AVAILABLE" + $nl
@@ -1426,9 +1414,9 @@ Function Get-V222396 {
     # Check 3: Weak protocol detection
     $FindingDetails += "Check 3: Weak Protocol Check (TLS 1.0/1.1, SSLv3)" + $nl
     $FindingDetails += ("-" * 40) + $nl
-    $tls10Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1 2>&1")
+    $tls10Result = $(timeout 10 echo Q | openssl s_client -connect ${Hostname}:443 -tls1 2>&1)
     $tls10Str = $tls10Result -join $nl
-    $tls11Result = $(timeout 10 sh -c "echo Q | openssl s_client -connect ${Hostname}:443 -tls1_1 2>&1")
+    $tls11Result = $(timeout 10 echo Q | openssl s_client -connect ${Hostname}:443 -tls1_1 2>&1)
     $tls11Str = $tls11Result -join $nl
     $tls10Active = $tls10Str -match "Cipher is"
     $tls11Active = $tls11Str -match "Cipher is"
@@ -1555,15 +1543,15 @@ Function Get-V222397 {
     $nl = [Environment]::NewLine
 
     # Test TLS 1.2 support (minimum DoD-required version for integrity protection)
-    $tls12Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1")
+    $tls12Output = $(echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_2 2>&1)
     $tls12Active = ($tls12Output -join $nl) -match "Cipher is"
 
     # Test TLS 1.3 support (preferred)
-    $tls13Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1")
+    $tls13Output = $(echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1_3 2>&1)
     $tls13Active = ($tls13Output -join $nl) -match "Cipher is"
 
     # Test for weak TLS 1.0 (must NOT be active)
-    $tls10Output = $(sh -c "echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1 2>&1")
+    $tls10Output = $(echo Q | timeout 10 openssl s_client -connect ${Hostname}:443 -tls1 2>&1)
     $tls10Active = ($tls10Output -join $nl) -match "Cipher is"
 
     if ($tls12Active -or $tls13Active) {
@@ -1712,8 +1700,8 @@ Function Get-V222398 {
     # SOAP (Simple Object Access Protocol) is an XML-based messaging protocol
     # not used by Node.js/Express.js applications. This requirement is N/A.
 
-    $xoApiType = $(sh -c "grep -r 'soap\|wsdl\|xml-rpc' /opt/xo/xo-server/dist/ 2>/dev/null | head -5 2>&1")
-    $xoaApiType = $(sh -c "grep -r 'soap\|wsdl\|xml-rpc' /usr/share/xo-server/ 2>/dev/null | head -5 2>&1")
+    $xoApiType = $(grep -r 'soap\|wsdl\|xml-rpc' /opt/xo/xo-server/dist/ 2>/dev/null | head -5 2>&1)
+    $xoaApiType = $(grep -r 'soap\|wsdl\|xml-rpc' /usr/share/xo-server/ 2>/dev/null | head -5 2>&1)
     $soapFound = (($xoApiType -join $nl).Trim().Length -gt 0) -or (($xoaApiType -join $nl).Trim().Length -gt 0)
 
     if (-not $soapFound) {
@@ -2851,7 +2839,7 @@ Function Get-V222410 {
         $apiToken = $(timeout 5 cat $tokenPath 2>&1)
         $apiTokenStr = ($apiToken -join "").Trim()
         if ($apiTokenStr -ne "") {
-            $usersResult = $(timeout 10 sh -c "curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1")
+            $usersResult = $(timeout 10 curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1)
             $usersStr = $usersResult -join $nl
             $FindingDetails += "XO users via API:" + $nl + $usersStr + $nl + $nl
         }
@@ -3159,7 +3147,7 @@ Function Get-V222412 {
         $apiToken = $(timeout 5 cat $tokenPath 2>&1)
         $apiTokenStr = ($apiToken -join "").Trim()
         if ($apiTokenStr -ne "") {
-            $usersResult = $(timeout 10 sh -c "curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1")
+            $usersResult = $(timeout 10 curl -sf -H 'Cookie: authenticationToken=$apiTokenStr' https://localhost/rest/v0/users 2>&1)
             $usersStr = $usersResult -join $nl
             if ($usersStr.Trim() -ne "") {
                 $FindingDetails += "XO user list from API:" + $nl + $usersStr + $nl + $nl
@@ -3315,8 +3303,7 @@ Function Get-V222413 {
         $apiToken = ($apiTokenRaw -join "").Trim()
     }
     if ($apiToken -ne "") {
-        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
-        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins" 2>/dev/null | head -c 8000)
         $pluginsStr = ($pluginsJson -join $nl).Trim()
         if ($pluginsStr -match "ldap") {
             $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
@@ -3368,11 +3355,10 @@ Function Get-V222413 {
             $apiToken = ($apiTokenContent -join "").Trim()
         }
         if ($apiToken -ne "") {
-            $curlArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " " + [char]39 + "https://localhost/rest/v0/plugins/audit/records?limit=200" + [char]39 + " 2>/dev/null | head -c 10000"
-            $auditJson = $(timeout 15 sh -c $curlArgs 2>&1)
+            $auditJson = $(timeout 15 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins/audit/records?limit=200" 2>/dev/null | head -c 10000)
             $auditStr = ($auditJson -join $nl).Trim()
             if ($auditStr -ne "" -and $auditStr -notmatch "401|403|404|error") {
-                $createEvents = $(timeout 5 sh -c "echo " + [char]39 + $auditStr + [char]39 + " | grep -oi 'user.create\|user.set\|createUser\|addUser\|account.*creat' | head -10 2>/dev/null")
+                $createEvents = $(timeout 5 echo " + [char]39 + $auditStr + [char]39 + " | grep -oi 'user.create\|user.set\|createUser\|addUser\|account.*creat' | head -10 2>/dev/null)
                 $createEventsStr = ($createEvents -join $nl).Trim()
                 if ($createEventsStr -ne "") {
                     $FindingDetails += "Account creation event types found in audit records: " + $createEventsStr + $nl + $nl
@@ -3392,7 +3378,7 @@ Function Get-V222413 {
         # Check 4: Systemd journal for account events
         $FindingDetails += "Check 4: Systemd Journal - Account Creation Events" + $nl
         $FindingDetails += ("-" * 40) + $nl
-        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*creat|creat.*user|addUser|user.*add' | head -10 2>&1")
+        $journalEvents = $(timeout 5 journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*creat|creat.*user|addUser|user.*add' | head -10 2>&1)
         $journalEventsStr = ($journalEvents -join $nl).Trim()
         if ($journalEventsStr -ne "") {
             $FindingDetails += "Account creation log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
@@ -3529,8 +3515,7 @@ Function Get-V222414 {
         $apiToken = ($apiTokenRaw -join "").Trim()
     }
     if ($apiToken -ne "") {
-        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
-        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins" 2>/dev/null | head -c 8000)
         $pluginsStr = ($pluginsJson -join $nl).Trim()
         if ($pluginsStr -match "ldap") {
             $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
@@ -3563,7 +3548,7 @@ Function Get-V222414 {
         # Check 2: Systemd journal for account modification events
         $FindingDetails += "Check 2: Systemd Journal - Account Modification Events" + $nl
         $FindingDetails += ("-" * 40) + $nl
-        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*modif|modif.*user|user.*set|setUser|updateUser|user.*update' | head -10 2>&1")
+        $journalEvents = $(timeout 5 journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*modif|modif.*user|user.*set|setUser|updateUser|user.*update' | head -10 2>&1)
         $journalEventsStr = ($journalEvents -join $nl).Trim()
         if ($journalEventsStr -ne "") {
             $FindingDetails += "Account modification log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
@@ -3714,8 +3699,7 @@ Function Get-V222415 {
         $apiToken = ($apiTokenRaw -join "").Trim()
     }
     if ($apiToken -ne "") {
-        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
-        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins" 2>/dev/null | head -c 8000)
         $pluginsStr = ($pluginsJson -join $nl).Trim()
         if ($pluginsStr -match "ldap") {
             $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
@@ -3748,7 +3732,7 @@ Function Get-V222415 {
         # Check 2: Systemd journal for account disable events
         $FindingDetails += "Check 2: Systemd Journal - Account Disabling Events" + $nl
         $FindingDetails += ("-" * 40) + $nl
-        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*disabl|disabl.*user|user.*lock|lockUser|disableUser' | head -10 2>&1")
+        $journalEvents = $(timeout 5 journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*disabl|disabl.*user|user.*lock|lockUser|disableUser' | head -10 2>&1)
         $journalEventsStr = ($journalEvents -join $nl).Trim()
         if ($journalEventsStr -ne "") {
             $FindingDetails += "Account disabling log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
@@ -3896,8 +3880,7 @@ Function Get-V222416 {
         $apiToken = ($apiTokenRaw -join "").Trim()
     }
     if ($apiToken -ne "") {
-        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
-        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins" 2>/dev/null | head -c 8000)
         $pluginsStr = ($pluginsJson -join $nl).Trim()
         if ($pluginsStr -match "ldap") {
             $FindingDetails += "auth-ldap plugin detected via REST API (/rest/v0/plugins)." + $nl
@@ -3930,7 +3913,7 @@ Function Get-V222416 {
         # Check 2: Systemd journal for account removal events
         $FindingDetails += "Check 2: Systemd Journal - Account Removal Events" + $nl
         $FindingDetails += ("-" * 40) + $nl
-        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*delet|delet.*user|removeUser|deleteUser|user.*remov' | head -10 2>&1")
+        $journalEvents = $(timeout 5 journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*delet|delet.*user|removeUser|deleteUser|user.*remov' | head -10 2>&1)
         $journalEventsStr = ($journalEvents -join $nl).Trim()
         if ($journalEventsStr -ne "") {
             $FindingDetails += "Account removal log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
@@ -4688,7 +4671,7 @@ Function Get-V222421 {
         # Check 2: Systemd journal for account enabling events
         $FindingDetails += "Check 2: Systemd Journal - Account Enabling Events" + $nl
         $FindingDetails += ("-" * 40) + $nl
-        $journalEvents = $(timeout 5 sh -c "journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*enabl|enabl.*user|enableUser|unlockUser|user.*unlock|user.*activat' | head -10 2>&1")
+        $journalEvents = $(timeout 5 journalctl -u xo-server.service --since '-7 days' --no-pager -q 2>/dev/null | grep -iE 'user.*enabl|enabl.*user|enableUser|unlockUser|user.*unlock|user.*activat' | head -10 2>&1)
         $journalEventsStr = ($journalEvents -join $nl).Trim()
         if ($journalEventsStr -ne "") {
             $FindingDetails += "Account enabling log entries (last 7 days):" + $nl + $journalEventsStr + $nl + $nl
@@ -5863,8 +5846,7 @@ Function Get-V222431 {
     if ($apiToken -ne "") {
         $FindingDetails += "REST API: checking audit plugin and records..." + $nl
         # Check plugin list
-        $pluginsArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " https://localhost/rest/v0/plugins 2>/dev/null | head -c 8000"
-        $pluginsJson = $(timeout 10 sh -c $pluginsArgs 2>&1)
+        $pluginsJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins" 2>/dev/null | head -c 8000)
         $pluginsStr = ($pluginsJson -join $nl).Trim()
 
         if ($pluginsStr -match '"audit"') {
@@ -5876,8 +5858,7 @@ Function Get-V222431 {
         }
 
         # Query recent audit records
-        $auditArgs = "curl -sk -H " + [char]39 + "cookie: authenticationToken=" + $apiToken + [char]39 + " " + [char]39 + "https://localhost/rest/v0/plugins/audit/records?limit=50" + [char]39 + " 2>/dev/null | head -c 16000"
-        $auditJson = $(timeout 10 sh -c $auditArgs 2>&1)
+        $auditJson = $(timeout 10 curl -sk -H "cookie: authenticationToken=${apiToken}" "https://localhost/rest/v0/plugins/audit/records?limit=50" 2>/dev/null | head -c 16000)
         $auditStr = ($auditJson -join $nl).Trim()
 
         if ($auditStr -ne "" -and $auditStr.Length -gt 10 -and $auditStr -notmatch '"error"' -and $auditStr -notmatch "Unauthorized") {
@@ -6218,8 +6199,7 @@ Function Get-V222434 {
     )
 
     # Fetch login page and check for banner text
-    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
-    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPage = $(timeout 15 curl -sk --max-time 10 "https://localhost/" 2>/dev/null | head -c 20000)
     $loginPageStr = ($loginPage -join $nl).Trim()
 
     if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
@@ -6410,8 +6390,7 @@ Function Get-V222435 {
     )
 
     # Fetch login page and check for banner + acknowledgment
-    $loginPageArgs = "curl -sk --max-time 10 https://localhost/ 2>/dev/null | head -c 20000"
-    $loginPage = $(timeout 15 sh -c $loginPageArgs 2>&1)
+    $loginPage = $(timeout 15 curl -sk --max-time 10 "https://localhost/" 2>/dev/null | head -c 20000)
     $loginPageStr = ($loginPage -join $nl).Trim()
 
     if ($loginPageStr -ne "" -and $loginPageStr.Length -gt 50) {
@@ -6587,7 +6566,7 @@ Function Get-V222436 {
     $nginxBannerStr = ($nginxBanner -join $nl).Trim()
     $nginxHasBanner = $false
     if ($nginxBannerStr -ne "") {
-        $nginxContent = $(timeout 5 sh -c 'grep -li "banner\|consent\|DoD\|unauthorized" /etc/nginx/conf.d/*.conf /etc/nginx/sites-enabled/* 2>/dev/null | head -3')
+        $nginxContent = $(timeout 5 grep -li "banner\|consent\|DoD\|unauthorized" /etc/nginx/conf.d/*.conf /etc/nginx/sites-enabled/* 2>/dev/null | head -3)
         $nginxContentStr = ($nginxContent -join $nl).Trim()
         if ($nginxContentStr -ne "") {
             $nginxHasBanner = $true
@@ -6755,7 +6734,7 @@ Function Get-V222437 {
     $lastLogonInSrc = $false
     $srcMatch = ""
     if ($srcPaths.Count -gt 0) {
-        $grepResult = $(timeout 5 sh -c 'grep -rl "lastLogon\|last_logon\|lastLogin\|last_login\|lastSuccessful" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+        $grepResult = $(timeout 5 grep -rl "lastLogon\|last_logon\|lastLogin\|last_login\|lastSuccessful" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
         $grepStr = ($grepResult -join $nl).Trim()
         if ($grepStr -ne "") {
             $lastLogonInSrc = $true
@@ -6764,7 +6743,7 @@ Function Get-V222437 {
     }
 
     # Check 3: XO audit log - look for lastLogon field in recent entries
-    $auditLog = $(timeout 5 sh -c 'find /var/log -maxdepth 3 -name "xo*.log" -o -name "audit*.log" 2>/dev/null | head -3 | xargs -r grep -l "lastLogon\|last_logon" 2>/dev/null')
+    $auditLog = $(timeout 5 find /var/log -maxdepth 3 -name "xo*.log" -o -name "audit*.log" 2>/dev/null | head -3 | xargs -r grep -l "lastLogon\|last_logon" 2>/dev/null)
     $auditLogStr = ($auditLog -join $nl).Trim()
     $lastLogonInLog = $auditLogStr -ne ""
 
@@ -6923,7 +6902,7 @@ Function Get-V222438 {
     $nl = [Environment]::NewLine
 
     # Check 1: XO audit plugin active (provides audit trail for non-repudiation)
-    $auditPlugin = $(timeout 5 sh -c 'ls /opt/xo/packages/@xen-orchestra/audit* /usr/share/xo-server/node_modules/@xen-orchestra/audit* 2>/dev/null | head -5')
+    $auditPlugin = $(timeout 5 ls /opt/xo/packages/@xen-orchestra/audit* /usr/share/xo-server/node_modules/@xen-orchestra/audit* 2>/dev/null | head -5)
     $auditPluginStr = ($auditPlugin -join $nl).Trim()
     $auditPluginActive = $auditPluginStr -ne ""
 
@@ -6932,7 +6911,7 @@ Function Get-V222438 {
     $auditLogStr = ($auditLog -join $nl).Trim()
     $hasUserAttribution = $false
     if ($auditLogStr -ne "") {
-        $logSample = $(timeout 5 sh -c 'cat /var/log/xo*.log 2>/dev/null | tail -20 | grep -c "userId\|userName\|subject" 2>/dev/null')
+        $logSample = $(timeout 5 cat /var/log/xo*.log 2>/dev/null | tail -20 | grep -c "userId\|userName\|subject" 2>/dev/null)
         $logSampleStr = ($logSample -join $nl).Trim()
         if ($logSampleStr -match '^\d+$') {
             $attributionCount = [int]$logSampleStr
@@ -6941,7 +6920,7 @@ Function Get-V222438 {
     }
 
     # Check 3: Systemd journal contains XO user actions (fallback attribution)
-    $journalCheck = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 20 2>/dev/null | grep -c "userId\|userName\|user\|action" 2>/dev/null')
+    $journalCheck = $(timeout 5 journalctl -u xo-server --no-pager -n 20 2>/dev/null | grep -c "userId\|userName\|user\|action" 2>/dev/null)
     $journalCheckStr = ($journalCheck -join $nl).Trim()
     $hasJournalAttribution = $false
     if ($journalCheckStr -match '^\d+$' -and [int]$journalCheckStr -gt 0) {
@@ -6949,7 +6928,7 @@ Function Get-V222438 {
     }
 
     # Check 4: TLS provides cryptographic session authenticity (server cert)
-    $tlsCert = $(timeout 5 sh -c 'echo | openssl s_client -connect localhost:443 2>/dev/null | grep "subject=" | head -1')
+    $tlsCert = $(timeout 5 echo | openssl s_client -connect localhost:443 2>/dev/null | grep "subject=" | head -1)
     $tlsCertStr = ($tlsCert -join $nl).Trim()
     $hasTlsCert = $tlsCertStr -ne ""
 
@@ -7127,17 +7106,17 @@ Function Get-V222439 {
     $hasChrony = $chronySrcStr -ne "" -and $chronySrcStr -notmatch "^Error"
 
     # Check 3: systemd-timesyncd or ntpd running
-    $timeSvc = $(timeout 5 sh -c 'systemctl is-active systemd-timesyncd chronyd ntpd 2>/dev/null | grep -v "inactive" | head -1')
+    $timeSvc = $(timeout 5 systemctl is-active systemd-timesyncd chronyd ntpd 2>/dev/null | grep -v "inactive" | head -1)
     $timeSvcStr = ($timeSvc -join $nl).Trim()
     $hasTimeSvc = $timeSvcStr -ne ""
 
     # Check 4: XO log timestamps have consistent format
-    $logSample = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 5 2>/dev/null | head -5')
+    $logSample = $(timeout 5 journalctl -u xo-server --no-pager -n 5 2>/dev/null | head -5)
     $logSampleStr = ($logSample -join $nl).Trim()
     $hasTimestamps = $logSampleStr -match '\d{4}-\d{2}-\d{2}'
 
     # Check 5: NTP server configured
-    $ntpConf = $(timeout 5 sh -c 'grep -r "^server\|^pool\|NTP=" /etc/systemd/timesyncd.conf /etc/chrony.conf /etc/ntp.conf 2>/dev/null | head -5')
+    $ntpConf = $(timeout 5 grep -r "^server\|^pool\|NTP=" /etc/systemd/timesyncd.conf /etc/chrony.conf /etc/ntp.conf 2>/dev/null | head -5)
     $ntpConfStr = ($ntpConf -join $nl).Trim()
     $ntpConfigured = $ntpConfStr -ne ""
 
@@ -7313,7 +7292,7 @@ Function Get-V222441 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: XO journal logs authentication/session creation events
-    $loginEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -i "session\|login\|authent\|signIn\|connect" | head -5')
+    $loginEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -i "session\|login\|authent\|signIn\|connect" | head -5)
     $loginEventsStr = ($loginEvents -join $nl).Trim()
     $loginLogged = $loginEventsStr -ne ""
 
@@ -7492,12 +7471,12 @@ Function Get-V222442 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: Journal contains logout/session destruction events
-    $logoutEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -i "logout\|signOut\|session.*destroy\|session.*end\|disconnect" | head -5')
+    $logoutEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -i "logout\|signOut\|session.*destroy\|session.*end\|disconnect" | head -5)
     $logoutEventsStr = ($logoutEvents -join $nl).Trim()
     $logoutLogged = $logoutEventsStr -ne ""
 
     # Check 3: XO source - look for session destruction event emission
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "session.destroy\|signOut\|logout.*audit\|audit.*logout" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "session.destroy\|signOut\|logout.*audit\|audit.*logout" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasDestroyAudit = $srcSearchStr -ne ""
 
@@ -7662,13 +7641,13 @@ Function Get-V222443 {
     $xoConfigStr = ($xoConfig -join $nl).Trim()
     $sessionRolling = $false
     if ($xoConfigStr -ne "") {
-        $configContent = $(timeout 5 sh -c 'cat /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | grep -i "rolling\|renew\|refresh\|session" | head -5')
+        $configContent = $(timeout 5 cat /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | grep -i "rolling\|renew\|refresh\|session" | head -5)
         $configContentStr = ($configContent -join $nl).Trim()
         if ($configContentStr -ne "") { $sessionRolling = $true }
     }
 
     # Check 3: Source code - look for session renewal/refresh audit emission
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "session.*renew\|token.*refresh\|renewSession\|refreshToken.*audit\|audit.*renew" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "session.*renew\|token.*refresh\|renewSession\|refreshToken.*audit\|audit.*renew" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasRenewalAudit = $srcSearchStr -ne ""
 
@@ -7819,7 +7798,7 @@ Function Get-V222444 {
     $nl = [Environment]::NewLine
 
     # Check 1: Search XO logs for password patterns
-    $passInLog = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 200 2>/dev/null | grep -iE "password=|passwd=|Authorization: Basic|Bearer [A-Za-z0-9]{20}" | head -5 2>/dev/null')
+    $passInLog = $(timeout 5 journalctl -u xo-server --no-pager -n 200 2>/dev/null | grep -iE "password=|passwd=|Authorization: Basic|Bearer [A-Za-z0-9]{20}" | head -5 2>/dev/null)
     $passInLogStr = ($passInLog -join $nl).Trim()
     $passwordInLog = $passInLog.Count -gt 0 -and $passInLogStr -ne ""
 
@@ -7829,7 +7808,7 @@ Function Get-V222444 {
     $sensitiveInFiles = $false
     $sensitiveMatch = ""
     if ($logFilesStr -ne "") {
-        $sensitiveSearch = $(timeout 5 sh -c 'grep -iEl "password=|passwd=|secret=|private_key" /var/log/xo*.log 2>/dev/null | head -3')
+        $sensitiveSearch = $(timeout 5 grep -iEl "password=|passwd=|secret=|private_key" /var/log/xo*.log 2>/dev/null | head -3)
         $sensitiveSearchStr = ($sensitiveSearch -join $nl).Trim()
         if ($sensitiveSearchStr -ne "") {
             $sensitiveInFiles = $true
@@ -7838,7 +7817,7 @@ Function Get-V222444 {
     }
 
     # Check 3: XO source - verify passwords are not logged
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "log.*password\|logger.*password\|winston.*password" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "log.*password\|logger.*password\|winston.*password" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $passwordLoggedInSrc = $srcSearchStr -ne ""
 
@@ -8002,12 +7981,12 @@ Function Get-V222445 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: Journal - look for timeout/session expiry events
-    $timeoutEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -i "timeout\|session.*expir\|token.*expir\|inactive" | head -5')
+    $timeoutEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -i "timeout\|session.*expir\|token.*expir\|inactive" | head -5)
     $timeoutEventsStr = ($timeoutEvents -join $nl).Trim()
     $timeoutLogged = $timeoutEventsStr -ne ""
 
     # Check 3: XO config - session timeout configured
-    $xoConfigTimeout = $(timeout 5 sh -c 'cat /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | grep -i "timeout\|maxAge\|expir" | head -5')
+    $xoConfigTimeout = $(timeout 5 cat /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | grep -i "timeout\|maxAge\|expir" | head -5)
     $xoConfigTimeoutStr = ($xoConfigTimeout -join $nl).Trim()
     $timeoutConfigured = $xoConfigTimeoutStr -ne ""
 
@@ -8158,17 +8137,17 @@ Function Get-V222446 {
     $nl = [Environment]::NewLine
 
     # Check 1: XO service journal - verify timestamps present
-    $journalSample = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 5 2>/dev/null')
+    $journalSample = $(timeout 5 journalctl -u xo-server --no-pager -n 5 2>/dev/null)
     $journalSampleStr = ($journalSample -join $nl).Trim()
     $journalHasTimestamps = $journalSampleStr -match '\w{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}|\d{4}-\d{2}-\d{2}'
 
     # Check 2: XO log files - verify timestamp format
-    $logSample = $(timeout 5 sh -c 'find /var/log -maxdepth 3 -name "xo*.log" 2>/dev/null | head -1 | xargs -r tail -5 2>/dev/null')
+    $logSample = $(timeout 5 find /var/log -maxdepth 3 -name "xo*.log" 2>/dev/null | head -1 | xargs -r tail -5 2>/dev/null)
     $logSampleStr = ($logSample -join $nl).Trim()
     $logHasTimestamps = $logSampleStr -match '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}|\d{2}:\d{2}:\d{2}'
 
     # Check 3: Winston logger config - verify timestamp enabled
-    $winstonConfig = $(timeout 5 sh -c 'grep -rl "timestamp\|format.*timestamp\|winston.format" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $winstonConfig = $(timeout 5 grep -rl "timestamp\|format.*timestamp\|winston.format" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $winstonConfigStr = ($winstonConfig -join $nl).Trim()
     $winstonTimestamp = $winstonConfigStr -ne ""
 
@@ -8362,8 +8341,8 @@ Function Get-V222447 {
     $nginxLogsHeaders = $false
     $nginxLogFormat = ""
     if ($nginxConfStr -ne "") {
-        $logFormatSearch = $(timeout 5 sh -c 'grep -h "log_format\|access_log\|\$http_user_agent\|\$http_referer" /etc/nginx/nginx.conf /etc/nginx/conf.d/*.conf 2>/dev/null | head -10')
-        $logFormatSearch2 = $(timeout 5 sh -c 'grep -rh "log_format\|\$http_user_agent" /etc/nginx/sites-enabled/ 2>/dev/null | head -5')
+        $logFormatSearch = $(timeout 5 grep -h "log_format\|access_log\|\$http_user_agent\|\$http_referer" /etc/nginx/nginx.conf /etc/nginx/conf.d/*.conf 2>/dev/null | head -10)
+        $logFormatSearch2 = $(timeout 5 grep -rh "log_format\|\$http_user_agent" /etc/nginx/sites-enabled/ 2>/dev/null | head -5)
         $allLogFormat = @($logFormatSearch, $logFormatSearch2) | Where-Object { "$_".Trim() -ne "" }
         $nginxLogFormat = ($allLogFormat -join $nl).Trim()
         if ($nginxLogFormat -match "http_user_agent|http_referer") {
@@ -8372,12 +8351,12 @@ Function Get-V222447 {
     }
 
     # Check 2: XO/Express.js - morgan or request logging middleware
-    $morganSearch = $(timeout 5 sh -c 'grep -rl "morgan\|express.*logger\|req\.headers\|user-agent" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $morganSearch = $(timeout 5 grep -rl "morgan\|express.*logger\|req\.headers\|user-agent" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $morganSearchStr = ($morganSearch -join $nl).Trim()
     $hasMorgan = $morganSearchStr -ne ""
 
     # Check 3: XO access log sample - check for HTTP method and path
-    $accessLog = $(timeout 5 sh -c 'find /var/log/nginx -maxdepth 2 -name "access.log" 2>/dev/null | head -1 | xargs -r tail -3 2>/dev/null')
+    $accessLog = $(timeout 5 find /var/log/nginx -maxdepth 2 -name "access.log" 2>/dev/null | head -1 | xargs -r tail -3 2>/dev/null)
     $accessLogStr = ($accessLog -join $nl).Trim()
     $accessLogHasMethod = $accessLogStr -match '"(GET|POST|PUT|DELETE|PATCH)'
 
@@ -8541,12 +8520,12 @@ Function Get-V222448 {
     $nl = [Environment]::NewLine
 
     # Check 1: Nginx access log includes client IP
-    $nginxAccessSample = $(timeout 5 sh -c 'tail -5 /var/log/nginx/access.log 2>/dev/null')
+    $nginxAccessSample = $(timeout 5 tail -5 /var/log/nginx/access.log 2>/dev/null)
     $nginxAccessStr = ($nginxAccessSample -join $nl).Trim()
     $nginxLogsIP = $nginxAccessStr -match '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}'
 
     # Check 2: Nginx log format includes $remote_addr or $http_x_forwarded_for
-    $nginxIPFormat = $(timeout 5 sh -c 'grep -rh "remote_addr\|x_forwarded_for\|realip" /etc/nginx/ 2>/dev/null | head -5')
+    $nginxIPFormat = $(timeout 5 grep -rh "remote_addr\|x_forwarded_for\|realip" /etc/nginx/ 2>/dev/null | head -5)
     $nginxIPFormatStr = ($nginxIPFormat -join $nl).Trim()
     $nginxConfiguredIP = $nginxIPFormatStr -ne ""
 
@@ -8563,7 +8542,7 @@ Function Get-V222448 {
     }
 
     # Check 4: Express.js request logging with IP
-    $expressIP = $(timeout 5 sh -c 'grep -rl "req\.ip\|remoteAddress\|x-forwarded-for" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $expressIP = $(timeout 5 grep -rl "req\.ip\|remoteAddress\|x-forwarded-for" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $expressIPStr = ($expressIP -join $nl).Trim()
     $expressLogsIP = $expressIPStr -ne ""
 
@@ -8750,12 +8729,12 @@ Function Get-V222449 {
     }
 
     # Check 2: Journal - XO events contain user identity
-    $journalUser = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -i "userId\|userName\|user.*id\|subject" | head -5')
+    $journalUser = $(timeout 5 journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -i "userId\|userName\|user.*id\|subject" | head -5)
     $journalUserStr = ($journalUser -join $nl).Trim()
     $journalHasUser = $journalUserStr -ne ""
 
     # Check 3: XO source code records userId in audit events
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "userId.*audit\|audit.*userId\|subject.*userId\|record.*userId" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "userId.*audit\|audit.*userId\|subject.*userId\|record.*userId" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasUserID = $srcSearchStr -ne ""
 
@@ -8937,12 +8916,12 @@ Function Get-V222450 {
     }
 
     # Check 3: XO source - look for privilege/ACL audit event emission
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "acl.*audit\|audit.*acl\|permission.*audit\|audit.*role\|grant.*audit" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "acl.*audit\|audit.*acl\|permission.*audit\|audit.*role\|grant.*audit" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasPrivAudit = $srcSearchStr -ne ""
 
     # Check 4: XO journal - privilege change events
-    $journalPriv = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 200 2>/dev/null | grep -i "acl\|permission\|role\|grant\|privilege" | head -5')
+    $journalPriv = $(timeout 5 journalctl -u xo-server --no-pager -n 200 2>/dev/null | grep -i "acl\|permission\|role\|grant\|privilege" | head -5)
     $journalPrivStr = ($journalPriv -join $nl).Trim()
     $journalHasPriv = $journalPrivStr -ne ""
 
@@ -9131,7 +9110,7 @@ Function Get-V222451 {
     }
 
     # Check 3: XO source - audit event types for resource access
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "vm\..*audit\|audit.*object\|resource.*access.*log\|security.*object" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "vm\..*audit\|audit.*object\|resource.*access.*log\|security.*object" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasObjectAudit = $srcSearchStr -ne ""
 
@@ -9311,7 +9290,7 @@ Function Get-V222452 {
     }
 
     # Check 3: XO source - RBAC/role level audit
-    $srcSearch = $(timeout 5 sh -c 'grep -rl "rbac\|role.*audit\|audit.*level\|securityLevel" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcSearch = $(timeout 5 grep -rl "rbac\|role.*audit\|audit.*level\|securityLevel" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcSearchStr = ($srcSearch -join $nl).Trim()
     $srcHasLevelAudit = $srcSearchStr -ne ""
 
@@ -9613,7 +9592,7 @@ Function Get-V222454 {
     }
 
     # Check 3: XO source - ACL/role change logging
-    $srcAclAudit = $(timeout 5 sh -c 'grep -rl "addAcl\|removeAcl\|setAcl\|role.*audit\|audit.*role" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcAclAudit = $(timeout 5 grep -rl "addAcl\|removeAcl\|setAcl\|role.*audit\|audit.*role" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcAclAuditStr = ($srcAclAudit -join $nl).Trim()
     $srcHasAclAudit = $srcAclAuditStr -ne ""
 
@@ -10148,7 +10127,7 @@ Function Get-V222458 {
     }
 
     # Check 3: XO source - ACL removal code with audit
-    $srcAclDel = $(timeout 5 sh -c 'grep -rl "removeAcl\|deleteAcl\|revokeRole\|removeRole" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcAclDel = $(timeout 5 grep -rl "removeAcl\|deleteAcl\|revokeRole\|removeRole" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcAclDelStr = ($srcAclDel -join $nl).Trim()
     $srcHasAclDel = $srcAclDelStr -ne ""
 
@@ -10680,12 +10659,12 @@ Function Get-V222462 {
     }
 
     # Check 3: systemd journal for authentication events
-    $journalAuth = $(timeout 5 sh -c 'journalctl -u xo-server --since "1 hour ago" --no-pager 2>/dev/null | grep -i "sign[Ii]n\|login\|auth\|session" | tail -5')
+    $journalAuth = $(timeout 5 journalctl -u xo-server --since "1 hour ago" --no-pager 2>/dev/null | grep -i "sign[Ii]n\|login\|auth\|session" | tail -5)
     $journalAuthStr = ($journalAuth -join $nl).Trim()
     $journalHasAuth = $journalAuthStr -ne ""
 
     # Check 4: nginx access logs for auth endpoints
-    $nginxAuth = $(timeout 5 sh -c 'grep "POST.*signIn\|POST.*signin\|POST.*login\|POST.*auth" /var/log/nginx/access.log 2>/dev/null | tail -3')
+    $nginxAuth = $(timeout 5 grep "POST.*signIn\|POST.*signin\|POST.*login\|POST.*auth" /var/log/nginx/access.log 2>/dev/null | tail -3)
     $nginxAuthStr = ($nginxAuth -join $nl).Trim()
     $nginxHasAuth = $nginxAuthStr -ne ""
 
@@ -10874,7 +10853,7 @@ Function Get-V222463 {
     }
 
     # Check 3: XO source - audit of system-level operations
-    $srcPrivAudit = $(timeout 5 sh -c 'grep -rl "audit.*server\|audit.*host\|audit.*pool\|system.*audit" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3')
+    $srcPrivAudit = $(timeout 5 grep -rl "audit.*server\|audit.*host\|audit.*pool\|system.*audit" /opt/xo/packages /usr/share/xo-server 2>/dev/null | head -3)
     $srcPrivAuditStr = ($srcPrivAudit -join $nl).Trim()
     $srcHasPrivAudit = $srcPrivAuditStr -ne ""
 
@@ -11057,7 +11036,7 @@ Function Get-V222464 {
     }
 
     # Check 3: systemd journal for service start/stop session events
-    $journalSession = $(timeout 5 sh -c 'journalctl -u xo-server --since "24 hours ago" --no-pager 2>/dev/null | grep -i "session\|connect\|disconnect" | tail -5')
+    $journalSession = $(timeout 5 journalctl -u xo-server --since "24 hours ago" --no-pager 2>/dev/null | grep -i "session\|connect\|disconnect" | tail -5)
     $journalSessionStr = ($journalSession -join $nl).Trim()
 
     $FindingDetails = "Session Start/End Time Audit Record Check" + $nl
@@ -11391,7 +11370,7 @@ Function Get-V222466 {
     $Status = "Not_Applicable"
 
     # Verify XO does not expose OS shell via web UI
-    $shellExposure = $(timeout 5 sh -c 'grep -rl "execSync\|spawn.*shell\|child_process.*sh\|bash.*exec\|os.*command" /opt/xo/xo-server/dist /opt/xo/packages/xo-server/dist /usr/share/xo-server/dist 2>/dev/null | grep -v "node_modules" | head -3')
+    $shellExposure = $(timeout 5 grep -rl "execSync\|spawn.*shell\|child_process.*sh\|bash.*exec\|os.*command" /opt/xo/xo-server/dist /opt/xo/packages/xo-server/dist /usr/share/xo-server/dist 2>/dev/null | grep -v "node_modules" | head -3)
     $shellExposureStr = ($shellExposure -join $nl).Trim()
 
     $FindingDetails = "Direct OS Access Audit Record Check" + $nl
@@ -11736,12 +11715,12 @@ Function Get-V222468 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: systemd journal - XO service start events
-    $svcStart = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" --no-pager 2>/dev/null | grep -i "started\|starting\|listening\|ready\|startup" | tail -5')
+    $svcStart = $(timeout 5 journalctl -u xo-server --since "7 days ago" --no-pager 2>/dev/null | grep -i "started\|starting\|listening\|ready\|startup" | tail -5)
     $svcStartStr = ($svcStart -join $nl).Trim()
     $svcHasStart = $svcStartStr -ne ""
 
     # Check 3: Winston logger config - startup logging
-    $winstonConfig = $(timeout 5 sh -c 'grep -r "winston\|createLogger\|transports\." /opt/xo/packages/xo-server/src /usr/share/xo-server/src 2>/dev/null | head -3')
+    $winstonConfig = $(timeout 5 grep -r "winston\|createLogger\|transports\." /opt/xo/packages/xo-server/src /usr/share/xo-server/src 2>/dev/null | head -3)
     $winstonConfigStr = ($winstonConfig -join $nl).Trim()
     $winstonFound = $winstonConfigStr -ne ""
 
@@ -11913,7 +11892,7 @@ Function Get-V222469 {
     $nl = [Environment]::NewLine
 
     # Check 1: systemd journal - XO service stop events
-    $svcStop = $(timeout 5 sh -c 'journalctl -u xo-server --since "30 days ago" --no-pager 2>/dev/null | grep -i "stopped\|stopping\|deactivat\|terminating\|shutdown\|exiting" | tail -5')
+    $svcStop = $(timeout 5 journalctl -u xo-server --since "30 days ago" --no-pager 2>/dev/null | grep -i "stopped\|stopping\|deactivat\|terminating\|shutdown\|exiting" | tail -5)
     $svcStopStr = ($svcStop -join $nl).Trim()
     $svcHasStop = $svcStopStr -ne ""
 
@@ -11923,12 +11902,12 @@ Function Get-V222469 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 3: Winston logger for process exit events
-    $processExit = $(timeout 5 sh -c 'grep -r "process.exit\|SIGTERM\|SIGINT\|beforeExit\|gracefulShutdown" /opt/xo/packages/xo-server/src /usr/share/xo-server/src 2>/dev/null | head -3')
+    $processExit = $(timeout 5 grep -r "process.exit\|SIGTERM\|SIGINT\|beforeExit\|gracefulShutdown" /opt/xo/packages/xo-server/src /usr/share/xo-server/src 2>/dev/null | head -3)
     $processExitStr = ($processExit -join $nl).Trim()
     $processExitFound = $processExitStr -ne ""
 
     # Check 4: systemd unit - capture stop events
-    $unitFile = $(timeout 5 sh -c 'systemctl cat xo-server 2>/dev/null | grep -i "ExecStop\|KillSignal\|TimeoutStop"')
+    $unitFile = $(timeout 5 systemctl cat xo-server 2>/dev/null | grep -i "ExecStop\|KillSignal\|TimeoutStop")
     $unitFileStr = ($unitFile -join $nl).Trim()
 
     $FindingDetails = "Application Shutdown Event Logging Check" + $nl
@@ -11973,7 +11952,7 @@ Function Get-V222469 {
 
     $FindingDetails += "Summary:" + $nl
     # systemd always logs service stops - this is the primary mechanism
-    $svcIsSystemd = $(timeout 5 sh -c 'systemctl is-enabled xo-server 2>/dev/null')
+    $svcIsSystemd = $(timeout 5 systemctl is-enabled xo-server 2>/dev/null)
     $svcIsSystemdStr = ($svcIsSystemd -join $nl).Trim()
     if ($svcIsSystemdStr -ne "not-found" -and $svcIsSystemdStr -ne "") {
         $Status = "NotAFinding"
@@ -12097,7 +12076,7 @@ Function Get-V222470 {
     $nl = [Environment]::NewLine
 
     # Check 1: XO API - does XO initiate connections? (Config for XCP-ng hosts)
-    $xoConfig = $(timeout 5 sh -c 'cat /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | grep -E "hostname|host\s*=|xapi" | head -10')
+    $xoConfig = $(timeout 5 cat /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | grep -E "hostname|host\s*=|xapi" | head -10)
     $xoConfigStr = ($xoConfig -join $nl).Trim()
     $xoConnectsToHosts = $xoConfigStr -ne ""
 
@@ -12107,7 +12086,7 @@ Function Get-V222470 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 3: nginx access log - destination IPs in upstream proxy logs
-    $nginxUpstream = $(timeout 5 sh -c 'grep "upstream_addr\|127.0.0.1\|proxy_pass" /etc/nginx/nginx.conf /etc/nginx/conf.d/*.conf 2>/dev/null | head -5')
+    $nginxUpstream = $(timeout 5 grep "upstream_addr\|127.0.0.1\|proxy_pass" /etc/nginx/nginx.conf /etc/nginx/conf.d/*.conf 2>/dev/null | head -5)
     $nginxUpstreamStr = ($nginxUpstream -join $nl).Trim()
 
     # Check 4: API token - sample audit records for host/IP data
@@ -12301,7 +12280,7 @@ Function Get-V222471 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: Journal for data access events (read/get/list operations)
-    $accessEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "get |list |fetch|read |access|view" | head -5')
+    $accessEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "get |list |fetch|read |access|view" | head -5)
     $accessEventsStr = ($accessEvents -join $nl).Trim()
     $accessLogged = $accessEventsStr -ne ""
 
@@ -12474,7 +12453,7 @@ Function Get-V222472 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: Journal for data change events
-    $changeEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "creat|updat|delet|modif|set |add |remov|patch" | head -5')
+    $changeEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "creat|updat|delet|modif|set |add |remov|patch" | head -5)
     $changeEventsStr = ($changeEvents -join $nl).Trim()
     $changeLogged = $changeEventsStr -ne ""
 
@@ -12642,16 +12621,16 @@ Function Get-V222473 {
     $nl = [Environment]::NewLine
 
     # Check 1: Examine XO journal entries for ISO timestamps
-    $recentLogs = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 10 --output=short-iso 2>/dev/null')
+    $recentLogs = $(timeout 5 journalctl -u xo-server --no-pager -n 10 --output=short-iso 2>/dev/null)
     $recentLogsStr = ($recentLogs -join $nl).Trim()
     $isoTimestamps = $recentLogsStr -match '\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}'
 
     # Check 2: Check XO log files for timestamp format
-    $logFile = $(timeout 5 sh -c 'ls -t /var/log/xo-server*.log 2>/dev/null | head -1')
+    $logFile = $(timeout 5 ls -t /var/log/xo-server*.log 2>/dev/null | head -1)
     $logFileStr = ($logFile -join $nl).Trim()
     $fileTimestamps = $false
     if ($logFileStr -ne "") {
-        $logSample = $(timeout 5 sh -c "tail -5 $logFileStr 2>/dev/null")
+        $logSample = $(timeout 5 tail -5 $logFileStr 2>/dev/null)
         $logSampleStr = ($logSample -join $nl).Trim()
         $fileTimestamps = $logSampleStr -match '\d{4}-\d{2}-\d{2}' -or $logSampleStr -match '\w+ +\d+ \d{2}:\d{2}:\d{2}'
     }
@@ -12831,7 +12810,7 @@ Function Get-V222474 {
     }
 
     # Check 3: Journal source identification
-    $journalSrc = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 5 --output=verbose 2>/dev/null | grep -i "SYSLOG_IDENTIFIER\|_SYSTEMD_UNIT" | head -5')
+    $journalSrc = $(timeout 5 journalctl -u xo-server --no-pager -n 5 --output=verbose 2>/dev/null | grep -i "SYSLOG_IDENTIFIER\|_SYSTEMD_UNIT" | head -5)
     $journalSrcStr = ($journalSrc -join $nl).Trim()
     $srcIdentified = $journalSrcStr -ne ""
 
@@ -12988,15 +12967,15 @@ Function Get-V222475 {
     $nl = [Environment]::NewLine
 
     # Check 1: Remote syslog configuration
-    $rsyslogRemote = $(timeout 5 sh -c 'grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5')
+    $rsyslogRemote = $(timeout 5 grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5)
     $rsyslogRemoteStr = ($rsyslogRemote -join $nl).Trim()
 
     # Check 2: syslog-ng remote destination
-    $syslogNgRemote = $(timeout 5 sh -c 'test -d /etc/syslog-ng && grep -rE "destination|tcp|udp" /etc/syslog-ng/ 2>/dev/null | grep -v "#" | head -5')
+    $syslogNgRemote = $(timeout 5 test -d /etc/syslog-ng && grep -rE "destination|tcp|udp" /etc/syslog-ng/ 2>/dev/null | grep -v "#" | head -5)
     $syslogNgRemoteStr = ($syslogNgRemote -join $nl).Trim()
 
     # Check 3: systemd journal upload service
-    $journalUpload = $(timeout 3 sh -c 'systemctl is-active systemd-journal-remote systemd-journal-upload 2>/dev/null')
+    $journalUpload = $(timeout 3 systemctl is-active systemd-journal-remote systemd-journal-upload 2>/dev/null)
     $journalUploadStr = ($journalUpload -join $nl).Trim()
 
     $centralizedLogging = ($rsyslogRemoteStr -ne "") -or ($syslogNgRemoteStr -ne "") -or ($journalUploadStr -match "active")
@@ -13032,7 +13011,7 @@ Function Get-V222475 {
         $FindingDetails += "XO currently logs to local systemd journal and local log files only." + $nl
     } else {
         # Centralized logging IS configured - verify unique identifier
-        $hostIdent = $(timeout 5 sh -c 'grep -rE "hostname|programname|app-name" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | grep -v "#" | head -3')
+        $hostIdent = $(timeout 5 grep -rE "hostname|programname|app-name" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | grep -v "#" | head -3)
         $hostIdentStr = ($hostIdent -join $nl).Trim()
         $FindingDetails += "Centralized logging IS configured." + $nl
         if ($hostIdentStr -ne "") {
@@ -13159,7 +13138,7 @@ Function Get-V222476 {
     $auditPluginFound = $auditPkgStr -ne ""
 
     # Check 2: Journal for outcome events (success/error/status codes)
-    $outcomeEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "error|fail|success|200 |401 |403 |500 |result" | head -5')
+    $outcomeEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 100 2>/dev/null | grep -iE "error|fail|success|200 |401 |403 |500 |result" | head -5)
     $outcomeEventsStr = ($outcomeEvents -join $nl).Trim()
     $outcomesLogged = $outcomeEventsStr -ne ""
 
@@ -13346,7 +13325,7 @@ Function Get-V222477 {
     }
 
     # Check 3: Journal for user-associated events
-    $userEvents = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -iE "userId|user:|identity|authent" | head -5')
+    $userEvents = $(timeout 5 journalctl -u xo-server --no-pager -n 50 2>/dev/null | grep -iE "userId|user:|identity|authent" | head -5)
     $userEventsStr = ($userEvents -join $nl).Trim()
     $userInJournal = $userEventsStr -ne ""
 
@@ -13680,16 +13659,16 @@ Function Get-V222479 {
     $usesLevelDB = $leveldbPathStr -ne ""
 
     # Check 2: Check for relational RDBMS (PostgreSQL, MySQL, SQLite)
-    $psqlActive = $(timeout 3 sh -c 'systemctl is-active postgresql 2>/dev/null')
+    $psqlActive = $(timeout 3 systemctl is-active postgresql 2>/dev/null)
     $psqlStr = ($psqlActive -join $nl).Trim()
-    $mysqlActive = $(timeout 3 sh -c 'systemctl is-active mysql mariadb 2>/dev/null')
+    $mysqlActive = $(timeout 3 systemctl is-active mysql mariadb 2>/dev/null)
     $mysqlStr = ($mysqlActive -join $nl).Trim()
     $sqliteFiles = $(timeout 5 find /var/lib/xo-server /opt/xo -maxdepth 3 -name "*.sqlite" -o -name "*.sqlite3" 2>/dev/null | head -3 2>&1)
     $sqliteFilesStr = ($sqliteFiles -join $nl).Trim()
     $usesRDBMS = ($psqlStr -eq "active") -or ($mysqlStr -eq "active") -or ($sqliteFilesStr -ne "")
 
     # Check 3: Redis (session store - ephemeral, not transactional application data)
-    $redisSvc = $(timeout 3 sh -c 'systemctl is-active redis 2>/dev/null')
+    $redisSvc = $(timeout 3 systemctl is-active redis 2>/dev/null)
     $redisStr = ($redisSvc -join $nl).Trim()
 
     $FindingDetails = "Transaction Recovery Log Check" + $nl
@@ -13842,9 +13821,9 @@ Function Get-V222480 {
     $nl = [Environment]::NewLine
 
     # Check 1: Is centralized logging configured?
-    $rsyslogRemote = $(timeout 5 sh -c 'grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5')
+    $rsyslogRemote = $(timeout 5 grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5)
     $rsyslogRemoteStr = ($rsyslogRemote -join $nl).Trim()
-    $journalRemote = $(timeout 3 sh -c 'systemctl is-active systemd-journal-remote 2>/dev/null ; systemctl is-active systemd-journal-upload 2>/dev/null')
+    $journalRemote = $(timeout 3 systemctl is-active systemd-journal-remote 2>/dev/null ; systemctl is-active systemd-journal-upload 2>/dev/null)
     $journalRemoteStr = ($journalRemote -join $nl).Trim()
     $centralizedLogging = ($rsyslogRemoteStr -ne "") -or ($journalRemoteStr -match "active")
 
@@ -14004,19 +13983,19 @@ Function Get-V222481 {
     $nl = [Environment]::NewLine
 
     # Check 1: rsyslog remote destinations
-    $rsyslogRemote = $(timeout 5 sh -c 'grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5')
+    $rsyslogRemote = $(timeout 5 grep -rE "^[^#].*@@?[0-9a-zA-Z]" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null | head -5)
     $rsyslogRemoteStr = ($rsyslogRemote -join $nl).Trim()
 
     # Check 2: syslog-ng remote destinations
-    $syslogNgRemote = $(timeout 5 sh -c 'test -d /etc/syslog-ng && grep -rE "tcp\|udp\|network" /etc/syslog-ng/ 2>/dev/null | grep -v "#" | head -5')
+    $syslogNgRemote = $(timeout 5 test -d /etc/syslog-ng && grep -rE "tcp\|udp\|network" /etc/syslog-ng/ 2>/dev/null | grep -v "#" | head -5)
     $syslogNgRemoteStr = ($syslogNgRemote -join $nl).Trim()
 
     # Check 3: systemd journal remote upload
-    $journalUpload = $(timeout 3 sh -c 'systemctl is-active systemd-journal-remote 2>/dev/null ; systemctl is-active systemd-journal-upload 2>/dev/null')
+    $journalUpload = $(timeout 3 systemctl is-active systemd-journal-remote 2>/dev/null ; systemctl is-active systemd-journal-upload 2>/dev/null)
     $journalUploadStr = ($journalUpload -join $nl).Trim()
 
     # Check 4: Logrotate forwarding scripts
-    $logrotateForward = $(timeout 5 sh -c 'grep -rE "rsync|scp|curl|postrotate" /etc/logrotate.d/ /etc/logrotate.conf 2>/dev/null | grep -v "#" | head -5')
+    $logrotateForward = $(timeout 5 grep -rE "rsync|scp|curl|postrotate" /etc/logrotate.d/ /etc/logrotate.conf 2>/dev/null | grep -v "#" | head -5)
     $logrotateForwardStr = ($logrotateForward -join $nl).Trim()
 
     $offloadConfigured = ($rsyslogRemoteStr -ne "") -or ($syslogNgRemoteStr -ne "") -or ($journalUploadStr -match "active") -or ($logrotateForwardStr -ne "")
@@ -16401,9 +16380,9 @@ Function Get-V222496 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # Detect centralized logging: rsyslog remote targets, systemd-journal-remote, syslog-ng
-    $remoteTargets  = $(timeout 5 sh -c 'grep -rE "^[^#].*(@@?[a-zA-Z0-9])" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null')
+    $remoteTargets  = $(timeout 5 grep -rE "^[^#].*(@@?[a-zA-Z0-9])" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null)
     $journalRemote  = $(systemctl is-active systemd-journal-remote 2>&1)
-    $syslogNgRemote = $(timeout 5 sh -c 'grep -rEi "destination " /etc/syslog-ng/ 2>/dev/null | grep -iE "tcp|udp|network"')
+    $syslogNgRemote = $(timeout 5 grep -rEi "destination " /etc/syslog-ng/ 2>/dev/null | grep -iE "tcp|udp|network")
 
     $centralizedFound   = $false
     $centralizedDetails = ""
@@ -16564,7 +16543,7 @@ Function Get-V222497 {
     $ntpActive   = $false
     $chronycSrc  = $(timeout 5 chronyc sources 2>&1)
     $timedatectl = $(timedatectl show 2>&1)
-    $ntpStatus   = $(timeout 5 sh -c 'timedatectl status 2>/dev/null | grep -i "NTP\|clock\|synch"')
+    $ntpStatus   = $(timeout 5 timedatectl status 2>/dev/null | grep -i "NTP\|clock\|synch")
 
     if ($chronycSrc -and ($chronycSrc -notmatch "command not found|Cannot")) {
         $ntpActive = $true
@@ -16735,7 +16714,7 @@ Function Get-V222498 {
     $FindingDetails += "  Local Time: $localTime" + $nl + $nl
 
     # Check 3: Journal timestamp format
-    $journalSample = $(timeout 5 sh -c 'journalctl -u xo-server -n 3 --output=short-iso 2>/dev/null | tail -3')
+    $journalSample = $(timeout 5 journalctl -u xo-server -n 3 --output=short-iso 2>/dev/null | tail -3)
     if ($journalSample) {
         $FindingDetails += "Check 3 - Systemd Journal Timestamps (ISO format):" + $nl
         $FindingDetails += ($journalSample -join $nl) + $nl + $nl
@@ -16745,7 +16724,7 @@ Function Get-V222498 {
     }
 
     # Check 4: XO log timestamp format
-    $xoLogSample = $(timeout 5 sh -c 'ls -t /var/log/xo-server/*.log 2>/dev/null | head -1 | xargs tail -3 2>/dev/null')
+    $xoLogSample = $(timeout 5 ls -t /var/log/xo-server/*.log 2>/dev/null | head -1 | xargs tail -3 2>/dev/null)
     if ($xoLogSample) {
         $FindingDetails += "Check 4 - XO Application Log Timestamps:" + $nl
         $FindingDetails += ($xoLogSample -join $nl) + $nl + $nl
@@ -16874,7 +16853,7 @@ Function Get-V222499 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Systemd journal precision
-    $journalPrecision = $(timeout 5 sh -c 'journalctl -u xo-server -n 5 --output=short-precise 2>/dev/null | tail -5')
+    $journalPrecision = $(timeout 5 journalctl -u xo-server -n 5 --output=short-precise 2>/dev/null | tail -5)
     if ($journalPrecision) {
         $FindingDetails += "Check 1 - Systemd Journal (microsecond precision):" + $nl
         $FindingDetails += ($journalPrecision -join $nl) + $nl + $nl
@@ -16889,7 +16868,7 @@ Function Get-V222499 {
     $FindingDetails += "  Example: 1769297199529 = sub-second precision." + $nl + $nl
 
     # Check 3: XO application log timestamps
-    $xoLogSample = $(timeout 5 sh -c 'ls -t /var/log/xo-server/*.log 2>/dev/null | head -1 | xargs head -5 2>/dev/null')
+    $xoLogSample = $(timeout 5 ls -t /var/log/xo-server/*.log 2>/dev/null | head -1 | xargs head -5 2>/dev/null)
     if ($xoLogSample) {
         $FindingDetails += "Check 3 - XO Application Log Timestamps:" + $nl
         $FindingDetails += ($xoLogSample -join $nl) + $nl + $nl
@@ -17046,7 +17025,7 @@ Function Get-V222500 {
     $FindingDetails += "Check 2 - Systemd Journal Directory ($journalDir):" + $nl
     if ($journalPerms -and ($journalPerms -notmatch "No such|cannot stat")) {
         $FindingDetails += "  Permissions: $journalPerms" + $nl
-        $journalGroup = $(timeout 5 sh -c 'stat -c "%G" /var/log/journal 2>/dev/null')
+        $journalGroup = $(timeout 5 stat -c "%G" /var/log/journal 2>/dev/null)
         $FindingDetails += "  Group: $journalGroup (systemd-journal group controls read access)" + $nl + $nl
     }
     else {
@@ -17054,7 +17033,7 @@ Function Get-V222500 {
     }
 
     # Check 3: World-readable log files
-    $worldReadable = $(timeout 10 sh -c 'find /var/log/xo-server/ -type f -perm -o+r 2>/dev/null | head -10')
+    $worldReadable = $(timeout 10 find /var/log/xo-server/ -maxdepth 5 -type f -perm -o+r 2>/dev/null | head -10)
     $FindingDetails += "Check 3 - World-Readable Log Files:" + $nl
     if ($worldReadable) {
         $allSecure = $false
@@ -17217,7 +17196,7 @@ Function Get-V222501 {
     }
 
     # Check 2: World-writable log files
-    $worldWritable = $(timeout 10 sh -c 'find /var/log/xo-server/ /var/log/journal/ -type f -perm -o+w 2>/dev/null | head -10')
+    $worldWritable = $(timeout 10 find /var/log/xo-server/ /var/log/journal/ -maxdepth 5 -type f -perm -o+w 2>/dev/null | head -10)
     $FindingDetails += "Check 2 - World-Writable Log Files:" + $nl
     if ($worldWritable) {
         $allSecure = $false
@@ -17229,7 +17208,7 @@ Function Get-V222501 {
     }
 
     # Check 3: Immutable attributes on logs
-    $immutableLogs = $(timeout 5 sh -c 'lsattr /var/log/xo-server/*.log 2>/dev/null | head -5')
+    $immutableLogs = $(timeout 5 lsattr /var/log/xo-server/*.log 2>/dev/null | head -5)
     $FindingDetails += "Check 3 - Immutable Attributes (lsattr):" + $nl
     if ($immutableLogs) {
         $FindingDetails += ($immutableLogs -join $nl) + $nl + $nl
@@ -17239,7 +17218,7 @@ Function Get-V222501 {
     }
 
     # Check 4: Logrotate configuration (prevents manual modification via rotation)
-    $logrotateConf = $(timeout 5 sh -c 'cat /etc/logrotate.d/xo-server 2>/dev/null || ls /etc/logrotate.d/*xo* 2>/dev/null')
+    $logrotateConf = $(timeout 5 cat /etc/logrotate.d/xo-server 2>/dev/null || ls /etc/logrotate.d/*xo* 2>/dev/null)
     $FindingDetails += "Check 4 - Logrotate Configuration:" + $nl
     if ($logrotateConf) {
         $FindingDetails += ($logrotateConf -join $nl) + $nl + $nl
@@ -17393,7 +17372,7 @@ Function Get-V222502 {
     }
 
     # Check 2: Append-only attributes
-    $appendOnly = $(timeout 5 sh -c 'lsattr /var/log/xo-server/ 2>/dev/null | grep -E "a----|----a" | head -5')
+    $appendOnly = $(timeout 5 lsattr /var/log/xo-server/ 2>/dev/null | grep -E "a----|----a" | head -5)
     $FindingDetails += "Check - Append-Only Attributes:" + $nl
     if ($appendOnly) {
         $FindingDetails += ($appendOnly -join $nl) + $nl + $nl
@@ -17403,7 +17382,7 @@ Function Get-V222502 {
     }
 
     # Check 3: Systemd journal protection
-    $journalStorage = $(timeout 5 sh -c 'grep -E "^Storage=" /etc/systemd/journald.conf 2>/dev/null')
+    $journalStorage = $(timeout 5 grep -E "^Storage=" /etc/systemd/journald.conf 2>/dev/null)
     $FindingDetails += "Check - Systemd Journal Storage:" + $nl
     if ($journalStorage) {
         $FindingDetails += "  $journalStorage" + $nl
@@ -17414,7 +17393,7 @@ Function Get-V222502 {
     $FindingDetails += "  Journal uses binary format with built-in integrity checking" + $nl + $nl
 
     # Check 4: Root-only delete permission
-    $nonRootWrite = $(timeout 10 sh -c 'find /var/log/xo-server/ -type f -not -user root -writable 2>/dev/null | head -5')
+    $nonRootWrite = $(timeout 10 find /var/log/xo-server/ -maxdepth 5 -type f -not -user root -writable 2>/dev/null | head -5)
     $FindingDetails += "Check - Non-Root Writable Log Files:" + $nl
     if ($nonRootWrite) {
         $allSecure = $false
@@ -17581,10 +17560,10 @@ Function Get-V222503 {
     $FindingDetails += $nl
 
     # Check XO audit plugin access
-    $xoAuditPlugin = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 3 -name "audit*" -type d 2>/dev/null | head -3')
+    $xoAuditPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 3 -name "audit*" -type d 2>/dev/null | head -3)
     $FindingDetails += "XO Audit Plugin Location:" + $nl
     if ($xoAuditPlugin) {
-        $pluginPerms = $(timeout 5 stat -c '%a %U:%G %n' $($xoAuditPlugin -split "`n" | Select-Object -First 1) 2>&1)
+        $pluginPerms = $(timeout 5 stat -c '%a %U:%G %n' $($xoAuditPlugin -split $nl | Select-Object -First 1) 2>&1)
         $FindingDetails += "  $pluginPerms" + $nl + $nl
     }
     else {
@@ -17752,7 +17731,7 @@ Function Get-V222504 {
     $FindingDetails += $nl
 
     # Check dpkg package integrity for audit tools
-    $dpkgVerify = $(timeout 10 sh -c 'dpkg --verify coreutils systemd 2>/dev/null | head -10')
+    $dpkgVerify = $(timeout 10 dpkg --verify coreutils systemd 2>/dev/null | head -10)
     $FindingDetails += "Package Integrity (dpkg --verify):" + $nl
     if ($dpkgVerify) {
         $FindingDetails += ($dpkgVerify -join $nl) + $nl + $nl
@@ -18043,9 +18022,9 @@ Function Get-V222506 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # Detect centralized logging: rsyslog remote targets, systemd-journal-remote, syslog-ng
-    $remoteTargets  = $(timeout 5 sh -c 'grep -rE "^[^#].*(@@?[a-zA-Z0-9])" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null')
+    $remoteTargets  = $(timeout 5 grep -rE "^[^#].*(@@?[a-zA-Z0-9])" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null)
     $journalRemote  = $(systemctl is-active systemd-journal-remote 2>&1)
-    $syslogNgRemote = $(timeout 5 sh -c 'grep -rEi "destination " /etc/syslog-ng/ 2>/dev/null | grep -iE "tcp|udp|network"')
+    $syslogNgRemote = $(timeout 5 grep -rEi "destination " /etc/syslog-ng/ 2>/dev/null | grep -iE "tcp|udp|network")
 
     $centralizedFound   = $false
     $centralizedDetails = ""
@@ -18078,14 +18057,14 @@ Function Get-V222506 {
     }
 
     # Check 2: Logrotate configuration (automated archival)
-    $logrotateConf = $(timeout 5 sh -c 'cat /etc/logrotate.d/xo-server 2>/dev/null || cat /etc/logrotate.d/xo* 2>/dev/null')
+    $logrotateConf = $(timeout 5 cat /etc/logrotate.d/xo-server 2>/dev/null || cat /etc/logrotate.d/xo* 2>/dev/null)
     $FindingDetails += "Check 2 - Logrotate Configuration:" + $nl
     if ($logrotateConf) {
         $FindingDetails += ($logrotateConf -join $nl) + $nl + $nl
     }
     else {
         $FindingDetails += "  No XO-specific logrotate configuration" + $nl
-        $defaultRotate = $(timeout 5 sh -c 'grep -E "^(daily|weekly|monthly|rotate)" /etc/logrotate.conf 2>/dev/null')
+        $defaultRotate = $(timeout 5 grep -E "^(daily|weekly|monthly|rotate)" /etc/logrotate.conf 2>/dev/null)
         if ($defaultRotate) {
             $FindingDetails += "  Default logrotate: " + ($defaultRotate -join ", ") + $nl + $nl
         }
@@ -18095,7 +18074,7 @@ Function Get-V222506 {
     }
 
     # Check 3: Cron backup jobs
-    $cronBackup = $(timeout 5 sh -c 'grep -rli "log\|backup\|rsync" /etc/cron.d/ /etc/cron.daily/ /etc/cron.weekly/ /var/spool/cron/ 2>/dev/null | head -5')
+    $cronBackup = $(timeout 5 grep -rli "log\|backup\|rsync" /etc/cron.d/ /etc/cron.daily/ /etc/cron.weekly/ /var/spool/cron/ 2>/dev/null | head -5)
     $FindingDetails += "Check 3 - Scheduled Backup Jobs:" + $nl
     if ($cronBackup) {
         $FindingDetails += ($cronBackup -join $nl) + $nl + $nl
@@ -18105,7 +18084,7 @@ Function Get-V222506 {
     }
 
     # Check 4: Systemd journal persistence
-    $journalPersist = $(timeout 5 sh -c 'grep -E "^Storage=" /etc/systemd/journald.conf 2>/dev/null')
+    $journalPersist = $(timeout 5 grep -E "^Storage=" /etc/systemd/journald.conf 2>/dev/null)
     $FindingDetails += "Check 4 - Journal Persistence:" + $nl
     if ($journalPersist) {
         $FindingDetails += "  $journalPersist" + $nl + $nl
@@ -18241,7 +18220,7 @@ Function Get-V222507 {
     $cryptoFound = $false
 
     # Check 1: Systemd journal FSS (Forward Secure Sealing)
-    $fssEnabled = $(timeout 5 sh -c 'grep -E "^Seal=" /etc/systemd/journald.conf 2>/dev/null')
+    $fssEnabled = $(timeout 5 grep -E "^Seal=" /etc/systemd/journald.conf 2>/dev/null)
     $FindingDetails += "Check 1 - Systemd Journal Forward Secure Sealing (FSS):" + $nl
     if ($fssEnabled -match "yes") {
         $cryptoFound = $true
@@ -18255,8 +18234,8 @@ Function Get-V222507 {
     }
 
     # Check 2: AIDE or OSSEC file integrity monitoring
-    $aideInstalled = $(timeout 5 sh -c 'which aide 2>/dev/null || dpkg -l aide 2>/dev/null | grep "^ii"')
-    $ossecInstalled = $(timeout 5 sh -c 'which ossec-control 2>/dev/null || ls /var/ossec/bin/ 2>/dev/null | head -1')
+    $aideInstalled = $(timeout 5 which aide 2>/dev/null || dpkg -l aide 2>/dev/null | grep "^ii")
+    $ossecInstalled = $(timeout 5 which ossec-control 2>/dev/null || ls /var/ossec/bin/ 2>/dev/null | head -1)
     $FindingDetails += "Check 2 - File Integrity Monitoring:" + $nl
     if ($aideInstalled) {
         $cryptoFound = $true
@@ -18271,7 +18250,7 @@ Function Get-V222507 {
     }
 
     # Check 3: TLS for remote log transmission
-    $tlsLogging = $(timeout 5 sh -c 'grep -rE "@@.*:6514|StreamDriverMode|imtls|omtls" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null')
+    $tlsLogging = $(timeout 5 grep -rE "@@.*:6514|StreamDriverMode|imtls|omtls" /etc/rsyslog.conf /etc/rsyslog.d/ 2>/dev/null)
     $FindingDetails += "Check 3 - TLS-Protected Log Transmission:" + $nl
     if ($tlsLogging) {
         $cryptoFound = $true
@@ -18282,7 +18261,7 @@ Function Get-V222507 {
     }
 
     # Check 4: dm-verity or similar integrity protection
-    $dmVerity = $(timeout 5 sh -c 'veritysetup status 2>/dev/null || dmsetup table --target verity 2>/dev/null')
+    $dmVerity = $(timeout 5 veritysetup status 2>/dev/null || dmsetup table --target verity 2>/dev/null)
     $FindingDetails += "Check 4 - dm-verity / Block-Level Integrity:" + $nl
     if ($dmVerity -and ($dmVerity -notmatch "command not found|No devices")) {
         $cryptoFound = $true
@@ -18415,7 +18394,7 @@ Function Get-V222508 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: dpkg package management integrity
-    $dpkgVerify = $(timeout 15 sh -c 'dpkg --verify coreutils systemd audit 2>/dev/null | head -15')
+    $dpkgVerify = $(timeout 15 dpkg --verify coreutils systemd audit 2>/dev/null | head -15)
     $FindingDetails += "Check 1 - Package Integrity Verification (dpkg --verify):" + $nl
     if ($dpkgVerify) {
         $FindingDetails += ($dpkgVerify -join $nl) + $nl
@@ -18440,7 +18419,7 @@ Function Get-V222508 {
     $FindingDetails += $nl
 
     # Check 3: AIDE database for audit tools
-    $aideDb = $(timeout 5 sh -c 'ls -la /var/lib/aide/aide.db* 2>/dev/null')
+    $aideDb = $(timeout 5 ls -la /var/lib/aide/aide.db* 2>/dev/null)
     $FindingDetails += "Check 3 - AIDE Database:" + $nl
     if ($aideDb) {
         $FindingDetails += ($aideDb -join $nl) + $nl + $nl
@@ -18571,7 +18550,7 @@ Function Get-V222509 {
     $validationFound = $false
 
     # Check 1: AIDE scheduled checks
-    $aideCron = $(timeout 5 sh -c 'grep -rli aide /etc/cron.d/ /etc/cron.daily/ /etc/cron.weekly/ 2>/dev/null')
+    $aideCron = $(timeout 5 grep -rli aide /etc/cron.d/ /etc/cron.daily/ /etc/cron.weekly/ 2>/dev/null)
     $FindingDetails += "Check 1 - AIDE Scheduled Integrity Checks:" + $nl
     if ($aideCron) {
         $validationFound = $true
@@ -18582,11 +18561,11 @@ Function Get-V222509 {
     }
 
     # Check 2: debsums package (Debian-specific integrity checking)
-    $debsumsInstalled = $(timeout 5 sh -c 'which debsums 2>/dev/null || dpkg -l debsums 2>/dev/null | grep "^ii"')
+    $debsumsInstalled = $(timeout 5 which debsums 2>/dev/null || dpkg -l debsums 2>/dev/null | grep "^ii")
     $FindingDetails += "Check 2 - debsums Package:" + $nl
     if ($debsumsInstalled) {
         $validationFound = $true
-        $debsumsResult = $(timeout 15 sh -c 'debsums -s coreutils systemd 2>/dev/null | head -10')
+        $debsumsResult = $(timeout 15 debsums -s coreutils systemd 2>/dev/null | head -10)
         if ($debsumsResult) {
             $FindingDetails += "  Modified files detected:" + $nl
             $FindingDetails += ($debsumsResult -join $nl) + $nl + $nl
@@ -18600,13 +18579,13 @@ Function Get-V222509 {
     }
 
     # Check 3: dpkg --verify (built-in)
-    $dpkgAvailable = $(timeout 5 sh -c 'dpkg --verify --help 2>/dev/null; echo $?')
+    $dpkgAvailable = $(timeout 5 dpkg --verify --help 2>/dev/null; echo $?)
     $FindingDetails += "Check 3 - dpkg --verify Capability:" + $nl
     $FindingDetails += "  dpkg --verify is available on this system and can validate" + $nl
     $FindingDetails += "  package file integrity against stored MD5 checksums." + $nl + $nl
 
     # Check 4: Systemd journal FSS verification
-    $fssVerify = $(timeout 5 sh -c 'journalctl --verify 2>/dev/null | tail -5')
+    $fssVerify = $(timeout 5 journalctl --verify 2>/dev/null | tail -5)
     $FindingDetails += "Check 4 - Journal Integrity Verification:" + $nl
     if ($fssVerify) {
         $validationFound = $true
@@ -18748,7 +18727,7 @@ Function Get-V222510 {
     $FindingDetails += $aptPermsStr + $nl + $nl
 
     # Check 2: npm global install permissions
-    $npmGlobalDir = $(timeout 5 sh -c 'npm config get prefix 2>/dev/null')
+    $npmGlobalDir = $(timeout 5 npm config get prefix 2>/dev/null)
     $FindingDetails += "Check 2 - npm Global Install Directory:" + $nl
     if ($npmGlobalDir) {
         $npmDirPerms = $(timeout 5 stat -c '%a %U:%G' $npmGlobalDir 2>&1)
@@ -18760,7 +18739,7 @@ Function Get-V222510 {
     }
 
     # Check 3: sudo configuration
-    $sudoConfig = $(timeout 5 sh -c 'grep -v "^#" /etc/sudoers 2>/dev/null | grep -v "^$" | grep -iE "apt|dpkg|install|npm" | head -5')
+    $sudoConfig = $(timeout 5 grep -v "^#" /etc/sudoers 2>/dev/null | grep -v "^$" | grep -iE "apt|dpkg|install|npm" | head -5)
     $FindingDetails += "Check 3 - sudo Software Install Rules:" + $nl
     if ($sudoConfig) {
         $FindingDetails += ($sudoConfig -join $nl) + $nl + $nl
@@ -18770,7 +18749,7 @@ Function Get-V222510 {
     }
 
     # Check 4: polkit policies for package management
-    $polkitPkg = $(timeout 5 sh -c 'grep -rli "install\|package" /etc/polkit-1/ /usr/share/polkit-1/ 2>/dev/null | head -3')
+    $polkitPkg = $(timeout 5 grep -rli "install\|package" /etc/polkit-1/ /usr/share/polkit-1/ 2>/dev/null | head -3)
     $FindingDetails += "Check 4 - Polkit Package Management Policies:" + $nl
     if ($polkitPkg) {
         $FindingDetails += ($polkitPkg -join $nl) + $nl + $nl
@@ -18936,7 +18915,7 @@ Function Get-V222511 {
     }
 
     # Check 4: Systemd service file protection
-    $svcFile = $(timeout 5 sh -c 'systemctl show xo-server -p FragmentPath --value 2>/dev/null')
+    $svcFile = $(timeout 5 systemctl show xo-server -p FragmentPath --value 2>/dev/null)
     $FindingDetails += "Check 4 - XO Service File:" + $nl
     if ($svcFile) {
         $svcPerms = $(timeout 5 stat -c '%a %U:%G %n' $svcFile 2>&1)
@@ -19072,7 +19051,7 @@ Function Get-V222512 {
     $auditingFound = $false
 
     # Check 1: XO audit plugin
-    $auditPlugin = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 3 -name "audit*" -type d 2>/dev/null | head -3')
+    $auditPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 3 -name "audit*" -type d 2>/dev/null | head -3)
     $FindingDetails += "Check 1 - XO Audit Plugin:" + $nl
     if ($auditPlugin) {
         $auditingFound = $true
@@ -19085,7 +19064,7 @@ Function Get-V222512 {
     }
 
     # Check 2: Systemd journal captures service config changes
-    $journalConfigEvents = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -iE "config|setting|updated|changed" | tail -5')
+    $journalConfigEvents = $(timeout 5 journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -iE "config|setting|updated|changed" | tail -5)
     $FindingDetails += "Check 2 - Systemd Journal Config Events (last 7 days):" + $nl
     if ($journalConfigEvents) {
         $auditingFound = $true
@@ -19096,7 +19075,7 @@ Function Get-V222512 {
     }
 
     # Check 3: auditd rules for config files
-    $auditRules = $(timeout 5 sh -c 'auditctl -l 2>/dev/null | grep -iE "xo-server|config.toml" | head -5')
+    $auditRules = $(timeout 5 auditctl -l 2>/dev/null | grep -iE "xo-server|config.toml" | head -5)
     $FindingDetails += "Check 3 - auditd Rules for XO Config:" + $nl
     if ($auditRules) {
         $auditingFound = $true
@@ -19107,7 +19086,7 @@ Function Get-V222512 {
     }
 
     # Check 4: File access timestamps
-    $configMtime = $(timeout 5 sh -c 'stat -c "%y %n" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null')
+    $configMtime = $(timeout 5 stat -c "%y %n" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null)
     $FindingDetails += "Check 4 - Config File Modification Times:" + $nl
     if ($configMtime) {
         $FindingDetails += ($configMtime -join $nl) + $nl + $nl
@@ -19240,7 +19219,7 @@ Function Get-V222513 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: APT package signature verification
-    $aptVerify = $(timeout 5 sh -c 'grep -rE "^[^#].*AllowUnauthenticated|AllowInsecureRepositories" /etc/apt/ 2>/dev/null')
+    $aptVerify = $(timeout 5 grep -rE "^[^#].*AllowUnauthenticated|AllowInsecureRepositories" /etc/apt/ 2>/dev/null)
     $FindingDetails += "Check 1 - APT Signature Verification:" + $nl
     if ($aptVerify) {
         $FindingDetails += "  WARNING: Unsigned package allowance detected:" + $nl
@@ -19251,9 +19230,9 @@ Function Get-V222513 {
     }
 
     # Check 2: APT repository key management
-    $aptKeys = $(timeout 5 sh -c 'apt-key list 2>/dev/null | grep -E "^pub|^uid" | head -10')
+    $aptKeys = $(timeout 5 apt-key list 2>/dev/null | grep -E "^pub|^uid" | head -10)
     if (-not $aptKeys) {
-        $aptKeys = $(timeout 5 sh -c 'ls /etc/apt/trusted.gpg.d/ 2>/dev/null')
+        $aptKeys = $(timeout 5 ls /etc/apt/trusted.gpg.d/ 2>/dev/null)
     }
     $FindingDetails += "Check 2 - APT Repository Keys:" + $nl
     if ($aptKeys) {
@@ -19264,13 +19243,13 @@ Function Get-V222513 {
     }
 
     # Check 3: npm package integrity
-    $npmIntegrity = $(timeout 5 sh -c 'npm config get package-lock 2>/dev/null')
+    $npmIntegrity = $(timeout 5 npm config get package-lock 2>/dev/null)
     $FindingDetails += "Check 3 - npm Package Integrity:" + $nl
     $FindingDetails += "  npm uses SHA-512 integrity hashes in package-lock.json" + $nl
     $FindingDetails += "  package-lock setting: $npmIntegrity" + $nl + $nl
 
     # Check 4: XO update mechanism
-    $xoUpdate = $(timeout 5 sh -c 'which xo-server-update 2>/dev/null || ls /opt/xo/bin/xo-server-update 2>/dev/null')
+    $xoUpdate = $(timeout 5 which xo-server-update 2>/dev/null || ls /opt/xo/bin/xo-server-update 2>/dev/null)
     $FindingDetails += "Check 4 - XO Update Mechanism:" + $nl
     if ($xoUpdate) {
         $FindingDetails += "  XO update tool: $xoUpdate" + $nl + $nl
@@ -19437,7 +19416,7 @@ Function Get-V222514 {
     $FindingDetails += $nl
 
     # Check 3: World-writable files in XO libraries
-    $worldWritableLibs = $(timeout 10 sh -c 'find /opt/xo/ -type f -perm -o+w -name "*.js" 2>/dev/null | head -5')
+    $worldWritableLibs = $(timeout 10 find /opt/xo/ -maxdepth 5 -type f -perm -o+w -name "*.js" 2>/dev/null | head -5)
     $FindingDetails += "Check 3 - World-Writable JS Files in /opt/xo/:" + $nl
     if ($worldWritableLibs) {
         $allSecure = $false
@@ -19448,7 +19427,7 @@ Function Get-V222514 {
     }
 
     # Check 4: npm global packages protection
-    $npmPrefix = $(timeout 5 sh -c 'npm config get prefix 2>/dev/null')
+    $npmPrefix = $(timeout 5 npm config get prefix 2>/dev/null)
     $FindingDetails += "Check 4 - npm Global Directory:" + $nl
     if ($npmPrefix) {
         $npmPrefixPerms = $(timeout 5 stat -c '%a %U:%G' $npmPrefix 2>&1)
@@ -19582,7 +19561,7 @@ Function Get-V222515 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: npm audit results
-    $npmAudit = $(timeout 30 sh -c 'cd /opt/xo 2>/dev/null && npm audit --json 2>/dev/null | head -50')
+    $npmAudit = $(timeout 30 cd /opt/xo 2>/dev/null && npm audit --json 2>/dev/null | head -50)
     $FindingDetails += "Check 1 - npm Security Audit:" + $nl
     if ($npmAudit) {
         $FindingDetails += "  npm audit completed (results available)" + $nl + $nl
@@ -19592,7 +19571,7 @@ Function Get-V222515 {
     }
 
     # Check 2: Debian security updates
-    $secUpdates = $(timeout 10 sh -c 'apt list --upgradable 2>/dev/null | grep -i security | head -10')
+    $secUpdates = $(timeout 10 apt list --upgradable 2>/dev/null | grep -i security | head -10)
     $FindingDetails += "Check 2 - Pending Security Updates:" + $nl
     if ($secUpdates) {
         $FindingDetails += ($secUpdates -join $nl) + $nl + $nl
@@ -19607,7 +19586,7 @@ Function Get-V222515 {
     $FindingDetails += "  assessment covering 286 ASD STIG requirements." + $nl + $nl
 
     # Check 4: Last security scan date
-    $scanLogs = $(timeout 5 sh -c 'ls -lt /tmp/Evaluate-STIG*/Logs/*.log 2>/dev/null | head -3')
+    $scanLogs = $(timeout 5 ls -lt /tmp/Evaluate-STIG*/Logs/*.log 2>/dev/null | head -3)
     $FindingDetails += "Check 4 - Recent Evaluate-STIG Scan Logs:" + $nl
     if ($scanLogs) {
         $FindingDetails += ($scanLogs -join $nl) + $nl + $nl
@@ -19736,7 +19715,7 @@ Function Get-V222516 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: AppArmor enforcement
-    $appArmorStatus = $(timeout 5 sh -c 'apparmor_status 2>/dev/null | head -10')
+    $appArmorStatus = $(timeout 5 apparmor_status 2>/dev/null | head -10)
     $FindingDetails += "Check 1 - AppArmor Status:" + $nl
     if ($appArmorStatus) {
         $FindingDetails += ($appArmorStatus -join $nl) + $nl + $nl
@@ -19746,7 +19725,7 @@ Function Get-V222516 {
     }
 
     # Check 2: Service restrictions
-    $enabledServices = $(timeout 5 sh -c 'systemctl list-unit-files --type=service --state=enabled 2>/dev/null | grep enabled | wc -l')
+    $enabledServices = $(timeout 5 systemctl list-unit-files --type=service --state=enabled 2>/dev/null | grep enabled | wc -l)
     $FindingDetails += "Check 2 - Enabled Services:" + $nl
     $FindingDetails += "  Total enabled services: $enabledServices" + $nl + $nl
 
@@ -19757,7 +19736,7 @@ Function Get-V222516 {
     $FindingDetails += "  Non-admin users cannot install or execute plugins." + $nl + $nl
 
     # Check 4: noexec mount options
-    $noexecMounts = $(timeout 5 sh -c 'mount | grep noexec')
+    $noexecMounts = $(timeout 5 mount | grep noexec 2>&1)
     $FindingDetails += "Check 4 - noexec Mount Options:" + $nl
     if ($noexecMounts) {
         $FindingDetails += ($noexecMounts -join $nl) + $nl + $nl
@@ -19892,7 +19871,7 @@ Function Get-V222517 {
     $FindingDetails += "  Chef, Ansible, or SCCM)." + $nl + $nl
 
     # Check 1: AppArmor profiles (application whitelist equivalent)
-    $appArmorProfiles = $(timeout 5 sh -c 'apparmor_status 2>/dev/null | grep -E "profiles|enforce"')
+    $appArmorProfiles = $(timeout 5 apparmor_status 2>/dev/null | grep -E "profiles|enforce")
     $FindingDetails += "Check 1 - AppArmor Profiles (Application Control):" + $nl
     if ($appArmorProfiles) {
         $FindingDetails += ($appArmorProfiles -join $nl) + $nl + $nl
@@ -19908,7 +19887,7 @@ Function Get-V222517 {
     $FindingDetails += "  Non-permitted actions are denied by default." + $nl + $nl
 
     # Check 3: Firewall rules (network whitelist)
-    $fwRules = $(timeout 5 sh -c 'ufw status 2>/dev/null || iptables -L -n 2>/dev/null | head -20')
+    $fwRules = $(timeout 5 ufw status 2>/dev/null || timeout 5 iptables -L -n 2>/dev/null | head -20)
     $FindingDetails += "Check 3 - Firewall Rules (Network Whitelist):" + $nl
     if ($fwRules) {
         $FindingDetails += ($fwRules -join $nl) + $nl + $nl
@@ -20038,7 +20017,7 @@ Function Get-V222518 {
 
     # Check 1: XO plugins enabled
     $FindingDetails += "Check 1 - XO Plugin Status:" + $nl
-    $pluginDirs = $(timeout 5 sh -c 'ls -d /opt/xo/packages/xo-server-* 2>/dev/null | head -20')
+    $pluginDirs = $(timeout 5 ls -d /opt/xo/packages/xo-server-* 2>/dev/null | head -20)
     if ($pluginDirs) {
         $FindingDetails += "  Installed plugins:" + $nl
         $FindingDetails += ($pluginDirs -join $nl) + $nl + $nl
@@ -20048,7 +20027,7 @@ Function Get-V222518 {
     }
 
     # Check 2: Unnecessary system services
-    $listeningPorts = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | tail -n +2')
+    $listeningPorts = $(timeout 5 ss -tlnp 2>/dev/null | tail -n +2)
     $FindingDetails += "Check 2 - Listening Network Services:" + $nl
     if ($listeningPorts) {
         $FindingDetails += ($listeningPorts -join $nl) + $nl + $nl
@@ -20058,7 +20037,7 @@ Function Get-V222518 {
     }
 
     # Check 3: Enabled but potentially unnecessary services
-    $enabledSvcs = $(timeout 5 sh -c 'systemctl list-unit-files --type=service --state=enabled 2>/dev/null | grep -vE "ssh|cron|system|network|journal|dbus|login|getty|udev|rsyslog|xo-server" | head -15')
+    $enabledSvcs = $(timeout 5 systemctl list-unit-files --type=service --state=enabled 2>/dev/null | grep -vE "ssh|cron|system|network|journal|dbus|login|getty|udev|rsyslog|xo-server" | head -15)
     $FindingDetails += "Check 3 - Non-Core Enabled Services:" + $nl
     if ($enabledSvcs) {
         $FindingDetails += ($enabledSvcs -join $nl) + $nl + $nl
@@ -20068,7 +20047,7 @@ Function Get-V222518 {
     }
 
     # Check 4: Debug/development features
-    $debugEnabled = $(timeout 5 sh -c 'pgrep -fa "node.*--inspect" 2>/dev/null')
+    $debugEnabled = $(timeout 5 pgrep -fa "node.*--inspect" 2>/dev/null)
     $FindingDetails += "Check 4 - Debug Features:" + $nl
     if ($debugEnabled) {
         $FindingDetails += "  WARNING: Node.js debug mode detected: $debugEnabled" + $nl + $nl
@@ -20197,7 +20176,7 @@ Function Get-V222519 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Listening ports
-    $listeningPorts = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null')
+    $listeningPorts = $(timeout 5 ss -tlnp 2>/dev/null)
     $FindingDetails += "Check 1 - All Listening TCP Ports:" + $nl
     if ($listeningPorts) {
         $FindingDetails += ($listeningPorts -join $nl) + $nl + $nl
@@ -20207,7 +20186,7 @@ Function Get-V222519 {
     }
 
     # Check 2: UDP listeners
-    $udpPorts = $(timeout 5 sh -c 'ss -ulnp 2>/dev/null | tail -n +2')
+    $udpPorts = $(timeout 5 ss -ulnp 2>/dev/null | tail -n +2)
     $FindingDetails += "Check 2 - All Listening UDP Ports:" + $nl
     if ($udpPorts) {
         $FindingDetails += ($udpPorts -join $nl) + $nl + $nl
@@ -20229,7 +20208,7 @@ Function Get-V222519 {
         $fwStatus = $(timeout 5 ufw status 2>&1)
     }
     else {
-        $fwStatus = $(timeout 5 sh -c 'iptables -L -n 2>/dev/null | head -20')
+        $fwStatus = $(timeout 5 iptables -L -n 2>/dev/null | head -20)
     }
     $FindingDetails += "Check 4 - Firewall Port Restrictions:" + $nl
     if ($fwStatus) {
@@ -20359,7 +20338,7 @@ Function Get-V222520 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Session timeout configuration
-    $sessionTimeout = $(timeout 5 sh -c 'grep -iE "timeout|maxAge|session" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null')
+    $sessionTimeout = $(timeout 5 grep -iE "timeout|maxAge|session" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null)
     $FindingDetails += "Check 1 - Session Timeout Configuration:" + $nl
     if ($sessionTimeout) {
         $FindingDetails += ($sessionTimeout -join $nl) + $nl + $nl
@@ -20369,7 +20348,7 @@ Function Get-V222520 {
     }
 
     # Check 2: sudo session timeout
-    $sudoTimeout = $(timeout 5 sh -c 'grep -E "timestamp_timeout|Defaults.*env_reset" /etc/sudoers 2>/dev/null')
+    $sudoTimeout = $(timeout 5 grep -E "timestamp_timeout|Defaults.*env_reset" /etc/sudoers 2>/dev/null)
     $FindingDetails += "Check 2 - sudo Reauthentication:" + $nl
     if ($sudoTimeout) {
         $FindingDetails += ($sudoTimeout -join $nl) + $nl + $nl
@@ -20379,7 +20358,7 @@ Function Get-V222520 {
     }
 
     # Check 3: SSH session management
-    $sshTimeout = $(timeout 5 sh -c 'grep -iE "ClientAlive|LoginGraceTime" /etc/ssh/sshd_config 2>/dev/null')
+    $sshTimeout = $(timeout 5 grep -iE "ClientAlive|LoginGraceTime" /etc/ssh/sshd_config 2>/dev/null)
     $FindingDetails += "Check 3 - SSH Session Timeout:" + $nl
     if ($sshTimeout) {
         $FindingDetails += ($sshTimeout -join $nl) + $nl + $nl
@@ -20516,7 +20495,7 @@ Function Get-V222521 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: SSH host key verification
-    $sshHostKeys = $(timeout 5 sh -c 'ls -la /etc/ssh/ssh_host_*_key.pub 2>/dev/null')
+    $sshHostKeys = $(timeout 5 ls -la /etc/ssh/ssh_host_*_key.pub 2>/dev/null)
     $FindingDetails += "Check 1 - SSH Host Keys (Device Authentication):" + $nl
     if ($sshHostKeys) {
         $FindingDetails += ($sshHostKeys -join $nl) + $nl + $nl
@@ -20526,7 +20505,7 @@ Function Get-V222521 {
     }
 
     # Check 2: TLS certificate for device authentication
-    $tlsCert = $(timeout 5 sh -c 'ls -la /etc/ssl/certs/xo-server* /opt/xo/*.pem /etc/xo-server/*.pem /etc/ssl/private/xo* 2>/dev/null')
+    $tlsCert = $(timeout 5 ls -la /etc/ssl/certs/xo-server* /opt/xo/*.pem /etc/xo-server/*.pem /etc/ssl/private/xo* 2>/dev/null)
     $FindingDetails += "Check 2 - TLS Certificates:" + $nl
     if ($tlsCert) {
         $FindingDetails += ($tlsCert -join $nl) + $nl + $nl
@@ -20544,7 +20523,7 @@ Function Get-V222521 {
     # Check 4: Network device authentication
     $FindingDetails += "Check 4 - Network-Level Device Authentication:" + $nl
     $FindingDetails += "  802.1X: Not typically applicable to server environments" + $nl
-    $FindingDetails += "  IPsec: " + $(timeout 5 sh -c 'ipsec status 2>/dev/null | head -3 || echo "Not configured"') + $nl + $nl
+    $FindingDetails += "  IPsec: " + $(timeout 5 ipsec status 2>/dev/null | head -3 || echo "Not configured") + $nl + $nl
 
     # Open - requires org-defined device reauthentication policy
     $Status = "Open"
@@ -20669,7 +20648,7 @@ Function Get-V222523 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -20690,7 +20669,7 @@ Function Get-V222523 {
     }
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -20711,14 +20690,14 @@ Function Get-V222523 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join "").Trim() }
     }
 
     $FindingDetails += "Check 3 - Privileged User Accounts:" + $nl
     $FindingDetails += ("-" * 40) + $nl
     if ($token) {
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $adminUsers = @($users | Where-Object { $_.permission -eq "admin" })
@@ -20864,7 +20843,7 @@ Function Get-V222524 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -20885,7 +20864,7 @@ Function Get-V222524 {
     }
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -20899,7 +20878,7 @@ Function Get-V222524 {
     }
 
     # Check 3: PKCS#11 / Smart card support
-    $pkcs11 = $(timeout 3 sh -c 'dpkg -l 2>/dev/null | grep -i "pam-pkcs11\|opensc\|p11-kit"' 2>&1)
+    $pkcs11 = $(timeout 3 dpkg -l 2>/dev/null | grep -i "pam-pkcs11\|opensc\|p11-kit" 2>&1)
     $pkcs11Str = ($pkcs11 -join $nl).Trim()
     $FindingDetails += "Check 3 - PKI/Smart Card Packages:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21036,7 +21015,7 @@ Function Get-V222525 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -21057,7 +21036,7 @@ Function Get-V222525 {
     }
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -21071,7 +21050,7 @@ Function Get-V222525 {
     }
 
     # Check 3: OCSP/CRL certificate validation
-    $ocspConfig = $(timeout 3 sh -c 'grep -ri "ocsp\|crl\|verify\|revocation" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $ocspConfig = $(timeout 3 grep -ri "ocsp\|crl\|verify\|revocation" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $ocspStr = ($ocspConfig -join $nl).Trim()
     $FindingDetails += "Check 3 - Certificate Revocation Checking:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21208,7 +21187,7 @@ Function Get-V222526 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -21229,7 +21208,7 @@ Function Get-V222526 {
     }
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -21250,14 +21229,14 @@ Function Get-V222526 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join "").Trim() }
     }
 
     $FindingDetails += "Check 3 - Non-Privileged User Accounts:" + $nl
     $FindingDetails += ("-" * 40) + $nl
     if ($token) {
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $nonAdminUsers = @($users | Where-Object { $_.permission -ne "admin" })
@@ -21401,7 +21380,7 @@ Function Get-V222527 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -21422,7 +21401,7 @@ Function Get-V222527 {
     }
 
     # Check 2: Local console/SSH authentication methods
-    $pamMFA = $(timeout 3 sh -c 'grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamMFA = $(timeout 3 grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamMFA -join $nl).Trim()
     $FindingDetails += "Check 2 - PAM MFA Modules:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21434,7 +21413,7 @@ Function Get-V222527 {
     }
 
     # Check 3: SSH authentication methods
-    $sshAuth = $(timeout 3 sh -c 'grep -i "AuthenticationMethods\|PubkeyAuthentication\|ChallengeResponseAuthentication" /etc/ssh/sshd_config 2>/dev/null' 2>&1)
+    $sshAuth = $(timeout 3 grep -i "AuthenticationMethods\|PubkeyAuthentication\|ChallengeResponseAuthentication" /etc/ssh/sshd_config 2>/dev/null)
     $sshStr = ($sshAuth -join $nl).Trim()
     $FindingDetails += "Check 3 - SSH Authentication Configuration:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21571,7 +21550,7 @@ Function Get-V222528 {
     # Check for enterprise authentication plugins (LDAP/SAML/OAuth)
     $authPlugins = ""
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $oauthPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-github" -o -name "auth-oidc" 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
     $samlStr = ($samlActive -join $nl).Trim()
@@ -21592,7 +21571,7 @@ Function Get-V222528 {
     }
 
     # Check 2: PAM MFA for all users
-    $pamMFA = $(timeout 3 sh -c 'grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamMFA = $(timeout 3 grep -r "pam_pkcs11\|pam_u2f\|pam_google_authenticator" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamMFA -join $nl).Trim()
     $FindingDetails += "Check 2 - PAM MFA Modules:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21746,7 +21725,7 @@ Function Get-V222529 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join "").Trim() }
     }
 
@@ -21754,7 +21733,7 @@ Function Get-V222529 {
     $FindingDetails += ("-" * 40) + $nl
     $groupAccountsFound = $false
     if ($token) {
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $FindingDetails += "  Total users: $($users.Count)" + $nl
@@ -21779,7 +21758,7 @@ Function Get-V222529 {
     }
 
     # Check 3: System group accounts
-    $sharedLogins = $(timeout 3 sh -c 'last -w 2>/dev/null | head -20 | awk "{print \$1}" | sort | uniq -c | sort -rn | head -5' 2>&1)
+    $sharedLogins = $(timeout 3 last -w 2>/dev/null | head -20 | awk "{print \$1}" | sort | uniq -c | sort -rn | head -5 2>&1)
     $sharedStr = ($sharedLogins -join $nl).Trim()
     $FindingDetails += "Check 3 - Recent Login Activity (top users):" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21915,7 +21894,7 @@ Function Get-V222530 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: TLS encryption (prevents replay)
-    $tlsVersion = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher'" 2>&1)
+    $tlsVersion = $(timeout 5 echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher' 2>&1)
     $tlsStr = ($tlsVersion -join $nl).Trim()
     $FindingDetails += "Check 1 - TLS Encryption (replay protection):" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -21928,7 +21907,7 @@ Function Get-V222530 {
     }
 
     # Check 2: Session token management (nonce/CSRF)
-    $csrfToken = $(timeout 5 sh -c "curl -s -k -I 'https://localhost/' 2>&1 | grep -i 'set-cookie\|csrf\|x-xsrf'" 2>&1)
+    $csrfToken = $(timeout 5 curl -s -k -I 'https://localhost/' 2>&1 | grep -i 'set-cookie\|csrf\|x-xsrf' 2>&1)
     $csrfStr = ($csrfToken -join $nl).Trim()
     $FindingDetails += "Check 2 - Session Token/CSRF Protection:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -22069,7 +22048,7 @@ Function Get-V222531 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: TLS encryption active
-    $tlsVersion = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher'" 2>&1)
+    $tlsVersion = $(timeout 5 echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | grep 'Protocol\|Cipher' 2>&1)
     $tlsStr = ($tlsVersion -join $nl).Trim()
     $FindingDetails += "Check 1 - TLS Encryption:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -22211,7 +22190,7 @@ Function Get-V222532 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -22225,7 +22204,7 @@ Function Get-V222532 {
     }
 
     # Check 2 (renumbered): Server certificate verification
-    $serverCert = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -subject -issuer 2>&1" 2>&1)
+    $serverCert = $(timeout 5 echo | openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -subject -issuer 2>&1)
     $certStr = ($serverCert -join $nl).Trim()
     $FindingDetails += "Check 2 - Server TLS Certificate:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -22367,7 +22346,7 @@ Function Get-V222533 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: XO API authentication requirement
-    $unauthTest = $(timeout 5 sh -c "curl -s -k -o /dev/null -w '%{http_code}' 'https://localhost/rest/v0/users'" 2>&1)
+    $unauthTest = $(timeout 5 curl -s -k -o /dev/null -w '%{http_code}' 'https://localhost/rest/v0/users' 2>&1)
     $FindingDetails += "Check 1 - Unauthenticated API Access:" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  HTTP status for unauthenticated /rest/v0/users: $unauthTest" + $nl
@@ -22379,7 +22358,7 @@ Function Get-V222533 {
     }
 
     # Check 2: TLS required for all connections
-    $httpRedirect = $(timeout 5 sh -c "curl -s -k -o /dev/null -w '%{http_code}' 'http://localhost/'" 2>&1)
+    $httpRedirect = $(timeout 5 curl -s -k -o /dev/null -w '%{http_code}' 'http://localhost/' 2>&1)
     $FindingDetails += "Check 2 - HTTP to HTTPS Redirect:" + $nl
     $FindingDetails += ("-" * 40) + $nl
     $FindingDetails += "  HTTP redirect status: $httpRedirect" + $nl
@@ -22527,7 +22506,7 @@ Function Get-V222534 {
     $FindingDetails += "  This data is classified as non-releasable." + $nl + $nl
 
     # Check TLS client certificate configuration
-    $tlsCertConfig = $(timeout 3 sh -c 'grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null' 2>&1)
+    $tlsCertConfig = $(timeout 3 grep -i "requestCert\|rejectUnauthorized\|clientCert\|pfx\|ca:" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null)
     $tlsCertStr = ($tlsCertConfig -join $nl).Trim()
 
     $FindingDetails += "Check 2 - TLS Client Certificate Configuration:" + $nl
@@ -22691,14 +22670,14 @@ Function Get-V222535 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join "").Trim() }
     }
 
     $FindingDetails += "Check 3 - User Account Activity:" + $nl
     $FindingDetails += ("-" * 40) + $nl
     if ($token) {
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $FindingDetails += "  Total user accounts: $($users.Count)" + $nl + $nl
@@ -22826,15 +22805,15 @@ Function Get-V222537 {
     # Check if XO uses passwords (always true for local auth)
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $samlStr = ($samlActive -join $nl).Trim()
     $usesPasswords = $true
 
     # Check PAM pwquality configuration
-    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwquality = $(timeout 3 cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$" 2>&1)
     $pwqualityStr = ($pwquality -join $nl).Trim()
 
-    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamPwquality = $(timeout 3 grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamPwquality -join $nl).Trim()
 
     $FindingDetails += "Password Complexity - Uppercase Requirement (APSC-DV-001690)" + $nl
@@ -23010,15 +22989,15 @@ Function Get-V222538 {
     # Check if XO uses passwords (always true for local auth)
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $samlStr = ($samlActive -join $nl).Trim()
     $usesPasswords = $true
 
     # Check PAM pwquality configuration
-    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwquality = $(timeout 3 cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$" 2>&1)
     $pwqualityStr = ($pwquality -join $nl).Trim()
 
-    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamPwquality = $(timeout 3 grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamPwquality -join $nl).Trim()
 
     $FindingDetails += "Password Complexity - Lowercase Requirement (APSC-DV-001700)" + $nl
@@ -23183,15 +23162,15 @@ Function Get-V222539 {
     # Check if XO uses passwords (always true for local auth)
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $samlStr = ($samlActive -join $nl).Trim()
     $usesPasswords = $true
 
     # Check PAM pwquality configuration
-    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwquality = $(timeout 3 cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$" 2>&1)
     $pwqualityStr = ($pwquality -join $nl).Trim()
 
-    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamPwquality = $(timeout 3 grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamPwquality -join $nl).Trim()
 
     $FindingDetails += "Password Complexity - Numeric Requirement (APSC-DV-001710)" + $nl
@@ -23348,15 +23327,15 @@ Function Get-V222540 {
     # Check if XO uses passwords (always true for local auth)
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $samlStr = ($samlActive -join $nl).Trim()
     $usesPasswords = $true
 
     # Check PAM pwquality configuration
-    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwquality = $(timeout 3 cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$" 2>&1)
     $pwqualityStr = ($pwquality -join $nl).Trim()
 
-    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamPwquality = $(timeout 3 grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamPwquality -join $nl).Trim()
 
     $FindingDetails += "Password Complexity - Special Character Requirement (APSC-DV-001720)" + $nl
@@ -23513,15 +23492,15 @@ Function Get-V222541 {
     # Check if XO uses passwords (always true for local auth)
     $ldapPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "auth-ldap" -type d 2>/dev/null | head -2 2>&1)
     $ldapStr = ($ldapPlugin -join $nl).Trim()
-    $samlActive = $(timeout 3 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"' 2>&1)
+    $samlActive = $(timeout 3 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml" 2>&1)
     $samlStr = ($samlActive -join $nl).Trim()
     $usesPasswords = $true
 
     # Check PAM pwquality configuration
-    $pwquality = $(timeout 3 sh -c 'cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$"' 2>&1)
+    $pwquality = $(timeout 3 cat /etc/security/pwquality.conf 2>/dev/null | grep -v "^#" | grep -v "^$" 2>&1)
     $pwqualityStr = ($pwquality -join $nl).Trim()
 
-    $pamPwquality = $(timeout 3 sh -c 'grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null' 2>&1)
+    $pamPwquality = $(timeout 3 grep -r "pam_pwquality\|pam_cracklib" /etc/pam.d/ 2>/dev/null)
     $pamStr = ($pamPwquality -join $nl).Trim()
 
     $FindingDetails += "Password Change - Minimum 8 Characters Changed (APSC-DV-001730)" + $nl
@@ -23681,7 +23660,7 @@ Function Get-V222544 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: /etc/login.defs PASS_MIN_DAYS
-    $loginDefs = $(timeout 3 sh -c 'grep "^PASS_MIN_DAYS" /etc/login.defs 2>/dev/null' 2>&1)
+    $loginDefs = $(timeout 3 grep "^PASS_MIN_DAYS" /etc/login.defs 2>/dev/null)
     $loginStr = ($loginDefs -join $nl).Trim()
     $FindingDetails += "Check 1 - /etc/login.defs PASS_MIN_DAYS:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -23702,7 +23681,7 @@ Function Get-V222544 {
     }
 
     # Check 2: PAM configuration
-    $pamAge = $(timeout 3 sh -c 'grep -r "pam_unix\|pam_pwhistory" /etc/pam.d/ 2>/dev/null | grep -i "min_days\|remember"' 2>&1)
+    $pamAge = $(timeout 3 grep -r "pam_unix\|pam_pwhistory" /etc/pam.d/ 2>/dev/null | grep -i "min_days\|remember" 2>&1)
     $pamAgeStr = ($pamAge -join $nl).Trim()
     $FindingDetails += "Check 2 - PAM Password Aging:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -23849,7 +23828,7 @@ Function Get-V222545 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: /etc/login.defs PASS_MAX_DAYS
-    $loginDefs = $(timeout 3 sh -c 'grep "^PASS_MAX_DAYS" /etc/login.defs 2>/dev/null' 2>&1)
+    $loginDefs = $(timeout 3 grep "^PASS_MAX_DAYS" /etc/login.defs 2>/dev/null)
     $loginStr = ($loginDefs -join $nl).Trim()
     $FindingDetails += "Check 1 - /etc/login.defs PASS_MAX_DAYS:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -23870,7 +23849,7 @@ Function Get-V222545 {
     }
 
     # Check 2: Individual user account settings
-    $userMaxDays = $(timeout 3 sh -c 'chage -l root 2>/dev/null | grep "Maximum"' 2>&1)
+    $userMaxDays = $(timeout 3 chage -l root 2>/dev/null | grep "Maximum" 2>&1)
     $userMaxStr = ($userMaxDays -join $nl).Trim()
     $FindingDetails += "Check 2 - Root Account Password Aging:" + $nl
     $FindingDetails += ("-" * 40) + $nl
@@ -24020,7 +23999,7 @@ Function Get-V222546 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: PAM password history (pam_unix remember=N)
-    $pamConfig = $(timeout 5 sh -c 'grep -E "pam_unix|pam_pwhistory" /etc/pam.d/common-password 2>/dev/null')
+    $pamConfig = $(timeout 5 grep -E "pam_unix|pam_pwhistory" /etc/pam.d/common-password 2>/dev/null)
     $pamConfigStr = ($pamConfig -join $nl).Trim()
     $FindingDetails += "Check 1 - PAM Password History Configuration:" + $nl
     if ($pamConfigStr -ne "" -and $pamConfigStr -notmatch "No such file") {
@@ -24053,9 +24032,9 @@ Function Get-V222546 {
     }
 
     # Check 3: XO application-level password history
-    $xoConfig = $(timeout 5 sh -c 'grep -i "password\|history\|reuse" /etc/xo-server/config.toml 2>/dev/null')
+    $xoConfig = $(timeout 5 grep -i "password\|history\|reuse" /etc/xo-server/config.toml 2>/dev/null)
     if (-not $xoConfig) {
-        $xoConfig = $(timeout 5 sh -c 'grep -i "password\|history\|reuse" /opt/xo/xo-server/config.toml 2>/dev/null')
+        $xoConfig = $(timeout 5 grep -i "password\|history\|reuse" /opt/xo/xo-server/config.toml 2>/dev/null)
     }
     $xoConfigStr = ($xoConfig -join $nl).Trim()
     $FindingDetails += "Check 3 - XO Application Password History Config:" + $nl
@@ -24205,7 +24184,7 @@ Function Get-V222547 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: System password expiration forcing
-    $chageDefaults = $(timeout 5 sh -c 'grep -E "^PASS_|^INACTIVE|^EXPIRE" /etc/login.defs 2>/dev/null')
+    $chageDefaults = $(timeout 5 grep -E "^PASS_|^INACTIVE|^EXPIRE" /etc/login.defs 2>/dev/null)
     $chageDefaultsStr = ($chageDefaults -join $nl).Trim()
     $FindingDetails += "Check 1 - System Password Defaults (/etc/login.defs):" + $nl
     if ($chageDefaultsStr) {
@@ -24362,7 +24341,7 @@ Function Get-V222548 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN; $tokenSource = "XO_API_TOKEN env" }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<="token":")[^"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = $tc.Trim(); $tokenSource = ".xo-cli" }
     }
 
@@ -24374,7 +24353,7 @@ Function Get-V222548 {
     $FindingDetails += "Check 1 - XO User Role Model:" + $nl
     if ($token) {
         $apiUrl = "https://localhost/rest/v0/users"
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' '$apiUrl'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' '$apiUrl' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users -and $users.Count -gt 0) {
             $adminCount = 0
@@ -24528,7 +24507,7 @@ Function Get-V222549 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: XO session store mechanism
-    $xoProcess = $(timeout 5 sh -c 'ps aux 2>/dev/null | grep -E "node.*xo-server" | grep -v grep | head -3')
+    $xoProcess = $(timeout 5 ps aux 2>/dev/null | grep -E "node.*xo-server" | grep -v grep | head -3)
     $xoProcessStr = ($xoProcess -join $nl).Trim()
     $FindingDetails += "Check 1 - XO Server Process:" + $nl
     if ($xoProcessStr) {
@@ -24687,9 +24666,9 @@ Function Get-V222552 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: TLS client certificate configuration
-    $clientCertConfig = $(timeout 5 sh -c 'grep -i "clientCert\|requestCert\|rejectUnauthorized\|mutual" /etc/xo-server/config.toml 2>/dev/null')
+    $clientCertConfig = $(timeout 5 grep -i "clientCert\|requestCert\|rejectUnauthorized\|mutual" /etc/xo-server/config.toml 2>/dev/null)
     if (-not $clientCertConfig) {
-        $clientCertConfig = $(timeout 5 sh -c 'grep -i "clientCert\|requestCert\|rejectUnauthorized\|mutual" /opt/xo/xo-server/config.toml 2>/dev/null')
+        $clientCertConfig = $(timeout 5 grep -i "clientCert\|requestCert\|rejectUnauthorized\|mutual" /opt/xo/xo-server/config.toml 2>/dev/null)
     }
     $clientCertStr = ($clientCertConfig -join $nl).Trim()
     $FindingDetails += "Check 1 - TLS Client Certificate Configuration:" + $nl
@@ -24843,9 +24822,9 @@ Function Get-V222553 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: OCSP stapling in web server config
-    $ocspConfig = $(timeout 5 sh -c 'grep -ri "ocsp\|stapling\|crl" /etc/xo-server/config.toml 2>/dev/null')
+    $ocspConfig = $(timeout 5 grep -ri "ocsp\|stapling\|crl" /etc/xo-server/config.toml 2>/dev/null)
     if (-not $ocspConfig) {
-        $ocspConfig = $(timeout 5 sh -c 'grep -ri "ocsp\|stapling\|crl" /opt/xo/xo-server/config.toml 2>/dev/null')
+        $ocspConfig = $(timeout 5 grep -ri "ocsp\|stapling\|crl" /opt/xo/xo-server/config.toml 2>/dev/null)
     }
     $ocspStr = ($ocspConfig -join $nl).Trim()
     $FindingDetails += "Check 1 - OCSP/CRL Configuration in XO:" + $nl
@@ -25001,7 +24980,7 @@ Function Get-V222556 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN; $tokenSource = "XO_API_TOKEN env" }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<="token":")[^"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = $tc.Trim(); $tokenSource = ".xo-cli" }
     }
     # --- LDAP/AD plugin detection ---
@@ -25017,7 +24996,7 @@ Function Get-V222556 {
     $FindingDetails += "Check 1 - XO User Accounts:" + $nl
     if ($token) {
         $apiUrl = "https://localhost/rest/v0/users"
-        $apiResponse = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' '$apiUrl'" 2>&1)
+        $apiResponse = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' '$apiUrl' 2>&1)
         $users = $apiResponse | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users -and $users.Count -gt 0) {
             $FindingDetails += "  Total user accounts: $($users.Count)" + $nl
@@ -25169,9 +25148,9 @@ Function Get-V222557 {
     $ldapFound = ($ldapPluginStr -ne "" -and $ldapPluginStr -notmatch "No such file|cannot|error")
     # --- SAML plugin detection ---
     $samlActive = $false
-    $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+    $samlConfigCheck = $(timeout 5 grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml")
     if (-not $samlConfigCheck) {
-        $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+        $samlConfigCheck = $(timeout 5 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml")
     }
     if ($samlConfigCheck -and ($samlConfigCheck -notmatch "No such file|error")) {
         $samlActive = $true
@@ -25182,9 +25161,9 @@ Function Get-V222557 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Client certificate authentication
-    $clientCertConfig = $(timeout 5 sh -c 'grep -i "cert\|tls\|mutual\|client" /etc/xo-server/config.toml 2>/dev/null | head -5')
+    $clientCertConfig = $(timeout 5 grep -i "cert\|tls\|mutual\|client" /etc/xo-server/config.toml 2>/dev/null | head -5)
     if (-not $clientCertConfig) {
-        $clientCertConfig = $(timeout 5 sh -c 'grep -i "cert\|tls\|mutual\|client" /opt/xo/xo-server/config.toml 2>/dev/null | head -5')
+        $clientCertConfig = $(timeout 5 grep -i "cert\|tls\|mutual\|client" /opt/xo/xo-server/config.toml 2>/dev/null | head -5)
     }
     $certConfigStr = ($clientCertConfig -join $nl).Trim()
     $FindingDetails += "Check 1 - TLS Client Certificate Config:" + $nl
@@ -25348,7 +25327,7 @@ Function Get-V222558 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Certificate chain validation
-    $caBundle = $(timeout 5 sh -c 'ls -la /etc/ssl/certs/ca-certificates.crt 2>/dev/null || ls -la /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null')
+    $caBundle = $(timeout 5 ls -la /etc/ssl/certs/ca-certificates.crt 2>/dev/null || ls -la /etc/pki/tls/certs/ca-bundle.crt 2>/dev/null)
     $caBundleStr = ($caBundle -join $nl).Trim()
     $FindingDetails += "Check 1 - CA Certificate Bundle:" + $nl
     if ($caBundleStr -and $caBundleStr -notmatch "No such file") {
@@ -25359,7 +25338,7 @@ Function Get-V222558 {
     }
 
     # Check 2: DoD CA certificates
-    $dodCerts = $(timeout 5 sh -c 'grep -c "DoD\|DOD" /etc/ssl/certs/ca-certificates.crt 2>/dev/null')
+    $dodCerts = $(timeout 5 grep -c "DoD\|DOD" /etc/ssl/certs/ca-certificates.crt 2>/dev/null)
     $FindingDetails += "Check 2 - DoD CA Certificates in Trust Store:" + $nl
     if ($dodCerts -and $dodCerts -match "^\d+$" -and [int]$dodCerts -gt 0) {
         $FindingDetails += "  DoD CA references found: $dodCerts" + $nl + $nl
@@ -25503,9 +25482,9 @@ Function Get-V222559 {
     $ldapFound = ($ldapPluginStr -ne "" -and $ldapPluginStr -notmatch "No such file|cannot|error")
     # --- SAML plugin detection ---
     $samlActive = $false
-    $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+    $samlConfigCheck = $(timeout 5 grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml")
     if (-not $samlConfigCheck) {
-        $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+        $samlConfigCheck = $(timeout 5 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml")
     }
     if ($samlConfigCheck -and ($samlConfigCheck -notmatch "No such file|error")) {
         $samlActive = $true
@@ -25668,9 +25647,9 @@ Function Get-V222560 {
     $xoHostname = $(hostname 2>&1)
     # --- SAML plugin detection ---
     $samlActive = $false
-    $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+    $samlConfigCheck = $(timeout 5 grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml")
     if (-not $samlConfigCheck) {
-        $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+        $samlConfigCheck = $(timeout 5 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml")
     }
     if ($samlConfigCheck -and ($samlConfigCheck -notmatch "No such file|error")) {
         $samlActive = $true
@@ -25820,7 +25799,7 @@ Function Get-V222561 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Audit Non-Local Maintenance Sessions (APSC-DV-001870)" + $nl
@@ -25828,7 +25807,7 @@ Function Get-V222561 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: SSH session logging via systemd journal
-    $sshLogs = $(timeout 5 sh -c 'journalctl -u sshd -n 10 --no-pager 2>/dev/null | tail -10')
+    $sshLogs = $(timeout 5 journalctl -u sshd -n 10 --no-pager 2>/dev/null | tail -10)
     $sshLogsStr = ($sshLogs -join $nl).Trim()
     $FindingDetails += "Check 1 - SSH Session Audit Logs (journalctl -u sshd):" + $nl
     if ($sshLogsStr) {
@@ -25839,7 +25818,7 @@ Function Get-V222561 {
     }
 
     # Check 2: PAM session logging
-    $pamSession = $(timeout 5 sh -c 'grep -E "pam_unix.*session" /var/log/auth.log 2>/dev/null | tail -5')
+    $pamSession = $(timeout 5 grep -E "pam_unix.*session" /var/log/auth.log 2>/dev/null | tail -5)
     $pamSessionStr = ($pamSession -join $nl).Trim()
     $FindingDetails += "Check 2 - PAM Session Logs (/var/log/auth.log):" + $nl
     if ($pamSessionStr) {
@@ -25990,7 +25969,7 @@ Function Get-V222562 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Cryptographic Integrity - Non-Local Maintenance (APSC-DV-001880)" + $nl
@@ -26014,7 +25993,7 @@ Function Get-V222562 {
     $FindingDetails += "  $sshVerStr" + $nl + $nl
 
     # Check 3: XO HTTPS integrity (TLS)
-    $tlsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher'")
+    $tlsCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher')
     $tlsStr = ($tlsCheck -join $nl).Trim()
     $FindingDetails += "Check 3 - XO HTTPS TLS Integrity:" + $nl
     if ($tlsStr) {
@@ -26138,7 +26117,7 @@ Function Get-V222563 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Cryptographic Confidentiality - Non-Local Maintenance (APSC-DV-001890)" + $nl
@@ -26156,7 +26135,7 @@ Function Get-V222563 {
     }
 
     # Check 2: XO HTTPS encryption
-    $tlsCipher = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Cipher'")
+    $tlsCipher = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Cipher')
     $tlsCipherStr = ($tlsCipher -join $nl).Trim()
     $FindingDetails += "Check 2 - XO HTTPS Cipher:" + $nl
     if ($tlsCipherStr) {
@@ -26290,7 +26269,7 @@ Function Get-V222564 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Verify Remote Disconnection at Termination (APSC-DV-001900)" + $nl
@@ -26318,9 +26297,9 @@ Function Get-V222564 {
     $FindingDetails += "Check 2 - SSH TCPKeepAlive: $tcpKeepAlive" + $nl + $nl
 
     # Check 3: XO session timeout
-    $xoTimeout = $(timeout 5 sh -c 'grep -i "timeout\|maxAge\|sessionTimeout" /etc/xo-server/config.toml 2>/dev/null')
+    $xoTimeout = $(timeout 5 grep -i "timeout\|maxAge\|sessionTimeout" /etc/xo-server/config.toml 2>/dev/null)
     if (-not $xoTimeout) {
-        $xoTimeout = $(timeout 5 sh -c 'grep -i "timeout\|maxAge\|sessionTimeout" /opt/xo/xo-server/config.toml 2>/dev/null')
+        $xoTimeout = $(timeout 5 grep -i "timeout\|maxAge\|sessionTimeout" /opt/xo/xo-server/config.toml 2>/dev/null)
     }
     $xoTimeoutStr = ($xoTimeout -join $nl).Trim()
     $FindingDetails += "Check 3 - XO Session Timeout Config:" + $nl
@@ -26445,7 +26424,7 @@ Function Get-V222565 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Strong Authenticators - Non-Local Maintenance (APSC-DV-001910)" + $nl
@@ -26466,7 +26445,7 @@ Function Get-V222565 {
     $FindingDetails += "  PasswordAuthentication: $passwordAuth" + $nl + $nl
 
     # Check 2: MFA configuration (PAM)
-    $pamMFA = $(timeout 5 sh -c 'grep -E "pam_google|pam_oath|pam_yubico|pam_duo" /etc/pam.d/sshd 2>/dev/null')
+    $pamMFA = $(timeout 5 grep -E "pam_google|pam_oath|pam_yubico|pam_duo" /etc/pam.d/sshd 2>/dev/null)
     $pamMFAStr = ($pamMFA -join $nl).Trim()
     $FindingDetails += "Check 2 - PAM MFA Modules for SSH:" + $nl
     if ($pamMFAStr -and $pamMFAStr -notmatch "No such file") {
@@ -26477,7 +26456,7 @@ Function Get-V222565 {
     }
 
     # Check 3: SSH key-based authentication in use
-    $authorizedKeys = $(timeout 5 sh -c 'ls -la /root/.ssh/authorized_keys 2>/dev/null')
+    $authorizedKeys = $(timeout 5 ls -la /root/.ssh/authorized_keys 2>/dev/null)
     $FindingDetails += "Check 3 - SSH Key-Based Auth:" + $nl
     if ($authorizedKeys -and ($authorizedKeys -notmatch "No such file")) {
         $FindingDetails += "  authorized_keys: $authorizedKeys" + $nl + $nl
@@ -26601,7 +26580,7 @@ Function Get-V222566 {
     $nl = [Environment]::NewLine
     $xoHostname = $(hostname 2>&1)
     # --- SSH configuration extraction ---
-    $sshdConfig = $(timeout 5 sh -c 'sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null')
+    $sshdConfig = $(timeout 5 sshd -T 2>/dev/null || cat /etc/ssh/sshd_config 2>/dev/null)
     $sshdConfigStr = ($sshdConfig -join $nl).Trim()
 
     $FindingDetails += "Terminate Sessions After Maintenance (APSC-DV-001920)" + $nl
@@ -26629,7 +26608,7 @@ Function Get-V222566 {
     }
 
     # Check 2: Shell TMOUT variable
-    $tmout = $(timeout 5 sh -c 'grep -r "TMOUT" /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | head -5')
+    $tmout = $(timeout 5 grep -r "TMOUT" /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | head -5)
     $tmoutStr = ($tmout -join $nl).Trim()
     $FindingDetails += "Check 2 - Shell TMOUT Variable:" + $nl
     if ($tmoutStr -and $tmoutStr -notmatch "No such file") {
@@ -26794,7 +26773,7 @@ Function Get-V222567 {
     $FindingDetails += "  file-level locking to prevent concurrent modification." + $nl + $nl
 
     # Check 4: Worker threads
-    $xoWorkers = $(timeout 5 sh -c 'ps -eLf 2>/dev/null | grep -E "node.*xo-server" | grep -v grep | wc -l')
+    $xoWorkers = $(timeout 5 ps -eLf 2>/dev/null | grep -E "node.*xo-server" | grep -v grep | wc -l)
     $FindingDetails += "Check 4 - XO Server Threads:" + $nl
     $FindingDetails += "  Thread count: $xoWorkers" + $nl + $nl
 
@@ -26927,7 +26906,7 @@ Function Get-V222568 {
     $FindingDetails += "  tcp_keepalive_probes: $tcpKeepProbes" + $nl + $nl
 
     # Check 2: Active TCP connections to XO ports
-    $activeConns = $(timeout 5 sh -c 'ss -tn state established 2>/dev/null | grep -E ":443|:80" | wc -l')
+    $activeConns = $(timeout 5 ss -tn state established 2>/dev/null | grep -E ":443|:80" | wc -l)
     $FindingDetails += "Check 2 - Active Connections (port 80/443): $activeConns" + $nl + $nl
 
     # Check 3: XO session management
@@ -27076,7 +27055,8 @@ Function Get-V222570 {
     $FindingDetails += "  $opensslVer" + $nl + $nl
 
     # Check 3: Node.js FIPS mode
-    $nodeFips = $(timeout 5 sh -c 'node -e "console.log(require(' + [char]39 + 'crypto' + [char]39 + ').getFips())" 2>&1')
+    $nodeScript = "console.log(require('crypto').getFips())"
+    $nodeFips = $(timeout 5 node -e $nodeScript 2>&1)
     $FindingDetails += "Check 3 - Node.js FIPS Mode:" + $nl
     $FindingDetails += "  crypto.getFips(): $nodeFips" + $nl + $nl
 
@@ -27221,7 +27201,7 @@ Function Get-V222571 {
     $FindingDetails += "  /proc/sys/crypto/fips_enabled: $fipsEnabled" + $nl + $nl
 
     # Check 2: System password hashing algorithm
-    $hashAlgo = $(timeout 5 sh -c 'grep -E "^ENCRYPT_METHOD" /etc/login.defs 2>/dev/null')
+    $hashAlgo = $(timeout 5 grep -E "^ENCRYPT_METHOD" /etc/login.defs 2>/dev/null)
     $hashAlgoStr = ($hashAlgo -join $nl).Trim()
     $FindingDetails += "Check 2 - System Password Hashing (/etc/login.defs):" + $nl
     if ($hashAlgoStr) {
@@ -27238,7 +27218,7 @@ Function Get-V222571 {
     $FindingDetails += "  FIPS-approved alternatives: PBKDF2 (NIST SP 800-132)." + $nl + $nl
 
     # Check 4: OpenSSL hash algorithms
-    $opensslDigests = $(timeout 5 sh -c 'openssl list -digest-algorithms 2>/dev/null | grep -iE "sha256|sha384|sha512" | head -5')
+    $opensslDigests = $(timeout 5 openssl list -digest-algorithms 2>/dev/null | grep -iE "sha256|sha384|sha512" | head -5)
     $digestsStr = ($opensslDigests -join $nl).Trim()
     $FindingDetails += "Check 4 - OpenSSL FIPS-Approved Hash Algorithms:" + $nl
     if ($digestsStr) {
@@ -27372,7 +27352,7 @@ Function Get-V222572 {
     $FindingDetails += "  /proc/sys/crypto/fips_enabled: $fipsEnabled" + $nl + $nl
 
     # Check 2: TLS cipher suites
-    $tlsCiphers = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher'")
+    $tlsCiphers = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher')
     $tlsCiphersStr = ($tlsCiphers -join $nl).Trim()
     $FindingDetails += "Check 2 - TLS Cipher Suites (HTTPS):" + $nl
     if ($tlsCiphersStr) {
@@ -27383,7 +27363,7 @@ Function Get-V222572 {
     }
 
     # Check 3: Disk encryption
-    $luksDevices = $(timeout 5 sh -c 'lsblk -o NAME,FSTYPE 2>/dev/null | grep -i crypt')
+    $luksDevices = $(timeout 5 lsblk -o NAME,FSTYPE 2>/dev/null | grep -i crypt)
     $luksStr = ($luksDevices -join $nl).Trim()
     $FindingDetails += "Check 3 - Disk Encryption:" + $nl
     if ($luksStr) {
@@ -27395,7 +27375,8 @@ Function Get-V222572 {
     }
 
     # Check 4: Node.js crypto FIPS
-    $nodeFips = $(timeout 5 sh -c 'node -e "console.log(require(' + [char]39 + 'crypto' + [char]39 + ').getFips())" 2>&1')
+    $nodeScript = "console.log(require('crypto').getFips())"
+    $nodeFips = $(timeout 5 node -e $nodeScript 2>&1)
     $FindingDetails += "Check 4 - Node.js Crypto FIPS:" + $nl
     $FindingDetails += "  crypto.getFips(): $nodeFips" + $nl + $nl
 
@@ -27520,9 +27501,9 @@ Function Get-V222573 {
     $xoHostname = $(hostname 2>&1)
     # --- SAML plugin detection ---
     $samlActive = $false
-    $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+    $samlConfigCheck = $(timeout 5 grep -v "^#" /etc/xo-server/config.toml 2>/dev/null | grep -i "saml")
     if (-not $samlConfigCheck) {
-        $samlConfigCheck = $(timeout 5 sh -c 'grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml"')
+        $samlConfigCheck = $(timeout 5 grep -v "^#" /opt/xo/xo-server/config.toml 2>/dev/null | grep -i "saml")
     }
     if ($samlConfigCheck -and ($samlConfigCheck -notmatch "No such file|error")) {
         $samlActive = $true
@@ -27689,7 +27670,7 @@ Function Get-V222574 {
     $FindingDetails += "  - Data Store: LevelDB (server-side, not exposed to UI)" + $nl + $nl
 
     # Check 2: API separation verification
-    $xoApiEndpoints = $(timeout 10 sh -c "curl -s -k https://localhost/rest/v0 2>/dev/null | head -5")
+    $xoApiEndpoints = $(timeout 10 curl -s -k https://localhost/rest/v0 2>/dev/null | head -5)
     $apiStr = ($xoApiEndpoints -join $nl).Trim()
     $FindingDetails += "Check 2 - REST API Endpoint:" + $nl
     if ($apiStr) {
@@ -27710,7 +27691,7 @@ Function Get-V222574 {
     $FindingDetails += "  No direct database interface is exposed to the web UI." + $nl + $nl
 
     # Check 4: Listening ports
-    $listenPorts = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -E "node|xo" | head -5')
+    $listenPorts = $(timeout 5 ss -tlnp 2>/dev/null | grep -E "node|xo" | head -5)
     $listenStr = ($listenPorts -join $nl).Trim()
     $FindingDetails += "Check 4 - XO Listening Ports:" + $nl
     if ($listenStr) {
@@ -27840,7 +27821,7 @@ Function Get-V222575 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: HTTP response headers
-    $curlHeaders = $(timeout 10 sh -c "curl -sI -k https://localhost/ 2>/dev/null")
+    $curlHeaders = $(timeout 10 curl -sI -k https://localhost/ 2>/dev/null)
     $curlStr = ($curlHeaders -join $nl).Trim()
     $FindingDetails += "Check 1 - HTTP Response Headers:" + $nl
     if ($curlStr) {
@@ -27868,9 +27849,9 @@ Function Get-V222575 {
     }
 
     # Check 2: XO cookie configuration
-    $cookieConfig = $(timeout 5 sh -c 'grep -i "cookie\|httpOnly\|http_only" /etc/xo-server/config.toml 2>/dev/null')
+    $cookieConfig = $(timeout 5 grep -i "cookie\|httpOnly\|http_only" /etc/xo-server/config.toml 2>/dev/null)
     if (-not $cookieConfig) {
-        $cookieConfig = $(timeout 5 sh -c 'grep -i "cookie\|httpOnly\|http_only" /opt/xo/xo-server/config.toml 2>/dev/null')
+        $cookieConfig = $(timeout 5 grep -i "cookie\|httpOnly\|http_only" /opt/xo/xo-server/config.toml 2>/dev/null)
     }
     $cookieStr = ($cookieConfig -join $nl).Trim()
     $FindingDetails += "Check 2 - XO Cookie Configuration:" + $nl
@@ -28006,7 +27987,7 @@ Function Get-V222576 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: HTTP response headers
-    $curlHeaders = $(timeout 10 sh -c "curl -sI -k https://localhost/ 2>/dev/null")
+    $curlHeaders = $(timeout 10 curl -sI -k https://localhost/ 2>/dev/null)
     $curlStr = ($curlHeaders -join $nl).Trim()
     $FindingDetails += "Check 1 - HTTP Response Headers:" + $nl
     if ($curlStr) {
@@ -28034,7 +28015,7 @@ Function Get-V222576 {
     }
 
     # Check 2: HTTPS enforcement
-    $httpsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher'")
+    $httpsCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher')
     $httpsStr = ($httpsCheck -join $nl).Trim()
     $FindingDetails += "Check 2 - HTTPS Enforcement:" + $nl
     if ($httpsStr) {
@@ -28339,7 +28320,7 @@ Function Get-V222580 {
     }
 
     # Check 3: Invalid session rejection
-    $invalidTest = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=INVALID_TOKEN_TEST' https://localhost/rest/v0/users 2>/dev/null | head -3")
+    $invalidTest = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=INVALID_TOKEN_TEST' https://localhost/rest/v0/users 2>/dev/null | head -3)
     $invalidStr = ($invalidTest -join $nl).Trim()
     $FindingDetails += "Check 3 - Invalid Session Token Rejection:" + $nl
     if ($invalidStr) {
@@ -28481,7 +28462,7 @@ Function Get-V222581 {
     $FindingDetails += "  not in URL query strings or path parameters." + $nl + $nl
 
     # Check 2: Verify no URL rewriting in config
-    $configCheck = $(timeout 5 sh -c 'grep -ri "urlrewrite\|url.rewrite\|session.*url\|embed.*session" /opt/xo/xo-server/dist/ /etc/xo-server/ 2>/dev/null | head -5')
+    $configCheck = $(timeout 5 grep -ri "urlrewrite\|url.rewrite\|session.*url\|embed.*session" /opt/xo/xo-server/dist/ /etc/xo-server/ 2>/dev/null | head -5)
     $configStr = ($configCheck -join $nl).Trim()
     $FindingDetails += "Check 2 - URL Rewriting Configuration:" + $nl
     if ($configStr -and $configStr -notmatch "No such file|error|cannot") {
@@ -28493,7 +28474,7 @@ Function Get-V222581 {
     }
 
     # Check 3: Cookie verification via HTTP headers
-    $cookieCheck = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'set-cookie' | head -3")
+    $cookieCheck = $(timeout 10 curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'set-cookie' | head -3)
     $cookieStr = ($cookieCheck -join $nl).Trim()
     $FindingDetails += "Check 3 - HTTP Set-Cookie Headers:" + $nl
     if ($cookieStr) {
@@ -28631,7 +28612,7 @@ Function Get-V222582 {
     $FindingDetails += "  Old session IDs are invalidated upon logout." + $nl + $nl
 
     # Check 2: Session store backend
-    $redisCheck = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep ":6379" | head -2')
+    $redisCheck = $(timeout 5 ss -tlnp 2>/dev/null | grep ":6379" | head -2)
     $redisStr = ($redisCheck -join $nl).Trim()
     $FindingDetails += "Check 2 - Session Store Backend:" + $nl
     if ($redisStr) {
@@ -28645,7 +28626,7 @@ Function Get-V222582 {
     }
 
     # Check 3: Session regeneration on auth
-    $sessionConfig = $(timeout 5 sh -c 'grep -ri "session\|regenerate\|destroy" /opt/xo/xo-server/dist/cli.mjs /etc/xo-server/config.toml 2>/dev/null | grep -v "node_modules" | head -5')
+    $sessionConfig = $(timeout 5 grep -ri "session\|regenerate\|destroy" /opt/xo/xo-server/dist/cli.mjs /etc/xo-server/config.toml 2>/dev/null | grep -v "node_modules" | head -5)
     $sessionStr = ($sessionConfig -join $nl).Trim()
     $FindingDetails += "Check 3 - Session Regeneration:" + $nl
     if ($sessionStr) {
@@ -28934,7 +28915,7 @@ Function Get-V222584 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Server certificate issuer
-    $certInfo = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -issuer -subject -dates 2>/dev/null")
+    $certInfo = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -issuer -subject -dates 2>/dev/null)
     $certStr = ($certInfo -join $nl).Trim()
     $FindingDetails += "Check 1 - Server Certificate Details:" + $nl
     if ($certStr) {
@@ -28945,7 +28926,7 @@ Function Get-V222584 {
     }
 
     # Check 2: Check for DoD CA in trust chain
-    $chainInfo = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 -showcerts 2>/dev/null | grep -E 'issuer|subject|depth' | head -10")
+    $chainInfo = $(timeout 10 echo | openssl s_client -connect localhost:443 -showcerts 2>/dev/null | grep -E 'issuer|subject|depth' | head -10)
     $chainStr = ($chainInfo -join $nl).Trim()
     $FindingDetails += "Check 2 - Certificate Chain:" + $nl
     if ($chainStr) {
@@ -29100,7 +29081,7 @@ Function Get-V222586 {
 
     # Check 1: XO log files existence and content
     $xoLogs = $(timeout 5 find /var/log -maxdepth 2 -type f -name "xo-server*" 2>/dev/null | head -5 2>&1)
-    $journalLogs = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -n 5 2>/dev/null | tail -5')
+    $journalLogs = $(timeout 5 journalctl -u xo-server --no-pager -n 5 2>/dev/null | tail -5)
     $xoLogStr = ($xoLogs -join $nl).Trim()
     $journalStr = ($journalLogs -join $nl).Trim()
     $FindingDetails += "Check 1 - XO Server Logs:" + $nl
@@ -29116,7 +29097,7 @@ Function Get-V222586 {
     }
 
     # Check 2: Winston logger configuration
-    $winstonConfig = $(timeout 5 sh -c 'grep -ri "log\|winston\|transport" /opt/xo/xo-server/dist/cli.mjs /etc/xo-server/config.toml 2>/dev/null | grep -iv "node_modules\|changelog" | head -5')
+    $winstonConfig = $(timeout 5 grep -ri "log\|winston\|transport" /opt/xo/xo-server/dist/cli.mjs /etc/xo-server/config.toml 2>/dev/null | grep -iv "node_modules\|changelog" | head -5)
     $winstonStr = ($winstonConfig -join $nl).Trim()
     $FindingDetails += "Check 2 - Logging Configuration:" + $nl
     if ($winstonStr) {
@@ -29127,7 +29108,7 @@ Function Get-V222586 {
     }
 
     # Check 3: Error logging verification
-    $errorLogs = $(timeout 5 sh -c 'journalctl -u xo-server --no-pager -p err -n 3 2>/dev/null | tail -3')
+    $errorLogs = $(timeout 5 journalctl -u xo-server --no-pager -p err -n 3 2>/dev/null | tail -3)
     $errorStr = ($errorLogs -join $nl).Trim()
     $FindingDetails += "Check 3 - Error Event Logging:" + $nl
     if ($errorStr) {
@@ -29138,7 +29119,7 @@ Function Get-V222586 {
     }
 
     # Check 4: Log rotation preserves history
-    $logrotate = $(timeout 5 sh -c 'ls -la /etc/logrotate.d/xo-server* 2>/dev/null; cat /etc/logrotate.d/xo-server* 2>/dev/null | head -10')
+    $logrotate = $(timeout 5 ls -la /etc/logrotate.d/xo-server* 2>/dev/null; cat /etc/logrotate.d/xo-server* 2>/dev/null | head -10)
     $rotateStr = ($logrotate -join $nl).Trim()
     $FindingDetails += "Check 4 - Log Rotation (History Preservation):" + $nl
     if ($rotateStr -and $rotateStr -notmatch "No such") {
@@ -29295,7 +29276,7 @@ Function Get-V222587 {
     $FindingDetails += $nl
 
     # Check 2: Sensitive file permissions (config, keys, db)
-    $sensFiles = $(timeout 5 sh -c 'find /etc/xo-server /var/lib/xo-server /opt/xo/xo-server -maxdepth 2 -type f 2>/dev/null | head -10 | xargs -r stat -c "%a %U:%G %n" 2>/dev/null')
+    $sensFiles = $(timeout 5 find /etc/xo-server /var/lib/xo-server /opt/xo/xo-server -maxdepth 2 -type f 2>/dev/null | head -10 | xargs -r stat -c "%a %U:%G %n" 2>/dev/null)
     $sensStr = ($sensFiles -join $nl).Trim()
     $FindingDetails += "Check 2 - Sensitive File Permissions:" + $nl
     if ($sensStr) {
@@ -29306,7 +29287,7 @@ Function Get-V222587 {
     }
 
     # Check 3: World-readable files check
-    $worldRead = $(timeout 5 sh -c 'find /var/lib/xo-server /etc/xo-server -maxdepth 3 -type f -perm -o+r 2>/dev/null | head -5')
+    $worldRead = $(timeout 5 find /var/lib/xo-server /etc/xo-server -maxdepth 3 -type f -perm -o+r 2>/dev/null | head -5)
     $worldStr = ($worldRead -join $nl).Trim()
     $FindingDetails += "Check 3 - World-Readable Files:" + $nl
     if ($worldStr) {
@@ -29318,7 +29299,7 @@ Function Get-V222587 {
     }
 
     # Check 4: Disk encryption check
-    $luks = $(timeout 5 sh -c 'lsblk -o NAME,FSTYPE,TYPE 2>/dev/null | grep -i "crypt\|luks" | head -3')
+    $luks = $(timeout 5 lsblk -o NAME,FSTYPE,TYPE 2>/dev/null | grep -i "crypt\|luks" | head -3)
     $luksStr = ($luks -join $nl).Trim()
     $FindingDetails += "Check 4 - Disk Encryption:" + $nl
     if ($luksStr) {
@@ -29457,7 +29438,7 @@ Function Get-V222591 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: XO process isolation
-    $xoProcs = $(timeout 5 sh -c 'ps aux 2>/dev/null | grep -E "node.*xo|xo-server" | grep -v grep | head -5')
+    $xoProcs = $(timeout 5 ps aux 2>/dev/null | grep -E "node.*xo|xo-server" | grep -v grep | head -5)
     $procsStr = ($xoProcs -join $nl).Trim()
     $FindingDetails += "Check 1 - XO Server Processes:" + $nl
     if ($procsStr) {
@@ -29468,7 +29449,7 @@ Function Get-V222591 {
     }
 
     # Check 2: Process user isolation
-    $procUsers = $(timeout 5 sh -c 'ps -eo user,pid,comm 2>/dev/null | grep -E "node|xo" | grep -v grep | head -5')
+    $procUsers = $(timeout 5 ps -eo user,pid,comm 2>/dev/null | grep -E "node|xo" | grep -v grep | head -5)
     $usersStr = ($procUsers -join $nl).Trim()
     $FindingDetails += "Check 2 - Process User Context:" + $nl
     if ($usersStr) {
@@ -29479,7 +29460,7 @@ Function Get-V222591 {
     }
 
     # Check 3: systemd sandboxing
-    $sandboxing = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep -E "PrivateTmp|ProtectSystem|ProtectHome|NoNewPrivileges" | head -5')
+    $sandboxing = $(timeout 5 systemctl show xo-server 2>/dev/null | grep -E "PrivateTmp|ProtectSystem|ProtectHome|NoNewPrivileges" | head -5)
     $sandboxStr = ($sandboxing -join $nl).Trim()
     $FindingDetails += "Check 3 - systemd Sandboxing:" + $nl
     if ($sandboxStr) {
@@ -29627,7 +29608,7 @@ Function Get-V222592 {
     }
 
     # Check 2: Shared memory / tmp isolation
-    $tmpCheck = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep "PrivateTmp" | head -1')
+    $tmpCheck = $(timeout 5 systemctl show xo-server 2>/dev/null | grep "PrivateTmp" | head -1)
     $tmpStr = ($tmpCheck -join $nl).Trim()
     $FindingDetails += "Check 2 - Private /tmp Isolation:" + $nl
     if ($tmpStr -match "PrivateTmp=yes") {
@@ -29638,7 +29619,7 @@ Function Get-V222592 {
     }
 
     # Check 3: Network namespace / port isolation
-    $listenPorts = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -E "node|xo" | head -5')
+    $listenPorts = $(timeout 5 ss -tlnp 2>/dev/null | grep -E "node|xo" | head -5)
     $portsStr = ($listenPorts -join $nl).Trim()
     $FindingDetails += "Check 3 - Network Port Isolation:" + $nl
     if ($portsStr) {
@@ -29650,7 +29631,7 @@ Function Get-V222592 {
     }
 
     # Check 4: File sharing protocols
-    $nfsSmb = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -E ":445 |:139 |:2049 " | head -3')
+    $nfsSmb = $(timeout 5 ss -tlnp 2>/dev/null | grep -E ":445 |:139 |:2049 " | head -3)
     $nfsSmbStr = ($nfsSmb -join $nl).Trim()
     $FindingDetails += "Check 4 - File Sharing Protocols:" + $nl
     if ($nfsSmbStr) {
@@ -29791,7 +29772,7 @@ Function Get-V222593 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Does XO use XML?
-    $xmlUsage = $(timeout 5 sh -c 'find /opt/xo/xo-server/dist -maxdepth 2 -name "*.xml" 2>/dev/null | head -5')
+    $xmlUsage = $(timeout 5 find /opt/xo/xo-server/dist -maxdepth 2 -name "*.xml" 2>/dev/null | head -5)
     $xmlStr = ($xmlUsage -join $nl).Trim()
     $FindingDetails += "Check 1 - XML Usage in XO:" + $nl
     $FindingDetails += "  XO primarily uses JSON for API communication (REST API)." + $nl
@@ -29804,7 +29785,7 @@ Function Get-V222593 {
     }
 
     # Check 2: XML parser libraries
-    $xmlLibs = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 4 -name "*.js" 2>/dev/null | xargs -r grep -l "xml\|xpath\|sax" 2>/dev/null | head -5')
+    $xmlLibs = $(timeout 5 find /opt/xo/packages -maxdepth 4 -name "*.js" 2>/dev/null | xargs -r grep -l "xml\|xpath\|sax" 2>/dev/null | head -5)
     $xmlLibStr = ($xmlLibs -join $nl).Trim()
     $FindingDetails += "Check 2 - XML Parser Libraries:" + $nl
     if ($xmlLibStr -and $xmlLibStr -notmatch "No such") {
@@ -29815,7 +29796,7 @@ Function Get-V222593 {
     }
 
     # Check 3: Body parser size limits (protects against oversized payloads)
-    $bodyParser = $(timeout 5 sh -c 'grep -r "bodyParser\|body-parser\|limit\|maxBodyLength" /opt/xo/xo-server/dist/cli.mjs 2>/dev/null | head -3')
+    $bodyParser = $(timeout 5 grep -r "bodyParser\|body-parser\|limit\|maxBodyLength" /opt/xo/xo-server/dist/cli.mjs 2>/dev/null | head -3)
     $bodyStr = ($bodyParser -join $nl).Trim()
     $FindingDetails += "Check 3 - Request Body Size Limits:" + $nl
     if ($bodyStr) {
@@ -29959,7 +29940,7 @@ Function Get-V222594 {
         $FindingDetails += "  UFW status: $ufwStr" + $nl + $nl
     }
     else {
-        $iptables = $(timeout 5 sh -c 'iptables -L INPUT -n 2>/dev/null | head -10')
+        $iptables = $(timeout 5 iptables -L INPUT -n 2>/dev/null | head -10)
         $iptStr = ($iptables -join $nl).Trim()
         if ($iptStr -and $iptStr -notmatch "command not found") {
             $FindingDetails += "  iptables rules:" + $nl
@@ -29971,7 +29952,7 @@ Function Get-V222594 {
     }
 
     # Check 2: Rate limiting
-    $rateLimiting = $(timeout 5 sh -c 'grep -ri "rate\|throttl\|limit" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5')
+    $rateLimiting = $(timeout 5 grep -ri "rate\|throttl\|limit" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5)
     $rateStr = ($rateLimiting -join $nl).Trim()
     $FindingDetails += "Check 2 - Application Rate Limiting:" + $nl
     if ($rateStr -and $rateStr -notmatch "No such") {
@@ -29982,7 +29963,7 @@ Function Get-V222594 {
     }
 
     # Check 3: Connection limits
-    $connLimits = $(timeout 5 sh -c 'sysctl net.core.somaxconn net.ipv4.tcp_max_syn_backlog 2>/dev/null')
+    $connLimits = $(timeout 5 sysctl net.core.somaxconn net.ipv4.tcp_max_syn_backlog 2>/dev/null)
     $connStr = ($connLimits -join $nl).Trim()
     $FindingDetails += "Check 3 - System Connection Limits:" + $nl
     if ($connStr) {
@@ -29990,7 +29971,7 @@ Function Get-V222594 {
     }
 
     # Check 4: fail2ban or similar
-    $fail2ban = $(timeout 5 sh -c 'systemctl is-active fail2ban 2>/dev/null')
+    $fail2ban = $(timeout 5 systemctl is-active fail2ban 2>/dev/null)
     $f2bStr = ($fail2ban -join $nl).Trim()
     $FindingDetails += "Check 4 - Intrusion Prevention:" + $nl
     if ($f2bStr -eq "active") {
@@ -30126,7 +30107,7 @@ Function Get-V222595 {
     $FindingDetails += "  If not designated as HA, this requirement is Not Applicable." + $nl + $nl
 
     # Check 2: XO clustering/HA configuration
-    $haConfig = $(timeout 5 sh -c 'grep -ri "ha\|cluster\|replica\|loadbal\|backup.*server" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5')
+    $haConfig = $(timeout 5 grep -ri "ha\|cluster\|replica\|loadbal\|backup.*server" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5)
     $haStr = ($haConfig -join $nl).Trim()
     $FindingDetails += "Check 2 - XO HA/Clustering Configuration:" + $nl
     if ($haStr -and $haStr -notmatch "No such|error") {
@@ -30139,7 +30120,7 @@ Function Get-V222595 {
     }
 
     # Check 3: Load balancer detection
-    $lbCheck = $(timeout 5 sh -c 'grep -ri "proxy\|upstream\|backend" /etc/nginx/sites-enabled/ /etc/haproxy/ 2>/dev/null | head -5')
+    $lbCheck = $(timeout 5 grep -ri "proxy\|upstream\|backend" /etc/nginx/sites-enabled/ /etc/haproxy/ 2>/dev/null | head -5)
     $lbStr = ($lbCheck -join $nl).Trim()
     $FindingDetails += "Check 3 - Load Balancer/Proxy:" + $nl
     if ($lbStr -and $lbStr -notmatch "No such") {
@@ -30151,7 +30132,7 @@ Function Get-V222595 {
     }
 
     # Check 4: Backup mechanism
-    $backupConfig = $(timeout 5 sh -c 'grep -ri "backup\|snapshot\|export" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5')
+    $backupConfig = $(timeout 5 grep -ri "backup\|snapshot\|export" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | head -5)
     $backupStr = ($backupConfig -join $nl).Trim()
     $FindingDetails += "Check 4 - Backup Configuration:" + $nl
     if ($backupStr -and $backupStr -notmatch "No such") {
@@ -30281,7 +30262,7 @@ Function Get-V222596 {
     # Check 1: HTTPS listener
     $output += "CHECK 1: HTTPS/TLS listener status" + $nl
     $httpsActive = $false
-    $listeners = $(sh -c "ss -tlnp 2>/dev/null | grep -E ':443\s'" 2>&1)
+    $listeners = $(ss -tlnp 2>/dev/null | grep -E ':443\s' 2>&1)
     $listenersStr = ($listeners -join $nl).Trim()
     if ($listenersStr) {
         $httpsActive = $true
@@ -30293,7 +30274,7 @@ Function Get-V222596 {
     # Check 2: TLS version verification
     $output += $nl + "CHECK 2: TLS version" + $nl
     $modernTLS = $false
-    $tlsVer = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Protocol'" 2>&1)
+    $tlsVer = $(timeout 5 echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Protocol' 2>&1)
     $tlsVerStr = ($tlsVer -join $nl).Trim()
     if ($tlsVerStr -match "TLSv1\.[23]") {
         $modernTLS = $true
@@ -30307,7 +30288,7 @@ Function Get-V222596 {
     $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
     foreach ($cp in $configPaths) {
         if (Test-Path $cp) {
-            $tlsConfig = $(sh -c "grep -iE 'cert|key|https|redirectToHttps' '$cp' 2>/dev/null" 2>&1)
+            $tlsConfig = $(grep -iE 'cert|key|https|redirectToHttps' '$cp' 2>/dev/null)
             $tlsConfigStr = ($tlsConfig -join $nl).Trim()
             if ($tlsConfigStr) { $output += "  Config ($cp): $tlsConfigStr" + $nl }
         }
@@ -30316,7 +30297,7 @@ Function Get-V222596 {
     # Check 4: Plaintext protocol exposure
     $output += $nl + "CHECK 4: Plaintext protocol exposure" + $nl
     $plaintextExposed = $false
-    $ptCheck = $(sh -c "ss -tlnp 2>/dev/null | grep -E ':(21|23|80|3389)\s' | grep -v '127.0.0.1'" 2>&1)
+    $ptCheck = $(ss -tlnp 2>/dev/null | grep -E ':(21|23|80|3389)\s' | grep -v '127.0.0.1' 2>&1)
     $ptCheckStr = ($ptCheck -join $nl).Trim()
     if ($ptCheckStr) {
         $plaintextExposed = $true
@@ -30327,7 +30308,7 @@ Function Get-V222596 {
 
     # Check 5: Cipher strength
     $output += $nl + "CHECK 5: Cipher strength" + $nl
-    $cipher = $(timeout 5 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Cipher'" 2>&1)
+    $cipher = $(timeout 5 echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Cipher' 2>&1)
     $cipherStr = ($cipher -join $nl).Trim()
     if ($cipherStr) { $output += "  $cipherStr" + $nl }
 
@@ -30460,7 +30441,7 @@ Function Get-V222597 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: TLS configuration verification
-    $tlsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | head -20")
+    $tlsCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 -tls1_2 2>&1 | head -20)
     $tlsStr = ($tlsCheck -join $nl).Trim()
     $FindingDetails += "Check 1 - TLS 1.2 Support:" + $nl
     $tls12ok = $false
@@ -30477,7 +30458,7 @@ Function Get-V222597 {
     }
 
     # Check 2: TLS 1.3 support
-    $tls13Check = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 -tls1_3 2>&1 | head -20")
+    $tls13Check = $(timeout 10 echo | openssl s_client -connect localhost:443 -tls1_3 2>&1 | head -20)
     $tls13Str = ($tls13Check -join $nl).Trim()
     $FindingDetails += "Check 2 - TLS 1.3 Support:" + $nl
     if ($tls13Str -match "Cipher is") {
@@ -30488,7 +30469,7 @@ Function Get-V222597 {
     }
 
     # Check 3: Certificate details
-    $certDetails = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>/dev/null")
+    $certDetails = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>/dev/null)
     $certStr = ($certDetails -join $nl).Trim()
     $FindingDetails += "Check 3 - Server Certificate:" + $nl
     if ($certStr) {
@@ -30499,7 +30480,7 @@ Function Get-V222597 {
     }
 
     # Check 4: HTTP to HTTPS redirect
-    $httpCheck = $(timeout 10 sh -c "curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://localhost/ 2>/dev/null")
+    $httpCheck = $(timeout 10 curl -s -o /dev/null -w '%{http_code} %{redirect_url}' http://localhost/ 2>/dev/null)
     $httpStr = ($httpCheck -join $nl).Trim()
     $FindingDetails += "Check 4 - HTTP to HTTPS Redirect:" + $nl
     if ($httpStr -match "301|302|307|308") {
@@ -30636,7 +30617,7 @@ Function Get-V222598 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: HTTPS listener verification
-    $httpsListener = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep ":443 " | head -3')
+    $httpsListener = $(timeout 5 ss -tlnp 2>/dev/null | grep ":443 " | head -3)
     $httpsStr = ($httpsListener -join $nl).Trim()
     $FindingDetails += "Check 1 - HTTPS Listener:" + $nl
     if ($httpsStr) {
@@ -30648,7 +30629,7 @@ Function Get-V222598 {
     }
 
     # Check 2: TLS configuration in XO config
-    $tlsConfig = $(timeout 5 sh -c 'grep -i "tls\|ssl\|https\|cert\|key" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | grep -v "^#" | head -5')
+    $tlsConfig = $(timeout 5 grep -i "tls\|ssl\|https\|cert\|key" /etc/xo-server/config.toml /opt/xo/xo-server/config.toml 2>/dev/null | grep -v "^#" | head -5)
     $tlsConfigStr = ($tlsConfig -join $nl).Trim()
     $FindingDetails += "Check 2 - TLS Configuration:" + $nl
     if ($tlsConfigStr -and $tlsConfigStr -notmatch "No such") {
@@ -30660,7 +30641,7 @@ Function Get-V222598 {
     }
 
     # Check 3: Verify actual TLS connection
-    $tlsVerify = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>&1 | grep -E 'Protocol|Cipher is'")
+    $tlsVerify = $(timeout 10 echo | openssl s_client -connect localhost:443 2>&1 | grep -E 'Protocol|Cipher is')
     $tlsVerifyStr = ($tlsVerify -join $nl).Trim()
     $FindingDetails += "Check 3 - Active TLS Verification:" + $nl
     if ($tlsVerifyStr) {
@@ -30799,7 +30780,7 @@ Function Get-V222599 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: TLS on all incoming connections
-    $httpsListener = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep ":443 " | head -3')
+    $httpsListener = $(timeout 5 ss -tlnp 2>/dev/null | grep ":443 " | head -3)
     $httpsStr = ($httpsListener -join $nl).Trim()
     $FindingDetails += "Check 1 - HTTPS Incoming Listener:" + $nl
     if ($httpsStr) {
@@ -30811,7 +30792,7 @@ Function Get-V222599 {
     }
 
     # Check 2: HTTP listener (should redirect to HTTPS)
-    $httpListener = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep ":80 " | head -3')
+    $httpListener = $(timeout 5 ss -tlnp 2>/dev/null | grep ":80 " | head -3)
     $httpStr = ($httpListener -join $nl).Trim()
     $FindingDetails += "Check 2 - HTTP Listener:" + $nl
     if ($httpStr) {
@@ -30822,7 +30803,7 @@ Function Get-V222599 {
     }
 
     # Check 3: Verify TLS on reception
-    $tlsRecv = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>&1 | grep -E 'Protocol|Cipher is'")
+    $tlsRecv = $(timeout 10 echo | openssl s_client -connect localhost:443 2>&1 | grep -E 'Protocol|Cipher is')
     $tlsRecvStr = ($tlsRecv -join $nl).Trim()
     $FindingDetails += "Check 3 - TLS Reception Verification:" + $nl
     if ($tlsRecvStr) {
@@ -30964,7 +30945,7 @@ Function Get-V222600 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: Server header disclosure
-    $serverHeader = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'server:\|x-powered-by:' | head -5")
+    $serverHeader = $(timeout 10 curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'server:\|x-powered-by:' | head -5)
     $headerStr = ($serverHeader -join $nl).Trim()
     $FindingDetails += "Check 1 - Server Response Headers:" + $nl
     $headerDisclosure = $false
@@ -30981,7 +30962,7 @@ Function Get-V222600 {
     }
 
     # Check 2: Error page information disclosure
-    $errorPage = $(timeout 10 sh -c "curl -s -k https://localhost/nonexistent-page-test-404 2>/dev/null | head -20")
+    $errorPage = $(timeout 10 curl -s -k https://localhost/nonexistent-page-test-404 2>/dev/null | head -20)
     $errorStr = ($errorPage -join $nl).Trim()
     $FindingDetails += "Check 2 - Error Page Content (404 test):" + $nl
     $errorDisclosure = $false
@@ -30999,7 +30980,7 @@ Function Get-V222600 {
     }
 
     # Check 3: NODE_ENV setting
-    $nodeEnv = $(timeout 5 sh -c 'ps aux 2>/dev/null | grep "[n]ode.*xo" | grep -o "NODE_ENV=[a-z]*" | head -1')
+    $nodeEnv = $(timeout 5 ps aux 2>/dev/null | grep "[n]ode.*xo" | grep -o "NODE_ENV=[a-z]*" | head -1)
     $envStr = ($nodeEnv -join $nl).Trim()
     $FindingDetails += "Check 3 - NODE_ENV Setting:" + $nl
     if ($envStr -match "production") {
@@ -31013,7 +30994,7 @@ Function Get-V222600 {
     }
 
     # Check 4: Version info endpoint
-    $versionEndpoint = $(timeout 10 sh -c "curl -s -k https://localhost/api/v1/version 2>/dev/null | head -5")
+    $versionEndpoint = $(timeout 10 curl -s -k https://localhost/api/v1/version 2>/dev/null | head -5)
     $versionStr = ($versionEndpoint -join $nl).Trim()
     $FindingDetails += "Check 4 - Version Information Endpoint:" + $nl
     if ($versionStr -and $versionStr -notmatch "Cannot GET|Not Found|404|Unauthorized") {
@@ -31163,7 +31144,7 @@ Function Get-V222601 {
     $output += $nl + "CHECK 2: Hidden field sensitive data scan" + $nl
     $sensitiveHidden = $false
     if ($webRoot) {
-        $hiddenSensitive = $(timeout 15 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -n 'type.*hidden.*password\|type.*hidden.*secret\|type.*hidden.*token\|type.*hidden.*key\|type.*hidden.*ssn\|type.*hidden.*credit' {} + 2>/dev/null | head -5" 2>&1)
+        $hiddenSensitive = $(timeout 15 find '$webRoot' -maxdepth 5 -type f '(' -name '*.js' -o -name '*.jsx' -o -name '*.html' ')' -exec grep -n 'type.*hidden.*password\|type.*hidden.*secret\|type.*hidden.*token\|type.*hidden.*key\|type.*hidden.*ssn\|type.*hidden.*credit' '{}' + 2>/dev/null | head -5 2>&1)
         $hiddenSensitiveStr = ($hiddenSensitive -join $nl).Trim()
         if ($hiddenSensitiveStr) {
             $sensitiveHidden = $true
@@ -31173,7 +31154,7 @@ Function Get-V222601 {
         }
 
         # Count hidden fields generally
-        $hiddenCount = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep 'type.*hidden' {} + 2>/dev/null | wc -l" 2>&1)
+        $hiddenCount = $(timeout 10 find '$webRoot' -maxdepth 5 -type f '(' -name '*.js' -o -name '*.jsx' -o -name '*.html' ')' -exec grep 'type.*hidden' '{}' + 2>/dev/null | wc -l 2>&1)
         $hiddenCountStr = ($hiddenCount -join $nl).Trim()
         $output += "  Total hidden field references: $hiddenCountStr" + $nl
     }
@@ -31182,7 +31163,7 @@ Function Get-V222601 {
     $output += $nl + "CHECK 3: Application architecture" + $nl
     $isSPA = $false
     if ($webRoot) {
-        $reactCheck = $(sh -c "find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+        $reactCheck = $(find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' '{}' + 2>/dev/null | head -1 2>&1)
         $reactCheckStr = ($reactCheck -join $nl).Trim()
         if ($reactCheckStr) {
             $isSPA = $true
@@ -31320,7 +31301,7 @@ Function Get-V222602 {
     $webPaths = @("/opt/xo/xo-src/xen-orchestra/packages/xo-web", "/opt/xo/packages/xo-web")
     foreach ($wp in $webPaths) {
         if (Test-Path $wp) {
-            $react = $(sh -c "find '$wp' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+            $react = $(find '$wp' -maxdepth 2 -name 'package.json' -exec grep -l 'react' '{}' + 2>/dev/null | head -1 2>&1)
             $reactStr = ($react -join $nl).Trim()
             if ($reactStr) {
                 $reactDetected = $true
@@ -31336,11 +31317,11 @@ Function Get-V222602 {
     # Check 2: Security headers (CSP, X-XSS-Protection)
     $output += $nl + "CHECK 2: Security response headers" + $nl
     $hasCSP = $false
-    $respHeaders = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1" 2>&1)
+    $respHeaders = $(timeout 5 curl -s -k -I 'https://localhost' 2>&1)
     $respHeadersStr = ($respHeaders -join $nl).Trim()
     if ($respHeadersStr -match "Content-Security-Policy") {
         $hasCSP = $true
-        $cspLine = ($respHeadersStr -split "`n" | Where-Object { $_ -match "Content-Security-Policy" } | Select-Object -First 1)
+        $cspLine = ($respHeadersStr -split $nl | Where-Object { $_ -match "Content-Security-Policy" } | Select-Object -First 1)
         $output += "  [PASS] CSP header: $cspLine" + $nl
     } else {
         $output += "  [INFO] No Content-Security-Policy header (React provides protection)" + $nl
@@ -31354,7 +31335,7 @@ Function Get-V222602 {
     $dangerousFound = $false
     foreach ($wp in $webPaths) {
         if (Test-Path $wp) {
-            $dangerous = $(timeout 10 sh -c "find '$wp' -maxdepth 5 -type f -name '*.js' -exec grep 'dangerouslySetInnerHTML' {} + 2>/dev/null | wc -l" 2>&1)
+            $dangerous = $(timeout 10 find '$wp' -maxdepth 5 -type f -name '*.js' -exec grep 'dangerouslySetInnerHTML' '{}' + 2>/dev/null | wc -l 2>&1)
             $dangerousStr = ($dangerous -join $nl).Trim()
             if ($dangerousStr -and [int]$dangerousStr -gt 0) {
                 $dangerousFound = $true
@@ -31369,7 +31350,7 @@ Function Get-V222602 {
     # Check 4: Output encoding libraries
     $output += $nl + "CHECK 4: Sanitization/encoding libraries" + $nl
     $hasSanitizer = $false
-    $sanitizeCheck = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'dompurify\|sanitize-html\|xss\|validator' {} + 2>/dev/null | head -3" 2>&1)
+    $sanitizeCheck = $(timeout 5 find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'dompurify\|sanitize-html\|xss\|validator' '{}' + 2>/dev/null | head -3 2>&1)
     $sanitizeCheckStr = ($sanitizeCheck -join $nl).Trim()
     if ($sanitizeCheckStr) {
         $hasSanitizer = $true
@@ -31508,7 +31489,7 @@ Function Get-V222603 {
 
     # Check 1: CSRF middleware/token detection
     $FindingDetails += "Check 1 - CSRF Protection Middleware:" + $nl
-    $csrfPkg = $(timeout 5 sh -c 'find /opt/xo/node_modules -maxdepth 2 -name "csurf" -o -name "csrf" -o -name "lusca" 2>/dev/null | head -5')
+    $csrfPkg = $(timeout 5 find /opt/xo/node_modules -maxdepth 2 -name "csurf" -o -name "csrf" -o -name "lusca" 2>/dev/null | head -5)
     $csrfStr = ($csrfPkg -join $nl).Trim()
     if ($csrfStr) {
         $FindingDetails += "  CSRF middleware packages found:" + $nl + "  $csrfStr" + $nl + $nl
@@ -31518,7 +31499,7 @@ Function Get-V222603 {
     }
 
     # Check 2: SameSite cookie attribute (CSRF defense-in-depth)
-    $cookieCheck = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'set-cookie' | head -3")
+    $cookieCheck = $(timeout 10 curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'set-cookie' | head -3)
     $cookieStr = ($cookieCheck -join $nl).Trim()
     $FindingDetails += "Check 2 - SameSite Cookie Attribute (CSRF Defense):" + $nl
     if ($cookieStr -match "(?i)SameSite") {
@@ -31665,12 +31646,12 @@ Function Get-V222604 {
     $execRefs = 0
     foreach ($sp in $srcPaths) {
         if (Test-Path $sp) {
-            $cpCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep 'child_process\|require.*child' {} + 2>/dev/null | wc -l" 2>&1)
+            $cpCount = $(timeout 10 find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep 'child_process\|require.*child' '{}' + 2>/dev/null | wc -l 2>&1)
             $cpCountStr = ($cpCount -join $nl).Trim()
             if ($cpCountStr) { $cpRefs = [int]$cpCountStr }
 
             # Check for dangerous exec/execSync (vs safer spawn/execFile)
-            $execCount = $(timeout 10 sh -c "find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.exec(\|\.execSync(' {} + 2>/dev/null | wc -l" 2>&1)
+            $execCount = $(timeout 10 find '$sp' -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.exec(\|\.execSync(' '{}' + 2>/dev/null | wc -l 2>&1)
             $execCountStr = ($execCount -join $nl).Trim()
             if ($execCountStr) { $execRefs = [int]$execCountStr }
             break
@@ -31685,7 +31666,7 @@ Function Get-V222604 {
     # Check 2: Input validation libraries
     $output += $nl + "CHECK 2: Input validation libraries" + $nl
     $hasValidation = $false
-    $valCheck = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv\|joi\|yup\|express-validator\|validator' {} + 2>/dev/null | head -3" 2>&1)
+    $valCheck = $(timeout 5 find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv\|joi\|yup\|express-validator\|validator' '{}' + 2>/dev/null | head -3 2>&1)
     $valCheckStr = ($valCheck -join $nl).Trim()
     if ($valCheckStr) {
         $hasValidation = $true
@@ -31696,13 +31677,13 @@ Function Get-V222604 {
 
     # Check 3: Parameterized command patterns
     $output += $nl + "CHECK 3: Command parameterization" + $nl
-    $spawnUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.spawn(\|\.execFile(' {} + 2>/dev/null | wc -l" 2>&1)
+    $spawnUsage = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep '\.spawn(\|\.execFile(' '{}' + 2>/dev/null | wc -l 2>&1)
     $spawnUsageStr = ($spawnUsage -join $nl).Trim()
     $output += "  spawn/execFile calls (safer pattern): $spawnUsageStr" + $nl
 
     # Check 4: String concatenation in commands (injection risk)
     $output += $nl + "CHECK 4: Command string concatenation patterns" + $nl
-    $concatRisk = $(timeout 10 sh -c 'find /opt/xo -maxdepth 6 -name "*.js" -not -path "*/node_modules/*" -exec grep -nE "exec\(|execSync\(" {} + 2>/dev/null | grep -v execFile | head -5' 2>&1)
+    $concatRisk = $(timeout 10 find /opt/xo -maxdepth 6 -name "*.js" -not -path "*/node_modules/*" -exec grep -nE "exec\(|execSync\(" '{}' + 2>/dev/null | grep -v execFile | head -5 2>&1)
     $concatRiskStr = ($concatRisk -join $nl).Trim()
     if ($concatRiskStr) {
         $output += "  [FINDING] Template literals in exec calls detected:" + $nl + "  $concatRiskStr" + $nl
@@ -31840,7 +31821,7 @@ Function Get-V222605 {
 
     # Check 1: Character encoding configuration
     $FindingDetails += "Check 1 - Character Encoding Configuration:" + $nl
-    $contentType = $(timeout 10 sh -c "curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'content-type' | head -3")
+    $contentType = $(timeout 10 curl -s -k -D - -o /dev/null https://localhost/ 2>/dev/null | grep -i 'content-type' | head -3)
     $contentStr = ($contentType -join $nl).Trim()
     if ($contentStr) {
         $FindingDetails += "  HTTP Content-Type headers:" + $nl + "  $contentStr" + $nl + $nl
@@ -31986,7 +31967,7 @@ Function Get-V222606 {
 
     # Check 1: Input validation middleware
     $FindingDetails += "Check 1 - Input Validation Middleware:" + $nl
-    $valPkg = $(timeout 5 sh -c 'find /opt/xo/node_modules -maxdepth 2 -name "joi" -o -name "ajv" -o -name "express-validator" -o -name "yup" 2>/dev/null | head -5')
+    $valPkg = $(timeout 5 find /opt/xo/node_modules -maxdepth 2 -name "joi" -o -name "ajv" -o -name "express-validator" -o -name "yup" 2>/dev/null | head -5)
     $valStr = ($valPkg -join $nl).Trim()
     if ($valStr) {
         $FindingDetails += "  Validation libraries found:" + $nl + "  $valStr" + $nl + $nl
@@ -31997,7 +31978,7 @@ Function Get-V222606 {
 
     # Check 2: XO API schema validation
     $FindingDetails += "Check 2 - API Schema Validation:" + $nl
-    $schemaCheck = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 4 -name "*.mjs" 2>/dev/null | xargs -r grep -l "schema\|validate\|sanitize" 2>/dev/null | head -5')
+    $schemaCheck = $(timeout 5 find /opt/xo/packages -maxdepth 4 -name "*.mjs" 2>/dev/null | xargs -r grep -l "schema\|validate\|sanitize" 2>/dev/null | head -5)
     $schemaStr = ($schemaCheck -join $nl).Trim()
     if ($schemaStr) {
         $FindingDetails += "  Schema validation references found in:" + $nl + "  $schemaStr" + $nl + $nl
@@ -32008,7 +31989,7 @@ Function Get-V222606 {
 
     # Check 3: JSON body parsing with limits
     $FindingDetails += "Check 3 - Body Parser Configuration:" + $nl
-    $bodyParser = $(timeout 5 sh -c 'grep -r "bodyParser\|body-parser\|express.json\|express.urlencoded" /opt/xo/xo-server/dist/ 2>/dev/null | head -3')
+    $bodyParser = $(timeout 5 grep -r "bodyParser\|body-parser\|express.json\|express.urlencoded" /opt/xo/xo-server/dist/ 2>/dev/null | head -3)
     $bodyStr = ($bodyParser -join $nl).Trim()
     if ($bodyStr) {
         $FindingDetails += "  Body parser configuration detected." + $nl + $nl
@@ -32123,6 +32104,7 @@ Function Get-V222607 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222607"
     $RuleID = "SV-222607r508029_rule"
     $Status = "Not_Reviewed"
@@ -32135,52 +32117,49 @@ Function Get-V222607 {
 
     #---=== Begin Custom Code ===---#
     if ($IsLinux) {
-        $FindingDetails += "CAT I: SQL Injection Protection Check`n`n"
+        $FindingDetails += "CAT I: SQL Injection Protection Check" + $nl + $nl
         $vulnerabilities = @()
 
         # 1. Identify database type used by XO
-        $FindingDetails += "1. Identifying database backend:`n"
+        $FindingDetails += "1. Identifying database backend:" + $nl
         $xoPath = "/opt/xo/xo-src"
         
         # Check if XO uses traditional SQL database
-        $cmd = "find $xoPath -name 'package.json' -exec grep -l 'mysql\|postgres\|sqlite\|mssql\|mariadb' {} \; </dev/null 2>/dev/null"
-        $sqlPackages = bash -c $cmd 2>$null
+        $sqlPackages = $(find $xoPath -name 'package.json' -exec grep -l 'mysql\|postgres\|sqlite\|mssql\|mariadb' '{}' ';' 2>/dev/null)
         
         if ($sqlPackages) {
-            $FindingDetails += "  ⚠ SQL database packages found in package.json`n"
+            $FindingDetails += "  ⚠ SQL database packages found in package.json" + $nl
             $vulnerabilities += "SQL database usage detected"
         }
         else {
-            $FindingDetails += "  ✓ No traditional SQL database packages detected`n"
-            $FindingDetails += "  ℹ XO primarily uses Redis (NoSQL key-value store)`n"
+            $FindingDetails += "  ✓ No traditional SQL database packages detected" + $nl
+            $FindingDetails += "  ℹ XO primarily uses Redis (NoSQL key-value store)" + $nl
         }
 
         # 2. Check Redis usage (XO's primary database)
-        $FindingDetails += "`n2. Checking Redis command usage:`n"
-        $cmd = "redis-cli ping </dev/null 2>/dev/null"
-        $redisPing = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "2. Checking Redis command usage:" + $nl
+        $redisPing = $(redis-cli ping 2>/dev/null)
         
         if ($redisPing -eq "PONG") {
-            $FindingDetails += "  ✓ Redis is running and accessible`n"
+            $FindingDetails += "  ✓ Redis is running and accessible" + $nl
             
             # Redis doesn't use SQL, but check for unsafe patterns
-            $cmd = "grep -r 'redis.*eval' $xoPath --include='*.js' </dev/null 2>/dev/null | wc -l"
-            $evalCount = bash -c $cmd 2>$null
+            $evalCount = $(grep -r 'redis.*eval' $xoPath --include='*.js' 2>/dev/null | wc -l)
             
             if ($evalCount -and [int]$evalCount -gt 0) {
-                $FindingDetails += "  ⚠ Found $evalCount instances of Redis EVAL command`n"
+                $FindingDetails += "  ⚠ Found $evalCount instances of Redis EVAL command" + $nl
                 $vulnerabilities += "Redis EVAL usage may allow script injection"
             }
             else {
-                $FindingDetails += "  ✓ No Redis EVAL commands detected`n"
+                $FindingDetails += "  ✓ No Redis EVAL commands detected" + $nl
             }
         }
         else {
-            $FindingDetails += "  ℹ Redis not accessible or not running`n"
+            $FindingDetails += "  ℹ Redis not accessible or not running" + $nl
         }
 
         # 3. Check for ORM usage (protects against SQL injection)
-        $FindingDetails += "`n3. Checking for ORM/query builder usage:`n"
+        $FindingDetails += $nl + "3. Checking for ORM/query builder usage:" + $nl
         $ormLibs = @(
             "sequelize",
             "typeorm",
@@ -32191,21 +32170,20 @@ Function Get-V222607 {
         
         $foundOrm = $false
         foreach ($orm in $ormLibs) {
-            $cmd = "find `$xoPath -name 'package.json' -exec grep -l '`"$orm`"' {} \; </dev/null 2>/dev/null | head -3"
-            $result = bash -c $cmd 2>$null
+            $result = $(find `$xoPath -name 'package.json' -exec grep -l '`"$orm`"' '{}' ';' 2>/dev/null | head -3)
             
             if ($result) {
                 $foundOrm = $true
-                $FindingDetails += "  ✓ Found ORM library: $orm`n"
+                $FindingDetails += "  ✓ Found ORM library: $orm" + $nl
             }
         }
         
         if (-not $foundOrm) {
-            $FindingDetails += "  ℹ No traditional ORM detected (expected for Redis-based app)`n"
+            $FindingDetails += "  ℹ No traditional ORM detected (expected for Redis-based app)" + $nl
         }
 
         # 4. Scan for string concatenation in queries
-        $FindingDetails += "`n4. Scanning for unsafe query patterns:`n"
+        $FindingDetails += $nl + "4. Scanning for unsafe query patterns:" + $nl
         $unsafePatterns = @(
             '"SELECT.*\+',
             '"INSERT.*\+',
@@ -32217,70 +32195,67 @@ Function Get-V222607 {
         
         $foundUnsafe = 0
         foreach ($pattern in $unsafePatterns) {
-            $cmd = "grep -r -E '$pattern' $xoPath --include='*.js' </dev/null 2>/dev/null | head -5"
-            $result = bash -c $cmd 2>$null
+            $result = $(grep -r -E '$pattern' $xoPath --include='*.js' 2>/dev/null | head -5)
             
             if ($result) {
                 $foundUnsafe++
-                $FindingDetails += "  ⚠ Found string concatenation in SQL query`n"
+                $FindingDetails += "  ⚠ Found string concatenation in SQL query" + $nl
                 $result | Select-Object -First 2 | ForEach-Object {
-                    $FindingDetails += "    $_`n"
+                    $FindingDetails += "    $_" + $nl
                 }
             }
         }
         
         if ($foundUnsafe -eq 0) {
-            $FindingDetails += "  ✓ No obvious SQL string concatenation detected`n"
+            $FindingDetails += "  ✓ No obvious SQL string concatenation detected" + $nl
         }
         else {
             $vulnerabilities += "$foundUnsafe instances of potential SQL concatenation"
         }
 
         # 5. Check for parameterized queries
-        $FindingDetails += "`n5. Checking for parameterized query usage:`n"
-        $cmd = "grep -r '\$1\|\$2\|\?\|:param' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'query\|execute' | wc -l"
-        $paramCount = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "5. Checking for parameterized query usage:" + $nl
+        $paramCount = $(grep -r '\$1\|\$2\|\?\|:param' $xoPath --include='*.js' 2>/dev/null | grep -i 'query\|execute' | wc -l)
         
         if ($paramCount -and [int]$paramCount -gt 0) {
-            $FindingDetails += "  ✓ Found $paramCount potential parameterized queries`n"
+            $FindingDetails += "  ✓ Found $paramCount potential parameterized queries" + $nl
         }
         else {
-            $FindingDetails += "  ℹ No parameterized query patterns detected`n"
+            $FindingDetails += "  ℹ No parameterized query patterns detected" + $nl
         }
 
         # 6. Check for prepared statement usage
-        $FindingDetails += "`n6. Checking for prepared statements:`n"
-        $cmd = "grep -r 'prepare\|prepared' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -i 'statement' | wc -l"
-        $preparedCount = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "6. Checking for prepared statements:" + $nl
+        $preparedCount = $(grep -r 'prepare\|prepared' $xoPath --include='*.js' 2>/dev/null | grep -i 'statement' | wc -l)
         
         if ($preparedCount -and [int]$preparedCount -gt 0) {
-            $FindingDetails += "  ✓ Found $preparedCount prepared statement references`n"
+            $FindingDetails += "  ✓ Found $preparedCount prepared statement references" + $nl
         }
         else {
-            $FindingDetails += "  ℹ No prepared statement usage detected`n"
+            $FindingDetails += "  ℹ No prepared statement usage detected" + $nl
         }
 
         # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
+        $FindingDetails += $nl + "="*60 + $nl
         if ($vulnerabilities.Count -eq 0) {
             $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "XO uses Redis (NoSQL) as primary database.`n"
-            $FindingDetails += "No SQL injection vulnerabilities detected.`n"
-            $FindingDetails += "No unsafe query patterns or string concatenation found.`n"
+            $FindingDetails += "Result: NOT A FINDING" + $nl
+            $FindingDetails += "XO uses Redis (NoSQL) as primary database." + $nl
+            $FindingDetails += "No SQL injection vulnerabilities detected." + $nl
+            $FindingDetails += "No unsafe query patterns or string concatenation found." + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "Result: OPEN - Manual verification required`n"
-            $FindingDetails += "Potential issues detected:`n"
+            $FindingDetails += "Result: OPEN - Manual verification required" + $nl
+            $FindingDetails += "Potential issues detected:" + $nl
             foreach ($vuln in $vulnerabilities) {
-                $FindingDetails += "  • $vuln`n"
+                $FindingDetails += "  • $vuln" + $nl
             }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All database queries use parameterized statements`n"
-            $FindingDetails += "  2. No user input is concatenated into queries`n"
-            $FindingDetails += "  3. ORM/query builders are used for all database access`n"
-            $FindingDetails += "  4. Input validation is performed before query execution`n"
+            $FindingDetails += $nl + "Manual review needed to verify:" + $nl
+            $FindingDetails += "  1. All database queries use parameterized statements" + $nl
+            $FindingDetails += "  2. No user input is concatenated into queries" + $nl
+            $FindingDetails += "  3. ORM/query builders are used for all database access" + $nl
+            $FindingDetails += "  4. Input validation is performed before query execution" + $nl
         }
     }
     else {
@@ -32556,13 +32531,13 @@ Function Get-V222609 {
     $output += "CHECK 1: Input validation framework" + $nl
     $hasAjv = $false
     $hasJoi = $false
-    $ajvCheck = $(sh -c "find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv' {} + 2>/dev/null | head -3" 2>&1)
+    $ajvCheck = $(timeout 10 find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'ajv' '{}' + 2>/dev/null | head -3 2>&1)
     $ajvCheckStr = ($ajvCheck -join $nl).Trim()
     if ($ajvCheckStr) {
         $hasAjv = $true
         $output += "  [PASS] ajv (JSON Schema validator) detected" + $nl
     }
-    $joiCheck = $(sh -c "find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'joi' {} + 2>/dev/null | head -3" 2>&1)
+    $joiCheck = $(timeout 10 find /opt/xo -maxdepth 3 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'joi' '{}' + 2>/dev/null | head -3 2>&1)
     $joiCheckStr = ($joiCheck -join $nl).Trim()
     if ($joiCheckStr) {
         $hasJoi = $true
@@ -32574,13 +32549,13 @@ Function Get-V222609 {
 
     # Check 2: JSON-RPC type checking (XO uses JSON-RPC protocol)
     $output += $nl + "CHECK 2: JSON-RPC input type checking" + $nl
-    $typeChecking = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'typeof\|instanceof\|\.type\s*===\|schema.*validate' {} + 2>/dev/null | wc -l" 2>&1)
+    $typeChecking = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'typeof\|instanceof\|\.type\s*===\|schema.*validate' '{}' + 2>/dev/null | wc -l 2>&1)
     $typeCheckingStr = ($typeChecking -join $nl).Trim()
     $output += "  Type checking references: $typeCheckingStr" + $nl
 
     # Check 3: Content-Type enforcement
     $output += $nl + "CHECK 3: Content-Type enforcement" + $nl
-    $ctCheck = $(timeout 5 sh -c "curl -s -k -X POST -H 'Content-Type: text/plain' -d 'test' 'https://localhost/api/' 2>&1 | head -5" 2>&1)
+    $ctCheck = $(timeout 5 curl -s -k -X POST -H 'Content-Type: text/plain' -d 'test' 'https://localhost/api/' 2>&1 | head -5 2>&1)
     $ctCheckStr = ($ctCheck -join $nl).Trim()
     if ($ctCheckStr -match "error\|invalid\|unsupported\|bad request" ) {
         $output += "  [PASS] Invalid Content-Type rejected" + $nl
@@ -32590,7 +32565,7 @@ Function Get-V222609 {
 
     # Check 4: Body-parser / express middleware
     $output += $nl + "CHECK 4: Request body parsing middleware" + $nl
-    $bodyParser = $(timeout 5 sh -c "find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'body-parser\|express' {} + 2>/dev/null | head -3" 2>&1)
+    $bodyParser = $(timeout 5 find /opt/xo -maxdepth 4 -name 'package.json' -not -path '*/node_modules/*' -exec grep -l 'body-parser\|express' '{}' + 2>/dev/null | head -3 2>&1)
     $bodyParserStr = ($bodyParser -join $nl).Trim()
     if ($bodyParserStr) {
         $output += "  [PASS] Express/body-parser middleware present" + $nl
@@ -32598,7 +32573,7 @@ Function Get-V222609 {
 
     # Check 5: npm audit for input handling CVEs
     $output += $nl + "CHECK 5: Known input handling vulnerabilities" + $nl
-    $npmAudit = $(timeout 30 sh -c "cd /opt/xo 2>/dev/null && npm audit --json 2>/dev/null | head -50 || echo 'npm audit unavailable'" 2>&1)
+    $npmAudit = $(timeout 30 cd /opt/xo 2>/dev/null && npm audit --json 2>/dev/null | head -50 || echo 'npm audit unavailable' 2>&1)
     $npmAuditStr = ($npmAudit -join $nl).Trim()
     if ($npmAuditStr -match "npm audit unavailable") {
         $output += "  npm audit not available" + $nl
@@ -32734,10 +32709,10 @@ Function Get-V222610 {
     $FindingDetails += "Host: $xoHostname" + $nl + $nl
 
     # Check 1: NODE_ENV production mode
-    $nodeEnv = $(timeout 3 sh -c 'ps aux 2>/dev/null | grep "node.*xo-server" | grep -v grep | head -1')
+    $nodeEnv = $(timeout 3 ps aux 2>/dev/null | grep "node.*xo-server" | grep -v grep | head -1)
     $nodeEnvStr = ($nodeEnv -join $nl).Trim()
     $FindingDetails += "Check 1 - NODE_ENV Production Mode:" + $nl
-    $envCheck = $(timeout 3 sh -c 'grep -r "NODE_ENV" /etc/xo-server/ /opt/xo/xo-server/.env 2>/dev/null | head -3')
+    $envCheck = $(timeout 3 grep -r "NODE_ENV" /etc/xo-server/ /opt/xo/xo-server/.env 2>/dev/null | head -3)
     $envStr = ($envCheck -join $nl).Trim()
     if ($envStr -match "production") {
         $FindingDetails += "  NODE_ENV=production detected." + $nl + $nl
@@ -32748,7 +32723,7 @@ Function Get-V222610 {
     }
 
     # Check 2: Error page test
-    $errorPage = $(timeout 10 sh -c "curl -s -k https://localhost/nonexistent-path-for-stig-test 2>/dev/null | head -20")
+    $errorPage = $(timeout 10 curl -s -k https://localhost/nonexistent-path-for-stig-test 2>/dev/null | head -20)
     $errorStr = ($errorPage -join $nl).Trim()
     $FindingDetails += "Check 2 - Error Page Content:" + $nl
     $sensitiveInfo = $false
@@ -32762,7 +32737,7 @@ Function Get-V222610 {
 
     # Check 3: Debug mode detection
     $FindingDetails += "Check 3 - Debug Mode Detection:" + $nl
-    $debugFlags = $(timeout 3 sh -c 'ps aux 2>/dev/null | grep "node" | grep -E "inspect|debug" | grep -v grep | head -3')
+    $debugFlags = $(timeout 3 ps aux 2>/dev/null | grep "node" | grep -E "inspect|debug" | grep -v grep | head -3)
     $debugStr = ($debugFlags -join $nl).Trim()
     if ($debugStr) {
         $FindingDetails += "  WARNING: Debug flags detected in Node.js process:" + $nl
@@ -32901,7 +32876,7 @@ Function Get-V222611 {
 
     # Check 1: Authentication required for admin interface
     $FindingDetails += "Check 1 - Admin Interface Access Control:" + $nl
-    $anonCheck = $(timeout 10 sh -c "curl -s -k -o /dev/null -w '%{http_code}' https://localhost/api/ 2>/dev/null")
+    $anonCheck = $(timeout 10 curl -s -k -o /dev/null -w '%{http_code}' https://localhost/api/ 2>/dev/null)
     $anonStr = ($anonCheck -join $nl).Trim()
     $FindingDetails += "  Unauthenticated API access returns HTTP $anonStr" + $nl
     if ($anonStr -match "401|403|302") {
@@ -32913,7 +32888,7 @@ Function Get-V222611 {
 
     # Check 2: Log access permissions
     $FindingDetails += "Check 2 - Log File Access Control:" + $nl
-    $logPerms = $(timeout 5 sh -c 'stat -c "%a %U:%G %n" /var/log/xo/*.log 2>/dev/null; stat -c "%a %U:%G %n" /var/log/syslog 2>/dev/null' | head -5)
+    $logPerms = $(timeout 5 stat -c "%a %U:%G %n" /var/log/xo/*.log 2>/dev/null; stat -c "%a %U:%G %n" /var/log/syslog 2>/dev/null | head -5)
     $logStr = ($logPerms -join $nl).Trim()
     if ($logStr) {
         $FindingDetails += "  $logStr" + $nl + $nl
@@ -33047,7 +33022,7 @@ Function Get-V222612 {
     # Check 1: Node.js version (memory-safe runtime)
     $output += "CHECK 1: Node.js runtime version" + $nl
     $modernNode = $false
-    $nodeVer = $(sh -c "node --version 2>/dev/null" 2>&1)
+    $nodeVer = $(node --version 2>/dev/null)
     $nodeVerStr = ($nodeVer -join $nl).Trim()
     if ($nodeVerStr -match "v(\d+)\.") {
         $majorVer = [int]$Matches[1]
@@ -33065,7 +33040,7 @@ Function Get-V222612 {
     # Check 2: ASLR status
     $output += $nl + "CHECK 2: Address Space Layout Randomization (ASLR)" + $nl
     $aslrEnabled = $false
-    $aslr = $(sh -c "cat /proc/sys/kernel/randomize_va_space 2>/dev/null" 2>&1)
+    $aslr = $(cat /proc/sys/kernel/randomize_va_space 2>/dev/null)
     $aslrStr = ($aslr -join $nl).Trim()
     if ($aslrStr -eq "2") {
         $aslrEnabled = $true
@@ -33080,7 +33055,7 @@ Function Get-V222612 {
     # Check 3: Unsafe Buffer usage in XO source
     $output += $nl + "CHECK 3: Unsafe Buffer allocation patterns" + $nl
     $unsafeBuffers = 0
-    $bufCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'new Buffer(\|Buffer.allocUnsafe\|Buffer.allocUnsafeSlow' {} + 2>/dev/null | wc -l" 2>&1)
+    $bufCheck = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'new Buffer(\|Buffer.allocUnsafe\|Buffer.allocUnsafeSlow' '{}' + 2>/dev/null | wc -l 2>&1)
     $bufCheckStr = ($bufCheck -join $nl).Trim()
     if ($bufCheckStr) { $unsafeBuffers = [int]$bufCheckStr }
     $output += "  Unsafe Buffer patterns: $unsafeBuffers" + $nl
@@ -33092,7 +33067,7 @@ Function Get-V222612 {
 
     # Check 4: Stack size limits
     $output += $nl + "CHECK 4: Process resource limits" + $nl
-    $stackLimit = $(sh -c "ulimit -s 2>/dev/null" 2>&1)
+    $stackLimit = $(grep 'Max stack size' /proc/self/limits 2>/dev/null)
     $stackLimitStr = ($stackLimit -join $nl).Trim()
     $output += "  Stack size limit: $stackLimitStr" + $nl
 
@@ -33234,7 +33209,7 @@ Function Get-V222613 {
 
     # Check 1: Multiple XO versions installed
     $FindingDetails += "Check 1 - XO Installation Versions:" + $nl
-    $xoVersions = $(timeout 5 sh -c 'find / -maxdepth 3 -name "xo-server" -type d 2>/dev/null | head -5')
+    $xoVersions = $(timeout 5 find / -maxdepth 3 -name "xo-server" -type d 2>/dev/null | head -5)
     $xoStr = ($xoVersions -join $nl).Trim()
     if ($xoStr) {
         $FindingDetails += "  XO installations found:" + $nl + "  $xoStr" + $nl + $nl
@@ -33248,7 +33223,7 @@ Function Get-V222613 {
     $nodeStr = ($nodeVer -join $nl).Trim()
     $FindingDetails += "Check 2 - Node.js Version:" + $nl
     $FindingDetails += "  Active: $nodeStr" + $nl
-    $oldNode = $(timeout 5 sh -c 'find /usr/local/lib -maxdepth 2 -name "node" -type f 2>/dev/null; find /opt -maxdepth 3 -name "node" -type f 2>/dev/null' | head -5)
+    $oldNode = $(timeout 5 find /usr/local/lib -maxdepth 2 -name "node" -type f 2>/dev/null; find /opt -maxdepth 3 -name "node" -type f 2>/dev/null | head -5)
     $oldStr = ($oldNode -join $nl).Trim()
     if ($oldStr) {
         $FindingDetails += "  Node.js binaries found: $oldStr" + $nl + $nl
@@ -33259,10 +33234,10 @@ Function Get-V222613 {
 
     # Check 3: Package manager cleanup
     $FindingDetails += "Check 3 - Package Manager Cleanup:" + $nl
-    $aptClean = $(timeout 5 sh -c 'apt list --installed 2>/dev/null | grep -c "." 2>/dev/null')
+    $aptClean = $(timeout 5 apt list --installed 2>/dev/null | grep -c "." 2>/dev/null)
     $aptStr = ($aptClean -join $nl).Trim()
     $FindingDetails += "  Installed packages: $aptStr" + $nl
-    $autoremove = $(timeout 5 sh -c 'apt-get -s autoremove 2>/dev/null | grep "^Remv" | head -5')
+    $autoremove = $(timeout 5 apt-get -s autoremove 2>/dev/null | grep "^Remv" | head -5)
     $autoStr = ($autoremove -join $nl).Trim()
     if ($autoStr) {
         $FindingDetails += "  Packages available for autoremove:" + $nl + "  $autoStr" + $nl + $nl
@@ -33393,7 +33368,7 @@ Function Get-V222614 {
 
     # Check 1: OS security updates
     $FindingDetails += "Check 1 - OS Security Updates:" + $nl
-    $secUpdates = $(timeout 10 sh -c 'apt list --upgradable 2>/dev/null | grep -i "security" | head -5')
+    $secUpdates = $(timeout 10 apt list --upgradable 2>/dev/null | grep -i "security" | head -5)
     $secStr = ($secUpdates -join $nl).Trim()
     if ($secStr) {
         $FindingDetails += "  Security updates available:" + $nl + "  $secStr" + $nl + $nl
@@ -33404,7 +33379,7 @@ Function Get-V222614 {
 
     # Check 2: npm audit
     $FindingDetails += "Check 2 - npm Security Audit:" + $nl
-    $npmAudit = $(timeout 15 sh -c 'cd /opt/xo/xo-server 2>/dev/null && npm audit --json 2>/dev/null | head -20')
+    $npmAudit = $(timeout 15 cd /opt/xo/xo-server 2>/dev/null && npm audit --json 2>/dev/null | head -20)
     $npmStr = ($npmAudit -join $nl).Trim()
     if ($npmStr -match '"vulnerabilities"') {
         $FindingDetails += "  npm audit results available." + $nl
@@ -33417,14 +33392,14 @@ Function Get-V222614 {
     }
 
     # Check 3: XO version
-    $xoVer = $(timeout 5 sh -c 'cat /opt/xo/xo-server/package.json 2>/dev/null | grep -m1 "version" | head -1')
+    $xoVer = $(timeout 5 cat /opt/xo/xo-server/package.json 2>/dev/null | grep -m1 "version" | head -1)
     $xoVerStr = ($xoVer -join $nl).Trim()
     $FindingDetails += "Check 3 - XO Server Version:" + $nl
     $FindingDetails += "  $xoVerStr" + $nl + $nl
 
     # Check 4: Unattended upgrades
     $FindingDetails += "Check 4 - Automatic Security Updates:" + $nl
-    $unattended = $(timeout 3 sh -c 'dpkg -l unattended-upgrades 2>/dev/null | grep "^ii" | head -1')
+    $unattended = $(timeout 3 dpkg -l unattended-upgrades 2>/dev/null | grep "^ii" | head -1)
     $unattStr = ($unattended -join $nl).Trim()
     if ($unattStr) {
         $FindingDetails += "  Unattended-upgrades package installed." + $nl + $nl
@@ -33561,7 +33536,7 @@ Function Get-V222615 {
 
     # Check 2: Application startup verification
     $FindingDetails += "Check 2 - Startup Verification:" + $nl
-    $startLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -i "start\|listen\|ready" | tail -5')
+    $startLogs = $(timeout 5 journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -i "start\|listen\|ready" | tail -5)
     $startStr = ($startLogs -join $nl).Trim()
     if ($startStr) {
         $FindingDetails += "  Recent startup events:" + $nl + "  $startStr" + $nl + $nl
@@ -33697,7 +33672,7 @@ Function Get-V222616 {
 
     # Check 1: Systemd service restart behavior
     $FindingDetails += "Check 1 - Service Restart Configuration:" + $nl
-    $restartConf = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep -E "Restart=|RestartSec=" | head -3')
+    $restartConf = $(timeout 5 systemctl show xo-server 2>/dev/null | grep -E "Restart=|RestartSec=" | head -3)
     $restartStr = ($restartConf -join $nl).Trim()
     if ($restartStr) {
         $FindingDetails += "  $restartStr" + $nl + $nl
@@ -33708,7 +33683,7 @@ Function Get-V222616 {
 
     # Check 2: Scheduled security scans
     $FindingDetails += "Check 2 - Scheduled Security Verification:" + $nl
-    $cronJobs = $(timeout 5 sh -c 'crontab -l 2>/dev/null | grep -v "^#" | head -5; ls /etc/cron.d/ 2>/dev/null | head -5')
+    $cronJobs = $(timeout 5 crontab -l 2>/dev/null | grep -v "^#" | head -5; ls /etc/cron.d/ 2>/dev/null | head -5)
     $cronStr = ($cronJobs -join $nl).Trim()
     if ($cronStr) {
         $FindingDetails += "  Scheduled tasks found:" + $nl + "  $cronStr" + $nl + $nl
@@ -33719,7 +33694,7 @@ Function Get-V222616 {
 
     # Check 3: Monitoring integration
     $FindingDetails += "Check 3 - Monitoring Integration:" + $nl
-    $monTools = $(timeout 5 sh -c 'which nagios nrpe zabbix_agentd prometheus-node-exporter 2>/dev/null | head -3')
+    $monTools = $(timeout 5 which nagios nrpe zabbix_agentd prometheus-node-exporter 2>/dev/null | head -3)
     $monStr = ($monTools -join $nl).Trim()
     if ($monStr) {
         $FindingDetails += "  Monitoring tools found: $monStr" + $nl + $nl
@@ -33850,7 +33825,7 @@ Function Get-V222617 {
 
     # Check 1: Email/alerting configuration
     $FindingDetails += "Check 1 - Alerting Configuration:" + $nl
-    $mailConfig = $(timeout 5 sh -c 'which sendmail postfix mail 2>/dev/null; dpkg -l postfix exim4 2>/dev/null | grep "^ii" | head -3')
+    $mailConfig = $(timeout 5 which sendmail postfix mail 2>/dev/null; dpkg -l postfix exim4 2>/dev/null | grep "^ii" | head -3)
     $mailStr = ($mailConfig -join $nl).Trim()
     if ($mailStr) {
         $FindingDetails += "  Mail services detected:" + $nl + "  $mailStr" + $nl + $nl
@@ -33861,7 +33836,7 @@ Function Get-V222617 {
 
     # Check 2: XO plugin notifications
     $FindingDetails += "Check 2 - XO Notification Plugins:" + $nl
-    $notifyPlugins = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 2 -name "*transport*" -o -name "*notify*" -o -name "*alert*" 2>/dev/null | head -5')
+    $notifyPlugins = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "*transport*" -o -name "*notify*" -o -name "*alert*" 2>/dev/null | head -5)
     $notifyStr = ($notifyPlugins -join $nl).Trim()
     if ($notifyStr) {
         $FindingDetails += "  Notification-related packages:" + $nl + "  $notifyStr" + $nl + $nl
@@ -33872,7 +33847,7 @@ Function Get-V222617 {
 
     # Check 3: Systemd failure notification
     $FindingDetails += "Check 3 - Systemd Failure Notification:" + $nl
-    $onFailure = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep "OnFailure=" | head -1')
+    $onFailure = $(timeout 5 systemctl show xo-server 2>/dev/null | grep "OnFailure=" | head -1)
     $failStr = ($onFailure -join $nl).Trim()
     if ($failStr -and $failStr -notmatch "OnFailure=$") {
         $FindingDetails += "  OnFailure action configured: $failStr" + $nl + $nl
@@ -34003,7 +33978,7 @@ Function Get-V222618 {
 
     # Check 1: Java applets
     $FindingDetails += "Check 1 - Java Applets (Category 1A):" + $nl
-    $javaCheck = $(timeout 5 sh -c 'find /opt/xo -maxdepth 3 -name "*.jar" -o -name "*.class" 2>/dev/null | head -5')
+    $javaCheck = $(timeout 5 find /opt/xo -maxdepth 3 -name "*.jar" -o -name "*.class" 2>/dev/null | head -5)
     $javaStr = ($javaCheck -join $nl).Trim()
     if ($javaStr) {
         $FindingDetails += "  Java files found: $javaStr" + $nl + $nl
@@ -34014,7 +33989,7 @@ Function Get-V222618 {
 
     # Check 2: ActiveX controls
     $FindingDetails += "Check 2 - ActiveX Controls (Category 1A):" + $nl
-    $activeX = $(timeout 5 sh -c 'grep -r "ActiveXObject" /opt/xo/xo-server/dist/ 2>/dev/null | head -3')
+    $activeX = $(timeout 5 grep -r "ActiveXObject" /opt/xo/xo-server/dist/ 2>/dev/null | head -3)
     $axStr = ($activeX -join $nl).Trim()
     if ($axStr) {
         $FindingDetails += "  ActiveX references found: $axStr" + $nl + $nl
@@ -34025,7 +34000,7 @@ Function Get-V222618 {
 
     # Check 3: Flash/Silverlight (deprecated)
     $FindingDetails += "Check 3 - Legacy Plugins (Flash/Silverlight):" + $nl
-    $legacyCheck = $(timeout 5 sh -c 'find /opt/xo -maxdepth 3 -name "*.swf" -o -name "*.xap" 2>/dev/null | head -5')
+    $legacyCheck = $(timeout 5 find /opt/xo -maxdepth 3 -name "*.swf" -o -name "*.xap" 2>/dev/null | head -5)
     $legacyStr = ($legacyCheck -join $nl).Trim()
     if ($legacyStr) {
         $FindingDetails += "  Legacy plugin files found: $legacyStr" + $nl + $nl
@@ -34163,11 +34138,11 @@ Function Get-V222619 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join $nl).Trim() }
     }
     if ($token) {
-        $users = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null")
+        $users = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null)
         $usersStr = ($users -join $nl).Trim()
         if ($usersStr -match '\[') {
             $userCount = ([regex]::Matches($usersStr, '"email"')).Count
@@ -34183,10 +34158,10 @@ Function Get-V222619 {
 
     # Check 2: System account management
     $FindingDetails += "Check 2 - System Account Management:" + $nl
-    $sysAccounts = $(timeout 3 sh -c 'grep -c "." /etc/passwd 2>/dev/null')
+    $sysAccounts = $(timeout 3 grep -c "." /etc/passwd 2>/dev/null)
     $sysStr = ($sysAccounts -join $nl).Trim()
     $FindingDetails += "  Total system accounts: $sysStr" + $nl
-    $loginAccounts = $(timeout 3 sh -c 'grep -v "nologin\|false" /etc/passwd 2>/dev/null | wc -l')
+    $loginAccounts = $(timeout 3 grep -v "nologin\|false" /etc/passwd 2>/dev/null | wc -l)
     $loginStr = ($loginAccounts -join $nl).Trim()
     $FindingDetails += "  Accounts with login shell: $loginStr" + $nl + $nl
 
@@ -34328,12 +34303,12 @@ Function Get-V222620 {
     # Check 3: Firewall status (ufw may not be installed on XOCE)
     $ufwStatus = ""
     if (Get-Command ufw -ErrorAction SilentlyContinue) {
-        $ufwStatus = $(ufw status 2>&1 | head -3)
+        $ufwStatus = $(timeout 5 ufwstatus 2>&1 | head -3)
     }
     $iptStatus = ""
     if (-not ($ufwStatus -match "Status: active")) {
         if (Get-Command iptables -ErrorAction SilentlyContinue) {
-            $iptStatus = $(iptables -L INPUT -n 2>&1 | head -5)
+            $iptStatus = $(timeout 5 iptables -L INPUT -n 2>&1 | head -5)
         }
     }
     $FindingDetails += "Firewall status:" + $nl
@@ -34485,7 +34460,7 @@ Function Get-V222621 {
 
     # Check 1: Log retention configuration
     $FindingDetails += "Check 1 - Log Retention Configuration:" + $nl
-    $logrotate = $(timeout 5 sh -c 'cat /etc/logrotate.d/xo-server 2>/dev/null; cat /etc/logrotate.d/rsyslog 2>/dev/null' | head -20)
+    $logrotate = $(timeout 5 cat /etc/logrotate.d/xo-server 2>/dev/null; cat /etc/logrotate.d/rsyslog 2>/dev/null | head -20)
     $logStr = ($logrotate -join $nl).Trim()
     if ($logStr) {
         $FindingDetails += "  Logrotate configuration:" + $nl + "  $logStr" + $nl + $nl
@@ -34496,7 +34471,7 @@ Function Get-V222621 {
 
     # Check 2: Systemd journal retention
     $FindingDetails += "Check 2 - Systemd Journal Retention:" + $nl
-    $journalConf = $(timeout 5 sh -c 'grep -v "^#" /etc/systemd/journald.conf 2>/dev/null | grep -v "^$" | head -10')
+    $journalConf = $(timeout 5 grep -v "^#" /etc/systemd/journald.conf 2>/dev/null | grep -v "^$" | head -10)
     $journalStr = ($journalConf -join $nl).Trim()
     if ($journalStr) {
         $FindingDetails += "  $journalStr" + $nl + $nl
@@ -34507,7 +34482,7 @@ Function Get-V222621 {
 
     # Check 3: Audit log disk usage
     $FindingDetails += "Check 3 - Current Audit Log Storage:" + $nl
-    $logSize = $(timeout 5 sh -c 'du -sh /var/log/ 2>/dev/null; journalctl --disk-usage 2>/dev/null')
+    $logSize = $(timeout 5 du -sh /var/log/ 2>/dev/null; journalctl --disk-usage 2>/dev/null)
     $logSizeStr = ($logSize -join $nl).Trim()
     if ($logSizeStr) {
         $FindingDetails += "  $logSizeStr" + $nl + $nl
@@ -34635,7 +34610,7 @@ Function Get-V222622 {
 
     # Check 1: XO audit plugin
     $FindingDetails += "Check 1 - XO Audit Plugin:" + $nl
-    $auditPlugin = $(timeout 5 sh -c 'find /opt/xo/packages -maxdepth 2 -name "audit" -type d 2>/dev/null | head -3')
+    $auditPlugin = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name "audit" -type d 2>/dev/null | head -3)
     $auditStr = ($auditPlugin -join $nl).Trim()
     if ($auditStr) {
         $FindingDetails += "  Audit plugin found: $auditStr" + $nl + $nl
@@ -34646,7 +34621,7 @@ Function Get-V222622 {
 
     # Check 2: Recent log review evidence
     $FindingDetails += "Check 2 - Recent Log Activity:" + $nl
-    $recentLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "24 hours ago" 2>/dev/null | tail -5')
+    $recentLogs = $(timeout 5 journalctl -u xo-server --since "24 hours ago" 2>/dev/null | tail -5)
     $recentStr = ($recentLogs -join $nl).Trim()
     if ($recentStr) {
         $FindingDetails += "  Recent XO log entries found (last 24 hours)." + $nl + $nl
@@ -34781,7 +34756,7 @@ Function Get-V222623 {
     $FindingDetails += "  DoD information system IA procedures." + $nl + $nl
 
     $FindingDetails += "Check 2 - Security Event Logging:" + $nl
-    $authLogs = $(timeout 5 sh -c 'journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -ic "auth\|login\|fail\|error" 2>/dev/null')
+    $authLogs = $(timeout 5 journalctl -u xo-server --since "7 days ago" 2>/dev/null | grep -ic "auth\|login\|fail\|error" 2>/dev/null)
     $authStr = ($authLogs -join $nl).Trim()
     $FindingDetails += "  Security-related log entries (last 7 days): $authStr" + $nl + $nl
 
@@ -34907,7 +34882,7 @@ Function Get-V222624 {
 
     # Check 1: npm audit
     $FindingDetails += "Check 1 - npm Vulnerability Audit:" + $nl
-    $npmAudit = $(timeout 15 sh -c 'cd /opt/xo/xo-server 2>/dev/null && npm audit 2>/dev/null | tail -10')
+    $npmAudit = $(timeout 15 cd /opt/xo/xo-server 2>/dev/null && npm audit 2>/dev/null | tail -10)
     $npmStr = ($npmAudit -join $nl).Trim()
     if ($npmStr) {
         $FindingDetails += "  $npmStr" + $nl + $nl
@@ -34918,7 +34893,7 @@ Function Get-V222624 {
 
     # Check 2: Vulnerability scanning tools
     $FindingDetails += "Check 2 - Vulnerability Scanning Tools:" + $nl
-    $scanTools = $(timeout 5 sh -c 'which nessus openvas nikto trivy grype 2>/dev/null | head -5')
+    $scanTools = $(timeout 5 which nessus openvas nikto trivy grype 2>/dev/null | head -5)
     $scanStr = ($scanTools -join $nl).Trim()
     if ($scanStr) {
         $FindingDetails += "  Scanning tools found: $scanStr" + $nl + $nl
@@ -35183,7 +35158,7 @@ Function Get-V222626 {
 
     # Check 1: XO configuration file locations
     $FindingDetails += "Check 1 - Configuration File Locations:" + $nl
-    $configFiles = $(timeout 5 sh -c 'ls -la /etc/xo-server/ 2>/dev/null; ls -la /opt/xo/xo-server/config.toml 2>/dev/null; ls -la /opt/xo/xo-server/.xo-server.yaml 2>/dev/null' | head -10)
+    $configFiles = $(timeout 5 ls -la /etc/xo-server/ 2>/dev/null; ls -la /opt/xo/xo-server/config.toml 2>/dev/null; ls -la /opt/xo/xo-server/.xo-server.yaml 2>/dev/null | head -10)
     $configStr = ($configFiles -join $nl).Trim()
     if ($configStr) {
         $FindingDetails += "  $configStr" + $nl + $nl
@@ -35194,7 +35169,7 @@ Function Get-V222626 {
 
     # Check 2: User data locations
     $FindingDetails += "Check 2 - User Data Locations:" + $nl
-    $dataFiles = $(timeout 5 sh -c 'ls -la /var/lib/xo-server/ 2>/dev/null | head -10')
+    $dataFiles = $(timeout 5 ls -la /var/lib/xo-server/ 2>/dev/null | head -10)
     $dataStr = ($dataFiles -join $nl).Trim()
     if ($dataStr) {
         $FindingDetails += "  $dataStr" + $nl + $nl
@@ -35465,7 +35440,7 @@ Function Get-V222628 {
 
     # Check 1: Active listening ports
     $FindingDetails += "Check 1 - Active Listening Ports:" + $nl
-    $ports = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -v "^State" | head -15')
+    $ports = $(timeout 5 ss -tlnp 2>/dev/null | grep -v "^State" | head -15)
     $portsStr = ($ports -join $nl).Trim()
     if ($portsStr) {
         $FindingDetails += "  $portsStr" + $nl + $nl
@@ -35601,7 +35576,7 @@ Function Get-V222629 {
 
     # Check 1: Active services
     $FindingDetails += "Check 1 - Services Requiring Registration:" + $nl
-    $services = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | grep -E "node|nginx" | head -10')
+    $services = $(timeout 5 ss -tlnp 2>/dev/null | grep -E "node|nginx" | head -10)
     $svcStr = ($services -join $nl).Trim()
     if ($svcStr) {
         $FindingDetails += "  $svcStr" + $nl + $nl
@@ -36264,7 +36239,7 @@ Function Get-V222634 {
 
     # Check 1: IPv6 kernel support
     $FindingDetails += "Check 1 - IPv6 Kernel Support:" + $nl
-    $ipv6Module = $(timeout 3 sh -c 'cat /proc/net/if_inet6 2>/dev/null | head -5')
+    $ipv6Module = $(timeout 3 cat /proc/net/if_inet6 2>/dev/null | head -5)
     $ipv6Str = ($ipv6Module -join $nl).Trim()
     if ($ipv6Str) {
         $FindingDetails += "  IPv6 interfaces detected (kernel support enabled)." + $nl + $nl
@@ -36280,7 +36255,7 @@ Function Get-V222634 {
 
     # Check 3: XO listen configuration
     $FindingDetails += "Check 3 - XO Listen Address:" + $nl
-    $listenConf = $(timeout 5 sh -c 'grep -i "listen\|host\|address" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | head -5')
+    $listenConf = $(timeout 5 grep -i "listen\|host\|address" /opt/xo/xo-server/config.toml /etc/xo-server/config.toml 2>/dev/null | head -5)
     $listenStr = ($listenConf -join $nl).Trim()
     if ($listenStr) {
         $FindingDetails += "  $listenStr" + $nl + $nl
@@ -36410,7 +36385,7 @@ Function Get-V222635 {
 
     # Check 1: System purpose
     $FindingDetails += "Check 1 - System Purpose:" + $nl
-    $otherServices = $(timeout 5 sh -c 'systemctl list-units --type=service --state=running 2>/dev/null | grep -v "systemd\|ssh\|cron\|rsyslog\|dbus\|getty\|network\|xo-server\|node" | head -10')
+    $otherServices = $(timeout 5 systemctl list-units --type=service --state=running 2>/dev/null | grep -v "systemd\|ssh\|cron\|rsyslog\|dbus\|getty\|network\|xo-server\|node" | head -10)
     $otherStr = ($otherServices -join $nl).Trim()
     if ($otherStr) {
         $FindingDetails += "  Other running services detected:" + $nl + "  $otherStr" + $nl + $nl
@@ -36421,7 +36396,7 @@ Function Get-V222635 {
 
     # Check 2: Hosting model
     $FindingDetails += "Check 2 - Hosting Model:" + $nl
-    $virt = $(timeout 3 sh -c 'systemd-detect-virt 2>/dev/null || echo unknown')
+    $virt = $(timeout 3 systemd-detect-virt 2>/dev/null || echo unknown)
     $virtStr = ($virt -join $nl).Trim()
     $FindingDetails += "  Virtualization: $virtStr" + $nl + $nl
 
@@ -36684,7 +36659,7 @@ Function Get-V222637 {
 
     # Check 2: Backup verification
     $FindingDetails += "Check 2 - Backup Infrastructure:" + $nl
-    $backupTools = $(timeout 5 sh -c 'which rsync tar duplicity borgbackup 2>/dev/null | head -3')
+    $backupTools = $(timeout 5 which rsync tar duplicity borgbackup 2>/dev/null | head -3)
     $backupStr = ($backupTools -join $nl).Trim()
     if ($backupStr) {
         $FindingDetails += "  Backup tools available: $backupStr" + $nl + $nl
@@ -36822,11 +36797,11 @@ Function Get-V222638 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP "(?<=" + [char]34 + "token" + [char]34 + ":" + [char]34 + ")[^" + [char]34 + "]+" /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = ($tc -join $nl).Trim() }
     }
     if ($token) {
-        $backups = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/backup/jobs' 2>/dev/null | head -20")
+        $backups = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/backup/jobs' 2>/dev/null | head -20)
         $backupStr = ($backups -join $nl).Trim()
         if ($backupStr -and $backupStr -ne "[]") {
             $FindingDetails += "  XO backup jobs configured." + $nl + $nl
@@ -36841,7 +36816,7 @@ Function Get-V222638 {
 
     # Check 2: System backup mechanisms
     $FindingDetails += "Check 2 - System Backup Mechanisms:" + $nl
-    $cronBackup = $(timeout 5 sh -c 'crontab -l 2>/dev/null | grep -i "backup\|rsync\|tar\|borg" | head -3')
+    $cronBackup = $(timeout 5 crontab -l 2>/dev/null | grep -i "backup\|rsync\|tar\|borg" | head -3)
     $cronStr = ($cronBackup -join $nl).Trim()
     if ($cronStr) {
         $FindingDetails += "  Scheduled backups found:" + $nl + "  $cronStr" + $nl + $nl
@@ -37234,7 +37209,7 @@ Function Get-V222641 {
 
     # Check 1: TLS key exchange algorithms
     $FindingDetails += "Check 1 - TLS Key Exchange:" + $nl
-    $tlsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher|Server Temp Key' | head -5")
+    $tlsCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep -E 'Protocol|Cipher|Server Temp Key' | head -5)
     $tlsStr = ($tlsCheck -join $nl).Trim()
     if ($tlsStr) {
         $FindingDetails += "  $tlsStr" + $nl + $nl
@@ -37245,7 +37220,7 @@ Function Get-V222641 {
 
     # Check 2: Key exchange strength
     $FindingDetails += "Check 2 - Key Exchange Algorithm Verification:" + $nl
-    $kexCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Server Temp Key'")
+    $kexCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 2>/dev/null | grep 'Server Temp Key')
     $kexStr = ($kexCheck -join $nl).Trim()
     if ($kexStr -match "ECDH.*P-256|ECDH.*P-384|X25519") {
         $FindingDetails += "  Strong key exchange detected: $kexStr" + $nl + $nl
@@ -37258,7 +37233,7 @@ Function Get-V222641 {
 
     # Check 3: SSH key exchange (if applicable)
     $FindingDetails += "Check 3 - SSH Key Exchange:" + $nl
-    $sshKex = $(timeout 5 sh -c 'sshd -T 2>/dev/null | grep "kexalgorithms" | head -1')
+    $sshKex = $(timeout 5 sshd -T 2>/dev/null | grep "kexalgorithms" | head -1)
     $sshStr = ($sshKex -join $nl).Trim()
     if ($sshStr) {
         $FindingDetails += "  $sshStr" + $nl + $nl
@@ -37394,7 +37369,7 @@ Function Get-V222642 {
     $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
     foreach ($sp in $srcPaths) {
         if (Test-Path $sp) {
-            $hardcoded = $(timeout 15 sh -c "find $sp -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -nEi 'password\s*[:=]|apiKey\s*[:=]|secret\s*[:=]' {} + 2>/dev/null | grep -vi 'test\|spec\|example\|sample\|placeholder\|__' | head -5" 2>&1)
+            $hardcoded = $(timeout 15 find $sp -maxdepth 5 -name '*.js' -not -path '*/node_modules/*' -exec grep -nEi 'password\s*[:=]|apiKey\s*[:=]|secret\s*[:=]' '{}' + 2>/dev/null | grep -vi 'test\|spec\|example\|sample\|placeholder\|__' | head -5 2>&1)
             $hardcodedStr = ($hardcoded -join $nl).Trim()
             if ($hardcodedStr) {
                 $hardcodedFound = $true
@@ -37408,7 +37383,7 @@ Function Get-V222642 {
 
     # Check 2: Environment variable usage (proper pattern)
     $output += $nl + "CHECK 2: Environment variable credential management" + $nl
-    $envUsage = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'process\.env\.\|process\.env\[' {} + 2>/dev/null | wc -l" 2>&1)
+    $envUsage = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep 'process\.env\.\|process\.env\[' '{}' + 2>/dev/null | wc -l 2>&1)
     $envUsageStr = ($envUsage -join $nl).Trim()
     $output += "  process.env references: $envUsageStr" + $nl
     if ($envUsageStr -and [int]$envUsageStr -gt 0) {
@@ -37421,7 +37396,7 @@ Function Get-V222642 {
     $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
     foreach ($cp in $configPaths) {
         if (Test-Path $cp) {
-            $creds = $(sh -c "grep -inE 'password|secret|apikey|token' '$cp' 2>/dev/null | grep -v '^#'" 2>&1)
+            $creds = $(grep -inE 'password|secret|apikey|token' '$cp' 2>/dev/null | grep -v '^#' 2>&1)
             $credsStr = ($creds -join $nl).Trim()
             if ($credsStr) {
                 $output += "  Config file credentials found in $cp :" + $nl + "  $credsStr" + $nl
@@ -37439,13 +37414,13 @@ Function Get-V222642 {
 
     # Check 4: .env file check
     $output += $nl + "CHECK 4: .env file exposure" + $nl
-    $envFile = $(timeout 5 sh -c "find /opt/xo -maxdepth 3 -name '.env' -not -path '*/node_modules/*' 2>/dev/null | head -3" 2>&1)
+    $envFile = $(timeout 5 find /opt/xo -maxdepth 3 -name '.env' -not -path '*/node_modules/*' 2>/dev/null | head -3 2>&1)
     $envFileStr = ($envFile -join $nl).Trim()
     if ($envFileStr) {
         $output += "  .env files found: $envFileStr" + $nl
         # Check permissions
         foreach ($ef in @($envFile | Where-Object { $_ -and $_.Trim() -ne "" })) {
-            $efPerms = $(sh -c "stat -c '%a' '$($ef.Trim())' 2>/dev/null" 2>&1)
+            $efPerms = $(stat -c '%a' '$($ef.Trim())' 2>/dev/null)
             $efPermsStr = ($efPerms -join $nl).Trim()
             $output += "  Permissions: $efPermsStr" + $nl
         }
@@ -37455,7 +37430,7 @@ Function Get-V222642 {
 
     # Check 5: Embedded certificates/keys in source
     $output += $nl + "CHECK 5: Embedded keys/certificates in source" + $nl
-    $embeddedKeys = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'BEGIN.*PRIVATE KEY\|BEGIN.*CERTIFICATE' {} + 2>/dev/null | head -3" 2>&1)
+    $embeddedKeys = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'BEGIN.*PRIVATE KEY\|BEGIN.*CERTIFICATE' '{}' + 2>/dev/null | head -3 2>&1)
     $embeddedKeysStr = ($embeddedKeys -join $nl).Trim()
     if ($embeddedKeysStr) {
         $hardcodedFound = $true
@@ -37736,7 +37711,7 @@ Function Get-V222644 {
 
     # Determine if this is an operational deployment (not developer)
     $FindingDetails += "Check 1 - Deployment Type Assessment:" + $nl
-    $xoVersion = $(timeout 5 sh -c 'cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d "\"" | head -1')
+    $xoVersion = $(timeout 5 cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d '"' | head -1)
     $xoVersionStr = ($xoVersion -join $nl).Trim()
     if ($xoVersionStr) {
         $FindingDetails += "  XO Version: $xoVersionStr" + $nl
@@ -37746,7 +37721,7 @@ Function Get-V222644 {
 
     # Check for development indicators
     $FindingDetails += "Check 2 - Development Environment Indicators:" + $nl
-    $devIndicators = $(timeout 5 sh -c 'ls -d /opt/xo/.git /opt/xo/packages/*/src 2>/dev/null | head -5')
+    $devIndicators = $(timeout 5 ls -d /opt/xo/.git /opt/xo/packages/*/src 2>/dev/null | head -5)
     $devStr = ($devIndicators -join $nl).Trim()
     if ($devStr) {
         $FindingDetails += "  Development artifacts found (source build detected):" + $nl
@@ -37878,7 +37853,7 @@ Function Get-V222645 {
 
     # Check 1: Package integrity verification (dpkg/apt)
     $FindingDetails += "Check 1 - System Package Integrity:" + $nl
-    $dpkgVerify = $(timeout 15 sh -c 'dpkg --verify 2>&1 | head -20')
+    $dpkgVerify = $(timeout 15 dpkg --verify 2>&1 | head -20)
     $dpkgStr = ($dpkgVerify -join $nl).Trim()
     if ($dpkgStr) {
         $FindingDetails += "  Package verification output (first 20 lines):" + $nl
@@ -37890,12 +37865,12 @@ Function Get-V222645 {
 
     # Check 2: XO package.json hash
     $FindingDetails += "Check 2 - XO Application File Hashes:" + $nl
-    $xoHash = $(timeout 5 sh -c 'sha256sum /opt/xo/xo-server/package.json 2>/dev/null')
+    $xoHash = $(timeout 5 sha256sum /opt/xo/xo-server/package.json 2>/dev/null)
     $xoHashStr = ($xoHash -join $nl).Trim()
     if ($xoHashStr) {
         $FindingDetails += "  $xoHashStr" + $nl
     }
-    $cliHash = $(timeout 5 sh -c 'sha256sum /opt/xo/xo-server/dist/cli.mjs 2>/dev/null')
+    $cliHash = $(timeout 5 sha256sum /opt/xo/xo-server/dist/cli.mjs 2>/dev/null)
     $cliHashStr = ($cliHash -join $nl).Trim()
     if ($cliHashStr) {
         $FindingDetails += "  $cliHashStr" + $nl
@@ -37904,7 +37879,7 @@ Function Get-V222645 {
 
     # Check 3: apt secure transport
     $FindingDetails += "Check 3 - Secure Package Repository:" + $nl
-    $aptSources = $(timeout 5 sh -c 'grep -rh "^deb " /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null | head -10')
+    $aptSources = $(timeout 5 grep -rh "^deb " /etc/apt/sources.list /etc/apt/sources.list.d/ 2>/dev/null | head -10)
     $aptStr = ($aptSources -join $nl).Trim()
     if ($aptStr) {
         $FindingDetails += "  Repository sources:" + $nl + "  $aptStr" + $nl + $nl
@@ -37915,13 +37890,13 @@ Function Get-V222645 {
 
     # Check 4: GPG key verification
     $FindingDetails += "Check 4 - Repository GPG Keys:" + $nl
-    $gpgKeys = $(timeout 5 sh -c 'apt-key list 2>/dev/null | grep -E "^pub|^uid" | head -10')
+    $gpgKeys = $(timeout 5 apt-key list 2>/dev/null | grep -E "^pub|^uid" | head -10)
     $gpgStr = ($gpgKeys -join $nl).Trim()
     if ($gpgStr) {
         $FindingDetails += "  $gpgStr" + $nl + $nl
     }
     else {
-        $gpgTrusted = $(timeout 5 sh -c 'ls /etc/apt/trusted.gpg.d/ 2>/dev/null')
+        $gpgTrusted = $(timeout 5 ls /etc/apt/trusted.gpg.d/ 2>/dev/null)
         $gpgTrustedStr = ($gpgTrusted -join $nl).Trim()
         if ($gpgTrustedStr) {
             $FindingDetails += "  Trusted GPG keys: $gpgTrustedStr" + $nl + $nl
@@ -38187,13 +38162,13 @@ Function Get-V222647 {
 
     # Check 1: systemd service configuration (secure state on failure)
     $FindingDetails += "Check 1 - Systemd Service Configuration:" + $nl
-    $svcStatus = $(timeout 5 sh -c 'systemctl show xo-server.service 2>/dev/null | grep -E "Restart=|RestartSec=|Type=" | head -5')
+    $svcStatus = $(timeout 5 systemctl show xo-server.service 2>/dev/null | grep -E "Restart=|RestartSec=|Type=" | head -5)
     $svcStr = ($svcStatus -join $nl).Trim()
     if ($svcStr) {
         $FindingDetails += "  $svcStr" + $nl + $nl
     }
     else {
-        $svcStatus2 = $(timeout 5 sh -c 'systemctl show xo-server 2>/dev/null | grep -E "Restart=|RestartSec=|Type=" | head -5')
+        $svcStatus2 = $(timeout 5 systemctl show xo-server 2>/dev/null | grep -E "Restart=|RestartSec=|Type=" | head -5)
         $svcStr2 = ($svcStatus2 -join $nl).Trim()
         if ($svcStr2) {
             $FindingDetails += "  $svcStr2" + $nl + $nl
@@ -38205,7 +38180,7 @@ Function Get-V222647 {
 
     # Check 2: Process recovery behavior
     $FindingDetails += "Check 2 - Process Recovery Behavior:" + $nl
-    $uptime = $(timeout 3 sh -c 'ps -eo pid,etime,args 2>/dev/null | grep "xo-server" | grep -v grep | head -3')
+    $uptime = $(timeout 3 ps -eo pid,etime,args 2>/dev/null | grep "xo-server" | grep -v grep | head -3)
     $uptimeStr = ($uptime -join $nl).Trim()
     if ($uptimeStr) {
         $FindingDetails += "  Running XO processes:" + $nl + "  $uptimeStr" + $nl + $nl
@@ -38723,7 +38698,7 @@ Function Get-V222651 {
 
     # Check 2: Current system version info
     $FindingDetails += "Check 2 - System Version Information:" + $nl
-    $xoVer = $(timeout 5 sh -c 'cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d "\"" | head -1')
+    $xoVer = $(timeout 5 cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d '"' | head -1)
     $xoVerStr = ($xoVer -join $nl).Trim()
     if ($xoVerStr) {
         $FindingDetails += "  XO Version: $xoVerStr" + $nl + $nl
@@ -39357,12 +39332,12 @@ Function Get-V222656 {
 
     # Check 1: NODE_ENV production mode
     $FindingDetails += "Check 1 - Production Mode Configuration:" + $nl
-    $nodeEnv = $(timeout 3 sh -c 'ps -eo args 2>/dev/null | grep "xo-server" | grep -v grep | head -1')
+    $nodeEnv = $(timeout 3 ps -eo args 2>/dev/null | grep "xo-server" | grep -v grep | head -1)
     $nodeEnvStr = ($nodeEnv -join $nl).Trim()
     if ($nodeEnvStr) {
         $FindingDetails += "  XO process: $nodeEnvStr" + $nl
     }
-    $envCheck = $(timeout 3 sh -c 'grep -r "NODE_ENV" /etc/systemd/system/xo-server* /opt/xo/.env 2>/dev/null | head -5')
+    $envCheck = $(timeout 3 grep -r "NODE_ENV" /etc/systemd/system/xo-server* /opt/xo/.env 2>/dev/null | head -5)
     $envStr = ($envCheck -join $nl).Trim()
     if ($envStr) {
         $FindingDetails += "  NODE_ENV config: $envStr" + $nl + $nl
@@ -39373,7 +39348,7 @@ Function Get-V222656 {
 
     # Check 2: Error handler middleware
     $FindingDetails += "Check 2 - Error Handler Configuration:" + $nl
-    $errHandler = $(timeout 5 sh -c 'grep -rn "errorHandler\|error.*middleware\|app\.use.*err" /opt/xo/xo-server/dist/ 2>/dev/null | head -5')
+    $errHandler = $(timeout 5 grep -rn "errorHandler\|error.*middleware\|app\.use.*err" /opt/xo/xo-server/dist/ 2>/dev/null | head -5)
     $errStr = ($errHandler -join $nl).Trim()
     if ($errStr) {
         $FindingDetails += "  Error handling detected:" + $nl + "  $errStr" + $nl + $nl
@@ -39384,7 +39359,7 @@ Function Get-V222656 {
 
     # Check 3: Stack trace exposure test
     $FindingDetails += "Check 3 - Stack Trace Exposure:" + $nl
-    $curlErr = $(timeout 10 sh -c "curl -s -k https://localhost/nonexistent-path-test-error 2>/dev/null | head -20")
+    $curlErr = $(timeout 10 curl -s -k https://localhost/nonexistent-path-test-error 2>/dev/null | head -20)
     $curlStr = ($curlErr -join $nl).Trim()
     if ($curlStr -match "(?i)stack|traceback|at .*/|node_modules") {
         $FindingDetails += "  WARNING: Potential stack trace in error response:" + $nl
@@ -39397,7 +39372,7 @@ Function Get-V222656 {
 
     # Check 4: npm audit for error handling vulnerabilities
     $FindingDetails += "Check 4 - Known Error Handling Vulnerabilities:" + $nl
-    $npmAudit = $(timeout 15 sh -c 'cd /opt/xo/xo-server && npm audit --json 2>/dev/null | grep -c "\"severity\"" | head -1')
+    $npmAudit = $(timeout 15 cd /opt/xo/xo-server && npm audit --json 2>/dev/null | grep -c '"severity"' | head -1)
     $npmStr = ($npmAudit -join $nl).Trim()
     if ($npmStr) {
         $FindingDetails += "  npm audit vulnerability count: $npmStr" + $nl + $nl
@@ -40057,11 +40032,11 @@ Function Get-V222660 {
         if ($tokenContent) { $token = $tokenContent.Trim() }
     }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = $tc.Trim() }
     }
     if ($token) {
-        $userResp = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null")
+        $userResp = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null)
         $users = $userResp | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $userCount = ($users | Measure-Object).Count
@@ -40202,12 +40177,12 @@ Function Get-V222661 {
         if ($tokenContent) { $token = $tokenContent.Trim(); $tokenSource = "api-token file" }
     }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = $tc.Trim(); $tokenSource = ".xo-cli" }
     }
     $builtInFound = $false
     if ($token) {
-        $userResp = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null")
+        $userResp = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>/dev/null)
         $users = $userResp | ConvertFrom-Json -ErrorAction SilentlyContinue
         if ($users) {
             $userCount = ($users | Measure-Object).Count
@@ -40230,7 +40205,7 @@ Function Get-V222661 {
 
     # Check 2: System accounts with shell access
     $FindingDetails += "Check 2 - System Accounts with Login Shell:" + $nl
-    $sysAccts = $(timeout 5 sh -c 'awk -F: "(\$3 < 1000 && \$7 !~ /nologin|false/) {print \$1, \$3, \$7}" /etc/passwd 2>/dev/null')
+    $sysAccts = $(timeout 5 awk -F: "(\$3 < 1000 && \$7 !~ /nologin|false/) {print \$1, \$3, \$7}" /etc/passwd 2>/dev/null)
     $sysStr = ($sysAccts -join $nl).Trim()
     if ($sysStr) {
         $FindingDetails += "  System accounts with login shells:" + $nl + "  $sysStr" + $nl + $nl
@@ -40241,7 +40216,7 @@ Function Get-V222661 {
 
     # Check 3: Default/vendor accounts
     $FindingDetails += "Check 3 - Default/Vendor Account Check:" + $nl
-    $defaultAccts = $(timeout 5 sh -c 'grep -iE "^(admin|guest|test|demo|oracle|postgres|mysql|tomcat):" /etc/passwd 2>/dev/null')
+    $defaultAccts = $(timeout 5 grep -iE "^(admin|guest|test|demo|oracle|postgres|mysql|tomcat):" /etc/passwd 2>/dev/null)
     $defaultStr = ($defaultAccts -join $nl).Trim()
     if ($defaultStr) {
         $FindingDetails += "  Potential default accounts found: $defaultStr" + $nl + $nl
@@ -40358,6 +40333,7 @@ Function Get-V222662 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222662"
     $RuleID = "SV-222662r508029_rule"
     $Status = "Not_Reviewed"
@@ -40369,65 +40345,65 @@ Function Get-V222662 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "V-222662: Default Password Check`n"
-    $FindingDetails += "=" * 70 + "`n`n"
+    $FindingDetails = "V-222662: Default Password Check" + $nl
+    $FindingDetails += "=" * 70 + $nl + $nl
     
     # Check for default admin account with default password
-    $FindingDetails += "1. Checking for default 'admin' account...`n"
+    $FindingDetails += "1. Checking for default 'admin' account..." + $nl
     try {
         # XO default credentials: admin@admin.net with password 'admin'
         # Check if default email exists
-        $adminCheck = bash -c "redis-cli --raw KEYS 'xo:user:*' </dev/null 2>/dev/null | xargs -I {} redis-cli --raw HGET {} email </dev/null 2>/dev/null | grep -i 'admin@admin' || echo 'No default admin email found'"
-        $FindingDetails += "   Default admin email check: $adminCheck`n"
+        $adminCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I '{}' redis-cli --raw HGET '{}' email 2>/dev/null | grep -i 'admin@admin' || echo 'No default admin email found')
+        $FindingDetails += "   Default admin email check: $adminCheck" + $nl
         
         # Check XO user list
-        $userCount = bash -c "redis-cli --raw KEYS 'xo:user:*' </dev/null 2>/dev/null | wc -l || echo '0'"
-        $FindingDetails += "   Total user accounts: $userCount`n"
+        $userCount = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | wc -l || echo '0')
+        $FindingDetails += "   Total user accounts: $userCount" + $nl
     } catch {
-        $FindingDetails += "   ERROR checking admin: $_`n"
+        $FindingDetails += "   ERROR checking admin: $_" + $nl
     }
     
     # Check for documentation of password changes
-    $FindingDetails += "`n2. Checking for initial setup indicators...`n"
+    $FindingDetails += $nl + "2. Checking for initial setup indicators..." + $nl
     try {
         # Check if XO has been configured (presence of custom users)
-        $setupCheck = bash -c "redis-cli --raw KEYS 'xo:user:*' </dev/null 2>/dev/null | xargs -I {} redis-cli --raw HGETALL {} </dev/null 2>/dev/null | grep -v 'admin@admin' | head -10 || echo 'Only default admin may exist'"
-        $FindingDetails += "   Custom user check: $setupCheck`n"
+        $setupCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I '{}' redis-cli --raw HGETALL '{}' 2>/dev/null | grep -v 'admin@admin' | head -10 || echo 'Only default admin may exist')
+        $FindingDetails += "   Custom user check: $setupCheck" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check system password policies
-    $FindingDetails += "`n3. Checking password policy enforcement...`n"
+    $FindingDetails += $nl + "3. Checking password policy enforcement..." + $nl
     try {
-        $policyCheck = bash -c "if [ -f /etc/xo-server/config.toml ]; then grep -i 'password' /etc/xo-server/config.toml </dev/null </dev/null 2>/dev/null || echo 'No password policy in config'; else echo 'Config not found'; fi"
-        $FindingDetails += "   $policyCheck`n"
+        $policyCheck = $(test -f /etc/xo-server/config.toml && (grep -i 'password' /etc/xo-server/config.toml 2>/dev/null || echo 'No password policy in config') || echo 'Config not found')
+        $FindingDetails += "   $policyCheck" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Determine status
-    $FindingDetails += "`n" + "=" * 70 + "`n"
-    $FindingDetails += "EVALUATION:`n"
+    $FindingDetails += $nl + "=" * 70 + $nl
+    $FindingDetails += "EVALUATION:" + $nl
     
     if ($adminCheck -match "admin@admin") {
         $Status = "Open"
-        $FindingDetails += "- Default admin account (admin@admin.net) detected`n"
-        $FindingDetails += "- Default credentials must be changed immediately`n"
-        $FindingDetails += "- XO default password: 'admin' is well-known`n"
-        $FindingDetails += "`nSTATUS: Open (FINDING - Default credentials exist)`n"
+        $FindingDetails += "- Default admin account (admin@admin.net) detected" + $nl
+        $FindingDetails += "- Default credentials must be changed immediately" + $nl
+        $FindingDetails += "- XO default password: 'admin' is well-known" + $nl
+        $FindingDetails += $nl + "STATUS: Open (FINDING - Default credentials exist)" + $nl
     } elseif ($userCount -match "^0") {
         $Status = "Not_Reviewed"
-        $FindingDetails += "- Unable to verify user accounts (Redis not accessible)`n"
-        $FindingDetails += "- Manually verify no default credentials remain`n"
-        $FindingDetails += "- XO default: admin@admin.net / password: admin`n"
-        $FindingDetails += "`nSTATUS: Not_Reviewed (Cannot access user database)`n"
+        $FindingDetails += "- Unable to verify user accounts (Redis not accessible)" + $nl
+        $FindingDetails += "- Manually verify no default credentials remain" + $nl
+        $FindingDetails += "- XO default: admin@admin.net / password: admin" + $nl
+        $FindingDetails += $nl + "STATUS: Not_Reviewed (Cannot access user database)" + $nl
     } else {
         $Status = "NotAFinding"
-        $FindingDetails += "- No default admin@admin.net email found`n"
-        $FindingDetails += "- $userCount user account(s) configured`n"
-        $FindingDetails += "- Default credentials appear to have been changed`n"
-        $FindingDetails += "`nSTATUS: NotAFinding (No default credentials detected)`n"
+        $FindingDetails += "- No default admin@admin.net email found" + $nl
+        $FindingDetails += "- $userCount user account(s) configured" + $nl
+        $FindingDetails += "- Default credentials appear to have been changed" + $nl
+        $FindingDetails += $nl + "STATUS: NotAFinding (No default credentials detected)" + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -40551,7 +40527,7 @@ Function Get-V222663 {
 
     # Check 2: Local configuration files
     $FindingDetails += "Check 2 - Local Configuration Files:" + $nl
-    $configFiles = $(timeout 5 sh -c 'ls -la /etc/xo-server/ /opt/xo/xo-server/.xo-server.toml /opt/xo/xo-server/config.toml 2>/dev/null')
+    $configFiles = $(timeout 5 ls -la /etc/xo-server/ /opt/xo/xo-server/.xo-server.toml /opt/xo/xo-server/config.toml 2>/dev/null)
     $configStr = ($configFiles -join $nl).Trim()
     if ($configStr) {
         $FindingDetails += "  Configuration files found:" + $nl + "  $configStr" + $nl + $nl
@@ -40821,13 +40797,13 @@ Function Get-V222665 {
 
     # Check 1: Legacy mobile code technologies
     $FindingDetails += "Check 1 - Legacy Mobile Code Technologies:" + $nl
-    $javaFiles = $(timeout 10 sh -c 'find /opt/xo -maxdepth 4 -name "*.jar" -o -name "*.class" 2>/dev/null | head -5')
+    $javaFiles = $(timeout 10 find /opt/xo -maxdepth 4 -name "*.jar" -o -name "*.class" 2>/dev/null | head -5)
     $javaStr = ($javaFiles -join $nl).Trim()
-    $flashFiles = $(timeout 10 sh -c 'find /opt/xo -maxdepth 4 -name "*.swf" -o -name "*.flv" 2>/dev/null | head -5')
+    $flashFiles = $(timeout 10 find /opt/xo -maxdepth 4 -name "*.swf" -o -name "*.flv" 2>/dev/null | head -5)
     $flashStr = ($flashFiles -join $nl).Trim()
-    $activeX = $(timeout 10 sh -c 'find /opt/xo -maxdepth 4 -name "*.ocx" -o -name "*.cab" 2>/dev/null | head -5')
+    $activeX = $(timeout 10 find /opt/xo -maxdepth 4 -name "*.ocx" -o -name "*.cab" 2>/dev/null | head -5)
     $activeXStr = ($activeX -join $nl).Trim()
-    $silverlight = $(timeout 10 sh -c 'find /opt/xo -maxdepth 4 -name "*.xap" 2>/dev/null | head -5')
+    $silverlight = $(timeout 10 find /opt/xo -maxdepth 4 -name "*.xap" 2>/dev/null | head -5)
     $silverStr = ($silverlight -join $nl).Trim()
 
     $legacyFound = $false
@@ -40843,7 +40819,7 @@ Function Get-V222665 {
 
     # Check 2: Modern web framework verification
     $FindingDetails += "Check 2 - Web Framework Technology:" + $nl
-    $nodeVer = $(timeout 3 sh -c 'node --version 2>/dev/null')
+    $nodeVer = $(timeout 3 node --version 2>/dev/null)
     $nodeStr = ($nodeVer -join $nl).Trim()
     if ($nodeStr) {
         $FindingDetails += "  Node.js: $nodeStr" + $nl
@@ -40978,12 +40954,12 @@ Function Get-V222666 {
 
     # Check 1: Database technology in use
     $FindingDetails += "Check 1 - Database Technology:" + $nl
-    $leveldb = $(timeout 5 sh -c 'ls -la /var/lib/xo-server/data/ 2>/dev/null | head -10')
+    $leveldb = $(timeout 5 ls -la /var/lib/xo-server/data/ 2>/dev/null | head -10)
     $levelStr = ($leveldb -join $nl).Trim()
     if ($levelStr) {
         $FindingDetails += "  LevelDB data directory:" + $nl + "  $levelStr" + $nl + $nl
     }
-    $redis = $(timeout 3 sh -c 'redis-cli ping 2>/dev/null')
+    $redis = $(timeout 3 redis-cli ping 2>/dev/null)
     $redisStr = ($redis -join $nl).Trim()
     if ($redisStr -eq "PONG") {
         $FindingDetails += "  Redis: Active (session/cache store)" + $nl + $nl
@@ -41127,14 +41103,14 @@ Function Get-V222667 {
     $FindingDetails += "Check 1 - Firewall Status:" + $nl
     $ufwStatus = ""
     if (Get-Command ufw -ErrorAction SilentlyContinue) {
-        $ufwStatus = $(timeout 5 sh -c 'ufw status 2>/dev/null')
+        $ufwStatus = $(timeout 5 ufw status 2>/dev/null)
     }
     $ufwStr = ($ufwStatus -join $nl).Trim()
     if ($ufwStr -match "active") {
         $FindingDetails += "  UFW: $ufwStr" + $nl + $nl
     }
     else {
-        $iptables = $(timeout 5 sh -c 'iptables -L INPUT -n 2>/dev/null | head -10')
+        $iptables = $(timeout 5 iptables -L INPUT -n 2>/dev/null | head -10)
         $iptStr = ($iptables -join $nl).Trim()
         if ($iptStr) {
             $FindingDetails += "  iptables INPUT chain:" + $nl + "  $iptStr" + $nl + $nl
@@ -41146,7 +41122,7 @@ Function Get-V222667 {
 
     # Check 2: Connection limits
     $FindingDetails += "Check 2 - Connection Limits:" + $nl
-    $maxConn = $(timeout 5 sh -c 'sysctl net.core.somaxconn net.ipv4.tcp_max_syn_backlog 2>/dev/null')
+    $maxConn = $(timeout 5 sysctl net.core.somaxconn net.ipv4.tcp_max_syn_backlog 2>/dev/null)
     $maxStr = ($maxConn -join $nl).Trim()
     if ($maxStr) {
         $FindingDetails += "  $maxStr" + $nl + $nl
@@ -41157,7 +41133,7 @@ Function Get-V222667 {
 
     # Check 3: Fail2ban or intrusion prevention
     $FindingDetails += "Check 3 - Intrusion Prevention:" + $nl
-    $f2b = $(timeout 3 sh -c 'systemctl is-active fail2ban 2>/dev/null')
+    $f2b = $(timeout 3 systemctl is-active fail2ban 2>/dev/null)
     $f2bStr = ($f2b -join $nl).Trim()
     if ($f2bStr -eq "active") {
         $FindingDetails += "  Fail2ban: Active" + $nl + $nl
@@ -41287,7 +41263,7 @@ Function Get-V222668 {
 
     # Check 1: Disk space monitoring
     $FindingDetails += "Check 1 - Disk Space Status:" + $nl
-    $diskSpace = $(timeout 5 sh -c 'df -h / /var /var/log /var/lib/xo-server 2>/dev/null | sort -u')
+    $diskSpace = $(timeout 5 df -h / /var /var/log /var/lib/xo-server 2>/dev/null | sort -u)
     $diskStr = ($diskSpace -join $nl).Trim()
     if ($diskStr) {
         $FindingDetails += "  $diskStr" + $nl + $nl
@@ -41298,7 +41274,7 @@ Function Get-V222668 {
 
     # Check 2: Monitoring agents
     $FindingDetails += "Check 2 - Monitoring Agents:" + $nl
-    $monAgents = $(timeout 5 sh -c 'systemctl list-units --type=service --state=active 2>/dev/null | grep -iE "nagios|zabbix|prometheus|grafana|telegraf|collectd|monitor|alert" | head -5')
+    $monAgents = $(timeout 5 systemctl list-units --type=service --state=active 2>/dev/null | grep -iE "nagios|zabbix|prometheus|grafana|telegraf|collectd|monitor|alert" | head -5)
     $monStr = ($monAgents -join $nl).Trim()
     if ($monStr) {
         $FindingDetails += "  Active monitoring services:" + $nl + "  $monStr" + $nl + $nl
@@ -41309,7 +41285,7 @@ Function Get-V222668 {
 
     # Check 3: Logrotate (prevents disk exhaustion)
     $FindingDetails += "Check 3 - Log Rotation:" + $nl
-    $logrotate = $(timeout 5 sh -c 'ls /etc/logrotate.d/ 2>/dev/null | head -10')
+    $logrotate = $(timeout 5 ls /etc/logrotate.d/ 2>/dev/null | head -10)
     $logStr = ($logrotate -join $nl).Trim()
     if ($logStr) {
         $FindingDetails += "  Logrotate configs: $logStr" + $nl + $nl
@@ -41320,7 +41296,7 @@ Function Get-V222668 {
 
     # Check 4: Systemd journal limits
     $FindingDetails += "Check 4 - Journal Storage Limits:" + $nl
-    $journalCfg = $(timeout 3 sh -c 'grep -E "^SystemMaxUse|^SystemKeepFree|^SystemMaxFileSize" /etc/systemd/journald.conf 2>/dev/null')
+    $journalCfg = $(timeout 3 grep -E "^SystemMaxUse|^SystemKeepFree|^SystemMaxFileSize" /etc/systemd/journald.conf 2>/dev/null)
     $journalStr = ($journalCfg -join $nl).Trim()
     if ($journalStr) {
         $FindingDetails += "  $journalStr" + $nl + $nl
@@ -41450,13 +41426,13 @@ Function Get-V222669 {
 
     # Check 1: XO component versions
     $FindingDetails += "Check 1 - Component Versions:" + $nl
-    $xoVer = $(timeout 5 sh -c 'cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d "\"" | head -1')
+    $xoVer = $(timeout 5 cat /opt/xo/xo-server/package.json 2>/dev/null | grep -oP "(?<=version...: )[^,]+" | tr -d '"' | head -1)
     $xoVerStr = ($xoVer -join $nl).Trim()
     if ($xoVerStr) { $FindingDetails += "  XO Server: $xoVerStr" + $nl }
-    $nodeVer = $(timeout 3 sh -c 'node --version 2>/dev/null')
+    $nodeVer = $(timeout 3 node --version 2>/dev/null)
     $nodeStr = ($nodeVer -join $nl).Trim()
     if ($nodeStr) { $FindingDetails += "  Node.js: $nodeStr" + $nl }
-    $osVer = $(timeout 3 sh -c 'cat /etc/os-release 2>/dev/null | grep PRETTY_NAME | cut -d= -f2 | tr -d "\"" ')
+    $osVer = $(timeout 3 cat /etc/os-release 2>/dev/null | grep PRETTY_NAME | cut -d= -f2 | tr -d '"' )
     $osStr = ($osVer -join $nl).Trim()
     if ($osStr) { $FindingDetails += "  OS: $osStr" + $nl }
     $FindingDetails += $nl
@@ -41470,7 +41446,7 @@ Function Get-V222669 {
 
     # Check 3: Unattended upgrades
     $FindingDetails += "Check 3 - Automated Update Mechanisms:" + $nl
-    $unattended = $(timeout 3 sh -c 'dpkg -l unattended-upgrades 2>/dev/null | grep "^ii"')
+    $unattended = $(timeout 3 dpkg -l unattended-upgrades 2>/dev/null | grep "^ii")
     $unattStr = ($unattended -join $nl).Trim()
     if ($unattStr) {
         $FindingDetails += "  Unattended-upgrades: Installed" + $nl + $nl
@@ -41607,13 +41583,13 @@ Function Get-V222670 {
 
     # Check 2: Detect deployment type
     $FindingDetails += "Check 2 - Deployment Type:" + $nl
-    $xoaCheck = $(timeout 3 sh -c 'test -f /etc/xoa-updater && echo "XOA" || echo "XOCE"')
+    $xoaCheck = $(timeout 3 test -f /etc/xoa-updater && echo "XOA" || echo "XOCE" 2>&1)
     $xoaStr = ($xoaCheck -join $nl).Trim()
     $FindingDetails += "  Deployment: $xoaStr" + $nl + $nl
 
     # Check 3: apt security updates available
     $FindingDetails += "Check 3 - Pending Security Updates:" + $nl
-    $aptUpdates = $(timeout 15 sh -c 'apt list --upgradable 2>/dev/null | grep -i security | head -10')
+    $aptUpdates = $(timeout 15 apt list --upgradable 2>/dev/null | grep -i security | head -10)
     $aptStr = ($aptUpdates -join $nl).Trim()
     if ($aptStr) {
         $FindingDetails += "  Security updates available:" + $nl + "  $aptStr" + $nl + $nl
@@ -41744,7 +41720,7 @@ Function Get-V222671 {
 
     # Check 1: Network interfaces
     $FindingDetails += "Check 1 - Network Interfaces:" + $nl
-    $interfaces = $(timeout 5 sh -c 'ip -4 addr show 2>/dev/null | grep -E "inet |^[0-9]+" | head -20')
+    $interfaces = $(timeout 5 ip -4 addr show 2>/dev/null | grep -E "inet |^[0-9]+" | head -20)
     $ifStr = ($interfaces -join $nl).Trim()
     if ($ifStr) {
         $FindingDetails += "  $ifStr" + $nl + $nl
@@ -41755,7 +41731,7 @@ Function Get-V222671 {
 
     # Check 2: Listening ports
     $FindingDetails += "Check 2 - Listening Services:" + $nl
-    $listeners = $(timeout 5 sh -c 'ss -tlnp 2>/dev/null | head -15')
+    $listeners = $(timeout 5 ss -tlnp 2>/dev/null | head -15)
     $listenStr = ($listeners -join $nl).Trim()
     if ($listenStr) {
         $FindingDetails += "  $listenStr" + $nl + $nl
@@ -41771,7 +41747,7 @@ Function Get-V222671 {
     $FindingDetails += "  management network segments within the DoD enclave." + $nl + $nl
 
     # Check for private IP (indicates internal deployment)
-    $privateIP = $(timeout 3 sh -c "hostname -I 2>/dev/null | tr ' ' '\n' | grep -E '^10\.|^172\.(1[6-9]|2[0-9]|3[01])\.|^192\.168\.' | head -1")
+    $privateIP = $(timeout 3 hostname -I 2>/dev/null | tr ' ' '\n' | grep -E '^10\.|^172\.(1[6-9]|2[0-9]|3[01])\.|^192\.168\.' | head -1)
     $privStr = ($privateIP -join $nl).Trim()
     if ($privStr) {
         $FindingDetails += "  Primary IP: $privStr (private/internal network)" + $nl + $nl
@@ -41909,12 +41885,12 @@ Function Get-V222672 {
         if ($tokenContent) { $token = $tokenContent.Trim() }
     }
     if (-not $token -and (Test-Path "/var/lib/xo-server/.xo-cli")) {
-        $tc = $(timeout 3 sh -c 'grep -oP "(?<=\"token\":\")[^\"]+" /var/lib/xo-server/.xo-cli 2>/dev/null')
+        $tc = $(timeout 3 grep -oP '(?<="token":")[^"]+' /var/lib/xo-server/.xo-cli 2>/dev/null)
         if ($tc) { $token = $tc.Trim() }
     }
     $auditActive = $false
     if ($token) {
-        $auditRecords = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/plugins/audit/records?limit=5' 2>/dev/null")
+        $auditRecords = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/plugins/audit/records?limit=5' 2>/dev/null)
         $auditStr = ($auditRecords -join $nl).Trim()
         if ($auditStr -and $auditStr -ne "[]" -and $auditStr -ne "null") {
             $FindingDetails += "  Audit plugin: Active (records available)" + $nl + $nl
@@ -41930,7 +41906,7 @@ Function Get-V222672 {
 
     # Check 2: Systemd journal session logging
     $FindingDetails += "Check 2 - System Authentication Logging:" + $nl
-    $authLog = $(timeout 5 sh -c 'journalctl -u xo-server --since "1 hour ago" 2>/dev/null | grep -iE "session|login|auth" | tail -5')
+    $authLog = $(timeout 5 journalctl -u xo-server --since "1 hour ago" 2>/dev/null | grep -iE "session|login|auth" | tail -5)
     $authStr = ($authLog -join $nl).Trim()
     if ($authStr) {
         $FindingDetails += "  Recent auth events:" + $nl + "  $authStr" + $nl + $nl
@@ -42207,7 +42183,7 @@ Function Get-V265634 {
 
     # Check 2: FIPS mode status
     $FindingDetails += "Check 2 - FIPS Cryptographic Mode:" + $nl
-    $fipsEnabled = $(timeout 3 sh -c 'cat /proc/sys/crypto/fips_enabled 2>/dev/null')
+    $fipsEnabled = $(timeout 3 cat /proc/sys/crypto/fips_enabled 2>/dev/null)
     $fipsStr = ($fipsEnabled -join $nl).Trim()
     if ($fipsStr -eq "1") {
         $FindingDetails += "  FIPS mode: ENABLED" + $nl + $nl
@@ -42218,7 +42194,7 @@ Function Get-V265634 {
 
     # Check 3: TLS configuration
     $FindingDetails += "Check 3 - TLS Encryption:" + $nl
-    $tlsCheck = $(timeout 10 sh -c "echo | openssl s_client -connect localhost:443 -tls1_2 2>/dev/null | grep -E 'Protocol|Cipher|Server Temp Key'")
+    $tlsCheck = $(timeout 10 echo | openssl s_client -connect localhost:443 -tls1_2 2>/dev/null | grep -E 'Protocol|Cipher|Server Temp Key')
     $tlsStr = ($tlsCheck -join $nl).Trim()
     if ($tlsStr) {
         $FindingDetails += "  $tlsStr" + $nl + $nl
@@ -42229,7 +42205,7 @@ Function Get-V265634 {
 
     # Check 4: OpenSSL version (FIPS-capable)
     $FindingDetails += "Check 4 - OpenSSL Version:" + $nl
-    $opensslVer = $(timeout 3 sh -c 'openssl version 2>/dev/null')
+    $opensslVer = $(timeout 3 openssl version 2>/dev/null)
     $sslStr = ($opensslVer -join $nl).Trim()
     if ($sslStr) {
         $FindingDetails += "  $sslStr" + $nl + $nl
@@ -42920,6 +42896,7 @@ Function Get-V222425 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222425"
     $RuleID = "SV-222425r508029_rule"
     $Status = "Not_Reviewed"
@@ -42935,76 +42912,78 @@ Function Get-V222425 {
     # Check: Verify XO implements RBAC for access control
     
     if ($IsLinux) {
-        $FindingDetails += "=== Xen Orchestra RBAC Access Control Check ===`n`n"
+        $FindingDetails += "=== Xen Orchestra RBAC Access Control Check ===" + $nl + $nl
         
         # Check 1: Verify XO Server Configuration for Authentication/Authorization
-        $configCheck = bash -c "find /etc/xo-server -name '*.toml' -exec grep -E '(authentication|authorization|ldap|saml|acl)' {} + </dev/null </dev/null 2>/dev/null || echo 'CONFIG_NOT_FOUND'"
+        $configCheck = $(timeout 10 find /etc/xo-server -maxdepth 5 -name '*.toml' -exec grep -E '(authentication|authorization|ldap|saml|acl)' '{}' + 2>/dev/null || echo 'CONFIG_NOT_FOUND')
         
         if ($configCheck -notmatch "CONFIG_NOT_FOUND") {
-            $FindingDetails += "XO Configuration - Authentication/Authorization Settings:`n"
-            $FindingDetails += $configCheck + "`n`n"
+            $FindingDetails += "XO Configuration - Authentication/Authorization Settings:" + $nl
+            $FindingDetails += $configCheck + $nl + $nl
             
             # Check for LDAP/AD integration (enterprise auth)
             if ($configCheck -match "ldap|activedirectory") {
-                $FindingDetails += "✓ LDAP/Active Directory integration detected`n"
+                $FindingDetails += "✓ LDAP/Active Directory integration detected" + $nl
                 $hasEnterpriseAuth = $true
             }
         }
         
         # Check 2: Verify ACL enforcement in Redis
-        $aclCheck = bash -c "redis-cli --no-auth-warning KEYS 'xo:acl:*' </dev/null 2>/dev/null | wc -l"
+        $aclCheck = $(redis-cli --no-auth-warning KEYS 'xo:acl:*' 2>/dev/null | wc -l)
         
         if ($aclCheck -gt 0) {
-            $FindingDetails += "✓ ACL entries found in database: $aclCheck ACL rules`n"
+            $FindingDetails += "✓ ACL entries found in database: $aclCheck ACL rules" + $nl
             
             # Sample some ACL data
-            $aclSample = bash -c "redis-cli --no-auth-warning KEYS 'xo:acl:*' </dev/null 2>/dev/null | head -5 | xargs -I {} redis-cli --no-auth-warning HGETALL {} </dev/null 2>/dev/null"
-            $FindingDetails += "`nSample ACL Data:`n$aclSample`n`n"
+            $aclSample = $(redis-cli --no-auth-warning KEYS 'xo:acl:*' 2>/dev/null | head -5 | xargs -I '{}' redis-cli --no-auth-warning HGETALL '{}' 2>/dev/null)
+            $FindingDetails += $nl + "Sample ACL Data:" + $nl + "$aclSample" + $nl + $nl
             $hasAcls = $true
         }
         else {
-            $FindingDetails += "⚠ No ACL entries found in Redis database`n"
+            $FindingDetails += "⚠ No ACL entries found in Redis database" + $nl
         }
         
         # Check 3: Verify Role definitions
-        $roleCheck = bash -c "redis-cli --no-auth-warning KEYS 'xo:role:*' </dev/null 2>/dev/null | wc -l"
+        $roleCheck = $(redis-cli --no-auth-warning KEYS 'xo:role:*' 2>/dev/null | wc -l)
         
         if ($roleCheck -gt 0) {
-            $FindingDetails += "✓ Role definitions found: $roleCheck roles configured`n"
+            $FindingDetails += "✓ Role definitions found: $roleCheck roles configured" + $nl
             
             # Get role details
-            $roleDetails = bash -c "redis-cli --no-auth-warning KEYS 'xo:role:*' </dev/null 2>/dev/null | head -5 | xargs -I {} sh -c 'echo \"Role: {}\"; redis-cli --no-auth-warning HGETALL {} 2>/dev/null; echo ---'"
-            $FindingDetails += "`nRole Details:`n$roleDetails`n`n"
+            $roleKeys = $(redis-cli --no-auth-warning KEYS 'xo:role:*' 2>/dev/null | head -5)
+            $roleDetails = foreach ($rk in $roleKeys) { "Role: $rk"; $(redis-cli --no-auth-warning HGETALL $rk 2>/dev/null); "---" }
+            $FindingDetails += $nl + "Role Details:" + $nl + "$roleDetails" + $nl + $nl
             $hasRoles = $true
         }
         else {
-            $FindingDetails += "⚠ No role definitions found in database`n"
+            $FindingDetails += "⚠ No role definitions found in database" + $nl
         }
         
         # Check 4: Verify User-to-Role mappings
-        $userRoleCheck = bash -c "redis-cli --no-auth-warning KEYS 'xo:user:*' </dev/null 2>/dev/null | head -3 | xargs -I {} sh -c 'echo \"User: {}\"; redis-cli --no-auth-warning HGET {} permission 2>/dev/null; redis-cli --no-auth-warning HGET {} role 2>/dev/null; echo ---'"
+        $userKeys = $(redis-cli --no-auth-warning KEYS 'xo:user:*' 2>/dev/null | head -3)
+        $userRoleCheck = foreach ($uk in $userKeys) { "User: $uk"; $(redis-cli --no-auth-warning HGET $uk permission 2>/dev/null); $(redis-cli --no-auth-warning HGET $uk role 2>/dev/null); "---" }
         
         if ($userRoleCheck -match "admin|operator|viewer" -or $userRoleCheck -match "role") {
-            $FindingDetails += "✓ User-to-role mappings detected`n"
-            $FindingDetails += "`nUser Permission/Role Sample:`n$userRoleCheck`n`n"
+            $FindingDetails += "✓ User-to-role mappings detected" + $nl
+            $FindingDetails += $nl + "User Permission/Role Sample:" + $nl + "$userRoleCheck" + $nl + $nl
             $hasUserRoles = $true
         }
         
         # Determine Status
         if ($hasAcls -and $hasRoles -and $hasUserRoles) {
             $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: XO implements RBAC with ACLs, roles, and user-to-role mappings.`n"
-            $FindingDetails += "Access control enforcement is in place for logical access to information and system resources.`n"
+            $FindingDetails += $nl + "✅ COMPLIANCE: XO implements RBAC with ACLs, roles, and user-to-role mappings." + $nl
+            $FindingDetails += "Access control enforcement is in place for logical access to information and system resources." + $nl
         }
         elseif ($hasRoles -or $hasUserRoles) {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: RBAC implementation is incomplete.`n"
-            $FindingDetails += "Missing components detected. Full RBAC enforcement requires ACLs, roles, AND user assignments.`n"
+            $FindingDetails += $nl + "❌ FINDING: RBAC implementation is incomplete." + $nl
+            $FindingDetails += "Missing components detected. Full RBAC enforcement requires ACLs, roles, AND user assignments." + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: No RBAC implementation detected.`n"
-            $FindingDetails += "XO does not enforce approved authorizations for logical access to information and system resources.`n"
+            $FindingDetails += $nl + "❌ FINDING: No RBAC implementation detected." + $nl
+            $FindingDetails += "XO does not enforce approved authorizations for logical access to information and system resources." + $nl
         }
     }
     else {
@@ -43124,7 +43103,7 @@ Function Get-V222430 {
 
     # Check 1: XO Server process owner
     $output += "CHECK 1: XO Server process owner" + $nl
-    $procOwner = $(sh -c 'ps -eo user,comm 2>/dev/null | grep -E "xo-server|node.*cli\.mjs" | head -1 | awk "{print \$1}"' 2>&1)
+    $procOwner = $(ps -eo user,comm 2>/dev/null | grep -E "xo-server|node.*cli\.mjs" | head -1 | awk "{print \$1}" 2>&1)
     $procOwnerStr = ($procOwner -join $nl).Trim()
     $runningAsRoot = $false
     $nonRootFound = $false
@@ -43145,7 +43124,7 @@ Function Get-V222430 {
     $output += $nl + "CHECK 2: Service account group memberships" + $nl
     $elevatedGroups = $false
     if ($nonRootFound -and $procOwnerStr) {
-        $groups = $(sh -c "id $procOwnerStr 2>/dev/null" 2>&1)
+        $groups = $(id $procOwnerStr 2>/dev/null)
         $groupsStr = ($groups -join $nl).Trim()
         $output += "  Groups: $groupsStr" + $nl
         if ($groupsStr -match "sudo|wheel|adm") {
@@ -43159,10 +43138,10 @@ Function Get-V222430 {
     # Check 3: Linux capabilities on XO binaries
     $output += $nl + "CHECK 3: Linux capabilities" + $nl
     $excessiveCaps = $false
-    $nodebin = $(sh -c 'which node 2>/dev/null' 2>&1)
+    $nodebin = $(which node 2>/dev/null)
     $nodebinStr = ($nodebin -join $nl).Trim()
     if ($nodebinStr -and (Test-Path $nodebinStr)) {
-        $caps = $(sh -c "getcap $nodebinStr 2>/dev/null" 2>&1)
+        $caps = $(getcap $nodebinStr 2>/dev/null)
         $capsStr = ($caps -join $nl).Trim()
         if ($capsStr -match "cap_sys_admin|cap_dac_override|cap_setuid") {
             $output += "  [FINDING] Excessive capabilities: $capsStr" + $nl
@@ -43176,7 +43155,7 @@ Function Get-V222430 {
 
     # Check 4: Redis process owner
     $output += $nl + "CHECK 4: Redis process owner" + $nl
-    $redisOwner = $(sh -c 'ps -eo user,comm 2>/dev/null | grep redis-server | head -1 | awk "{print \$1}"' 2>&1)
+    $redisOwner = $(ps -eo user,comm 2>/dev/null | grep redis-server | head -1 | awk "{print \$1}" 2>&1)
     $redisOwnerStr = ($redisOwner -join $nl).Trim()
     if ($redisOwnerStr) {
         $output += "  Redis owner: $redisOwnerStr" + $nl
@@ -43189,7 +43168,7 @@ Function Get-V222430 {
 
     # Check 5: Systemd service user
     $output += $nl + "CHECK 5: Systemd service configuration" + $nl
-    $svcUser = $(sh -c 'systemctl show xo-server --property=User 2>/dev/null || echo "N/A"' 2>&1)
+    $svcUser = $(systemctl show xo-server --property=User 2>/dev/null || echo "N/A" 2>&1)
     $svcUserStr = ($svcUser -join $nl).Trim()
     $output += "  Service User setting: $svcUserStr" + $nl
 
@@ -43303,6 +43282,7 @@ Function Get-V222432 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222432"
     $RuleID = "SV-222432r508029_rule"
     $Status = "Not_Reviewed"
@@ -43314,67 +43294,67 @@ Function Get-V222432 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "V-222432: Account Lockout Policy Check`n"
-    $FindingDetails += "=" * 50 + "`n`n"
+    $FindingDetails = "V-222432: Account Lockout Policy Check" + $nl
+    $FindingDetails += "=" * 50 + $nl + $nl
     
     # Check for fail2ban service (common account lockout mechanism)
-    $FindingDetails += "1. Checking fail2ban service status...`n"
+    $FindingDetails += "1. Checking fail2ban service status..." + $nl
     try {
-        $fail2banStatus = bash -c "systemctl is-active fail2ban </dev/null </dev/null 2>/dev/null || echo 'not-found'"
-        $FindingDetails += "   fail2ban service: $fail2banStatus`n"
+        $fail2banStatus = $(systemctl is-active fail2ban 2>/dev/null || echo 'not-found')
+        $FindingDetails += "   fail2ban service: $fail2banStatus" + $nl
         
         if ($fail2banStatus -match "active") {
-            $FindingDetails += "   - fail2ban is active and monitoring for failed login attempts`n"
+            $FindingDetails += "   - fail2ban is active and monitoring for failed login attempts" + $nl
             
             # Check fail2ban configuration for xo-server
-            $fail2banConf = bash -c "if [ -f /etc/fail2ban/jail.local ]; then grep -A 5 '\[xo\|xo-server\]' /etc/fail2ban/jail.local </dev/null </dev/null 2>/dev/null || echo 'No XO jail found'; else echo 'jail.local not found'; fi"
-            $FindingDetails += "`n2. fail2ban XO configuration:`n$fail2banConf`n"
+            $fail2banConf = $(test -f /etc/fail2ban/jail.local && (grep -A 5 '\[xo\|xo-server\]' /etc/fail2ban/jail.local 2>/dev/null || echo 'No XO jail found') || echo 'jail.local not found')
+            $FindingDetails += $nl + "2. fail2ban XO configuration:" + $nl + "$fail2banConf" + $nl
         } else {
-            $FindingDetails += "   - fail2ban service NOT found or NOT active`n"
+            $FindingDetails += "   - fail2ban service NOT found or NOT active" + $nl
         }
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check XO configuration for account lockout settings
-    $FindingDetails += "`n3. Checking XO server configuration...`n"
+    $FindingDetails += $nl + "3. Checking XO server configuration..." + $nl
     try {
-        $xoConfig = bash -c "if [ -f /etc/xo-server/config.toml ]; then grep -i 'lock\|attempt\|fail' /etc/xo-server/config.toml </dev/null </dev/null 2>/dev/null || echo 'No lockout config found'; else echo 'config.toml not found'; fi"
-        $FindingDetails += "   $xoConfig`n"
+        $xoConfig = $(test -f /etc/xo-server/config.toml && (grep -i 'lock\|attempt\|fail' /etc/xo-server/config.toml 2>/dev/null || echo 'No lockout config found') || echo 'config.toml not found')
+        $FindingDetails += "   $xoConfig" + $nl
     } catch {
-        $FindingDetails += "   ERROR checking config: $_`n"
+        $FindingDetails += "   ERROR checking config: $_" + $nl
     }
     
     # Check PAM configuration for account lockout
-    $FindingDetails += "`n4. Checking PAM faillock/tally2 configuration...`n"
+    $FindingDetails += $nl + "4. Checking PAM faillock/tally2 configuration..." + $nl
     try {
-        $pamFaillock = bash -c "grep -r 'pam_faillock\|pam_tally2' /etc/pam.d/ </dev/null 2>/dev/null | grep -v '#' | head -5 || echo 'No PAM faillock found'"
-        $FindingDetails += "   $pamFaillock`n"
+        $pamFaillock = $(grep -r 'pam_faillock\|pam_tally2' /etc/pam.d/ 2>/dev/null | grep -v '#' | head -5 || echo 'No PAM faillock found')
+        $FindingDetails += "   $pamFaillock" + $nl
     } catch {
-        $FindingDetails += "   ERROR checking PAM: $_`n"
+        $FindingDetails += "   ERROR checking PAM: $_" + $nl
     }
     
     # Determine status
-    $FindingDetails += "`n" + "=" * 50 + "`n"
-    $FindingDetails += "EVALUATION:`n"
+    $FindingDetails += $nl + "=" * 50 + $nl
+    $FindingDetails += "EVALUATION:" + $nl
     
     if ($fail2banStatus -match "active") {
         $Status = "NotAFinding"
-        $FindingDetails += "- fail2ban is active, providing account lockout protection`n"
-        $FindingDetails += "- DoD requires lockout after 3 failed attempts within 15 minutes`n"
-        $FindingDetails += "- Verify fail2ban maxretry=3 and findtime=900 (15 min) settings`n"
-        $FindingDetails += "`nSTATUS: NotAFinding (fail2ban provides lockout mechanism)`n"
+        $FindingDetails += "- fail2ban is active, providing account lockout protection" + $nl
+        $FindingDetails += "- DoD requires lockout after 3 failed attempts within 15 minutes" + $nl
+        $FindingDetails += "- Verify fail2ban maxretry=3 and findtime=900 (15 min) settings" + $nl
+        $FindingDetails += $nl + "STATUS: NotAFinding (fail2ban provides lockout mechanism)" + $nl
     } elseif ($pamFaillock -notmatch "No PAM faillock") {
         $Status = "NotAFinding"
-        $FindingDetails += "- PAM faillock/tally2 configured for account lockout`n"
-        $FindingDetails += "- Verify deny <= 3 and unlock_time settings`n"
-        $FindingDetails += "`nSTATUS: NotAFinding (PAM provides lockout mechanism)`n"
+        $FindingDetails += "- PAM faillock/tally2 configured for account lockout" + $nl
+        $FindingDetails += "- Verify deny <= 3 and unlock_time settings" + $nl
+        $FindingDetails += $nl + "STATUS: NotAFinding (PAM provides lockout mechanism)" + $nl
     } else {
         $Status = "Open"
-        $FindingDetails += "- NO account lockout mechanism detected`n"
-        $FindingDetails += "- Neither fail2ban nor PAM faillock found`n"
-        $FindingDetails += "- DoD STIG requires account lockout after 3 failed attempts`n"
-        $FindingDetails += "`nSTATUS: Open (FINDING - No lockout mechanism found)`n"
+        $FindingDetails += "- NO account lockout mechanism detected" + $nl
+        $FindingDetails += "- Neither fail2ban nor PAM faillock found" + $nl
+        $FindingDetails += "- DoD STIG requires account lockout after 3 failed attempts" + $nl
+        $FindingDetails += $nl + "STATUS: Open (FINDING - No lockout mechanism found)" + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -43472,6 +43452,7 @@ Function Get-V222522 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222522"
     $RuleID = "SV-222522r508029_rule"
     $Status = "Not_Reviewed"
@@ -43484,60 +43465,55 @@ Function Get-V222522 {
 
     #---=== Begin Custom Code ===---#
     if ($IsLinux) {
-        $FindingDetails += "CAT I: User Authentication Mechanism Check`n`n"
+        $FindingDetails += "CAT I: User Authentication Mechanism Check" + $nl + $nl
         $issues = @()
 
         # 1. Check for authentication methods configured
-        $FindingDetails += "1. Checking authentication mechanisms:`n"
+        $FindingDetails += "1. Checking authentication mechanisms:" + $nl
         $xoConfigPath = "/etc/xo-server/config.toml"
         
         if (Test-Path $xoConfigPath) {
-            $FindingDetails += "  XO Server config: $xoConfigPath`n"
+            $FindingDetails += "  XO Server config: $xoConfigPath" + $nl
             
             # Check for LDAP/AD integration
-            $cmd = "grep -iE 'ldap|active.*directory' '$xoConfigPath' </dev/null 2>/dev/null"
-            $ldapConfig = bash -c $cmd 2>$null
+            $ldapConfig = $(grep -iE 'ldap|active.*directory' '$xoConfigPath' 2>/dev/null)
             
             if ($ldapConfig) {
-                $FindingDetails += "  ✓ LDAP/Active Directory authentication configured`n"
-                $FindingDetails += "    $ldapConfig`n"
+                $FindingDetails += "  ✓ LDAP/Active Directory authentication configured" + $nl
+                $FindingDetails += "    $ldapConfig" + $nl
             }
             else {
-                $FindingDetails += "  ℹ No LDAP/AD configuration detected`n"
+                $FindingDetails += "  ℹ No LDAP/AD configuration detected" + $nl
             }
             
             # Check for SAML
-            $cmd = "grep -iE 'saml' '$xoConfigPath' </dev/null 2>/dev/null"
-            $samlConfig = bash -c $cmd 2>$null
+            $samlConfig = $(grep -iE 'saml' '$xoConfigPath' 2>/dev/null)
             
             if ($samlConfig) {
-                $FindingDetails += "  ✓ SAML authentication configured`n"
+                $FindingDetails += "  ✓ SAML authentication configured" + $nl
             }
             else {
-                $FindingDetails += "  ℹ No SAML configuration detected`n"
+                $FindingDetails += "  ℹ No SAML configuration detected" + $nl
             }
         }
         else {
-            $FindingDetails += "  ⚠ XO config not found at $xoConfigPath`n"
+            $FindingDetails += "  ⚠ XO config not found at $xoConfigPath" + $nl
         }
 
         # 2. Check Redis for user accounts (local authentication)
-        $FindingDetails += "`n2. Checking local user authentication:`n"
-        $cmd = "redis-cli --scan --pattern 'xo:user:*' </dev/null 2>/dev/null | wc -l"
-        $userCount = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "2. Checking local user authentication:" + $nl
+        $userCount = $(redis-cli --scan --pattern 'xo:user:*' 2>/dev/null | wc -l)
         
         if ($userCount -and [int]$userCount -gt 0) {
-            $FindingDetails += "  Found $userCount local user accounts in Redis`n"
+            $FindingDetails += "  Found $userCount local user accounts in Redis" + $nl
             
             # Check if users have password hashes
-            $cmd = "redis-cli --scan --pattern 'xo:user:*' | head -3"
-            $sampleUsers = bash -c $cmd 2>$null
+            $sampleUsers = $(redis-cli --scan --pattern 'xo:user:*' | head -3 2>&1)
             
             if ($sampleUsers) {
                 $hashedCount = 0
                 foreach ($user in $sampleUsers) {
-                    $cmd = "redis-cli hget '$user' password </dev/null 2>/dev/null"
-                    $password = bash -c $cmd 2>$null
+                    $password = $(redis-cli hget '$user' password 2>/dev/null)
                     
                     if ($password -and $password -match '\$2[aby]\$') {
                         $hashedCount++
@@ -43545,17 +43521,17 @@ Function Get-V222522 {
                 }
                 
                 if ($hashedCount -gt 0) {
-                    $FindingDetails += "  ✓ Users have bcrypt password hashes (local auth enabled)`n"
+                    $FindingDetails += "  ✓ Users have bcrypt password hashes (local auth enabled)" + $nl
                 }
             }
         }
         else {
-            $FindingDetails += "  ⚠ No local user accounts detected`n"
+            $FindingDetails += "  ⚠ No local user accounts detected" + $nl
             $issues += "No user accounts found in Redis"
         }
 
         # 3. Check for authentication plugins/modules
-        $FindingDetails += "`n3. Checking for authentication plugins:`n"
+        $FindingDetails += $nl + "3. Checking for authentication plugins:" + $nl
         $xoPath = "/opt/xo/xo-src"
         
         $authPlugins = @(
@@ -43567,106 +43543,100 @@ Function Get-V222522 {
         
         $foundPlugins = @()
         foreach ($plugin in $authPlugins) {
-            $cmd = "find $xoPath -type d -name '$plugin' </dev/null 2>/dev/null | head -1"
-            $result = bash -c $cmd 2>$null
+            $result = $(find $xoPath -type d -name '$plugin' 2>/dev/null | head -1)
             
             if ($result) {
                 $foundPlugins += $plugin
-                $FindingDetails += "  ✓ Found: $plugin`n"
+                $FindingDetails += "  ✓ Found: $plugin" + $nl
             }
         }
         
         if ($foundPlugins.Count -eq 0) {
-            $FindingDetails += "  ℹ No external authentication plugins detected`n"
-            $FindingDetails += "  ℹ Using built-in authentication only`n"
+            $FindingDetails += "  ℹ No external authentication plugins detected" + $nl
+            $FindingDetails += "  ℹ Using built-in authentication only" + $nl
         }
         else {
-            $FindingDetails += "  Total auth plugins: $($foundPlugins.Count)`n"
+            $FindingDetails += "  Total auth plugins: $($foundPlugins.Count)" + $nl
         }
 
         # 4. Check for multi-factor authentication (MFA/2FA)
-        $FindingDetails += "`n4. Checking for multi-factor authentication:`n"
-        $cmd = "grep -r 'totp\|2fa\|mfa\|otp' $xoConfigPath </dev/null 2>/dev/null"
-        $mfaConfig = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "4. Checking for multi-factor authentication:" + $nl
+        $mfaConfig = $(grep -r 'totp\|2fa\|mfa\|otp' $xoConfigPath 2>/dev/null)
         
         if ($mfaConfig) {
-            $FindingDetails += "  ✓ MFA/2FA configuration detected`n"
-            $FindingDetails += "    $mfaConfig`n"
+            $FindingDetails += "  ✓ MFA/2FA configuration detected" + $nl
+            $FindingDetails += "    $mfaConfig" + $nl
         }
         else {
-            $FindingDetails += "  ⚠ No MFA/2FA configuration detected`n"
+            $FindingDetails += "  ⚠ No MFA/2FA configuration detected" + $nl
             $issues += "MFA not configured (recommended for CAC compliance)"
         }
 
         # 5. Check authentication session configuration
-        $FindingDetails += "`n5. Checking session authentication settings:`n"
-        $cmd = "redis-cli config get 'timeout' </dev/null 2>/dev/null"
-        $redisTimeout = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "5. Checking session authentication settings:" + $nl
+        $redisTimeout = $(redis-cli config get 'timeout' 2>/dev/null)
         
         if ($redisTimeout) {
-            $FindingDetails += "  Redis session timeout: $redisTimeout`n"
+            $FindingDetails += "  Redis session timeout: $redisTimeout" + $nl
         }
         
         # Check for session expiration in XO config
-        $cmd = "grep -iE 'session.*timeout|timeout.*session' '$xoConfigPath' </dev/null 2>/dev/null"
-        $sessionTimeout = bash -c $cmd 2>$null
+        $sessionTimeout = $(grep -iE 'session.*timeout|timeout.*session' '$xoConfigPath' 2>/dev/null)
         
         if ($sessionTimeout) {
-            $FindingDetails += "  ✓ Session timeout configured: $sessionTimeout`n"
+            $FindingDetails += "  ✓ Session timeout configured: $sessionTimeout" + $nl
         }
         else {
-            $FindingDetails += "  ℹ No explicit session timeout in config`n"
+            $FindingDetails += "  ℹ No explicit session timeout in config" + $nl
         }
 
         # 6. Check for authentication logging
-        $FindingDetails += "`n6. Checking authentication event logging:`n"
-        $cmd = "find /var/log -name '*xo*' -type f </dev/null 2>/dev/null | head -3"
-        $logFiles = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "6. Checking authentication event logging:" + $nl
+        $logFiles = $(timeout 10 find /var/log -maxdepth 5 -name '*xo*' -type f 2>/dev/null | head -3)
         
         if ($logFiles) {
-            $FindingDetails += "  XO log files found:`n"
+            $FindingDetails += "  XO log files found:" + $nl
             foreach ($log in $logFiles) {
-                $FindingDetails += "    $log`n"
+                $FindingDetails += "    $log" + $nl
             }
             
             # Check for authentication events in logs
-            $cmd = "find /var/log -name '*xo*' -type f -exec grep -l 'auth\|login\|signin' {} \; </dev/null 2>/dev/null | head -3"
-            $authLogs = bash -c $cmd 2>$null
+            $authLogs = $(timeout 10 find /var/log -maxdepth 5 -name '*xo*' -type f -exec grep -l 'auth\|login\|signin' '{}' ';' 2>/dev/null | head -3)
             
             if ($authLogs) {
-                $FindingDetails += "  ✓ Authentication events logged`n"
+                $FindingDetails += "  ✓ Authentication events logged" + $nl
             }
         }
         else {
-            $FindingDetails += "  ℹ No XO log files found`n"
+            $FindingDetails += "  ℹ No XO log files found" + $nl
         }
 
         # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
+        $FindingDetails += $nl + "="*60 + $nl
         if ($issues.Count -eq 0 -and $userCount -and [int]$userCount -gt 0) {
             $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "User authentication mechanism properly implemented:`n"
-            $FindingDetails += "  • $userCount user accounts configured`n"
-            $FindingDetails += "  • Password-based authentication active (bcrypt hashing)`n"
+            $FindingDetails += "Result: NOT A FINDING" + $nl
+            $FindingDetails += "User authentication mechanism properly implemented:" + $nl
+            $FindingDetails += "  • $userCount user accounts configured" + $nl
+            $FindingDetails += "  • Password-based authentication active (bcrypt hashing)" + $nl
             if ($foundPlugins.Count -gt 0) {
-                $FindingDetails += "  • External authentication plugins: $($foundPlugins -join ', ')`n"
+                $FindingDetails += "  • External authentication plugins: $($foundPlugins -join ', ')" + $nl
             }
-            $FindingDetails += "  • Authentication events logged`n"
+            $FindingDetails += "  • Authentication events logged" + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "Result: OPEN - Manual verification required`n"
-            $FindingDetails += "Potential concerns:`n"
+            $FindingDetails += "Result: OPEN - Manual verification required" + $nl
+            $FindingDetails += "Potential concerns:" + $nl
             foreach ($issue in $issues) {
-                $FindingDetails += "  • $issue`n"
+                $FindingDetails += "  • $issue" + $nl
             }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. All users are uniquely identified and authenticated`n"
-            $FindingDetails += "  2. Authentication integrates with DoD PKI/CAC (if required)`n"
-            $FindingDetails += "  3. Multi-factor authentication is enabled for privileged users`n"
-            $FindingDetails += "  4. Authentication failures are logged and audited`n"
-            $FindingDetails += "  5. Session timeouts are appropriate for sensitivity level`n"
+            $FindingDetails += $nl + "Manual review needed to verify:" + $nl
+            $FindingDetails += "  1. All users are uniquely identified and authenticated" + $nl
+            $FindingDetails += "  2. Authentication integrates with DoD PKI/CAC (if required)" + $nl
+            $FindingDetails += "  3. Multi-factor authentication is enabled for privileged users" + $nl
+            $FindingDetails += "  4. Authentication failures are logged and audited" + $nl
+            $FindingDetails += "  5. Session timeouts are appropriate for sensitivity level" + $nl
         }
     }
     else {
@@ -43769,6 +43739,7 @@ Function Get-V222536 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222536"
     $RuleID = "SV-222536r508029_rule"
     $Status = "Not_Reviewed"
@@ -43784,51 +43755,51 @@ Function Get-V222536 {
     # Check: Verify XO password policy requires 15+ character passwords
     
     if ($IsLinux) {
-        $FindingDetails += "=== Xen Orchestra Password Length Policy Check ===`n`n"
+        $FindingDetails += "=== Xen Orchestra Password Length Policy Check ===" + $nl + $nl
         
         # Check 1: Look for password policy in XO configuration
-        $pwPolicyConfig = bash -c "find /etc/xo-server -name '*.toml' -exec grep -iE '(password|minLength|min_length)' {} + </dev/null </dev/null 2>/dev/null || echo 'POLICY_NOT_FOUND'"
+        $pwPolicyConfig = $(timeout 10 find /etc/xo-server -maxdepth 5 -name '*.toml' -exec grep -iE '(password|minLength|min_length)' '{}' + 2>/dev/null || echo 'POLICY_NOT_FOUND')
         
         if ($pwPolicyConfig -notmatch "POLICY_NOT_FOUND") {
-            $FindingDetails += "XO Configuration - Password Policy:`n"
-            $FindingDetails += $pwPolicyConfig + "`n`n"
+            $FindingDetails += "XO Configuration - Password Policy:" + $nl
+            $FindingDetails += $pwPolicyConfig + $nl + $nl
             
             # Parse for minimum length
             if ($pwPolicyConfig -match "minLength\s*=\s*(\d+)" -or $pwPolicyConfig -match "min_length\s*=\s*(\d+)") {
                 $minLength = [int]$matches[1]
-                $FindingDetails += "Configured Minimum Password Length: $minLength characters`n"
+                $FindingDetails += "Configured Minimum Password Length: $minLength characters" + $nl
                 
                 if ($minLength -ge 15) {
-                    $FindingDetails += "✓ Meets 15-character minimum requirement`n"
+                    $FindingDetails += "✓ Meets 15-character minimum requirement" + $nl
                     $meetsLengthReq = $true
                 }
                 else {
-                    $FindingDetails += "❌ Does NOT meet 15-character minimum (currently: $minLength)`n"
+                    $FindingDetails += "❌ Does NOT meet 15-character minimum (currently: $minLength)" + $nl
                     $insufficientLength = $true
                 }
             }
         }
         else {
-            $FindingDetails += "⚠ No password policy configuration found in XO config files`n"
+            $FindingDetails += "⚠ No password policy configuration found in XO config files" + $nl
         }
         
         # Check 2: Check for PAM password requirements (system-level enforcement)
-        $pamPwquality = bash -c "grep -E '^password.*pam_pwquality.so' /etc/pam.d/common-password </dev/null </dev/null 2>/dev/null || echo 'PAM_NOT_CONFIGURED'"
+        $pamPwquality = $(grep -E '^password.*pam_pwquality.so' /etc/pam.d/common-password 2>/dev/null || echo 'PAM_NOT_CONFIGURED')
         
         if ($pamPwquality -notmatch "PAM_NOT_CONFIGURED") {
-            $FindingDetails += "`nPAM Password Quality Configuration:`n"
-            $FindingDetails += $pamPwquality + "`n"
+            $FindingDetails += $nl + "PAM Password Quality Configuration:" + $nl
+            $FindingDetails += $pamPwquality + $nl
             
             # Check pwquality.conf for minlen
-            $pwqualityConf = bash -c "grep -E '^minlen' /etc/security/pwquality.conf </dev/null </dev/null 2>/dev/null || echo 'NOT_SET'"
+            $pwqualityConf = $(grep -E '^minlen' /etc/security/pwquality.conf 2>/dev/null || echo 'NOT_SET')
             
             if ($pwqualityConf -notmatch "NOT_SET") {
-                $FindingDetails += "`nPAM Password Length Setting:`n$pwqualityConf`n"
+                $FindingDetails += $nl + "PAM Password Length Setting:" + $nl + "$pwqualityConf" + $nl
                 
                 if ($pwqualityConf -match "minlen\s*=\s*(\d+)") {
                     $pamMinLen = [int]$matches[1]
                     if ($pamMinLen -ge 15) {
-                        $FindingDetails += "✓ PAM enforces 15+ character passwords at system level`n"
+                        $FindingDetails += "✓ PAM enforces 15+ character passwords at system level" + $nl
                         $pamEnforcesLength = $true
                     }
                 }
@@ -43836,48 +43807,48 @@ Function Get-V222536 {
         }
         
         # Check 3: Verify authentication mechanism
-        $authMechanism = bash -c "find /etc/xo-server -name '*.toml' -exec grep -iE '(authentication.*method|authProvider)' {} + </dev/null 2>/dev/null"
+        $authMechanism = $(timeout 10 find /etc/xo-server -maxdepth 5 -name '*.toml' -exec grep -iE '(authentication.*method|authProvider)' '{}' + 2>/dev/null)
         
         if ($authMechanism) {
-            $FindingDetails += "`nAuthentication Mechanism:`n$authMechanism`n"
+            $FindingDetails += $nl + "Authentication Mechanism:" + $nl + "$authMechanism" + $nl
             
             # If using external auth (LDAP/AD), password policy is enforced there
             if ($authMechanism -match "ldap|activedirectory|saml") {
-                $FindingDetails += "`n✓ External authentication detected - password policy enforced by external provider`n"
+                $FindingDetails += $nl + "✓ External authentication detected - password policy enforced by external provider" + $nl
                 $externalAuth = $true
             }
         }
         
         # Check 4: Check actual user passwords in Redis (test if short passwords exist)
-        $userCount = bash -c "redis-cli --no-auth-warning KEYS 'xo:user:*' </dev/null 2>/dev/null | wc -l"
-        $FindingDetails += "`nTotal Users in Database: $userCount`n"
+        $userCount = $(redis-cli --no-auth-warning KEYS 'xo:user:*' 2>/dev/null | wc -l)
+        $FindingDetails += $nl + "Total Users in Database: $userCount" + $nl
         
         if ($userCount -gt 0) {
             # Note: We can't check actual password lengths (they're hashed), but we can check if policy is enforced
-            $FindingDetails += "Note: Passwords are properly hashed - length validation occurs at input.`n"
+            $FindingDetails += "Note: Passwords are properly hashed - length validation occurs at input." + $nl
         }
         
         # Determine Status
         if ($insufficientLength) {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Password policy does NOT enforce 15-character minimum.`n"
-            $FindingDetails += "Current minimum length is below required 15 characters.`n"
+            $FindingDetails += $nl + "❌ FINDING: Password policy does NOT enforce 15-character minimum." + $nl
+            $FindingDetails += "Current minimum length is below required 15 characters." + $nl
         }
         elseif ($meetsLengthReq -or $pamEnforcesLength) {
             $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Application enforces minimum 15-character password length.`n"
-            if ($meetsLengthReq) { $FindingDetails += "XO configuration enforces 15+ character requirement.`n" }
-            if ($pamEnforcesLength) { $FindingDetails += "System PAM enforces 15+ character requirement.`n" }
+            $FindingDetails += $nl + "✅ COMPLIANCE: Application enforces minimum 15-character password length." + $nl
+            if ($meetsLengthReq) { $FindingDetails += "XO configuration enforces 15+ character requirement." + $nl }
+            if ($pamEnforcesLength) { $FindingDetails += "System PAM enforces 15+ character requirement." + $nl }
         }
         elseif ($externalAuth) {
             $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ External authentication in use - password policy enforced by external provider.`n"
-            $FindingDetails += "Manual verification required to confirm external provider meets 15-character minimum.`n"
+            $FindingDetails += $nl + "⚠ External authentication in use - password policy enforced by external provider." + $nl
+            $FindingDetails += "Manual verification required to confirm external provider meets 15-character minimum." + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Unable to verify 15-character password enforcement.`n"
-            $FindingDetails += "No password policy configuration found in XO or system PAM configuration.`n"
+            $FindingDetails += $nl + "❌ FINDING: Unable to verify 15-character password enforcement." + $nl
+            $FindingDetails += "No password policy configuration found in XO or system PAM configuration." + $nl
         }
     }
     else {
@@ -43980,6 +43951,7 @@ Function Get-V222542 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222542"
     $RuleID = "SV-222542r508029_rule"
     $Status = "Not_Reviewed"
@@ -43991,52 +43963,52 @@ Function Get-V222542 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "V-222542: Password Storage - Cryptographic Representations Only`n"
-    $FindingDetails += "=" * 70 + "`n`n"
+    $FindingDetails = "V-222542: Password Storage - Cryptographic Representations Only" + $nl
+    $FindingDetails += "=" * 70 + $nl + $nl
     
     # Check for plaintext passwords in configuration files
-    $FindingDetails += "1. Scanning for plaintext passwords in XO configuration...`n"
+    $FindingDetails += "1. Scanning for plaintext passwords in XO configuration..." + $nl
     try {
-        $configCheck = bash -c "find /etc/xo-server /opt/xo/xo-server -name '*.toml' -o -name '*.conf' -o -name '*.json' </dev/null 2>/dev/null | xargs grep -i 'password.*=.*[^$]' </dev/null 2>/dev/null | grep -v '#' | grep -v 'bcrypt\|scrypt\|sha\|hash' | head -5 || echo 'No plaintext passwords found'"
-        $FindingDetails += "   Result: $configCheck`n"
+        $configCheck = $(timeout 10 find /etc/xo-server /opt/xo/xo-server -maxdepth 5 -name '*.toml' -o -name '*.conf' -o -name '*.json' 2>/dev/null | xargs grep -i 'password.*=.*[^$]' 2>/dev/null | grep -v '#' | grep -v 'bcrypt\|scrypt\|sha\|hash' | head -5 || echo 'No plaintext passwords found')
+        $FindingDetails += "   Result: $configCheck" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check Redis for password storage patterns
-    $FindingDetails += "`n2. Checking authentication mechanism...`n"
+    $FindingDetails += $nl + "2. Checking authentication mechanism..." + $nl
     try {
-        $authMech = bash -c "if [ -f /opt/xo/xo-server/dist/authentication.js ]; then grep -i 'bcrypt\|scrypt\|hash' /opt/xo/xo-server/dist/authentication.js | head -3 || echo 'Authentication file exists'; else echo 'Authentication file not found'; fi </dev/null"
-        $FindingDetails += "   $authMech`n"
+        $authMech = $(test -f /opt/xo/xo-server/dist/authentication.js && (grep -i 'bcrypt\|scrypt\|hash' /opt/xo/xo-server/dist/authentication.js | head -3 || echo 'Authentication file exists') || echo 'Authentication file not found')
+        $FindingDetails += "   $authMech" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check for database password hashing
-    $FindingDetails += "`n3. Checking database authentication storage...`n"
+    $FindingDetails += $nl + "3. Checking database authentication storage..." + $nl
     try {
         # XO uses Redis - check if passwords are hashed
-        $redisCheck = bash -c "redis-cli --scan --pattern 'xo:user:*' </dev/null 2>/dev/null | head -3 || echo 'Redis not accessible'"
-        $FindingDetails += "   User storage: $redisCheck`n"
+        $redisCheck = $(redis-cli --scan --pattern 'xo:user:*' 2>/dev/null | head -3 || echo 'Redis not accessible')
+        $FindingDetails += "   User storage: $redisCheck" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Determine status
-    $FindingDetails += "`n" + "=" * 70 + "`n"
-    $FindingDetails += "EVALUATION:`n"
+    $FindingDetails += $nl + "=" * 70 + $nl
+    $FindingDetails += "EVALUATION:" + $nl
     
     if ($configCheck -match "No plaintext passwords found" -or $configCheck -eq "") {
         $Status = "NotAFinding"
-        $FindingDetails += "- No plaintext passwords detected in configuration files`n"
-        $FindingDetails += "- Xen Orchestra uses bcrypt for password hashing by default`n"
-        $FindingDetails += "- Passwords stored as cryptographic hashes (bcrypt)`n"
-        $FindingDetails += "`nSTATUS: NotAFinding (Passwords properly hashed)`n"
+        $FindingDetails += "- No plaintext passwords detected in configuration files" + $nl
+        $FindingDetails += "- Xen Orchestra uses bcrypt for password hashing by default" + $nl
+        $FindingDetails += "- Passwords stored as cryptographic hashes (bcrypt)" + $nl
+        $FindingDetails += $nl + "STATUS: NotAFinding (Passwords properly hashed)" + $nl
     } else {
         $Status = "Open"
-        $FindingDetails += "- Potential plaintext passwords detected in configuration`n"
-        $FindingDetails += "- Review findings above for security concerns`n"
-        $FindingDetails += "`nSTATUS: Open (FINDING - Plaintext passwords may exist)`n"
+        $FindingDetails += "- Potential plaintext passwords detected in configuration" + $nl
+        $FindingDetails += "- Review findings above for security concerns" + $nl
+        $FindingDetails += $nl + "STATUS: Open (FINDING - Plaintext passwords may exist)" + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -44134,6 +44106,7 @@ Function Get-V222543 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222543"
     $RuleID = "SV-222543r508029_rule"
     $Status = "Not_Reviewed"
@@ -44145,57 +44118,57 @@ Function Get-V222543 {
     $Justification = ""
 
     #---=== Begin Custom Code ===---#
-    $FindingDetails = "V-222543: Password Transmission - Encryption Required`n"
-    $FindingDetails += "=" * 70 + "`n`n"
+    $FindingDetails = "V-222543: Password Transmission - Encryption Required" + $nl
+    $FindingDetails += "=" * 70 + $nl + $nl
     
     # Check if HTTPS is enforced (XO web interface)
-    $FindingDetails += "1. Checking HTTPS/TLS configuration...`n"
+    $FindingDetails += "1. Checking HTTPS/TLS configuration..." + $nl
     try {
         # Check XO listening ports
-        $ports = bash -c "ss -tlnp </dev/null 2>/dev/null | grep xo-server || echo 'No listening ports found'"
-        $FindingDetails += "   XO listening ports: $ports`n"
+        $ports = $(ss -tlnp 2>/dev/null | grep xo-server || echo 'No listening ports found')
+        $FindingDetails += "   XO listening ports: $ports" + $nl
         
         # Check for HTTP to HTTPS redirect
-        $httpRedirect = bash -c "curl -sI http://localhost </dev/null 2>/dev/null | grep -i 'location.*https' || echo 'No HTTPS redirect detected'"
-        $FindingDetails += "   HTTP redirect check: $httpRedirect`n"
+        $httpRedirect = $(curl -sI http://localhost 2>/dev/null | grep -i 'location.*https' || echo 'No HTTPS redirect detected')
+        $FindingDetails += "   HTTP redirect check: $httpRedirect" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check TLS configuration in config files
-    $FindingDetails += "`n2. Checking TLS/SSL configuration in XO config...`n"
+    $FindingDetails += $nl + "2. Checking TLS/SSL configuration in XO config..." + $nl
     try {
-        $tlsConfig = bash -c "if [ -f /etc/xo-server/config.toml ]; then grep -A 5 '\[http\]' /etc/xo-server/config.toml </dev/null 2>/dev/null | grep -i 'cert\|key\|redirect' || echo 'No TLS config section found'; else echo 'config.toml not found'; fi"
-        $FindingDetails += "   $tlsConfig`n"
+        $tlsConfig = $(test -f /etc/xo-server/config.toml && (grep -A 5 '\[http\]' /etc/xo-server/config.toml 2>/dev/null | grep -i 'cert\|key\|redirect' || echo 'No TLS config section found') || echo 'config.toml not found')
+        $FindingDetails += "   $tlsConfig" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Check nginx TLS config (if reverse proxy used)
-    $FindingDetails += "`n3. Checking nginx TLS configuration (reverse proxy)...`n"
+    $FindingDetails += $nl + "3. Checking nginx TLS configuration (reverse proxy)..." + $nl
     try {
-        $nginxTLS = bash -c "if [ -f /etc/nginx/sites-enabled/xo ]; then grep -i 'ssl\|443\|redirect' /etc/nginx/sites-enabled/xo </dev/null 2>/dev/null | head -5 || echo 'Nginx config exists but no SSL detected'; elif systemctl is-active nginx >/dev/null 2>&1; then echo 'Nginx active - check config'; else echo 'Nginx not configured'; fi"
-        $FindingDetails += "   $nginxTLS`n"
+        $nginxTLS = $(test -f /etc/nginx/sites-enabled/xo && (grep -i 'ssl\|443\|redirect' /etc/nginx/sites-enabled/xo 2>/dev/null | head -5 || echo 'Nginx config exists but no SSL detected') || (systemctl is-active nginx >/dev/null 2>&1 && echo 'Nginx active - check config' || echo 'Nginx not configured'))
+        $FindingDetails += "   $nginxTLS" + $nl
     } catch {
-        $FindingDetails += "   ERROR: $_`n"
+        $FindingDetails += "   ERROR: $_" + $nl
     }
     
     # Determine status
-    $FindingDetails += "`n" + "=" * 70 + "`n"
-    $FindingDetails += "EVALUATION:`n"
+    $FindingDetails += $nl + "=" * 70 + $nl
+    $FindingDetails += "EVALUATION:" + $nl
     
     if ($ports -match "443" -or $tlsConfig -match "cert" -or $nginxTLS -match "ssl") {
         $Status = "NotAFinding"
-        $FindingDetails += "- TLS/HTTPS configuration detected`n"
-        $FindingDetails += "- Passwords transmitted over encrypted channel`n"
-        $FindingDetails += "- HTTPS port 443 in use or TLS configured`n"
-        $FindingDetails += "`nSTATUS: NotAFinding (TLS encryption in use)`n"
+        $FindingDetails += "- TLS/HTTPS configuration detected" + $nl
+        $FindingDetails += "- Passwords transmitted over encrypted channel" + $nl
+        $FindingDetails += "- HTTPS port 443 in use or TLS configured" + $nl
+        $FindingDetails += $nl + "STATUS: NotAFinding (TLS encryption in use)" + $nl
     } else {
         $Status = "Open"
-        $FindingDetails += "- NO TLS/HTTPS configuration detected`n"
-        $FindingDetails += "- Passwords may be transmitted in cleartext`n"
-        $FindingDetails += "- Configure HTTPS or use nginx reverse proxy with TLS`n"
-        $FindingDetails += "`nSTATUS: Open (FINDING - No TLS detected)`n"
+        $FindingDetails += "- NO TLS/HTTPS configuration detected" + $nl
+        $FindingDetails += "- Passwords may be transmitted in cleartext" + $nl
+        $FindingDetails += "- Configure HTTPS or use nginx reverse proxy with TLS" + $nl
+        $FindingDetails += $nl + "STATUS: Open (FINDING - No TLS detected)" + $nl
     }
     #---=== End Custom Code ===---#
 
@@ -44314,7 +44287,7 @@ Function Get-V222550 {
     $configPaths = @("/etc/xo-server/config.toml", "/opt/xo/xo-server/config.toml")
     foreach ($cp in $configPaths) {
         if (Test-Path $cp) {
-            $certLine = $(sh -c "grep -iE '^\s*cert\s*=' '$cp' 2>/dev/null | head -1" 2>&1)
+            $certLine = $(grep -iE '^\s*cert\s*=' '$cp' 2>/dev/null | head -1 2>&1)
             $certLineStr = ($certLine -join $nl).Trim()
             if ($certLineStr -match "=\s*['" + [char]34 + "]?(/[^'" + [char]34 + "]+)") {
                 $certFile = $Matches[1].Trim()
@@ -44327,7 +44300,7 @@ Function Get-V222550 {
     $output += $nl + "CHECK 2: Certificate chain validation" + $nl
     $chainValid = $false
     if ($certFile -and (Test-Path $certFile)) {
-        $verify = $(sh -c "openssl verify '$certFile' 2>&1" 2>&1)
+        $verify = $(openssl verify '$certFile' 2>&1)
         $verifyStr = ($verify -join $nl).Trim()
         $output += "  openssl verify: $verifyStr" + $nl
         if ($verifyStr -match "OK") {
@@ -44338,7 +44311,7 @@ Function Get-V222550 {
         }
     } else {
         # Try active TLS connection
-        $tlsVerify = $(sh -c "timeout 5 openssl s_client -connect localhost:443 -verify_return_error </dev/null 2>&1 | grep -E 'Verify return|verify error'" 2>&1)
+        $tlsVerify = $(timeout 5 openssl s_client -connect localhost:443 -verify_return_error 2>&1 | grep -E 'Verify return|verify error' 2>&1)
         $tlsVerifyStr = ($tlsVerify -join $nl).Trim()
         $output += "  Active TLS check: $tlsVerifyStr" + $nl
         if ($tlsVerifyStr -match "Verify return code: 0") {
@@ -44356,7 +44329,7 @@ Function Get-V222550 {
     foreach ($b in $bundles) {
         if (Test-Path $b) {
             $bundleFound = $true
-            $caCount = $(sh -c "grep -c 'BEGIN CERTIFICATE' '$b' 2>/dev/null" 2>&1)
+            $caCount = $(grep -c 'BEGIN CERTIFICATE' '$b' 2>/dev/null)
             $caCountStr = ($caCount -join $nl).Trim()
             $output += "  [PASS] CA bundle found: $b ($caCountStr CAs)" + $nl
             break
@@ -44369,7 +44342,7 @@ Function Get-V222550 {
     # Check 4: Node.js TLS rejection setting
     $output += $nl + "CHECK 4: Node.js TLS validation" + $nl
     $tlsDisabled = $false
-    $envCheck = $(sh -c 'ps auxe 2>/dev/null | grep "xo-server\|cli.mjs" | grep -o "NODE_TLS_REJECT_UNAUTHORIZED=[^[:space:]]*" || echo "not set"' 2>&1)
+    $envCheck = $(ps auxe 2>/dev/null | grep "xo-server\|cli.mjs" | grep -o "NODE_TLS_REJECT_UNAUTHORIZED=[^[:space:]]*" || echo "not set" 2>&1)
     $envCheckStr = ($envCheck -join $nl).Trim()
     if ($envCheckStr -match "=0") {
         $output += "  [FINDING] NODE_TLS_REJECT_UNAUTHORIZED=0 - certificate validation DISABLED" + $nl
@@ -44380,7 +44353,7 @@ Function Get-V222550 {
 
     # Check 5: Certificate details
     $output += $nl + "CHECK 5: Certificate details" + $nl
-    $certDetails = $(sh -c "timeout 5 openssl s_client -connect localhost:443 </dev/null 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>/dev/null" 2>&1)
+    $certDetails = $(timeout 5 openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject -issuer -dates 2>/dev/null)
     $certDetailsStr = ($certDetails -join $nl).Trim()
     if ($certDetailsStr) { $output += "  $certDetailsStr" + $nl }
 
@@ -44514,7 +44487,7 @@ Function Get-V222551 {
     $allKeys = @()
     foreach ($sp in $searchPaths) {
         if (Test-Path $sp) {
-            $found = $(timeout 10 sh -c "find '$sp' -maxdepth 3 -type f \( -name '*.key' -o -name '*-key.pem' -o -name 'privkey.pem' -o -name '*private*' \) 2>/dev/null | head -10" 2>&1)
+            $found = $(timeout 10 find '$sp' -maxdepth 3 -type f '(' -name '*.key' -o -name '*-key.pem' -o -name 'privkey.pem' -o -name '*private*' ')' 2>/dev/null | head -10 2>&1)
             $foundArr = @($found | Where-Object { $_ -and $_.Trim() -ne "" })
             if ($foundArr.Count -gt 0) {
                 $allKeys += $foundArr
@@ -44531,7 +44504,7 @@ Function Get-V222551 {
     foreach ($key in ($allKeys | Select-Object -First 10)) {
         $keyStr = $key.Trim()
         if (-not $keyStr) { continue }
-        $perms = $(sh -c "stat -c '%a %U:%G' '$keyStr' 2>/dev/null" 2>&1)
+        $perms = $(stat -c '%a %U:%G' '$keyStr' 2>/dev/null)
         $permsStr = ($perms -join $nl).Trim()
         $output += "  $keyStr : $permsStr" + $nl
         if ($permsStr -match "^(600|400|640)\s") {
@@ -44548,7 +44521,7 @@ Function Get-V222551 {
     $webDirs = @("/var/www", "/opt/xo/xo-src/xen-orchestra/packages/xo-web/dist")
     foreach ($wd in $webDirs) {
         if (Test-Path $wd) {
-            $wk = $(timeout 5 sh -c "find '$wd' -maxdepth 3 -type f -name '*.key' 2>/dev/null | head -3" 2>&1)
+            $wk = $(timeout 5 find '$wd' -maxdepth 3 -type f -name '*.key' 2>/dev/null | head -3 2>&1)
             $wkStr = ($wk -join $nl).Trim()
             if ($wkStr) {
                 $webKeyFound = $true
@@ -44566,7 +44539,7 @@ Function Get-V222551 {
     foreach ($key in ($allKeys | Select-Object -First 5)) {
         $keyStr = $key.Trim()
         if (-not $keyStr) { continue }
-        $encCheck = $(sh -c "head -2 '$keyStr' 2>/dev/null | grep -c 'ENCRYPTED'" 2>&1)
+        $encCheck = $(head -2 '$keyStr' 2>/dev/null | grep -c 'ENCRYPTED' 2>&1)
         $encCheckStr = ($encCheck -join $nl).Trim()
         if ($encCheckStr -eq "0") {
             $unencrypted++
@@ -44721,14 +44694,14 @@ Function Get-V222554 {
     $cleartextFound = $false
     $properInputFound = $false
     if ($webRoot) {
-        $pwInputs = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' -o -name '*.html' \) -exec grep -l 'type.*password' {} + 2>/dev/null | head -5" 2>&1)
+        $pwInputs = $(timeout 10 find '$webRoot' -maxdepth 5 -type f '(' -name '*.js' -o -name '*.jsx' -o -name '*.html' ')' -exec grep -l 'type.*password' '{}' + 2>/dev/null | head -5 2>&1)
         $pwInputsStr = ($pwInputs -join $nl).Trim()
         if ($pwInputsStr) {
             $output += "  Files with password-type inputs: $pwInputsStr" + $nl
             $properInputFound = $true
         }
         # Check for type='text' on password fields
-        $textPw = $(timeout 10 sh -c "find '$webRoot' -maxdepth 5 -type f \( -name '*.js' -o -name '*.jsx' \) -exec grep -n 'password.*type.*text\|type.*text.*password' {} + 2>/dev/null | head -3" 2>&1)
+        $textPw = $(timeout 10 find '$webRoot' -maxdepth 5 -type f '(' -name '*.js' -o -name '*.jsx' ')' -exec grep -n 'password.*type.*text\|type.*text.*password' '{}' + 2>/dev/null | head -3 2>&1)
         $textPwStr = ($textPw -join $nl).Trim()
         if ($textPwStr) {
             $cleartextFound = $true
@@ -44739,7 +44712,7 @@ Function Get-V222554 {
     # Check 3: Check for cleartext passwords in logs
     $output += $nl + "CHECK 3: Cleartext passwords in log files" + $nl
     $pwInLogs = $false
-    $logCheck = $(timeout 10 sh -c "find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'password.*=.*[^*]' {} + 2>/dev/null | head -3" 2>&1)
+    $logCheck = $(timeout 10 find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'password.*=.*[^*]' '{}' + 2>/dev/null | head -3 2>&1)
     $logCheckStr = ($logCheck -join $nl).Trim()
     if ($logCheckStr) {
         $pwInLogs = $true
@@ -44752,7 +44725,7 @@ Function Get-V222554 {
     $output += $nl + "CHECK 4: UI framework analysis" + $nl
     $reactDetected = $false
     if ($webRoot) {
-        $react = $(sh -c "find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' {} + 2>/dev/null | head -1" 2>&1)
+        $react = $(find '$webRoot' -maxdepth 2 -name 'package.json' -exec grep -l 'react' '{}' + 2>/dev/null | head -1 2>&1)
         $reactStr = ($react -join $nl).Trim()
         if ($reactStr) {
             $reactDetected = $true
@@ -44769,7 +44742,7 @@ Function Get-V222554 {
     }
     if (-not $token -and $env:XO_API_TOKEN) { $token = $env:XO_API_TOKEN }
     if ($token) {
-        $userResp = $(timeout 10 sh -c "curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1" 2>&1)
+        $userResp = $(timeout 10 curl -s -k -H 'Cookie: authenticationToken=$token' -H 'Accept: application/json' 'https://localhost/rest/v0/users' 2>&1)
         $userRespStr = ($userResp -join $nl).Trim()
         if ($userRespStr -match "password") {
             $output += "  [FINDING] API response contains password field" + $nl
@@ -44889,6 +44862,7 @@ Function Get-V222555 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222555"
     $RuleID = "SV-222555r508029_rule"
     $Status = "Not_Reviewed"
@@ -44901,122 +44875,113 @@ Function Get-V222555 {
 
     #---=== Begin Custom Code ===---#
     if ($IsLinux) {
-        $FindingDetails += "CAT I: FIPS-Compliant Cryptographic Module Check`n`n"
+        $FindingDetails += "CAT I: FIPS-Compliant Cryptographic Module Check" + $nl + $nl
         $issues = @()
 
         # 1. Check FIPS mode status
-        $FindingDetails += "1. Checking FIPS 140-2 mode status:`n"
-        $cmd = "cat /proc/sys/crypto/fips_enabled </dev/null 2>/dev/null"
-        $fipsEnabled = bash -c $cmd 2>$null
+        $FindingDetails += "1. Checking FIPS 140-2 mode status:" + $nl
+        $fipsEnabled = $(cat /proc/sys/crypto/fips_enabled 2>/dev/null)
         
         if ($fipsEnabled -eq "1") {
-            $FindingDetails += "  ✓ FIPS mode ENABLED (fips_enabled=1)`n"
+            $FindingDetails += "  ✓ FIPS mode ENABLED (fips_enabled=1)" + $nl
         }
         elseif ($fipsEnabled -eq "0") {
             $issues += "FIPS mode disabled"
-            $FindingDetails += "  ⚠ FIPS mode DISABLED (fips_enabled=0)`n"
+            $FindingDetails += "  ⚠ FIPS mode DISABLED (fips_enabled=0)" + $nl
         }
         else {
-            $FindingDetails += "  ⚠ Unable to determine FIPS status`n"
+            $FindingDetails += "  ⚠ Unable to determine FIPS status" + $nl
             $issues += "FIPS status unknown"
         }
 
         # 2. Check OpenSSL FIPS module
-        $FindingDetails += "`n2. Checking OpenSSL FIPS module:`n"
-        $cmd = "openssl version </dev/null 2>/dev/null"
-        $opensslVersion = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "2. Checking OpenSSL FIPS module:" + $nl
+        $opensslVersion = $(openssl version 2>/dev/null)
         
         if ($opensslVersion) {
-            $FindingDetails += "  OpenSSL version: $opensslVersion`n"
+            $FindingDetails += "  OpenSSL version: $opensslVersion" + $nl
             
             # Check if FIPS module is available
-            $cmd = "openssl list -providers </dev/null 2>/dev/null | grep -i fips"
-            $fipsProvider = bash -c $cmd 2>$null
+            $fipsProvider = $(openssl list -providers 2>/dev/null | grep -i fips)
             
             if ($fipsProvider) {
-                $FindingDetails += "  ✓ FIPS provider available: $fipsProvider`n"
+                $FindingDetails += "  ✓ FIPS provider available: $fipsProvider" + $nl
             }
             else {
-                $FindingDetails += "  ℹ No FIPS provider detected (OpenSSL 3.x command)`n"
+                $FindingDetails += "  ℹ No FIPS provider detected (OpenSSL 3.x command)" + $nl
                 
                 # Try older OpenSSL 1.x method
-                $cmd = "openssl list-message-digest-algorithms </dev/null 2>/dev/null | grep -i fips || echo 'no fips'"
-                $fipsAlg = bash -c $cmd 2>$null
+                $fipsAlg = $(openssl list-message-digest-algorithms 2>/dev/null | grep -i fips || echo 'no fips')
                 
                 if ($fipsAlg -ne 'no fips') {
-                    $FindingDetails += "  FIPS algorithms: $fipsAlg`n"
+                    $FindingDetails += "  FIPS algorithms: $fipsAlg" + $nl
                 }
             }
         }
 
         # 3. Check for libgcrypt FIPS mode
-        $FindingDetails += "`n3. Checking libgcrypt FIPS support:`n"
-        $cmd = "ldconfig -p | grep libgcrypt </dev/null 2>/dev/null"
-        $libgcrypt = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "3. Checking libgcrypt FIPS support:" + $nl
+        $libgcrypt = $(ldconfig -p | grep libgcrypt 2>/dev/null)
         
         if ($libgcrypt) {
-            $FindingDetails += "  ✓ libgcrypt installed`n"
+            $FindingDetails += "  ✓ libgcrypt installed" + $nl
             
             # Check FIPS mode file
             if (Test-Path "/etc/gcrypt/fips_enabled") {
-                $FindingDetails += "  ✓ FIPS mode file exists: /etc/gcrypt/fips_enabled`n"
+                $FindingDetails += "  ✓ FIPS mode file exists: /etc/gcrypt/fips_enabled" + $nl
             }
             else {
-                $FindingDetails += "  ℹ No FIPS mode file for libgcrypt`n"
+                $FindingDetails += "  ℹ No FIPS mode file for libgcrypt" + $nl
             }
         }
         else {
-            $FindingDetails += "  ℹ libgcrypt not detected`n"
+            $FindingDetails += "  ℹ libgcrypt not detected" + $nl
         }
 
         # 4. Check Node.js crypto module (XO uses Node.js)
-        $FindingDetails += "`n4. Checking Node.js crypto module:`n"
-        $cmd = "node --version </dev/null 2>/dev/null"
-        $nodeVersion = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "4. Checking Node.js crypto module:" + $nl
+        $nodeVersion = $(node --version 2>/dev/null)
         
         if ($nodeVersion) {
-            $FindingDetails += "  Node.js version: $nodeVersion`n"
+            $FindingDetails += "  Node.js version: $nodeVersion" + $nl
             
             # Check if Node.js was built with FIPS support
-            $cmd = "node -p 'process.versions.openssl' </dev/null 2>/dev/null"
-            $nodeOpenssl = bash -c $cmd 2>$null
+            $nodeOpenssl = $(node -p 'process.versions.openssl' 2>/dev/null)
             
             if ($nodeOpenssl) {
-                $FindingDetails += "  OpenSSL in Node.js: $nodeOpenssl`n"
+                $FindingDetails += "  OpenSSL in Node.js: $nodeOpenssl" + $nl
             }
             
             # Check if FIPS mode can be enabled
-            $cmd = 'node -e ''try { crypto.setFips(1); console.log("FIPS capable"); } catch(e) { console.log("Not FIPS capable: " + e.message); }'' 2>&1'
-            $nodeFips = bash -c $cmd 2>$null
+            $nodeFips = $(node -e 'try { crypto.setFips(1); console.log("FIPS capable"); } catch(e) { console.log("Not FIPS capable: " + e.message); }' 2>&1)
             
             if ($nodeFips -match 'FIPS capable') {
-                $FindingDetails += "  ✓ Node.js supports FIPS mode`n"
+                $FindingDetails += "  ✓ Node.js supports FIPS mode" + $nl
             }
             elseif ($nodeFips -match 'not supported') {
                 $issues += "Node.js not compiled with FIPS support"
-                $FindingDetails += "  ⚠ Node.js not compiled with FIPS support`n"
-                $FindingDetails += "    $nodeFips`n"
+                $FindingDetails += "  ⚠ Node.js not compiled with FIPS support" + $nl
+                $FindingDetails += "    $nodeFips" + $nl
             }
             else {
-                $FindingDetails += "  ℹ FIPS capability test: $nodeFips`n"
+                $FindingDetails += "  ℹ FIPS capability test: $nodeFips" + $nl
             }
         }
 
         # 5. Check if XO is configured to use FIPS
-        $FindingDetails += "`n5. Checking XO FIPS configuration:`n"
-        $cmd = "ps aux | grep 'node.*xo-server' | grep -o 'force-fips\|enable-fips' || echo 'not set'"
-        $xoFips = bash -c $cmd 2>$null
+        $FindingDetails += $nl + "5. Checking XO FIPS configuration:" + $nl
+        $xoFips = $(ps aux | grep 'node.*xo-server' | grep -o 'force-fips\|enable-fips' || echo 'not set' 2>&1)
         
         if ($xoFips -ne 'not set') {
-            $FindingDetails += "  ✓ XO running with FIPS flag: $xoFips`n"
+            $FindingDetails += "  ✓ XO running with FIPS flag: $xoFips" + $nl
         }
         else {
-            $FindingDetails += "  ℹ XO not running with --force-fips or --enable-fips`n"
+            $FindingDetails += "  ℹ XO not running with --force-fips or --enable-fips" + $nl
             $issues += "XO not started with FIPS flag"
         }
 
         # 6. Check approved cryptographic algorithms
-        $FindingDetails += "`n6. Checking approved cryptographic algorithms:`n"
+        $FindingDetails += $nl + "6. Checking approved cryptographic algorithms:" + $nl
         $xoPath = "/opt/xo/xo-src"
         
         # Check for weak algorithms in code
@@ -45024,76 +44989,75 @@ Function Get-V222555 {
         $weakFound = @()
         
         foreach ($alg in $weakAlgorithms) {
-            $cmd = "grep -r -iE `"`"$alg`"|'$alg'`" $xoPath --include='*.js' </dev/null 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l"
-            $count = bash -c $cmd 2>$null
+            $grepPat = [char]34 + $alg + [char]34 + "|'" + $alg + "'"
+            $count = $(grep -r -iE $grepPat $xoPath --include='*.js' 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l)
             
             if ($count -and [int]$count -gt 0) {
                 $weakFound += "$alg ($count instances)"
-                $FindingDetails += "  ⚠ Weak algorithm detected: $alg ($count instances)`n"
+                $FindingDetails += "  ⚠ Weak algorithm detected: $alg ($count instances)" + $nl
             }
         }
         
         if ($weakFound.Count -eq 0) {
-            $FindingDetails += "  ✓ No obvious weak algorithms detected in code scan`n"
+            $FindingDetails += "  ✓ No obvious weak algorithms detected in code scan" + $nl
         }
         else {
             $issues += "Weak cryptographic algorithms found: $($weakFound -join ', ')"
         }
 
         # 7. Check for FIPS-approved algorithms
-        $FindingDetails += "`n7. Checking for FIPS-approved algorithms:`n"
+        $FindingDetails += $nl + "7. Checking for FIPS-approved algorithms:" + $nl
         $approvedAlgorithms = @("aes-256", "aes-128", "sha256", "sha384", "sha512")
         $approvedFound = @()
         
         foreach ($alg in $approvedAlgorithms) {
-            $cmd = "grep -r -i '$alg' $xoPath --include='*.js' </dev/null 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l"
-            $count = bash -c $cmd 2>$null
+            $count = $(grep -r -i '$alg' $xoPath --include='*.js' 2>/dev/null | grep -v 'test\|spec\|node_modules' | wc -l)
             
             if ($count -and [int]$count -gt 0) {
                 $approvedFound += $alg
-                $FindingDetails += "  ✓ FIPS-approved algorithm in use: $alg ($count instances)`n"
+                $FindingDetails += "  ✓ FIPS-approved algorithm in use: $alg ($count instances)" + $nl
             }
         }
         
         if ($approvedFound.Count -eq 0) {
-            $FindingDetails += "  ℹ No explicit FIPS-approved algorithms detected in code scan`n"
+            $FindingDetails += "  ℹ No explicit FIPS-approved algorithms detected in code scan" + $nl
         }
 
         # Determine status
-        $FindingDetails += "`n" + "="*60 + "`n"
+        $FindingDetails += $nl + "="*60 + $nl
         if ($fipsEnabled -eq "1" -and $issues.Count -eq 0) {
             $Status = "NotAFinding"
-            $FindingDetails += "Result: NOT A FINDING`n"
-            $FindingDetails += "FIPS 140-2 compliant cryptographic module in use:`n"
-            $FindingDetails += "  • System FIPS mode enabled (fips_enabled=1)`n"
-            $FindingDetails += "  • OpenSSL FIPS module available`n"
-            $FindingDetails += "  • No weak cryptographic algorithms detected`n"
+            $FindingDetails += "Result: NOT A FINDING" + $nl
+            $FindingDetails += "FIPS 140-2 compliant cryptographic module in use:" + $nl
+            $FindingDetails += "  • System FIPS mode enabled (fips_enabled=1)" + $nl
+            $FindingDetails += "  • OpenSSL FIPS module available" + $nl
+            $FindingDetails += "  • No weak cryptographic algorithms detected" + $nl
         }
         elseif ($fipsEnabled -eq "0") {
             $Status = "Open"
-            $FindingDetails += "Result: OPEN - FIPS mode not enabled`n"
-            $FindingDetails += "System is not using FIPS 140-2 validated cryptographic module.`n"
-            $FindingDetails += "`nREQUIRED REMEDIATION:`n"
-            $FindingDetails += "  1. Enable FIPS mode: echo 1 > /proc/sys/crypto/fips_enabled`n"
-            $FindingDetails += "  2. Add fips=1 to kernel boot parameters`n"
-            $FindingDetails += "  3. Rebuild initramfs: dracut -f`n"
-            $FindingDetails += "  4. Reboot system to apply FIPS mode`n"
-            $FindingDetails += "  5. Restart XO with --force-fips flag`n"
+            $FindingDetails += "Result: OPEN - FIPS mode not enabled" + $nl
+            $FindingDetails += "System is not using FIPS 140-2 validated cryptographic module." + $nl
+            $FindingDetails += $nl + "REQUIRED REMEDIATION:" + $nl
+            $FindingDetails += "  1. Enable FIPS mode: echo 1 > /proc/sys/crypto/fips_enabled" + $nl
+            $FindingDetails += "  2. Add fips=1 to kernel boot parameters" + $nl
+            $FindingDetails += "  3. Rebuild initramfs: dracut -f" + $nl
+            $FindingDetails += "  4. Reboot system to apply FIPS mode" + $nl
+            $FindingDetails += "  5. Restart XO with --force-fips flag" + $nl
         }
         else {
             $Status = "Not_Reviewed"
-            $FindingDetails += "Result: NOT REVIEWED - Manual verification required`n"
+            $FindingDetails += "Result: NOT REVIEWED - Manual verification required" + $nl
             if ($issues.Count -gt 0) {
-                $FindingDetails += "Potential issues:`n"
+                $FindingDetails += "Potential issues:" + $nl
                 foreach ($issue in $issues) {
-                    $FindingDetails += "  • $issue`n"
+                    $FindingDetails += "  • $issue" + $nl
                 }
             }
-            $FindingDetails += "`nManual review needed to verify:`n"
-            $FindingDetails += "  1. Cryptographic module is FIPS 140-2 validated`n"
-            $FindingDetails += "  2. Only FIPS-approved algorithms are used`n"
-            $FindingDetails += "  3. Weak algorithms (MD5, SHA-1, DES, RC4) are disabled`n"
-            $FindingDetails += "  4. Application is configured to use FIPS mode`n"
+            $FindingDetails += $nl + "Manual review needed to verify:" + $nl
+            $FindingDetails += "  1. Cryptographic module is FIPS 140-2 validated" + $nl
+            $FindingDetails += "  2. Only FIPS-approved algorithms are used" + $nl
+            $FindingDetails += "  3. Weak algorithms (MD5, SHA-1, DES, RC4) are disabled" + $nl
+            $FindingDetails += "  4. Application is configured to use FIPS mode" + $nl
         }
     }
     else {
@@ -45215,7 +45179,7 @@ Function Get-V222577 {
     $output += "CHECK 1: Cookie security flags" + $nl
     $httpOnly = $false
     $secureCookie = $false
-    $headers = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie'" 2>&1)
+    $headers = $(timeout 5 curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie' 2>&1)
     $headersStr = ($headers -join $nl).Trim()
     if ($headersStr) {
         $output += "  Set-Cookie headers:" + $nl + "  $headersStr" + $nl
@@ -45229,7 +45193,7 @@ Function Get-V222577 {
 
     # Check 2: Session storage (Redis)
     $output += $nl + "CHECK 2: Session storage in Redis" + $nl
-    $sessionCount = $(sh -c "timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | wc -l" 2>&1)
+    $sessionCount = $(timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | wc -l 2>&1)
     $sessionCountStr = ($sessionCount -join $nl).Trim()
     $output += "  Active sessions in Redis: $sessionCountStr" + $nl
 
@@ -45237,7 +45201,7 @@ Function Get-V222577 {
     $output += $nl + "CHECK 3: Session ID URL exposure" + $nl
     $urlExposure = $false
     $srcPath = "/opt/xo"
-    $urlCheck = $(timeout 10 sh -c "find '$srcPath' -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'sessionid.*url\|sid.*query\|token.*url.*param' {} + 2>/dev/null | head -3" 2>&1)
+    $urlCheck = $(timeout 10 find '$srcPath' -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'sessionid.*url\|sid.*query\|token.*url.*param' '{}' + 2>/dev/null | head -3 2>&1)
     $urlCheckStr = ($urlCheck -join $nl).Trim()
     if ($urlCheckStr) {
         $urlExposure = $true
@@ -45248,7 +45212,7 @@ Function Get-V222577 {
 
     # Check 4: Session ID in logs
     $output += $nl + "CHECK 4: Session ID in log files" + $nl
-    $logExposure = $(timeout 5 sh -c "find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'authenticationToken\|sessionId' {} + 2>/dev/null | head -3" 2>&1)
+    $logExposure = $(timeout 5 find /var/log -maxdepth 2 -name '*xo*' -type f -exec grep -l 'authenticationToken\|sessionId' '{}' + 2>/dev/null | head -3 2>&1)
     $logExposureStr = ($logExposure -join $nl).Trim()
     if ($logExposureStr) {
         $output += "  [FINDING] Session references in logs: $logExposureStr" + $nl
@@ -45259,7 +45223,7 @@ Function Get-V222577 {
     # Check 5: HTTPS enforcement (session over TLS only)
     $output += $nl + "CHECK 5: HTTPS enforcement" + $nl
     $httpsActive = $false
-    $tlsCheck = $(timeout 5 sh -c "ss -tlnp 2>/dev/null | grep -E ':443\s'" 2>&1)
+    $tlsCheck = $(timeout 5 ss -tlnp 2>/dev/null | grep -E ':443\s' 2>&1)
     $tlsCheckStr = ($tlsCheck -join $nl).Trim()
     if ($tlsCheckStr) {
         $httpsActive = $true
@@ -45402,7 +45366,7 @@ Function Get-V222578 {
     $srcPaths = @("/opt/xo/xo-server", "/opt/xo/packages/xo-server", "/opt/xo/xo-src/xen-orchestra/packages/xo-server")
     foreach ($sp in $srcPaths) {
         if (Test-Path $sp) {
-            $handlers = $(timeout 10 sh -c "find '$sp' -maxdepth 4 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'signOut\|logout\|session.*destroy\|session.*invalidate' {} + 2>/dev/null | head -5" 2>&1)
+            $handlers = $(timeout 10 find '$sp' -maxdepth 4 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'signOut\|logout\|session.*destroy\|session.*invalidate' '{}' + 2>/dev/null | head -5 2>&1)
             $handlersStr = ($handlers -join $nl).Trim()
             if ($handlersStr) {
                 $signOutFound = $true
@@ -45418,7 +45382,7 @@ Function Get-V222578 {
     # Check 2: XO REST API session.signOut endpoint
     $output += $nl + "CHECK 2: XO API session management" + $nl
     $apiSignOut = $false
-    $apiCheck = $(timeout 10 sh -c "find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'session.signOut\|api.*signOut' {} + 2>/dev/null | head -3" 2>&1)
+    $apiCheck = $(timeout 10 find /opt/xo -maxdepth 6 -name '*.js' -not -path '*/node_modules/*' -exec grep -l 'session.signOut\|api.*signOut' '{}' + 2>/dev/null | head -3 2>&1)
     $apiCheckStr = ($apiCheck -join $nl).Trim()
     if ($apiCheckStr) {
         $apiSignOut = $true
@@ -45428,10 +45392,10 @@ Function Get-V222578 {
     # Check 3: Redis session TTL (automatic expiration)
     $output += $nl + "CHECK 3: Redis session TTL" + $nl
     $hasTTL = $false
-    $sampleKey = $(sh -c "timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | head -1" 2>&1)
+    $sampleKey = $(timeout 3 redis-cli --scan --pattern 'xo:session:*' 2>/dev/null | head -1 2>&1)
     $sampleKeyStr = ($sampleKey -join $nl).Trim()
     if ($sampleKeyStr) {
-        $ttl = $(sh -c "timeout 3 redis-cli TTL '$sampleKeyStr' 2>/dev/null" 2>&1)
+        $ttl = $(timeout 3 redis-cli TTL '$sampleKeyStr' 2>/dev/null)
         $ttlStr = ($ttl -join $nl).Trim()
         $output += "  Session key: $sampleKeyStr" + $nl
         $output += "  TTL: $ttlStr seconds" + $nl
@@ -45447,7 +45411,7 @@ Function Get-V222578 {
 
     # Check 4: Cookie settings (session cookies vs persistent)
     $output += $nl + "CHECK 4: Cookie persistence settings" + $nl
-    $cookieCheck = $(timeout 5 sh -c "curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie'" 2>&1)
+    $cookieCheck = $(timeout 5 curl -s -k -I 'https://localhost' 2>&1 | grep -i 'Set-Cookie' 2>&1)
     $cookieCheckStr = ($cookieCheck -join $nl).Trim()
     if ($cookieCheckStr) {
         $output += "  $cookieCheckStr" + $nl
@@ -45580,7 +45544,7 @@ Function Get-V222585 {
     $FindingDetails = "Service Failure Configuration Check" + $nl + $nl
 
     # Check 1: Find xo-server systemd service file and Restart directive
-    $svcFile = $(find /etc/systemd /lib/systemd /usr/lib/systemd -maxdepth 4 -name "xo-server.service" 2>&1 | head -1)
+    $svcFile = $(timeout 10 find /etc/systemd /lib/systemd /usr/lib/systemd -maxdepth 4 -name "xo-server.service" 2>&1 | head -1)
     $FindingDetails += "Systemd service file: " + $nl
     if ($svcFile -match "xo-server.service") {
         $FindingDetails += $svcFile + $nl
@@ -45733,6 +45697,7 @@ Function Get-V222588 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222588"
     $RuleID = "SV-222588r508029_rule"
     $Status = "Not_Reviewed"
@@ -45748,90 +45713,90 @@ Function Get-V222588 {
     # Check: Verify file integrity monitoring and cryptographic protection for data at rest
     
     if ($IsLinux) {
-        $FindingDetails += "=== Data at Rest Modification Protection Check ===`n`n"
+        $FindingDetails += "=== Data at Rest Modification Protection Check ===" + $nl + $nl
         
         # Check 1: Verify filesystem encryption (LUKS/dm-crypt)
-        $encryptedPartitions = bash -c "lsblk -o NAME,FSTYPE,MOUNTPOINT | grep -i crypt || echo 'NO_ENCRYPTION' </dev/null"
+        $encryptedPartitions = $(lsblk -o NAME,FSTYPE,MOUNTPOINT | grep -i crypt || echo 'NO_ENCRYPTION' 2>&1)
         
         if ($encryptedPartitions -notmatch "NO_ENCRYPTION") {
-            $FindingDetails += "Encrypted Partitions Detected:`n$encryptedPartitions`n`n"
-            $FindingDetails += "✓ Filesystem-level encryption in use`n"
+            $FindingDetails += "Encrypted Partitions Detected:" + $nl + "$encryptedPartitions" + $nl + $nl
+            $FindingDetails += "✓ Filesystem-level encryption in use" + $nl
             $hasFilesystemEncryption = $true
         }
         else {
-            $FindingDetails += "⚠ No encrypted partitions detected`n"
+            $FindingDetails += "⚠ No encrypted partitions detected" + $nl
         }
         
         # Check 2: Verify Redis data persistence encryption
-        $redisConfig = bash -c "grep -E '(save |appendonly)' /etc/redis/redis.conf </dev/null </dev/null 2>/dev/null || echo 'REDIS_CONFIG_NOT_FOUND'"
+        $redisConfig = $(grep -E '(save |appendonly)' /etc/redis/redis.conf 2>/dev/null || echo 'REDIS_CONFIG_NOT_FOUND')
         
         if ($redisConfig -notmatch "REDIS_CONFIG_NOT_FOUND") {
-            $FindingDetails += "`nRedis Persistence Configuration:`n$redisConfig`n"
+            $FindingDetails += $nl + "Redis Persistence Configuration:" + $nl + "$redisConfig" + $nl
             
             # Check if Redis data directory is on encrypted partition
-            $redisDir = bash -c "grep '^dir ' /etc/redis/redis.conf </dev/null 2>/dev/null | awk '{print `$2}' || echo '/var/lib/redis'"
-            $FindingDetails += "Redis Data Directory: $redisDir`n"
+            $redisDir = $(grep '^dir ' /etc/redis/redis.conf 2>/dev/null | awk '{print `$2}' || echo '/var/lib/redis')
+            $FindingDetails += "Redis Data Directory: $redisDir" + $nl
             
             if ($hasFilesystemEncryption) {
-                $FindingDetails += "✓ Redis data protected by filesystem encryption`n"
+                $FindingDetails += "✓ Redis data protected by filesystem encryption" + $nl
                 $redisProtected = $true
             }
         }
         
         # Check 3: File integrity monitoring (AIDE, Tripwire, OSSEC)
-        $aideInstalled = bash -c "which aide </dev/null </dev/null 2>/dev/null || echo 'NOT_FOUND'"
-        $tripwireInstalled = bash -c "which tripwire </dev/null </dev/null 2>/dev/null || echo 'NOT_FOUND'"
-        $ossecInstalled = bash -c "which ossec-control </dev/null </dev/null 2>/dev/null || echo 'NOT_FOUND'"
+        $aideInstalled = $(which aide 2>/dev/null || echo 'NOT_FOUND')
+        $tripwireInstalled = $(which tripwire 2>/dev/null || echo 'NOT_FOUND')
+        $ossecInstalled = $(which ossec-control 2>/dev/null || echo 'NOT_FOUND')
         
-        $FindingDetails += "`nFile Integrity Monitoring:`n"
+        $FindingDetails += $nl + "File Integrity Monitoring:" + $nl
         if ($aideInstalled -notmatch "NOT_FOUND") {
-            $FindingDetails += "✓ AIDE detected: $aideInstalled`n"
+            $FindingDetails += "✓ AIDE detected: $aideInstalled" + $nl
             $hasFIM = $true
         }
         elseif ($tripwireInstalled -notmatch "NOT_FOUND") {
-            $FindingDetails += "✓ Tripwire detected: $tripwireInstalled`n"
+            $FindingDetails += "✓ Tripwire detected: $tripwireInstalled" + $nl
             $hasFIM = $true
         }
         elseif ($ossecInstalled -notmatch "NOT_FOUND") {
-            $FindingDetails += "✓ OSSEC detected: $ossecInstalled`n"
+            $FindingDetails += "✓ OSSEC detected: $ossecInstalled" + $nl
             $hasFIM = $true
         }
         else {
-            $FindingDetails += "⚠ No file integrity monitoring tools detected`n"
+            $FindingDetails += "⚠ No file integrity monitoring tools detected" + $nl
         }
         
         # Check 4: SELinux/AppArmor for mandatory access control
-        $selinuxStatus = bash -c "getenforce </dev/null </dev/null 2>/dev/null || echo 'NOT_INSTALLED'"
-        $apparmorStatus = bash -c "aa-status </dev/null 2>/dev/null | grep -i 'apparmor module is loaded' || echo 'NOT_LOADED'"
+        $selinuxStatus = $(timeout 5 getenforce2>/dev/null || echo 'NOT_INSTALLED')
+        $apparmorStatus = $(aa-status 2>/dev/null | grep -i 'apparmor module is loaded' || echo 'NOT_LOADED')
         
-        $FindingDetails += "`nMandatory Access Control:`n"
+        $FindingDetails += $nl + "Mandatory Access Control:" + $nl
         if ($selinuxStatus -match "Enforcing|Permissive") {
-            $FindingDetails += "✓ SELinux Status: $selinuxStatus`n"
+            $FindingDetails += "✓ SELinux Status: $selinuxStatus" + $nl
             $hasMAC = $true
         }
         elseif ($apparmorStatus -notmatch "NOT_LOADED") {
-            $FindingDetails += "✓ AppArmor is loaded and active`n"
+            $FindingDetails += "✓ AppArmor is loaded and active" + $nl
             $hasMAC = $true
         }
         else {
-            $FindingDetails += "⚠ No mandatory access control detected`n"
+            $FindingDetails += "⚠ No mandatory access control detected" + $nl
         }
         
         # Determine Status
         if ($hasFilesystemEncryption -and $redisProtected) {
             $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Cryptographic mechanisms protect data at rest.`n"
-            $FindingDetails += "Filesystem encryption and secure data storage implemented.`n"
+            $FindingDetails += $nl + "✅ COMPLIANCE: Cryptographic mechanisms protect data at rest." + $nl
+            $FindingDetails += "Filesystem encryption and secure data storage implemented." + $nl
         }
         elseif ($hasFIM -or $hasMAC) {
             $Status = "Open"
-            $FindingDetails += "`n⚠ Partial protection detected - manual review recommended.`n"
-            $FindingDetails += "File integrity monitoring or MAC present but encryption not verified.`n"
+            $FindingDetails += $nl + "⚠ Partial protection detected - manual review recommended." + $nl
+            $FindingDetails += "File integrity monitoring or MAC present but encryption not verified." + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: Insufficient protection for data at rest.`n"
-            $FindingDetails += "No filesystem encryption, FIM, or MAC detected.`n"
+            $FindingDetails += $nl + "❌ FINDING: Insufficient protection for data at rest." + $nl
+            $FindingDetails += "No filesystem encryption, FIM, or MAC detected." + $nl
         }
     }
     else {
@@ -45934,6 +45899,7 @@ Function Get-V222589 {
     )
 
     $ModuleName = (Get-Command $MyInvocation.MyCommand).Source
+    $nl = [Environment]::NewLine
     $VulnID = "V-222589"
     $RuleID = "SV-222589r508029_rule"
     $Status = "Not_Reviewed"
@@ -45949,85 +45915,85 @@ Function Get-V222589 {
     # Check: Verify encryption at rest for sensitive data storage
     
     if ($IsLinux) {
-        $FindingDetails += "=== Encryption at Rest for DoD Information ===`n`n"
+        $FindingDetails += "=== Encryption at Rest for DoD Information ===" + $nl + $nl
         
         # Check 1: Verify disk encryption status
-        $luksDrives = bash -c "lsblk -o NAME,FSTYPE | grep crypto_LUKS | wc -l"
+        $luksDrives = $(lsblk -o NAME,FSTYPE | grep crypto_LUKS | wc -l 2>&1)
         
-        $FindingDetails += "LUKS Encrypted Drives: $luksDrives`n"
+        $FindingDetails += "LUKS Encrypted Drives: $luksDrives" + $nl
         if ([int]$luksDrives -gt 0) {
-            $FindingDetails += "✓ Disk encryption implemented using LUKS`n"
+            $FindingDetails += "✓ Disk encryption implemented using LUKS" + $nl
             $hasLUKS = $true
             
             # Get encryption details
-            $luksDetails = bash -c "lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -B1 crypto_LUKS </dev/null"
-            $FindingDetails += "`nEncrypted Volumes:`n$luksDetails`n`n"
+            $luksDetails = $(lsblk -o NAME,FSTYPE,SIZE,MOUNTPOINT | grep -B1 crypto_LUKS 2>&1)
+            $FindingDetails += $nl + "Encrypted Volumes:" + $nl + "$luksDetails" + $nl + $nl
         }
         else {
-            $FindingDetails += "⚠ No LUKS encryption detected`n`n"
+            $FindingDetails += "⚠ No LUKS encryption detected" + $nl + $nl
         }
         
         # Check 2: Verify Redis data encryption
-        $redisDataDir = bash -c "ps aux | grep '[r]edis-server' | grep -oP '(?<=dir )\S+' || echo '/var/lib/redis' </dev/null"
-        $FindingDetails += "Redis Data Directory: $redisDataDir`n"
+        $redisDataDir = $(ps aux | grep '[r]edis-server' | grep -oP '(?<=dir )\S+' || echo '/var/lib/redis' 2>&1)
+        $FindingDetails += "Redis Data Directory: $redisDataDir" + $nl
         
         # Check if Redis directory is on encrypted filesystem
-        $redisMountpoint = bash -c "df $redisDataDir </dev/null 2>/dev/null | tail -1 | awk '{print `$1}'"
-        $isRedisEncrypted = bash -c "lsblk -o NAME,FSTYPE | grep `$(basename $redisMountpoint) | grep -i crypt || echo 'NOT_ENCRYPTED' </dev/null"
+        $redisMountpoint = $(df $redisDataDir 2>/dev/null | tail -1 | awk '{print `$1}')
+        $isRedisEncrypted = $(lsblk -o NAME,FSTYPE | grep `$(basename $redisMountpoint) | grep -i crypt || echo 'NOT_ENCRYPTED' 2>&1)
         
         if ($isRedisEncrypted -notmatch "NOT_ENCRYPTED") {
-            $FindingDetails += "✓ Redis data directory on encrypted partition`n"
+            $FindingDetails += "✓ Redis data directory on encrypted partition" + $nl
             $redisEncrypted = $true
         }
         else {
-            $FindingDetails += "⚠ Redis data directory not on encrypted partition`n"
+            $FindingDetails += "⚠ Redis data directory not on encrypted partition" + $nl
         }
         
         # Check 3: XO backup encryption
-        $xoBackupConfig = bash -c "find /etc/xo-server -name '*.toml' -exec grep -iE '(backup|encryption)' {} + </dev/null </dev/null 2>/dev/null || echo 'NO_BACKUP_CONFIG'"
+        $xoBackupConfig = $(timeout 10 find /etc/xo-server -maxdepth 5 -name '*.toml' -exec grep -iE '(backup|encryption)' '{}' + 2>/dev/null || echo 'NO_BACKUP_CONFIG')
         
         if ($xoBackupConfig -notmatch "NO_BACKUP_CONFIG") {
-            $FindingDetails += "`nXO Backup Configuration:`n$xoBackupConfig`n"
+            $FindingDetails += $nl + "XO Backup Configuration:" + $nl + "$xoBackupConfig" + $nl
             
             if ($xoBackupConfig -match "encrypt|crypt") {
-                $FindingDetails += "✓ Backup encryption configured`n"
+                $FindingDetails += "✓ Backup encryption configured" + $nl
                 $backupEncrypted = $true
             }
         }
         
         # Check 4: Verify cryptographic algorithm compliance (FIPS 140-2)
-        $fipsMode = bash -c "cat /proc/sys/crypto/fips_enabled </dev/null </dev/null 2>/dev/null || echo '0'"
+        $fipsMode = $(cat /proc/sys/crypto/fips_enabled 2>/dev/null || echo '0')
         
-        $FindingDetails += "`nFIPS Mode: $(if ($fipsMode -eq '1') { 'Enabled' } else { 'Disabled' })`n"
+        $FindingDetails += $nl + "FIPS Mode: $(if ($fipsMode -eq '1') { 'Enabled' } else { 'Disabled' })" + $nl
         if ($fipsMode -eq '1') {
-            $FindingDetails += "✓ FIPS 140-2 compliant cryptography enabled`n"
+            $FindingDetails += "✓ FIPS 140-2 compliant cryptography enabled" + $nl
             $fipsEnabled = $true
         }
         
         # Check 5: Verify encryption key management
-        $keyManagement = bash -c "systemctl is-active cryptsetup.target </dev/null </dev/null 2>/dev/null || echo 'NOT_ACTIVE'"
+        $keyManagement = $(systemctl is-active cryptsetup.target 2>/dev/null || echo 'NOT_ACTIVE')
         
         if ($keyManagement -match "active") {
-            $FindingDetails += "✓ Cryptsetup target active (key management in place)`n"
+            $FindingDetails += "✓ Cryptsetup target active (key management in place)" + $nl
             $hasKeyManagement = $true
         }
         
         # Determine Status
         if ($hasLUKS -and $redisEncrypted) {
             $Status = "NotAFinding"
-            $FindingDetails += "`n✅ COMPLIANCE: Appropriate cryptography protects stored DoD information.`n"
-            $FindingDetails += "Disk encryption and secure data storage implemented.`n"
-            if ($fipsEnabled) { $FindingDetails += "FIPS 140-2 compliance verified.`n" }
+            $FindingDetails += $nl + "✅ COMPLIANCE: Appropriate cryptography protects stored DoD information." + $nl
+            $FindingDetails += "Disk encryption and secure data storage implemented." + $nl
+            if ($fipsEnabled) { $FindingDetails += "FIPS 140-2 compliance verified." + $nl }
         }
         elseif ($hasLUKS) {
             $Status = "Not_Reviewed"
-            $FindingDetails += "`n⚠ Partial encryption detected - verify all sensitive data is protected.`n"
-            $FindingDetails += "Disk encryption present but Redis data protection requires verification.`n"
+            $FindingDetails += $nl + "⚠ Partial encryption detected - verify all sensitive data is protected." + $nl
+            $FindingDetails += "Disk encryption present but Redis data protection requires verification." + $nl
         }
         else {
             $Status = "Open"
-            $FindingDetails += "`n❌ FINDING: No encryption at rest detected for DoD information.`n"
-            $FindingDetails += "LUKS disk encryption required for sensitive data protection.`n"
+            $FindingDetails += $nl + "❌ FINDING: No encryption at rest detected for DoD information." + $nl
+            $FindingDetails += "LUKS disk encryption required for sensitive data protection." + $nl
         }
     }
     else {
