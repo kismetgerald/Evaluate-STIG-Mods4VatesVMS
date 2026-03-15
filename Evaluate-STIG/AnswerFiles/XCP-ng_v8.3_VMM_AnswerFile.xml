@@ -3462,6 +3462,13 @@ Contact the system administrator to configure password complexity requirements.<
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
       </Answer>
+      <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode></ValidationCode>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>The automated scan determined this system meets the dual authorization requirement for audit data movement and deletion. Organizational procedures enforce ISSO approval before audit log operations, audit rules are configured as immutable (-e 2), and log file permissions restrict access to root only. The ISSO/ISSM should verify that dual authorization procedures are documented in the System Security Plan and actively enforced.</ValidTrueComment>
+        <ValidFalseStatus>NR</ValidFalseStatus>
+        <ValidFalseComment>This answer index should not normally be used.</ValidFalseComment>
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-207468">

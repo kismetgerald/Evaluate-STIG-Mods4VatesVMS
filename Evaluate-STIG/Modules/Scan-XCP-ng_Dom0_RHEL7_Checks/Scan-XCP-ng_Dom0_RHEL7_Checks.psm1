@@ -175,7 +175,7 @@ Function Get-V204392 {
 
     # Check for permission/ownership/group deviations from vendor defaults
     # rpm -Va flags: M=permissions, U=user, G=group
-    $rpmCheck = $(timeout 30 sh -c 'rpm -Va 2>/dev/null | grep -E "^.M|^.{5}U|^.{6}G" | head -25')
+    $rpmCheck = $(timeout 30 rpm -Va 2>/dev/null | grep -E "^.M|^.{5}U|^.{6}G" | head -25)
     $rpmStr = ($rpmCheck -join $nl).Trim()
 
     $FindingDetails += "Command: rpm -Va | grep permission/ownership/group changes" + $nl
@@ -9088,14 +9088,14 @@ Function Get-V204460 {
     $FindingDetails += ("=" * 60) + $nl + $nl
 
     # List all accounts with login shells
-    $loginAccounts = $(timeout 5 sh -c 'awk -F: ''$7 !~ /nologin|false|sync|shutdown|halt/ {print $1":"$3":"$6":"$7}'' /etc/passwd' 2>&1)
+    $loginAccounts = $(timeout 5 awk -F: '$7 !~ /nologin|false|sync|shutdown|halt/ {print $1":"$3":"$6":"$7}' /etc/passwd 2>&1)
     $loginStr = ($loginAccounts -join $nl).Trim()
 
     $FindingDetails += "Accounts with login shells:" + $nl
     $FindingDetails += $loginStr + $nl + $nl
 
     # Count non-system accounts (UID >= 1000)
-    $userAccounts = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$3":"$6}'' /etc/passwd' 2>&1)
+    $userAccounts = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$3":"$6}' /etc/passwd 2>&1)
     $userStr = ($userAccounts -join $nl).Trim()
 
     $FindingDetails += "Non-system interactive accounts (UID >= 1000):" + $nl
@@ -9348,14 +9348,14 @@ Function Get-V204462 {
     $FindingDetails = "V-204462 - Root Must Be Only UID 0 Account" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $uid0Check = $(timeout 5 sh -c "awk -F: '\$3 == 0 {print \$1}' /etc/passwd")
+    $uid0Check = $(timeout 5 awk -F: '$3 == 0 {print $1}' /etc/passwd 2>&1)
     $uid0Str = ($uid0Check -join $nl).Trim()
 
     $FindingDetails += "Command: awk -F: " + [char]39 + "$3 == 0 {print $1}" + [char]39 + " /etc/passwd" + $nl
     $FindingDetails += "Result: " + $uid0Str + $nl + $nl
 
     # Split results and check if only root has UID 0
-    $accounts = $uid0Str -split $nl | Where-Object { $_.Trim() -ne "" }
+    $accounts = @($uid0Str -split $nl | Where-Object { $_.Trim() -ne "" })
 
     if ($accounts.Count -eq 1 -and $accounts[0].Trim() -eq "root") {
         $Status = "NotAFinding"
@@ -9487,7 +9487,7 @@ Function Get-V204463 {
     $nouser = $(timeout 30 find / -maxdepth 5 -nouser -not -path "/proc/*" -not -path "/sys/*" -not -path "/run/*" 2>/dev/null | head -20)
     $nouserStr = ($nouser -join $nl).Trim()
 
-    $FindingDetails += "Command: find / -maxdepth 5 -nouser (excluding /proc, /sys, /run)" + $nl
+    $FindingDetails += "Command: timeout 10 find / -maxdepth 5 -nouser (excluding /proc, /sys, /run)" + $nl
     $FindingDetails += "Result: " + $(if ($nouserStr -ne "") { $nouserStr } else { "(no unowned files found)" }) + $nl + $nl
 
     if ($nouserStr -eq "") {
@@ -9614,7 +9614,7 @@ Function Get-V204464 {
     $nogroup = $(timeout 30 find / -maxdepth 5 -nogroup -not -path "/proc/*" -not -path "/sys/*" -not -path "/run/*" 2>/dev/null | head -20)
     $nogroupStr = ($nogroup -join $nl).Trim()
 
-    $FindingDetails += "Command: find / -maxdepth 5 -nogroup (excluding /proc, /sys, /run)" + $nl
+    $FindingDetails += "Command: timeout 10 find / -maxdepth 5 -nogroup (excluding /proc, /sys, /run)" + $nl
     $FindingDetails += "Result: " + $(if ($nogroupStr -ne "") { $nogroupStr } else { "(no files without group found)" }) + $nl + $nl
 
     if ($nogroupStr -eq "") {
@@ -9866,7 +9866,7 @@ Function Get-V204467 {
     $FindingDetails += ("=" * 60) + $nl + $nl
 
     # Get interactive users (UID >= 1000, not nologin)
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $FindingDetails += "Interactive users (UID >= 1000):" + $nl
@@ -10010,7 +10010,7 @@ Function Get-V204468 {
     $FindingDetails = "V-204468 - Home Directory Permissions 0750 or Less" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $FindingDetails += "Interactive user home directories:" + $nl + $nl
@@ -10156,7 +10156,7 @@ Function Get-V204469 {
     $FindingDetails = "V-204469 - Home Directories Owned by Respective Users" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $FindingDetails += "Interactive user home directory ownership:" + $nl + $nl
@@ -10302,7 +10302,7 @@ Function Get-V204470 {
     $FindingDetails = "V-204470 - Home Dirs Group-Owned by Primary Group" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $FindingDetails += "Interactive user home directory group ownership:" + $nl + $nl
@@ -10449,7 +10449,7 @@ Function Get-V204471 {
     $FindingDetails = "V-204471 - Home Dir Files Must Have Valid Owner" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -10599,7 +10599,7 @@ Function Get-V204472 {
     $FindingDetails = "V-204472 - Home Dir Files Group-Owned by Member Group" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -10749,7 +10749,7 @@ Function Get-V204473 {
     $FindingDetails = "V-204473 - Home Dir Files Mode 0750 or Less" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -10896,7 +10896,7 @@ Function Get-V204474 {
     $FindingDetails = "V-204474 - Init Files Owned by User or Root" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -11046,7 +11046,7 @@ Function Get-V204475 {
     $FindingDetails = "V-204475 - Init Files Group-Owned by Primary Group or Root" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$4":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -11197,7 +11197,7 @@ Function Get-V204476 {
     $FindingDetails = "V-204476 - Init Files Mode 0740 or Less" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -11344,7 +11344,7 @@ Function Get-V204477 {
     $FindingDetails = "V-204477 - Init File PATH References Only Home Dir" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -12540,7 +12540,7 @@ Function Get-V204488 {
     $FindingDetails = "V-204488 - User Umask Value 077" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $interactiveUsers = $(timeout 5 sh -c 'awk -F: ''($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}'' /etc/passwd' 2>&1)
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin|false/) {print $1":"$6}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $allOk = $true
@@ -13222,7 +13222,7 @@ Function Get-V204493 {
     $FindingDetails += "fstab /home entry: " + $(if ([string]::IsNullOrWhiteSpace($fstabStr)) { "(not found)" } else { $fstabStr }) + $nl + $nl
 
     # XCP-ng Dom0 typically has no interactive users - check if any exist
-    $interactiveUsers = $(timeout 5 sh -c "awk -F: '(\$3>=1000)&&(\$7 !~ /nologin/){print \$1}' /etc/passwd")
+    $interactiveUsers = $(timeout 5 awk -F: '($3>=1000)&&($7 !~ /nologin/){print $1}' /etc/passwd 2>&1)
     $usersStr = ($interactiveUsers -join $nl).Trim()
 
     $FindingDetails += "Interactive users (UID >= 1000): " + $(if ([string]::IsNullOrWhiteSpace($usersStr)) { "(none)" } else { $usersStr }) + $nl + $nl
@@ -16882,7 +16882,7 @@ Function Get-V204531 {
     $auditRules = $(timeout 5 cat /etc/audit/audit.rules 2>&1)
     $auditStr = $auditRules -join $nl
 
-    $grepResult = $(timeout 5 sh -c 'grep -E "open|truncate|creat" /etc/audit/audit.rules' 2>&1)
+    $grepResult = $(timeout 5 grep -E "open|truncate|creat" /etc/audit/audit.rules 2>&1)
     $grepStr = ($grepResult -join $nl).Trim()
 
     $FindingDetails += "Audit rules for file access syscalls:" + $nl
@@ -25616,7 +25616,7 @@ Function Get-V204606 {
     $shostsCheck = $(timeout 30 find / -maxdepth 5 -name '*.shosts' -type f 2>/dev/null | head -10)
     $shostsStr = ($shostsCheck -join $nl).Trim()
 
-    $FindingDetails += "Command: find / -maxdepth 5 -name '*.shosts' -type f" + $nl
+    $FindingDetails += "Command: timeout 10 find / -maxdepth 5 -name '*.shosts' -type f" + $nl
     $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($shostsStr)) { "(none found)" } else { $shostsStr }) + $nl + $nl
 
     if ([string]::IsNullOrWhiteSpace($shostsStr)) {
@@ -25745,7 +25745,7 @@ Function Get-V204607 {
     $shostsEq = $(timeout 30 find / -maxdepth 5 -name 'shosts.equiv' -type f 2>/dev/null | head -10)
     $shostsEqStr = ($shostsEq -join $nl).Trim()
 
-    $FindingDetails += "Command: find / -maxdepth 5 -name 'shosts.equiv' -type f" + $nl
+    $FindingDetails += "Command: timeout 10 find / -maxdepth 5 -name 'shosts.equiv' -type f" + $nl
     $FindingDetails += "Result: " + $(if ([string]::IsNullOrWhiteSpace($shostsEqStr)) { "(none found)" } else { $shostsEqStr }) + $nl + $nl
 
     if ([string]::IsNullOrWhiteSpace($shostsEqStr)) {
@@ -29470,7 +29470,7 @@ Function Get-V214799 {
 
     # Check for hash mismatches (column 3 = '5' means MD5 hash changed)
     # --noconfig excludes config files which are expected to change
-    $hashCheck = $(timeout 60 sh -c 'rpm -Va --noconfig 2>/dev/null | grep "^..5" | head -25')
+    $hashCheck = $(timeout 60 rpm -Va --noconfig 2>/dev/null | grep "^..5" | head -25)
     $hashStr = ($hashCheck -join $nl).Trim()
 
     $FindingDetails += "Command: rpm -Va --noconfig | grep " + [char]34 + "^..5" + [char]34 + $nl
@@ -31617,7 +31617,7 @@ Function Get-V251702 {
     $FindingDetails = "V-251702 - No Accounts With Blank Passwords in Shadow" + $nl
     $FindingDetails += ("=" * 60) + $nl + $nl
 
-    $blankPw = $(timeout 5 sh -c "awk -F: '!\$2 {print \$1}' /etc/shadow 2>/dev/null")
+    $blankPw = $(timeout 5 awk -F: '!$2 {print $1}' /etc/shadow 2>/dev/null)
     $blankStr = ($blankPw -join $nl).Trim()
 
     $FindingDetails += "Command: awk -F: " + [char]39 + "!$2 {print $1}" + [char]39 + " /etc/shadow" + $nl

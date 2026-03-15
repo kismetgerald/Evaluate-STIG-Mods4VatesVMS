@@ -269,8 +269,7 @@ Function Get-XOAuditPluginInfo {
     # Note: /rest/v0/plugins is NOT a valid collection endpoint — each plugin
     # registers sub-routes under /rest/v0/plugins/<name>/. We test the audit
     # plugin by querying its records endpoint; a valid response means it is loaded.
-    $recordArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records?limit=10${sq} 2>/dev/null"
-    $recordsJson = $(sh -c $recordArgs 2>&1)
+    $recordsJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" "https://localhost/rest/v0/plugins/audit/records?limit=10" 2>/dev/null)
 
     if ($LASTEXITCODE -ne 0 -or -not $recordsJson) {
         $Global:XOAuditPluginInfo.Details = "Unable to query XO REST API at /rest/v0/plugins/audit/records"
@@ -303,8 +302,7 @@ Function Get-XOAuditPluginInfo {
         $firstId = $records[0]
         # URL-encode the record ID (contains $ characters)
         $encodedId = [Uri]::EscapeDataString($firstId)
-        $detailArgs = "timeout 10 curl -s -k -H ${sq}Cookie: authenticationToken=${token}${sq} ${sq}https://localhost/rest/v0/plugins/audit/records/${encodedId}${sq} 2>/dev/null"
-        $detailJson = $(sh -c $detailArgs 2>&1)
+            $detailJson = $(timeout 10 curl -s -k -H "Cookie: authenticationToken=${token}" "https://localhost/rest/v0/plugins/audit/records/${encodedId}" 2>/dev/null)
         if ($detailJson) {
             $detailStr = ($detailJson -join "")
             if ($detailStr -match "previousId|nonce|previousRecord") {
@@ -1565,7 +1563,7 @@ Function Get-V203595 {
     # Check 3: SSH Banner configuration
     $output += "Check 3: SSH Banner Configuration${nl}"
     try {
-        $sshBanner = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i '^banner'" 2>&1)
+        $sshBanner = $(timeout 5 sshd -T 2>/dev/null | grep -i '^banner' 2>&1)
         $sshBannerStr = ($sshBanner -join $nl).Trim()
         if ($sshBannerStr -match "banner\s+(/\S+)") {
             $bannerPath = $matches[1]
@@ -1704,7 +1702,7 @@ Function Get-V203596 {
     # Check 1: SSH PrintMotd and Banner settings
     $output += "Check 1: SSH Banner Display Configuration${nl}"
     try {
-        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(banner|printmotd|printlastlog)'" 2>&1)
+        $sshConfig = $(timeout 5 sshd -T 2>/dev/null | grep -iE '^(banner|printmotd|printlastlog)' 2>&1)
         $sshStr = ($sshConfig -join $nl).Trim()
         if ($sshStr) {
             foreach ($line in ($sshStr -split $nl)) {
@@ -1752,8 +1750,8 @@ Function Get-V203596 {
         $gdmInstalled = $(timeout 5 dpkg -l gdm3 2>&1)
         $gdmStr = ($gdmInstalled -join $nl).Trim()
         if ($gdmStr -match "^ii\s+gdm3") {
-            $bannerEnabled = $(timeout 5 sh -c "gsettings get org.gnome.login-screen banner-message-enable 2>/dev/null" 2>&1)
-            $bannerText = $(timeout 5 sh -c "gsettings get org.gnome.login-screen banner-message-text 2>/dev/null" 2>&1)
+            $bannerEnabled = $(timeout 5 gsettings get org.gnome.login-screen banner-message-enable 2>/dev/null)
+            $bannerText = $(timeout 5 gsettings get org.gnome.login-screen banner-message-text 2>/dev/null)
             $output += "  GDM3 installed${nl}"
             $output += "  Banner enabled: $(($bannerEnabled -join $nl).Trim())${nl}"
             $output += "  Banner text: $(($bannerText -join $nl).Trim())${nl}"
@@ -1888,7 +1886,7 @@ Function Get-V203597 {
     # Check 1: PAM limits.conf for maxlogins
     $output += "Check 1: PAM Session Limits (/etc/security/limits.conf)${nl}"
     try {
-        $limitsContent = $(timeout 5 sh -c "grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep -i maxlogins" 2>&1)
+        $limitsContent = $(timeout 5 grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep -i maxlogins 2>&1)
         $limitsStr = ($limitsContent -join $nl).Trim()
         if ($limitsStr -and $limitsStr -notmatch "No such file") {
             $output += "  maxlogins entries found:${nl}"
@@ -1917,7 +1915,7 @@ Function Get-V203597 {
     # Check 2: limits.d directory
     $output += "Check 2: PAM Limits Drop-in (/etc/security/limits.d/)${nl}"
     try {
-        $limitsD = $(timeout 5 sh -c "grep -r maxlogins /etc/security/limits.d/ 2>/dev/null" 2>&1)
+        $limitsD = $(timeout 5 grep -r maxlogins /etc/security/limits.d/ 2>/dev/null)
         $limitsDStr = ($limitsD -join $nl).Trim()
         if ($limitsDStr -and $limitsDStr -notmatch "No such file") {
             $output += "  maxlogins entries in limits.d:${nl}"
@@ -1937,7 +1935,7 @@ Function Get-V203597 {
     # Check 3: SSH MaxSessions
     $output += "Check 3: SSH MaxSessions${nl}"
     try {
-        $sshMax = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i maxsessions" 2>&1)
+        $sshMax = $(timeout 5 sshd -T 2>/dev/null | grep -i maxsessions 2>&1)
         $sshMaxStr = ($sshMax -join $nl).Trim()
         if ($sshMaxStr -match "maxsessions\s+(\d+)") {
             $sshMaxVal = [int]$matches[1]
@@ -2109,7 +2107,7 @@ Function Get-V203598 {
     $output += "Check 2: Console Lock Utility${nl}"
     $vlockInstalled = $false
     try {
-        $vlockCheck = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlockCheck = $(timeout 5 which vlock 2>/dev/null || which physlock 2>/dev/null)
         $vlockStr = ($vlockCheck -join $nl).Trim()
         if ($vlockStr -match "vlock|physlock") {
             $vlockInstalled = $true
@@ -2127,7 +2125,7 @@ Function Get-V203598 {
     # Check 3: SSH re-authentication requirement
     $output += "Check 3: SSH Session Re-authentication${nl}"
     try {
-        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)'" 2>&1)
+        $sshConfig = $(timeout 5 sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)' 2>&1)
         $sshStr = ($sshConfig -join $nl).Trim()
         if ($sshStr) {
             foreach ($line in ($sshStr -split $nl)) {
@@ -2264,7 +2262,7 @@ Function Get-V203599 {
     $output += "Check 1: SSH Inactivity Timeout${nl}"
     $sshTimeoutPass = $false
     try {
-        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)'" 2>&1)
+        $sshConfig = $(timeout 5 sshd -T 2>/dev/null | grep -iE '^(clientaliveinterval|clientalivecountmax)' 2>&1)
         $sshStr = ($sshConfig -join $nl).Trim()
         if ($sshStr) {
             foreach ($line in ($sshStr -split $nl)) {
@@ -2297,7 +2295,7 @@ Function Get-V203599 {
     $output += "Check 2: Shell Inactivity Timeout (TMOUT)${nl}"
     $tmoutPass = $false
     try {
-        $tmoutFiles = $(timeout 5 sh -c "grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null" 2>&1)
+        $tmoutFiles = $(timeout 5 grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null)
         $tmoutStr = ($tmoutFiles -join $nl).Trim()
         if ($tmoutStr -and $tmoutStr -notmatch "No such file") {
             foreach ($line in ($tmoutStr -split $nl | Select-Object -First 5)) {
@@ -2326,7 +2324,7 @@ Function Get-V203599 {
     # Check 3: tmux lock-after-time (if tmux is used)
     $output += "Check 3: tmux Lock Timeout${nl}"
     try {
-        $tmuxConf = $(timeout 5 sh -c "cat /etc/tmux.conf 2>/dev/null; cat ~/.tmux.conf 2>/dev/null" 2>&1)
+        $tmuxConf = $(timeout 5 cat /etc/tmux.conf 2>/dev/null; cat ~/.tmux.conf 2>/dev/null)
         $tmuxStr = ($tmuxConf -join $nl).Trim()
         if ($tmuxStr -match "lock-after-time\s+(\d+)") {
             $lockTime = [int]$matches[1]
@@ -2464,7 +2462,7 @@ Function Get-V203600 {
     # Check 1: vlock or physlock for user-initiated console lock
     $output += "Check 1: Console Lock Utilities${nl}"
     try {
-        $vlock = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlock = $(timeout 5 which vlock 2>/dev/null || which physlock 2>/dev/null)
         $vlockStr = ($vlock -join $nl).Trim()
         if ($vlockStr -match "vlock|physlock") {
             $output += "  [PASS] Console lock utility available: $vlockStr${nl}"
@@ -2642,7 +2640,7 @@ Function Get-V203601 {
         if ($gdmStr -match "^ii\s+gdm3") {
             $hasGui = $true
             $output += "  [INFO] GDM3 installed - graphical lock screen applies${nl}"
-            $lockEnabled = $(timeout 5 sh -c "gsettings get org.gnome.desktop.screensaver lock-enabled 2>/dev/null" 2>&1)
+            $lockEnabled = $(timeout 5 gsettings get org.gnome.desktop.screensaver lock-enabled 2>/dev/null)
             $lockStr = ($lockEnabled -join $nl).Trim()
             $output += "  Screensaver lock enabled: $lockStr${nl}"
         }
@@ -2665,7 +2663,7 @@ Function Get-V203601 {
             $output += "  [PASS] tmux installed - lock-session clears display and requires password${nl}"
             $cliLockConceals = $true
         }
-        $vlockPath = $(timeout 5 sh -c "which vlock 2>/dev/null || which physlock 2>/dev/null" 2>&1)
+        $vlockPath = $(timeout 5 which vlock 2>/dev/null || which physlock 2>/dev/null)
         $vlockStr = ($vlockPath -join $nl).Trim()
         if ($vlockStr -match "vlock|physlock") {
             $output += "  [PASS] Console lock utility clears terminal display: $vlockStr${nl}"
@@ -2683,7 +2681,7 @@ Function Get-V203601 {
     # Check 3: SSH disconnects clear remote display
     $output += "Check 3: SSH Session Termination${nl}"
     try {
-        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientaliveinterval" 2>&1)
+        $sshConfig = $(timeout 5 sshd -T 2>/dev/null | grep -i clientaliveinterval 2>&1)
         $sshStr = ($sshConfig -join $nl).Trim()
         if ($sshStr -match "clientaliveinterval\s+(\d+)") {
             $interval = [int]$matches[1]
@@ -7066,7 +7064,7 @@ Function Get-V203625 {
     # Check 1: pwquality.conf ucredit setting
     $output += "Check 1: pwquality.conf ucredit Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ucredit'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ucredit' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "ucredit\s*=\s*(-?\d+)") {
             $ucreditVal = [int]$Matches[1]
@@ -7090,7 +7088,7 @@ Function Get-V203625 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -7108,7 +7106,7 @@ Function Get-V203625 {
     # Check 3: libpam-pwquality package installed
     $output += "Check 3: libpam-pwquality Package${nl}"
     try {
-        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgCheck = $(timeout 5 dpkg -l libpam-pwquality 2>/dev/null | grep '^ii' 2>&1)
         $pkgStr = ($pkgCheck -join $nl).Trim()
         if ($pkgStr) {
             $output += "  $pkgStr${nl}"
@@ -7242,7 +7240,7 @@ Function Get-V203626 {
     # Check 1: pwquality.conf lcredit setting
     $output += "Check 1: pwquality.conf lcredit Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'lcredit'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'lcredit' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "lcredit\s*=\s*(-?\d+)") {
             $lcreditVal = [int]$Matches[1]
@@ -7266,7 +7264,7 @@ Function Get-V203626 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -7284,7 +7282,7 @@ Function Get-V203626 {
     # Check 3: libpam-pwquality package installed
     $output += "Check 3: libpam-pwquality Package${nl}"
     try {
-        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgCheck = $(timeout 5 dpkg -l libpam-pwquality 2>/dev/null | grep '^ii' 2>&1)
         $pkgStr = ($pkgCheck -join $nl).Trim()
         if ($pkgStr) {
             $output += "  $pkgStr${nl}"
@@ -7418,7 +7416,7 @@ Function Get-V203627 {
     # Check 1: pwquality.conf dcredit setting
     $output += "Check 1: pwquality.conf dcredit Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dcredit'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dcredit' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "dcredit\s*=\s*(-?\d+)") {
             $dcreditVal = [int]$Matches[1]
@@ -7442,7 +7440,7 @@ Function Get-V203627 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -7460,7 +7458,7 @@ Function Get-V203627 {
     # Check 3: libpam-pwquality package installed
     $output += "Check 3: libpam-pwquality Package${nl}"
     try {
-        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgCheck = $(timeout 5 dpkg -l libpam-pwquality 2>/dev/null | grep '^ii' 2>&1)
         $pkgStr = ($pkgCheck -join $nl).Trim()
         if ($pkgStr) {
             $output += "  $pkgStr${nl}"
@@ -7594,7 +7592,7 @@ Function Get-V203628 {
     # Check 1: pwquality.conf difok setting (minimum different characters)
     $output += "Check 1: pwquality.conf difok Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'difok'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'difok' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "difok\s*=\s*(\d+)") {
             $difokVal = [int]$Matches[1]
@@ -7618,7 +7616,7 @@ Function Get-V203628 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -7636,7 +7634,7 @@ Function Get-V203628 {
     # Check 3: Current minlen to validate difok ratio
     $output += "Check 3: Minimum Password Length (for difok ratio)${nl}"
     try {
-        $minlenConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $minlenConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen' 2>&1)
         $minlenStr = ($minlenConf -join $nl).Trim()
         if ($minlenStr -match "minlen\s*=\s*(\d+)") {
             $minlenVal = [int]$Matches[1]
@@ -8157,7 +8155,7 @@ Function Get-V203631 {
     # Check 1: /etc/login.defs PASS_MIN_DAYS
     $output += "Check 1: /etc/login.defs PASS_MIN_DAYS${nl}"
     try {
-        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_DAYS'" 2>&1)
+        $loginDefs = $(timeout 5 grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_DAYS' 2>&1)
         $loginStr = ($loginDefs -join $nl).Trim()
         if ($loginStr -match "PASS_MIN_DAYS\s+(\d+)") {
             $minDays = [int]$Matches[1]
@@ -8182,7 +8180,7 @@ Function Get-V203631 {
     # Check 2: Per-user PASS_MIN_DAYS via chage
     $output += "Check 2: Per-User Minimum Password Age${nl}"
     try {
-        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userAccounts = $(timeout 5 awk -F: '($3 >= 1000 || $1 == [char]34 + "root" + [char]34) && $7 !~ /nologin|false/ {print $1}' /etc/passwd 2>/dev/null)
         $userStr = ($userAccounts -join $nl).Trim()
         if ($userStr) {
             $users = $userStr -split $nl
@@ -8190,7 +8188,7 @@ Function Get-V203631 {
             foreach ($user in $users) {
                 $u = $user.Trim()
                 if (-not $u) { continue }
-                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Minimum'" 2>&1)
+                $chageOut = $(timeout 5 chage -l $u 2>/dev/null | grep -i 'Minimum' 2>&1)
                 $chageStr = ($chageOut -join $nl).Trim()
                 if ($chageStr -match ":\s*(\d+)") {
                     $userMin = [int]$Matches[1]
@@ -8336,7 +8334,7 @@ Function Get-V203632 {
     # Check 1: /etc/login.defs PASS_MAX_DAYS
     $output += "Check 1: /etc/login.defs PASS_MAX_DAYS${nl}"
     try {
-        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MAX_DAYS'" 2>&1)
+        $loginDefs = $(timeout 5 grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MAX_DAYS' 2>&1)
         $loginStr = ($loginDefs -join $nl).Trim()
         if ($loginStr -match "PASS_MAX_DAYS\s+(\d+)") {
             $maxDays = [int]$Matches[1]
@@ -8361,7 +8359,7 @@ Function Get-V203632 {
     # Check 2: Per-user PASS_MAX_DAYS via chage
     $output += "Check 2: Per-User Maximum Password Age${nl}"
     try {
-        $userAccounts = $(timeout 5 sh -c "awk -F: '(\$3 >= 1000 || \$1 == [char]34 + "root" + [char]34) && \$7 !~ /nologin|false/ {print \$1}' /etc/passwd 2>/dev/null" 2>&1)
+        $userAccounts = $(timeout 5 awk -F: '($3 >= 1000 || $1 == [char]34 + "root" + [char]34) && $7 !~ /nologin|false/ {print $1}' /etc/passwd 2>/dev/null)
         $userStr = ($userAccounts -join $nl).Trim()
         if ($userStr) {
             $users = $userStr -split $nl
@@ -8369,7 +8367,7 @@ Function Get-V203632 {
             foreach ($user in $users) {
                 $u = $user.Trim()
                 if (-not $u) { continue }
-                $chageOut = $(timeout 5 sh -c "chage -l $u 2>/dev/null | grep -i 'Maximum'" 2>&1)
+                $chageOut = $(timeout 5 chage -l $u 2>/dev/null | grep -i 'Maximum' 2>&1)
                 $chageStr = ($chageOut -join $nl).Trim()
                 if ($chageStr -match ":\s*(\d+)") {
                     $userMax = [int]$Matches[1]
@@ -8514,7 +8512,7 @@ Function Get-V203634 {
     # Check 1: pwquality.conf minlen setting
     $output += "Check 1: pwquality.conf minlen Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'minlen' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "minlen\s*=\s*(\d+)") {
             $minlenVal = [int]$Matches[1]
@@ -8538,7 +8536,7 @@ Function Get-V203634 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -8556,7 +8554,7 @@ Function Get-V203634 {
     # Check 3: /etc/login.defs PASS_MIN_LEN
     $output += "Check 3: /etc/login.defs PASS_MIN_LEN${nl}"
     try {
-        $loginDefs = $(timeout 5 sh -c "grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_LEN'" 2>&1)
+        $loginDefs = $(timeout 5 grep -v '^#' /etc/login.defs 2>/dev/null | grep -i 'PASS_MIN_LEN' 2>&1)
         $loginStr = ($loginDefs -join $nl).Trim()
         if ($loginStr -match "PASS_MIN_LEN\s+(\d+)") {
             $passMinLen = [int]$Matches[1]
@@ -8700,7 +8698,7 @@ Function Get-V203635 {
     # Check 1: PAM password feedback (pam_unix obscure_authtok)
     $output += "Check 1: PAM Password Obscuring${nl}"
     try {
-        $pamAuth = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_unix" 2>&1)
+        $pamAuth = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_unix 2>&1)
         $pamStr = ($pamAuth -join $nl).Trim()
         if ($pamStr) {
             $output += "  PAM password config: $pamStr${nl}"
@@ -8723,7 +8721,7 @@ Function Get-V203635 {
     # Check 2: SSH password display (no echo)
     $output += "Check 2: SSH Password Display${nl}"
     try {
-        $sshConfig = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -iE '^(passwordauthentication|kbdinteractiveauthentication)'" 2>&1)
+        $sshConfig = $(timeout 5 sshd -T 2>/dev/null | grep -iE '^(passwordauthentication|kbdinteractiveauthentication)' 2>&1)
         $sshStr = ($sshConfig -join $nl).Trim()
         if ($sshStr) {
             foreach ($line in ($sshStr -split $nl)) {
@@ -8743,7 +8741,7 @@ Function Get-V203635 {
     # Check 3: sudo password feedback
     $output += "Check 3: sudo Password Feedback${nl}"
     try {
-        $sudoConfig = $(timeout 5 sh -c "sudo -l 2>/dev/null | head -5; grep -r 'pwfeedback' /etc/sudoers /etc/sudoers.d/ 2>/dev/null" 2>&1)
+        $sudoConfig = $(timeout 5 sudo -l 2>/dev/null | head -5; grep -r 'pwfeedback' /etc/sudoers /etc/sudoers.d/ 2>/dev/null)
         $sudoStr = ($sudoConfig -join $nl).Trim()
         if ($sudoStr -match "pwfeedback") {
             $output += "  [FAIL] pwfeedback enabled in sudoers (shows asterisks - potential information leak)${nl}"
@@ -9491,7 +9489,7 @@ Function Get-V203639 {
     $FindingDetails += "--- Check 1: Unique User Accounts ---" + $nl
     $userCount = $(timeout 5 grep -c "^" /etc/passwd 2>&1)
     $FindingDetails += "  Total accounts in /etc/passwd: $userCount" + $nl
-    $humanUsers = $(timeout 5 awk -F: "(\$3 >= 1000 && \$3 < 65534) {print \$1 \":\" \$3}" /etc/passwd 2>&1)
+    $humanUsers = $(timeout 5 awk -F: '($3 >= 1000 && $3 < 65534) {print $1 ":" $3}' /etc/passwd 2>&1)
     if ($humanUsers) {
         $FindingDetails += "  Human user accounts (UID >= 1000):" + $nl
         foreach ($user in ($humanUsers -split $nl)) {
@@ -11388,7 +11386,7 @@ Function Get-V203649 {
     # Check 4: PAM crypto modules
     $output += "Check 4: PAM Cryptographic Modules${nl}"
     try {
-        $pamCrypto = $(timeout 5 sh -c "grep -r 'pam_unix\|pam_sssd\|pam_ldap' /etc/pam.d/common-auth 2>/dev/null" 2>&1)
+        $pamCrypto = $(timeout 5 grep -r 'pam_unix\|pam_sssd\|pam_ldap' /etc/pam.d/common-auth 2>/dev/null)
         $pamStr = ($pamCrypto -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -11406,7 +11404,7 @@ Function Get-V203649 {
     # Check 5: SSH crypto configuration
     $output += "Check 5: SSH Cryptographic Algorithms${nl}"
     try {
-        $sshCiphers = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i ciphers" 2>&1)
+        $sshCiphers = $(timeout 5 sshd -T 2>/dev/null | grep -i ciphers 2>&1)
         $sshStr = ($sshCiphers -join $nl).Trim()
         if ($sshStr) {
             $output += "  $sshStr${nl}"
@@ -11722,7 +11720,7 @@ Function Get-V203651 {
 
     # Check 1: journalctl availability
     $FindingDetails += $nl + "Check 1: journalctl Audit Reduction" + $nl
-    $journalctl = $(sh -c "which journalctl >/dev/null 2>&1 && journalctl --disk-usage 2>/dev/null || echo 'NOT_AVAILABLE'" 2>&1)
+    $journalctl = $(which journalctl >/dev/null 2>&1 && journalctl --disk-usage 2>/dev/null || echo 'NOT_AVAILABLE' 2>&1)
     if ("$journalctl" -notmatch "NOT_AVAILABLE") {
         $FindingDetails += "  journalctl: Available" + $nl
         $FindingDetails += "  $("$journalctl".Trim())" + $nl
@@ -11734,8 +11732,8 @@ Function Get-V203651 {
 
     # Check 2: ausearch/aureport tools
     $FindingDetails += $nl + "Check 2: Audit Search and Report Tools" + $nl
-    $ausearch = $(sh -c "which ausearch >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
-    $aureport = $(sh -c "which aureport >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $ausearch = $(which ausearch >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
+    $aureport = $(which aureport >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$ausearch" -match "AVAILABLE") {
         $FindingDetails += "  ausearch: Available (audit event search)" + $nl
     }
@@ -11751,7 +11749,7 @@ Function Get-V203651 {
 
     # Check 3: XO Audit Plugin
     $FindingDetails += $nl + "Check 3: XO Audit Plugin" + $nl
-    $xoAudit = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1" 2>&1)
+    $xoAudit = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1 2>&1)
     if ($xoAudit -and "$xoAudit".Trim().Length -gt 0) {
         $FindingDetails += "  XO Audit Plugin: Detected (provides audit reduction via REST API)" + $nl
     }
@@ -11761,8 +11759,8 @@ Function Get-V203651 {
 
     # Check 4: Log analysis tools
     $FindingDetails += $nl + "Check 4: Log Analysis Tools" + $nl
-    $awk = $(sh -c "which awk >/dev/null 2>&1 && echo 'YES' || echo 'NO'" 2>&1)
-    $grep = $(sh -c "which grep >/dev/null 2>&1 && echo 'YES' || echo 'NO'" 2>&1)
+    $awk = $(which awk >/dev/null 2>&1 && echo 'YES' || echo 'NO' 2>&1)
+    $grep = $(which grep >/dev/null 2>&1 && echo 'YES' || echo 'NO' 2>&1)
     $FindingDetails += "  awk: $(if ("$awk" -match 'YES') { 'Available' } else { 'Not available' })" + $nl
     $FindingDetails += "  grep: $(if ("$grep" -match 'YES') { 'Available' } else { 'Not available' })" + $nl
 
@@ -12648,7 +12646,7 @@ Function Get-V203657 {
     # Check 2: /tmp mount with noexec,nosuid,nodev
     $output += "Check 2: /tmp Mount Options${nl}"
     try {
-        $tmpMount = $(timeout 5 sh -c "findmnt -n -o OPTIONS /tmp 2>/dev/null" 2>&1)
+        $tmpMount = $(timeout 5 findmnt -n -o OPTIONS /tmp 2>/dev/null)
         $tmpStr = ($tmpMount -join " ").Trim()
         if ($tmpStr) {
             $output += "  /tmp options: $tmpStr${nl}"
@@ -12672,7 +12670,7 @@ Function Get-V203657 {
     # Check 3: /dev/shm mount options
     $output += "Check 3: /dev/shm Mount Options${nl}"
     try {
-        $shmMount = $(timeout 5 sh -c "findmnt -n -o OPTIONS /dev/shm 2>/dev/null" 2>&1)
+        $shmMount = $(timeout 5 findmnt -n -o OPTIONS /dev/shm 2>/dev/null)
         $shmStr = ($shmMount -join " ").Trim()
         if ($shmStr) {
             $output += "  /dev/shm options: $shmStr${nl}"
@@ -12696,7 +12694,7 @@ Function Get-V203657 {
     # Check 4: Core dump restrictions
     $output += "Check 4: Core Dump Restrictions${nl}"
     try {
-        $coreLimits = $(timeout 5 sh -c "grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep core" 2>&1)
+        $coreLimits = $(timeout 5 grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep core 2>&1)
         $coreStr = ($coreLimits -join $nl).Trim()
         $sysCore = $(timeout 5 cat /proc/sys/kernel/core_pattern 2>/dev/null)
         $sysCoreStr = ($sysCore -join " ").Trim()
@@ -12842,7 +12840,7 @@ Function Get-V203658 {
         if ($fwStatus.Active) {
             $output += "  Firewall: $($fwStatus.Type) ACTIVE${nl}"
             if ($fwStatus.Type -eq "UFW") {
-                $ufwRules = $(timeout 5 sh -c "ufw status verbose 2>/dev/null | grep -i 'limit\|rate'" 2>&1)
+                $ufwRules = $(timeout 5 ufw status verbose 2>/dev/null | grep -i 'limit\|rate' 2>&1)
                 $ufwStr = ($ufwRules -join $nl).Trim()
                 if ($ufwStr) {
                     $output += "  Rate limiting rules found:${nl}  $ufwStr${nl}"
@@ -12901,7 +12899,7 @@ Function Get-V203658 {
     # Check 4: Resource limits (ulimits)
     $output += "Check 4: System Resource Limits${nl}"
     try {
-        $limitsConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep -v '^\s*$'" 2>&1)
+        $limitsConf = $(timeout 5 grep -v '^#' /etc/security/limits.conf 2>/dev/null | grep -v '^\s*$' 2>&1)
         $limitsStr = ($limitsConf -join $nl).Trim()
         if ($limitsStr) {
             $output += "  Custom limits configured:${nl}"
@@ -13038,9 +13036,9 @@ Function Get-V203659 {
     # Check 1: SSH ClientAliveInterval and ClientAliveCountMax
     $output += "Check 1: SSH Session Timeout Configuration${nl}"
     try {
-        $sshInterval = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientaliveinterval" 2>&1)
+        $sshInterval = $(timeout 5 sshd -T 2>/dev/null | grep -i clientaliveinterval 2>&1)
         $sshIntervalStr = ($sshInterval -join " ").Trim()
-        $sshCount = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientalivecountmax" 2>&1)
+        $sshCount = $(timeout 5 sshd -T 2>/dev/null | grep -i clientalivecountmax 2>&1)
         $sshCountStr = ($sshCount -join " ").Trim()
         $output += "  $sshIntervalStr${nl}"
         $output += "  $sshCountStr${nl}"
@@ -13067,7 +13065,7 @@ Function Get-V203659 {
     # Check 2: TMOUT shell variable
     $output += "Check 2: Shell Inactivity Timeout (TMOUT)${nl}"
     try {
-        $tmout = $(timeout 5 sh -c "grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | grep -v '^#'" 2>&1)
+        $tmout = $(timeout 5 grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | grep -v '^#' 2>&1)
         $tmoutStr = ($tmout -join $nl).Trim()
         if ($tmoutStr) {
             $output += "  $tmoutStr${nl}"
@@ -13093,7 +13091,7 @@ Function Get-V203659 {
     # Check 3: systemd-logind InactivityTimeout
     $output += "Check 3: systemd-logind Session Configuration${nl}"
     try {
-        $logindConf = $(timeout 5 sh -c "grep -v '^#' /etc/systemd/logind.conf 2>/dev/null | grep -i 'IdleAction\|StopIdleSessionSec\|KillUserProcesses'" 2>&1)
+        $logindConf = $(timeout 5 grep -v '^#' /etc/systemd/logind.conf 2>/dev/null | grep -i 'IdleAction\|StopIdleSessionSec\|KillUserProcesses' 2>&1)
         $logindStr = ($logindConf -join $nl).Trim()
         if ($logindStr) {
             $output += "  $logindStr${nl}"
@@ -13111,7 +13109,7 @@ Function Get-V203659 {
     # Check 4: XO session timeout (if applicable)
     $output += "Check 4: XO Application Session Timeout${nl}"
     try {
-        $xoConf = $(timeout 5 sh -c "grep -ri 'session\|timeout\|maxAge\|idle' /etc/xo-server/config.toml /opt/xo/xo-server/.xo-server.yaml 2>/dev/null | grep -v '^#'" 2>&1)
+        $xoConf = $(timeout 5 grep -ri 'session\|timeout\|maxAge\|idle' /etc/xo-server/config.toml /opt/xo/xo-server/.xo-server.yaml 2>/dev/null | grep -v '^#' 2>&1)
         $xoStr = ($xoConf -join $nl).Trim()
         if ($xoStr) {
             $output += "  $xoStr${nl}"
@@ -13266,7 +13264,7 @@ Function Get-V203660 {
     # Check 2: Emergency/rescue mode requires root authentication
     $output += "Check 2: Emergency/Rescue Mode Authentication${nl}"
     try {
-        $suloginCheck = $(timeout 5 sh -c "grep -r 'sulogin\|ExecStart.*-sulogin' /usr/lib/systemd/system/emergency.service /usr/lib/systemd/system/rescue.service 2>/dev/null" 2>&1)
+        $suloginCheck = $(timeout 5 grep -r 'sulogin\|ExecStart.*-sulogin' /usr/lib/systemd/system/emergency.service /usr/lib/systemd/system/rescue.service 2>/dev/null)
         $suloginStr = ($suloginCheck -join $nl).Trim()
         if ($suloginStr -match "sulogin") {
             $output += "  $suloginStr${nl}"
@@ -13439,7 +13437,7 @@ Function Get-V203661 {
     # Check 1: LUKS/dm-crypt encrypted volumes
     $output += "Check 1: Disk Encryption (LUKS/dm-crypt)${nl}"
     try {
-        $luksDevices = $(timeout 10 sh -c "lsblk -o NAME,FSTYPE,MOUNTPOINT 2>/dev/null | grep -i 'crypto_LUKS\|crypt'" 2>&1)
+        $luksDevices = $(timeout 10 lsblk -o NAME,FSTYPE,MOUNTPOINT 2>/dev/null | grep -i 'crypto_LUKS\|crypt' 2>&1)
         $luksStr = ($luksDevices -join $nl).Trim()
         if ($luksStr) {
             $output += "  Encrypted volumes found:${nl}"
@@ -13460,7 +13458,7 @@ Function Get-V203661 {
     # Check 2: /etc/crypttab
     $output += "Check 2: Encrypted Volume Configuration (/etc/crypttab)${nl}"
     try {
-        $crypttab = $(timeout 5 sh -c "cat /etc/crypttab 2>/dev/null | grep -v '^#' | grep -v '^\s*$'" 2>&1)
+        $crypttab = $(timeout 5 cat /etc/crypttab 2>/dev/null | grep -v '^#' | grep -v '^\s*$' 2>&1)
         $cryptStr = ($crypttab -join $nl).Trim()
         if ($cryptStr) {
             $output += "  $cryptStr${nl}"
@@ -13686,7 +13684,7 @@ Function Get-V203663 {
     # Check 3: SSH banner configuration
     $output += "Check 3: SSH Banner Configuration${nl}"
     try {
-        $sshBanner = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i banner" 2>&1)
+        $sshBanner = $(timeout 5 sshd -T 2>/dev/null | grep -i banner 2>&1)
         $bannerStr = ($sshBanner -join " ").Trim()
         $output += "  $bannerStr${nl}"
         if ($bannerStr -match "banner\s+/etc/issue") {
@@ -13707,7 +13705,7 @@ Function Get-V203663 {
     # Check 4: System logging verbosity (not leaking sensitive data)
     $output += "Check 4: Syslog Error Message Configuration${nl}"
     try {
-        $rsysConf = $(timeout 5 sh -c "grep -v '^#' /etc/rsyslog.conf 2>/dev/null | grep -v '^\s*$' | head -20" 2>&1)
+        $rsysConf = $(timeout 5 grep -v '^#' /etc/rsyslog.conf 2>/dev/null | grep -v '^\s*$' | head -20 2>&1)
         $rsysStr = ($rsysConf -join $nl).Trim()
         if ($rsysStr) {
             $output += "  rsyslog configured (first 20 active lines)${nl}"
@@ -13892,12 +13890,12 @@ Function Get-V203664 {
     # Check 3: journald configuration
     $output += "Check 3: journald Access Configuration${nl}"
     try {
-        $jdConf = $(timeout 5 sh -c "grep -v '^#' /etc/systemd/journald.conf 2>/dev/null | grep -v '^\s*$'" 2>&1)
+        $jdConf = $(timeout 5 grep -v '^#' /etc/systemd/journald.conf 2>/dev/null | grep -v '^\s*$' 2>&1)
         $jdStr = ($jdConf -join $nl).Trim()
         if ($jdStr) {
             $output += "  $jdStr${nl}"
         }
-        $jdStorage = $(timeout 5 sh -c "grep -i 'Storage' /etc/systemd/journald.conf 2>/dev/null | grep -v '^#'" 2>&1)
+        $jdStorage = $(timeout 5 grep -i 'Storage' /etc/systemd/journald.conf 2>/dev/null | grep -v '^#' 2>&1)
         $jdStorStr = ($jdStorage -join " ").Trim()
         if ($jdStorStr) {
             $output += "  Storage setting: $jdStorStr${nl}"
@@ -14047,7 +14045,7 @@ Function Get-V203665 {
     $output += "Check 1: SSH Banner for Public/Remote Connections${nl}"
     $sshBannerPass = $false
     try {
-        $sshBanner = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i '^banner'" 2>&1)
+        $sshBanner = $(timeout 5 sshd -T 2>/dev/null | grep -i '^banner' 2>&1)
         $sshBannerStr = ($sshBanner -join $nl).Trim()
         if ($sshBannerStr -match "banner\s+(/\S+)") {
             $bannerFile = $matches[1]
@@ -15203,7 +15201,7 @@ Function Get-V203671 {
 
     # Check 1: Systemd journal source tracking
     $FindingDetails += $nl + "Check 1: Systemd Journal Source Identification" + $nl
-    $journalSample = $(sh -c "journalctl -n 5 -o verbose 2>/dev/null | grep -E '_SYSTEMD_UNIT|_COMM|_EXE|_PID' | head -15" 2>&1)
+    $journalSample = $(journalctl -n 5 -o verbose 2>/dev/null | grep -E '_SYSTEMD_UNIT|_COMM|_EXE|_PID' | head -15 2>&1)
     if ($journalSample -and "$journalSample".Trim().Length -gt 0) {
         $FindingDetails += "  Journal records include source identity:" + $nl
         foreach ($line in ("$journalSample" -split $nl | Select-Object -First 10)) {
@@ -15218,7 +15216,7 @@ Function Get-V203671 {
 
     # Check 2: Auditd source tracking
     $FindingDetails += $nl + "Check 2: Auditd Source Tracking" + $nl
-    $auditdActive = $(sh -c "systemctl is-active auditd 2>/dev/null" 2>&1)
+    $auditdActive = $(systemctl is-active auditd 2>/dev/null)
     if ("$auditdActive" -match "active") {
         $FindingDetails += "  auditd: Active (records include syscall source, PID, executable)" + $nl
     }
@@ -15228,7 +15226,7 @@ Function Get-V203671 {
 
     # Check 3: Syslog source identification
     $FindingDetails += $nl + "Check 3: Syslog Source Identification" + $nl
-    $syslogSample = $(sh -c "tail -5 /var/log/syslog 2>/dev/null || tail -5 /var/log/messages 2>/dev/null" 2>&1)
+    $syslogSample = $(tail -5 /var/log/syslog 2>/dev/null || tail -5 /var/log/messages 2>/dev/null)
     if ($syslogSample -and "$syslogSample".Trim().Length -gt 0) {
         $FindingDetails += "  Syslog entries include hostname and process source:" + $nl
         foreach ($line in ("$syslogSample" -split $nl | Select-Object -First 3)) {
@@ -15959,7 +15957,7 @@ Function Get-V203675 {
 
     # Check 1: Package manager access
     $FindingDetails += $nl + "Check 1: Package Manager (apt) Access" + $nl
-    $aptPerms = $(sh -c "ls -la /usr/bin/apt /usr/bin/apt-get /usr/bin/dpkg 2>/dev/null" 2>&1)
+    $aptPerms = $(ls -la /usr/bin/apt /usr/bin/apt-get /usr/bin/dpkg 2>/dev/null)
     if ($aptPerms) {
         foreach ($line in ("$aptPerms" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -15970,7 +15968,7 @@ Function Get-V203675 {
 
     # Check 2: sudo configuration for package management
     $FindingDetails += $nl + "Check 2: sudo Package Management Controls" + $nl
-    $sudoApt = $(sh -c "timeout 5 grep -r 'apt\|dpkg\|install' /etc/sudoers /etc/sudoers.d/ 2>/dev/null | grep -v '^#'" 2>&1)
+    $sudoApt = $(timeout 5 grep -r 'apt\|dpkg\|install' /etc/sudoers /etc/sudoers.d/ 2>/dev/null | grep -v '^#' 2>&1)
     if ($sudoApt -and "$sudoApt".Trim().Length -gt 0) {
         foreach ($line in ("$sudoApt" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -15984,7 +15982,7 @@ Function Get-V203675 {
 
     # Check 3: System directories protection
     $FindingDetails += $nl + "Check 3: System Directory Permissions" + $nl
-    $sysDirs = $(sh -c "ls -ld /usr/bin /usr/sbin /usr/lib /usr/local/bin 2>/dev/null" 2>&1)
+    $sysDirs = $(ls -ld /usr/bin /usr/sbin /usr/lib /usr/local/bin 2>/dev/null)
     if ($sysDirs) {
         foreach ($line in ("$sysDirs" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -15995,7 +15993,7 @@ Function Get-V203675 {
 
     # Check 4: Non-root users with write access
     $FindingDetails += $nl + "Check 4: Write Access to System Binaries" + $nl
-    $worldWrite = $(sh -c "timeout 10 find /usr/bin /usr/sbin -maxdepth 1 -perm -o+w -type f 2>/dev/null | head -5" 2>&1)
+    $worldWrite = $(timeout 10 find /usr/bin /usr/sbin -maxdepth 1 -perm -o+w -type f 2>/dev/null | head -5 2>&1)
     if ($worldWrite -and "$worldWrite".Trim().Length -gt 0) {
         $FindingDetails += "  [FINDING] World-writable binaries found:" + $nl
         $FindingDetails += "  $("$worldWrite".Trim())" + $nl
@@ -16131,7 +16129,7 @@ Function Get-V203676 {
     # Check 1: pwquality.conf ocredit setting
     $output += "Check 1: pwquality.conf ocredit Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ocredit'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'ocredit' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "ocredit\s*=\s*(-?\d+)") {
             $ocreditVal = [int]$Matches[1]
@@ -16155,7 +16153,7 @@ Function Get-V203676 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -16173,7 +16171,7 @@ Function Get-V203676 {
     # Check 3: libpam-pwquality package installed
     $output += "Check 3: libpam-pwquality Package${nl}"
     try {
-        $pkgCheck = $(timeout 5 sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+        $pkgCheck = $(timeout 5 dpkg -l libpam-pwquality 2>/dev/null | grep '^ii' 2>&1)
         $pkgStr = ($pkgCheck -join $nl).Trim()
         if ($pkgStr) {
             $output += "  $pkgStr${nl}"
@@ -16298,11 +16296,11 @@ Function Get-V203677 {
 
     # Check 1: Persistent journal storage
     $FindingDetails += $nl + "Check 1: Persistent Journal Storage" + $nl
-    $journalStorage = $(sh -c "cat /etc/systemd/journald.conf 2>/dev/null | grep -i '^Storage'" 2>&1)
+    $journalStorage = $(cat /etc/systemd/journald.conf 2>/dev/null | grep -i '^Storage' 2>&1)
     if ($journalStorage -and "$journalStorage" -match "persistent") {
         $FindingDetails += "  $("$journalStorage".Trim()) (logs survive reboot)" + $nl
     }
-    elseif ($(sh -c "test -d /var/log/journal && echo 'EXISTS'" 2>&1) -match "EXISTS") {
+    elseif ($(test -d /var/log/journal && echo 'EXISTS' 2>&1) -match "EXISTS") {
         $FindingDetails += "  /var/log/journal directory exists (persistent by default)" + $nl
     }
     else {
@@ -16311,7 +16309,7 @@ Function Get-V203677 {
 
     # Check 2: Crash dump configuration
     $FindingDetails += $nl + "Check 2: Crash Dump Configuration" + $nl
-    $kdump = $(sh -c "systemctl is-active kdump 2>/dev/null || echo 'inactive'" 2>&1)
+    $kdump = $(systemctl is-active kdump 2>/dev/null || echo 'inactive' 2>&1)
     $FindingDetails += "  kdump service: $("$kdump".Trim())" + $nl
     $corePattern = $(cat /proc/sys/kernel/core_pattern 2>&1)
     if ($corePattern) {
@@ -16320,7 +16318,7 @@ Function Get-V203677 {
 
     # Check 3: Filesystem journal (ext4/xfs)
     $FindingDetails += $nl + "Check 3: Filesystem Integrity" + $nl
-    $fsType = $(sh -c "df -T / 2>/dev/null | tail -1 | awk '{print \$2}'" 2>&1)
+    $fsType = $(df -T / 2>/dev/null | tail -1 | awk '{print $2}' 2>&1)
     if ($fsType) {
         $FindingDetails += "  Root filesystem type: $("$fsType".Trim())" + $nl
         if ("$fsType" -match "ext4|xfs") {
@@ -16330,8 +16328,8 @@ Function Get-V203677 {
 
     # Check 4: Log directory on separate partition
     $FindingDetails += $nl + "Check 4: Log Partition Separation" + $nl
-    $logMount = $(sh -c "df /var/log 2>/dev/null | tail -1" 2>&1)
-    $rootMount = $(sh -c "df / 2>/dev/null | tail -1" 2>&1)
+    $logMount = $(df /var/log 2>/dev/null | tail -1 2>&1)
+    $rootMount = $(df / 2>/dev/null | tail -1 2>&1)
     if ($logMount -and $rootMount) {
         $logDev = ("$logMount" -split "\s+")[0]
         $rootDev = ("$rootMount" -split "\s+")[0]
@@ -16344,7 +16342,7 @@ Function Get-V203677 {
     }
 
     # Status determination
-    $journalPersistent = $(sh -c "test -d /var/log/journal && echo 'YES' || echo 'NO'" 2>&1)
+    $journalPersistent = $(test -d /var/log/journal && echo 'YES' || echo 'NO' 2>&1)
     if ("$journalPersistent" -match "YES") {
         $Status = "NotAFinding"
         $FindingDetails += $nl + "RESULT: System preserves information through persistent journal storage." + $nl
@@ -16459,7 +16457,7 @@ Function Get-V203678 {
 
     # Check 1: Auditd rules for account actions
     $FindingDetails += $nl + "Check 1: Audit Rules for Account Creation" + $nl
-    $auditRules = $(sh -c "auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd'" 2>&1)
+    $auditRules = $(timeout 5 auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd' 2>&1)
     if ($auditRules -and "$auditRules".Trim().Length -gt 0) {
         foreach ($line in ("$auditRules" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -16473,7 +16471,7 @@ Function Get-V203678 {
 
     # Check 2: XO Audit Plugin for account notifications
     $FindingDetails += $nl + "Check 2: XO Audit Plugin" + $nl
-    $xoAudit = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1" 2>&1)
+    $xoAudit = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1 2>&1)
     if ($xoAudit -and "$xoAudit".Trim().Length -gt 0) {
         $FindingDetails += "  XO Audit Plugin: Detected (logs account actions)" + $nl
     }
@@ -16483,19 +16481,19 @@ Function Get-V203678 {
 
     # Check 3: Email/notification configuration
     $FindingDetails += $nl + "Check 3: Notification Mechanism" + $nl
-    $mailCmd = $(sh -c "which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $mailCmd = $(which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$mailCmd" -match "AVAILABLE") {
         $FindingDetails += "  Mail utility: Available" + $nl
     }
     else {
         $FindingDetails += "  Mail utility: Not available" + $nl
     }
-    $rsyslog = $(sh -c "systemctl is-active rsyslog 2>/dev/null" 2>&1)
+    $rsyslog = $(systemctl is-active rsyslog 2>/dev/null)
     $FindingDetails += "  rsyslog: $("$rsyslog".Trim())" + $nl
 
     # Check 4: PAM notification hooks
     $FindingDetails += $nl + "Check 4: PAM Notification Configuration" + $nl
-    $pamExec = $(sh -c "timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3" 2>&1)
+    $pamExec = $(timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3 2>&1)
     if ($pamExec -and "$pamExec".Trim().Length -gt 0) {
         foreach ($line in ("$pamExec" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -16645,7 +16643,7 @@ Function Get-V203679 {
 
     # Check 1: Auditd rules for account actions
     $FindingDetails += $nl + "Check 1: Audit Rules for Account Modification" + $nl
-    $auditRules = $(sh -c "auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd'" 2>&1)
+    $auditRules = $(timeout 5 auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd' 2>&1)
     if ($auditRules -and "$auditRules".Trim().Length -gt 0) {
         foreach ($line in ("$auditRules" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -16659,7 +16657,7 @@ Function Get-V203679 {
 
     # Check 2: XO Audit Plugin for account notifications
     $FindingDetails += $nl + "Check 2: XO Audit Plugin" + $nl
-    $xoAudit = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1" 2>&1)
+    $xoAudit = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1 2>&1)
     if ($xoAudit -and "$xoAudit".Trim().Length -gt 0) {
         $FindingDetails += "  XO Audit Plugin: Detected (logs account actions)" + $nl
     }
@@ -16669,19 +16667,19 @@ Function Get-V203679 {
 
     # Check 3: Email/notification configuration
     $FindingDetails += $nl + "Check 3: Notification Mechanism" + $nl
-    $mailCmd = $(sh -c "which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $mailCmd = $(which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$mailCmd" -match "AVAILABLE") {
         $FindingDetails += "  Mail utility: Available" + $nl
     }
     else {
         $FindingDetails += "  Mail utility: Not available" + $nl
     }
-    $rsyslog = $(sh -c "systemctl is-active rsyslog 2>/dev/null" 2>&1)
+    $rsyslog = $(systemctl is-active rsyslog 2>/dev/null)
     $FindingDetails += "  rsyslog: $("$rsyslog".Trim())" + $nl
 
     # Check 4: PAM notification hooks
     $FindingDetails += $nl + "Check 4: PAM Notification Configuration" + $nl
-    $pamExec = $(sh -c "timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3" 2>&1)
+    $pamExec = $(timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3 2>&1)
     if ($pamExec -and "$pamExec".Trim().Length -gt 0) {
         foreach ($line in ("$pamExec" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -16831,7 +16829,7 @@ Function Get-V203680 {
 
     # Check 1: Auditd rules for account actions
     $FindingDetails += $nl + "Check 1: Audit Rules for Account Disabling" + $nl
-    $auditRules = $(sh -c "auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd'" 2>&1)
+    $auditRules = $(timeout 5 auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd' 2>&1)
     if ($auditRules -and "$auditRules".Trim().Length -gt 0) {
         foreach ($line in ("$auditRules" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -16845,7 +16843,7 @@ Function Get-V203680 {
 
     # Check 2: XO Audit Plugin for account notifications
     $FindingDetails += $nl + "Check 2: XO Audit Plugin" + $nl
-    $xoAudit = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1" 2>&1)
+    $xoAudit = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1 2>&1)
     if ($xoAudit -and "$xoAudit".Trim().Length -gt 0) {
         $FindingDetails += "  XO Audit Plugin: Detected (logs account actions)" + $nl
     }
@@ -16855,19 +16853,19 @@ Function Get-V203680 {
 
     # Check 3: Email/notification configuration
     $FindingDetails += $nl + "Check 3: Notification Mechanism" + $nl
-    $mailCmd = $(sh -c "which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $mailCmd = $(which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$mailCmd" -match "AVAILABLE") {
         $FindingDetails += "  Mail utility: Available" + $nl
     }
     else {
         $FindingDetails += "  Mail utility: Not available" + $nl
     }
-    $rsyslog = $(sh -c "systemctl is-active rsyslog 2>/dev/null" 2>&1)
+    $rsyslog = $(systemctl is-active rsyslog 2>/dev/null)
     $FindingDetails += "  rsyslog: $("$rsyslog".Trim())" + $nl
 
     # Check 4: PAM notification hooks
     $FindingDetails += $nl + "Check 4: PAM Notification Configuration" + $nl
-    $pamExec = $(sh -c "timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3" 2>&1)
+    $pamExec = $(timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3 2>&1)
     if ($pamExec -and "$pamExec".Trim().Length -gt 0) {
         foreach ($line in ("$pamExec" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -17017,7 +17015,7 @@ Function Get-V203681 {
 
     # Check 1: Auditd rules for account actions
     $FindingDetails += $nl + "Check 1: Audit Rules for Account Removal" + $nl
-    $auditRules = $(sh -c "auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd'" 2>&1)
+    $auditRules = $(timeout 5 auditctl -l 2>/dev/null | grep -E 'passwd|shadow|group|gshadow|opasswd' 2>&1)
     if ($auditRules -and "$auditRules".Trim().Length -gt 0) {
         foreach ($line in ("$auditRules" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -17031,7 +17029,7 @@ Function Get-V203681 {
 
     # Check 2: XO Audit Plugin for account notifications
     $FindingDetails += $nl + "Check 2: XO Audit Plugin" + $nl
-    $xoAudit = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1" 2>&1)
+    $xoAudit = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'audit' 2>/dev/null | head -1 2>&1)
     if ($xoAudit -and "$xoAudit".Trim().Length -gt 0) {
         $FindingDetails += "  XO Audit Plugin: Detected (logs account actions)" + $nl
     }
@@ -17041,19 +17039,19 @@ Function Get-V203681 {
 
     # Check 3: Email/notification configuration
     $FindingDetails += $nl + "Check 3: Notification Mechanism" + $nl
-    $mailCmd = $(sh -c "which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $mailCmd = $(which mail >/dev/null 2>&1 && echo 'AVAILABLE' || which sendmail >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$mailCmd" -match "AVAILABLE") {
         $FindingDetails += "  Mail utility: Available" + $nl
     }
     else {
         $FindingDetails += "  Mail utility: Not available" + $nl
     }
-    $rsyslog = $(sh -c "systemctl is-active rsyslog 2>/dev/null" 2>&1)
+    $rsyslog = $(systemctl is-active rsyslog 2>/dev/null)
     $FindingDetails += "  rsyslog: $("$rsyslog".Trim())" + $nl
 
     # Check 4: PAM notification hooks
     $FindingDetails += $nl + "Check 4: PAM Notification Configuration" + $nl
-    $pamExec = $(sh -c "timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3" 2>&1)
+    $pamExec = $(timeout 5 grep -r 'pam_exec\|pam_script' /etc/pam.d/ 2>/dev/null | head -3 2>&1)
     if ($pamExec -and "$pamExec".Trim().Length -gt 0) {
         foreach ($line in ("$pamExec" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -17409,9 +17407,9 @@ Function Get-V203683 {
     # Check 1: SSH ClientAliveInterval
     $output += "Check 1: SSH Inactivity Timeout${nl}"
     try {
-        $sshInterval = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientaliveinterval" 2>&1)
+        $sshInterval = $(timeout 5 sshd -T 2>/dev/null | grep -i clientaliveinterval 2>&1)
         $sshIntervalStr = ($sshInterval -join " ").Trim()
-        $sshCount = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i clientalivecountmax" 2>&1)
+        $sshCount = $(timeout 5 sshd -T 2>/dev/null | grep -i clientalivecountmax 2>&1)
         $sshCountStr = ($sshCount -join " ").Trim()
         $output += "  $sshIntervalStr${nl}"
         $output += "  $sshCountStr${nl}"
@@ -17438,7 +17436,7 @@ Function Get-V203683 {
     # Check 2: TMOUT shell variable
     $output += "Check 2: Shell TMOUT Variable${nl}"
     try {
-        $tmout = $(timeout 5 sh -c "grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | grep -v '^#'" 2>&1)
+        $tmout = $(timeout 5 grep -r 'TMOUT' /etc/profile /etc/profile.d/ /etc/bash.bashrc 2>/dev/null | grep -v '^#' 2>&1)
         $tmoutStr = ($tmout -join $nl).Trim()
         $tmoutOk = $false
         if ($tmoutStr) {
@@ -17466,7 +17464,7 @@ Function Get-V203683 {
     # Check 3: systemd-logind idle action
     $output += "Check 3: systemd-logind Idle Configuration${nl}"
     try {
-        $logindConf = $(timeout 5 sh -c "grep -v '^#' /etc/systemd/logind.conf 2>/dev/null | grep -i 'IdleAction\|StopIdleSessionSec'" 2>&1)
+        $logindConf = $(timeout 5 grep -v '^#' /etc/systemd/logind.conf 2>/dev/null | grep -i 'IdleAction\|StopIdleSessionSec' 2>&1)
         $logindStr = ($logindConf -join $nl).Trim()
         if ($logindStr) {
             $output += "  $logindStr${nl}"
@@ -17484,14 +17482,14 @@ Function Get-V203683 {
     # Check 4: Screen lock / vlock
     $output += "Check 4: Terminal Lock Capability${nl}"
     try {
-        $vlockPkg = $(timeout 5 sh -c "dpkg -l vlock 2>/dev/null | grep '^ii'" 2>&1)
+        $vlockPkg = $(timeout 5 dpkg -l vlock 2>/dev/null | grep '^ii' 2>&1)
         $vlockStr = ($vlockPkg -join " ").Trim()
         if ($vlockStr) {
             $output += "  $vlockStr${nl}"
             $output += "  [PASS] vlock terminal locking available${nl}"
         }
         else {
-            $tmuxPkg = $(timeout 5 sh -c "which tmux 2>/dev/null" 2>&1)
+            $tmuxPkg = $(timeout 5 which tmux 2>/dev/null)
             $tmuxStr = ($tmuxPkg -join " ").Trim()
             if ($tmuxStr -and $tmuxStr -notmatch "not found") {
                 $output += "  tmux available at: $tmuxStr${nl}"
@@ -17672,7 +17670,7 @@ Function Get-V203684 {
     # Check 3: XO web application logoff
     $output += "Check 3: XO Web Application Logoff${nl}"
     try {
-        $xoProcess = $(timeout 5 sh -c "pgrep -fa 'xo-server' 2>/dev/null | head -3" 2>&1)
+        $xoProcess = $(timeout 5 pgrep -fa 'xo-server' 2>/dev/null | head -3 2>&1)
         $xoStr = ($xoProcess -join $nl).Trim()
         if ($xoStr) {
             $output += "  XO server process detected${nl}"
@@ -18938,7 +18936,7 @@ Function Get-V203691 {
     $auditdActive = $(systemctl is-active auditd 2>&1)
     if ($auditdActive -eq "active") {
         $FindingDetails += "  auditd service: ACTIVE" + $nl
-        $auditRules = $(auditctl -l 2>&1)
+        $auditRules = $(timeout 5 auditctl -l 2>&1)
         $accountRules = ($auditRules | Select-String -Pattern "passwd|shadow|group|gshadow|opasswd|usermod|useradd")
         if ($accountRules) {
             $FindingDetails += "  Account-related audit rules found:" + $nl
@@ -19318,7 +19316,7 @@ Function Get-V203693 {
             $sudoConfigured = $true
         }
         # Check sudoers.d directory
-        $sudoersD = $(timeout 5 find /etc/sudoers.d -type f -name "*.conf" -o -type f ! -name "README" 2>/dev/null | head -5)
+        $sudoersD = $(timeout 5 find /etc/sudoers.d -maxdepth 5 -type f -name "*.conf" -o -type f ! -name "README" 2>/dev/null | head -5)
         if ($sudoersD) {
             $FindingDetails += "  Additional sudoers configs:" + $nl
             foreach ($sd in $sudoersD) {
@@ -20480,7 +20478,7 @@ Function Get-V203699 {
 
     # Check 3: Audit rules configuration files
     $FindingDetails += $nl + "Check 3: Audit Rules Configuration" + $nl
-    $auditRulesDir = $(timeout 5 find /etc/audit -name "*.rules" -type f 2>/dev/null | head -10)
+    $auditRulesDir = $(timeout 5 find /etc/audit -maxdepth 5 -name "*.rules" -type f 2>/dev/null | head -10)
     if ($auditRulesDir) {
         $FindingDetails += "  Audit rules files:" + $nl
         foreach ($arf in $auditRulesDir) {
@@ -23847,7 +23845,7 @@ Function Get-V203718 {
     # Verify DAC, file permissions, and access control mechanisms
 
     $FindingDetails += "--- Check 1: File Permission Model ---" + $nl
-    $umask = $(timeout 5 sh -c 'umask' 2>&1)
+    $umask = $(timeout 5 umask 2>&1)
     $umaskStr = ("$umask").Trim()
     $FindingDetails += "  Default umask: $umaskStr" + $nl
     if ($umaskStr -match "0027|027|0077|077") {
@@ -24426,7 +24424,7 @@ Function Get-V203721 {
     $selinuxActive = $false
     $(which getenforce 2>&1) | Out-Null
     if ($LASTEXITCODE -eq 0) {
-        $getenforce = $(getenforce 2>&1)
+        $getenforce = $(timeout 5 getenforce2>&1)
         if ($LASTEXITCODE -eq 0 -and $getenforce -match "Enforcing|Permissive") {
             $FindingDetails += "  SELinux: $($getenforce.ToString().Trim())" + $nl
             $selinuxActive = ($getenforce -match "Enforcing")
@@ -26068,7 +26066,7 @@ Function Get-V203731 {
 
     # Check 2: TLS certificate (server authenticates to client)
     $FindingDetails += $nl + "Check 2: TLS Server Certificate" + $nl
-    $tlsCert = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -subject -issuer 2>&1")
+    $tlsCert = $(echo '' | timeout 10 openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -subject -issuer 2>&1)
     if ($tlsCert -and $tlsCert -match "subject=") {
         foreach ($line in ($tlsCert -split $nl | Select-Object -First 2)) {
             $FindingDetails += "  $($line.ToString().Trim())" + $nl
@@ -27416,7 +27414,7 @@ Function Get-V203744 {
 
     # Check 3: XO TLS certificate issuer
     $FindingDetails += $nl + "Check 3: XO TLS Certificate Issuer" + $nl
-    $certIssuer = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -issuer 2>&1")
+    $certIssuer = $(echo '' | timeout 10 openssl s_client -connect localhost:443 2>&1 | openssl x509 -noout -issuer 2>&1)
     if ($certIssuer -and $certIssuer -match "issuer=") {
         $FindingDetails += "  $($certIssuer.ToString().Trim())" + $nl
         if ($certIssuer -match "DoD|DISA|DOD") {
@@ -27900,11 +27898,11 @@ Function Get-V203747 {
     $fwDetected = $false
     $(which ufw 2>&1) | Out-Null
     if ($LASTEXITCODE -eq 0) {
-        $fwStatus = $(ufw status 2>&1)
+        $fwStatus = $(timeout 5 ufwstatus 2>&1)
         if ($fwStatus -match "Status: active") {
             $FindingDetails += "  UFW: ACTIVE" + $nl
             $fwDetected = $true
-            $limitRules = $(ufw status 2>&1 | grep -i "LIMIT" 2>&1)
+            $limitRules = $(timeout 5 ufwstatus 2>&1 | grep -i "LIMIT" 2>&1)
             if ($limitRules -and $LASTEXITCODE -eq 0) {
                 $FindingDetails += "  Rate limit rules:" + $nl
                 foreach ($line in ($limitRules -split $nl | Select-Object -First 5)) {
@@ -27922,7 +27920,7 @@ Function Get-V203747 {
     if (-not $fwDetected) {
         $(which iptables 2>&1) | Out-Null
         if ($LASTEXITCODE -eq 0) {
-            $iptRules = $(iptables -L INPUT -n 2>&1 | head -20)
+            $iptRules = $(timeout 5 iptables-L INPUT -n 2>&1 | head -20)
             if ($LASTEXITCODE -eq 0) {
                 $FindingDetails += "  iptables INPUT chain:" + $nl
                 foreach ($line in ($iptRules -split $nl | Select-Object -First 5)) {
@@ -28496,7 +28494,7 @@ Function Get-V203750 {
     $FindingDetails += $nl + "Check 2: XO TLS Configuration" + $nl
     $tlsSecure = $false
     $xoHostname = $(hostname 2>&1)
-    $tlsCheck = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1")
+    $tlsCheck = $(echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1)
     if ($tlsCheck -match "Protocol\s*:\s*TLSv1\.[23]") {
         $protoLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Protocol" } | Select-Object -First 1
         $cipherLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Cipher\s+:" } | Select-Object -First 1
@@ -28654,7 +28652,7 @@ Function Get-V203751 {
     # Check 2: TLS for incoming connections
     $FindingDetails += $nl + "Check 2: TLS for Incoming Connections" + $nl
     $tlsReceptionOk = $false
-    $tlsCheck = $(sh -c "echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1")
+    $tlsCheck = $(echo '' | timeout 10 openssl s_client -connect localhost:443 -tls1_2 2>&1)
     if ($tlsCheck -match "Protocol\s*:\s*TLSv1\.[23]") {
         $protoLine = ($tlsCheck -split $nl) | Where-Object { $_ -match "Protocol" } | Select-Object -First 1
         if ($protoLine) { $FindingDetails += "  $($protoLine.ToString().Trim())" + $nl }
@@ -28670,7 +28668,7 @@ Function Get-V203751 {
     $fwDetected = $false
     $(which ufw 2>&1) | Out-Null
     if ($LASTEXITCODE -eq 0) {
-        $fwStatus = $(ufw status 2>&1)
+        $fwStatus = $(timeout 5 ufwstatus 2>&1)
         if ($LASTEXITCODE -eq 0 -and $fwStatus -match "Status: active") {
             $FindingDetails += "  UFW: ACTIVE" + $nl
             $fwRules = ($fwStatus -split $nl) | Where-Object { $_ -match "ALLOW|DENY|REJECT" } | Select-Object -First 5
@@ -28683,7 +28681,7 @@ Function Get-V203751 {
     if (-not $fwDetected) {
         $(which iptables 2>&1) | Out-Null
         if ($LASTEXITCODE -eq 0) {
-            $iptRules = $(iptables -L INPUT -n 2>&1 | head -10)
+            $iptRules = $(timeout 5 iptables-L INPUT -n 2>&1 | head -10)
             if ($LASTEXITCODE -eq 0) {
                 $FindingDetails += "  iptables INPUT chain:" + $nl
                 foreach ($line in ($iptRules -split $nl | Select-Object -First 5)) {
@@ -33333,7 +33331,7 @@ Function Get-V203778 {
     # Check 1: pwquality.conf dictcheck setting
     $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
             $dictcheckVal = [int]$Matches[1]
@@ -33359,7 +33357,7 @@ Function Get-V203778 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -33377,7 +33375,7 @@ Function Get-V203778 {
     # Check 3: Dictionary files available (cracklib)
     $output += "Check 3: Dictionary Files${nl}"
     try {
-        $dictFiles = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l libpam-cracklib 2>/dev/null | grep '^ii'" 2>&1)
+        $dictFiles = $(timeout 5 ls -la /usr/share/dict/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l libpam-cracklib 2>/dev/null | grep '^ii' 2>&1)
         $dictStr = ($dictFiles -join $nl).Trim()
         if ($dictStr) {
             foreach ($line in ($dictStr -split $nl)) {
@@ -33513,7 +33511,7 @@ Function Get-V203779 {
     $output += "Check 1: PAM Fail Delay Configuration${nl}"
     $faildelayPass = $false
     try {
-        $pamAuth = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_faildelay" 2>&1)
+        $pamAuth = $(timeout 5 grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_faildelay 2>&1)
         $pamStr = ($pamAuth -join $nl).Trim()
         if ($pamStr -match "pam_faildelay") {
             $output += "  PAM faildelay config: $pamStr${nl}"
@@ -33542,7 +33540,7 @@ Function Get-V203779 {
     $output += "Check 2: PAM Unix Delay Behavior${nl}"
     $nodelayBad = $false
     try {
-        $pamUnix = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_unix" 2>&1)
+        $pamUnix = $(timeout 5 grep -v '^#' /etc/pam.d/common-auth 2>/dev/null | grep pam_unix 2>&1)
         $pamUnixStr = ($pamUnix -join $nl).Trim()
         if ($pamUnixStr) {
             $output += "  PAM unix config: $pamUnixStr${nl}"
@@ -33563,7 +33561,7 @@ Function Get-V203779 {
     # Check 3: SSH LoginGraceTime
     $output += "Check 3: SSH Login Grace Time${nl}"
     try {
-        $sshGrace = $(timeout 5 sh -c "sshd -T 2>/dev/null | grep -i logingracetime" 2>&1)
+        $sshGrace = $(timeout 5 sshd -T 2>/dev/null | grep -i logingracetime 2>&1)
         $sshStr = ($sshGrace -join $nl).Trim()
         if ($sshStr -match "logingracetime\s+(\d+)") {
             $graceTime = [int]$matches[1]
@@ -34233,7 +34231,7 @@ Function Get-V203783 {
 
     # Check 1: Home directory permissions
     $FindingDetails += $nl + "Check 1: Home Directory Permissions" + $nl
-    $homeDirs = $(sh -c "ls -ld /home/*/ 2>/dev/null" 2>&1)
+    $homeDirs = $(ls -ld /home/*/ 2>/dev/null)
     if ($homeDirs -and "$homeDirs" -notmatch "No such file") {
         $FindingDetails += "  Home directories:" + $nl
         $homeLines = "$homeDirs" -split $nl
@@ -34256,7 +34254,7 @@ Function Get-V203783 {
 
     # Check 2: Default home directory creation permissions
     $FindingDetails += $nl + "Check 2: Default Home Directory Permissions (login.defs)" + $nl
-    $umaskSetting = $(sh -c "grep -i '^UMASK' /etc/login.defs 2>/dev/null" 2>&1)
+    $umaskSetting = $(grep -i '^UMASK' /etc/login.defs 2>/dev/null)
     if ($umaskSetting -and "$umaskSetting".Trim().Length -gt 0) {
         $FindingDetails += "  $("$umaskSetting".Trim())" + $nl
     }
@@ -34266,7 +34264,7 @@ Function Get-V203783 {
 
     # Check 3: HOME_MODE setting
     $FindingDetails += $nl + "Check 3: HOME_MODE Setting" + $nl
-    $homeMode = $(sh -c "grep -i '^HOME_MODE' /etc/login.defs 2>/dev/null" 2>&1)
+    $homeMode = $(grep -i '^HOME_MODE' /etc/login.defs 2>/dev/null)
     if ($homeMode -and "$homeMode".Trim().Length -gt 0) {
         $FindingDetails += "  $("$homeMode".Trim())" + $nl
     }
@@ -34276,7 +34274,7 @@ Function Get-V203783 {
 
     # Check 4: USERGROUPS_ENAB
     $FindingDetails += $nl + "Check 4: User Private Groups" + $nl
-    $ugEnabled = $(sh -c "grep -i '^USERGROUPS_ENAB' /etc/login.defs 2>/dev/null" 2>&1)
+    $ugEnabled = $(grep -i '^USERGROUPS_ENAB' /etc/login.defs 2>/dev/null)
     if ($ugEnabled -and "$ugEnabled".Trim().Length -gt 0) {
         $FindingDetails += "  $("$ugEnabled".Trim())" + $nl
     }
@@ -34409,12 +34407,12 @@ Function Get-V203784 {
 
     # Check 1: UFW status
     $FindingDetails += $nl + "Check 1: UFW Firewall Status" + $nl
-    $ufwStatus = $(sh -c "which ufw >/dev/null 2>&1 && ufw status 2>/dev/null || echo 'UFW_NOT_INSTALLED'" 2>&1)
+    $ufwStatus = $(which ufw >/dev/null 2>&1 && ufw status 2>/dev/null || echo 'UFW_NOT_INSTALLED' 2>&1)
     $firewallActive = $false
     if ($ufwStatus -and "$ufwStatus" -match "Status: active") {
         $FindingDetails += "  UFW Status: Active" + $nl
         $firewallActive = $true
-        $ufwRules = $(sh -c "ufw status numbered 2>/dev/null | head -20" 2>&1)
+        $ufwRules = $(timeout 5 ufwstatus numbered 2>/dev/null | head -20 2>&1)
         if ($ufwRules) {
             $FindingDetails += "  Rules:" + $nl
             foreach ($line in ("$ufwRules" -split $nl)) {
@@ -34433,7 +34431,7 @@ Function Get-V203784 {
 
     # Check 2: iptables rules
     $FindingDetails += $nl + "Check 2: iptables Rules" + $nl
-    $iptRules = $(sh -c "iptables -L INPUT -n --line-numbers 2>/dev/null | head -15" 2>&1)
+    $iptRules = $(timeout 5 iptables-L INPUT -n --line-numbers 2>/dev/null | head -15 2>&1)
     if ($iptRules -and "$iptRules" -notmatch "command not found") {
         $ruleCount = (("$iptRules" -split $nl) | Where-Object { $_ -match "^\d+" }).Count
         $FindingDetails += "  INPUT chain rules: $ruleCount" + $nl
@@ -34452,7 +34450,7 @@ Function Get-V203784 {
 
     # Check 3: nftables
     $FindingDetails += $nl + "Check 3: nftables Status" + $nl
-    $nftStatus = $(sh -c "which nft >/dev/null 2>&1 && nft list ruleset 2>/dev/null | head -10 || echo 'NFT_NOT_INSTALLED'" 2>&1)
+    $nftStatus = $(which nft >/dev/null 2>&1 && nft list ruleset 2>/dev/null | head -10 || echo 'NFT_NOT_INSTALLED' 2>&1)
     if ($nftStatus -and "$nftStatus" -notmatch "NFT_NOT_INSTALLED") {
         $FindingDetails += "  nftables: Available" + $nl
         $nftRuleCount = (("$nftStatus" -split $nl) | Where-Object { $_ -match "rule" }).Count
@@ -34467,7 +34465,7 @@ Function Get-V203784 {
 
     # Check 4: XO deployment model context
     $FindingDetails += $nl + "Check 4: Deployment Model" + $nl
-    $xoaCheck = $(sh -c "test -f /etc/xo-appliance && echo 'XOA' || echo 'XOCE'" 2>&1)
+    $xoaCheck = $(test -f /etc/xo-appliance && echo 'XOA' || echo 'XOCE' 2>&1)
     $FindingDetails += "  Deployment: $("$xoaCheck".Trim())" + $nl
     if ("$xoaCheck" -match "XOA") {
         $FindingDetails += "  Note: XOA includes UFW enabled by default" + $nl
@@ -34599,7 +34597,7 @@ Function Get-V252688 {
     $FindingDetails += "Check 1: Bluetooth Hardware Detection" + $nl
     $FindingDetails += ("-" * 40) + $nl
 
-    $btDevices = $(timeout 5 sh -c 'ls /sys/class/bluetooth/ 2>/dev/null')
+    $btDevices = $(timeout 5 ls /sys/class/bluetooth/ 2>/dev/null)
     $btStr = ($btDevices -join $nl).Trim()
     $btFound = ($btStr.Length -gt 0)
 
@@ -34631,7 +34629,7 @@ Function Get-V252688 {
     $FindingDetails += "Check 3: Wireless Network Hardware Detection" + $nl
     $FindingDetails += ("-" * 40) + $nl
 
-    $wifiDevices = $(timeout 5 sh -c 'ls /sys/class/net/*/wireless 2>/dev/null')
+    $wifiDevices = $(timeout 5 ls /sys/class/net/*/wireless 2>/dev/null)
     $wifiStr = ($wifiDevices -join $nl).Trim()
     $wifiFound = ($wifiStr.Length -gt 0)
 
@@ -34647,7 +34645,7 @@ Function Get-V252688 {
     $FindingDetails += "Check 4: Wireless Kernel Modules" + $nl
     $FindingDetails += ("-" * 40) + $nl
 
-    $wirelessMods = $(timeout 5 sh -c 'lsmod 2>/dev/null | grep -iE "bluetooth|btusb|iwlwifi|ath9k|ath10k|rtl8|mt76|brcmfmac" 2>/dev/null')
+    $wirelessMods = $(timeout 5 lsmod 2>/dev/null | grep -iE "bluetooth|btusb|iwlwifi|ath9k|ath10k|rtl8|mt76|brcmfmac" 2>/dev/null)
     $wirelessModStr = ($wirelessMods -join $nl).Trim()
 
     if ($wirelessModStr.Length -gt 0) {
@@ -34986,7 +34984,7 @@ Function Get-V263650 {
 
     # Check 1: System accounts that should be locked
     $FindingDetails += $nl + "Check 1: System Account Lock Status" + $nl
-    $sysAccounts = $(sh -c "awk -F: '($3 < 1000 && $1 != \"root\") {print $1\":\"$2}' /etc/shadow 2>/dev/null" 2>&1)
+    $sysAccounts = $(awk -F: '($3 < 1000 && $1 != "root") {print $1":"$2}' /etc/shadow 2>/dev/null)
     if ($sysAccounts) {
         $unlockedSys = 0
         foreach ($acct in ("$sysAccounts" -split $nl)) {
@@ -35003,7 +35001,7 @@ Function Get-V263650 {
 
     # Check 2: Inactive user accounts (no login > 90 days)
     $FindingDetails += $nl + "Check 2: Inactive User Accounts (>90 days)" + $nl
-    $lastlogOutput = $(sh -c "lastlog -b 90 2>/dev/null | tail -n +2" 2>&1)
+    $lastlogOutput = $(lastlog -b 90 2>/dev/null | tail -n +2 2>&1)
     if ($lastlogOutput -and "$lastlogOutput".Trim().Length -gt 0) {
         $inactiveCount = 0
         foreach ($line in ("$lastlogOutput" -split $nl)) {
@@ -35021,7 +35019,7 @@ Function Get-V263650 {
 
     # Check 3: Account expiration policy
     $FindingDetails += $nl + "Check 3: Account Expiration Policy" + $nl
-    $inactiveDays = $(sh -c "grep -i '^INACTIVE' /etc/default/useradd 2>/dev/null" 2>&1)
+    $inactiveDays = $(grep -i '^INACTIVE' /etc/default/useradd 2>/dev/null)
     if ($inactiveDays -and "$inactiveDays".Trim().Length -gt 0) {
         $FindingDetails += "  $("$inactiveDays".Trim())" + $nl
     }
@@ -35031,8 +35029,8 @@ Function Get-V263650 {
 
     # Check 4: LDAP/AD centralized management
     $FindingDetails += $nl + "Check 4: Centralized Account Management" + $nl
-    $sssdConf = $(sh -c "test -f /etc/sssd/sssd.conf && echo 'SSSD_CONFIGURED' || echo 'NO_SSSD'" 2>&1)
-    $ldapCheck = $(sh -c "timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1" 2>&1)
+    $sssdConf = $(test -f /etc/sssd/sssd.conf && echo 'SSSD_CONFIGURED' || echo 'NO_SSSD' 2>&1)
+    $ldapCheck = $(timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1 2>&1)
     if ("$sssdConf" -match "SSSD_CONFIGURED") {
         $FindingDetails += "  SSSD: Configured (centralized account management)" + $nl
     }
@@ -35153,14 +35151,14 @@ Function Get-V263651 {
 
     # Check 1: USB device policy
     $FindingDetails += $nl + "Check 1: USB Storage Policy" + $nl
-    $usbStorage = $(sh -c "lsmod 2>/dev/null | grep usb_storage" 2>&1)
+    $usbStorage = $(lsmod 2>/dev/null | grep usb_storage 2>&1)
     if ($usbStorage -and "$usbStorage".Trim().Length -gt 0) {
         $FindingDetails += "  usb_storage module: LOADED" + $nl
     }
     else {
         $FindingDetails += "  usb_storage module: Not loaded" + $nl
     }
-    $usbBlacklist = $(sh -c "timeout 5 grep -r 'usb.storage' /etc/modprobe.d/ 2>/dev/null" 2>&1)
+    $usbBlacklist = $(timeout 5 grep -r 'usb.storage' /etc/modprobe.d/ 2>/dev/null)
     if ($usbBlacklist -and "$usbBlacklist".Trim().Length -gt 0) {
         $FindingDetails += "  USB storage blacklist: $("$usbBlacklist".Trim())" + $nl
     }
@@ -35170,7 +35168,7 @@ Function Get-V263651 {
 
     # Check 2: Connected USB devices
     $FindingDetails += $nl + "Check 2: Connected USB Devices" + $nl
-    $usbDevices = $(sh -c "lsusb 2>/dev/null | head -10" 2>&1)
+    $usbDevices = $(lsusb 2>/dev/null | head -10 2>&1)
     if ($usbDevices -and "$usbDevices" -notmatch "command not found") {
         foreach ($line in ("$usbDevices" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -35184,7 +35182,7 @@ Function Get-V263651 {
 
     # Check 3: Thunderbolt/PCIe device policy
     $FindingDetails += $nl + "Check 3: Thunderbolt/DMA Protection" + $nl
-    $tbCheck = $(sh -c "lsmod 2>/dev/null | grep thunderbolt" 2>&1)
+    $tbCheck = $(lsmod 2>/dev/null | grep thunderbolt 2>&1)
     if ($tbCheck -and "$tbCheck".Trim().Length -gt 0) {
         $FindingDetails += "  Thunderbolt module: Loaded" + $nl
     }
@@ -35194,7 +35192,7 @@ Function Get-V263651 {
 
     # Check 4: Hardware inventory (PCI devices)
     $FindingDetails += $nl + "Check 4: PCI Device Summary" + $nl
-    $pciCount = $(sh -c "lspci 2>/dev/null | wc -l" 2>&1)
+    $pciCount = $(lspci 2>/dev/null | wc -l 2>&1)
     if ($pciCount -and "$pciCount".Trim() -match "^\d+$") {
         $FindingDetails += "  PCI devices detected: $("$pciCount".Trim())" + $nl
     }
@@ -35309,7 +35307,7 @@ Function Get-V263652 {
 
     # Check 1: PAM MFA modules
     $FindingDetails += $nl + "Check 1: PAM MFA Configuration" + $nl
-    $pamMfa = $(sh -c "timeout 5 grep -r 'pam_pkcs11\|pam_google_authenticator\|pam_u2f\|pam_duo\|pam_yubico' /etc/pam.d/ 2>/dev/null" 2>&1)
+    $pamMfa = $(timeout 5 grep -r 'pam_pkcs11\|pam_google_authenticator\|pam_u2f\|pam_duo\|pam_yubico' /etc/pam.d/ 2>/dev/null)
     if ($pamMfa -and "$pamMfa".Trim().Length -gt 0) {
         $FindingDetails += "  MFA PAM modules detected:" + $nl
         foreach ($line in ("$pamMfa" -split $nl | Select-Object -First 5)) {
@@ -35322,7 +35320,7 @@ Function Get-V263652 {
 
     # Check 2: Smart card / CAC support
     $FindingDetails += $nl + "Check 2: Smart Card Support" + $nl
-    $pkcs11 = $(sh -c "dpkg -l 2>/dev/null | grep -i 'opensc\|pcsc\|coolkey\|cac'" 2>&1)
+    $pkcs11 = $(dpkg -l 2>/dev/null | grep -i 'opensc\|pcsc\|coolkey\|cac' 2>&1)
     if ($pkcs11 -and "$pkcs11".Trim().Length -gt 0) {
         $FindingDetails += "  Smart card packages:" + $nl
         foreach ($line in ("$pkcs11" -split $nl | Select-Object -First 5)) {
@@ -35335,7 +35333,7 @@ Function Get-V263652 {
 
     # Check 3: SSH MFA configuration
     $FindingDetails += $nl + "Check 3: SSH Authentication Methods" + $nl
-    $sshAuth = $(sh -c "sshd -T 2>/dev/null | grep -i 'authenticationmethods\|pubkeyauthentication\|passwordauthentication'" 2>&1)
+    $sshAuth = $(sshd -T 2>/dev/null | grep -i 'authenticationmethods\|pubkeyauthentication\|passwordauthentication' 2>&1)
     if ($sshAuth -and "$sshAuth".Trim().Length -gt 0) {
         foreach ($line in ("$sshAuth" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -35346,7 +35344,7 @@ Function Get-V263652 {
 
     # Check 4: XO LDAP/SAML/OIDC plugins for MFA
     $FindingDetails += $nl + "Check 4: XO Enterprise Authentication" + $nl
-    $xoAuth = $(sh -c "timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'auth-ldap\|auth-saml\|auth-oidc' 2>/dev/null" 2>&1)
+    $xoAuth = $(timeout 5 find /opt/xo/packages -maxdepth 2 -name 'package.json' 2>/dev/null | xargs grep -l 'auth-ldap\|auth-saml\|auth-oidc' 2>/dev/null)
     if ($xoAuth -and "$xoAuth".Trim().Length -gt 0) {
         $FindingDetails += "  XO auth plugins detected:" + $nl
         foreach ($line in ("$xoAuth" -split $nl)) {
@@ -35480,7 +35478,7 @@ Function Get-V263653 {
     # Check 1: pwquality.conf dictcheck setting
     $output += "Check 1: pwquality.conf dictcheck Setting${nl}"
     try {
-        $pwqConf = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck'" 2>&1)
+        $pwqConf = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictcheck' 2>&1)
         $pwqStr = ($pwqConf -join $nl).Trim()
         if ($pwqStr -match "dictcheck\s*=\s*(\d+)") {
             $dictcheckVal = [int]$Matches[1]
@@ -35506,7 +35504,7 @@ Function Get-V263653 {
     # Check 2: PAM pwquality module loaded
     $output += "Check 2: PAM pwquality Module${nl}"
     try {
-        $pamConf = $(timeout 5 sh -c "grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality" 2>&1)
+        $pamConf = $(timeout 5 grep -v '^#' /etc/pam.d/common-password 2>/dev/null | grep pam_pwquality 2>&1)
         $pamStr = ($pamConf -join $nl).Trim()
         if ($pamStr) {
             $output += "  $pamStr${nl}"
@@ -35524,7 +35522,7 @@ Function Get-V263653 {
     # Check 3: Wordlist/dictionary files for compromised password checking
     $output += "Check 3: Compromised Password Wordlists${nl}"
     try {
-        $wordlists = $(timeout 5 sh -c "ls -la /usr/share/dict/ 2>/dev/null; ls -la /usr/share/cracklib/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l wamerican 2>/dev/null | grep '^ii'; dpkg -l wamerican-large 2>/dev/null | grep '^ii'" 2>&1)
+        $wordlists = $(timeout 5 ls -la /usr/share/dict/ 2>/dev/null; ls -la /usr/share/cracklib/ 2>/dev/null; dpkg -l cracklib-runtime 2>/dev/null | grep '^ii'; dpkg -l wamerican 2>/dev/null | grep '^ii'; dpkg -l wamerican-large 2>/dev/null | grep '^ii' 2>&1)
         $wordStr = ($wordlists -join $nl).Trim()
         if ($wordStr) {
             foreach ($line in ($wordStr -split $nl)) {
@@ -35550,12 +35548,12 @@ Function Get-V263653 {
     # Check 4: pwquality dictpath for custom compromised password list
     $output += "Check 4: Custom Compromised Password List${nl}"
     try {
-        $dictpath = $(timeout 5 sh -c "grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictpath'" 2>&1)
+        $dictpath = $(timeout 5 grep -v '^#' /etc/security/pwquality.conf 2>/dev/null | grep -i 'dictpath' 2>&1)
         $dictpathStr = ($dictpath -join $nl).Trim()
         if ($dictpathStr -match "dictpath\s*=\s*(.+)") {
             $customPath = $Matches[1].Trim()
             $output += "  dictpath = $customPath${nl}"
-            $pathCheck = $(timeout 5 sh -c "ls -la ${customPath}* 2>/dev/null" 2>&1)
+            $pathCheck = $(timeout 5 ls -la ${customPath}* 2>/dev/null)
             $pathStr = ($pathCheck -join $nl).Trim()
             if ($pathStr) {
                 $output += "  [PASS] Custom dictionary path exists${nl}"
@@ -35684,7 +35682,7 @@ Function Get-V263654 {
 
     # Check 1: Password expiry forcing
     $FindingDetails += $nl + "Check 1: Force Password Change Capability" + $nl
-    $chageCheck = $(sh -c "which chage >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE'" 2>&1)
+    $chageCheck = $(which chage >/dev/null 2>&1 && echo 'AVAILABLE' || echo 'NOT_AVAILABLE' 2>&1)
     if ("$chageCheck" -match "AVAILABLE") {
         $FindingDetails += "  chage utility: Available (can force password change)" + $nl
         $FindingDetails += "  Usage: chage -d 0 <username> (forces change at next login)" + $nl
@@ -35695,7 +35693,7 @@ Function Get-V263654 {
 
     # Check 2: PAM password change enforcement
     $FindingDetails += $nl + "Check 2: PAM Password Change Enforcement" + $nl
-    $pamPwChange = $(sh -c "timeout 5 grep -r 'pam_pwquality\|pam_cracklib\|force_for_root' /etc/pam.d/ 2>/dev/null | head -5" 2>&1)
+    $pamPwChange = $(timeout 5 grep -r 'pam_pwquality\|pam_cracklib\|force_for_root' /etc/pam.d/ 2>/dev/null | head -5 2>&1)
     if ($pamPwChange -and "$pamPwChange".Trim().Length -gt 0) {
         foreach ($line in ("$pamPwChange" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -35709,7 +35707,7 @@ Function Get-V263654 {
 
     # Check 3: LDAP/AD delegation
     $FindingDetails += $nl + "Check 3: External Password Management" + $nl
-    $ldapCheck = $(sh -c "timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1" 2>&1)
+    $ldapCheck = $(timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1 2>&1)
     if ($ldapCheck -and "$ldapCheck".Trim().Length -gt 0) {
         $FindingDetails += "  LDAP/AD: Detected (password recovery may be delegated)" + $nl
     }
@@ -35833,7 +35831,7 @@ Function Get-V263655 {
 
     # Check 1: PAM pwquality maxlen/minlen
     $FindingDetails += $nl + "Check 1: PAM Password Length Configuration" + $nl
-    $pwquality = $(sh -c "cat /etc/security/pwquality.conf 2>/dev/null | grep -v '^#' | grep -v '^$'" 2>&1)
+    $pwquality = $(cat /etc/security/pwquality.conf 2>/dev/null | grep -v '^#' | grep -v '^$' 2>&1)
     if ($pwquality -and "$pwquality".Trim().Length -gt 0) {
         foreach ($line in ("$pwquality" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -35847,7 +35845,7 @@ Function Get-V263655 {
 
     # Check 2: PAM maxlen setting (allows long passwords)
     $FindingDetails += $nl + "Check 2: Maximum Password Length" + $nl
-    $pamMaxLen = $(sh -c "timeout 5 grep -r 'maxlen\|maxrepeat' /etc/pam.d/ /etc/security/ 2>/dev/null" 2>&1)
+    $pamMaxLen = $(timeout 5 grep -r 'maxlen\|maxrepeat' /etc/pam.d/ /etc/security/ 2>/dev/null)
     if ($pamMaxLen -and "$pamMaxLen".Trim().Length -gt 0) {
         foreach ($line in ("$pamMaxLen" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -35861,7 +35859,7 @@ Function Get-V263655 {
 
     # Check 3: Password hash algorithm (supports long passwords)
     $FindingDetails += $nl + "Check 3: Password Hash Algorithm" + $nl
-    $hashAlgo = $(sh -c "grep -i '^ENCRYPT_METHOD' /etc/login.defs 2>/dev/null" 2>&1)
+    $hashAlgo = $(grep -i '^ENCRYPT_METHOD' /etc/login.defs 2>/dev/null)
     if ($hashAlgo -and "$hashAlgo".Trim().Length -gt 0) {
         $FindingDetails += "  $("$hashAlgo".Trim())" + $nl
         if ("$hashAlgo" -match "SHA512|YESCRYPT") {
@@ -35997,7 +35995,7 @@ Function Get-V263656 {
 
     # Check 1: PAM pwquality module
     $FindingDetails += $nl + "Check 1: PAM pwquality Module" + $nl
-    $pwqInstalled = $(sh -c "dpkg -l libpam-pwquality 2>/dev/null | grep '^ii'" 2>&1)
+    $pwqInstalled = $(dpkg -l libpam-pwquality 2>/dev/null | grep '^ii' 2>&1)
     if ($pwqInstalled -and "$pwqInstalled".Trim().Length -gt 0) {
         $FindingDetails += "  libpam-pwquality: Installed" + $nl
     }
@@ -36007,7 +36005,7 @@ Function Get-V263656 {
 
     # Check 2: PAM configuration for password quality
     $FindingDetails += $nl + "Check 2: PAM Password Quality Configuration" + $nl
-    $pamConfig = $(sh -c "timeout 5 grep -r 'pam_pwquality\|pam_cracklib' /etc/pam.d/ 2>/dev/null" 2>&1)
+    $pamConfig = $(timeout 5 grep -r 'pam_pwquality\|pam_cracklib' /etc/pam.d/ 2>/dev/null)
     if ($pamConfig -and "$pamConfig".Trim().Length -gt 0) {
         foreach ($line in ("$pamConfig" -split $nl | Select-Object -First 5)) {
             if ("$line".Trim().Length -gt 0) {
@@ -36021,7 +36019,7 @@ Function Get-V263656 {
 
     # Check 3: pwquality.conf settings
     $FindingDetails += $nl + "Check 3: Password Quality Settings" + $nl
-    $pwqConf = $(sh -c "cat /etc/security/pwquality.conf 2>/dev/null | grep -v '^#' | grep -v '^$'" 2>&1)
+    $pwqConf = $(cat /etc/security/pwquality.conf 2>/dev/null | grep -v '^#' | grep -v '^$' 2>&1)
     if ($pwqConf -and "$pwqConf".Trim().Length -gt 0) {
         foreach ($line in ("$pwqConf" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -36035,7 +36033,7 @@ Function Get-V263656 {
 
     # Check 4: Dictionary files for password checking
     $FindingDetails += $nl + "Check 4: Password Dictionary Files" + $nl
-    $dictCheck = $(sh -c "ls -la /usr/share/dict/ 2>/dev/null | head -5" 2>&1)
+    $dictCheck = $(ls -la /usr/share/dict/ 2>/dev/null | head -5 2>&1)
     if ($dictCheck -and "$dictCheck" -notmatch "No such file") {
         $FindingDetails += "  Dictionary files available in /usr/share/dict/" + $nl
     }
@@ -36165,14 +36163,14 @@ Function Get-V263657 {
 
     # Check 1: SSH key algorithms
     $FindingDetails += $nl + "Check 1: SSH Host Key Algorithms" + $nl
-    $sshHostKeys = $(sh -c "sshd -T 2>/dev/null | grep -i hostkeyalgorithms" 2>&1)
+    $sshHostKeys = $(sshd -T 2>/dev/null | grep -i hostkeyalgorithms 2>&1)
     if ($sshHostKeys -and "$sshHostKeys".Trim().Length -gt 0) {
         $FindingDetails += "  $("$sshHostKeys".Trim())" + $nl
     }
     else {
         $FindingDetails += "  Using default host key algorithms" + $nl
     }
-    $hostKeyFiles = $(sh -c "ls -la /etc/ssh/ssh_host_*_key.pub 2>/dev/null" 2>&1)
+    $hostKeyFiles = $(ls -la /etc/ssh/ssh_host_*_key.pub 2>/dev/null)
     if ($hostKeyFiles) {
         foreach ($line in ("$hostKeyFiles" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {
@@ -36183,10 +36181,10 @@ Function Get-V263657 {
 
     # Check 2: TLS certificate algorithms
     $FindingDetails += $nl + "Check 2: TLS Certificate Compliance" + $nl
-    $certFile = $(sh -c "timeout 5 find /etc/ssl /opt/xo -maxdepth 3 -name '*.pem' -o -name '*.crt' 2>/dev/null | head -3" 2>&1)
+    $certFile = $(timeout 5 find /etc/ssl /opt/xo -maxdepth 3 -name '*.pem' -o -name '*.crt' 2>/dev/null | head -3 2>&1)
     if ($certFile -and "$certFile".Trim().Length -gt 0) {
         $firstCert = ("$certFile" -split $nl)[0].Trim()
-        $certInfo = $(sh -c "openssl x509 -in '$firstCert' -noout -text 2>/dev/null | grep -E 'Signature Algorithm|Public-Key'" 2>&1)
+        $certInfo = $(openssl x509 -in '$firstCert' -noout -text 2>/dev/null | grep -E 'Signature Algorithm|Public-Key' 2>&1)
         if ($certInfo) {
             foreach ($line in ("$certInfo" -split $nl)) {
                 if ("$line".Trim().Length -gt 0) {
@@ -36201,7 +36199,7 @@ Function Get-V263657 {
 
     # Check 3: LDAP/AD credential handling
     $FindingDetails += $nl + "Check 3: External Credential Sources" + $nl
-    $ldapCheck = $(sh -c "timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1" 2>&1)
+    $ldapCheck = $(timeout 5 grep -rl 'auth-ldap' /opt/xo/packages/ 2>/dev/null | head -1 2>&1)
     if ($ldapCheck -and "$ldapCheck".Trim().Length -gt 0) {
         $FindingDetails += "  LDAP/AD authentication: Detected" + $nl
         $FindingDetails += "  External credentials delegated to directory service" + $nl
@@ -36216,7 +36214,7 @@ Function Get-V263657 {
     if ($opensslVer) {
         $FindingDetails += "  $("$opensslVer".Trim())" + $nl
     }
-    $fipsCheck = $(sh -c "cat /proc/sys/crypto/fips_enabled 2>/dev/null" 2>&1)
+    $fipsCheck = $(cat /proc/sys/crypto/fips_enabled 2>/dev/null)
     if ($fipsCheck -and "$fipsCheck".Trim() -eq "1") {
         $FindingDetails += "  FIPS mode: Enabled" + $nl
     }
@@ -36544,18 +36542,18 @@ Function Get-V263659 {
 
     # Check 1: System CA certificate store
     $FindingDetails += $nl + "Check 1: System CA Certificate Store" + $nl
-    $caCerts = $(sh -c "ls /etc/ssl/certs/ 2>/dev/null | wc -l" 2>&1)
+    $caCerts = $(ls /etc/ssl/certs/ 2>/dev/null | wc -l 2>&1)
     if ($caCerts -and "$caCerts".Trim() -match "^\d+$") {
         $FindingDetails += "  Certificates in /etc/ssl/certs/: $("$caCerts".Trim())" + $nl
     }
-    $caBundle = $(sh -c "test -f /etc/ssl/certs/ca-certificates.crt && wc -l /etc/ssl/certs/ca-certificates.crt | awk '{print $1}' || echo 'NOT_FOUND'" 2>&1)
+    $caBundle = $(test -f /etc/ssl/certs/ca-certificates.crt && wc -l /etc/ssl/certs/ca-certificates.crt | awk '{print $1}' || echo 'NOT_FOUND' 2>&1)
     if ("$caBundle" -notmatch "NOT_FOUND") {
         $FindingDetails += "  CA bundle: /etc/ssl/certs/ca-certificates.crt ($("$caBundle".Trim()) lines)" + $nl
     }
 
     # Check 2: DoD CA certificates
     $FindingDetails += $nl + "Check 2: DoD CA Certificates" + $nl
-    $dodCerts = $(sh -c "timeout 10 grep -c 'DoD\|DOD\|Department of Defense' /etc/ssl/certs/ca-certificates.crt 2>/dev/null || echo '0'" 2>&1)
+    $dodCerts = $(timeout 10 grep -c 'DoD\|DOD\|Department of Defense' /etc/ssl/certs/ca-certificates.crt 2>/dev/null || echo '0' 2>&1)
     if ($dodCerts -and "$dodCerts".Trim() -ne "0") {
         $FindingDetails += "  DoD CA references found: $("$dodCerts".Trim())" + $nl
     }
@@ -36565,7 +36563,7 @@ Function Get-V263659 {
 
     # Check 3: Custom trust anchors
     $FindingDetails += $nl + "Check 3: Custom/Local Trust Anchors" + $nl
-    $localCerts = $(sh -c "ls /usr/local/share/ca-certificates/ 2>/dev/null" 2>&1)
+    $localCerts = $(ls /usr/local/share/ca-certificates/ 2>/dev/null)
     if ($localCerts -and "$localCerts".Trim().Length -gt 0 -and "$localCerts" -notmatch "No such file") {
         $FindingDetails += "  Custom certificates:" + $nl
         foreach ($line in ("$localCerts" -split $nl)) {
@@ -36580,7 +36578,7 @@ Function Get-V263659 {
 
     # Check 4: ca-certificates package management
     $FindingDetails += $nl + "Check 4: CA Certificate Package" + $nl
-    $caPkg = $(sh -c "dpkg -l ca-certificates 2>/dev/null | grep '^ii'" 2>&1)
+    $caPkg = $(dpkg -l ca-certificates 2>/dev/null | grep '^ii' 2>&1)
     if ($caPkg -and "$caPkg".Trim().Length -gt 0) {
         $FindingDetails += "  $("$caPkg".Trim())" + $nl
     }
@@ -36698,7 +36696,7 @@ Function Get-V263660 {
 
     # Check 1: SSH host key permissions
     $FindingDetails += $nl + "Check 1: SSH Host Key Permissions" + $nl
-    $sshKeys = $(sh -c "ls -la /etc/ssh/ssh_host_*_key 2>/dev/null" 2>&1)
+    $sshKeys = $(ls -la /etc/ssh/ssh_host_*_key 2>/dev/null)
     if ($sshKeys -and "$sshKeys" -notmatch "No such file") {
         $keyIssue = $false
         foreach ($line in ("$sshKeys" -split $nl)) {
@@ -36716,11 +36714,11 @@ Function Get-V263660 {
 
     # Check 2: TLS/SSL certificate key permissions
     $FindingDetails += $nl + "Check 2: TLS Certificate Key Permissions" + $nl
-    $tlsKeys = $(sh -c "timeout 10 find /etc/ssl/private /opt/xo -maxdepth 3 -name '*.key' -o -name '*-key.pem' 2>/dev/null | head -5" 2>&1)
+    $tlsKeys = $(timeout 10 find /etc/ssl/private /opt/xo -maxdepth 3 -name '*.key' -o -name '*-key.pem' 2>/dev/null | head -5 2>&1)
     if ($tlsKeys -and "$tlsKeys".Trim().Length -gt 0) {
         foreach ($keyFile in ("$tlsKeys" -split $nl)) {
             if ("$keyFile".Trim().Length -gt 0) {
-                $keyPerms = $(sh -c "ls -la '$("$keyFile".Trim())' 2>/dev/null" 2>&1)
+                $keyPerms = $(ls -la '$("$keyFile".Trim())' 2>/dev/null)
                 if ($keyPerms) {
                     $FindingDetails += "  $("$keyPerms".Trim())" + $nl
                 }
@@ -36733,7 +36731,7 @@ Function Get-V263660 {
 
     # Check 3: LUKS/dm-crypt encrypted storage
     $FindingDetails += $nl + "Check 3: Encrypted Storage" + $nl
-    $luksDevices = $(sh -c "lsblk -f 2>/dev/null | grep -i 'crypto\|luks'" 2>&1)
+    $luksDevices = $(lsblk -f 2>/dev/null | grep -i 'crypto\|luks' 2>&1)
     if ($luksDevices -and "$luksDevices".Trim().Length -gt 0) {
         $FindingDetails += "  Encrypted volumes detected:" + $nl
         $FindingDetails += "  $("$luksDevices".Trim())" + $nl
@@ -36744,7 +36742,7 @@ Function Get-V263660 {
 
     # Check 4: Kernel keyring
     $FindingDetails += $nl + "Check 4: Kernel Keyring" + $nl
-    $keyring = $(sh -c "cat /proc/keys 2>/dev/null | wc -l" 2>&1)
+    $keyring = $(cat /proc/keys 2>/dev/null | wc -l 2>&1)
     if ($keyring -and "$keyring".Trim() -match "^\d+$") {
         $FindingDetails += "  Kernel keyring entries: $("$keyring".Trim())" + $nl
     }
@@ -36869,9 +36867,9 @@ Function Get-V263661 {
 
     # Check 1: NTP/Chrony service status
     $FindingDetails += $nl + "Check 1: Time Synchronization Service" + $nl
-    $chronyd = $(sh -c "systemctl is-active chronyd 2>/dev/null" 2>&1)
-    $ntpd = $(sh -c "systemctl is-active ntp 2>/dev/null || systemctl is-active ntpd 2>/dev/null" 2>&1)
-    $timesyncd = $(sh -c "systemctl is-active systemd-timesyncd 2>/dev/null" 2>&1)
+    $chronyd = $(systemctl is-active chronyd 2>/dev/null)
+    $ntpd = $(systemctl is-active ntp 2>/dev/null || systemctl is-active ntpd 2>/dev/null)
+    $timesyncd = $(systemctl is-active systemd-timesyncd 2>/dev/null)
     $timeSyncActive = $false
     if ("$chronyd" -match "^active") {
         $FindingDetails += "  chronyd: Active" + $nl
@@ -36892,7 +36890,7 @@ Function Get-V263661 {
     # Check 2: Sync sources
     $FindingDetails += $nl + "Check 2: Time Synchronization Sources" + $nl
     if ("$chronyd" -match "^active") {
-        $sources = $(sh -c "chronyc sources 2>/dev/null | head -10" 2>&1)
+        $sources = $(chronyc sources 2>/dev/null | head -10 2>&1)
         if ($sources) {
             foreach ($line in ("$sources" -split $nl | Select-Object -First 8)) {
                 if ("$line".Trim().Length -gt 0) {
@@ -36902,7 +36900,7 @@ Function Get-V263661 {
         }
     }
     elseif ("$timesyncd" -match "^active") {
-        $tsStatus = $(sh -c "timedatectl show-timesync --property=ServerName --property=NTPMessage 2>/dev/null || timedatectl status 2>/dev/null | grep -i 'NTP\|server'" 2>&1)
+        $tsStatus = $(timedatectl show-timesync --property=ServerName --property=NTPMessage 2>/dev/null || timedatectl status 2>/dev/null | grep -i 'NTP\|server' 2>&1)
         if ($tsStatus) {
             foreach ($line in ("$tsStatus" -split $nl | Select-Object -First 5)) {
                 if ("$line".Trim().Length -gt 0) {
@@ -36914,7 +36912,7 @@ Function Get-V263661 {
 
     # Check 3: timedatectl status
     $FindingDetails += $nl + "Check 3: System Time Status" + $nl
-    $tdctl = $(sh -c "timedatectl status 2>/dev/null | grep -E 'synchronized|NTP|Time zone'" 2>&1)
+    $tdctl = $(timedatectl status 2>/dev/null | grep -E 'synchronized|NTP|Time zone' 2>&1)
     if ($tdctl) {
         foreach ($line in ("$tdctl" -split $nl)) {
             if ("$line".Trim().Length -gt 0) {

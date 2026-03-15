@@ -104,6 +104,15 @@ Reference: The AO must accept this finding or document a compensating control in
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222390">
@@ -129,6 +138,15 @@ Remediation options:
 4. Document this as an accepted risk with compensating controls in the SSP.
 
 Reference: APSC-DV-000080. The AO must accept this finding or document a compensating control.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
         </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
@@ -208,6 +226,15 @@ This is a CAT III (low severity) finding. Document as accepted risk if remediati
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222393">
@@ -223,6 +250,15 @@ labeling (e.g., classification markings). The STIG requires security attribute a
 applications that store data subject to mandatory access control (MAC) or sensitivity labeling policies.
 XO stores infrastructure configuration data (VM configs, user credentials, audit logs), not mission data.
 This requirement does not apply to infrastructure management software of this type.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
         </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
@@ -247,6 +283,15 @@ subject to data labeling requirements. This requirement does not apply.
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222395">
@@ -265,6 +310,15 @@ TLS confidentiality and integrity protection for XO API transmissions is covered
 V-222396 (confidentiality) and V-222397 (integrity). This control specifically requires applications
 to embed and preserve data classification attributes (e.g., FOUO, SECRET) in transmitted messages.
 As an infrastructure management tool, XO does not handle data subject to this labeling requirement.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
         </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
@@ -413,6 +467,15 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222400">
@@ -424,6 +487,15 @@ If SOAP is confirmed but not properly secured, contact Vates to implement WS-Sec
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -475,6 +547,15 @@ Note: If a future XO deployment introduces a SOAP-based integration gateway, thi
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222403">
@@ -489,6 +570,15 @@ Note: If a future XO deployment introduces a SOAP-based integration gateway, thi
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222404">
@@ -500,6 +590,15 @@ Note: If a future XO deployment introduces a SOAP-based integration gateway, thi
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -653,6 +752,15 @@ Document the chosen approach in the ISSO/ISSM authorization artifacts. If no tem
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222410">
@@ -668,6 +776,15 @@ Document the chosen approach in the ISSO/ISSM authorization artifacts. If no tem
 Emergency access to the underlying XO infrastructure is handled at the operating system level (Debian 12 root account, SSH key-based access) rather than within the XO application itself. The operating system emergency access controls are assessed separately under the GPOS SRG for Debian 12.
 
 Since XO has no application-level emergency account feature or account type distinction, this control is Not Applicable. Document this assessment in the authorization artifacts noting that emergency system access relies on OS-level administrative mechanisms.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -689,6 +806,15 @@ Action required (choose one):
 3. External automation: Use the XO REST API (/rest/v0/users) with a scheduled job that compares user last-activity timestamps from audit logs against the 35-day threshold.
 
 Document the chosen approach in the ISSO/ISSM authorization artifacts with evidence that inactivity monitoring is active and enforced.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -714,14 +840,23 @@ Schedule periodic account reviews (recommend every 30 days) and maintain documen
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222413">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account creation events in the systemd
 journal for the last 7 days. This is expected on systems where no account changes have been made recently.
 
@@ -738,9 +873,9 @@ If using LDAP/AD for account management, configure the auth-ldap plugin to satis
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected the auth-ldap plugin is installed and configured. Account management
 is delegated to the enterprise LDAP/AD directory service, which maintains its own comprehensive audit trail of
 all account lifecycle events including creation.
@@ -751,25 +886,14 @@ in the Windows Security Event Log.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Automated scan found account creation events in the systemd journal. XO is logging account
-creation activity as required by this control.
-
-ISSO should verify: The XO audit plugin (xo-server-audit) is enabled and logs include account name and timestamp
-at minimum. Audit logs should be retained per DoD requirements and forwarded to a centralized audit server.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222414">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account modification events in the
 systemd journal for the last 7 days.
 
@@ -782,9 +906,9 @@ XO account modification events via the audit plugin include role changes, passwo
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account management is delegated to
 enterprise LDAP/AD, which maintains its own audit trail. Account modification events in AD appear as Event ID 4738
 (user account changed) in the Windows Security Event Log.
@@ -793,22 +917,14 @@ ISSO must verify AD audit policy covers account management changes and logs are 
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Automated scan found account modification events in the systemd journal. XO is logging account
-modification activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222415">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account disabling events in the
 systemd journal for the last 7 days.
 
@@ -822,21 +938,13 @@ removing permissions or by the LDAP/AD directory if configured.</ValidTrueCommen
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account disabling is managed by
 enterprise LDAP/AD. Account disable events in AD appear as Event ID 4725 (user account disabled).
 
 ISSO must verify AD audit policy is enabled and logs retained per DoD policy.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
-      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Automated scan found account disabling events in the systemd journal. XO is logging account
-disabling activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -845,9 +953,9 @@ disabling activity as required. ISSO should verify audit log retention and centr
   <Vuln ID="V-222416">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account removal events in the
 systemd journal for the last 7 days.
 
@@ -860,21 +968,13 @@ Account deletion in XO is logged as a user.delete action in the audit log when t
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account removal is managed by
 enterprise LDAP/AD. Account deletion events in AD appear as Event ID 4726 (user account deleted).
 
 ISSO must verify AD audit policy is enabled and logs retained per DoD policy.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
-      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Automated scan found account removal events in the systemd journal. XO is logging account
-removal activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1005,9 +1105,9 @@ account removal per DoD account management policy.</ValidTrueComment>
   <Vuln ID="V-222421">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Automated scan found no auth-ldap plugin configured and no account enabling events in the
 systemd journal for the last 7 days.
 
@@ -1021,21 +1121,13 @@ and logged with the account name, timestamp, and the admin who performed the act
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="2" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
+        <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated scan detected the auth-ldap plugin is configured. Account enabling events are
 managed by enterprise LDAP/AD. Account unlock events in AD appear as Event ID 4767 (user account unlocked).
 
 ISSO must verify AD audit policy covers account management and logs are retained per DoD policy.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
-      <Answer Index="3" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
-        <ValidTrueComment>Automated scan found account enabling events in the systemd journal. XO is logging account
-enabling activity as required. ISSO should verify audit log retention and centralized forwarding.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1096,6 +1188,15 @@ This documentation is required by APSC-DV-000440 and must be available for audit
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222424">
@@ -1121,6 +1222,15 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222425">
@@ -1132,6 +1242,15 @@ XO REST API calls are logged when the audit plugin is enabled, providing a basel
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1150,6 +1269,15 @@ which requires subjects (users) to set permissions on objects they own (e.g., Un
 Windows DACLs). In XO, all access control is centrally administered by administrators, not by
 object owners. The STIG check states: "If the application does not implement DAC, this requirement
 is N/A." This requirement is Not Applicable to Xen Orchestra.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1172,6 +1300,15 @@ Not Applicable to Xen Orchestra.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222428">
@@ -1188,6 +1325,15 @@ enforcement on data crossing system boundaries. XO enforces TLS encryption and R
 inter-system API calls but not classification-based flow control. The STIG check states: "If the
 application does not provide data flow control capabilities, this requirement is N/A." This
 requirement is Not Applicable to Xen Orchestra.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1235,14 +1381,14 @@ process user and should remain functional after this change.</ValidTrueComment>
   <Vuln ID="V-222430">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO Server runs as a non-root service account with appropriate group memberships. No excessive Linux capabilities detected on Node.js binary. Redis runs as dedicated redis user. The systemd service configuration enforces least privilege execution. Service account does not have sudo, wheel, or adm group membership.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Automated check determined XO does not run with least privilege.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>XO Server is running as root or with excessive account permissions. Remediation: Configure XO to run as a dedicated non-root service account. Remove the service account from sudo/wheel/adm groups. Set appropriate file ownership on /opt/xo directories. Verify no excessive Linux capabilities are assigned to the node binary.</ValidTrueComment>
@@ -1302,6 +1448,15 @@ in the centralized audit server per V-222422 requirements.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222433">
@@ -1331,6 +1486,15 @@ To satisfy this requirement:
 3. Implement a ticketing workflow (e.g., ServiceNow, JIRA) for unlock requests
 4. Train administrators on the identity verification step
 5. Retain records of all unlock events for audit purposes</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>NotAFinding</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system meets the requirement. The technical evidence in FINDING_DETAILS confirms compliance with the STIG check criteria.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1754,6 +1918,15 @@ simultaneously. Implementing both with a single nginx pre-auth page is the recom
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222454">
@@ -1789,6 +1962,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222456">
@@ -1802,6 +1984,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222457">
@@ -1812,6 +2003,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidationCode />
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Xen Orchestra does not store or process classified information and does not implement data classification categories or compartmentalized data protection. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data protection. This condition applies to XO deployments.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1850,6 +2050,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222460">
@@ -1863,6 +2072,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222461">
@@ -1873,6 +2091,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Test:
         <ValidationCode />
         <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
         <ValidTrueComment>Xen Orchestra does not store classified or categorized information and does not implement data classification categories. The STIG check explicitly states this requirement is not applicable when the application does not require compartmentalized data and data protection. This condition applies to XO deployments.</ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -1977,6 +2204,15 @@ ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Acces
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this requirement is applicable and the system does not meet it. Review FINDING_DETAILS for specific technical evidence and implement corrective actions per the STIG Check_Content guidance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
     <Vuln ID="V-222467">
@@ -1996,13 +2232,6 @@ ISSO action: Test account lifecycle logging: (1) Create a test user and verify a
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Automated check could not confirm the XO audit plugin is active or account lifecycle events are logged. Account lifecycle audit records may not be generated.
 ISSO action: (1) Install and activate the @xen-orchestra/audit plugin; (2) Create, modify, and delete a test user account; (3) Verify audit records for each lifecycle event are created; (4) Confirm records include: performing user ID, target user ID, action, and timestamp.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>XO is configured to use LDAP/AD enterprise authentication. The STIG states this requirement is not applicable when the application uses a STIG-compliant enterprise user management capability. Account lifecycle events (create/modify/disable/terminate) are managed and audited by the enterprise directory (AD/LDAP) system. Verify the enterprise directory STIG compliance and confirm account lifecycle audit records exist in the directory audit logs.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -2243,17 +2472,6 @@ REMEDIATION STEPS:
 "
 3. Verify xo-server is identifiable as the application in centralized log storage
 4. Coordinate with SIEM team to confirm XO logs are distinguishable from other sources</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>This requirement is Not Applicable. XO is not configured to use a centralized logging solution. Per STIG check content: if the application logs locally and does not utilize a centralized logging solution, this requirement is Not Applicable.
-
-XO currently logs to the local systemd journal and/or local log files only. No remote syslog, syslog-ng, or systemd-journal-upload destinations are configured.
-
-NOTE: For DoD environments, configuring centralized audit log forwarding is strongly recommended to satisfy V-222481 (off-load audit records) and support SIEM integration. See VATES_COMPLIANCE_BLOCKERS.md for implementation guidance.</ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -3956,7 +4174,7 @@ If all users are uniquely identified, document evidence and mark as NotAFinding.
   <Vuln ID="V-222523">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Xen Orchestra privileged account access has been verified for MFA/Alt Token compliance.
 
 Enterprise authentication integration (LDAP/AD with smart card or SAML with MFA-enabled IdP) is configured, providing multifactor authentication for privileged network access to the XO management console.
@@ -3967,7 +4185,7 @@ Evidence examined:
 - Privileged user account enumeration via REST API
 
 The organization has implemented MFA through directory services integration, meeting DoD requirements for privileged network access authentication.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Xen Orchestra does not natively enforce multifactor authentication for privileged network access.
 
 Current state: XO uses local username/password authentication by default. No MFA/Alt Token enforcement detected for admin accounts.
@@ -3984,7 +4202,7 @@ Reference: VATES_COMPLIANCE_BLOCKERS.md - MFA/2FA not built into XO</ValidTrueCo
   <Vuln ID="V-222524">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>PIV credential acceptance has been verified for Xen Orchestra.
 
 The system is configured to accept PIV credentials through TLS client certificate authentication or LDAP/AD integration with smart card support. PKCS#11 packages are installed on the host system.
@@ -3993,7 +4211,7 @@ Evidence examined:
 - TLS client certificate configuration
 - PKCS#11/smart card package installation
 - Authentication plugin configuration</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Xen Orchestra does not natively accept PIV credentials.
 
 Current state: XO uses local username/password or token-based authentication. No PIV/CAC credential acceptance configured.
@@ -4008,7 +4226,7 @@ Remediation actions:
   <Vuln ID="V-222525">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>PIV credential electronic verification has been confirmed for Xen Orchestra.
 
 The system validates PIV credentials through OCSP/CRL certificate revocation checking and TLS client certificate verification.
@@ -4017,7 +4235,7 @@ Evidence examined:
 - OCSP/CRL revocation checking configuration
 - TLS client certificate verification settings
 - Certificate chain validation</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>PIV credential electronic verification is not configured for Xen Orchestra.
 
 Current state: No OCSP or CRL revocation checking configured for client certificates. Certificate chain validation is limited to server-side TLS.
@@ -4032,7 +4250,7 @@ Remediation actions:
   <Vuln ID="V-222526">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>MFA for non-privileged network access has been verified for Xen Orchestra.
 
 Enterprise authentication (LDAP/AD or SAML) with MFA capability is configured for all user accounts, including non-privileged users.
@@ -4041,7 +4259,7 @@ Evidence examined:
 - Authentication plugin configuration
 - Non-privileged user account enumeration
 - MFA enforcement settings</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>MFA is not enforced for non-privileged network access to Xen Orchestra.
 
 Current state: Non-privileged users authenticate with username/password only. No MFA enforcement for standard user accounts.
@@ -4056,7 +4274,7 @@ Remediation actions:
   <Vuln ID="V-222527">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>MFA for local privileged access has been verified for Xen Orchestra.
 
 PAM MFA modules or SSH multi-factor authentication is configured for local privileged access to the XO server.
@@ -4065,7 +4283,7 @@ Evidence examined:
 - PAM configuration (pam_pkcs11, pam_u2f, pam_google_authenticator)
 - SSH AuthenticationMethods configuration
 - Local console access controls</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>MFA is not enforced for local privileged access to the Xen Orchestra server.
 
 Current state: Local access uses standard password authentication without additional factors.
@@ -4080,7 +4298,7 @@ Remediation actions:
   <Vuln ID="V-222528">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>MFA for local nonprivileged access has been verified for Xen Orchestra.
 
 PAM MFA modules or SAML integration provides multifactor authentication for all local user access.
@@ -4089,7 +4307,7 @@ Evidence examined:
 - PAM MFA configuration
 - SAML/OIDC authentication settings
 - Web interface authentication methods</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>MFA is not enforced for local nonprivileged access to Xen Orchestra.
 
 Current state: Local nonprivileged users authenticate with username/password only.
@@ -4104,7 +4322,7 @@ Remediation actions:
   <Vuln ID="V-222529">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Individual authentication before group access has been verified for Xen Orchestra.
 
 All XO user accounts use individual email/username credentials. No shared or group accounts were detected in the XO user database. Each user must authenticate individually before accessing any shared resources.
@@ -4113,7 +4331,7 @@ Evidence examined:
 - XO user account listing via REST API
 - Shared/group account detection
 - Recent login activity analysis</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Individual authentication before group access requires verification for Xen Orchestra.
 
 Current state: Possible shared or group accounts detected in XO user database. Individual authentication before shared access must be verified.
@@ -4128,7 +4346,7 @@ Remediation actions:
   <Vuln ID="V-222530">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Replay-resistant authentication for privileged access has been verified for Xen Orchestra.
 
 XO uses session-based authentication over TLS 1.2+. TLS encryption prevents credential interception and replay. Session tokens are unique per session and time-limited.
@@ -4137,7 +4355,7 @@ Evidence examined:
 - TLS version and cipher configuration
 - Session token management
 - CSRF protection headers</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Replay-resistant authentication for privileged access cannot be fully verified.
 
 Current state: TLS configuration may not fully prevent replay attacks.
@@ -4152,7 +4370,7 @@ Remediation actions:
   <Vuln ID="V-222531">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Replay-resistant authentication for nonprivileged access has been verified for Xen Orchestra.
 
 The same TLS 1.2+ session-based authentication mechanism applies to all user accounts (both privileged and nonprivileged), providing replay protection through encrypted transport and unique session tokens.
@@ -4160,7 +4378,7 @@ The same TLS 1.2+ session-based authentication mechanism applies to all user acc
 Evidence examined:
 - TLS encryption active for all connections
 - Uniform authentication mechanism for all users</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Replay-resistant authentication for nonprivileged access cannot be fully verified.
 
 Remediation: Ensure TLS 1.2+ is enforced for all connections. Verify session tokens are cryptographically random and time-limited for all user accounts.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
@@ -4169,7 +4387,7 @@ Remediation: Ensure TLS 1.2+ is enforced for all connections. Verify session tok
   <Vuln ID="V-222532">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Mutual authentication for non-repudiation has been verified for Xen Orchestra.
 
 Mutual TLS (mTLS) is configured, providing both server and client certificate verification. This ensures device-level non-repudiation for management operations.
@@ -4178,7 +4396,7 @@ Evidence examined:
 - TLS client certificate configuration
 - Server certificate verification
 - Mutual authentication settings</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Mutual authentication (mTLS) is not configured for Xen Orchestra.
 
 Current state: Server-side TLS only. No client certificate authentication configured.
@@ -4193,7 +4411,7 @@ Remediation actions:
   <Vuln ID="V-222533">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Endpoint device authentication has been verified for Xen Orchestra.
 
 The XO API correctly rejects unauthenticated requests (HTTP 401/403). All management operations require authentication tokens. HTTP traffic is redirected to HTTPS.
@@ -4202,7 +4420,7 @@ Evidence examined:
 - Unauthenticated API access test (401/403 response)
 - HTTP to HTTPS redirect verification
 - WebSocket authentication requirements</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Endpoint device authentication requires verification for Xen Orchestra.
 
 Remediation actions:
@@ -4215,7 +4433,7 @@ Remediation actions:
   <Vuln ID="V-222534">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Mutual SSL/TLS for service-oriented access has been verified for Xen Orchestra.
 
 XO REST API endpoints use TLS with client certificate authentication for service consumers handling non-releasable virtualization management data.
@@ -4224,7 +4442,7 @@ Evidence examined:
 - REST API TLS configuration
 - Client certificate requirements
 - Data classification assessment</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Mutual SSL/TLS is not configured for XO service-oriented endpoints.
 
 Current state: REST API uses token-based authentication over server-side TLS. No client certificate requirements for API consumers.
@@ -4239,18 +4457,12 @@ Remediation actions:
   <Vuln ID="V-222535">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Device identifier management has been assessed for Xen Orchestra. XO authenticates users, not devices, making this requirement Not Applicable per STIG guidance.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Device identifier inactivity management requires review.
 
 Remediation: If XO is configured to authenticate devices, ensure device identifiers are disabled after 35 days of inactivity. If using DoD PKI certificates for device authentication, the expiration date on the certificate fulfills this requirement.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable">
-        <ValidationCode /><ValidTrueStatus>Not_Applicable</ValidTrueStatus><ValidTrueComment>Not Applicable. Xen Orchestra is a web-based management application that authenticates users, not devices. XO does not use device identifiers for authentication.
-
-Per STIG guidance: "If the application is not designed to authenticate devices, this is Not Applicable."
-
-User authentication is managed through individual user accounts with email/username credentials. Browser sessions are authenticated via user credentials, not device identifiers.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222536">
@@ -4265,12 +4477,21 @@ User authentication is managed through individual user accounts with email/usern
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222537">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Password uppercase requirement has been verified for Xen Orchestra.
 
 PAM pwquality module is configured with ucredit = -1 (or stricter), requiring at least one uppercase character in passwords.
@@ -4279,7 +4500,7 @@ Evidence examined:
 - /etc/security/pwquality.conf ucredit setting
 - PAM module configuration
 - External authentication delegation (LDAP/AD)</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Password uppercase requirement is not enforced for Xen Orchestra.
 
 Current state: PAM pwquality ucredit not configured to require uppercase characters.
@@ -4294,9 +4515,9 @@ Remediation actions:
   <Vuln ID="V-222538">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Password lowercase requirement has been verified. PAM pwquality lcredit = -1 configured.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Password lowercase requirement is not enforced.
 
 Remediation: Set lcredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwquality is loaded in PAM stack. If using LDAP/AD, verify directory password policy enforces lowercase.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
@@ -4305,9 +4526,9 @@ Remediation: Set lcredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwqual
   <Vuln ID="V-222539">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Password numeric requirement has been verified. PAM pwquality dcredit = -1 configured.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Password numeric character requirement is not enforced.
 
 Remediation: Set dcredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwquality is loaded in PAM stack. If using LDAP/AD, verify directory password policy enforces numeric characters.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
@@ -4316,9 +4537,9 @@ Remediation: Set dcredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwqual
   <Vuln ID="V-222540">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Password special character requirement has been verified. PAM pwquality ocredit = -1 configured.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Password special character requirement is not enforced.
 
 Remediation: Set ocredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwquality is loaded in PAM stack. If using LDAP/AD, verify directory password policy enforces special characters.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
@@ -4327,9 +4548,9 @@ Remediation: Set ocredit = -1 in /etc/security/pwquality.conf. Ensure pam_pwqual
   <Vuln ID="V-222541">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Password change difference requirement has been verified. PAM pwquality difok = 8 (or higher) configured, requiring at least 8 characters differ from old password.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Password change difference requirement is not enforced.
 
 Current state: PAM pwquality difok not configured to require 8+ character changes (default is 1).
@@ -4349,6 +4570,15 @@ Remediation: Set difok = 8 in /etc/security/pwquality.conf. Ensure pam_pwquality
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222543">
@@ -4363,14 +4593,23 @@ Remediation: Set difok = 8 in /etc/security/pwquality.conf. Ensure pam_pwquality
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222544">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Minimum password lifetime of 24 hours has been verified. PASS_MIN_DAYS is set to 1 or greater in /etc/login.defs.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Minimum password lifetime is not enforced.
 
 Current state: PASS_MIN_DAYS not configured or set to 0 in /etc/login.defs.
@@ -4381,9 +4620,9 @@ Remediation: Set PASS_MIN_DAYS 1 in /etc/login.defs. Apply to existing users wit
   <Vuln ID="V-222545">
     
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>NotAFinding</ValidTrueStatus><ValidTrueComment>Maximum password lifetime of 60 days has been verified. PASS_MAX_DAYS is set to 60 or less in /etc/login.defs.</ValidTrueComment><ValidFalseStatus /><ValidFalseComment /></Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode /><ValidTrueStatus>Open</ValidTrueStatus><ValidTrueComment>Maximum password lifetime is not properly configured.
 
 Current state: PASS_MAX_DAYS not set to 60 or less in /etc/login.defs.
@@ -4544,14 +4783,14 @@ for that user. Session tokens referencing deleted users are rejected on the next
   <Vuln ID="V-222550">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>PKI certificate path validation is properly configured. SSL/TLS certificate chain validates successfully against the system CA bundle. CA certificate bundle is present with trusted root certificates. Node.js TLS certificate validation is enabled (NODE_TLS_REJECT_UNAUTHORIZED is not set to 0). Active TLS connections verify certificate chains correctly.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Automated check could not confirm certificate validation.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>PKI certificate path validation issues detected. This may include: self-signed certificates, missing CA bundle, disabled TLS validation (NODE_TLS_REJECT_UNAUTHORIZED=0), or certificate chain validation failures. Remediation: Install a CA-signed certificate, ensure the system CA bundle is present at /etc/ssl/certs/ca-certificates.crt, and verify NODE_TLS_REJECT_UNAUTHORIZED is not set to 0 in the XO server environment.</ValidTrueComment>
@@ -4563,26 +4802,19 @@ for that user. Session tokens referencing deleted users are rejected on the next
   <Vuln ID="V-222551">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>PKI private keys are properly protected. Key files have restrictive permissions (600 or 400), are owned by root or the appropriate service account, and are not located in web-accessible directories. No private keys are tracked in version control repositories.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Private key protection issues detected.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Private key protection violations detected. This may include: permissive file permissions (should be 600 or 400), keys in web-accessible directories, or keys tracked in git repositories. Remediation: Set key file permissions to 600 (chmod 600), ensure root ownership, remove keys from web directories, and add *.key to .gitignore.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Private key protection requires remediation.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable">
-        <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>No private key files were detected on the system. If PKI is not used by this application, this requirement is not applicable.</ValidTrueComment>
-        <ValidFalseStatus>Not_Applicable</ValidFalseStatus>
-        <ValidFalseComment>No private keys present.</ValidFalseComment>
       </Answer>
     </AnswerKey>
   </Vuln>
@@ -4663,14 +4895,14 @@ checking is operational for offline and online scenarios.
   <Vuln ID="V-222554">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO web interface properly masks password input. React framework provides automatic input masking for password-type fields. No cleartext password display detected in HTML/JSX source files. Log files do not contain cleartext passwords. API responses do not expose password field values.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Password masking could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Cleartext password display detected. This may include: input fields using type=text instead of type=password, cleartext passwords in log files, or API responses exposing password values. Remediation: Ensure all password input fields use type=password, configure log sanitization to redact passwords, and verify API endpoints do not return password fields.</ValidTrueComment>
@@ -4688,6 +4920,15 @@ checking is operational for offline and online scenarios.
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -5432,14 +5673,14 @@ The automated check could not verify the Secure flag on session cookies. Manual 
   <Vuln ID="V-222577">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Session IDs are properly protected from exposure. Sessions are transmitted exclusively over HTTPS (port 443). Cookie security flags (HttpOnly, Secure) prevent client-side access and plaintext transmission. No session ID exposure detected in URL parameters or log files. Redis is used for secure server-side session storage.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Session ID exposure protection could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Session ID exposure risks detected. This may include: missing HttpOnly/Secure cookie flags, session IDs in URL parameters, or session references in log files. Remediation: Configure cookie flags (HttpOnly, Secure, SameSite=Strict), ensure HTTPS enforcement, and verify session IDs are not logged or passed in URLs.</ValidTrueComment>
@@ -5451,14 +5692,14 @@ The automated check could not verify the Secure flag on session cookies. Manual 
   <Vuln ID="V-222578">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO properly destroys session IDs on logoff. The session.signOut API endpoint handles session invalidation. Server-side logout handlers explicitly destroy session data. Redis sessions have finite TTL for automatic cleanup. Cookie settings prevent persistent session storage beyond browser close.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Session destruction could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Session destruction on logoff could not be verified. No explicit session.destroy or signOut handlers were detected in the application source. Remediation: Verify the XO web interface implements server-side session invalidation on logout. Check that Redis sessions have appropriate TTL values. Ensure browser cookies are session-only (no persistent expiration).</ValidTrueComment>
@@ -5625,6 +5866,15 @@ The automated check could not fully verify session validation. Manual verificati
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222586">
@@ -5690,6 +5940,15 @@ The automated check could not fully verify session validation. Manual verificati
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -5801,26 +6060,19 @@ The automated check could not fully verify session validation. Manual verificati
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode />
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>XO has not been designated as a high availability system. This requirement only applies to applications that have been designated as requiring high availability. Per STIG guidance, if the application has not been designated as a high availability system, this requirement is not applicable.</ValidTrueComment>
-        <ValidFalseStatus />
-        <ValidFalseComment />
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222596">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>Transmitted information is protected with TLS encryption. HTTPS is active on port 443 with TLS 1.2 or higher. No plaintext protocols (FTP, Telnet, HTTP) are exposed on network interfaces. XO configuration includes certificate and key settings for HTTPS enforcement.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Transmission protection could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Transmitted information protection is insufficient. This may include: HTTPS not active, plaintext protocols exposed, or outdated TLS version. Remediation: Configure XO with a valid TLS certificate (cert and key in config.toml), ensure HTTPS on port 443, disable plaintext protocols, and verify TLS 1.2+ is enforced.</ValidTrueComment>
@@ -5904,14 +6156,14 @@ The automated check could not fully verify session validation. Manual verificati
   <Vuln ID="V-222601">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>No sensitive information stored in hidden fields. XO uses React SPA architecture which minimizes server-rendered hidden fields. Automated scan of web application source files found no hidden fields containing passwords, tokens, secrets, API keys, SSNs, or credit card data.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Hidden field scan could not confirm compliance.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Sensitive information detected in hidden form fields. Remediation: Remove sensitive data from hidden fields. Use server-side session storage (Redis) for sensitive values. If hidden fields are required for CSRF tokens, ensure they use cryptographically random values that cannot be used to extract sensitive information.</ValidTrueComment>
@@ -5923,14 +6175,14 @@ The automated check could not fully verify session validation. Manual verificati
   <Vuln ID="V-222602">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO is protected from XSS vulnerabilities. The application uses the React framework which provides automatic XSS protection through JSX escaping. React escapes all values embedded in JSX before rendering, preventing injection of malicious scripts. No dangerous patterns (dangerouslySetInnerHTML) were detected without proper sanitization.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>XSS protection could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>XSS protection mechanisms are insufficient. Remediation: Implement Content-Security-Policy headers, add X-Content-Type-Options: nosniff header, review and sanitize any dangerouslySetInnerHTML usage, and consider adding a sanitization library (DOMPurify) for user-generated content. React provides baseline protection but CSP headers add defense-in-depth.</ValidTrueComment>
@@ -5985,14 +6237,14 @@ Contact ISSO/ISSM to verify CSRF protection is adequate for the deployment.
   <Vuln ID="V-222604">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO is protected from command injection. The application uses safer command execution patterns (spawn/execFile with argument arrays) rather than shell-interpreted exec() calls. Input validation libraries are present. No string concatenation in command execution was detected.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Command injection protection could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Command injection risk detected. The application uses child_process.exec() with potential string concatenation, which could allow command injection. Remediation: Replace exec() calls with spawn() or execFile() using argument arrays. Validate and sanitize all user input before passing to system commands. Implement allowlists for permitted command arguments.</ValidTrueComment>
@@ -6114,19 +6366,28 @@ Contact ISSO/ISSM to verify input validation testing has been performed.
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222609">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO implements input handling validation. The ajv (Another JSON Validator) library provides JSON Schema validation for API inputs. Express.js body-parser middleware enforces Content-Type requirements. Type checking is used throughout the codebase for input validation.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Input validation could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Input validation is insufficient. No dedicated input validation library (ajv, joi, express-validator) was detected. Remediation: Implement JSON Schema validation using ajv for all API endpoints. Add Content-Type enforcement middleware. Validate input types, lengths, and ranges at all system boundaries.</ValidTrueComment>
@@ -6220,14 +6481,14 @@ Remediation Steps:
   <Vuln ID="V-222612">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>XO is not vulnerable to overflow attacks. Node.js is a memory-safe runtime — the V8 JavaScript engine provides automatic garbage collection, bounds checking on ArrayBuffer/TypedArray, and no direct memory pointer access. ASLR is enabled on the operating system (randomize_va_space=2). Modern Node.js version provides latest security patches.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Overflow protection could not be confirmed.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Overflow protection is insufficient. This may include outdated Node.js version or ASLR disabled. Remediation: Update Node.js to the latest LTS version. Ensure ASLR is enabled (sysctl kernel.randomize_va_space=2). Replace any Buffer.allocUnsafe() calls with Buffer.alloc(). Run npm audit to check for known memory-related vulnerabilities.</ValidTrueComment>
@@ -7347,14 +7608,14 @@ Contact system administrator to verify key exchange configuration.
   <Vuln ID="V-222642">
     <!--Session #49 (Feb 2026): CAT I completion-->
     <AnswerKey Name="XO">
-      <Answer Index="1" ExpectedStatus="NotAFinding">
+      <Answer Index="1" ExpectedStatus="NotAFinding" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>NotAFinding</ValidTrueStatus>
         <ValidTrueComment>No embedded authentication data detected in XO source code. Credentials are managed through environment variables and configuration files rather than hardcoded in source. No plaintext passwords, API keys, or secrets found in JavaScript source files. No embedded private keys or certificates in application code. Configuration files do not contain plaintext credential values.</ValidTrueComment>
         <ValidFalseStatus>Open</ValidFalseStatus>
         <ValidFalseComment>Embedded credential scan could not confirm compliance.</ValidFalseComment>
       </Answer>
-      <Answer Index="2" ExpectedStatus="Open">
+      <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
         <ValidationCode />
         <ValidTrueStatus>Open</ValidTrueStatus>
         <ValidTrueComment>Embedded authentication data detected in source code or configuration. This may include hardcoded passwords, API keys, secrets, or embedded private keys. Remediation: Move all credentials to environment variables or secure configuration management. Rotate any exposed credentials immediately. Add credential scanning to CI/CD pipeline. Use .gitignore to prevent credential files from being committed.</ValidTrueComment>
@@ -7372,6 +7633,15 @@ Contact system administrator to verify key exchange configuration.
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -7409,14 +7679,6 @@ Remediation Steps:
 2. Maintain local test procedures for configuration changes
 3. Document test results prior to deploying updates
 4. Include security testing in change management process
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. This is an operational deployment of Xen Orchestra. The organization does not perform application development. Test plan requirements apply to the vendor (Vates SAS).
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -7493,14 +7755,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization operating XO is not doing development work for the application. Security tester designation requirements apply to the vendor (Vates SAS).
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222647">
@@ -7571,14 +7825,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. This requirement is meant to apply to developers or organizations doing the application development work. The organization does not perform development or manage the development process for Xen Orchestra.
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222649">
@@ -7605,14 +7851,6 @@ Justification: Code coverage tracking is a vendor responsibility (Vates SAS).
 Remediation Steps:
 1. Contact Vates SAS for code coverage reports
 2. Request coverage statistics for each release
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization does not do or manage the application development work for Xen Orchestra. Code coverage tracking is a vendor responsibility (Vates SAS).
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -7644,14 +7882,6 @@ Remediation Steps:
 1. Verify Vates SAS defect tracking at GitHub
 2. Monitor published security advisories
 3. Track local configuration issues separately
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. Application development is not being done or managed by the organization. Vates SAS manages defect tracking via GitHub Issues.
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -7726,14 +7956,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization is not performing or managing the development work. Security flaw project planning is a vendor responsibility (Vates SAS).
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222653">
@@ -7760,14 +7982,6 @@ Justification: Vates SAS maintains coding standards for the XO codebase.
 Remediation Steps:
 1. Contact Vates SAS for coding standards documentation
 2. Review Vates contribution guidelines on GitHub
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization is not doing the development or managing the development work. Coding standards are a vendor responsibility (Vates SAS).
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -7802,14 +8016,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization is not doing the development or managing the development work. Design documentation is a vendor responsibility (Vates SAS).
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222655">
@@ -7837,14 +8043,6 @@ Remediation Steps:
 1. Contact Vates SAS for threat model documentation
 2. Develop organizational threat model for XO deployment
 3. Review threat model with each XO update
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. The organization is not doing the development or managing the development work. Threat model documentation is a vendor responsibility (Vates SAS).
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -7921,14 +8119,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. XO is a third-party application and the development team is not directly accessible for interview. Incident response plan requirements apply to the vendor (Vates SAS).
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222658">
@@ -7943,6 +8133,15 @@ Remediation Steps:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222659">
@@ -7954,6 +8153,15 @@ Remediation Steps:
         <ValidationCode />
         <ValidTrueStatus />
         <ValidTrueComment />
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
@@ -8050,6 +8258,15 @@ Remediation Steps:
         <ValidFalseStatus />
         <ValidFalseComment />
       </Answer>
+          <Answer Index="2" ExpectedStatus="Open" Hostname="" Instance="" Database="" Site="" ResultHash="">
+        <ValidationCode />
+        <ValidTrueStatus>Open</ValidTrueStatus>
+        <ValidTrueComment>
+The automated scan determined this system does not meet the requirement. Review FINDING_DETAILS for specific technical evidence. Implement corrective actions per the STIG Check_Content guidance, then re-scan to verify compliance.
+        </ValidTrueComment>
+        <ValidFalseStatus />
+        <ValidFalseComment />
+      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-222663">
@@ -8118,14 +8335,6 @@ Remediation Steps:
 1. Assess whether XO processes classified data
 2. If classified data is processed, create a Security Classification Guide
 3. Document all data elements and their classification levels
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. XO does not directly process classified information. It manages virtual machine lifecycle operations (create, delete, backup, migrate). Classified data resides within the VMs, not within the XO application itself.
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
@@ -8482,14 +8691,6 @@ Remediation Steps:
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>
       </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. This requirement is meant to be applied to developers and development teams only. The organization does not maintain a development team for Xen Orchestra. Annual security training for operational staff is tracked separately.
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
     </AnswerKey>
   </Vuln>
   <Vuln ID="V-265634">
@@ -8527,14 +8728,6 @@ Remediation Steps:
 3. Use NSA Suite B cryptographic algorithms
 4. Verify OpenSSL FIPS module is active
 5. Document cryptographic controls in System Security Plan
-        </ValidTrueComment>
-        <ValidFalseStatus>NR</ValidFalseStatus>
-        <ValidFalseComment>Manual verification required.</ValidFalseComment>
-      </Answer>
-      <Answer Index="3" ExpectedStatus="Not_Applicable" Hostname="" Instance="" Database="" Site="" ResultHash="">
-        <ValidationCode></ValidationCode>
-        <ValidTrueStatus>Not_Applicable</ValidTrueStatus>
-        <ValidTrueComment>Not Applicable. XO does not directly process classified information. It manages virtual machine lifecycle operations. NSA-approved cryptography requirements apply to systems that store/process classified data.
         </ValidTrueComment>
         <ValidFalseStatus>NR</ValidFalseStatus>
         <ValidFalseComment>Manual verification required.</ValidFalseComment>

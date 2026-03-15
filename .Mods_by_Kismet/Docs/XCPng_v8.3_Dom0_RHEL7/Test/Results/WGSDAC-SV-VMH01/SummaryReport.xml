@@ -52,14 +52,14 @@
       <CATII_PossibleTotal>367</CATII_PossibleTotal>
       <CATIII_OpenNRTotal>41</CATIII_OpenNRTotal>
       <CATIII_PossibleTotal>44</CATIII_PossibleTotal>
-      <CountRetrievalSuccess>1</CountRetrievalSuccess>
+      <CountRetrievalSuccess>0</CountRetrievalSuccess>
       <RiskRating>Very High</RiskRating>
       <WeightedAvg>52</WeightedAvg>
     </Score>
   </Computer>
   <Results>
-    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-14T04:47:16.4120512-04:00" EvalScore="42.21">
-      <CAT_I Total="26" Not_Applicable="5" Open="10" NotAFinding="11" Not_Reviewed="0">
+    <Result STIG="RHEL_7_STIG" Version="3" Release="15" Site="" Instance="" ShortName="XCP-ng_Dom0_RHEL7" StartTime="2026-03-14T11:00:17.2785003-04:00" EvalScore="42.21">
+      <CAT_I Total="26" Not_Applicable="5" Open="9" NotAFinding="11" Not_Reviewed="1">
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the file permissions, ownership, and group membership of system files and commands match the vendor values." Status="Open" ID="V-204392" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not allow accounts configured with blank or null passwords." Status="Open" ID="V-204424" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon does not allow authentication using an empty password." Status="NotAFinding" ID="V-204425" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
@@ -74,7 +74,7 @@
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled on the command line." Status="Open" ID="V-204455" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the x86 Ctrl-Alt-Delete key sequence is disabled in the Graphical User Interface." Status="Not_Applicable" ID="V-204456" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be a vendor supported release." Status="Open" ID="V-204458" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
-        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the root account must be the only account having unrestricted access to the system." Status="Open" ID="V-204462" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
+        <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the root account must be the only account having unrestricted access to the system." Status="Not_Reviewed" ID="V-204462" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must implement NIST FIPS-validated cryptography for the following: to provision digital signatures, to generate cryptographic hashes, and to protect data requiring data-at-rest protections in accordance with applicable federal laws, Executive Orders, directives, policies, regulations, and standards." Status="Open" ID="V-204497" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must not have the telnet-server package installed." Status="NotAFinding" ID="V-204502" Override="" Justification="" AFStatusChange="" PreAFStatus="" />
         <Vuln RuleTitle="The Red Hat Enterprise Linux operating system must be configured so that the SSH daemon is configured to only use the SSHv2 protocol." Status="NotAFinding" ID="V-204594" Override="" Justification="" AFStatusChange="" PreAFStatus="" />

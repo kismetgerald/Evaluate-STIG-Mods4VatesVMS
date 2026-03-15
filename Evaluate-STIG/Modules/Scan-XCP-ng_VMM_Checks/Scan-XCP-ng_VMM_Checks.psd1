@@ -60,7 +60,7 @@
     # NestedModules = @()
 
     # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-    # 193 functions matching VMM SRG V2R2 XCCDF (14 explicit + 179 stubs)
+    # 193 functions matching VMM SRG V2R2 XCCDF (all explicit)
     FunctionsToExport = @('Get-V*')
 
     # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
