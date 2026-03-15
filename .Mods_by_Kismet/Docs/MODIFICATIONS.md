@@ -1,6 +1,6 @@
 # Evaluate-STIG Modifications by Kismet Agbasi
 **Created:** January 16, 2026
-**Last Updated:** March 1, 2026 (all 3 XO modules 100% complete)
+**Last Updated:** March 14, 2026 (QA Phase 2 — Linux Summary Report disk fix)
 **Purpose:** XCP-ng hypervisor STIG compliance scanning with Xen Orchestra application support
 **Original Source:** NAVSEA Evaluate-STIG v1.2507.6
 **Repository:** [https://github.com/NAVSEA/Evaluate-STIG](https://github.com/NAVSEA/Evaluate-STIG)
@@ -216,9 +216,21 @@ $NetAdapters = @(ip -4 addr | grep -B1 "inet " | grep "^[0-9]\+:" | awk '{print 
 **Impact:** Reduces false positive interfaces from 14+ to only active interfaces with real IP addresses
 **Compatibility:** Works on all Linux distributions; no impact on Windows interface detection
 
+#### Lines 1573-1598: Fixed Linux disk collection for Summary Report (MODIFIED_BY: Kismet Agbasi on 03/14/2026)
+```powershell
+# MODIFIED_BY: Kismet Agbasi on 03/14/2026 - Fix broken lsblk/lvscan parsing, populate all 7 disk fields
+# Original code only collected 3 of 7 fields (Index, DeviceID, Size) and had broken parsing
+# producing "Name Value ---- ------" garbage in Summary Report HTML.
+# Fix: Use lsblk -dno NAME,SIZE,MODEL,SERIAL,TRAN,TYPE to populate all 7 fields
+# matching the Windows CIM structure (Index, DeviceID, Size, Caption, SerialNumber, MediaType, InterfaceType)
+```
+**Rationale:** Linux disk data in Summary Report was malformed — only 3 fields populated, `lsblk` output parsing was broken (piping hashtables through `cut`), and `lvscan` Try/Catch path produced raw strings instead of structured data
+**Impact:** Summary Report HTML now shows complete disk information on Linux systems matching the Windows 7-column table format
+**Compatibility:** Linux only; no impact on Windows disk detection. Uses `lsblk -d` (physical disks only), available on all supported Linux distributions
+
 ---
 
-### 4. `xml/FileList.xml`
+### 5. `xml/FileList.xml`
 
 **Purpose:** File manifest controlling which files are packaged for remote scanning
 **Changes:** Updated 6 existing entries + added 4 new entries (10 total changes)

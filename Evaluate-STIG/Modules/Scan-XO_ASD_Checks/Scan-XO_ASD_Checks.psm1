@@ -40353,7 +40353,7 @@ Function Get-V222662 {
     try {
         # XO default credentials: admin@admin.net with password 'admin'
         # Check if default email exists
-        $adminCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I {} redis-cli --raw HGET {} email 2>/dev/null | grep -i 'admin@admin' || echo 'No default admin email found')
+        $adminCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I '{}' redis-cli --raw HGET '{}' email 2>/dev/null | grep -i 'admin@admin' || echo 'No default admin email found')
         $FindingDetails += "   Default admin email check: $adminCheck" + $nl
         
         # Check XO user list
@@ -40367,7 +40367,7 @@ Function Get-V222662 {
     $FindingDetails += $nl + "2. Checking for initial setup indicators..." + $nl
     try {
         # Check if XO has been configured (presence of custom users)
-        $setupCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I {} redis-cli --raw HGETALL {} 2>/dev/null | grep -v 'admin@admin' | head -10 || echo 'Only default admin may exist')
+        $setupCheck = $(redis-cli --raw KEYS 'xo:user:*' 2>/dev/null | xargs -I '{}' redis-cli --raw HGETALL '{}' 2>/dev/null | grep -v 'admin@admin' | head -10 || echo 'Only default admin may exist')
         $FindingDetails += "   Custom user check: $setupCheck" + $nl
     } catch {
         $FindingDetails += "   ERROR: $_" + $nl
@@ -42935,7 +42935,7 @@ Function Get-V222425 {
             $FindingDetails += "✓ ACL entries found in database: $aclCheck ACL rules" + $nl
             
             # Sample some ACL data
-            $aclSample = $(redis-cli --no-auth-warning KEYS 'xo:acl:*' 2>/dev/null | head -5 | xargs -I {} redis-cli --no-auth-warning HGETALL {} 2>/dev/null)
+            $aclSample = $(redis-cli --no-auth-warning KEYS 'xo:acl:*' 2>/dev/null | head -5 | xargs -I '{}' redis-cli --no-auth-warning HGETALL '{}' 2>/dev/null)
             $FindingDetails += $nl + "Sample ACL Data:" + $nl + "$aclSample" + $nl + $nl
             $hasAcls = $true
         }

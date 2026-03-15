@@ -16993,7 +16993,7 @@ Function Get-V206414 {
         $output += "   [FOUND] Redis server running (PID: $redisRunning)" + $nl
 
         # Check for Redis session keys with TTL
-        $redisTTL = $(redis-cli --scan --pattern 'sess:*' | head -1 | xargs -I {} redis-cli ttl {} 2>/dev/null)
+        $redisTTL = $(redis-cli --scan --pattern 'sess:*' | head -1 | xargs -I '{}' redis-cli ttl '{}' 2>/dev/null)
         if ($LASTEXITCODE -eq 0 -and $redisTTL -match '^\d+$') {
             $ttlSeconds = [int]$redisTTL
             $ttlHours = $ttlSeconds / 3600
@@ -35116,7 +35116,7 @@ Function Get-V264354 {
     $certDirs = @("/etc/ssl/certs", "/etc/pki/tls/certs", "/opt/xo/ssl", "/etc/xo-server/ssl")
     $crlDPFound = $false
     foreach ($certDir in $certDirs) {
-        $certCheck = $(test -d '$certDir' && find '$certDir' -name '*.crt' -o -name '*.pem' 2>/dev/null | head -3 | xargs -I {} openssl x509 -in {} -noout -text 2>/dev/null | grep -A2 'CRL Distribution Points')
+        $certCheck = $(test -d $certDir && find $certDir -name '*.crt' -o -name '*.pem' 2>/dev/null | head -3 | xargs -I '{}' openssl x509 -in '{}' -noout -text 2>/dev/null | grep -A2 'CRL Distribution Points')
         if ($certCheck -and $certCheck -match "URI:" -and $certCheck -notmatch "No such file") {
             $crlDPFound = $true
             $output += "   [INFO] Certificates with CRL Distribution Points detected in $certDir" + $nl
